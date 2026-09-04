@@ -4,9 +4,11 @@
 package azcosmos
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net/url"
+	"strings"
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -16,18 +18,24 @@ import (
 //
 // This does not embed [azcore.ClientOptions]. v2 executes operations through the Cosmos driver
 // rather than an azcore HTTP pipeline, so the transport, retry and per-call policy knobs on that
-// type have no effect here. Advertising options the client would silently ignore is worse than not
-// offering them, so the fields below are only the ones the driver honors.
+// type have no effect here, and advertising options the client would silently ignore is worse than
+// not offering them. Every field below is one the driver honors.
 //
 // A nil *ClientOptions selects the defaults for every field.
 type ClientOptions struct {
 	// Routing decides the order in which the client considers the account's regions. The zero
-	// value leaves the order to the account; prefer setting it with [ProximityTo] or
-	// [PreferredRegions].
+	// value leaves the order to the account; prefer setting it with [PreferredRegions].
+	//
+	// [ProximityTo] is not supported yet and is rejected when the client is constructed rather
+	// than being ignored; see its documentation.
 	Routing RoutingStrategy
 
 	// ApplicationID is an application-specific identifier appended to the user agent sent with
-	// every request. Keep it short and free of personally identifiable information.
+	// every request. Keep it free of personally identifiable information.
+	//
+	// The value is passed unchanged to the driver, which validates it when the client is
+	// constructed. Prefer a stable, low-cardinality name such as "order-service" over anything
+	// per instance.
 	ApplicationID string
 
 	// EnableContentResponseOnWrite requests that writes return the resulting item. Leaving it
@@ -53,36 +61,47 @@ type Client struct {
 	closed    bool
 	closeOnce sync.Once
 	closeErr  error
+
+	// driver holds the resources the client owns in the driver. It is nil in builds that are not
+	// bound to the driver, where operations report that they are not implemented.
+	driver *nativeDriver
 }
 
 // NewClient creates a client that authenticates with Microsoft Entra ID.
 //
 // endpoint is the Cosmos DB account endpoint. cred is any [azcore.TokenCredential], such as the
-// implementations in the azidentity module. options may be nil to accept the defaults.
+// implementations in the azidentity module. options may be nil to accept the defaults. Construction
+// performs no network I/O; call [Client.Initialize] to fill account-level caches eagerly.
 func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if cred == nil {
 		return nil, errors.New("azcosmos: credential must not be nil")
 	}
-	return newClient(endpoint, options)
+	return newClient(endpoint, "", cred, options)
 }
 
 // NewClientWithKey creates a client that authenticates with an account key.
 //
 // Prefer [NewClient] where possible; account keys grant full access to the account and cannot be
-// scoped down. options may be nil to accept the defaults.
+// scoped down. options may be nil to accept the defaults. Construction performs no network I/O;
+// call [Client.Initialize] to fill account-level caches eagerly.
 func NewClientWithKey(endpoint string, cred KeyCredential, options *ClientOptions) (*Client, error) {
 	if cred.accountKey == "" {
 		return nil, errors.New("azcosmos: credential must be created with NewKeyCredential")
 	}
-	return newClient(endpoint, options)
+	return newClient(endpoint, cred.accountKey, nil, options)
 }
 
-// newClient validates the inputs shared by every constructor and returns a client handle.
+// newClient validates the inputs shared by every constructor and opens the client's driver
+// resources.
 //
-// The handle is not yet backed by the driver: operations on it report that they are not
-// implemented. Construction still succeeds so that the surface can be compiled and explored
-// against during the preview.
-func newClient(endpoint string, options *ClientOptions) (*Client, error) {
+// accountKey is empty when the caller supplied a token credential. In builds that are not bound to
+// the driver no resources are acquired, and operations report that they are not implemented.
+func newClient(
+	endpoint string,
+	accountKey string,
+	tokenCredential azcore.TokenCredential,
+	options *ClientOptions,
+) (*Client, error) {
 	parsed, err := url.Parse(endpoint)
 	if err != nil {
 		return nil, fmt.Errorf("azcosmos: parsing endpoint: %w", err)
@@ -106,7 +125,41 @@ func newClient(endpoint string, options *ClientOptions) (*Client, error) {
 		client.options = *options
 		client.options.Routing = options.Routing.clone()
 	}
+	if err := client.options.validate(); err != nil {
+		return nil, err
+	}
+
+	driver, err := openDriver(driverConfig{
+		endpoint:        endpoint,
+		accountKey:      accountKey,
+		tokenCredential: tokenCredential,
+		options:         client.options,
+	})
+	if err != nil {
+		return nil, err
+	}
+	client.driver = driver
 	return client, nil
+}
+
+// Initialize eagerly creates the driver and fills its account-properties and routing caches.
+//
+// Initialize is idempotent and safe for concurrent use. Operations also initialize lazily, so
+// callers only need this when they want readiness and initialization failures before the first
+// operation.
+func (c *Client) Initialize(ctx context.Context) error {
+	if ctx == nil {
+		return errors.New("azcosmos: context must not be nil")
+	}
+	release, err := c.acquire()
+	if err != nil {
+		return err
+	}
+	defer release()
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	return c.driver.initialize(ctx)
 }
 
 // Endpoint returns the Cosmos DB account endpoint the client was created with.
@@ -114,23 +167,27 @@ func (c *Client) Endpoint() string {
 	return c.endpoint
 }
 
-// Close releases the driver resources the client owns. It first waits for the client's in-flight
-// operations to finish, and afterwards every operation on the client fails with [CodeClientClosed]
-// rather than reaching the driver.
+// Close releases the driver resources the client owns. It cancels active token acquisition, then
+// waits for the client's in-flight operations to finish. Afterwards every operation on the client
+// fails with [CodeClientClosed] rather than reaching the driver.
 //
 // Close is idempotent and safe to call concurrently; every caller observes the same result. It
 // returns an error only when the client could not be torn down cleanly, in which case the
 // resources are released anyway, so there is nothing to retry.
 func (c *Client) Close() error {
 	c.closeOnce.Do(func() {
+		// Signal host token acquisition before waiting for operations. Initialize can be holding
+		// the read lock while GetToken waits on this cancellation.
+		c.driver.cancel()
 		// Taking the write lock blocks until every operation holding it for read has finished,
 		// and keeps later operations out once closed is set.
 		c.mu.Lock()
 		defer c.mu.Unlock()
 		c.closed = true
-		// Driver resources are released here once the binding lands, recording a teardown that
-		// did not complete cleanly in c.closeErr. The error is stored on the client rather than
-		// in a local so that the second and subsequent callers see it too.
+		// The error is stored on the client rather than in a local so that the second and
+		// subsequent callers see it too.
+		c.closeErr = c.driver.close()
+		c.driver = nil
 	})
 	return c.closeErr
 }
@@ -163,4 +220,17 @@ func (c *Client) NewContainer(databaseID string, containerID string) (*Container
 		return nil, err
 	}
 	return database.NewContainer(containerID)
+}
+
+// validate reports option values the binding cannot implement. Values the driver understands are
+// passed through and validated there, so this package does not duplicate its rules.
+func (o ClientOptions) validate() error {
+	// The C ABI takes a NUL-terminated string. Passing an embedded NUL through C.CString would
+	// silently truncate the value before the driver could validate it.
+	if strings.IndexByte(o.ApplicationID, 0) >= 0 {
+		return errors.New("azcosmos: ClientOptions.ApplicationID must not contain a NUL byte")
+	}
+
+	_, err := o.Routing.preferredRegionOrder()
+	return err
 }

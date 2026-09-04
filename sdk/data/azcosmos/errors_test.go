@@ -145,6 +145,82 @@ func TestErrorUnwrapsCancellation(t *testing.T) {
 	// Every other failure is a Cosmos failure and nothing else.
 	require.NotErrorIs(t, &Error{Code: CodeThrottled}, context.Canceled)
 	require.NoError(t, (&Error{Code: CodeThrottled}).Unwrap())
+
+	deadline := newOperationCancelledError(context.DeadlineExceeded, 2.5, "activity-id")
+	require.ErrorIs(t, deadline, context.DeadlineExceeded)
+	require.NotErrorIs(t, deadline, context.Canceled)
+	require.Equal(t, 2.5, deadline.RequestCharge)
+	require.Equal(t, "activity-id", deadline.ActivityID)
+}
+
+// The driver pairs a failure it produced itself with a synthetic 408 or 503, so classifying one on
+// its HTTP status would blame the service for a local failure. These are the codes the driver's own
+// classifier consults the sub-status for.
+func TestCodeForSyntheticSubStatus(t *testing.T) {
+	for _, tt := range []struct {
+		name      string
+		subStatus int
+		want      Code
+	}{
+		{"authentication failed", 20402, CodeAuthenticationFailed},
+		{"client generated 401", 20401, CodeAuthenticationFailed},
+		{"transport generated 503", 20003, CodeTransportFailure},
+		{"transport connection failed", 20010, CodeTransportFailure},
+		{"transport band upper bound", 20015, CodeTransportFailure},
+		{"client operation timeout", 20008, CodeClientOperationTimeout},
+		{"serialization of a response body", 20020, CodeSerializationFailed},
+		{"serialization of a request body", 20021, CodeSerializationFailed},
+
+		// Anything the driver has not given a dedicated meaning is still client-side.
+		{"invalid account endpoint url", 20108, CodeClientError},
+		{"just outside the transport band", 20016, CodeClientError},
+		{"just outside the serialization band", 20022, CodeClientError},
+		{"absent", 0, CodeClientError},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			require.Equal(t, tt.want, codeForSyntheticSubStatus(tt.subStatus))
+		})
+	}
+}
+
+// A rich error reports both an HTTP status and whether the service produced it, and the two
+// disagree for synthetic failures: the driver reports a failed connection as 503, which means
+// "service unavailable" only if a service actually answered.
+func TestCodeForRichError(t *testing.T) {
+	require.Equal(t, CodeTransportFailure, codeForRichError(false, 503, 20010),
+		"a failed connection is not the service being unavailable")
+	require.Equal(t, CodeServiceUnavailable, codeForRichError(true, 503, 0),
+		"a 503 from the service is")
+	require.Equal(t, CodeClientOperationTimeout, codeForRichError(false, 408, 20008),
+		"a client-side timeout is not the service timing out")
+	require.Equal(t, CodeRequestTimeout, codeForRichError(true, 408, 0))
+	require.Equal(t, CodeSessionUnavailable, codeForRichError(true, 404, 1002),
+		"the sub-status refinement still applies to wire responses")
+}
+
+// Every wire status this package classifies has to survive the round trip from an HTTP status,
+// which is how a packed status arrives, back to the driver status the classifier expects.
+func TestDriverStatusForHTTP(t *testing.T) {
+	for httpStatus, want := range map[int]Code{
+		400: CodeBadRequest,
+		401: CodeUnauthorized,
+		403: CodeForbidden,
+		404: CodeNotFound,
+		408: CodeRequestTimeout,
+		409: CodeConflict,
+		410: CodeGone,
+		412: CodePreconditionFailed,
+		429: CodeThrottled,
+		503: CodeServiceUnavailable,
+	} {
+		require.Equal(t, want, codeForDriverStatus(driverStatusForHTTP(httpStatus), 0),
+			"http %d", httpStatus)
+	}
+
+	// A status with no dedicated code still lands in the wire band rather than going unknown.
+	require.Equal(t, CodeServiceError, codeForDriverStatus(driverStatusForHTTP(451), 0))
+	// No HTTP status at all means nothing reached the wire.
+	require.Equal(t, CodeClientError, codeForDriverStatus(driverStatusForHTTP(0), 0))
 }
 
 func TestErrorAsRetrievesFields(t *testing.T) {
@@ -180,16 +256,38 @@ func TestErrorAsRetrievesFields(t *testing.T) {
 	require.Equal(t, []byte(`{"code":"TooManyRequests"}`), cosmosErr.Body)
 }
 
-// The preview returns errNotImplemented from every operation, so it has to satisfy the errors.As
+// A build that cannot reach the driver reports that from every operation, so it has to satisfy the errors.As
 // idiom the package documents; a bare errors.New would not.
 func TestNotImplementedIsRetrievableAsError(t *testing.T) {
-	err := fmt.Errorf("reading item: %w", error(errNotImplemented))
+	err := fmt.Errorf("reading item: %w", error(newDriverUnavailableError()))
 
 	var cosmosErr *Error
 	require.True(t, errors.As(err, &cosmosErr))
 	require.Equal(t, CodeClientError, cosmosErr.Code)
 	require.False(t, cosmosErr.FromWire)
 	require.Zero(t, cosmosErr.StatusCode)
+}
+
+func TestPackageErrorsAreFresh(t *testing.T) {
+	driverErr := newDriverUnavailableError()
+	driverErr.Message = "mutated"
+	require.NotEqual(t, driverErr.Message, newDriverUnavailableError().Message)
+
+	routingErr := newProximityRoutingUnsupportedError()
+	routingErr.Message = "mutated"
+	require.NotEqual(t, routingErr.Message, newProximityRoutingUnsupportedError().Message)
+}
+
+func TestCloneErrorCopiesMutableState(t *testing.T) {
+	original := &Error{Code: CodeServiceError, Body: []byte("body")}
+	cloned, ok := cloneError(original).(*Error)
+	require.True(t, ok)
+	require.NotSame(t, original, cloned)
+
+	cloned.Code = CodeClientError
+	cloned.Body[0] = 'B'
+	require.Equal(t, CodeServiceError, original.Code)
+	require.Equal(t, []byte("body"), original.Body)
 }
 
 func TestErrorMessage(t *testing.T) {

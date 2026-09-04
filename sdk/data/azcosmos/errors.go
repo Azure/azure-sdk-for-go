@@ -12,16 +12,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// errNotImplemented is returned by operations whose driver binding has not landed yet. It is
-// temporary scaffolding for the incremental v2 rollout and will be removed once every operation
-// is wired up. It is an [Error] so that the documented errors.As idiom works during the preview.
-//
-//nolint:unused // returned by the operations that land in later changes.
-var errNotImplemented = &Error{
-	Code:    CodeClientError,
-	Message: "not implemented yet in this preview of v2",
-}
-
 // Code classifies a Cosmos DB failure so that callers can branch on it programmatically instead
 // of interpreting status and sub-status codes themselves.
 //
@@ -102,9 +92,9 @@ const (
 	CodeClientOperationTimeout Code = "ClientOperationTimeout"
 
 	// CodeOperationCancelled means an operation already in flight was cancelled before it
-	// completed, because the caller's context was cancelled or because [Client.Close] shut the
-	// driver down underneath it. An [Error] carrying it unwraps to [context.Canceled], so
-	// errors.Is reports it the same way the rest of the standard library does. An operation
+	// completed, because the caller's context ended or the native driver cancelled it. An [Error]
+	// carrying it unwraps to the context error that caused cancellation,
+	// so errors.Is reports it the same way the rest of the standard library does. An operation
 	// started after the client was closed is [CodeClientClosed] instead, since it never ran.
 	CodeOperationCancelled Code = "OperationCancelled"
 )
@@ -180,6 +170,8 @@ type Error struct {
 	// client-side one leaves that unknown. The response-derived fields above are only populated
 	// when this is true.
 	FromWire bool
+
+	cause error
 }
 
 // Error implements the error interface. The format is not part of the published API; branch on
@@ -212,12 +204,35 @@ func (e *Error) Error() string {
 
 // Unwrap reports the standard library error a failure corresponds to, so that callers can use
 // errors.Is for the conditions Go already has a vocabulary for. A cancelled operation unwraps to
-// [context.Canceled], which is what callers of a context-aware API check for.
+// its caller's context error, or [context.Canceled] when the native driver initiated cancellation.
 func (e *Error) Unwrap() error {
+	if e.cause != nil {
+		return e.cause
+	}
 	if e.Code == CodeOperationCancelled {
 		return context.Canceled
 	}
 	return nil
+}
+
+func newOperationCancelledError(cause error, requestCharge float64, activityID string) *Error {
+	return &Error{
+		Code:          CodeOperationCancelled,
+		Message:       "azcosmos: the operation was cancelled",
+		RequestCharge: requestCharge,
+		ActivityID:    activityID,
+		cause:         cause,
+	}
+}
+
+func cloneError(err error) error {
+	cosmosErr, ok := err.(*Error)
+	if !ok {
+		return err
+	}
+	clone := *cosmosErr
+	clone.Body = append([]byte(nil), cosmosErr.Body...)
+	return &clone
 }
 
 // subStatusReadSessionNotAvailable is reported with 404 when the serving replica has not caught up
@@ -266,6 +281,10 @@ const (
 	driverStatusWireMin     driverStatus = 2001
 	driverStatusPlumbingMin driverStatus = 3001
 	driverStatusWarningMin  driverStatus = 5001
+
+	// driverStatusWireBase is the offset the driver adds to an HTTP status to form its wire code,
+	// so that 404 becomes driverStatusNotFound. See driverStatusForHTTP.
+	driverStatusWireBase driverStatus = 2000
 )
 
 // normalizeSubStatus maps the driver's absent sentinel onto the zero value [Error.SubStatus]
@@ -280,6 +299,70 @@ func normalizeSubStatus(subStatus int32) int {
 		return 0
 	}
 	return int(subStatus)
+}
+
+// Sub-status codes the driver reports on failures it produced itself. It pairs them with a
+// synthetic 408 or 503, so the sub-status rather than the status is what says what went wrong.
+const (
+	subStatusTransportGenerated503  = 20003
+	subStatusClientOperationTimeout = 20008
+	subStatusTransportMin           = 20010
+	subStatusTransportMax           = 20015
+	// Serialization covers both directions: 20020 is a response body the client could not read,
+	// 20021 a request body it could not write.
+	subStatusSerializationMin = 20020
+	subStatusSerializationMax = 20021
+	// The driver treats a signature it generated a 401 for and a token it could not acquire as
+	// the same class of failure, and so does this.
+	subStatusClientGenerated401   = 20401
+	subStatusAuthenticationFailed = 20402
+)
+
+// codeForSyntheticSubStatus classifies a failure the client produced rather than the service.
+//
+// These carry a synthetic HTTP status, so classifying them by it would report a transport failure
+// as [CodeServiceUnavailable] and a client-side timeout as [CodeRequestTimeout] — in both cases
+// blaming the service for something local. The driver's own classifier consults the sub-status
+// first for exactly this reason, and this mirrors it.
+func codeForSyntheticSubStatus(subStatus int) Code {
+	switch {
+	case subStatus == subStatusClientGenerated401, subStatus == subStatusAuthenticationFailed:
+		return CodeAuthenticationFailed
+	case subStatus == subStatusTransportGenerated503,
+		subStatus >= subStatusTransportMin && subStatus <= subStatusTransportMax:
+		return CodeTransportFailure
+	case subStatus == subStatusClientOperationTimeout:
+		return CodeClientOperationTimeout
+	case subStatus >= subStatusSerializationMin && subStatus <= subStatusSerializationMax:
+		return CodeSerializationFailed
+	default:
+		return CodeClientError
+	}
+}
+
+// codeForRichError classifies a failure reported through a rich cosmos_error_t or an equivalent
+// HTTP and sub-status pair, following the driver's own order: a failure the client produced is
+// classified by its sub-status, and only a wire response is classified by its HTTP status.
+func codeForRichError(fromWire bool, httpStatus, subStatus int) Code {
+	if !fromWire {
+		return codeForSyntheticSubStatus(subStatus)
+	}
+	return codeForDriverStatus(driverStatusForHTTP(httpStatus), subStatus)
+}
+
+// driverStatusForHTTP maps a wire HTTP status onto the driver status that reports it, so that a
+// packed cosmos_status_code_t, which carries an HTTP status, classifies through the same table as
+// a completion, which carries a driver status.
+//
+// The driver derives its wire codes as 2000 plus the HTTP status, so the mapping is that offset
+// rather than a second table that could drift from the first. A status with no dedicated code
+// still lands in the wire band and classifies as [CodeServiceError], matching what the driver does
+// with one.
+func driverStatusForHTTP(httpStatus int) driverStatus {
+	if httpStatus <= 0 {
+		return driverStatusClientError
+	}
+	return driverStatusWireBase + driverStatus(httpStatus)
 }
 
 // codeForDriverStatus classifies a completion from the coarse status the driver reports, refined

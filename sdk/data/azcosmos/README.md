@@ -8,23 +8,96 @@ This client library enables client applications to connect to Azure Cosmos DB vi
 
 This is the v2 major version of the module and it is **not usable yet**. The v2 surface is being
 assembled incrementally so that it can be reviewed as it lands. This release covers the error and
-response model, partition keys, client construction, and reading and creating single items; the
-operations are not wired to the driver yet and report that they are not implemented.
+response model, partition keys, client construction, and reading and creating single items.
 
 v2 replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver, so that
 routing, retries, session handling, failover behavior and query fan-out are consistent across the
-Cosmos DB SDKs. The decision record is
-[`docs/adr/0001-go-v2-uses-ffi.md`](docs/adr/0001-go-v2-uses-ffi.md).
+Cosmos DB SDKs.
 
-Because v2 binds to a native driver, it requires cgo (`CGO_ENABLED=1`). v1's WebAssembly support
-does not carry over.
+### Building with the driver
+
+The driver binding is selected automatically when cgo is enabled on glibc `linux/amd64` or
+`darwin/arm64`. No build tag or linker environment variable is required:
+
+```sh
+go build ./...
+```
+
+The native archives are committed as `.syso` files in target-specific internal packages, so Go
+preserves them in module zips and vendored builds and links the matching package automatically. No
+separate driver build or runtime sidecar is required; the resulting executable is self-contained.
+
+`CGO_ENABLED=0` and unsupported platforms select `driver_stub.go`. That diagnostic build keeps the
+API compilable, but operations report that the driver is unavailable.
+
+Alpine and other musl-based Linux distributions are not supported yet. The bundled Linux archive
+is built for glibc, and the build reports that limitation explicitly rather than linking Rust code
+compiled for a different libc ABI.
+
+**Those committed binaries are temporary and are meant to be deleted.** Checking a build artifact
+into the repository is not the plan of record: the distribution design puts each target's library
+in its own Go module in [azure-cosmos-driver](https://github.com/Azure/azure-cosmos-driver),
+selected by `GOOS`/`GOARCH`. That repository exists and already carries a darwin/arm64 module, but
+not yet one for `linux/amd64`, which is the platform CI runs on — so the copies here stand in until
+it does.
+
+The trigger to remove them, and the steps, are recorded in
+[`internal/native/lib/README.md`](internal/native/lib/README.md). Only `linux/amd64` and
+`darwin/arm64` are present, because those are the platforms actually built and tested; another
+platform needs its own build from
+[azure_data_cosmos_driver_native](https://github.com/Azure/azure-sdk-for-rust/tree/main/sdk/cosmos/azure_data_cosmos_driver_native)
+dropped into the matching directory, which is the cost these files impose.
+
+`azurecosmosdriver.h` is the header the driver generates, vendored here and pinned to the version
+in `driver.go`. That version is checked against the linked archive before any struct-sensitive ABI
+call during construction, because a header and a library from different versions do not fail to
+compile — they fail as moved struct offsets somewhere far from the cause.
+
+### Client initialization
+
+`NewClient` and `NewClientWithKey` perform no network I/O. Call `Client.Initialize` with a context
+to initialize eagerly: it probes the account's HTTP capabilities, fetches and caches account
+properties, seeds the routing state, and creates the account transport. An unreachable or
+unauthorized account is then reported before the first operation, and the context bounds the work.
+
+Calling `Initialize` is optional. The first operation performs the same initialization lazily when
+it has not already run. The diagnostic build has no driver to initialize and reports that through
+`Initialize`.
+
+Container metadata is not fetched during client construction because the client does not know which
+containers the application will use. The first operation on a container resolves and caches that
+container's metadata.
+
+One limit applies to the driver-backed build today: v1's WebAssembly support does not carry over.
+
+### Running the end-to-end tests
+
+The tests in `emulator_test.go` run real operations against a service. They need a driver-backed
+build and the `EMULATOR` environment variable, and they skip otherwise.
+
+They run against the driver's own in-memory emulator, which is the same one the driver's Rust tests
+use, so the binding is exercised against what the driver is developed against. It is a plain
+process rather than a container, it creates the test database and container from its config, and it
+reports its endpoints as JSON on stdout, so the endpoint is read rather than assumed:
+
+```sh
+internal/native/lib/linux_amd64/azure_data_cosmos_emulator \
+  --config path/to/azcosmos/internal/testdata/emulator-config.json
+# {"event":"ready","accountEndpoint":"http://127.0.0.1:49151/", ...}
+
+EMULATOR=1 AZCOSMOS_ENDPOINT=http://127.0.0.1:49151/ go test -run TestEmulator ./...
+```
+
+The container the tests use is declared in `internal/testdata/emulator-config.json`; its ids
+default to `itemdb` and `items` and can be overridden with `AZCOSMOS_DATABASE` and
+`AZCOSMOS_CONTAINER`.
 
 ## Getting Started
 
 ### Prerequisites
 
 * An Azure subscription or free Azure Cosmos DB trial account
-* A C toolchain, because v2 requires cgo
+* A C toolchain on a supported driver platform
 
 Note: If you don't have an Azure subscription, create a free account before you begin.
 You can Try Azure Cosmos DB for free without an Azure subscription, free of charge and commitments, or create an Azure Cosmos DB free tier account, with the first 400 RU/s and 5 GB of storage for free. You can also use the Azure Cosmos DB Emulator with a URI of https://localhost:8081. For the key to use with the emulator, see [how to develop with the emulator](https://learn.microsoft.com/azure/cosmos-db/how-to-develop-emulator).

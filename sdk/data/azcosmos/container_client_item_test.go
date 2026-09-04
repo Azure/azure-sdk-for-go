@@ -9,17 +9,28 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/stretchr/testify/require"
 )
 
 func newTestContainer(t *testing.T) *ContainerClient {
 	t.Helper()
 
-	client, err := NewClientWithKey("https://myaccount.documents.azure.com", mustKeyCredential(t), nil)
+	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil, nil)
 	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, client.Close()) })
 	container, err := client.NewContainer("db", "items")
 	require.NoError(t, err)
 	return container
+}
+
+func requireNotDriverUnavailable(t *testing.T, err error) {
+	t.Helper()
+	var cosmosErr *Error
+	if errors.As(err, &cosmosErr) {
+		require.NotContains(t, cosmosErr.Message, "cannot reach the Cosmos driver",
+			"argument validation should run before the operation is attempted")
+	}
 }
 
 func TestReadItemRejectsEmptyID(t *testing.T) {
@@ -27,7 +38,7 @@ func TestReadItemRejectsEmptyID(t *testing.T) {
 
 	_, err := container.ReadItem(context.Background(), NewPartitionKeyString("pk"), "", nil)
 	require.Error(t, err)
-	require.NotErrorIs(t, err, errNotImplemented, "argument validation should run before the operation is attempted")
+	requireNotDriverUnavailable(t, err)
 }
 
 func TestCreateItemRejectsEmptyItem(t *testing.T) {
@@ -36,7 +47,7 @@ func TestCreateItemRejectsEmptyItem(t *testing.T) {
 	for _, item := range [][]byte{nil, {}} {
 		_, err := container.CreateItem(context.Background(), NewPartitionKeyString("pk"), "item-1", item, nil)
 		require.Error(t, err)
-		require.NotErrorIs(t, err, errNotImplemented, "argument validation should run before the operation is attempted")
+		requireNotDriverUnavailable(t, err)
 	}
 }
 
@@ -47,7 +58,7 @@ func TestCreateItemRejectsEmptyID(t *testing.T) {
 
 	_, err := container.CreateItem(context.Background(), NewPartitionKeyString("pk"), "", []byte(`{"id":"item-1"}`), nil)
 	require.Error(t, err)
-	require.NotErrorIs(t, err, errNotImplemented, "argument validation should run before the operation is attempted")
+	requireNotDriverUnavailable(t, err)
 }
 
 // Argument validation runs before the context is consulted, so a caller's deterministic mistake is
@@ -74,11 +85,11 @@ func TestItemOperationsRejectEmptyPartitionKey(t *testing.T) {
 
 	_, err := container.ReadItem(context.Background(), PartitionKey{}, "item-1", nil)
 	require.Error(t, err)
-	require.NotErrorIs(t, err, errNotImplemented)
+	requireNotDriverUnavailable(t, err)
 
 	_, err = container.CreateItem(context.Background(), PartitionKey{}, "item-1", []byte(`{"id":"item-1"}`), nil)
 	require.Error(t, err)
-	require.NotErrorIs(t, err, errNotImplemented)
+	requireNotDriverUnavailable(t, err)
 }
 
 // An already-cancelled context must be honored rather than starting work that is bound to fail,
@@ -95,9 +106,15 @@ func TestItemOperationsHonorCancelledContext(t *testing.T) {
 	require.ErrorIs(t, err, context.Canceled)
 }
 
-// Until the driver binding lands, a well-formed call reports that it is not implemented, and does
-// so as an *Error so the documented errors.As idiom works.
-func TestItemOperationsReportNotImplemented(t *testing.T) {
+// A well-formed call reaches the driver in a driver-backed build and reports that it is not
+// implemented otherwise. Either way it fails as an *Error, so the documented errors.As idiom works
+// whichever build a caller has.
+func TestItemOperationsReportErrorsAsCosmosErrors(t *testing.T) {
+	if driverAvailable {
+		// The driver would try to reach the endpoint, which is what the emulator tests cover.
+		t.Skip("driver-backed build: covered by the emulator tests")
+	}
+
 	container := newTestContainer(t)
 	pk := NewPartitionKeyString("pk")
 
@@ -159,4 +176,108 @@ func TestReadConsistencyStrategyUnsetIsNotDefault(t *testing.T) {
 
 	var zero ReadConsistencyStrategy
 	require.Equal(t, ReadConsistencyStrategyUnset, zero, "the zero value must mean inherit")
+}
+
+func TestReadItemRejectsUnknownConsistencyStrategy(t *testing.T) {
+	container := newTestContainer(t)
+
+	_, err := container.ReadItem(
+		context.Background(),
+		NewPartitionKeyString("pk"),
+		"item-1",
+		&ReadItemOptions{
+			Operation: OperationOptions{
+				ConsistencyStrategy: ReadConsistencyStrategy("LatestCommited"),
+			},
+		},
+	)
+
+	require.ErrorContains(t, err, "unknown read consistency strategy")
+	requireNotDriverUnavailable(t, err)
+}
+
+func TestItemOperationsRejectNULSessionToken(t *testing.T) {
+	container := newTestContainer(t)
+	token := SessionToken("1:2\x00:3")
+
+	_, err := container.ReadItem(
+		context.Background(),
+		NewPartitionKeyString("pk"),
+		"item-1",
+		&ReadItemOptions{SessionToken: token},
+	)
+	require.ErrorContains(t, err, "session token must not contain a NUL byte")
+
+	_, err = container.CreateItem(
+		context.Background(),
+		NewPartitionKeyString("pk"),
+		"item-1",
+		[]byte(`{"id":"item-1","pk":"pk"}`),
+		&CreateItemOptions{SessionToken: token},
+	)
+	require.ErrorContains(t, err, "session token must not contain a NUL byte")
+}
+
+func TestReadItemRejectsNULETag(t *testing.T) {
+	container := newTestContainer(t)
+	etag := azcore.ETag("\"etag\x00suffix\"")
+
+	_, err := container.ReadItem(
+		context.Background(),
+		NewPartitionKeyString("pk"),
+		"item-1",
+		&ReadItemOptions{IfNoneMatchETag: &etag},
+	)
+
+	require.ErrorContains(t, err, "IfNoneMatchETag must not contain a NUL byte")
+}
+
+func TestReadItemRejectsEmptyETag(t *testing.T) {
+	container := newTestContainer(t)
+	etag := azcore.ETag("")
+
+	_, err := container.ReadItem(
+		context.Background(),
+		NewPartitionKeyString("pk"),
+		"item-1",
+		&ReadItemOptions{IfNoneMatchETag: &etag},
+	)
+
+	require.ErrorContains(t, err, "IfNoneMatchETag must not be empty")
+}
+
+// The driver's budget is what guarantees an operation terminates: cancelling the context stops it
+// only once the driver notices, while without a budget it is bounded by transport timeouts times a
+// retry budget. Passing the caller's deadline down is what makes one number bound every layer.
+func TestEndToEndTimeoutFollowsTheContextDeadline(t *testing.T) {
+	t.Run("no deadline leaves the driver default", func(t *testing.T) {
+		require.Zero(t, endToEndTimeout(context.Background(), 0))
+	})
+
+	t.Run("deadline becomes the budget", func(t *testing.T) {
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+		defer cancel()
+
+		got := endToEndTimeout(ctx, 0)
+		require.Positive(t, got)
+		require.LessOrEqual(t, got, time.Minute)
+		require.Greater(t, got, 59*time.Second, "should be what remains, not a fixed value")
+	})
+
+	t.Run("an explicit setting wins over the deadline", func(t *testing.T) {
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+		defer cancel()
+
+		// The caller is describing how long the operation may spend, which is a different thing
+		// from when they stop waiting, so it is not second-guessed.
+		require.Equal(t, 5*time.Second, endToEndTimeout(ctx, 5*time.Second))
+	})
+
+	t.Run("an expired deadline stays positive", func(t *testing.T) {
+		ctx, cancel := context.WithTimeout(context.Background(), -time.Second)
+		defer cancel()
+
+		// Zero would read as unset at the ABI, which would remove the bound rather than tighten it.
+		require.Positive(t, endToEndTimeout(ctx, 0))
+	})
 }

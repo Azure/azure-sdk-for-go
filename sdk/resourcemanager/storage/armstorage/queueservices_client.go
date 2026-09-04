@@ -19,7 +19,7 @@ import (
 // QueueServicesClient contains the methods for the QueueServices group.
 // Don't use this type directly, use NewQueueServicesClient() instead.
 //
-// Generated from API version 2026-04-01
+// Generated from API version 2026-06-01
 type QueueServicesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -63,12 +63,7 @@ func (client *QueueServicesClient) GetServiceProperties(ctx context.Context, res
 	if err != nil {
 		return QueueServicesClientGetServicePropertiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return QueueServicesClientGetServicePropertiesResponse{}, err
-	}
-	resp, err := client.getServicePropertiesHandleResponse(httpResp)
-	return resp, err
+	return client.getServicePropertiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getServicePropertiesCreateRequest creates the GetServiceProperties request.
@@ -91,15 +86,18 @@ func (client *QueueServicesClient) getServicePropertiesCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getServicePropertiesHandleResponse handles the GetServiceProperties response.
-func (client *QueueServicesClient) getServicePropertiesHandleResponse(resp *http.Response) (QueueServicesClientGetServicePropertiesResponse, error) {
+func (client *QueueServicesClient) getServicePropertiesHandleResponse(resp *http.Response, successCodes ...int) (QueueServicesClientGetServicePropertiesResponse, error) {
 	result := QueueServicesClientGetServicePropertiesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueueServiceProperties); err != nil {
 		return QueueServicesClientGetServicePropertiesResponse{}, err
 	}
@@ -126,12 +124,7 @@ func (client *QueueServicesClient) List(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return QueueServicesClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return QueueServicesClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -154,15 +147,18 @@ func (client *QueueServicesClient) listCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *QueueServicesClient) listHandleResponse(resp *http.Response) (QueueServicesClientListResponse, error) {
+func (client *QueueServicesClient) listHandleResponse(resp *http.Response, successCodes ...int) (QueueServicesClientListResponse, error) {
 	result := QueueServicesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListQueueServices); err != nil {
 		return QueueServicesClientListResponse{}, err
 	}
@@ -193,12 +189,7 @@ func (client *QueueServicesClient) SetServiceProperties(ctx context.Context, res
 	if err != nil {
 		return QueueServicesClientSetServicePropertiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return QueueServicesClientSetServicePropertiesResponse{}, err
-	}
-	resp, err := client.setServicePropertiesHandleResponse(httpResp)
-	return resp, err
+	return client.setServicePropertiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // setServicePropertiesCreateRequest creates the SetServiceProperties request.
@@ -221,7 +212,7 @@ func (client *QueueServicesClient) setServicePropertiesCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -232,8 +223,11 @@ func (client *QueueServicesClient) setServicePropertiesCreateRequest(ctx context
 }
 
 // setServicePropertiesHandleResponse handles the SetServiceProperties response.
-func (client *QueueServicesClient) setServicePropertiesHandleResponse(resp *http.Response) (QueueServicesClientSetServicePropertiesResponse, error) {
+func (client *QueueServicesClient) setServicePropertiesHandleResponse(resp *http.Response, successCodes ...int) (QueueServicesClientSetServicePropertiesResponse, error) {
 	result := QueueServicesClientSetServicePropertiesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueueServiceProperties); err != nil {
 		return QueueServicesClientSetServicePropertiesResponse{}, err
 	}

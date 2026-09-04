@@ -307,6 +307,70 @@ type ConnectorsClientUpdateResponse struct {
 	Connector
 }
 
+// ContextCacheContainersClientCreateOrUpdateResponse contains the response from method ContextCacheContainersClient.BeginCreateOrUpdate.
+type ContextCacheContainersClientCreateOrUpdateResponse struct {
+	// A container resource within a Context Cache
+	ContextCacheContainer
+}
+
+// ContextCacheContainersClientDeleteResponse contains the response from method ContextCacheContainersClient.BeginDelete.
+type ContextCacheContainersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ContextCacheContainersClientGetResponse contains the response from method ContextCacheContainersClient.Get.
+type ContextCacheContainersClientGetResponse struct {
+	// A container resource within a Context Cache
+	ContextCacheContainer
+}
+
+// ContextCacheContainersClientListByContextCacheResponse contains the response from method ContextCacheContainersClient.NewListByContextCachePager.
+type ContextCacheContainersClientListByContextCacheResponse struct {
+	// The response of a ContextCacheContainer list operation.
+	ContextCacheContainerListResult
+}
+
+// ContextCacheContainersClientUpdateResponse contains the response from method ContextCacheContainersClient.BeginUpdate.
+type ContextCacheContainersClientUpdateResponse struct {
+	// A container resource within a Context Cache
+	ContextCacheContainer
+}
+
+// ContextCachesClientCreateOrUpdateResponse contains the response from method ContextCachesClient.BeginCreateOrUpdate.
+type ContextCachesClientCreateOrUpdateResponse struct {
+	// A Context Cache resource
+	ContextCache
+}
+
+// ContextCachesClientDeleteResponse contains the response from method ContextCachesClient.BeginDelete.
+type ContextCachesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ContextCachesClientGetResponse contains the response from method ContextCachesClient.Get.
+type ContextCachesClientGetResponse struct {
+	// A Context Cache resource
+	ContextCache
+}
+
+// ContextCachesClientListByResourceGroupResponse contains the response from method ContextCachesClient.NewListByResourceGroupPager.
+type ContextCachesClientListByResourceGroupResponse struct {
+	// The response of a ContextCache list operation.
+	ContextCacheListResult
+}
+
+// ContextCachesClientListBySubscriptionResponse contains the response from method ContextCachesClient.NewListBySubscriptionPager.
+type ContextCachesClientListBySubscriptionResponse struct {
+	// The response of a ContextCache list operation.
+	ContextCacheListResult
+}
+
+// ContextCachesClientUpdateResponse contains the response from method ContextCachesClient.BeginUpdate.
+type ContextCachesClientUpdateResponse struct {
+	// A Context Cache resource
+	ContextCache
+}
+
 // DataSharesClientCreateResponse contains the response from method DataSharesClient.BeginCreate.
 type DataSharesClientCreateResponse struct {
 	// A DataShare is a tracked ARM resource modeled as a sub-resource of a Storage Account.

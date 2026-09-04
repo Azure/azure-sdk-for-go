@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01/StorageAccountGetEncryptionScope.json
+// Generated from example definition: 2026-06-01/StorageAccountGetEncryptionScope.json
 func ExampleEncryptionScopesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,8 +36,8 @@ func ExampleEncryptionScopesClient_Get() {
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/encryptionScopes"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/accountname/encryptionScopes/{encryption-scope-name}"),
 	// 		EncryptionScopeProperties: &armstorage.EncryptionScopeProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-16T02:42:41.7633306Z"); return t}()),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-16T02:42:41.7633306Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2018, time.October, 16, 2, 42, 41, 763330600, time.UTC)),
+	// 			LastModifiedTime: to.Ptr(time.Date(2018, time.October, 16, 2, 42, 41, 763330600, time.UTC)),
 	// 			Source: to.Ptr(armstorage.EncryptionScopeSourceMicrosoftStorage),
 	// 			State: to.Ptr(armstorage.EncryptionScopeStateEnabled),
 	// 		},
@@ -45,7 +45,7 @@ func ExampleEncryptionScopesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountEncryptionScopeList.json
+// Generated from example definition: 2026-06-01/StorageAccountEncryptionScopeList.json
 func ExampleEncryptionScopesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,8 +75,8 @@ func ExampleEncryptionScopesClient_NewListPager() {
 		// 				Type: to.Ptr("Microsoft.Storage/storageAccounts/encryptionScopes"),
 		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/accountname/encryptionScopes/scope-1"),
 		// 				EncryptionScopeProperties: &armstorage.EncryptionScopeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-16T02:42:41.7633306Z"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-16T02:42:41.7633306Z"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2018, time.October, 16, 2, 42, 41, 763330600, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2018, time.October, 16, 2, 42, 41, 763330600, time.UTC)),
 		// 					Source: to.Ptr(armstorage.EncryptionScopeSourceMicrosoftStorage),
 		// 					State: to.Ptr(armstorage.EncryptionScopeStateEnabled),
 		// 				},
@@ -86,11 +86,11 @@ func ExampleEncryptionScopesClient_NewListPager() {
 		// 				Type: to.Ptr("Microsoft.Storage/storageAccounts/encryptionScopes"),
 		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/accountname/encryptionScopes/scope-2"),
 		// 				EncryptionScopeProperties: &armstorage.EncryptionScopeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-16T04:32:14.3355306Z"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2018, time.October, 16, 4, 32, 14, 335530600, time.UTC)),
 		// 					KeyVaultProperties: &armstorage.EncryptionScopeKeyVaultProperties{
 		// 						KeyURI: to.Ptr("https://testvault.vault.core.windows.net/keys/key1/863425f1358359c"),
 		// 					},
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-17T06:23:14.4513306Z"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2018, time.October, 17, 6, 23, 14, 451330600, time.UTC)),
 		// 					Source: to.Ptr(armstorage.EncryptionScopeSourceMicrosoftKeyVault),
 		// 					State: to.Ptr(armstorage.EncryptionScopeStateEnabled),
 		// 				},
@@ -101,7 +101,7 @@ func ExampleEncryptionScopesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountPatchEncryptionScope.json
+// Generated from example definition: 2026-06-01/StorageAccountPatchEncryptionScope.json
 func ExampleEncryptionScopesClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,13 +132,13 @@ func ExampleEncryptionScopesClient_Patch() {
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/encryptionScopes"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/accountname/encryptionScopes/{encryption-scope-name}"),
 	// 		EncryptionScopeProperties: &armstorage.EncryptionScopeProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-16T02:42:41.7633306Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2018, time.October, 16, 2, 42, 41, 763330600, time.UTC)),
 	// 			KeyVaultProperties: &armstorage.EncryptionScopeKeyVaultProperties{
 	// 				CurrentVersionedKeyIdentifier: to.Ptr("https://testvault.vault.core.windows.net/keys/key1/863425f1358359c"),
 	// 				KeyURI: to.Ptr("https://testvault.vault.core.windows.net/keys/key1/863425f1358359c"),
-	// 				LastKeyRotationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-13T20:36:23.7023290Z"); return t}()),
+	// 				LastKeyRotationTimestamp: to.Ptr(time.Date(2019, time.December, 13, 20, 36, 23, 702329000, time.UTC)),
 	// 			},
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-17T06:23:14.4513306Z"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2018, time.October, 17, 6, 23, 14, 451330600, time.UTC)),
 	// 			Source: to.Ptr(armstorage.EncryptionScopeSourceMicrosoftKeyVault),
 	// 			State: to.Ptr(armstorage.EncryptionScopeStateEnabled),
 	// 		},
@@ -146,7 +146,7 @@ func ExampleEncryptionScopesClient_Patch() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountPutEncryptionScope.json
+// Generated from example definition: 2026-06-01/StorageAccountPutEncryptionScope.json
 func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,8 +170,8 @@ func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScope() {
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/encryptionScopes"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/accountname/encryptionScopes/{encryption-scope-name}"),
 	// 		EncryptionScopeProperties: &armstorage.EncryptionScopeProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-16T02:42:41.7633306Z"); return t}()),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-16T02:42:41.7633306Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2018, time.October, 16, 2, 42, 41, 763330600, time.UTC)),
+	// 			LastModifiedTime: to.Ptr(time.Date(2018, time.October, 16, 2, 42, 41, 763330600, time.UTC)),
 	// 			Source: to.Ptr(armstorage.EncryptionScopeSourceMicrosoftStorage),
 	// 			State: to.Ptr(armstorage.EncryptionScopeStateEnabled),
 	// 		},
@@ -179,7 +179,7 @@ func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScope() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountPutEncryptionScopeWithInfrastructureEncryption.json
+// Generated from example definition: 2026-06-01/StorageAccountPutEncryptionScopeWithInfrastructureEncryption.json
 func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScopeWithInfrastructureEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,8 +207,8 @@ func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScopeWithInfra
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/encryptionScopes"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/accountname/encryptionScopes/{encryption-scope-name}"),
 	// 		EncryptionScopeProperties: &armstorage.EncryptionScopeProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-16T02:42:41.7633306Z"); return t}()),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-16T02:42:41.7633306Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2018, time.October, 16, 2, 42, 41, 763330600, time.UTC)),
+	// 			LastModifiedTime: to.Ptr(time.Date(2018, time.October, 16, 2, 42, 41, 763330600, time.UTC)),
 	// 			RequireInfrastructureEncryption: to.Ptr(true),
 	// 			Source: to.Ptr(armstorage.EncryptionScopeSourceMicrosoftStorage),
 	// 			State: to.Ptr(armstorage.EncryptionScopeStateEnabled),

@@ -80,6 +80,22 @@ func (c *ClientFactory) NewConnectorsClient() *ConnectorsClient {
 	}
 }
 
+// NewContextCacheContainersClient creates a new instance of ContextCacheContainersClient.
+func (c *ClientFactory) NewContextCacheContainersClient() *ContextCacheContainersClient {
+	return &ContextCacheContainersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewContextCachesClient creates a new instance of ContextCachesClient.
+func (c *ClientFactory) NewContextCachesClient() *ContextCachesClient {
+	return &ContextCachesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewDataSharesClient creates a new instance of DataSharesClient.
 func (c *ClientFactory) NewDataSharesClient() *DataSharesClient {
 	return &DataSharesClient{

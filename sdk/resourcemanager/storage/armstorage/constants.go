@@ -5,7 +5,7 @@
 package armstorage
 
 const (
-	version20260401 string = "2026-04-01"
+	version20260601 string = "2026-06-01"
 )
 
 // AccessTier - The default access tier for block blobs in the storage account. Required for storage accounts where kind =
@@ -123,6 +123,21 @@ func PossibleAdvancedPlatformMetricsRuleTypeValues() []AdvancedPlatformMetricsRu
 	}
 }
 
+// AiProvider - The AI provider associated with a container.
+type AiProvider string
+
+const (
+	// AiProviderOpenAI - OpenAI provider.
+	AiProviderOpenAI AiProvider = "OpenAI"
+)
+
+// PossibleAiProviderValues returns the possible values for the AiProvider const type.
+func PossibleAiProviderValues() []AiProvider {
+	return []AiProvider{
+		AiProviderOpenAI,
+	}
+}
+
 // AllowedCopyScope - Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet.
 type AllowedCopyScope string
 
@@ -192,6 +207,60 @@ func PossibleBypassValues() []Bypass {
 		BypassLogging,
 		BypassMetrics,
 		BypassNone,
+	}
+}
+
+// ContextCacheAccountKind - The kind of context cache account, determining storage topology.
+type ContextCacheAccountKind string
+
+const (
+	// ContextCacheAccountKindDataZone - Multi-region within a data zone
+	ContextCacheAccountKindDataZone ContextCacheAccountKind = "DataZone"
+	// ContextCacheAccountKindGlobal - All regions with global distribution
+	ContextCacheAccountKindGlobal ContextCacheAccountKind = "Global"
+	// ContextCacheAccountKindRegional - Single-region storage account
+	ContextCacheAccountKindRegional ContextCacheAccountKind = "Regional"
+)
+
+// PossibleContextCacheAccountKindValues returns the possible values for the ContextCacheAccountKind const type.
+func PossibleContextCacheAccountKindValues() []ContextCacheAccountKind {
+	return []ContextCacheAccountKind{
+		ContextCacheAccountKindDataZone,
+		ContextCacheAccountKindGlobal,
+		ContextCacheAccountKindRegional,
+	}
+}
+
+// ContextCacheProvisioningState - The status of the current operation.
+type ContextCacheProvisioningState string
+
+const (
+	// ContextCacheProvisioningStateAccepted - Change accepted for processing
+	ContextCacheProvisioningStateAccepted ContextCacheProvisioningState = "Accepted"
+	// ContextCacheProvisioningStateCanceled - Resource creation was canceled.
+	ContextCacheProvisioningStateCanceled ContextCacheProvisioningState = "Canceled"
+	// ContextCacheProvisioningStateCreating - Initial provisioning in progress
+	ContextCacheProvisioningStateCreating ContextCacheProvisioningState = "Creating"
+	// ContextCacheProvisioningStateDeleting - Deletion in progress
+	ContextCacheProvisioningStateDeleting ContextCacheProvisioningState = "Deleting"
+	// ContextCacheProvisioningStateFailed - Resource creation failed.
+	ContextCacheProvisioningStateFailed ContextCacheProvisioningState = "Failed"
+	// ContextCacheProvisioningStateSucceeded - Resource has been created.
+	ContextCacheProvisioningStateSucceeded ContextCacheProvisioningState = "Succeeded"
+	// ContextCacheProvisioningStateUpdating - Update in progress
+	ContextCacheProvisioningStateUpdating ContextCacheProvisioningState = "Updating"
+)
+
+// PossibleContextCacheProvisioningStateValues returns the possible values for the ContextCacheProvisioningState const type.
+func PossibleContextCacheProvisioningStateValues() []ContextCacheProvisioningState {
+	return []ContextCacheProvisioningState{
+		ContextCacheProvisioningStateAccepted,
+		ContextCacheProvisioningStateCanceled,
+		ContextCacheProvisioningStateCreating,
+		ContextCacheProvisioningStateDeleting,
+		ContextCacheProvisioningStateFailed,
+		ContextCacheProvisioningStateSucceeded,
+		ContextCacheProvisioningStateUpdating,
 	}
 }
 
@@ -512,6 +581,25 @@ func PossibleImmutabilityPolicyUpdateTypeValues() []ImmutabilityPolicyUpdateType
 	}
 }
 
+// InfrastructureEncryption - (Optional) Discouraged to include in resource definition. Only needed where it is possible to
+// disable platform (AKA infrastructure) encryption. Azure SQL TDE is an example of this. Values are enabled and disabled.
+type InfrastructureEncryption string
+
+const (
+	// InfrastructureEncryptionDisabled - Encryption is disabled
+	InfrastructureEncryptionDisabled InfrastructureEncryption = "disabled"
+	// InfrastructureEncryptionEnabled - Encryption is enabled
+	InfrastructureEncryptionEnabled InfrastructureEncryption = "enabled"
+)
+
+// PossibleInfrastructureEncryptionValues returns the possible values for the InfrastructureEncryption const type.
+func PossibleInfrastructureEncryptionValues() []InfrastructureEncryption {
+	return []InfrastructureEncryption{
+		InfrastructureEncryptionDisabled,
+		InfrastructureEncryptionEnabled,
+	}
+}
+
 // IntervalUnit - Run interval unit of task execution. This is a required field when ExecutionTrigger.properties.type is 'OnSchedule';
 // this property should not be present when ExecutionTrigger.properties.type is 'RunOnce'
 type IntervalUnit string
@@ -554,6 +642,27 @@ func PossibleIssueTypeValues() []IssueType {
 	return []IssueType{
 		IssueTypeConfigurationPropagationFailure,
 		IssueTypeUnknown,
+	}
+}
+
+// KeyEncryptionKeyIdentityType - The type of identity to use.
+type KeyEncryptionKeyIdentityType string
+
+const (
+	// KeyEncryptionKeyIdentityTypeDelegatedResourceIdentity - Delegated identity
+	KeyEncryptionKeyIdentityTypeDelegatedResourceIdentity KeyEncryptionKeyIdentityType = "delegatedResourceIdentity"
+	// KeyEncryptionKeyIdentityTypeSystemAssignedIdentity - System assigned identity
+	KeyEncryptionKeyIdentityTypeSystemAssignedIdentity KeyEncryptionKeyIdentityType = "systemAssignedIdentity"
+	// KeyEncryptionKeyIdentityTypeUserAssignedIdentity - User assigned identity
+	KeyEncryptionKeyIdentityTypeUserAssignedIdentity KeyEncryptionKeyIdentityType = "userAssignedIdentity"
+)
+
+// PossibleKeyEncryptionKeyIdentityTypeValues returns the possible values for the KeyEncryptionKeyIdentityType const type.
+func PossibleKeyEncryptionKeyIdentityTypeValues() []KeyEncryptionKeyIdentityType {
+	return []KeyEncryptionKeyIdentityType{
+		KeyEncryptionKeyIdentityTypeDelegatedResourceIdentity,
+		KeyEncryptionKeyIdentityTypeSystemAssignedIdentity,
+		KeyEncryptionKeyIdentityTypeUserAssignedIdentity,
 	}
 }
 
@@ -1015,6 +1124,28 @@ func PossiblePermissionsValues() []Permissions {
 		PermissionsR,
 		PermissionsU,
 		PermissionsW,
+	}
+}
+
+// PolicyViolationAction - The action to perform when a user delegation SAS (shared access signature) policy requirement is
+// violated.
+type PolicyViolationAction string
+
+const (
+	// PolicyViolationActionBlock - The request is blocked and denied when the policy requirement is violated.
+	PolicyViolationActionBlock PolicyViolationAction = "Block"
+	// PolicyViolationActionLog - The policy violation is logged for audit purposes.
+	PolicyViolationActionLog PolicyViolationAction = "Log"
+	// PolicyViolationActionNone - No action is taken when the policy requirement is violated.
+	PolicyViolationActionNone PolicyViolationAction = "None"
+)
+
+// PossiblePolicyViolationActionValues returns the possible values for the PolicyViolationAction const type.
+func PossiblePolicyViolationActionValues() []PolicyViolationAction {
+	return []PolicyViolationAction{
+		PolicyViolationActionBlock,
+		PolicyViolationActionLog,
+		PolicyViolationActionNone,
 	}
 }
 
@@ -1628,6 +1759,24 @@ func PossibleStorageTaskAssignmentProvisioningStateValues() []StorageTaskAssignm
 		StorageTaskAssignmentProvisioningStateSucceeded,
 		StorageTaskAssignmentProvisioningStateValidateSubscriptionQuotaBegin,
 		StorageTaskAssignmentProvisioningStateValidateSubscriptionQuotaEnd,
+	}
+}
+
+// SystemAssignedServiceIdentityType - Type of managed service identity (either system assigned, or none).
+type SystemAssignedServiceIdentityType string
+
+const (
+	// SystemAssignedServiceIdentityTypeNone - No managed system identity.
+	SystemAssignedServiceIdentityTypeNone SystemAssignedServiceIdentityType = "None"
+	// SystemAssignedServiceIdentityTypeSystemAssigned - System assigned managed system identity.
+	SystemAssignedServiceIdentityTypeSystemAssigned SystemAssignedServiceIdentityType = "SystemAssigned"
+)
+
+// PossibleSystemAssignedServiceIdentityTypeValues returns the possible values for the SystemAssignedServiceIdentityType const type.
+func PossibleSystemAssignedServiceIdentityTypeValues() []SystemAssignedServiceIdentityType {
+	return []SystemAssignedServiceIdentityType{
+		SystemAssignedServiceIdentityTypeNone,
+		SystemAssignedServiceIdentityTypeSystemAssigned,
 	}
 }
 

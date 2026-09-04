@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01/FileServicesGet.json
+// Generated from example definition: 2026-06-01/FileServicesGet.json
 func ExampleFileServicesClient_GetServiceProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleFileServicesClient_GetServiceProperties() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileServicesGetUsage.json
+// Generated from example definition: 2026-06-01/FileServicesGetUsage.json
 func ExampleFileServicesClient_GetServiceUsage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,7 +176,7 @@ func ExampleFileServicesClient_GetServiceUsage() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileServicesList.json
+// Generated from example definition: 2026-06-01/FileServicesList.json
 func ExampleFileServicesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -274,7 +274,7 @@ func ExampleFileServicesClient_List() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileServicesListUsages.json
+// Generated from example definition: 2026-06-01/FileServicesListUsages.json
 func ExampleFileServicesClient_NewListServiceUsagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,7 +353,7 @@ func ExampleFileServicesClient_NewListServiceUsagesPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/FileServicesPut.json
+// Generated from example definition: 2026-06-01/FileServicesPut.json
 func ExampleFileServicesClient_SetServiceProperties_putFileServices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -511,7 +511,7 @@ func ExampleFileServicesClient_SetServiceProperties_putFileServices() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileServicesPut_EnableSMBMultichannel.json
+// Generated from example definition: 2026-06-01/FileServicesPut_EnableSMBMultichannel.json
 func ExampleFileServicesClient_SetServiceProperties_putFileServicesEnableSmbMultichannel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -561,7 +561,7 @@ func ExampleFileServicesClient_SetServiceProperties_putFileServicesEnableSmbMult
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileServicesPut_EnableSecureSmbFeatures.json
+// Generated from example definition: 2026-06-01/FileServicesPut_EnableSecureSmbFeatures.json
 func ExampleFileServicesClient_SetServiceProperties_putFileServicesEnableSecureSmbFeatures() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -613,7 +613,7 @@ func ExampleFileServicesClient_SetServiceProperties_putFileServicesEnableSecureS
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileServicesPut_EncryptionInTransitRequired.json
+// Generated from example definition: 2026-06-01/FileServicesPut_EncryptionInTransitRequired.json
 func ExampleFileServicesClient_SetServiceProperties_putFileServicesEncryptionInTransitRequired() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

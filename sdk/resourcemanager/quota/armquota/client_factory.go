@@ -102,6 +102,14 @@ func (c *ClientFactory) NewGroupQuotasClient() *GroupQuotasClient {
 	}
 }
 
+// NewIncomingQuotaTransfersClient creates a new instance of IncomingQuotaTransfersClient.
+func (c *ClientFactory) NewIncomingQuotaTransfersClient(subscriptionID string) *IncomingQuotaTransfersClient {
+	return &IncomingQuotaTransfersClient{
+		subscriptionID: subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationClient creates a new instance of OperationClient.
 func (c *ClientFactory) NewOperationClient() *OperationClient {
 	return &OperationClient{
@@ -113,6 +121,14 @@ func (c *ClientFactory) NewOperationClient() *OperationClient {
 func (c *ClientFactory) NewRequestStatusClient() *RequestStatusClient {
 	return &RequestStatusClient{
 		internal: c.internal,
+	}
+}
+
+// NewTransfersClient creates a new instance of TransfersClient.
+func (c *ClientFactory) NewTransfersClient(subscriptionID string) *TransfersClient {
+	return &TransfersClient{
+		subscriptionID: subscriptionID,
+		internal:       c.internal,
 	}
 }
 

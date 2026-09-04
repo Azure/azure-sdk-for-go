@@ -88,6 +88,30 @@ type AllocationRequestStatusProperties struct {
 	RequestSubmitTime *time.Time
 }
 
+// ApprovalRecord - Record of an approval action on a transfer.
+type ApprovalRecord struct {
+	// REQUIRED; Principal that performed the approval (typically a UPN or service principal id).
+	Actor *string
+
+	// REQUIRED; Timestamp at which the approval was recorded.
+	OccurredAt *time.Time
+
+	// Optional free-text comment supplied by the approver.
+	Comment *string
+}
+
+// CancellationRecord - Record of a cancellation action on a transfer.
+type CancellationRecord struct {
+	// REQUIRED; Principal that performed the cancellation.
+	Actor *string
+
+	// REQUIRED; Timestamp at which the cancellation was recorded.
+	OccurredAt *time.Time
+
+	// Optional free-text reason supplied by the donor when cancelling.
+	Reason *string
+}
+
 // CurrentQuotaLimitBase - Quota limit.
 type CurrentQuotaLimitBase struct {
 	// Quota properties for the specified resource, based on the API called, Quotas or Usages.
@@ -422,6 +446,96 @@ type GroupQuotasEntityProperties struct {
 	ProvisioningState *RequestState
 }
 
+// IncomingQuotaTransfer - Recipient-side projection of a quota transfer. The URI key `{transferId}` is the
+// server-generated GUID returned to the donor in the PUT response under
+// `properties.transferId`. The resource is read-only from the recipient side; state
+// changes occur through the approve and reject actions.
+type IncomingQuotaTransfer struct {
+	// Properties of the incoming quota transfer.
+	Properties *IncomingQuotaTransferProperties
+
+	// READ-ONLY; "If etag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.")
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// IncomingQuotaTransferApproveRequest - Request body for the recipient approve action.
+type IncomingQuotaTransferApproveRequest struct {
+	// Optional free-text comment recorded on the transfer.
+	Comment *string
+}
+
+// IncomingQuotaTransferListResult - The response of a IncomingQuotaTransfer list operation.
+type IncomingQuotaTransferListResult struct {
+	// REQUIRED; The IncomingQuotaTransfer items on this page
+	Value []*IncomingQuotaTransfer
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// IncomingQuotaTransferProperties - Recipient-side projection properties of a quota transfer.
+type IncomingQuotaTransferProperties struct {
+	// READ-ONLY; Amount being transferred in the resource's native unit.
+	Amount *int64
+
+	// READ-ONLY; Approval record. Populated when `transferStatus` is `Accepted` or `Completed`.
+	// Mutually exclusive with `rejection`.
+	Approval *ApprovalRecord
+
+	// READ-ONLY; Billing account id both donor and recipient subscriptions roll up to.
+	BillingAccountID *string
+
+	// READ-ONLY; The status of the underlying ARM resource operation.
+	ProvisioningState *TransferProvisioningState
+
+	// READ-ONLY; Rejection record. Populated when `transferStatus` is `Rejected`.
+	// Mutually exclusive with `approval`.
+	Rejection *RejectionRecord
+
+	// READ-ONLY; The quota dimension being moved.
+	ResourceName *string
+
+	// READ-ONLY; ETag of the donor-side source document at the time the inbox entry was projected. Used
+	// as the If-Match value on approve and reject requests.
+	SourceEtag *string
+
+	// READ-ONLY; Donor subscription id. The recipient subscription is the one in the request URI.
+	SourceSubscriptionID *string
+
+	// READ-ONLY; Donor tenant id, resolved by the service from the donor subscription.
+	SourceTenantID *string
+
+	// READ-ONLY; Server-generated identifier of the transfer (matches the URI key).
+	TransferID *string
+
+	// READ-ONLY; Fully qualified ARM resource id of the donor-side quotaTransfers resource.
+	TransferRef *string
+
+	// READ-ONLY; The business status of the transfer.
+	TransferStatus *TransferStatus
+}
+
+// IncomingQuotaTransferRejectRequest - Request body for the recipient reject action.
+type IncomingQuotaTransferRejectRequest struct {
+	// Optional free-text reason recorded on the transfer.
+	Reason *string
+}
+
 // LimitJSONObject - LimitJson abstract class.
 type LimitJSONObject struct {
 	// REQUIRED; The limit object type.
@@ -516,6 +630,18 @@ type Properties struct {
 	// READ-ONLY; The quota units, such as Count and Bytes. When requesting quota, use the **unit** value returned in the GET
 	// response in the request body of your PUT operation.
 	Unit *string
+}
+
+// RejectionRecord - Record of a rejection action on a transfer.
+type RejectionRecord struct {
+	// REQUIRED; Principal that performed the rejection.
+	Actor *string
+
+	// REQUIRED; Timestamp at which the rejection was recorded.
+	OccurredAt *time.Time
+
+	// Optional free-text reason supplied by the recipient when rejecting.
+	Reason *string
 }
 
 // RequestDetails - List of quota requests with details.
@@ -755,6 +881,106 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
+}
+
+// Transfer - A quota transfer authored on the donor side. The donor selects the URI segment
+// `{transferName}`; the recipient addresses the same logical transfer via the
+// server-generated `properties.transferId` GUID on the `incomingQuotaTransfers` URI.
+type Transfer struct {
+	// Properties of the quota transfer.
+	Properties *TransferProperties
+
+	// READ-ONLY; "If etag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.")
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// TransferCancelRequest - Request body for the donor cancel action.
+type TransferCancelRequest struct {
+	// Optional free-text reason recorded on the transfer.
+	Reason *string
+}
+
+// TransferListResult - The response of a QuotaTransfer list operation.
+type TransferListResult struct {
+	// REQUIRED; The QuotaTransfer items on this page
+	Value []*Transfer
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// TransferProperties - Donor-side properties of a quota transfer.
+type TransferProperties struct {
+	// REQUIRED; Amount to transfer in the resource's native unit (e.g. vCPU count).
+	Amount *int64
+
+	// REQUIRED; Billing account id both donor and recipient subscriptions must roll up to.
+	BillingAccountID *string
+
+	// REQUIRED; Recipient subscription id. Must differ from the donor subscription.
+	DestinationSubscriptionID *string
+
+	// REQUIRED; Human-friendly label surfaced on customer GET responses and recipient inbox listings.
+	DisplayName *string
+
+	// REQUIRED; The quota dimension being moved, scoped by the URI's target provider
+	// (for example, `standardDv5Family` under Microsoft.Compute).
+	ResourceName *string
+
+	// Same-tenant one-shot opt-in. When true, the donor PUT admission-checks recipient-side
+	// RBAC and cap at submit time and drives the transfer to terminal Completed within the
+	// same LRO, with no recipient approve required. The outcome is reflected by
+	// `transferStatus`: `Completed` means the auto path committed; `Pending` means it did
+	// not (e.g. cross-tenant, missing RBAC, cap exceeded) and the recipient must approve.
+	AutoApprove *bool
+
+	// Donor-supplied free-text rationale captured at submit time.
+	Comment *string
+
+	// READ-ONLY; Approval record. Populated when `transferStatus` is `Accepted` or `Completed`.
+	// Mutually exclusive with `cancellation`.
+	Approval *ApprovalRecord
+
+	// READ-ONLY; Cancellation record. Populated when `transferStatus` is `Cancelled`.
+	// Mutually exclusive with `approval`.
+	Cancellation *CancellationRecord
+
+	// READ-ONLY; Time the transfer was created.
+	CreatedAt *time.Time
+
+	// READ-ONLY; Principal that created the transfer.
+	CreatedBy *string
+
+	// READ-ONLY; Recipient tenant id, resolved by the service from the recipient subscription.
+	DestinationTenantID *string
+
+	// READ-ONLY; Time at which a Pending transfer expires if the recipient has not approved or rejected it.
+	ExpiresAt *time.Time
+
+	// READ-ONLY; The status of the underlying ARM resource operation.
+	ProvisioningState *TransferProvisioningState
+
+	// READ-ONLY; Server-generated identifier the recipient uses to address the transfer on the
+	// incomingQuotaTransfers URI.
+	TransferID *string
+
+	// READ-ONLY; The business status of the transfer.
+	TransferStatus *TransferStatus
 }
 
 // UsagesLimits - Quota limits.

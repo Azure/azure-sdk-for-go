@@ -18,6 +18,8 @@ import (
 
 // GroupQuotaSubscriptionRequestsClient contains the methods for the GroupQuotaSubscriptionRequests group.
 // Don't use this type directly, use NewGroupQuotaSubscriptionRequestsClient() instead.
+//
+// Generated from API version 2026-09-01-preview
 type GroupQuotaSubscriptionRequestsClient struct {
 	internal *arm.Client
 }
@@ -40,8 +42,6 @@ func NewGroupQuotaSubscriptionRequestsClient(credential azcore.TokenCredential, 
 // specified in Azure-AsyncOperation header field, with retry-after duration in seconds to check the intermediate status.
 // This API provides the finals status with the request details and status.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - managementGroupID - The management group ID.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - requestID - Request Id.
@@ -61,12 +61,7 @@ func (client *GroupQuotaSubscriptionRequestsClient) Get(ctx context.Context, man
 	if err != nil {
 		return GroupQuotaSubscriptionRequestsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GroupQuotaSubscriptionRequestsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -89,15 +84,18 @@ func (client *GroupQuotaSubscriptionRequestsClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *GroupQuotaSubscriptionRequestsClient) getHandleResponse(resp *http.Response) (GroupQuotaSubscriptionRequestsClientGetResponse, error) {
+func (client *GroupQuotaSubscriptionRequestsClient) getHandleResponse(resp *http.Response, successCodes ...int) (GroupQuotaSubscriptionRequestsClientGetResponse, error) {
 	result := GroupQuotaSubscriptionRequestsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GroupQuotaSubscriptionRequestStatus); err != nil {
 		return GroupQuotaSubscriptionRequestsClientGetResponse{}, err
 	}
@@ -106,8 +104,6 @@ func (client *GroupQuotaSubscriptionRequestsClient) getHandleResponse(resp *http
 
 // NewListPager - List API to check the status of a subscriptionId requests by requestId. Request history is maintained for
 // 1 year.
-//
-// Generated from API version 2025-09-01
 //   - managementGroupID - The management group ID.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - options - GroupQuotaSubscriptionRequestsClientListOptions contains the optional parameters for the GroupQuotaSubscriptionRequestsClient.NewListPager
@@ -123,43 +119,57 @@ func (client *GroupQuotaSubscriptionRequestsClient) NewListPager(managementGroup
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, managementGroupID, groupQuotaName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, managementGroupID, groupQuotaName, nextLink, options)
 			if err != nil {
 				return GroupQuotaSubscriptionRequestsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GroupQuotaSubscriptionRequestsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *GroupQuotaSubscriptionRequestsClient) listCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, _ *GroupQuotaSubscriptionRequestsClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/subscriptionRequests"
-	if managementGroupID == "" {
-		return nil, errors.New("parameter managementGroupID cannot be empty")
+func (client *GroupQuotaSubscriptionRequestsClient) listCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, nextLink string, _ *GroupQuotaSubscriptionRequestsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/subscriptionRequests"
+		if managementGroupID == "" {
+			return nil, errors.New("parameter managementGroupID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
+		if groupQuotaName == "" {
+			return nil, errors.New("parameter groupQuotaName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{groupQuotaName}", url.PathEscape(groupQuotaName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	if groupQuotaName == "" {
-		return nil, errors.New("parameter groupQuotaName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{groupQuotaName}", url.PathEscape(groupQuotaName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *GroupQuotaSubscriptionRequestsClient) listHandleResponse(resp *http.Response) (GroupQuotaSubscriptionRequestsClientListResponse, error) {
+func (client *GroupQuotaSubscriptionRequestsClient) listHandleResponse(resp *http.Response, successCodes ...int) (GroupQuotaSubscriptionRequestsClientListResponse, error) {
 	result := GroupQuotaSubscriptionRequestsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GroupQuotaSubscriptionRequestStatusList); err != nil {
 		return GroupQuotaSubscriptionRequestsClientListResponse{}, err
 	}

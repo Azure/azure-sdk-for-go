@@ -57,11 +57,17 @@ type AttentionReason struct {
 	// User MSI associated with chaos resource object is deleted.
 	ChaosResourceUserMsi *ExtensionObjectState
 
+	// Whether the selected discovery rule still exists.
+	DiscoveryRuleExists *ExtensionObjectState
+
 	// Errors related to Drill Monitoring resources.
 	DrillMonitoringErrors []*ErrorDetails
 
 	// Drill object does not have the necessary RBAC to run the chaos resource.
 	DrillRbacOnChaosResource *RBACState
+
+	// Whether the Drill identity has the necessary RBAC (Reader) to read the selected Azure Health Model.
+	DrillRbacOnHealthModel *RBACState
 
 	// Drill MSI does not have the necessary RBAC to read the Drill Monitoring resources.
 	DrillRbacOnMonitoringResources *RBACState
@@ -69,8 +75,14 @@ type AttentionReason struct {
 	// Drill object does not have the necessary RBAC to run the Recovery Plan.
 	DrillRbacOnRecoveryPlan *RBACState
 
+	// Rolled-up RBAC state: NotSet if the Drill identity is missing the necessary RBAC to read any selected SLI.
+	DrillRbacOnSli *RBACState
+
 	// User MSI associated with Drill object is deleted.
 	DrillUserMsi *ExtensionObjectState
+
+	// Whether the selected Azure Health Model still exists.
+	HealthModelExists *ExtensionObjectState
 
 	// Included resource in Drill.
 	IncludedResourceInDrill *ExtensionObjectState
@@ -81,6 +93,10 @@ type AttentionReason struct {
 	// Monitoring RBAC required by Drill MSI not setup on the target resources.
 	MonitoringRbacOnDrillResources *RBACState
 
+	// Neither an Azure Health Model nor an SLI is configured for the Drill. Execution is blocked until a monitoring source is
+	// configured.
+	MonitoringSourceNotConfigured *bool
+
 	// Permissions needed by the Drill MSI to run the chaos resource.
 	RbacNeededForDrillOnChaosResource []*string
 
@@ -89,6 +105,9 @@ type AttentionReason struct {
 
 	// Permissions needed by the Drill MSI to read health metrics data for resources in service group.
 	RbacNeededForDrillOnDrillResources []*string
+
+	// Permissions needed by the Drill identity to read the selected Azure Health Model.
+	RbacNeededForDrillOnHealthModel []*string
 
 	// Permissions needed by the Drill MSI to run the Recovery Plan.
 	RbacNeededForDrillOnRecoveryPlan []*string
@@ -107,6 +126,9 @@ type AttentionReason struct {
 
 	// Resources in Service Group and Drill are out of sync.
 	ServiceGroupAndDrillResourcesState *RelativeResourceCompositionState
+
+	// Per-SLI attention status for each SLI selected for Drill monitoring.
+	SliAttentionStatuses []*SliAttentionStatus
 
 	// READ-ONLY; Monitoring Resources created for Drill
 	DrillMonitoringResources *ExtensionObjectState
@@ -195,6 +217,9 @@ type DrillProperties struct {
 	// Properties for internal resources that are created for the Drill.
 	DrillAssetProperties *AssetPropertiesOfDrill
 
+	// Azure Health Model monitoring properties of the Drill.
+	HealthModelMonitoringProperties *HealthModelMonitoringProperties
+
 	// Monitoring properties of the Drill.
 	MonitoringProperties *MonitoringPropertiesOfDrill
 
@@ -203,6 +228,9 @@ type DrillProperties struct {
 
 	// ROPlan properties.
 	RecoveryPlanProperties *RecoveryPlanPropertiesOfDrill
+
+	// SLI monitoring properties of the Drill.
+	SliMonitoringProperties *SliMonitoringProperties
 
 	// READ-ONLY; Attention reason if the ReadinessState is 'NeedsAttention'.
 	AttentionReason *AttentionReason
@@ -225,9 +253,6 @@ type DrillProperties struct {
 	// READ-ONLY; Last sync time.
 	LastSyncTime *time.Time
 
-	// READ-ONLY; Managed RG v2 properties.
-	ManagedOnBehalfOfConfiguration *ManagedOnBehalfOfConfiguration
-
 	// READ-ONLY; Status of the last operation.
 	ProvisioningState *ProvisioningState
 
@@ -240,6 +265,31 @@ type DrillProperties struct {
 
 // GetDrillProperties implements the DrillPropertiesClassification interface for type DrillProperties.
 func (d *DrillProperties) GetDrillProperties() *DrillProperties { return d }
+
+// DrillReportSummary - Public, read-only summary of report generation for a Drill Run. Exposes status and pointers only -
+// the report content and internal storage locations are never surfaced.
+type DrillReportSummary struct {
+	// READ-ONLY; Formats the report is currently available for download in.
+	AvailableFormats []*DrillReportFormat
+
+	// READ-ONLY; Finalization state of the report. A finalized report is immutable.
+	FinalizationState *DrillReportFinalizationState
+
+	// READ-ONLY; Overall report generation status for the Drill Run.
+	GenerationStatus *DrillReportGenerationStatus
+
+	// READ-ONLY; Error from the last failed report generation attempt.
+	LastError *ErrorDetails
+
+	// READ-ONLY; Timestamp of the last successful report generation.
+	LastGeneratedTimestamp *time.Time
+
+	// READ-ONLY; Schema version of the generated report content.
+	SchemaVersion *string
+
+	// READ-ONLY; Per-stage report generation statuses.
+	StageStatuses []*ReportStageStatus
+}
 
 // DrillResource - Drill Resource
 type DrillResource struct {
@@ -438,6 +488,9 @@ type DrillRunProperties struct {
 	// READ-ONLY; The operation that this job is intended to perform.
 	Operation *string
 
+	// READ-ONLY; Summary of report generation for this Drill Run.
+	Report *DrillReportSummary
+
 	// READ-ONLY; The resource for which this job was created. This is typically the resource that the job is intended to manage
 	// or operate on.
 	ResourceID *string
@@ -475,6 +528,12 @@ func (d *DrillRunProperties) GetJobProperties() *JobProperties {
 		TriggeredBy:             d.TriggeredBy,
 		UserComments:            d.UserComments,
 	}
+}
+
+// DrillRunReprotectRequest - Request body for Reprotect API.
+type DrillRunReprotectRequest struct {
+	// REQUIRED; The reprotect properties.
+	ReprotectProperties *ReprotectRequest
 }
 
 // DrillRunResource - Represents a Drill Run job resource in the Azure Resilience Management provider namespace.
@@ -596,6 +655,9 @@ type DrillUpdateProperties struct {
 	// Properties for internal resources that are created for the Drill.
 	DrillAssetProperties *AssetPropertiesOfDrill
 
+	// Azure Health Model monitoring properties of the Drill. Send null to clear the selection.
+	HealthModelMonitoringProperties *HealthModelMonitoringProperties
+
 	// Monitoring properties of the Drill.
 	MonitoringProperties *MonitoringPropertiesOfDrill
 
@@ -604,6 +666,9 @@ type DrillUpdateProperties struct {
 
 	// Recovery Plan properties.
 	RecoveryPlanProperties *RecoveryPlanPropertiesOfDrill
+
+	// SLI monitoring properties of the Drill. Send null to clear the selection; the submitted slis array is the new desired state.
+	SliMonitoringProperties *SliMonitoringProperties
 }
 
 // Enrollment - An enrollment that links a usage plan to a service group.
@@ -777,11 +842,14 @@ type GoalAssignmentListResult struct {
 
 // GoalAssignmentProperties - Definition of goal assignment property.
 type GoalAssignmentProperties struct {
-	// REQUIRED; The type of goal assignment.
+	// The type of goal assignment.
 	GoalAssignmentType *GoalAssignmentType
 
-	// REQUIRED; Arm id of the goal template.
+	// Arm id of the goal template.
 	GoalTemplateID *string
+
+	// Whether zonal resiliency is required for this goal assignment.
+	RequireZonalResiliency *bool
 
 	// List of service level resources.
 	ServiceLevelResources []*ServiceLevelResource
@@ -822,12 +890,6 @@ type GoalResourceListResult struct {
 
 // GoalResourceProperties - Definition of goal assignment property.
 type GoalResourceProperties struct {
-	// REQUIRED; Flag which depicts whether the Arm resource is manually attested for high availability recommendation.
-	HighAvailabilityAttestationStatus *AttestationState
-
-	// REQUIRED; Flag which depicts whether the Arm resource is excluded for high availability recommendation.
-	HighAvailabilityGoalParticipation *ExclusionState
-
 	// REQUIRED; Arm Id of resource under the SG for which the extension resource is maintained.
 	ResourceArmID *string
 
@@ -837,8 +899,17 @@ type GoalResourceProperties struct {
 	// Flag which depicts whether the Arm resource is excluded for disaster recovery recommendation.
 	DisasterRecoveryGoalParticipation *ExclusionState
 
+	// Flag which depicts whether the Arm resource is manually attested for high availability recommendation.
+	HighAvailabilityAttestationStatus *AttestationState
+
+	// Flag which depicts whether the Arm resource is excluded for high availability recommendation.
+	HighAvailabilityGoalParticipation *ExclusionState
+
 	// List of user confirmations for high availability solutions.
-	UserConfirmationForHighAvailability []*UserConfirmationForHighAvailabilityItem
+	UserConfirmationForHighAvailability []*UserConfirmationItem
+
+	// Zonal resiliency posture (participation, attestation, exclusion reason, and user confirmations) for the Arm resource.
+	ZonalResiliency *ResiliencyProperties
 
 	// READ-ONLY; Reason for exclusion from disaster recovery goals.
 	ExclusionReasonForDisasterRecoveryGoals *ExclusionReason
@@ -935,6 +1006,18 @@ type GoalsData struct {
 
 	// Whether the resource is required for high availability.
 	RequireHighAvailability *UnifiedResilienceItemRequirementSelected
+}
+
+// HealthModelMonitoringProperties - Azure Health Model monitoring properties of a Drill. Exactly one Health Model may be
+// selected per Drill.
+type HealthModelMonitoringProperties struct {
+	// REQUIRED; Full ARM Id of the discovery rule inside the Azure Health Model. The parent Health Model is derived from this
+	// Id; it is the only identifier accepted on the wire.
+	DiscoveryRuleID *string
+
+	// REQUIRED; Identity that the Drill uses to read the Azure Health Model. The Drill is granted Reader on the Health Model
+	// for this identity.
+	Identity *AssociatedIdentity
 }
 
 // IncludeOrUpdateResource - Include or Update resource
@@ -1149,10 +1232,10 @@ type LastRunProperties struct {
 	LastRunTime *time.Time
 }
 
-// ManagedOnBehalfOfConfiguration - Configuration of the managed on behalf of resource.
-type ManagedOnBehalfOfConfiguration struct {
-	// READ-ONLY; Associated MoboBrokerResources.
-	MoboBrokerResources []*MoboBrokerResource
+// ListReportDownloadURLRequest - Request to mint a short-lived, read-only download URL for a Drill Run report.
+type ListReportDownloadURLRequest struct {
+	// Format of the report to download. Defaults to Html when not specified.
+	Format *DrillReportFormat
 }
 
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
@@ -1175,13 +1258,6 @@ type ManagedServiceIdentity struct {
 type MarkAsCompleteRequest struct {
 	// REQUIRED; State of the Drill Run.
 	DrillRunStage *DrillRunSubtasks
-}
-
-// MoboBrokerResource - MoboBroker resource.
-type MoboBrokerResource struct {
-	// READ-ONLY; The fully qualified resource ID of the MoboBroker resource.
-	// Example: `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}`
-	ID *string
 }
 
 // MonitoringPropertiesOfDrill - Drill monitoring properties.
@@ -1263,6 +1339,9 @@ type OperationQualificationDetails struct {
 
 	// Reasons for resource not qualified for the operation.
 	NotQualifiedReasons []*string
+
+	// Advisory resource feasibility reviews. Absent when no review was evaluated for this resource.
+	ResourceFeasibilityReviews []*ResourceFeasibilityReview
 }
 
 // OperationStatusResult - The current status of an async operation.
@@ -1871,6 +1950,9 @@ type RegionalDrillProperties struct {
 	// Properties for internal resources that are created for the Drill.
 	DrillAssetProperties *AssetPropertiesOfDrill
 
+	// Azure Health Model monitoring properties of the Drill.
+	HealthModelMonitoringProperties *HealthModelMonitoringProperties
+
 	// Monitoring properties of the Drill.
 	MonitoringProperties *MonitoringPropertiesOfDrill
 
@@ -1879,6 +1961,9 @@ type RegionalDrillProperties struct {
 
 	// ROPlan properties.
 	RecoveryPlanProperties *RecoveryPlanPropertiesOfDrill
+
+	// SLI monitoring properties of the Drill.
+	SliMonitoringProperties *SliMonitoringProperties
 
 	// READ-ONLY; Attention reason if the ReadinessState is 'NeedsAttention'.
 	AttentionReason *AttentionReason
@@ -1901,9 +1986,6 @@ type RegionalDrillProperties struct {
 	// READ-ONLY; Last sync time.
 	LastSyncTime *time.Time
 
-	// READ-ONLY; Managed RG v2 properties.
-	ManagedOnBehalfOfConfiguration *ManagedOnBehalfOfConfiguration
-
 	// READ-ONLY; Status of the last operation.
 	ProvisioningState *ProvisioningState
 
@@ -1917,24 +1999,40 @@ type RegionalDrillProperties struct {
 // GetDrillProperties implements the DrillPropertiesClassification interface for type RegionalDrillProperties.
 func (r *RegionalDrillProperties) GetDrillProperties() *DrillProperties {
 	return &DrillProperties{
-		AttentionReason:                r.AttentionReason,
-		ChaosResourceProperties:        r.ChaosResourceProperties,
-		DrillAssetProperties:           r.DrillAssetProperties,
-		DrillType:                      r.DrillType,
-		ErrorDetails:                   r.ErrorDetails,
-		ExecutionReadinessState:        r.ExecutionReadinessState,
-		ExecutionState:                 r.ExecutionState,
-		LastResyncReadinessCheckTime:   r.LastResyncReadinessCheckTime,
-		LastRunProperties:              r.LastRunProperties,
-		LastSyncTime:                   r.LastSyncTime,
-		ManagedOnBehalfOfConfiguration: r.ManagedOnBehalfOfConfiguration,
-		MonitoringProperties:           r.MonitoringProperties,
-		ProvisioningState:              r.ProvisioningState,
-		RbacSetupMode:                  r.RbacSetupMode,
-		RecoveryPlanProperties:         r.RecoveryPlanProperties,
-		ServiceGroupID:                 r.ServiceGroupID,
-		SystemMetadata:                 r.SystemMetadata,
+		AttentionReason:                 r.AttentionReason,
+		ChaosResourceProperties:         r.ChaosResourceProperties,
+		DrillAssetProperties:            r.DrillAssetProperties,
+		DrillType:                       r.DrillType,
+		ErrorDetails:                    r.ErrorDetails,
+		ExecutionReadinessState:         r.ExecutionReadinessState,
+		ExecutionState:                  r.ExecutionState,
+		HealthModelMonitoringProperties: r.HealthModelMonitoringProperties,
+		LastResyncReadinessCheckTime:    r.LastResyncReadinessCheckTime,
+		LastRunProperties:               r.LastRunProperties,
+		LastSyncTime:                    r.LastSyncTime,
+		MonitoringProperties:            r.MonitoringProperties,
+		ProvisioningState:               r.ProvisioningState,
+		RbacSetupMode:                   r.RbacSetupMode,
+		RecoveryPlanProperties:          r.RecoveryPlanProperties,
+		ServiceGroupID:                  r.ServiceGroupID,
+		SliMonitoringProperties:         r.SliMonitoringProperties,
+		SystemMetadata:                  r.SystemMetadata,
 	}
+}
+
+// ReportStageStatus - Report generation status for a single Drill Run stage.
+type ReportStageStatus struct {
+	// REQUIRED; Name of the Drill Run stage this status applies to.
+	DrillRunStage *DrillRunSubtasks
+
+	// READ-ONLY; Report generation status for this stage.
+	GenerationStatus *DrillReportGenerationStatus
+
+	// READ-ONLY; Timestamp of the last report generation attempt for this stage.
+	LastAttemptTimestamp *time.Time
+
+	// READ-ONLY; Error from the last failed report generation attempt for this stage.
+	LastError *ErrorDetails
 }
 
 // ReprotectRequest - Reprotect post action request.
@@ -1949,6 +2047,21 @@ type ReprotectRequestProperties struct {
 	SelectedResourceIDs []*string
 }
 
+// ResiliencyProperties - Resiliency posture for a goal resource.
+type ResiliencyProperties struct {
+	// Flag which depicts whether the Arm resource is manually attested for resiliency recommendation.
+	AttestationStatus *AttestationState
+
+	// Flag which depicts whether the Arm resource is excluded for resiliency recommendation.
+	GoalParticipation *ExclusionState
+
+	// List of user confirmations for resiliency solutions.
+	UserConfirmation []*UserConfirmationItem
+
+	// READ-ONLY; Reason for exclusion from resiliency goals.
+	ExclusionReason *ExclusionReason
+}
+
 // ResourceBaseProtectionSolutionSetting - Definition of recovery orchestration resource protection solution setting with
 // recovery orchestration plan.
 type ResourceBaseProtectionSolutionSetting struct {
@@ -1960,6 +2073,30 @@ type ResourceBaseProtectionSolutionSetting struct {
 // type ResourceBaseProtectionSolutionSetting.
 func (r *ResourceBaseProtectionSolutionSetting) GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting {
 	return r
+}
+
+// ResourceCrossZoneVMRecoveryProtectionSetting - Definition of recovery orchestration resource protection with cross-zone
+// (zonally resilient) VM recovery.
+type ResourceCrossZoneVMRecoveryProtectionSetting struct {
+	// CONSTANT; Field has constant value ResourceProtectionSolutionTypeCrossZoneVMRecovery, any specified value is ignored.
+	ProtectionSolutionType *ResourceProtectionSolutionType
+
+	// ARM resource ID of the Capacity Reservation Group (in the same subscription as the VM) to use when moving the VM to the
+	// target zone.
+	CapacityReservationGroupID *string
+
+	// Customer-requested logical target availability zone for zonal failover (a positive availability-zone id, e.g. "1", "2",
+	// "3"; additional zones are accepted where the region exposes them). Always optional; when omitted the service selects a
+	// healthy zone. Immutable per failover.
+	TargetZone *string
+}
+
+// GetResourceBaseProtectionSolutionSetting implements the ResourceBaseProtectionSolutionSettingClassification interface for
+// type ResourceCrossZoneVMRecoveryProtectionSetting.
+func (r *ResourceCrossZoneVMRecoveryProtectionSetting) GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting {
+	return &ResourceBaseProtectionSolutionSetting{
+		ProtectionSolutionType: r.ProtectionSolutionType,
+	}
 }
 
 // ResourceCustomProtectionAction - Definition of recovery resource custom action setting with Recovery Orchestration Plan.
@@ -1996,6 +2133,27 @@ func (r *ResourceCustomProtectionSetting) GetResourceBaseProtectionSolutionSetti
 	return &ResourceBaseProtectionSolutionSetting{
 		ProtectionSolutionType: r.ProtectionSolutionType,
 	}
+}
+
+// ResourceFeasibilityReview - Result of a single feasibility review performed against one resource in a recovery plan.
+type ResourceFeasibilityReview struct {
+	// REQUIRED; The resource feasibility review type.
+	FeasibilityType *ResourceFeasibilityReviewType
+
+	// REQUIRED; Fully qualified ARM resource type evaluated, e.g. `Microsoft.Compute/virtualMachines`.
+	ResourceType *string
+
+	// REQUIRED; Outcome of this feasibility review.
+	Status *ResourceFeasibilityReviewStatus
+
+	// The SKU the resource is currently configured to recover into, enriched for comparison against the recommendations. Absent
+	// when it could not be resolved, and always absent on `Passed` and `NotApplicable` reviews.
+	CurrentTargetSKU *SKUDetails
+
+	// Alternative SKUs surfaced for this review. Absent or empty means a `Flagged` review has no alternatives, an `Unavailable`
+	// review has no applicable recommendations to surface, or the review has a minimal `Passed` / `NotApplicable` outcome. Callers
+	// should treat an absent array and an empty array identically.
+	RecommendedTargetSKUs []*SKUDetails
 }
 
 // ResourceLists - Add, Update, Delete resource lists
@@ -2113,6 +2271,28 @@ type ResourceSiteRecoveryTestFailoverParams struct {
 	NetworkResourceID *string
 }
 
+// SKUDetails - SKU details for a resource feasibility review, used for both the current target SKU and the recommended alternate
+// SKUs.
+type SKUDetails struct {
+	// REQUIRED; The Azure SKU name.
+	SKU *string
+
+	// ISO 4217 currency code for `monthlyPrice`.
+	Currency *string
+
+	// Estimated monthly price. Absent when pricing is unavailable.
+	MonthlyPrice *float64
+
+	// Identifier of the Azure offering used to estimate `monthlyPrice`.
+	OfferingID *string
+
+	// Memory in GiB for the SKU. Absent when SKU specifications are unavailable.
+	RAM *int32
+
+	// Number of virtual CPUs for the SKU. Absent when SKU specifications are unavailable.
+	VCPU *int32
+}
+
 // ServiceGroupMembership - Model for service group membership.
 type ServiceGroupMembership struct {
 	// REQUIRED; Membership type of the service group to resource.
@@ -2127,8 +2307,51 @@ type ServiceLevelResource struct {
 	// REQUIRED; The arm id of the service level indicator resource
 	ServiceLevelIndicatorResourceID *string
 
-	// REQUIRED; The arm id of the service level object resource
+	// The arm id of the service level object resource
 	ServiceLevelObjectiveResourceID *string
+}
+
+// SliAttentionStatus - Per-SLI attention status of a Drill.
+type SliAttentionStatus struct {
+	// REQUIRED; Full ARM Id of the SLI this status refers to.
+	SliID *string
+
+	// REQUIRED; User-declared category of the SLI.
+	Type *SliType
+
+	// READ-ONLY; Rolled-up RBAC state: NotSet if the Drill identity is missing Monitoring Reader on any of the SLI's destination
+	// Azure Monitor Workspaces.
+	DrillRbacOnDestinationAmw *RBACState
+
+	// READ-ONLY; Whether the selected SLI still exists.
+	Exists *ExtensionObjectState
+
+	// READ-ONLY; The destination Azure Monitor Workspaces that are still missing the Monitoring Reader grant for the Drill identity.
+	RbacNeededOnDestinationAmws []*string
+
+	// READ-ONLY; Whether the user-declared SLI type matches the SLI's actual category.
+	TypeMatch *SliTypeMatchState
+}
+
+// SliMonitoringProperties - SLI monitoring properties of a Drill. At most two SLIs may be selected: at most one Availability
+// and one Latency.
+type SliMonitoringProperties struct {
+	// REQUIRED; Identity that the Drill uses to read evaluated SLI results from each SLI's destination Azure Monitor Workspace.
+	// The Drill is granted Monitoring Reader on every destination AMW of every selected SLI for this identity.
+	Identity *AssociatedIdentity
+
+	// REQUIRED; The SLIs selected for Drill monitoring. Maximum of two entries: at most one Availability and one Latency. Duplicate
+	// types or duplicate SLI Ids are rejected.
+	Slis []*SliSelection
+}
+
+// SliSelection - A single SLI selected for Drill monitoring.
+type SliSelection struct {
+	// REQUIRED; Full ARM Id of the SLI.
+	SliID *string
+
+	// REQUIRED; User-declared category of the SLI. Must be unique across the selected SLIs.
+	Type *SliType
 }
 
 // SupportedVerbsForStage - Model for supported verbs for stage.
@@ -2300,8 +2523,8 @@ type UserAssignedIdentity struct {
 	PrincipalID *string
 }
 
-// UserConfirmationForHighAvailabilityItem - Represents a user confirmation for a high availability solution.
-type UserConfirmationForHighAvailabilityItem struct {
+// UserConfirmationItem - Represents a user confirmation for a high availability solution.
+type UserConfirmationItem struct {
 	// REQUIRED; The confirmation status of the high availability solution.
 	ConfirmationStatus *ConfirmationStatus
 
@@ -2314,7 +2537,11 @@ type UserConfirmationForHighAvailabilityItem struct {
 
 // ValidateForExecutionProperties - Additional properties for Failover.
 type ValidateForExecutionProperties struct {
-	// REQUIRED; Physiscal Source locations from where resources to be failed-over or faulted.
+	// Operation name for which the validation is being done. This is needed to determine the set of validations to be done for
+	// the operation.
+	OperationName *DrillRunTasks
+
+	// Physiscal Source locations from where resources to be failed-over or faulted.
 	SourceLocations []*string
 }
 
@@ -2348,6 +2575,9 @@ type ZonalDrillProperties struct {
 	// Properties for internal resources that are created for the Drill.
 	DrillAssetProperties *AssetPropertiesOfDrill
 
+	// Azure Health Model monitoring properties of the Drill.
+	HealthModelMonitoringProperties *HealthModelMonitoringProperties
+
 	// Monitoring properties of the Drill.
 	MonitoringProperties *MonitoringPropertiesOfDrill
 
@@ -2356,6 +2586,9 @@ type ZonalDrillProperties struct {
 
 	// ROPlan properties.
 	RecoveryPlanProperties *RecoveryPlanPropertiesOfDrill
+
+	// SLI monitoring properties of the Drill.
+	SliMonitoringProperties *SliMonitoringProperties
 
 	// READ-ONLY; Attention reason if the ReadinessState is 'NeedsAttention'.
 	AttentionReason *AttentionReason
@@ -2378,9 +2611,6 @@ type ZonalDrillProperties struct {
 	// READ-ONLY; Last sync time.
 	LastSyncTime *time.Time
 
-	// READ-ONLY; Managed RG v2 properties.
-	ManagedOnBehalfOfConfiguration *ManagedOnBehalfOfConfiguration
-
 	// READ-ONLY; Status of the last operation.
 	ProvisioningState *ProvisioningState
 
@@ -2397,22 +2627,23 @@ type ZonalDrillProperties struct {
 // GetDrillProperties implements the DrillPropertiesClassification interface for type ZonalDrillProperties.
 func (z *ZonalDrillProperties) GetDrillProperties() *DrillProperties {
 	return &DrillProperties{
-		AttentionReason:                z.AttentionReason,
-		ChaosResourceProperties:        z.ChaosResourceProperties,
-		DrillAssetProperties:           z.DrillAssetProperties,
-		DrillType:                      z.DrillType,
-		ErrorDetails:                   z.ErrorDetails,
-		ExecutionReadinessState:        z.ExecutionReadinessState,
-		ExecutionState:                 z.ExecutionState,
-		LastResyncReadinessCheckTime:   z.LastResyncReadinessCheckTime,
-		LastRunProperties:              z.LastRunProperties,
-		LastSyncTime:                   z.LastSyncTime,
-		ManagedOnBehalfOfConfiguration: z.ManagedOnBehalfOfConfiguration,
-		MonitoringProperties:           z.MonitoringProperties,
-		ProvisioningState:              z.ProvisioningState,
-		RbacSetupMode:                  z.RbacSetupMode,
-		RecoveryPlanProperties:         z.RecoveryPlanProperties,
-		ServiceGroupID:                 z.ServiceGroupID,
-		SystemMetadata:                 z.SystemMetadata,
+		AttentionReason:                 z.AttentionReason,
+		ChaosResourceProperties:         z.ChaosResourceProperties,
+		DrillAssetProperties:            z.DrillAssetProperties,
+		DrillType:                       z.DrillType,
+		ErrorDetails:                    z.ErrorDetails,
+		ExecutionReadinessState:         z.ExecutionReadinessState,
+		ExecutionState:                  z.ExecutionState,
+		HealthModelMonitoringProperties: z.HealthModelMonitoringProperties,
+		LastResyncReadinessCheckTime:    z.LastResyncReadinessCheckTime,
+		LastRunProperties:               z.LastRunProperties,
+		LastSyncTime:                    z.LastSyncTime,
+		MonitoringProperties:            z.MonitoringProperties,
+		ProvisioningState:               z.ProvisioningState,
+		RbacSetupMode:                   z.RbacSetupMode,
+		RecoveryPlanProperties:          z.RecoveryPlanProperties,
+		ServiceGroupID:                  z.ServiceGroupID,
+		SliMonitoringProperties:         z.SliMonitoringProperties,
+		SystemMetadata:                  z.SystemMetadata,
 	}
 }

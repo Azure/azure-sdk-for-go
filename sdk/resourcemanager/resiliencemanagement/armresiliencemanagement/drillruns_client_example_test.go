@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/DrillRuns_AddNotes_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/DrillRuns_AddNotes_MaximumSet_Gen.json
 func ExampleDrillRunsClient_BeginAddNotes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleDrillRunsClient_BeginAddNotes() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/DrillRuns_FailOver_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/DrillRuns_FailOver_MaximumSet_Gen.json
 func ExampleDrillRunsClient_BeginFailOver() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,17 +51,18 @@ func ExampleDrillRunsClient_BeginFailOver() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDrillRunsClient().BeginFailOver(ctx, "sampleServiceGroupName", "qmn", "drill1", "ca92602e-53bf-43d2-ae62-d3fc940474b3", armresiliencemanagement.DrillRunFailoverRequest{
-		FailoverProperties: &armresiliencemanagement.FailoverRequest{
-			FailoverDirection: to.Ptr(armresiliencemanagement.FailoverDirectionTypesFromSpecificLocations),
-			FailoverRequestProperties: &armresiliencemanagement.FailoverRequestProperties{
-				SourceLocations: []*string{
-					to.Ptr("westus"),
+	poller, err := clientFactory.NewDrillRunsClient().BeginFailOver(ctx, "sampleServiceGroupName", "qmn", "drill1", "ca92602e-53bf-43d2-ae62-d3fc940474b3", &armresiliencemanagement.DrillRunsClientBeginFailOverOptions{
+		Body: &armresiliencemanagement.DrillRunFailoverRequest{
+			FailoverProperties: &armresiliencemanagement.FailoverRequest{
+				FailoverDirection: to.Ptr(armresiliencemanagement.FailoverDirectionTypesFromSpecificLocations),
+				FailoverRequestProperties: &armresiliencemanagement.FailoverRequestProperties{
+					SourceLocations: []*string{
+						to.Ptr("westus"),
+					},
 				},
 			},
-		},
-		AutoFailover: to.Ptr(armresiliencemanagement.AutoFailoverEnable),
-	}, nil)
+			AutoFailover: to.Ptr(armresiliencemanagement.AutoFailoverEnable),
+		}})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -76,7 +77,33 @@ func ExampleDrillRunsClient_BeginFailOver() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/DrillRuns_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/DrillRuns_GenerateReport_MaximumSet_Gen.json
+func ExampleDrillRunsClient_BeginGenerateReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDrillRunsClient().BeginGenerateReport(ctx, "sampleServiceGroupName", "qmn", "drill1", "ca92602e-53bf-43d2-ae62-d3fc940474b3", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armresiliencemanagement.DrillRunsClientGenerateReportResponse{
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/DrillRuns_Get_MaximumSet_Gen.json
 func ExampleDrillRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +281,7 @@ func ExampleDrillRunsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/DrillRuns_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/DrillRuns_List_MaximumSet_Gen.json
 func ExampleDrillRunsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -419,7 +446,35 @@ func ExampleDrillRunsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/DrillRuns_MarkAsComplete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/DrillRuns_ListReportDownloadUrl_MaximumSet_Gen.json
+func ExampleDrillRunsClient_BeginListReportDownloadURL() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDrillRunsClient().BeginListReportDownloadURL(ctx, "sampleServiceGroupName", "3f2b1c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d", "drill1", "ca92602e-53bf-43d2-ae62-d3fc940474b3", armresiliencemanagement.ListReportDownloadURLRequest{
+		Format: to.Ptr(armresiliencemanagement.DrillReportFormatHTML),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armresiliencemanagement.DrillRunsClientListReportDownloadURLResponse{
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/DrillRuns_MarkAsComplete_MaximumSet_Gen.json
 func ExampleDrillRunsClient_BeginMarkAsComplete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -447,7 +502,7 @@ func ExampleDrillRunsClient_BeginMarkAsComplete() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/DrillRuns_Reprotect_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/DrillRuns_Reprotect_MaximumSet_Gen.json
 func ExampleDrillRunsClient_BeginReprotect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -473,7 +528,7 @@ func ExampleDrillRunsClient_BeginReprotect() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/DrillRuns_Resume_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/DrillRuns_Resume_MaximumSet_Gen.json
 func ExampleDrillRunsClient_BeginResume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

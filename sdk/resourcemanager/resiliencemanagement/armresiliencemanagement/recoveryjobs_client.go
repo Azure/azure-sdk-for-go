@@ -19,7 +19,7 @@ import (
 // RecoveryJobsClient - Operations for managing recovery jobs.
 // Don't use this type directly, use NewRecoveryJobsClient() instead.
 //
-// Generated from API version 2026-04-01-preview
+// Generated from API version 2026-08-31-preview
 type RecoveryJobsClient struct {
 	internal *arm.Client
 }
@@ -106,7 +106,7 @@ func (client *RecoveryJobsClient) cancelCreateRequest(ctx context.Context, servi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["operation-id"] = []string{operationID}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -159,7 +159,7 @@ func (client *RecoveryJobsClient) getCreateRequest(ctx context.Context, serviceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -230,7 +230,7 @@ func (client *RecoveryJobsClient) listCreateRequest(ctx context.Context, service
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260401Preview)
+		reqQP.Set("api-version", version20260831Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -317,7 +317,7 @@ func (client *RecoveryJobsClient) resumeCreateRequest(ctx context.Context, servi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["operation-id"] = []string{operationID}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -393,7 +393,7 @@ func (client *RecoveryJobsClient) retryCreateRequest(ctx context.Context, servic
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["operation-id"] = []string{operationID}
 	return req, nil

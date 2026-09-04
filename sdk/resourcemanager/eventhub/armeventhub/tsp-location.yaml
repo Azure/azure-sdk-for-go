@@ -1,4 +1,4 @@
 directory: specification/eventhub/resource-manager/Microsoft.EventHub/Eventhub
-commit: 2855d8bd0bf4e1e9527b4a904ad9e0ffcb9bb89f
+commit: e3d52974df27dbe11f67a88c7d066dd9e799a377
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

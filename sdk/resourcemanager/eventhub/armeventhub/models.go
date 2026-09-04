@@ -276,6 +276,9 @@ type ClusterProperties struct {
 	// A value that indicates whether Scaling is Supported.
 	SupportsScaling *bool
 
+	// A value that indicates whether the cluster is zone redundant.
+	ZoneRedundant *bool
+
 	// READ-ONLY; The UTC time when the Event Hubs Cluster was created.
 	CreatedAt *string
 
@@ -467,6 +470,10 @@ type EHNamespaceProperties struct {
 	// Geo Data Replication settings for the namespace
 	GeoDataReplication *GeoDataReplicationProperties
 
+	// The IP address type for the namespace. Determines whether the namespace supports IPv4 only or both IPv4 and IPv6 (dual
+	// stack).
+	IPAddressType *IPAddressType
+
 	// Value that indicates whether AutoInflate is enabled for eventhub namespace.
 	IsAutoInflateEnabled *bool
 
@@ -543,6 +550,97 @@ type Eventhub struct {
 	Type *string
 }
 
+// ExceptionWindow - A date-specific exception to the recurring maintenance windows.
+type ExceptionWindow struct {
+	// REQUIRED; Whether the exception blocks or allows upgrades.
+	Action *ExceptionWindowAction
+
+	// REQUIRED; The UTC date on which the exception starts.
+	Date *time.Time
+
+	// REQUIRED; The exception duration in minutes. Allow exceptions must be between 480 and 1440 minutes in 60-minute increments.
+	// Block exceptions must be 1440 minutes.
+	DurationMinutes *int32
+
+	// REQUIRED; The UTC time of day at which the exception starts, represented as an ISO 8601 duration since midnight.
+	StartTimeOfDay *string
+}
+
+// FabricShortcut - A Microsoft Fabric shortcut attached to an Event Hub.
+type FabricShortcut struct {
+	// Properties of the Microsoft Fabric shortcut.
+	Properties *FabricShortcutProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The geo-location where the resource lives.
+	Location *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// FabricShortcutConfiguration - Microsoft Fabric workspace and artifact configuration.
+type FabricShortcutConfiguration struct {
+	// REQUIRED; The Microsoft Fabric artifact ID.
+	ArtifactID *string
+
+	// REQUIRED; The Microsoft Fabric tenant ID.
+	TenantID *string
+
+	// REQUIRED; The Microsoft Fabric workspace ID.
+	WorkspaceID *string
+
+	// The Microsoft Fabric artifact name.
+	ArtifactName *string
+
+	// The resource ID of the Log Analytics workspace.
+	LogAnalyticsResourceID *string
+
+	// The Microsoft Fabric premium capacity ID.
+	PremiumCapacityID *string
+
+	// The Microsoft Fabric workspace name.
+	WorkspaceName *string
+}
+
+// FabricShortcutListResult - The response of a FabricShortcut list operation.
+type FabricShortcutListResult struct {
+	// REQUIRED; The FabricShortcut items on this page
+	Value []*FabricShortcut
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// FabricShortcutProperties - Properties of a Microsoft Fabric shortcut.
+type FabricShortcutProperties struct {
+	// REQUIRED; Microsoft Fabric workspace and artifact configuration.
+	Configuration *FabricShortcutConfiguration
+
+	// The current shortcut status. Only Pending can be supplied on create or update.
+	ShortcutStatus *FabricShortcutStatus
+
+	// The type of the shortcut.
+	ShortcutType *FabricShortcutType
+
+	// READ-ONLY; The UTC time when the shortcut was created.
+	CreatedAt *time.Time
+
+	// READ-ONLY; The UTC time when the shortcut was last modified.
+	ModifiedAt *time.Time
+
+	// READ-ONLY; A description of the current shortcut status.
+	StatusDescription *string
+}
+
 type FailOver struct {
 	Properties *FailOverProperties
 }
@@ -603,6 +701,18 @@ type ListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// MaintenanceWindow - A recurring weekly maintenance window in UTC.
+type MaintenanceWindow struct {
+	// REQUIRED; The UTC day of the week on which the maintenance window starts.
+	DayOfWeek *UpgradePreferenceDayOfWeek
+
+	// REQUIRED; The maintenance window duration in minutes. The value must be between 480 and 1440 in 60-minute increments.
+	DurationMinutes *int32
+
+	// REQUIRED; The UTC time of day at which the maintenance window starts, represented as an ISO 8601 duration since midnight.
+	StartTimeOfDay *string
 }
 
 // MessageTimestampDescription - Properties of MessageTimestamp Description
@@ -1152,6 +1262,49 @@ func (t *ThrottlingPolicy) GetApplicationGroupPolicy() *ApplicationGroupPolicy {
 		Name: t.Name,
 		Type: t.Type,
 	}
+}
+
+// UpgradePreferences - Upgrade preferences for an Event Hubs Dedicated cluster.
+type UpgradePreferences struct {
+	// Upgrade preference properties for the Event Hubs Dedicated cluster.
+	Properties *UpgradePreferencesProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// UpgradePreferencesProperties - Upgrade preference properties for an Event Hubs Dedicated cluster.
+type UpgradePreferencesProperties struct {
+	// Date-specific exceptions to the recurring maintenance windows.
+	ExceptionWindows []*ExceptionWindow
+
+	// Recurring weekly maintenance windows in UTC. At least one window must be supplied when preferences are created or updated.
+	// A maximum of two windows can be configured, and their combined duration must be at least 16 hours per week.
+	MaintenanceWindows []*MaintenanceWindow
+
+	// READ-ONLY; The current cluster upgrade status.
+	UpgradeStatus *UpgradeStatus
+}
+
+// UpgradeStatus - The current upgrade orchestration state for the cluster.
+type UpgradeStatus struct {
+	// REQUIRED; Whether an upgrade-now override is currently active.
+	InProgress *bool
+
+	// REQUIRED; Whether at least one deferred upgrade is waiting for the cluster.
+	PendingUpgrade *bool
+
+	// The estimated UTC time when the current upgrade will complete.
+	CompletesAt *time.Time
 }
 
 // UserAssignedIdentity - Recognized Dictionary value.

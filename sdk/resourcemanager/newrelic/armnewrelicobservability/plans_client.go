@@ -19,7 +19,7 @@ import (
 // PlansClient contains the methods for the Plans group.
 // Don't use this type directly, use NewPlansClient() instead.
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-06-01
 type PlansClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -94,7 +94,7 @@ func (client *PlansClient) listCreateRequest(ctx context.Context, nextLink strin
 		if options != nil && options.AccountID != nil {
 			reqQP.Set("accountId", *options.AccountID)
 		}
-		reqQP.Set("api-version", version20250501Preview)
+		reqQP.Set("api-version", version20260601)
 		if options != nil && options.OrganizationID != nil {
 			reqQP.Set("organizationId", *options.OrganizationID)
 		}

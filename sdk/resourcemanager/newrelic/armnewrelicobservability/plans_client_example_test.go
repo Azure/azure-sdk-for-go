@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/Plans_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/Plans_List_MaximumSet_Gen.json
 func ExamplePlansClient_NewListPager_plansListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExamplePlansClient_NewListPager_plansListMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/Plans_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01/Plans_List_MinimumSet_Gen.json
 func ExamplePlansClient_NewListPager_plansListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

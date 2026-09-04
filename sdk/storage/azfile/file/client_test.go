@@ -29,6 +29,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/testcommon"
@@ -5299,6 +5300,37 @@ func TestFileCreateStructuredMessageBody(t *testing.T) {
 	sclHeader := foldedHeaderValues(transport.capturedHeaders, "x-ms-structured-content-length")
 	_require.Len(sclHeader, 1)
 	_require.Equal(strconv.Itoa(contentSize), sclHeader[0])
+}
+
+func TestFileCreateRejectsUnsupportedValidationType(t *testing.T) {
+	_require := require.New(t)
+
+	transport := &captureBodyTransport{}
+	fileClient, err := file.NewClientWithNoCredential("https://fake/share/file", &file.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: transport,
+		},
+	})
+	_require.NoError(err)
+
+	body := streaming.NopCloser(bytes.NewReader([]byte("data")))
+
+	// Precomputed CRC64
+	_, err = fileClient.Create(context.Background(), 4, &file.CreateOptions{
+		OptionalBody:            body,
+		TransactionalValidation: exported.TransferValidationTypeCRC64(123),
+	})
+	_require.Error(err)
+	_require.Contains(err.Error(), "unsupported TransactionalValidation type")
+
+	// Computed CRC64
+	body = streaming.NopCloser(bytes.NewReader([]byte("data")))
+	_, err = fileClient.Create(context.Background(), 4, &file.CreateOptions{
+		OptionalBody:            body,
+		TransactionalValidation: exported.TransferValidationTypeComputeCRC64(),
+	})
+	_require.Error(err)
+	_require.Contains(err.Error(), "unsupported TransactionalValidation type")
 }
 
 // TODO: Add tests for retry header options

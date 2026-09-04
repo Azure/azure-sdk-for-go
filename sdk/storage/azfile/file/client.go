@@ -154,6 +154,8 @@ func (f *Client) Create(ctx context.Context, fileContentLength int64, options *C
 	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 
 	if options != nil && options.OptionalBody != nil && options.TransactionalValidation != nil {
+		// Defensive: CRC64 types (precomputed/computed) aren't publicly exported from this
+		// package so callers can't reach this, but reject them to avoid a silent no-op via SetCRC64.
 		if _, ok := options.TransactionalValidation.(TransferValidationTypeMD5); !ok &&
 			exported.GetStructuredBodyType(options.TransactionalValidation) == "" {
 			return CreateResponse{}, errors.New("unsupported TransactionalValidation type for Create; only MD5 and structured message CRC64 are supported")

@@ -11,6 +11,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relationships/armrelationships"
 	"net/http"
 	"net/url"
@@ -31,6 +32,10 @@ type ServiceGroupMemberRelationshipsServer struct {
 	// Get is the fake for method ServiceGroupMemberRelationshipsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceURI string, name string, options *armrelationships.ServiceGroupMemberRelationshipsClientGetOptions) (resp azfake.Responder[armrelationships.ServiceGroupMemberRelationshipsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByParentPager is the fake for method ServiceGroupMemberRelationshipsClient.NewListByParentPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByParentPager func(resourceURI string, options *armrelationships.ServiceGroupMemberRelationshipsClientListByParentOptions) (resp azfake.PagerResponder[armrelationships.ServiceGroupMemberRelationshipsClientListByParentResponse])
 }
 
 // NewServiceGroupMemberRelationshipsServerTransport creates a new instance of ServiceGroupMemberRelationshipsServerTransport with the provided implementation.
@@ -38,18 +43,20 @@ type ServiceGroupMemberRelationshipsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewServiceGroupMemberRelationshipsServerTransport(srv *ServiceGroupMemberRelationshipsServer) *ServiceGroupMemberRelationshipsServerTransport {
 	return &ServiceGroupMemberRelationshipsServerTransport{
-		srv:                 srv,
-		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armrelationships.ServiceGroupMemberRelationshipsClientCreateOrUpdateResponse]](),
-		beginDelete:         newTracker[azfake.PollerResponder[armrelationships.ServiceGroupMemberRelationshipsClientDeleteResponse]](),
+		srv:                  srv,
+		beginCreateOrUpdate:  newTracker[azfake.PollerResponder[armrelationships.ServiceGroupMemberRelationshipsClientCreateOrUpdateResponse]](),
+		beginDelete:          newTracker[azfake.PollerResponder[armrelationships.ServiceGroupMemberRelationshipsClientDeleteResponse]](),
+		newListByParentPager: newTracker[azfake.PagerResponder[armrelationships.ServiceGroupMemberRelationshipsClientListByParentResponse]](),
 	}
 }
 
 // ServiceGroupMemberRelationshipsServerTransport connects instances of armrelationships.ServiceGroupMemberRelationshipsClient to instances of ServiceGroupMemberRelationshipsServer.
 // Don't use this type directly, use NewServiceGroupMemberRelationshipsServerTransport instead.
 type ServiceGroupMemberRelationshipsServerTransport struct {
-	srv                 *ServiceGroupMemberRelationshipsServer
-	beginCreateOrUpdate *tracker[azfake.PollerResponder[armrelationships.ServiceGroupMemberRelationshipsClientCreateOrUpdateResponse]]
-	beginDelete         *tracker[azfake.PollerResponder[armrelationships.ServiceGroupMemberRelationshipsClientDeleteResponse]]
+	srv                  *ServiceGroupMemberRelationshipsServer
+	beginCreateOrUpdate  *tracker[azfake.PollerResponder[armrelationships.ServiceGroupMemberRelationshipsClientCreateOrUpdateResponse]]
+	beginDelete          *tracker[azfake.PollerResponder[armrelationships.ServiceGroupMemberRelationshipsClientDeleteResponse]]
+	newListByParentPager *tracker[azfake.PagerResponder[armrelationships.ServiceGroupMemberRelationshipsClientListByParentResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServiceGroupMemberRelationshipsServerTransport.
@@ -79,6 +86,8 @@ func (s *ServiceGroupMemberRelationshipsServerTransport) dispatchToMethodFake(re
 				res.resp, res.err = s.dispatchBeginDelete(req)
 			case "ServiceGroupMemberRelationshipsClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
+			case "ServiceGroupMemberRelationshipsClient.NewListByParentPager":
+				res.resp, res.err = s.dispatchNewListByParentPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -216,6 +225,43 @@ func (s *ServiceGroupMemberRelationshipsServerTransport) dispatchGet(req *http.R
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServiceGroupMemberRelationship, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServiceGroupMemberRelationshipsServerTransport) dispatchNewListByParentPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListByParentPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByParentPager not implemented")}
+	}
+	newListByParentPager := s.newListByParentPager.get(req)
+	if newListByParentPager == nil {
+		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Relationships/serviceGroupMember`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListByParentPager(resourceURIParam, nil)
+		newListByParentPager = &resp
+		s.newListByParentPager.add(req, newListByParentPager)
+		server.PagerResponderInjectNextLinks(newListByParentPager, req, func(page *armrelationships.ServiceGroupMemberRelationshipsClientListByParentResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByParentPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListByParentPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByParentPager) {
+		s.newListByParentPager.remove(req)
 	}
 	return resp, nil
 }

@@ -19,7 +19,7 @@ import (
 // ConfigureSourceScanClient contains the methods for the ConfigureSourceScan group.
 // Don't use this type directly, use NewConfigureSourceScanClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-08-01
 type ConfigureSourceScanClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -127,7 +127,7 @@ func (client *ConfigureSourceScanClient) executeCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

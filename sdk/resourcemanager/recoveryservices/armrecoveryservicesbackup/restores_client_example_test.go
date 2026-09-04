@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest.json
 func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestoreRequest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestore
 	}
 }
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_DataDiskEncryption.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_DataDiskEncryption.json
 func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestoreRequestWithIdentityBasedRestoreDetailsAndPerDiskEncryptionSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestore
 	}
 }
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_DataDiskEncryption_SingleEntry.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_DataDiskEncryption_SingleEntry.json
 func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestoreRequestWithIdentityBasedRestoreDetailsAndDataDiskEncryptionSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -169,7 +169,7 @@ func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestore
 	}
 }
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
 func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestoreRequestWithIdentityBasedRestoreDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestore
 	}
 }
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreWithRehydrationRequest.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreWithRehydrationRequest.json
 func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestoreWithRehydrationRequest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -256,7 +256,7 @@ func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestore
 	}
 }
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/TriggerRestore_ResourceGuardEnabled.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/TriggerRestore_ResourceGuardEnabled.json
 func ExampleRestoresClient_BeginTrigger_restoreWithResourceGuardEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -300,7 +300,7 @@ func ExampleRestoresClient_BeginTrigger_restoreWithResourceGuardEnabled() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
 func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVMRestoreRequest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -343,7 +343,7 @@ func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVMRestoreRequest() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
 func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVMRestoreRequestWithIdentityBasedRestoreDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -384,7 +384,7 @@ func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVMRestoreRequestWith
 	}
 }
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreWithRehydrationRequest.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreWithRehydrationRequest.json
 func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVMRestoreWithRehydrationRequest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -423,7 +423,7 @@ func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVMRestoreWithRehydra
 	}
 }
 
-// Generated from example definition: 2026-07-01/AzureStorage/TriggerRestore_AzureFileShare_WithSAMI.json
+// Generated from example definition: 2026-08-01/AzureStorage/TriggerRestore_AzureFileShare_WithSAMI.json
 func ExampleRestoresClient_BeginTrigger_restoreAzureFileShareToOriginalLocationWithManagedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -455,7 +455,7 @@ func ExampleRestoresClient_BeginTrigger_restoreAzureFileShareToOriginalLocationW
 	}
 }
 
-// Generated from example definition: 2026-07-01/AzureStorage/TriggerRestore_AzureFileShare_WithUAMI.json
+// Generated from example definition: 2026-08-01/AzureStorage/TriggerRestore_AzureFileShare_WithUAMI.json
 func ExampleRestoresClient_BeginTrigger_restoreAzureFileShareToOriginalLocationWithUserAssignedManagedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

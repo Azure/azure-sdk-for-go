@@ -20,7 +20,7 @@ import (
 // group.
 // Don't use this type directly, use NewProtectionContainerRefreshOperationResultsClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-08-01
 type ProtectionContainerRefreshOperationResultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -101,7 +101,7 @@ func (client *ProtectionContainerRefreshOperationResultsClient) getCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

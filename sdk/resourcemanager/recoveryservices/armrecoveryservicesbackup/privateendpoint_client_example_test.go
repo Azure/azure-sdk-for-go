@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/PrivateEndpointConnection/GetPrivateEndpointConnectionOperationStatus.json
+// Generated from example definition: 2026-08-01/PrivateEndpointConnection/GetPrivateEndpointConnectionOperationStatus.json
 func ExamplePrivateEndpointClient_GetOperationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

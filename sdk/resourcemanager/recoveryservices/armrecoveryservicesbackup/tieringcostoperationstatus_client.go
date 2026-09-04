@@ -19,7 +19,7 @@ import (
 // TieringCostOperationStatusClient contains the methods for the TieringCostOperationStatus group.
 // Don't use this type directly, use NewTieringCostOperationStatusClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-08-01
 type TieringCostOperationStatusClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -91,7 +91,7 @@ func (client *TieringCostOperationStatusClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/ProtectionIntent_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/ProtectionIntent_CreateOrUpdate.json
 func ExampleProtectionIntentClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleProtectionIntentClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AzureWorkload/BackupProtectionIntent_Delete.json
+// Generated from example definition: 2026-08-01/AzureWorkload/BackupProtectionIntent_Delete.json
 func ExampleProtectionIntentClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleProtectionIntentClient_Delete() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/AzureWorkload/BackupProtectionIntent_Get.json
+// Generated from example definition: 2026-08-01/AzureWorkload/BackupProtectionIntent_Get.json
 func ExampleProtectionIntentClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleProtectionIntentClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/ProtectionIntent_Validate.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/ProtectionIntent_Validate.json
 func ExampleProtectionIntentClient_Validate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

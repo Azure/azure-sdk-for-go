@@ -230,7 +230,7 @@ func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 	}
 	resp, err := f.generatedFileClientWithDFS().Delete(ctx, deleteOpts)
 	err = exported.ConvertToDFSError(err)
-	return resp, err
+	return path.FormatDeleteResponse(resp), err
 }
 
 // GetProperties gets the properties of a file.

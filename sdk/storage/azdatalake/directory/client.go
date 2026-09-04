@@ -303,7 +303,7 @@ func (d *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 		resp, err := d.generatedDirClientWithDFS().Delete(ctx, deleteOpts)
 		if resp.Continuation == nil || err != nil {
 			err = exported.ConvertToDFSError(err)
-			return resp, err
+			return path.FormatDeleteResponse(resp), err
 		}
 		deleteOpts.Continuation = resp.Continuation
 	}

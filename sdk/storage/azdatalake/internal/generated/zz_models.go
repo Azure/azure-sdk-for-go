@@ -153,7 +153,7 @@ type PathPrefix struct {
 // PathPropertiesInternal - Properties of a blob.
 type PathPropertiesInternal struct {
 	// REQUIRED; The entity tag.
-	Etag *string `xml:"Etag"`
+	ETag *azcore.ETag `xml:"Etag"`
 
 	// REQUIRED; The last modified time.
 	LastModified *time.Time `xml:"Last-Modified"`

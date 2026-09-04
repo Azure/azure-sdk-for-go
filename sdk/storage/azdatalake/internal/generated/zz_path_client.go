@@ -126,7 +126,11 @@ func (client *PathClient) appendDataHandleResponse(resp *http.Response, successC
 		result.ContentCRC64 = contentCRC64
 	}
 	if val := resp.Header.Get("Content-Md5"); val != "" {
-		result.ContentMD5 = &val
+		contentMD5, err := base64.StdEncoding.DecodeString(val)
+		if err != nil {
+			return PathClientAppendDataResponse{}, err
+		}
+		result.ContentMD5 = contentMD5
 	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
@@ -362,15 +366,15 @@ func (client *PathClient) createHandleResponse(resp *http.Response, successCodes
 // Conditional Headers for Blob Service Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - options - PathClientDeleteOptions contains the optional parameters for the PathClient.Delete method.
-func (client *PathClient) Delete(ctx context.Context, options *PathClientDeleteOptions) (PathClientDeleteResponse, error) {
+func (client *PathClient) Delete(ctx context.Context, options *PathClientDeleteOptions) (PathClientDeleteResponseInternal, error) {
 	var err error
 	req, err := client.deleteCreateRequest(ctx, options)
 	if err != nil {
-		return PathClientDeleteResponse{}, err
+		return PathClientDeleteResponseInternal{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return PathClientDeleteResponse{}, err
+		return PathClientDeleteResponseInternal{}, err
 	}
 	return client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
@@ -418,8 +422,8 @@ func (client *PathClient) deleteCreateRequest(ctx context.Context, options *Path
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *PathClient) deleteHandleResponse(resp *http.Response, successCodes ...int) (PathClientDeleteResponse, error) {
-	result := PathClientDeleteResponse{}
+func (client *PathClient) deleteHandleResponse(resp *http.Response, successCodes ...int) (PathClientDeleteResponseInternal, error) {
+	result := PathClientDeleteResponseInternal{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
@@ -432,7 +436,7 @@ func (client *PathClient) deleteHandleResponse(resp *http.Response, successCodes
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return PathClientDeleteResponse{}, err
+			return PathClientDeleteResponseInternal{}, err
 		}
 		result.Date = &date
 	}

@@ -248,12 +248,14 @@ func (o *FlushDataOptions) format(offset int64) (*generated.PathClientFlushDataO
 		flushDataOpts.IfModifiedSince = modifiedAccessConditions.IfModifiedSince
 		flushDataOpts.IfUnmodifiedSince = modifiedAccessConditions.IfUnmodifiedSince
 	}
+	// TODO: ContentLanguage https://github.com/Azure/azure-sdk-for-go/issues/27522
 	if o.HTTPHeaders != nil {
 		flushDataOpts.ContentMD5 = o.HTTPHeaders.ContentMD5
 		flushDataOpts.ContentType = o.HTTPHeaders.ContentType
 		flushDataOpts.CacheControl = o.HTTPHeaders.CacheControl
 		flushDataOpts.ContentDisposition = o.HTTPHeaders.ContentDisposition
 		flushDataOpts.ContentEncoding = o.HTTPHeaders.ContentEncoding
+		// flushDataOpts.ContentLanguage = o.HTTPHeaders.ContentLanguage
 	}
 	if o.CPKInfo != nil {
 		flushDataOpts.EncryptionKey = o.CPKInfo.EncryptionKey

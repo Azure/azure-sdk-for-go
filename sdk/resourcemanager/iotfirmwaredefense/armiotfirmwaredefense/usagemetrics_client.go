@@ -19,7 +19,7 @@ import (
 // UsageMetricsClient contains the methods for the UsageMetrics group.
 // Don't use this type directly, use NewUsageMetricsClient() instead.
 //
-// Generated from API version 2025-08-02
+// Generated from API version 2026-06-01-preview
 type UsageMetricsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -91,7 +91,7 @@ func (client *UsageMetricsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250802)
+	reqQP.Set("api-version", version20260601Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -167,7 +167,7 @@ func (client *UsageMetricsClient) listByWorkspaceCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250802)
+		reqQP.Set("api-version", version20260601Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -9,6 +9,14 @@ import (
 	"crypto/md5"
 	"encoding/binary"
 	"fmt"
+	"hash/crc64"
+	"io"
+	"log"
+	"os"
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
@@ -17,13 +25,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
-	"hash/crc64"
-	"io"
-	"log"
-	"os"
-	"strconv"
-	"strings"
-	"time"
 )
 
 func handleError(err error) {

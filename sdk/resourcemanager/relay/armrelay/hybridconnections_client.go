@@ -19,7 +19,7 @@ import (
 // HybridConnectionsClient contains the methods for the HybridConnections group.
 // Don't use this type directly, use NewHybridConnectionsClient() instead.
 //
-// Generated from API version 2024-01-01
+// Generated from API version 2026-07-01-preview
 type HybridConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -93,7 +93,7 @@ func (client *HybridConnectionsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240101)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -169,7 +169,7 @@ func (client *HybridConnectionsClient) createOrUpdateAuthorizationRuleCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240101)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -242,7 +242,7 @@ func (client *HybridConnectionsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240101)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -303,7 +303,7 @@ func (client *HybridConnectionsClient) deleteAuthorizationRuleCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240101)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -355,7 +355,7 @@ func (client *HybridConnectionsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240101)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -426,7 +426,7 @@ func (client *HybridConnectionsClient) getAuthorizationRuleCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240101)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -507,7 +507,7 @@ func (client *HybridConnectionsClient) listAuthorizationRulesCreateRequest(ctx c
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20240101)
+		reqQP.Set("api-version", version20260701Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -584,7 +584,7 @@ func (client *HybridConnectionsClient) listByNamespaceCreateRequest(ctx context.
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20240101)
+		reqQP.Set("api-version", version20260701Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -656,7 +656,7 @@ func (client *HybridConnectionsClient) listKeysCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240101)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -728,7 +728,7 @@ func (client *HybridConnectionsClient) regenerateKeysCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240101)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

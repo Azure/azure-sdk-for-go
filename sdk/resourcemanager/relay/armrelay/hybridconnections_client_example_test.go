@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-01-01/HybridConnection/RelayHybridConnectionCreate.json
+// Generated from example definition: 2026-07-01-preview/HybridConnection/RelayHybridConnectionCreate.json
 func ExampleHybridConnectionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleHybridConnectionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleCreate.json
+// Generated from example definition: 2026-07-01-preview/HybridConnection/RelayHybridConnectionAuthorizationRuleCreate.json
 func ExampleHybridConnectionsClient_CreateOrUpdateAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleHybridConnectionsClient_CreateOrUpdateAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/HybridConnection/RelayHybridconnectionDelete.json
+// Generated from example definition: 2026-07-01-preview/HybridConnection/RelayHybridconnectionDelete.json
 func ExampleHybridConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleHybridConnectionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleDelete.json
+// Generated from example definition: 2026-07-01-preview/HybridConnection/RelayHybridConnectionAuthorizationRuleDelete.json
 func ExampleHybridConnectionsClient_DeleteAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleHybridConnectionsClient_DeleteAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/HybridConnection/RelayHybridConnectionGet.json
+// Generated from example definition: 2026-07-01-preview/HybridConnection/RelayHybridConnectionGet.json
 func ExampleHybridConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleHybridConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleGet.json
+// Generated from example definition: 2026-07-01-preview/HybridConnection/RelayHybridConnectionAuthorizationRuleGet.json
 func ExampleHybridConnectionsClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,7 +198,7 @@ func ExampleHybridConnectionsClient_GetAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleListAll.json
+// Generated from example definition: 2026-07-01-preview/HybridConnection/RelayHybridConnectionAuthorizationRuleListAll.json
 func ExampleHybridConnectionsClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,7 +240,7 @@ func ExampleHybridConnectionsClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: 2024-01-01/HybridConnection/RelayHybridConnectionListAll.json
+// Generated from example definition: 2026-07-01-preview/HybridConnection/RelayHybridConnectionListAll.json
 func ExampleHybridConnectionsClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,7 +283,7 @@ func ExampleHybridConnectionsClient_NewListByNamespacePager() {
 	}
 }
 
-// Generated from example definition: 2024-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleListKey.json
+// Generated from example definition: 2026-07-01-preview/HybridConnection/RelayHybridConnectionAuthorizationRuleListKey.json
 func ExampleHybridConnectionsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -312,7 +312,7 @@ func ExampleHybridConnectionsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleRegenerateKey.json
+// Generated from example definition: 2026-07-01-preview/HybridConnection/RelayHybridConnectionAuthorizationRuleRegenerateKey.json
 func ExampleHybridConnectionsClient_RegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

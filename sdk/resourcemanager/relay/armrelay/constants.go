@@ -5,7 +5,7 @@
 package armrelay
 
 const (
-	version20240101 string = "2024-01-01"
+	version20260701Preview string = "2026-07-01-preview"
 )
 
 type AccessRights string
@@ -37,6 +37,81 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// ClusterProvisioningState - Provisioning state of a Relay cluster.
+type ClusterProvisioningState string
+
+const (
+	// ClusterProvisioningStateCanceled - Resource creation was canceled.
+	ClusterProvisioningStateCanceled ClusterProvisioningState = "Canceled"
+	// ClusterProvisioningStateCreating - The cluster is being created.
+	ClusterProvisioningStateCreating ClusterProvisioningState = "Creating"
+	// ClusterProvisioningStateDeleting - The cluster is being deleted.
+	ClusterProvisioningStateDeleting ClusterProvisioningState = "Deleting"
+	// ClusterProvisioningStateFailed - Resource creation failed.
+	ClusterProvisioningStateFailed ClusterProvisioningState = "Failed"
+	// ClusterProvisioningStateScaling - The cluster is being scaled.
+	ClusterProvisioningStateScaling ClusterProvisioningState = "Scaling"
+	// ClusterProvisioningStateSucceeded - Resource has been created.
+	ClusterProvisioningStateSucceeded ClusterProvisioningState = "Succeeded"
+)
+
+// PossibleClusterProvisioningStateValues returns the possible values for the ClusterProvisioningState const type.
+func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
+	return []ClusterProvisioningState{
+		ClusterProvisioningStateCanceled,
+		ClusterProvisioningStateCreating,
+		ClusterProvisioningStateDeleting,
+		ClusterProvisioningStateFailed,
+		ClusterProvisioningStateScaling,
+		ClusterProvisioningStateSucceeded,
+	}
+}
+
+// ClusterSKUName - Name of the Relay cluster SKU.
+type ClusterSKUName string
+
+const (
+	// ClusterSKUNameDedicated - The dedicated Relay cluster SKU.
+	ClusterSKUNameDedicated ClusterSKUName = "Dedicated"
+)
+
+// PossibleClusterSKUNameValues returns the possible values for the ClusterSKUName const type.
+func PossibleClusterSKUNameValues() []ClusterSKUName {
+	return []ClusterSKUName{
+		ClusterSKUNameDedicated,
+	}
+}
+
+// ClusterSKUScaleType - Scaling mode supported by a Relay cluster SKU.
+type ClusterSKUScaleType string
+
+const (
+	// ClusterSKUScaleTypeAutomatic - Capacity can be scaled automatically.
+	ClusterSKUScaleTypeAutomatic ClusterSKUScaleType = "Automatic"
+)
+
+// PossibleClusterSKUScaleTypeValues returns the possible values for the ClusterSKUScaleType const type.
+func PossibleClusterSKUScaleTypeValues() []ClusterSKUScaleType {
+	return []ClusterSKUScaleType{
+		ClusterSKUScaleTypeAutomatic,
+	}
+}
+
+// ClusterSKUTier - Tier of the Relay cluster SKU.
+type ClusterSKUTier string
+
+const (
+	// ClusterSKUTierDedicated - The dedicated Relay cluster SKU tier.
+	ClusterSKUTierDedicated ClusterSKUTier = "Dedicated"
+)
+
+// PossibleClusterSKUTierValues returns the possible values for the ClusterSKUTier const type.
+func PossibleClusterSKUTierValues() []ClusterSKUTier {
+	return []ClusterSKUTier{
+		ClusterSKUTierDedicated,
 	}
 }
 
@@ -235,6 +310,24 @@ const (
 func PossibleSKUTierValues() []SKUTier {
 	return []SKUTier{
 		SKUTierStandard,
+	}
+}
+
+// TLSVersion - TLS versions supported by Relay namespaces.
+type TLSVersion string
+
+const (
+	// TLSVersion12 - TLS version 1.2.
+	TLSVersion12 TLSVersion = "1.2"
+	// TLSVersion13 - TLS version 1.3.
+	TLSVersion13 TLSVersion = "1.3"
+)
+
+// PossibleTLSVersionValues returns the possible values for the TLSVersion const type.
+func PossibleTLSVersionValues() []TLSVersion {
+	return []TLSVersion{
+		TLSVersion12,
+		TLSVersion13,
 	}
 }
 

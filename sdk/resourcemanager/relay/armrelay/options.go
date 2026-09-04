@@ -4,6 +4,56 @@
 
 package armrelay
 
+// ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate method.
+type ClustersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
+type ClustersClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ClustersClientGetOptions contains the optional parameters for the ClustersClient.Get method.
+type ClustersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClustersClientListAvailableClusterRegionOptions contains the optional parameters for the ClustersClient.ListAvailableClusterRegion
+// method.
+type ClustersClientListAvailableClusterRegionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.NewListByResourceGroupPager
+// method.
+type ClustersClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClustersClientListBySubscriptionOptions contains the optional parameters for the ClustersClient.NewListBySubscriptionPager
+// method.
+type ClustersClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClustersClientListNamespacesOptions contains the optional parameters for the ClustersClient.ListNamespaces method.
+type ClustersClientListNamespacesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClustersClientListSKUsOptions contains the optional parameters for the ClustersClient.ListSKUs method.
+type ClustersClientListSKUsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClustersClientUpdateOptions contains the optional parameters for the ClustersClient.Update method.
+type ClustersClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // HybridConnectionsClientCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the HybridConnectionsClient.CreateOrUpdateAuthorizationRule
 // method.
 type HybridConnectionsClientCreateOrUpdateAuthorizationRuleOptions struct {

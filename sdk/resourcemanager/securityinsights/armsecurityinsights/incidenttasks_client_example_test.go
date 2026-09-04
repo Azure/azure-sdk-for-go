@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentTasks/IncidentTasks_CreateOrUpdate.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentTasks/IncidentTasks_CreateOrUpdate.json
 func ExampleIncidentTasksClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleIncidentTasksClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentTasks/IncidentTasks_Delete.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentTasks/IncidentTasks_Delete.json
 func ExampleIncidentTasksClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleIncidentTasksClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentTasks/IncidentTasks_Get.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentTasks/IncidentTasks_Get.json
 func ExampleIncidentTasksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExampleIncidentTasksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentTasks/IncidentTasks_List.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentTasks/IncidentTasks_List.json
 func ExampleIncidentTasksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

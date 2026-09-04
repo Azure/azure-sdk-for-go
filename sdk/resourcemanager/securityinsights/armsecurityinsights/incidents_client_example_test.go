@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-07-01-preview/incidents/Incidents_CreateOrUpdate.json
+// Generated from example definition: 2025-10-01-preview/incidents/Incidents_CreateOrUpdate.json
 func ExampleIncidentsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleIncidentsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/Incidents_Delete.json
+// Generated from example definition: 2025-10-01-preview/incidents/Incidents_Delete.json
 func ExampleIncidentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleIncidentsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/Incidents_Get.json
+// Generated from example definition: 2025-10-01-preview/incidents/Incidents_Get.json
 func ExampleIncidentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +199,7 @@ func ExampleIncidentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/Incidents_List.json
+// Generated from example definition: 2025-10-01-preview/incidents/Incidents_List.json
 func ExampleIncidentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -284,7 +284,7 @@ func ExampleIncidentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentAlerts/Incidents_ListAlerts.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentAlerts/Incidents_ListAlerts.json
 func ExampleIncidentsClient_ListAlerts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -344,7 +344,7 @@ func ExampleIncidentsClient_ListAlerts() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentBookmarks/Incidents_ListBookmarks.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentBookmarks/Incidents_ListBookmarks.json
 func ExampleIncidentsClient_ListBookmarks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -401,7 +401,7 @@ func ExampleIncidentsClient_ListBookmarks() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentEntities/Incidents_ListEntities.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentEntities/Incidents_ListEntities.json
 func ExampleIncidentsClient_ListEntities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -444,7 +444,7 @@ func ExampleIncidentsClient_ListEntities() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/manualTrigger/Incidents_RunPlaybook.json
+// Generated from example definition: 2025-10-01-preview/manualTrigger/Incidents_RunPlaybook.json
 func ExampleIncidentsClient_RunPlaybook() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

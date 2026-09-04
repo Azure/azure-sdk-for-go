@@ -20,7 +20,7 @@ import (
 // WorkspaceManagerAssignmentJobsClient contains the methods for the WorkspaceManagerAssignmentJobs group.
 // Don't use this type directly, use NewWorkspaceManagerAssignmentJobsClient() instead.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-10-01-preview
 type WorkspaceManagerAssignmentJobsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -93,7 +93,7 @@ func (client *WorkspaceManagerAssignmentJobsClient) createCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -167,7 +167,7 @@ func (client *WorkspaceManagerAssignmentJobsClient) deleteCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -225,7 +225,7 @@ func (client *WorkspaceManagerAssignmentJobsClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -315,7 +315,7 @@ func (client *WorkspaceManagerAssignmentJobsClient) listCreateRequest(ctx contex
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20250701Preview)
+		reqQP.Set("api-version", version20251001Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

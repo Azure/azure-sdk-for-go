@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/sourcecontrols/CreateSourceControl.json
+// Generated from example definition: 2025-10-01-preview/sourcecontrols/CreateSourceControl.json
 func ExampleSourceControlsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleSourceControlsClient_Create() {
 	// 				Message: to.Ptr("Successful deployment"),
 	// 			},
 	// 			PullRequest: &armsecurityinsights.PullRequest{
-	// 				State: to.Ptr(armsecurityinsights.State("Open")),
+	// 				State: to.Ptr(armsecurityinsights.PullRequestStateOpen),
 	// 				URL: to.Ptr("https://github.com/user/repo/pull/123"),
 	// 			},
 	// 			RepoType: to.Ptr(armsecurityinsights.RepoTypeGithub),
@@ -123,7 +123,7 @@ func ExampleSourceControlsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/sourcecontrols/DeleteSourceControl.json
+// Generated from example definition: 2025-10-01-preview/sourcecontrols/DeleteSourceControl.json
 func ExampleSourceControlsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +160,7 @@ func ExampleSourceControlsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/sourcecontrols/GetSourceControlById.json
+// Generated from example definition: 2025-10-01-preview/sourcecontrols/GetSourceControlById.json
 func ExampleSourceControlsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -204,7 +204,7 @@ func ExampleSourceControlsClient_Get() {
 	// 				Message: to.Ptr("Successful deployment"),
 	// 			},
 	// 			PullRequest: &armsecurityinsights.PullRequest{
-	// 				State: to.Ptr(armsecurityinsights.State("Open")),
+	// 				State: to.Ptr(armsecurityinsights.PullRequestStateOpen),
 	// 				URL: to.Ptr("https://github.com/user/repo/pull/123"),
 	// 			},
 	// 			RepoType: to.Ptr(armsecurityinsights.RepoTypeGithub),
@@ -249,7 +249,7 @@ func ExampleSourceControlsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/sourcecontrols/GetSourceControls.json
+// Generated from example definition: 2025-10-01-preview/sourcecontrols/GetSourceControls.json
 func ExampleSourceControlsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -299,7 +299,7 @@ func ExampleSourceControlsClient_NewListPager() {
 		// 						Message: to.Ptr("Successful deployment"),
 		// 					},
 		// 					PullRequest: &armsecurityinsights.PullRequest{
-		// 						State: to.Ptr(armsecurityinsights.State("Open")),
+		// 						State: to.Ptr(armsecurityinsights.PullRequestStateOpen),
 		// 						URL: to.Ptr("https://github.com/user/repo/pull/123"),
 		// 					},
 		// 					RepoType: to.Ptr(armsecurityinsights.RepoTypeGithub),

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/contentPackages/GetPackageById.json
+// Generated from example definition: 2025-10-01-preview/contentPackages/GetPackageById.json
 func ExampleContentPackagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleContentPackagesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/contentPackages/GetPackages.json
+// Generated from example definition: 2025-10-01-preview/contentPackages/GetPackages.json
 func ExampleContentPackagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

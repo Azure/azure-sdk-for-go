@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -135,7 +135,7 @@ func (s *ScenarioConfigurationsServerTransport) dispatchBeginCreateOrUpdate(req 
 	}
 	beginCreateOrUpdate := s.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scenarios/(?P<scenarioName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<scenarioConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scenarios/(?P<scenarioName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations/(?P<scenarioConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -191,7 +191,7 @@ func (s *ScenarioConfigurationsServerTransport) dispatchBeginDelete(req *http.Re
 	}
 	beginDelete := s.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scenarios/(?P<scenarioName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<scenarioConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scenarios/(?P<scenarioName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations/(?P<scenarioConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -243,7 +243,7 @@ func (s *ScenarioConfigurationsServerTransport) dispatchBeginExecute(req *http.R
 	}
 	beginExecute := s.beginExecute.get(req)
 	if beginExecute == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scenarios/(?P<scenarioName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<scenarioConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/execute`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scenarios/(?P<scenarioName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations/(?P<scenarioConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/execute`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -295,7 +295,7 @@ func (s *ScenarioConfigurationsServerTransport) dispatchBeginFixResourcePermissi
 	}
 	beginFixResourcePermissions := s.beginFixResourcePermissions.get(req)
 	if beginFixResourcePermissions == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scenarios/(?P<scenarioName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<scenarioConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fixResourcePermissions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scenarios/(?P<scenarioName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations/(?P<scenarioConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fixResourcePermissions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -355,7 +355,7 @@ func (s *ScenarioConfigurationsServerTransport) dispatchGet(req *http.Request) (
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scenarios/(?P<scenarioName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<scenarioConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scenarios/(?P<scenarioName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations/(?P<scenarioConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -398,7 +398,7 @@ func (s *ScenarioConfigurationsServerTransport) dispatchNewListAllPager(req *htt
 	}
 	newListAllPager := s.newListAllPager.get(req)
 	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scenarios/(?P<scenarioName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scenarios/(?P<scenarioName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -443,7 +443,7 @@ func (s *ScenarioConfigurationsServerTransport) dispatchBeginValidate(req *http.
 	}
 	beginValidate := s.beginValidate.get(req)
 	if beginValidate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scenarios/(?P<scenarioName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<scenarioConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/scenarios/(?P<scenarioName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations/(?P<scenarioConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {

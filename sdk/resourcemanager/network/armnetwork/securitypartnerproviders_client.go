@@ -30,6 +30,9 @@ type SecurityPartnerProvidersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSecurityPartnerProvidersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecurityPartnerProvidersClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -91,7 +94,7 @@ func (client *SecurityPartnerProvidersClient) createOrUpdate(ctx context.Context
 func (client *SecurityPartnerProvidersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, parameters SecurityPartnerProvider, _ *SecurityPartnerProvidersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/securityPartnerProviders/{securityPartnerProviderName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -166,7 +169,7 @@ func (client *SecurityPartnerProvidersClient) deleteOperation(ctx context.Contex
 func (client *SecurityPartnerProvidersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, _ *SecurityPartnerProvidersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/securityPartnerProviders/{securityPartnerProviderName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -214,7 +217,7 @@ func (client *SecurityPartnerProvidersClient) Get(ctx context.Context, resourceG
 func (client *SecurityPartnerProvidersClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, _ *SecurityPartnerProvidersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/securityPartnerProviders/{securityPartnerProviderName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -284,7 +287,7 @@ func (client *SecurityPartnerProvidersClient) listCreateRequest(ctx context.Cont
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/securityPartnerProviders"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -352,7 +355,7 @@ func (client *SecurityPartnerProvidersClient) listByResourceGroupCreateRequest(c
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/securityPartnerProviders"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -415,7 +418,7 @@ func (client *SecurityPartnerProvidersClient) UpdateTags(ctx context.Context, re
 func (client *SecurityPartnerProvidersClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, parameters TagsObject, _ *SecurityPartnerProvidersClientUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/securityPartnerProviders/{securityPartnerProviderName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

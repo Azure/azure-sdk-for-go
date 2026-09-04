@@ -30,6 +30,9 @@ type RegisteredServersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRegisteredServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegisteredServersClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -93,7 +96,7 @@ func (client *RegisteredServersClient) create(ctx context.Context, resourceGroup
 func (client *RegisteredServersClient) createCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters RegisteredServerCreateParameters, _ *RegisteredServersClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -173,7 +176,7 @@ func (client *RegisteredServersClient) deleteOperation(ctx context.Context, reso
 func (client *RegisteredServersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, _ *RegisteredServersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -225,7 +228,7 @@ func (client *RegisteredServersClient) Get(ctx context.Context, resourceGroupNam
 func (client *RegisteredServersClient) getCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, _ *RegisteredServersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -307,7 +310,7 @@ func (client *RegisteredServersClient) listByStorageSyncServiceCreateRequest(ctx
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -403,7 +406,7 @@ func (client *RegisteredServersClient) triggerRollover(ctx context.Context, reso
 func (client *RegisteredServersClient) triggerRolloverCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters TriggerRolloverRequest, _ *RegisteredServersClientBeginTriggerRolloverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}/triggerRollover"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -484,7 +487,7 @@ func (client *RegisteredServersClient) update(ctx context.Context, resourceGroup
 func (client *RegisteredServersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters RegisteredServerUpdateParameters, _ *RegisteredServersClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

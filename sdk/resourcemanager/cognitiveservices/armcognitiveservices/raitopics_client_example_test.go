@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/PutRaiTopic.json
+// Generated from example definition: 2026-07-15-preview/PutRaiTopic.json
 func ExampleRaiTopicsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,8 +42,8 @@ func ExampleRaiTopicsClient_CreateOrUpdate() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/raiTopics/raiTopicName"),
 	// 		Properties: &armcognitiveservices.RaiTopicProperties{
 	// 			Description: to.Ptr("This is a sample topic."),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T00:00:00Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-02T00:00:00Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.July, 2, 0, 0, 0, 0, time.UTC)),
 	// 			SampleBlobURL: to.Ptr("https://example.blob.core.windows.net/sampleblob"),
 	// 			Status: to.Ptr("Training"),
 	// 			TopicID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -53,7 +53,7 @@ func ExampleRaiTopicsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/DeleteRaiTopic.json
+// Generated from example definition: 2026-07-15-preview/DeleteRaiTopic.json
 func ExampleRaiTopicsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleRaiTopicsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/GetRaiTopic.json
+// Generated from example definition: 2026-07-15-preview/GetRaiTopic.json
 func ExampleRaiTopicsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,8 +98,8 @@ func ExampleRaiTopicsClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/raiTopics/raiTopicName"),
 	// 		Properties: &armcognitiveservices.RaiTopicProperties{
 	// 			Description: to.Ptr("This is a sample topic."),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T00:00:00Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-02T00:00:00Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.July, 2, 0, 0, 0, 0, time.UTC)),
 	// 			SampleBlobURL: to.Ptr("https://example.blob.core.windows.net/sampleblob"),
 	// 			Status: to.Ptr("Succeeded"),
 	// 			TopicID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -109,7 +109,7 @@ func ExampleRaiTopicsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ListRaiTopics.json
+// Generated from example definition: 2026-07-15-preview/ListRaiTopics.json
 func ExampleRaiTopicsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,8 +139,8 @@ func ExampleRaiTopicsClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/raiTopics/raiTopicName"),
 		// 				Properties: &armcognitiveservices.RaiTopicProperties{
 		// 					Description: to.Ptr("This is a sample topic."),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T00:00:00Z"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-02T00:00:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.July, 2, 0, 0, 0, 0, time.UTC)),
 		// 					SampleBlobURL: to.Ptr("https://example.blob.core.windows.net/sampleblob"),
 		// 					Status: to.Ptr("Succeeded"),
 		// 					TopicID: to.Ptr("00000000-0000-0000-0000-000000000000"),

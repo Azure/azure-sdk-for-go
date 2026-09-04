@@ -185,12 +185,32 @@ type AgentPoolListResult struct {
 	NextLink *string
 }
 
+// AgentPoolNICPublicIPAddressConfiguration - Public IP configuration applied to a secondary NIC on an agent pool. `ipTags`
+// and `publicIPPrefixID` are mutually exclusive, matching the primary NIC's behavior. For more information, see https://aka.ms/aks/multi-nic
+type AgentPoolNICPublicIPAddressConfiguration struct {
+	// REQUIRED; IP version of the public IP provisioned for this NIC. Required: its presence is what enables public IP provisioning,
+	// so an empty configuration allocates nothing. `IPv4` is the only accepted value.
+	PublicIPAddressVersion *AgentPoolNICPublicIPAddressVersion
+
+	// IP tags to attach to the public IP allocated for this NIC. Each tag's `ipTagType` must be `FirstPartyUsage`, `NetworkDomain`,
+	// or `RoutingPreference`. Mutually exclusive with `publicIPPrefixID`.
+	IPTags []*IPTag
+
+	// The resource ID of a public IP prefix to draw this NIC's public IP from. Mutually exclusive with `ipTags`.
+	PublicIPPrefixID *string
+}
+
 // AgentPoolNetworkInterface - Configuration of a secondary network interface provisioned on each VM instance in the agent
 // pool. For more information, see https://aka.ms/aks/multi-nic
 type AgentPoolNetworkInterface struct {
 	// Whether accelerated networking is enabled on this secondary NIC. If omitted, this defaults to true only when the agent
 	// pool VM SKU supports accelerated networking. Validation will fail if it is enabled on an unsupported SKU or NIC configuration.
 	EnableAcceleratedNetworking *bool
+
+	// Public IP configuration for this secondary NIC. Only valid when `type` is `Standard`. Set `publicIPAddressVersion` to provision
+	// a per-VM instance-level public IP for the NIC, then optionally shape it with `ipTags` or `publicIPPrefixID`. If omitted,
+	// no public IP is provisioned. Idle timeout is not configurable. For more information, see https://aka.ms/aks/multi-nic
+	PublicIPAddressConfiguration *AgentPoolNICPublicIPAddressConfiguration
 
 	// Type of NIC to be provisioned on the VM.
 	Type *AgentPoolNetworkInterfaceType
@@ -207,6 +227,9 @@ type AgentPoolNetworkProfile struct {
 
 	// The IDs of the application security groups which agent pool will associate when created.
 	ApplicationSecurityGroups []*string
+
+	// DRANET settings of an agent pool.
+	Dranet *DRANETProfile
 
 	// The resource IDs of public IP prefixes for node public IPs. At most one IPv4 and one IPv6 prefix may be specified. Order
 	// does not matter; the RP determines IP version from the referenced resource's publicIPAddressVersion. Requires enableNodePublicIP
@@ -257,6 +280,42 @@ type AgentPoolStatus struct {
 	// READ-ONLY; The error detail information of the agent pool. Preserves the detailed info of failure. If there was no error,
 	// this field is omitted.
 	ProvisioningError *ErrorDetail
+}
+
+// AgentPoolUpdate - Agent pool.
+type AgentPoolUpdate struct {
+	// Properties for the agent pool.
+	Properties *AgentPoolUpdateProperties
+}
+
+// AgentPoolUpdateManualScaleProfile - Specifications on number of machines.
+type AgentPoolUpdateManualScaleProfile struct {
+	// Number of nodes.
+	Count *int32
+
+	// VM size that AKS will use when creating and scaling e.g. 'Standard_E4s_v3', 'Standard_E16s_v3' or 'Standard_D16s_v5'.
+	Size *string
+}
+
+// AgentPoolUpdateProperties - Properties for the agent pool.
+type AgentPoolUpdateProperties struct {
+	// Number of agents (VMs) to host docker containers.
+	Count *int32
+
+	// Specifications on VirtualMachines agent pool.
+	VirtualMachinesProfile *AgentPoolUpdateVirtualMachinesProfile
+}
+
+// AgentPoolUpdateScaleProfile - Specifications on how to scale a VirtualMachines agent pool.
+type AgentPoolUpdateScaleProfile struct {
+	// Specifications on how to scale the VirtualMachines agent pool to a fixed size.
+	Manual []*AgentPoolUpdateManualScaleProfile
+}
+
+// AgentPoolUpdateVirtualMachinesProfile - Specifications on VirtualMachines agent pool.
+type AgentPoolUpdateVirtualMachinesProfile struct {
+	// Specifications on how to scale a VirtualMachines agent pool.
+	Scale *AgentPoolUpdateScaleProfile
 }
 
 // AgentPoolUpgradeProfile - The list of available upgrades for an agent pool.
@@ -552,6 +611,20 @@ type BootstrapTokenInfo struct {
 	Token *string
 }
 
+// CapacityReservation - The Capacity Reservation to provide virtual machines from a reserved group of Machines
+type CapacityReservation struct {
+	// The Capacity Reservation Group to provide virtual machines from a reserved group of Machines
+	CapacityReservationGroup *CapacityReservationGroup
+}
+
+// CapacityReservationGroup - The Capacity Reservation Group to provide virtual machines from a reserved group of Machines
+type CapacityReservationGroup struct {
+	// The fully qualified resource ID of the Capacity Reservation Group to provide virtual machines from a reserved group of
+	// Machines. This is of the form: '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Compute/capacityreservationgroups/{capacityReservationGroupName}'
+	// Customers use it to create a Machine with a specified CRG. For more information see [Capacity Reservation](aka.ms/CapacityReservation)
+	ID *string
+}
+
 // ClusterUpgradeSettings - Settings for upgrading a cluster.
 type ClusterUpgradeSettings struct {
 	// Settings for overrides.
@@ -629,6 +702,12 @@ type CredentialResult struct {
 type CredentialResults struct {
 	// READ-ONLY; Base64-encoded Kubernetes configuration file.
 	Kubeconfigs []*CredentialResult
+}
+
+// DRANETProfile - DRANET settings of an agent pool.
+type DRANETProfile struct {
+	// The DRANET mode for the agent pool.
+	Mode *DRANETMode
 }
 
 // DailySchedule - For schedules like: 'recur every day' or 'recur every 3 days'.
@@ -1034,6 +1113,18 @@ type JWTAuthenticatorProperties struct {
 	// REQUIRED; The JWT OIDC issuer details.
 	Issuer *JWTAuthenticatorIssuer
 
+	// PEM-encoded CA certificate bundle used to validate the connection when fetching discovery information. Use this for issuer
+	// endpoints that use private certificate authorities
+	// or environments where TLS inspection is performed.
+	// The bundle must contain only CERTIFICATE PEM blocks, up to 10 CA certificates, and must be no larger than 20 KB in total.
+	// Include all CA certificates needed to validate
+	// the issuer endpoint's TLS certificate. Certificate revocation checking is not supported.
+	// If provided, only these CAs are trusted instead of the well-known root CAs.
+	// If not provided and the managed cluster's properties.securityProfile.customCATrustCertificates is set, those certificates
+	// will be used instead. Otherwise, only the well-known
+	// root CAs are trusted.
+	CertificateAuthorityBundle *string
+
 	// The rules that are applied to validate token claims to authenticate users. All the expressions must evaluate to true for
 	// validation to succeed.
 	ClaimValidationRules []*JWTAuthenticatorValidationRule
@@ -1090,6 +1181,10 @@ type KubeletConfig struct {
 	// The maximum size (e.g. 10Mi) of container log file before it is rotated.
 	ContainerLogMaxSizeMB *int32
 
+	// Maximum grace period, in seconds, for pods to terminate during a soft eviction; caps the pod's terminationGracePeriodSeconds.
+	// Default is 60, applied when the cluster's `enableNodeHardening` property is true. Only applicable for Linux nodepools.
+	EvictionMaxPodGracePeriodInSeconds *int32
+
 	// If set to true it will make the Kubelet fail to start if swap is enabled on the node.
 	FailSwapOn *bool
 
@@ -1115,6 +1210,18 @@ type KubeletConfig struct {
 
 	// Specifies the default seccomp profile applied to all workloads. If not specified, 'Unconfined' will be used by default.
 	SeccompDefault *SeccompDefault
+
+	// Grace periods for soft eviction signals — how long a threshold must be held before pod eviction. Same defaulting and pairing
+	// rules as softEvictionThreshold. Values are Go-style duration strings (e.g. '1m30s'); supported units are 'ns', 'us', 'ms',
+	// 's', 'm', and 'h'. Only applicable for Linux nodepools.
+	SoftEvictionGracePeriod *SoftEvictionGracePeriod
+
+	// Soft eviction thresholds for kubelet. When crossed, pods are evicted after the paired softEvictionGracePeriod. System defaults
+	// apply when the cluster's `enableNodeHardening` property is true; otherwise no soft eviction is configured. For each signal
+	// (memoryAvailable, nodeFsAvailable, nodeFsInodesFree), the entries in softEvictionThreshold and softEvictionGracePeriod
+	// must be in the same state: both omitted (default), both non-empty (override), or both empty strings (opt that signal out).
+	// Only applicable for Linux nodepools. See https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#soft-eviction-thresholds.
+	SoftEvictionThreshold *SoftEvictionThreshold
 
 	// The Topology Manager policy to use. For more information see [Kubernetes Topology Manager](https://kubernetes.io/docs/tasks/administer-cluster/topology-manager).
 	// The default is 'none'. Allowed values are 'none', 'best-effort', 'restricted', and 'single-numa-node'.
@@ -1493,6 +1600,9 @@ type MachineOSProfileLinuxProfile struct {
 type MachineProperties struct {
 	// The properties having to do with machine billing.
 	Billing *MachineBillingProfile
+
+	// The Capacity Reservation Group to provide virtual machines from a reserved group of Machines
+	CapacityReservation *CapacityReservation
 
 	// The eviction policy for machine. This cannot be specified unless the priority is 'Spot'. If not specified, the default
 	// is 'Delete'.
@@ -2367,8 +2477,8 @@ type ManagedClusterAzureMonitorProfile struct {
 	// for an overview.
 	AppMonitoring *ManagedClusterAzureMonitorProfileAppMonitoring
 
-	// Azure Monitor Container Insights Profile for Kubernetes Events, Inventory and Container stdout & stderr logs etc. See aka.ms/AzureMonitorContainerInsights
-	// for an overview.
+	// Set this to enable and configure Azure Monitor Container Insights for the cluster, which collects Kubernetes events, inventory,
+	// and container stdout & stderr logs. See aka.ms/AzureMonitorContainerInsights for an overview.
 	ContainerInsights *ManagedClusterAzureMonitorProfileContainerInsights
 
 	// Metrics profile for the Azure Monitor managed service for Prometheus addon. Collect out-of-the-box Kubernetes infrastructure
@@ -2384,13 +2494,13 @@ type ManagedClusterAzureMonitorProfileAppMonitoring struct {
 	// for an overview.
 	AutoInstrumentation *ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation
 
-	// Application Monitoring Open Telemetry Logs and Traces Profile for AKS. Collects OpenTelemetry logs and traces of the application
+	// Application Monitoring OpenTelemetry logs and traces profile for AKS. Collects OpenTelemetry logs and traces of the application
 	// using Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring
 	// for an overview.
 	OpenTelemetryLogsAndTraces *ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces
 
-	// Application Monitoring Open Telemetry Metrics Profile for AKS. Collects OpenTelemetry metrics of the application using
-	// Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring
+	// Application Monitoring OpenTelemetry Metrics Profile for AKS. Collects OpenTelemetry metrics of the application using Azure
+	// Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring
 	// for an overview.
 	OpenTelemetryMetrics *ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics
 }
@@ -2403,49 +2513,45 @@ type ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation struct {
 	Enabled *bool
 }
 
-// ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces - Application Monitoring Open Telemetry Logs and
-// Traces Profile for AKS. Collects OpenTelemetry logs and traces of the application using Azure Monitor OpenTelemetry based
+// ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces - Application Monitoring OpenTelemetry logs and
+// traces profile for AKS. Collects OpenTelemetry logs and traces of the application using Azure Monitor OpenTelemetry based
 // SDKs. See https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
 type ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces struct {
-	// Indicates if Application Monitoring Open Telemetry Logs and traces is enabled or not.
+	// Indicates if Application Monitoring OpenTelemetry Logs and traces is enabled or not.
 	Enabled *bool
 
-	// The host port for Open Telemetry GRPC logs and traces. If not specified, the default port is 28332.
+	// The host port for OpenTelemetry GRPC logs and traces. If not specified, the default port is 28332.
 	GrpcPort *int64
 
-	// The host port for Open Telemetry HTTP/PROTOBUF logs and traces. If not specified, the default port is 28331.
+	// The host port for OpenTelemetry HTTP/PROTOBUF logs and traces. If not specified, the default port is 28331.
 	HTTPPort *int64
 }
 
-// ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics - Application Monitoring Open Telemetry Metrics Profile
+// ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics - Application Monitoring OpenTelemetry Metrics Profile
 // for AKS. Collects OpenTelemetry metrics of the application using Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs
 // and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
 type ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics struct {
-	// Indicates if Application Monitoring Open Telemetry Metrics is enabled or not.
+	// Indicates if Application Monitoring OpenTelemetry Metrics is enabled or not.
 	Enabled *bool
 
-	// The host port for Open Telemetry GRPC metrics. If not specified, the default port is 28334.
+	// The host port for OpenTelemetry GRPC metrics. If not specified, the default port is 28334.
 	GrpcPort *int64
 
-	// The host port for Open Telemetry HTTP/PROTOBUF metrics. If not specified, the default port is 28333.
+	// The host port for OpenTelemetry HTTP/PROTOBUF metrics. If not specified, the default port is 28333.
 	HTTPPort *int64
 }
 
-// ManagedClusterAzureMonitorProfileContainerInsights - Azure Monitor Container Insights Profile for Kubernetes Events, Inventory
-// and Container stdout & stderr logs etc. See aka.ms/AzureMonitorContainerInsights for an overview.
+// ManagedClusterAzureMonitorProfileContainerInsights - Azure Monitor Container Insights profile. Represents the configuration
+// for collecting Kubernetes events, inventory, and container stdout & stderr logs. See aka.ms/AzureMonitorContainerInsights
+// for an overview.
 type ManagedClusterAzureMonitorProfileContainerInsights struct {
-	// Configures container network logs ingestion with Azure Monitor. Which network logs to ingest is controlled by the CRD found
-	// in the following links. No network logs are ingested by default. More information on container network logs can be found
-	// at https://aka.ms/ContainerNetworkLogsDoc. More information on configuring container network log can be found at https://aka.ms/acns/howtoenablecnl.
-	// If not specified, the default is Disabled.
+	// Configures container network logs ingestion with Azure Monitor. The log types ingested are controlled by the associated
+	// CRD; if unspecified, defaults to `Disabled`. See https://aka.ms/ContainerNetworkLogsDoc and https://aka.ms/acns/howtoenablecnl
+	// for details.
 	ContainerNetworkLogs *ContainerNetworkLogs
 
-	// Indicates whether custom metrics collection has to be disabled or not. If not specified the default is false. No custom
-	// metrics will be emitted if this field is false but the container insights enabled field is false
-	DisableCustomMetrics *bool
-
-	// Indicates whether prometheus metrics scraping is disabled or not. If not specified the default is false. No prometheus
-	// metrics will be emitted if this field is false but the container insights enabled field is false
+	// Indicates whether prometheus metrics scraping is disabled or not. If not specified the default is false i.e. the prometheus
+	// scraping is enabled.
 	DisablePrometheusMetricsScraping *bool
 
 	// Indicates if Azure Monitor Container Insights Logs Addon is enabled or not.
@@ -2760,6 +2866,9 @@ type ManagedClusterNATGatewayProfile struct {
 	// Desired outbound IP resources for the managed NAT Gateway.
 	OutboundIPs *ManagedClusterNATGatewayProfileOutboundIPs
 
+	// The SKU of the managed cluster NAT Gateway. Defaults to 'StandardV2' where available in the region, otherwise 'Standard'.
+	SKU *ManagedClusterNATGatewaySKU
+
 	// READ-ONLY; The effective outbound IP resources of the cluster NAT gateway.
 	EffectiveOutboundIPs []*ResourceReference
 }
@@ -2971,6 +3080,12 @@ type ManagedClusterProperties struct {
 	// the managed cluster. See [https://aka.ms/NamespaceARMResource](https://aka.ms/NamespaceARMResource) for more details on
 	// Namespace as a ARM Resource.
 	EnableNamespaceResources *bool
+
+	// Whether to enable node hardening at the cluster level. When enabled, AKS applies hardened defaults for soft eviction thresholds,
+	// kube-reserved, and system-reserved on all Linux node pools in the cluster. Per-node-pool kubeletConfig settings take precedence
+	// over hardening defaults. On agent pools running Kubernetes 1.37 or later, node hardening is enabled by default and cannot
+	// be disabled; setting this field to false has no effect on those pools.
+	EnableNodeHardening *bool
 
 	// Whether to enable Kubernetes Role-Based Access Control.
 	EnableRBAC *bool
@@ -3930,6 +4045,10 @@ type NodeImageVersionsListResult struct {
 
 // NvidiaGPUProfile - NVIDIA-specific GPU settings
 type NvidiaGPUProfile struct {
+	// NVIDIA GPU resource allocation mode. DevicePlugin installs the NVIDIA
+	// Kubernetes device plugin. DRA installs the NVIDIA DRA driver.
+	DriverMode *NvidiaDriverMode
+
 	// The Managed GPU experience installs additional components, such as the Data Center GPU Manager (DCGM) metrics for monitoring,
 	// on top of the GPU driver for you. For more details of what is installed, check out aka.ms/aks/managed-gpu.
 	ManagementMode *ManagementMode
@@ -3974,8 +4093,14 @@ type OperationStatusResult struct {
 	// The start time of the operation.
 	StartTime *time.Time
 
+	// READ-ONLY; The type of the operation.
+	OperationType *string
+
 	// READ-ONLY; Fully qualified ID of the resource against which the original async operation was started.
 	ResourceID *string
+
+	// READ-ONLY; The type of the suboperation.
+	SubOperationType *string
 }
 
 // OperationStatusResultList - The operations list. It contains an URL link to get the next set of results.
@@ -4520,6 +4645,44 @@ type SnapshotProperties struct {
 
 	// READ-ONLY; The size of the VM.
 	VMSize *string
+}
+
+// SoftEvictionGracePeriod - Grace periods for kubelet soft eviction thresholds. Each field is a Go-style duration string
+// (e.g. '1m30s') that specifies how long the corresponding soft eviction signal must be crossed before pod eviction is triggered.
+// A grace period only applies when the matching soft eviction threshold is set.
+type SoftEvictionGracePeriod struct {
+	// The grace period for the memoryAvailable soft eviction signal, expressed as a Go-style duration string (e.g. '30s', '1m30s').
+	// Supported units are 'ns', 'us', 'ms', 's', 'm', and 'h'. Must be greater than or equal to '30s'. Default is '30s'.
+	MemoryAvailable *string
+
+	// The grace period for the nodeFsAvailable soft eviction signal, expressed as a Go-style duration string (e.g. '30s', '1m30s').
+	// Supported units are 'ns', 'us', 'ms', 's', 'm', and 'h'. Must be greater than or equal to '30s'. Default is '2m'.
+	NodeFsAvailable *string
+
+	// The grace period for the nodeFsInodesFree soft eviction signal, expressed as a Go-style duration string (e.g. '30s', '1m30s').
+	// Supported units are 'ns', 'us', 'ms', 's', 'm', and 'h'. Must be greater than or equal to '30s'. Default is '2m'.
+	NodeFsInodesFree *string
+}
+
+// SoftEvictionThreshold - Soft eviction thresholds for kubelet. These thresholds trigger graceful pod eviction when node
+// resources drop below the specified values for at least the corresponding grace period defined in softEvictionGracePeriod.
+// Supported formats are Ki, Mi, Gi, or percentages using %.
+type SoftEvictionThreshold struct {
+	// The threshold for available memory below which soft pod eviction is triggered. Accepts absolute values (e.g. '500Mi') or
+	// percentage values (e.g. '5%'). Absolute minimum is 100Mi; percentage minimum is 2%. Default uses a capacity-based step
+	// ladder: 500Mi for nodes with <=8GiB, 750Mi for 16GiB, and 1024Mi (1Gi) for >=32GiB. Must also be greater than the effective
+	// hardEvictionThreshold.memoryAvailable.
+	MemoryAvailable *string
+
+	// The threshold for available node filesystem space below which soft pod eviction is triggered. Accepts absolute values (e.g.
+	// '1Gi') or percentage values (e.g. '10%'). Default is '12%'. Must be greater than or equal to 10% and greater than the effective
+	// hardEvictionThreshold.nodeFsAvailable.
+	NodeFsAvailable *string
+
+	// The threshold for available inodes on the node filesystem below which soft pod eviction is triggered. Accepts absolute
+	// inode counts (e.g. '100000') or percentage values (e.g. '5%'). Default is '7%'. Percentage values must be greater than
+	// or equal to 5% and greater than the effective hardEvictionThreshold.nodeFsInodesFree.
+	NodeFsInodesFree *string
 }
 
 // SysctlConfig - Sysctl settings for Linux agent nodes.

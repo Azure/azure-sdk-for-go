@@ -19,7 +19,7 @@ import (
 // JWTAuthenticatorsClient contains the methods for the JWTAuthenticators group.
 // Don't use this type directly, use NewJWTAuthenticatorsClient() instead.
 //
-// Generated from API version 2026-05-02-preview
+// Generated from API version 2026-06-02-preview
 type JWTAuthenticatorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type JWTAuthenticatorsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewJWTAuthenticatorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JWTAuthenticatorsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -94,7 +97,7 @@ func (client *JWTAuthenticatorsClient) createOrUpdate(ctx context.Context, resou
 func (client *JWTAuthenticatorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, parameters JWTAuthenticator, _ *JWTAuthenticatorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/jwtAuthenticators/{jwtAuthenticatorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -114,7 +117,7 @@ func (client *JWTAuthenticatorsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -174,7 +177,7 @@ func (client *JWTAuthenticatorsClient) deleteOperation(ctx context.Context, reso
 func (client *JWTAuthenticatorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, _ *JWTAuthenticatorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/jwtAuthenticators/{jwtAuthenticatorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -194,7 +197,7 @@ func (client *JWTAuthenticatorsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -226,7 +229,7 @@ func (client *JWTAuthenticatorsClient) Get(ctx context.Context, resourceGroupNam
 func (client *JWTAuthenticatorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, _ *JWTAuthenticatorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/jwtAuthenticators/{jwtAuthenticatorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -246,7 +249,7 @@ func (client *JWTAuthenticatorsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -302,7 +305,7 @@ func (client *JWTAuthenticatorsClient) listByManagedClusterCreateRequest(ctx con
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/jwtAuthenticators"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -322,7 +325,7 @@ func (client *JWTAuthenticatorsClient) listByManagedClusterCreateRequest(ctx con
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260502Preview)
+		reqQP.Set("api-version", version20260602Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -104,7 +104,7 @@ func (s *ServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Respo
 	if s.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/slis/(?P<sliName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/slis/(?P<sliName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -141,7 +141,7 @@ func (s *ServerTransport) dispatchDelete(req *http.Request) (*http.Response, err
 	if s.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/slis/(?P<sliName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/slis/(?P<sliName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -174,7 +174,7 @@ func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error)
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/slis/(?P<sliName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/slis/(?P<sliName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -209,7 +209,7 @@ func (s *ServerTransport) dispatchNewListByParentPager(req *http.Request) (*http
 	}
 	newListByParentPager := s.newListByParentPager.get(req)
 	if newListByParentPager == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/slis`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/slis`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

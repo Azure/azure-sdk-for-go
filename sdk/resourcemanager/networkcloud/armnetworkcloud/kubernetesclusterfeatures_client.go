@@ -31,6 +31,9 @@ type KubernetesClusterFeaturesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewKubernetesClusterFeaturesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*KubernetesClusterFeaturesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -94,7 +97,7 @@ func (client *KubernetesClusterFeaturesClient) createOrUpdate(ctx context.Contex
 func (client *KubernetesClusterFeaturesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, featureName string, kubernetesClusterFeatureParameters KubernetesClusterFeature, options *KubernetesClusterFeaturesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/features/{featureName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -180,7 +183,7 @@ func (client *KubernetesClusterFeaturesClient) deleteOperation(ctx context.Conte
 func (client *KubernetesClusterFeaturesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, featureName string, options *KubernetesClusterFeaturesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/features/{featureName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -239,7 +242,7 @@ func (client *KubernetesClusterFeaturesClient) Get(ctx context.Context, resource
 func (client *KubernetesClusterFeaturesClient) getCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, featureName string, _ *KubernetesClusterFeaturesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/features/{featureName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -315,7 +318,7 @@ func (client *KubernetesClusterFeaturesClient) listByKubernetesClusterCreateRequ
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/features"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -411,7 +414,7 @@ func (client *KubernetesClusterFeaturesClient) update(ctx context.Context, resou
 func (client *KubernetesClusterFeaturesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, featureName string, kubernetesClusterFeatureUpdateParameters KubernetesClusterFeaturePatchParameters, options *KubernetesClusterFeaturesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/features/{featureName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

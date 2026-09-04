@@ -30,6 +30,9 @@ type ResourceAnchorsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewResourceAnchorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceAnchorsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -91,7 +94,7 @@ func (client *ResourceAnchorsClient) createOrUpdate(ctx context.Context, resourc
 func (client *ResourceAnchorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceAnchorName string, resource ResourceAnchor, _ *ResourceAnchorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/resourceAnchors/{resourceAnchorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -166,7 +169,7 @@ func (client *ResourceAnchorsClient) deleteOperation(ctx context.Context, resour
 func (client *ResourceAnchorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceAnchorName string, _ *ResourceAnchorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/resourceAnchors/{resourceAnchorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -213,7 +216,7 @@ func (client *ResourceAnchorsClient) Get(ctx context.Context, resourceGroupName 
 func (client *ResourceAnchorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceAnchorName string, _ *ResourceAnchorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/resourceAnchors/{resourceAnchorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -284,7 +287,7 @@ func (client *ResourceAnchorsClient) listByResourceGroupCreateRequest(ctx contex
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/resourceAnchors"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -355,7 +358,7 @@ func (client *ResourceAnchorsClient) listBySubscriptionCreateRequest(ctx context
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/resourceAnchors"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -436,7 +439,7 @@ func (client *ResourceAnchorsClient) update(ctx context.Context, resourceGroupNa
 func (client *ResourceAnchorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceAnchorName string, properties ResourceAnchorUpdate, _ *ResourceAnchorsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/resourceAnchors/{resourceAnchorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

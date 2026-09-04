@@ -305,7 +305,7 @@ func (m *ManagedClustersServerTransport) dispatchBeginAbortLatestOperation(req *
 	}
 	beginAbortLatestOperation := m.beginAbortLatestOperation.get(req)
 	if beginAbortLatestOperation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/abort`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/abort`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -349,7 +349,7 @@ func (m *ManagedClustersServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 	}
 	beginCreateOrUpdate := m.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -406,7 +406,7 @@ func (m *ManagedClustersServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	beginDelete := m.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -461,7 +461,7 @@ func (m *ManagedClustersServerTransport) dispatchGet(req *http.Request) (*http.R
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -494,7 +494,7 @@ func (m *ManagedClustersServerTransport) dispatchGetAccessProfile(req *http.Requ
 	if m.srv.GetAccessProfile == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAccessProfile not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/accessProfiles/(?P<roleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listCredential`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/accessProfiles/(?P<roleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listCredential`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -531,7 +531,7 @@ func (m *ManagedClustersServerTransport) dispatchGetCommandResult(req *http.Requ
 	if m.srv.GetCommandResult == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetCommandResult not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/commandResults/(?P<commandId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/commandResults/(?P<commandId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -571,7 +571,7 @@ func (m *ManagedClustersServerTransport) dispatchGetGuardrailsVersions(req *http
 	if m.srv.GetGuardrailsVersions == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetGuardrailsVersions not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/guardrailsVersions/(?P<version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/guardrailsVersions/(?P<version>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -604,7 +604,7 @@ func (m *ManagedClustersServerTransport) dispatchGetMeshRevisionProfile(req *htt
 	if m.srv.GetMeshRevisionProfile == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetMeshRevisionProfile not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/meshRevisionProfiles/(?P<mode>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/meshRevisionProfiles/(?P<mode>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -637,7 +637,7 @@ func (m *ManagedClustersServerTransport) dispatchGetMeshUpgradeProfile(req *http
 	if m.srv.GetMeshUpgradeProfile == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetMeshUpgradeProfile not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/meshUpgradeProfiles/(?P<mode>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/meshUpgradeProfiles/(?P<mode>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -674,7 +674,7 @@ func (m *ManagedClustersServerTransport) dispatchGetSafeguardsVersions(req *http
 	if m.srv.GetSafeguardsVersions == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSafeguardsVersions not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/safeguardsVersions/(?P<version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/safeguardsVersions/(?P<version>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -707,7 +707,7 @@ func (m *ManagedClustersServerTransport) dispatchGetUpgradeProfile(req *http.Req
 	if m.srv.GetUpgradeProfile == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetUpgradeProfile not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/upgradeProfiles/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgradeProfiles/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -742,7 +742,7 @@ func (m *ManagedClustersServerTransport) dispatchNewListPager(req *http.Request)
 	}
 	newListPager := m.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -775,7 +775,7 @@ func (m *ManagedClustersServerTransport) dispatchNewListByResourceGroupPager(req
 	}
 	newListByResourceGroupPager := m.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -810,7 +810,7 @@ func (m *ManagedClustersServerTransport) dispatchListClusterAdminCredentials(req
 	if m.srv.ListClusterAdminCredentials == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListClusterAdminCredentials not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listClusterAdminCredential`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listClusterAdminCredential`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -851,7 +851,7 @@ func (m *ManagedClustersServerTransport) dispatchListClusterMonitoringUserCreden
 	if m.srv.ListClusterMonitoringUserCredentials == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListClusterMonitoringUserCredentials not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listClusterMonitoringUserCredential`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listClusterMonitoringUserCredential`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -892,7 +892,7 @@ func (m *ManagedClustersServerTransport) dispatchListClusterUserCredentials(req 
 	if m.srv.ListClusterUserCredentials == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListClusterUserCredentials not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listClusterUserCredential`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listClusterUserCredential`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -937,7 +937,7 @@ func (m *ManagedClustersServerTransport) dispatchNewListGuardrailsVersionsPager(
 	}
 	newListGuardrailsVersionsPager := m.newListGuardrailsVersionsPager.get(req)
 	if newListGuardrailsVersionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/guardrailsVersions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/guardrailsVersions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -972,7 +972,7 @@ func (m *ManagedClustersServerTransport) dispatchListKubernetesVersions(req *htt
 	if m.srv.ListKubernetesVersions == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListKubernetesVersions not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/kubernetesVersions`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/kubernetesVersions`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -1003,7 +1003,7 @@ func (m *ManagedClustersServerTransport) dispatchNewListMeshRevisionProfilesPage
 	}
 	newListMeshRevisionProfilesPager := m.newListMeshRevisionProfilesPager.get(req)
 	if newListMeshRevisionProfilesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/meshRevisionProfiles`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/meshRevisionProfiles`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -1040,7 +1040,7 @@ func (m *ManagedClustersServerTransport) dispatchNewListMeshUpgradeProfilesPager
 	}
 	newListMeshUpgradeProfilesPager := m.newListMeshUpgradeProfilesPager.get(req)
 	if newListMeshUpgradeProfilesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/meshUpgradeProfiles`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/meshUpgradeProfiles`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1081,7 +1081,7 @@ func (m *ManagedClustersServerTransport) dispatchNewListOutboundNetworkDependenc
 	}
 	newListOutboundNetworkDependenciesEndpointsPager := m.newListOutboundNetworkDependenciesEndpointsPager.get(req)
 	if newListOutboundNetworkDependenciesEndpointsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/outboundNetworkDependenciesEndpoints`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/outboundNetworkDependenciesEndpoints`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1122,7 +1122,7 @@ func (m *ManagedClustersServerTransport) dispatchNewListSafeguardsVersionsPager(
 	}
 	newListSafeguardsVersionsPager := m.newListSafeguardsVersionsPager.get(req)
 	if newListSafeguardsVersionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/safeguardsVersions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/safeguardsVersions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -1159,7 +1159,7 @@ func (m *ManagedClustersServerTransport) dispatchBeginRebalanceLoadBalancers(req
 	}
 	beginRebalanceLoadBalancers := m.beginRebalanceLoadBalancers.get(req)
 	if beginRebalanceLoadBalancers == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rebalanceLoadBalancers`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rebalanceLoadBalancers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1207,7 +1207,7 @@ func (m *ManagedClustersServerTransport) dispatchBeginResetAADProfile(req *http.
 	}
 	beginResetAADProfile := m.beginResetAADProfile.get(req)
 	if beginResetAADProfile == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resetAADProfile`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resetAADProfile`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1255,7 +1255,7 @@ func (m *ManagedClustersServerTransport) dispatchBeginResetServicePrincipalProfi
 	}
 	beginResetServicePrincipalProfile := m.beginResetServicePrincipalProfile.get(req)
 	if beginResetServicePrincipalProfile == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resetServicePrincipalProfile`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resetServicePrincipalProfile`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1303,7 +1303,7 @@ func (m *ManagedClustersServerTransport) dispatchBeginRotateClusterCertificates(
 	}
 	beginRotateClusterCertificates := m.beginRotateClusterCertificates.get(req)
 	if beginRotateClusterCertificates == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rotateClusterCertificates`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rotateClusterCertificates`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1347,7 +1347,7 @@ func (m *ManagedClustersServerTransport) dispatchBeginRotateServiceAccountSignin
 	}
 	beginRotateServiceAccountSigningKeys := m.beginRotateServiceAccountSigningKeys.get(req)
 	if beginRotateServiceAccountSigningKeys == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rotateServiceAccountSigningKeys`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rotateServiceAccountSigningKeys`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1391,7 +1391,7 @@ func (m *ManagedClustersServerTransport) dispatchBeginRunCommand(req *http.Reque
 	}
 	beginRunCommand := m.beginRunCommand.get(req)
 	if beginRunCommand == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runCommand`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runCommand`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1439,7 +1439,7 @@ func (m *ManagedClustersServerTransport) dispatchBeginStart(req *http.Request) (
 	}
 	beginStart := m.beginStart.get(req)
 	if beginStart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/start`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1483,7 +1483,7 @@ func (m *ManagedClustersServerTransport) dispatchBeginStop(req *http.Request) (*
 	}
 	beginStop := m.beginStop.get(req)
 	if beginStop == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stop`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stop`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1527,7 +1527,7 @@ func (m *ManagedClustersServerTransport) dispatchBeginUpdateTags(req *http.Reque
 	}
 	beginUpdateTags := m.beginUpdateTags.get(req)
 	if beginUpdateTags == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

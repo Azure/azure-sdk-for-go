@@ -30,6 +30,9 @@ type ApplicationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -92,7 +95,7 @@ func (client *ApplicationsClient) createOrUpdate(ctx context.Context, resourceGr
 func (client *ApplicationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationResource, _ *ApplicationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -172,7 +175,7 @@ func (client *ApplicationsClient) deleteOperation(ctx context.Context, resourceG
 func (client *ApplicationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, _ *ApplicationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -250,7 +253,7 @@ func (client *ApplicationsClient) fetchHealth(ctx context.Context, resourceGroup
 func (client *ApplicationsClient) fetchHealthCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationFetchHealthRequest, _ *ApplicationsClientBeginFetchHealthOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/fetchHealth"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -307,7 +310,7 @@ func (client *ApplicationsClient) Get(ctx context.Context, resourceGroupName str
 func (client *ApplicationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, _ *ApplicationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -383,7 +386,7 @@ func (client *ApplicationsClient) listCreateRequest(ctx context.Context, resourc
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -474,7 +477,7 @@ func (client *ApplicationsClient) readUpgrade(ctx context.Context, resourceGroup
 func (client *ApplicationsClient) readUpgradeCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, _ *ApplicationsClientBeginReadUpgradeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/fetchUpgradeStatus"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -552,7 +555,7 @@ func (client *ApplicationsClient) restartDeployedCodePackage(ctx context.Context
 func (client *ApplicationsClient) restartDeployedCodePackageCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters RestartDeployedCodePackageRequest, _ *ApplicationsClientBeginRestartDeployedCodePackageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/restartDeployedCodePackage"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -634,7 +637,7 @@ func (client *ApplicationsClient) resumeUpgrade(ctx context.Context, resourceGro
 func (client *ApplicationsClient) resumeUpgradeCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters RuntimeResumeApplicationUpgradeParameters, _ *ApplicationsClientBeginResumeUpgradeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/resumeUpgrade"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -715,7 +718,7 @@ func (client *ApplicationsClient) startRollback(ctx context.Context, resourceGro
 func (client *ApplicationsClient) startRollbackCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, _ *ApplicationsClientBeginStartRollbackOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/startRollback"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -791,7 +794,7 @@ func (client *ApplicationsClient) update(ctx context.Context, resourceGroupName 
 func (client *ApplicationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationUpdateParameters, _ *ApplicationsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -872,7 +875,7 @@ func (client *ApplicationsClient) updateUpgrade(ctx context.Context, resourceGro
 func (client *ApplicationsClient) updateUpgradeCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters RuntimeUpdateApplicationUpgradeParameters, _ *ApplicationsClientBeginUpdateUpgradeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/updateUpgrade"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

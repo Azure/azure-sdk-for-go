@@ -93,7 +93,7 @@ func (i *InformationalOperationsServerTransport) dispatchGetLimits(req *http.Req
 	if i.srv.GetLimits == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetLimits not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.FileShares/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getLimits`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.FileShares/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getLimits`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -122,7 +122,7 @@ func (i *InformationalOperationsServerTransport) dispatchGetProvisioningRecommen
 	if i.srv.GetProvisioningRecommendation == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetProvisioningRecommendation not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.FileShares/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getProvisioningRecommendation`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.FileShares/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getProvisioningRecommendation`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -155,7 +155,7 @@ func (i *InformationalOperationsServerTransport) dispatchGetUsageData(req *http.
 	if i.srv.GetUsageData == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetUsageData not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.FileShares/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getUsageData`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.FileShares/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getUsageData`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

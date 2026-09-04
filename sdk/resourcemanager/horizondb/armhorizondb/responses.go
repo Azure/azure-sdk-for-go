@@ -4,9 +4,32 @@
 
 package armhorizondb
 
+// AdministratorsClientCreateOrUpdateResponse contains the response from method AdministratorsClient.BeginCreateOrUpdate.
+type AdministratorsClientCreateOrUpdateResponse struct {
+	// Represents an Entra ID administrator configured on a HorizonDB cluster.
+	Administrator
+}
+
+// AdministratorsClientDeleteResponse contains the response from method AdministratorsClient.BeginDelete.
+type AdministratorsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AdministratorsClientGetResponse contains the response from method AdministratorsClient.Get.
+type AdministratorsClientGetResponse struct {
+	// Represents an Entra ID administrator configured on a HorizonDB cluster.
+	Administrator
+}
+
+// AdministratorsClientListResponse contains the response from method AdministratorsClient.NewListPager.
+type AdministratorsClientListResponse struct {
+	// The response of a HorizonDbAdministrator list operation.
+	AdministratorListResult
+}
+
 // ClustersClientCreateOrUpdateResponse contains the response from method ClustersClient.BeginCreateOrUpdate.
 type ClustersClientCreateOrUpdateResponse struct {
-	// Represents the HorizonDb cluster.
+	// Represents the HorizonDB cluster.
 	Cluster
 }
 
@@ -17,7 +40,7 @@ type ClustersClientDeleteResponse struct {
 
 // ClustersClientGetResponse contains the response from method ClustersClient.Get.
 type ClustersClientGetResponse struct {
-	// Represents the HorizonDb cluster.
+	// Represents the HorizonDB cluster.
 	Cluster
 }
 
@@ -33,15 +56,30 @@ type ClustersClientListBySubscriptionResponse struct {
 	ClusterListResult
 }
 
+// ClustersClientRestartResponse contains the response from method ClustersClient.BeginRestart.
+type ClustersClientRestartResponse struct {
+	// placeholder for future response values
+}
+
+// ClustersClientStartResponse contains the response from method ClustersClient.BeginStart.
+type ClustersClientStartResponse struct {
+	// placeholder for future response values
+}
+
+// ClustersClientStopResponse contains the response from method ClustersClient.BeginStop.
+type ClustersClientStopResponse struct {
+	// placeholder for future response values
+}
+
 // ClustersClientUpdateResponse contains the response from method ClustersClient.BeginUpdate.
 type ClustersClientUpdateResponse struct {
-	// Represents the HorizonDb cluster.
+	// Represents the HorizonDB cluster.
 	Cluster
 }
 
 // FirewallRulesClientCreateOrUpdateResponse contains the response from method FirewallRulesClient.BeginCreateOrUpdate.
 type FirewallRulesClientCreateOrUpdateResponse struct {
-	// Represents the HorizonDb firewall rule.
+	// Represents the HorizonDB firewall rule.
 	FirewallRule
 }
 
@@ -52,7 +90,7 @@ type FirewallRulesClientDeleteResponse struct {
 
 // FirewallRulesClientGetResponse contains the response from method FirewallRulesClient.Get.
 type FirewallRulesClientGetResponse struct {
-	// Represents the HorizonDb firewall rule.
+	// Represents the HorizonDB firewall rule.
 	FirewallRule
 }
 
@@ -70,7 +108,7 @@ type OperationsClientListResponse struct {
 
 // ParameterGroupsClientCreateOrUpdateResponse contains the response from method ParameterGroupsClient.BeginCreateOrUpdate.
 type ParameterGroupsClientCreateOrUpdateResponse struct {
-	// Represents the HorizonDb parameter group.
+	// Represents the HorizonDB parameter group.
 	ParameterGroup
 }
 
@@ -81,7 +119,7 @@ type ParameterGroupsClientDeleteResponse struct {
 
 // ParameterGroupsClientGetResponse contains the response from method ParameterGroupsClient.Get.
 type ParameterGroupsClientGetResponse struct {
-	// Represents the HorizonDb parameter group.
+	// Represents the HorizonDB parameter group.
 	ParameterGroup
 }
 
@@ -111,13 +149,13 @@ type ParameterGroupsClientListVersionsResponse struct {
 
 // ParameterGroupsClientUpdateResponse contains the response from method ParameterGroupsClient.BeginUpdate.
 type ParameterGroupsClientUpdateResponse struct {
-	// Represents the HorizonDb parameter group.
+	// Represents the HorizonDB parameter group.
 	ParameterGroup
 }
 
 // PoolsClientGetResponse contains the response from method PoolsClient.Get.
 type PoolsClientGetResponse struct {
-	// Represents the HorizonDb pool.
+	// Represents the HorizonDB pool.
 	Pool
 }
 
@@ -144,15 +182,15 @@ type PrivateEndpointConnectionsClientListResponse struct {
 	PrivateEndpointConnectionResourceListResult
 }
 
-// PrivateEndpointConnectionsClientUpdateResponse contains the response from method PrivateEndpointConnectionsClient.BeginUpdate.
-type PrivateEndpointConnectionsClientUpdateResponse struct {
-	// The private endpoint connection resource
-	PrivateEndpointConnection
+// PrivateEndpointConnectionsClientUpdateStatusResponse contains the response from method PrivateEndpointConnectionsClient.UpdateStatus.
+type PrivateEndpointConnectionsClientUpdateStatusResponse struct {
+	// A private endpoint connection resource
+	PrivateEndpointConnectionResource
 }
 
 // PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
 type PrivateLinkResourcesClientGetResponse struct {
-	// Represents the HorizonDb private link resource.
+	// Represents the HorizonDB private link resource.
 	PrivateLinkResource
 }
 
@@ -164,7 +202,7 @@ type PrivateLinkResourcesClientListResponse struct {
 
 // ReplicasClientCreateOrUpdateResponse contains the response from method ReplicasClient.BeginCreateOrUpdate.
 type ReplicasClientCreateOrUpdateResponse struct {
-	// Represents the HorizonDb replica.
+	// Represents the HorizonDB replica.
 	Replica
 }
 
@@ -175,7 +213,7 @@ type ReplicasClientDeleteResponse struct {
 
 // ReplicasClientGetResponse contains the response from method ReplicasClient.Get.
 type ReplicasClientGetResponse struct {
-	// Represents the HorizonDb replica.
+	// Represents the HorizonDB replica.
 	Replica
 }
 
@@ -187,6 +225,6 @@ type ReplicasClientListResponse struct {
 
 // ReplicasClientUpdateResponse contains the response from method ReplicasClient.BeginUpdate.
 type ReplicasClientUpdateResponse struct {
-	// Represents the HorizonDb replica.
+	// Represents the HorizonDB replica.
 	Replica
 }

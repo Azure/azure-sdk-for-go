@@ -19,7 +19,7 @@ import (
 // SubscriptionRaiPolicyClient contains the methods for the SubscriptionRaiPolicy group.
 // Don't use this type directly, use NewSubscriptionRaiPolicyClient() instead.
 //
-// Generated from API version 2026-05-15-preview
+// Generated from API version 2026-07-15-preview
 type SubscriptionRaiPolicyClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -61,12 +61,7 @@ func (client *SubscriptionRaiPolicyClient) CreateOrUpdate(ctx context.Context, r
 	if err != nil {
 		return SubscriptionRaiPolicyClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return SubscriptionRaiPolicyClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -85,7 +80,7 @@ func (client *SubscriptionRaiPolicyClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -96,8 +91,11 @@ func (client *SubscriptionRaiPolicyClient) createOrUpdateCreateRequest(ctx conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SubscriptionRaiPolicyClient) createOrUpdateHandleResponse(resp *http.Response) (SubscriptionRaiPolicyClientCreateOrUpdateResponse, error) {
+func (client *SubscriptionRaiPolicyClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (SubscriptionRaiPolicyClientCreateOrUpdateResponse, error) {
 	result := SubscriptionRaiPolicyClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RaiPolicy); err != nil {
 		return SubscriptionRaiPolicyClientCreateOrUpdateResponse{}, err
 	}
@@ -143,8 +141,7 @@ func (client *SubscriptionRaiPolicyClient) deleteOperation(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -165,7 +162,7 @@ func (client *SubscriptionRaiPolicyClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -189,12 +186,7 @@ func (client *SubscriptionRaiPolicyClient) Get(ctx context.Context, raiPolicyNam
 	if err != nil {
 		return SubscriptionRaiPolicyClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SubscriptionRaiPolicyClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -213,15 +205,18 @@ func (client *SubscriptionRaiPolicyClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SubscriptionRaiPolicyClient) getHandleResponse(resp *http.Response) (SubscriptionRaiPolicyClientGetResponse, error) {
+func (client *SubscriptionRaiPolicyClient) getHandleResponse(resp *http.Response, successCodes ...int) (SubscriptionRaiPolicyClientGetResponse, error) {
 	result := SubscriptionRaiPolicyClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RaiPolicy); err != nil {
 		return SubscriptionRaiPolicyClientGetResponse{}, err
 	}

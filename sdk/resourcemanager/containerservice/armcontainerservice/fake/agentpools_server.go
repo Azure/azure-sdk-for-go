@@ -62,6 +62,10 @@ type AgentPoolsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ListBootstrapData func(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, body armcontainerservice.ListBootstrapDataRequest, options *armcontainerservice.AgentPoolsClientListBootstrapDataOptions) (resp azfake.Responder[armcontainerservice.AgentPoolsClientListBootstrapDataResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method AgentPoolsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, parameters armcontainerservice.AgentPoolUpdate, options *armcontainerservice.AgentPoolsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerservice.AgentPoolsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// BeginUpgradeNodeImageVersion is the fake for method AgentPoolsClient.BeginUpgradeNodeImageVersion
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginUpgradeNodeImageVersion func(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *armcontainerservice.AgentPoolsClientBeginUpgradeNodeImageVersionOptions) (resp azfake.PollerResponder[armcontainerservice.AgentPoolsClientUpgradeNodeImageVersionResponse], errResp azfake.ErrorResponder)
@@ -79,6 +83,7 @@ func NewAgentPoolsServerTransport(srv *AgentPoolsServer) *AgentPoolsServerTransp
 		beginDelete:                  newTracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientDeleteResponse]](),
 		beginDeleteMachines:          newTracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientDeleteMachinesResponse]](),
 		newListPager:                 newTracker[azfake.PagerResponder[armcontainerservice.AgentPoolsClientListResponse]](),
+		beginUpdate:                  newTracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientUpdateResponse]](),
 		beginUpgradeNodeImageVersion: newTracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientUpgradeNodeImageVersionResponse]](),
 	}
 }
@@ -93,6 +98,7 @@ type AgentPoolsServerTransport struct {
 	beginDelete                  *tracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientDeleteResponse]]
 	beginDeleteMachines          *tracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientDeleteMachinesResponse]]
 	newListPager                 *tracker[azfake.PagerResponder[armcontainerservice.AgentPoolsClientListResponse]]
+	beginUpdate                  *tracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientUpdateResponse]]
 	beginUpgradeNodeImageVersion *tracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientUpgradeNodeImageVersionResponse]]
 }
 
@@ -137,6 +143,8 @@ func (a *AgentPoolsServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AgentPoolsClient.ListBootstrapData":
 				res.resp, res.err = a.dispatchListBootstrapData(req)
+			case "AgentPoolsClient.BeginUpdate":
+				res.resp, res.err = a.dispatchBeginUpdate(req)
 			case "AgentPoolsClient.BeginUpgradeNodeImageVersion":
 				res.resp, res.err = a.dispatchBeginUpgradeNodeImageVersion(req)
 			default:
@@ -161,7 +169,7 @@ func (a *AgentPoolsServerTransport) dispatchBeginAbortLatestOperation(req *http.
 	}
 	beginAbortLatestOperation := a.beginAbortLatestOperation.get(req)
 	if beginAbortLatestOperation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/agentPools/(?P<agentPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/abort`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/agentPools/(?P<agentPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/abort`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -209,7 +217,7 @@ func (a *AgentPoolsServerTransport) dispatchBeginCompleteUpgrade(req *http.Reque
 	}
 	beginCompleteUpgrade := a.beginCompleteUpgrade.get(req)
 	if beginCompleteUpgrade == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/agentPools/(?P<agentPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/completeUpgrade`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/agentPools/(?P<agentPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/completeUpgrade`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -257,7 +265,7 @@ func (a *AgentPoolsServerTransport) dispatchBeginCreateOrUpdate(req *http.Reques
 	}
 	beginCreateOrUpdate := a.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/agentPools/(?P<agentPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/agentPools/(?P<agentPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -318,7 +326,7 @@ func (a *AgentPoolsServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	}
 	beginDelete := a.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/agentPools/(?P<agentPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/agentPools/(?P<agentPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -379,7 +387,7 @@ func (a *AgentPoolsServerTransport) dispatchBeginDeleteMachines(req *http.Reques
 	}
 	beginDeleteMachines := a.beginDeleteMachines.get(req)
 	if beginDeleteMachines == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/agentPools/(?P<agentPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deleteMachines`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/agentPools/(?P<agentPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deleteMachines`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -429,7 +437,7 @@ func (a *AgentPoolsServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/agentPools/(?P<agentPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/agentPools/(?P<agentPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -466,7 +474,7 @@ func (a *AgentPoolsServerTransport) dispatchGetAvailableAgentPoolVersions(req *h
 	if a.srv.GetAvailableAgentPoolVersions == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAvailableAgentPoolVersions not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/availableAgentPoolVersions`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/availableAgentPoolVersions`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -499,7 +507,7 @@ func (a *AgentPoolsServerTransport) dispatchGetUpgradeProfile(req *http.Request)
 	if a.srv.GetUpgradeProfile == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetUpgradeProfile not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/agentPools/(?P<agentPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/upgradeProfiles/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/agentPools/(?P<agentPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgradeProfiles/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -538,7 +546,7 @@ func (a *AgentPoolsServerTransport) dispatchNewListPager(req *http.Request) (*ht
 	}
 	newListPager := a.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/agentPools`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/agentPools`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -577,7 +585,7 @@ func (a *AgentPoolsServerTransport) dispatchListBootstrapData(req *http.Request)
 	if a.srv.ListBootstrapData == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListBootstrapData not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/agentPools/(?P<agentPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listBootstrapData`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/agentPools/(?P<agentPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listBootstrapData`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -614,13 +622,72 @@ func (a *AgentPoolsServerTransport) dispatchListBootstrapData(req *http.Request)
 	return resp, nil
 }
 
+func (a *AgentPoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := a.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/agentPools/(?P<agentPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerservice.AgentPoolUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		agentPoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("agentPoolName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "if-match"))
+		var options *armcontainerservice.AgentPoolsClientBeginUpdateOptions
+		if ifMatchParam != nil {
+			options = &armcontainerservice.AgentPoolsClientBeginUpdateOptions{
+				IfMatch: ifMatchParam,
+			}
+		}
+		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, agentPoolNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		a.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		a.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (a *AgentPoolsServerTransport) dispatchBeginUpgradeNodeImageVersion(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginUpgradeNodeImageVersion == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpgradeNodeImageVersion not implemented")}
 	}
 	beginUpgradeNodeImageVersion := a.beginUpgradeNodeImageVersion.get(req)
 	if beginUpgradeNodeImageVersion == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/agentPools/(?P<agentPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/upgradeNodeImageVersion`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/agentPools/(?P<agentPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgradeNodeImageVersion`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

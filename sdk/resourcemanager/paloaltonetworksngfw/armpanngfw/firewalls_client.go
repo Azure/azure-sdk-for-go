@@ -30,6 +30,9 @@ type FirewallsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFirewallsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FirewallsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -91,7 +94,7 @@ func (client *FirewallsClient) createOrUpdate(ctx context.Context, resourceGroup
 func (client *FirewallsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, firewallName string, resource FirewallResource, _ *FirewallsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -165,7 +168,7 @@ func (client *FirewallsClient) deleteOperation(ctx context.Context, resourceGrou
 func (client *FirewallsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, firewallName string, _ *FirewallsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -212,7 +215,7 @@ func (client *FirewallsClient) Get(ctx context.Context, resourceGroupName string
 func (client *FirewallsClient) getCreateRequest(ctx context.Context, resourceGroupName string, firewallName string, _ *FirewallsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -273,7 +276,7 @@ func (client *FirewallsClient) GetGlobalRulestack(ctx context.Context, resourceG
 func (client *FirewallsClient) getGlobalRulestackCreateRequest(ctx context.Context, resourceGroupName string, firewallName string, _ *FirewallsClientGetGlobalRulestackOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}/getGlobalRulestack"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -333,7 +336,7 @@ func (client *FirewallsClient) GetLogProfile(ctx context.Context, resourceGroupN
 func (client *FirewallsClient) getLogProfileCreateRequest(ctx context.Context, resourceGroupName string, firewallName string, _ *FirewallsClientGetLogProfileOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}/getLogProfile"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -394,7 +397,7 @@ func (client *FirewallsClient) GetSupportInfo(ctx context.Context, resourceGroup
 func (client *FirewallsClient) getSupportInfoCreateRequest(ctx context.Context, resourceGroupName string, firewallName string, options *FirewallsClientGetSupportInfoOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}/getSupportInfo"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -468,7 +471,7 @@ func (client *FirewallsClient) listByResourceGroupCreateRequest(ctx context.Cont
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -539,7 +542,7 @@ func (client *FirewallsClient) listBySubscriptionCreateRequest(ctx context.Conte
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/PaloAltoNetworks.Cloudngfw/firewalls"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -600,7 +603,7 @@ func (client *FirewallsClient) SaveLogProfile(ctx context.Context, resourceGroup
 func (client *FirewallsClient) saveLogProfileCreateRequest(ctx context.Context, resourceGroupName string, firewallName string, options *FirewallsClientSaveLogProfileOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}/saveLogProfile"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -655,7 +658,7 @@ func (client *FirewallsClient) Update(ctx context.Context, resourceGroupName str
 func (client *FirewallsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, firewallName string, properties FirewallResourceUpdate, _ *FirewallsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

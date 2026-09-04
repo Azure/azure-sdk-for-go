@@ -30,6 +30,9 @@ type BackupsAutomaticAndOnDemandClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBackupsAutomaticAndOnDemandClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupsAutomaticAndOnDemandClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -92,7 +95,7 @@ func (client *BackupsAutomaticAndOnDemandClient) create(ctx context.Context, res
 func (client *BackupsAutomaticAndOnDemandClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, backupName string, _ *BackupsAutomaticAndOnDemandClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/backups/{backupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -167,7 +170,7 @@ func (client *BackupsAutomaticAndOnDemandClient) deleteOperation(ctx context.Con
 func (client *BackupsAutomaticAndOnDemandClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, backupName string, _ *BackupsAutomaticAndOnDemandClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/backups/{backupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -220,7 +223,7 @@ func (client *BackupsAutomaticAndOnDemandClient) Get(ctx context.Context, resour
 func (client *BackupsAutomaticAndOnDemandClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, backupName string, _ *BackupsAutomaticAndOnDemandClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/backups/{backupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -296,7 +299,7 @@ func (client *BackupsAutomaticAndOnDemandClient) listByServerCreateRequest(ctx c
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/backups"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {

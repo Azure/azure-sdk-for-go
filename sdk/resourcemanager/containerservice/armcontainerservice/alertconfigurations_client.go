@@ -19,7 +19,7 @@ import (
 // AlertConfigurationsClient contains the methods for the AlertConfigurations group.
 // Don't use this type directly, use NewAlertConfigurationsClient() instead.
 //
-// Generated from API version 2026-05-02-preview
+// Generated from API version 2026-06-02-preview
 type AlertConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type AlertConfigurationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAlertConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertConfigurationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -92,7 +95,7 @@ func (client *AlertConfigurationsClient) createOrUpdate(ctx context.Context, res
 func (client *AlertConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, configurationName string, resource AlertConfiguration, _ *AlertConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/alertConfigurations/{configurationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -112,7 +115,7 @@ func (client *AlertConfigurationsClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -172,7 +175,7 @@ func (client *AlertConfigurationsClient) deleteOperation(ctx context.Context, re
 func (client *AlertConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, configurationName string, _ *AlertConfigurationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/alertConfigurations/{configurationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -192,7 +195,7 @@ func (client *AlertConfigurationsClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -224,7 +227,7 @@ func (client *AlertConfigurationsClient) Get(ctx context.Context, resourceGroupN
 func (client *AlertConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, configurationName string, _ *AlertConfigurationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/alertConfigurations/{configurationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -244,7 +247,7 @@ func (client *AlertConfigurationsClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -300,7 +303,7 @@ func (client *AlertConfigurationsClient) listByManagedClusterCreateRequest(ctx c
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/alertConfigurations"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -320,7 +323,7 @@ func (client *AlertConfigurationsClient) listByManagedClusterCreateRequest(ctx c
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260502Preview)
+		reqQP.Set("api-version", version20260602Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

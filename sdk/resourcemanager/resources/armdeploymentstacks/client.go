@@ -31,6 +31,9 @@ type Client struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -164,7 +167,7 @@ func (client *Client) createOrUpdateAtResourceGroup(ctx context.Context, resourc
 func (client *Client) createOrUpdateAtResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, deploymentStackName string, deploymentStack DeploymentStack, _ *ClientBeginCreateOrUpdateAtResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -239,7 +242,7 @@ func (client *Client) createOrUpdateAtSubscription(ctx context.Context, deployme
 func (client *Client) createOrUpdateAtSubscriptionCreateRequest(ctx context.Context, deploymentStackName string, deploymentStack DeploymentStack, _ *ClientBeginCreateOrUpdateAtSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deploymentStackName == "" {
@@ -395,7 +398,7 @@ func (client *Client) deleteAtResourceGroup(ctx context.Context, resourceGroupNa
 func (client *Client) deleteAtResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, deploymentStackName string, options *ClientBeginDeleteAtResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -481,7 +484,7 @@ func (client *Client) deleteAtSubscription(ctx context.Context, deploymentStackN
 func (client *Client) deleteAtSubscriptionCreateRequest(ctx context.Context, deploymentStackName string, options *ClientBeginDeleteAtSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deploymentStackName == "" {
@@ -597,7 +600,7 @@ func (client *Client) ExportTemplateAtResourceGroup(ctx context.Context, resourc
 func (client *Client) exportTemplateAtResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, deploymentStackName string, _ *ClientExportTemplateAtResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}/exportTemplate"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -657,7 +660,7 @@ func (client *Client) ExportTemplateAtSubscription(ctx context.Context, deployme
 func (client *Client) exportTemplateAtSubscriptionCreateRequest(ctx context.Context, deploymentStackName string, _ *ClientExportTemplateAtSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}/exportTemplate"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deploymentStackName == "" {
@@ -769,7 +772,7 @@ func (client *Client) GetAtResourceGroup(ctx context.Context, resourceGroupName 
 func (client *Client) getAtResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, deploymentStackName string, _ *ClientGetAtResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -828,7 +831,7 @@ func (client *Client) GetAtSubscription(ctx context.Context, deploymentStackName
 func (client *Client) getAtSubscriptionCreateRequest(ctx context.Context, deploymentStackName string, _ *ClientGetAtSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deploymentStackName == "" {
@@ -963,7 +966,7 @@ func (client *Client) listAtResourceGroupCreateRequest(ctx context.Context, reso
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacks"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -1033,7 +1036,7 @@ func (client *Client) listAtSubscriptionCreateRequest(ctx context.Context, nextL
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacks"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -1190,7 +1193,7 @@ func (client *Client) validateStackAtResourceGroup(ctx context.Context, resource
 func (client *Client) validateStackAtResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, deploymentStackName string, deploymentStack DeploymentStack, _ *ClientBeginValidateStackAtResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}/validate"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1267,7 +1270,7 @@ func (client *Client) validateStackAtSubscription(ctx context.Context, deploymen
 func (client *Client) validateStackAtSubscriptionCreateRequest(ctx context.Context, deploymentStackName string, deploymentStack DeploymentStack, _ *ClientBeginValidateStackAtSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}/validate"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deploymentStackName == "" {

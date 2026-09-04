@@ -20,7 +20,7 @@ import (
 // LaunchBulkInstancesOperationClient contains the methods for the LaunchBulkInstancesOperation group.
 // Don't use this type directly, use NewLaunchBulkInstancesOperationClient() instead.
 //
-// Generated from API version 2026-07-06-preview
+// Generated from API version 2026-08-06-preview
 type LaunchBulkInstancesOperationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -31,6 +31,9 @@ type LaunchBulkInstancesOperationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLaunchBulkInstancesOperationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LaunchBulkInstancesOperationClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -92,7 +95,7 @@ func (client *LaunchBulkInstancesOperationClient) cancel(ctx context.Context, re
 func (client *LaunchBulkInstancesOperationClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, _ *LaunchBulkInstancesOperationClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/launchBulkInstancesOperations/{name}/cancel"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -112,7 +115,7 @@ func (client *LaunchBulkInstancesOperationClient) cancelCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -168,7 +171,7 @@ func (client *LaunchBulkInstancesOperationClient) createOrUpdate(ctx context.Con
 func (client *LaunchBulkInstancesOperationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedLaunchBulkInstancesOperation, _ *LaunchBulkInstancesOperationClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/launchBulkInstancesOperations/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -188,7 +191,7 @@ func (client *LaunchBulkInstancesOperationClient) createOrUpdateCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -248,7 +251,7 @@ func (client *LaunchBulkInstancesOperationClient) deleteOperation(ctx context.Co
 func (client *LaunchBulkInstancesOperationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, options *LaunchBulkInstancesOperationClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/launchBulkInstancesOperations/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -268,7 +271,7 @@ func (client *LaunchBulkInstancesOperationClient) deleteCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	if options != nil && options.DeleteInstances != nil {
 		reqQP.Set("deleteInstances", strconv.FormatBool(*options.DeleteInstances))
 	}
@@ -304,7 +307,7 @@ func (client *LaunchBulkInstancesOperationClient) Get(ctx context.Context, resou
 func (client *LaunchBulkInstancesOperationClient) getCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, _ *LaunchBulkInstancesOperationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/launchBulkInstancesOperations/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -324,7 +327,7 @@ func (client *LaunchBulkInstancesOperationClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -369,7 +372,7 @@ func (client *LaunchBulkInstancesOperationClient) GetOperationStatus(ctx context
 func (client *LaunchBulkInstancesOperationClient) getOperationStatusCreateRequest(ctx context.Context, location string, asyncOperationID string, _ *LaunchBulkInstancesOperationClientGetOperationStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/launchBulkInstancesOperations/asyncOperations/{asyncOperationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -385,7 +388,7 @@ func (client *LaunchBulkInstancesOperationClient) getOperationStatusCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -441,7 +444,7 @@ func (client *LaunchBulkInstancesOperationClient) listByResourceGroupCreateReque
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/launchBulkInstancesOperations"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -461,7 +464,7 @@ func (client *LaunchBulkInstancesOperationClient) listByResourceGroupCreateReque
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260706Preview)
+		reqQP.Set("api-version", version20260806Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -517,7 +520,7 @@ func (client *LaunchBulkInstancesOperationClient) listBySubscriptionCreateReques
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/launchBulkInstancesOperations"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if location == "" {
@@ -533,7 +536,7 @@ func (client *LaunchBulkInstancesOperationClient) listBySubscriptionCreateReques
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260706Preview)
+		reqQP.Set("api-version", version20260806Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -591,7 +594,7 @@ func (client *LaunchBulkInstancesOperationClient) listVirtualMachinesCreateReque
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/launchBulkInstancesOperations/{name}/virtualMachines"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -621,7 +624,7 @@ func (client *LaunchBulkInstancesOperationClient) listVirtualMachinesCreateReque
 		if options != nil && options.Skiptoken != nil {
 			reqQP.Set("$skiptoken", *options.Skiptoken)
 		}
-		reqQP.Set("api-version", version20260706Preview)
+		reqQP.Set("api-version", version20260806Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

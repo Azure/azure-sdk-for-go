@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -110,7 +110,7 @@ func (r *ResourceTypeRegistrationsServerTransport) dispatchBeginCreateOrUpdate(r
 	}
 	beginCreateOrUpdate := r.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -158,7 +158,7 @@ func (r *ResourceTypeRegistrationsServerTransport) dispatchBeginDelete(req *http
 	}
 	beginDelete := r.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -200,7 +200,7 @@ func (r *ResourceTypeRegistrationsServerTransport) dispatchGet(req *http.Request
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -235,7 +235,7 @@ func (r *ResourceTypeRegistrationsServerTransport) dispatchNewListByProviderRegi
 	}
 	newListByProviderRegistrationPager := r.newListByProviderRegistrationPager.get(req)
 	if newListByProviderRegistrationPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

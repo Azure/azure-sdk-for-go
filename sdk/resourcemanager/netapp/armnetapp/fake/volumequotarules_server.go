@@ -118,7 +118,7 @@ func (v *VolumeQuotaRulesServerTransport) dispatchBeginCreate(req *http.Request)
 	}
 	beginCreate := v.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumeQuotaRules/(?P<volumeQuotaRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumeQuotaRules/(?P<volumeQuotaRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -178,7 +178,7 @@ func (v *VolumeQuotaRulesServerTransport) dispatchBeginDelete(req *http.Request)
 	}
 	beginDelete := v.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumeQuotaRules/(?P<volumeQuotaRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumeQuotaRules/(?P<volumeQuotaRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -232,7 +232,7 @@ func (v *VolumeQuotaRulesServerTransport) dispatchGet(req *http.Request) (*http.
 	if v.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumeQuotaRules/(?P<volumeQuotaRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumeQuotaRules/(?P<volumeQuotaRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -279,7 +279,7 @@ func (v *VolumeQuotaRulesServerTransport) dispatchNewListByVolumePager(req *http
 	}
 	newListByVolumePager := v.newListByVolumePager.get(req)
 	if newListByVolumePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumeQuotaRules`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumeQuotaRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -328,7 +328,7 @@ func (v *VolumeQuotaRulesServerTransport) dispatchBeginUpdate(req *http.Request)
 	}
 	beginUpdate := v.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumeQuotaRules/(?P<volumeQuotaRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumeQuotaRules/(?P<volumeQuotaRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {

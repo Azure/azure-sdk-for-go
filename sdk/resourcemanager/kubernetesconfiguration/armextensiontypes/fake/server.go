@@ -135,7 +135,7 @@ func (s *ServerTransport) dispatchClusterGetVersion(req *http.Request) (*http.Re
 	if s.srv.ClusterGetVersion == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ClusterGetVersion not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<clusterRp>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<clusterResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesConfiguration/extensionTypes/(?P<extensionTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<versionNumber>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<clusterRp>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<clusterResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KubernetesConfiguration/extensionTypes/(?P<extensionTypeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<versionNumber>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 8 {
@@ -186,7 +186,7 @@ func (s *ServerTransport) dispatchNewClusterListVersionsPager(req *http.Request)
 	}
 	newClusterListVersionsPager := s.newClusterListVersionsPager.get(req)
 	if newClusterListVersionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<clusterRp>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<clusterResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesConfiguration/extensionTypes/(?P<extensionTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<clusterRp>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<clusterResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KubernetesConfiguration/extensionTypes/(?P<extensionTypeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -252,7 +252,7 @@ func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error)
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<clusterRp>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<clusterResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesConfiguration/extensionTypes/(?P<extensionTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<clusterRp>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<clusterResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KubernetesConfiguration/extensionTypes/(?P<extensionTypeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -297,7 +297,7 @@ func (s *ServerTransport) dispatchGetVersion(req *http.Request) (*http.Response,
 	if s.srv.GetVersion == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetVersion not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesConfiguration/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensionTypes/(?P<extensionTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<versionNumber>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KubernetesConfiguration/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/extensionTypes/(?P<extensionTypeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<versionNumber>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -336,7 +336,7 @@ func (s *ServerTransport) dispatchNewListPager(req *http.Request) (*http.Respons
 	}
 	newListPager := s.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<clusterRp>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<clusterResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesConfiguration/extensionTypes`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<clusterRp>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<clusterResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KubernetesConfiguration/extensionTypes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -399,7 +399,7 @@ func (s *ServerTransport) dispatchNewListVersionsPager(req *http.Request) (*http
 	}
 	newListVersionsPager := s.newListVersionsPager.get(req)
 	if newListVersionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesConfiguration/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensionTypes/(?P<extensionTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KubernetesConfiguration/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/extensionTypes/(?P<extensionTypeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -455,7 +455,7 @@ func (s *ServerTransport) dispatchLocationGet(req *http.Request) (*http.Response
 	if s.srv.LocationGet == nil {
 		return nil, &nonRetriableError{errors.New("fake for method LocationGet not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesConfiguration/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensionTypes/(?P<extensionTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KubernetesConfiguration/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/extensionTypes/(?P<extensionTypeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -490,7 +490,7 @@ func (s *ServerTransport) dispatchNewLocationListPager(req *http.Request) (*http
 	}
 	newLocationListPager := s.newLocationListPager.get(req)
 	if newLocationListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesConfiguration/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensionTypes`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KubernetesConfiguration/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/extensionTypes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

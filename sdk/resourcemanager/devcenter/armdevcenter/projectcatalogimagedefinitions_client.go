@@ -31,6 +31,9 @@ type ProjectCatalogImageDefinitionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProjectCatalogImageDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProjectCatalogImageDefinitionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -93,7 +96,7 @@ func (client *ProjectCatalogImageDefinitionsClient) buildImage(ctx context.Conte
 func (client *ProjectCatalogImageDefinitionsClient) buildImageCreateRequest(ctx context.Context, resourceGroupName string, projectName string, catalogName string, imageDefinitionName string, _ *ProjectCatalogImageDefinitionsClientBeginBuildImageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/catalogs/{catalogName}/imageDefinitions/{imageDefinitionName}/buildImage"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -151,7 +154,7 @@ func (client *ProjectCatalogImageDefinitionsClient) GetByProjectCatalog(ctx cont
 func (client *ProjectCatalogImageDefinitionsClient) getByProjectCatalogCreateRequest(ctx context.Context, resourceGroupName string, projectName string, catalogName string, imageDefinitionName string, _ *ProjectCatalogImageDefinitionsClientGetByProjectCatalogOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/catalogs/{catalogName}/imageDefinitions/{imageDefinitionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -222,7 +225,7 @@ func (client *ProjectCatalogImageDefinitionsClient) GetErrorDetails(ctx context.
 func (client *ProjectCatalogImageDefinitionsClient) getErrorDetailsCreateRequest(ctx context.Context, resourceGroupName string, projectName string, catalogName string, imageDefinitionName string, _ *ProjectCatalogImageDefinitionsClientGetErrorDetailsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/catalogs/{catalogName}/imageDefinitions/{imageDefinitionName}/getErrorDetails"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -303,7 +306,7 @@ func (client *ProjectCatalogImageDefinitionsClient) listByProjectCatalogCreateRe
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/catalogs/{catalogName}/imageDefinitions"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {

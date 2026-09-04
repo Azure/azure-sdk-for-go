@@ -31,6 +31,9 @@ type RecommendationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRecommendationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecommendationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -75,7 +78,7 @@ func (client *RecommendationsClient) DisableAllForHostingEnvironment(ctx context
 func (client *RecommendationsClient) disableAllForHostingEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, hostingEnvironmentName string, environmentName string, _ *RecommendationsClientDisableAllForHostingEnvironmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations/disable"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -129,7 +132,7 @@ func (client *RecommendationsClient) DisableAllForWebApp(ctx context.Context, re
 func (client *RecommendationsClient) disableAllForWebAppCreateRequest(ctx context.Context, resourceGroupName string, siteName string, _ *RecommendationsClientDisableAllForWebAppOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/disable"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -181,7 +184,7 @@ func (client *RecommendationsClient) DisableRecommendationForHostingEnvironment(
 func (client *RecommendationsClient) disableRecommendationForHostingEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, name string, hostingEnvironmentName string, _ *RecommendationsClientDisableRecommendationForHostingEnvironmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations/{name}/disable"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -240,7 +243,7 @@ func (client *RecommendationsClient) DisableRecommendationForSite(ctx context.Co
 func (client *RecommendationsClient) disableRecommendationForSiteCreateRequest(ctx context.Context, resourceGroupName string, siteName string, name string, _ *RecommendationsClientDisableRecommendationForSiteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/{name}/disable"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -296,7 +299,7 @@ func (client *RecommendationsClient) DisableRecommendationForSubscription(ctx co
 func (client *RecommendationsClient) disableRecommendationForSubscriptionCreateRequest(ctx context.Context, name string, _ *RecommendationsClientDisableRecommendationForSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/{name}/disable"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if name == "" {
@@ -343,7 +346,7 @@ func (client *RecommendationsClient) GetRuleDetailsByHostingEnvironment(ctx cont
 func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, hostingEnvironmentName string, name string, options *RecommendationsClientGetRuleDetailsByHostingEnvironmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -417,7 +420,7 @@ func (client *RecommendationsClient) GetRuleDetailsByWebApp(ctx context.Context,
 func (client *RecommendationsClient) getRuleDetailsByWebAppCreateRequest(ctx context.Context, resourceGroupName string, siteName string, name string, options *RecommendationsClientGetRuleDetailsByWebAppOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -499,7 +502,7 @@ func (client *RecommendationsClient) listCreateRequest(ctx context.Context, next
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -576,7 +579,7 @@ func (client *RecommendationsClient) listHistoryForHostingEnvironmentCreateReque
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendationHistory"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -661,7 +664,7 @@ func (client *RecommendationsClient) listHistoryForWebAppCreateRequest(ctx conte
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendationHistory"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -746,7 +749,7 @@ func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentCr
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -831,7 +834,7 @@ func (client *RecommendationsClient) listRecommendedRulesForWebAppCreateRequest(
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -906,7 +909,7 @@ func (client *RecommendationsClient) ResetAllFilters(ctx context.Context, option
 func (client *RecommendationsClient) resetAllFiltersCreateRequest(ctx context.Context, _ *RecommendationsClientResetAllFiltersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/reset"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -952,7 +955,7 @@ func (client *RecommendationsClient) ResetAllFiltersForHostingEnvironment(ctx co
 func (client *RecommendationsClient) resetAllFiltersForHostingEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, hostingEnvironmentName string, environmentName string, _ *RecommendationsClientResetAllFiltersForHostingEnvironmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations/reset"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1006,7 +1009,7 @@ func (client *RecommendationsClient) ResetAllFiltersForWebApp(ctx context.Contex
 func (client *RecommendationsClient) resetAllFiltersForWebAppCreateRequest(ctx context.Context, resourceGroupName string, siteName string, _ *RecommendationsClientResetAllFiltersForWebAppOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/reset"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

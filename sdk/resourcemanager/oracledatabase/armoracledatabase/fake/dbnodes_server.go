@@ -102,7 +102,7 @@ func (d *DbNodesServerTransport) dispatchBeginAction(req *http.Request) (*http.R
 	}
 	beginAction := d.beginAction.get(req)
 	if beginAction == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Oracle\.Database/cloudVmClusters/(?P<cloudvmclustername>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dbNodes/(?P<dbnodeocid>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/action`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/cloudVmClusters/(?P<cloudvmclustername>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dbNodes/(?P<dbnodeocid>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/action`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -152,7 +152,7 @@ func (d *DbNodesServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Oracle\.Database/cloudVmClusters/(?P<cloudvmclustername>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dbNodes/(?P<dbnodeocid>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/cloudVmClusters/(?P<cloudvmclustername>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dbNodes/(?P<dbnodeocid>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -191,7 +191,7 @@ func (d *DbNodesServerTransport) dispatchNewListByCloudVMClusterPager(req *http.
 	}
 	newListByCloudVMClusterPager := d.newListByCloudVMClusterPager.get(req)
 	if newListByCloudVMClusterPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Oracle\.Database/cloudVmClusters/(?P<cloudvmclustername>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dbNodes`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/cloudVmClusters/(?P<cloudvmclustername>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dbNodes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

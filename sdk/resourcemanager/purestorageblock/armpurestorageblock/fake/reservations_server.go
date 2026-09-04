@@ -45,6 +45,14 @@ type ReservationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetResourceLimits func(ctx context.Context, resourceGroupName string, reservationName string, options *armpurestorageblock.ReservationsClientGetResourceLimitsOptions) (resp azfake.Responder[armpurestorageblock.ReservationsClientGetResourceLimitsResponse], errResp azfake.ErrorResponder)
 
+	// LatestLinkedSaaS is the fake for method ReservationsClient.LatestLinkedSaaS
+	// HTTP status codes to indicate success: http.StatusOK
+	LatestLinkedSaaS func(ctx context.Context, resourceGroupName string, reservationName string, options *armpurestorageblock.ReservationsClientLatestLinkedSaaSOptions) (resp azfake.Responder[armpurestorageblock.ReservationsClientLatestLinkedSaaSResponse], errResp azfake.ErrorResponder)
+
+	// BeginLinkSaaS is the fake for method ReservationsClient.BeginLinkSaaS
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginLinkSaaS func(ctx context.Context, resourceGroupName string, reservationName string, body armpurestorageblock.LinkSaaSRequest, options *armpurestorageblock.ReservationsClientBeginLinkSaaSOptions) (resp azfake.PollerResponder[armpurestorageblock.ReservationsClientLinkSaaSResponse], errResp azfake.ErrorResponder)
+
 	// NewListByResourceGroupPager is the fake for method ReservationsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armpurestorageblock.ReservationsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armpurestorageblock.ReservationsClientListByResourceGroupResponse])
@@ -66,6 +74,7 @@ func NewReservationsServerTransport(srv *ReservationsServer) *ReservationsServer
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armpurestorageblock.ReservationsClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armpurestorageblock.ReservationsClientDeleteResponse]](),
+		beginLinkSaaS:               newTracker[azfake.PollerResponder[armpurestorageblock.ReservationsClientLinkSaaSResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armpurestorageblock.ReservationsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armpurestorageblock.ReservationsClientListBySubscriptionResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armpurestorageblock.ReservationsClientUpdateResponse]](),
@@ -78,6 +87,7 @@ type ReservationsServerTransport struct {
 	srv                         *ReservationsServer
 	beginCreate                 *tracker[azfake.PollerResponder[armpurestorageblock.ReservationsClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armpurestorageblock.ReservationsClientDeleteResponse]]
+	beginLinkSaaS               *tracker[azfake.PollerResponder[armpurestorageblock.ReservationsClientLinkSaaSResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armpurestorageblock.ReservationsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armpurestorageblock.ReservationsClientListBySubscriptionResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armpurestorageblock.ReservationsClientUpdateResponse]]
@@ -116,6 +126,10 @@ func (r *ReservationsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = r.dispatchGetBillingStatus(req)
 			case "ReservationsClient.GetResourceLimits":
 				res.resp, res.err = r.dispatchGetResourceLimits(req)
+			case "ReservationsClient.LatestLinkedSaaS":
+				res.resp, res.err = r.dispatchLatestLinkedSaaS(req)
+			case "ReservationsClient.BeginLinkSaaS":
+				res.resp, res.err = r.dispatchBeginLinkSaaS(req)
 			case "ReservationsClient.NewListByResourceGroupPager":
 				res.resp, res.err = r.dispatchNewListByResourceGroupPager(req)
 			case "ReservationsClient.NewListBySubscriptionPager":
@@ -144,7 +158,7 @@ func (r *ReservationsServerTransport) dispatchBeginCreate(req *http.Request) (*h
 	}
 	beginCreate := r.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/reservations/(?P<reservationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/reservations/(?P<reservationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -192,7 +206,7 @@ func (r *ReservationsServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	}
 	beginDelete := r.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/reservations/(?P<reservationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/reservations/(?P<reservationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -234,7 +248,7 @@ func (r *ReservationsServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/reservations/(?P<reservationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/reservations/(?P<reservationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -267,7 +281,7 @@ func (r *ReservationsServerTransport) dispatchGetBillingReport(req *http.Request
 	if r.srv.GetBillingReport == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetBillingReport not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/reservations/(?P<reservationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getBillingReport`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/reservations/(?P<reservationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getBillingReport`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -300,7 +314,7 @@ func (r *ReservationsServerTransport) dispatchGetBillingStatus(req *http.Request
 	if r.srv.GetBillingStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetBillingStatus not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/reservations/(?P<reservationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getBillingStatus`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/reservations/(?P<reservationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getBillingStatus`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -333,7 +347,7 @@ func (r *ReservationsServerTransport) dispatchGetResourceLimits(req *http.Reques
 	if r.srv.GetResourceLimits == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetResourceLimits not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/reservations/(?P<reservationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getResourceLimits`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/reservations/(?P<reservationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getResourceLimits`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -362,13 +376,94 @@ func (r *ReservationsServerTransport) dispatchGetResourceLimits(req *http.Reques
 	return resp, nil
 }
 
+func (r *ReservationsServerTransport) dispatchLatestLinkedSaaS(req *http.Request) (*http.Response, error) {
+	if r.srv.LatestLinkedSaaS == nil {
+		return nil, &nonRetriableError{errors.New("fake for method LatestLinkedSaaS not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/reservations/(?P<reservationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/latestLinkedSaaS`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	reservationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("reservationName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.LatestLinkedSaaS(req.Context(), resourceGroupNameParam, reservationNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LatestLinkedSaaSResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *ReservationsServerTransport) dispatchBeginLinkSaaS(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginLinkSaaS == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginLinkSaaS not implemented")}
+	}
+	beginLinkSaaS := r.beginLinkSaaS.get(req)
+	if beginLinkSaaS == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/reservations/(?P<reservationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkSaaS`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armpurestorageblock.LinkSaaSRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		reservationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("reservationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginLinkSaaS(req.Context(), resourceGroupNameParam, reservationNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginLinkSaaS = &respr
+		r.beginLinkSaaS.add(req, beginLinkSaaS)
+	}
+
+	resp, err := server.PollerResponderNext(beginLinkSaaS, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginLinkSaaS.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginLinkSaaS) {
+		r.beginLinkSaaS.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (r *ReservationsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if r.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
 	newListByResourceGroupPager := r.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/reservations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/reservations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -405,7 +500,7 @@ func (r *ReservationsServerTransport) dispatchNewListBySubscriptionPager(req *ht
 	}
 	newListBySubscriptionPager := r.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/reservations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/reservations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -438,7 +533,7 @@ func (r *ReservationsServerTransport) dispatchBeginUpdate(req *http.Request) (*h
 	}
 	beginUpdate := r.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/reservations/(?P<reservationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/reservations/(?P<reservationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

@@ -105,7 +105,7 @@ func (s *SerialPortsServerTransport) dispatchConnect(req *http.Request) (*http.R
 	if s.srv.Connect == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Connect not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SerialConsole/serialPorts/(?P<serialPort>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connect`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<resourceProviderNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<parentResourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/(?P<parentResource>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SerialConsole/serialPorts/(?P<serialPort>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/connect`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -150,7 +150,7 @@ func (s *SerialPortsServerTransport) dispatchCreate(req *http.Request) (*http.Re
 	if s.srv.Create == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SerialConsole/serialPorts/(?P<serialPort>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<resourceProviderNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<parentResourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/(?P<parentResource>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SerialConsole/serialPorts/(?P<serialPort>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -199,7 +199,7 @@ func (s *SerialPortsServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SerialConsole/serialPorts/(?P<serialPort>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<resourceProviderNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<parentResourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/(?P<parentResource>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SerialConsole/serialPorts/(?P<serialPort>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -244,7 +244,7 @@ func (s *SerialPortsServerTransport) dispatchList(req *http.Request) (*http.Resp
 	if s.srv.List == nil {
 		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SerialConsole/serialPorts`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<resourceProviderNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<parentResourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/(?P<parentResource>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SerialConsole/serialPorts`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -285,7 +285,7 @@ func (s *SerialPortsServerTransport) dispatchListBySubscriptions(req *http.Reque
 	if s.srv.ListBySubscriptions == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListBySubscriptions not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SerialConsole/serialPorts`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SerialConsole/serialPorts`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

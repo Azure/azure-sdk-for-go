@@ -213,7 +213,7 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdateAtManagementGroup(req *http
 	}
 	beginCreateOrUpdateAtManagementGroup := s.beginCreateOrUpdateAtManagementGroup.get(req)
 	if beginCreateOrUpdateAtManagementGroup == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -261,7 +261,7 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdateAtResourceGroup(req *http.R
 	}
 	beginCreateOrUpdateAtResourceGroup := s.beginCreateOrUpdateAtResourceGroup.get(req)
 	if beginCreateOrUpdateAtResourceGroup == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -309,7 +309,7 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdateAtSubscription(req *http.Re
 	}
 	beginCreateOrUpdateAtSubscription := s.beginCreateOrUpdateAtSubscription.get(req)
 	if beginCreateOrUpdateAtSubscription == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -353,7 +353,7 @@ func (s *ServerTransport) dispatchBeginDeleteAtManagementGroup(req *http.Request
 	}
 	beginDeleteAtManagementGroup := s.beginDeleteAtManagementGroup.get(req)
 	if beginDeleteAtManagementGroup == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -416,7 +416,7 @@ func (s *ServerTransport) dispatchBeginDeleteAtResourceGroup(req *http.Request) 
 	}
 	beginDeleteAtResourceGroup := s.beginDeleteAtResourceGroup.get(req)
 	if beginDeleteAtResourceGroup == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -479,7 +479,7 @@ func (s *ServerTransport) dispatchBeginDeleteAtSubscription(req *http.Request) (
 	}
 	beginDeleteAtSubscription := s.beginDeleteAtSubscription.get(req)
 	if beginDeleteAtSubscription == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -536,7 +536,7 @@ func (s *ServerTransport) dispatchExportTemplateAtManagementGroup(req *http.Requ
 	if s.srv.ExportTemplateAtManagementGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExportTemplateAtManagementGroup not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportTemplate`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/exportTemplate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -569,7 +569,7 @@ func (s *ServerTransport) dispatchExportTemplateAtResourceGroup(req *http.Reques
 	if s.srv.ExportTemplateAtResourceGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExportTemplateAtResourceGroup not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportTemplate`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/exportTemplate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -602,7 +602,7 @@ func (s *ServerTransport) dispatchExportTemplateAtSubscription(req *http.Request
 	if s.srv.ExportTemplateAtSubscription == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExportTemplateAtSubscription not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportTemplate`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/exportTemplate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -631,7 +631,7 @@ func (s *ServerTransport) dispatchGetAtManagementGroup(req *http.Request) (*http
 	if s.srv.GetAtManagementGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAtManagementGroup not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -664,7 +664,7 @@ func (s *ServerTransport) dispatchGetAtResourceGroup(req *http.Request) (*http.R
 	if s.srv.GetAtResourceGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAtResourceGroup not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -697,7 +697,7 @@ func (s *ServerTransport) dispatchGetAtSubscription(req *http.Request) (*http.Re
 	if s.srv.GetAtSubscription == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAtSubscription not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -728,7 +728,7 @@ func (s *ServerTransport) dispatchNewListAtManagementGroupPager(req *http.Reques
 	}
 	newListAtManagementGroupPager := s.newListAtManagementGroupPager.get(req)
 	if newListAtManagementGroupPager == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -765,7 +765,7 @@ func (s *ServerTransport) dispatchNewListAtResourceGroupPager(req *http.Request)
 	}
 	newListAtResourceGroupPager := s.newListAtResourceGroupPager.get(req)
 	if newListAtResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -802,7 +802,7 @@ func (s *ServerTransport) dispatchNewListAtSubscriptionPager(req *http.Request) 
 	}
 	newListAtSubscriptionPager := s.newListAtSubscriptionPager.get(req)
 	if newListAtSubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -835,7 +835,7 @@ func (s *ServerTransport) dispatchBeginValidateStackAtManagementGroup(req *http.
 	}
 	beginValidateStackAtManagementGroup := s.beginValidateStackAtManagementGroup.get(req)
 	if beginValidateStackAtManagementGroup == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -883,7 +883,7 @@ func (s *ServerTransport) dispatchBeginValidateStackAtResourceGroup(req *http.Re
 	}
 	beginValidateStackAtResourceGroup := s.beginValidateStackAtResourceGroup.get(req)
 	if beginValidateStackAtResourceGroup == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -931,7 +931,7 @@ func (s *ServerTransport) dispatchBeginValidateStackAtSubscription(req *http.Req
 	}
 	beginValidateStackAtSubscription := s.beginValidateStackAtSubscription.get(req)
 	if beginValidateStackAtSubscription == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

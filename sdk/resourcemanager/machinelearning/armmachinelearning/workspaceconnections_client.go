@@ -31,6 +31,9 @@ type WorkspaceConnectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkspaceConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceConnectionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -73,7 +76,7 @@ func (client *WorkspaceConnectionsClient) Create(ctx context.Context, resourceGr
 func (client *WorkspaceConnectionsClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, body WorkspaceConnectionPropertiesV2BasicResource, _ *WorkspaceConnectionsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -148,7 +151,7 @@ func (client *WorkspaceConnectionsClient) Delete(ctx context.Context, resourceGr
 func (client *WorkspaceConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, _ *WorkspaceConnectionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -203,7 +206,7 @@ func (client *WorkspaceConnectionsClient) Get(ctx context.Context, resourceGroup
 func (client *WorkspaceConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, _ *WorkspaceConnectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -281,7 +284,7 @@ func (client *WorkspaceConnectionsClient) listCreateRequest(ctx context.Context,
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -359,7 +362,7 @@ func (client *WorkspaceConnectionsClient) ListSecrets(ctx context.Context, resou
 func (client *WorkspaceConnectionsClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, _ *WorkspaceConnectionsClientListSecretsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/listsecrets"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -451,7 +454,7 @@ func (client *WorkspaceConnectionsClient) testConnection(ctx context.Context, re
 func (client *WorkspaceConnectionsClient) testConnectionCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, options *WorkspaceConnectionsClientBeginTestConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/testconnection"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -514,7 +517,7 @@ func (client *WorkspaceConnectionsClient) Update(ctx context.Context, resourceGr
 func (client *WorkspaceConnectionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, body WorkspaceConnectionUpdateParameter, _ *WorkspaceConnectionsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

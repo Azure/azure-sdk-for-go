@@ -92,7 +92,7 @@ func (s *SubgroupsServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/interconnectGroups/(?P<interconnectGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/subgroups/(?P<subgroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/interconnectGroups/(?P<interconnectGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/subgroups/(?P<subgroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -131,7 +131,7 @@ func (s *SubgroupsServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	}
 	newListPager := s.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/interconnectGroups/(?P<interconnectGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/subgroups`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/interconnectGroups/(?P<interconnectGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/subgroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

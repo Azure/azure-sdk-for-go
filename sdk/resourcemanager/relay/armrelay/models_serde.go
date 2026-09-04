@@ -497,6 +497,7 @@ func (n NamespaceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateTime[datetime.RFC3339](objectMap, "createdAt", n.CreatedAt, true)
 	populate(objectMap, "metricId", n.MetricID)
+	populate(objectMap, "minimumTlsVersion", n.MinimumTLSVersion)
 	populate(objectMap, "privateEndpointConnections", n.PrivateEndpointConnections)
 	populate(objectMap, "provisioningState", n.ProvisioningState)
 	populate(objectMap, "publicNetworkAccess", n.PublicNetworkAccess)
@@ -520,6 +521,9 @@ func (n *NamespaceProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "metricId":
 			err = unpopulate(val, "MetricID", &n.MetricID)
+			delete(rawMsg, key)
+		case "minimumTlsVersion":
+			err = unpopulate(val, "MinimumTLSVersion", &n.MinimumTLSVersion)
 			delete(rawMsg, key)
 		case "privateEndpointConnections":
 			err = unpopulate(val, "PrivateEndpointConnections", &n.PrivateEndpointConnections)

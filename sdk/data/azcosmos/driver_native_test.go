@@ -250,6 +250,27 @@ func TestConcurrentCallersShareFailedInitialization(t *testing.T) {
 		"Rust retries twice inside one shared initialization attempt")
 }
 
+// When the leader and follower contexts finish together, the follower observes its own cause
+// regardless of which ready select branch wins.
+func TestInitializationWaiterReturnsOwnCancellationCause(t *testing.T) {
+	done := make(chan struct{})
+	close(done)
+	d := &nativeDriver{
+		creating: &driverCreation{
+			done: done,
+			err:  context.DeadlineExceeded,
+		},
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	for range 100 {
+		_, err := d.ensureDriver(ctx)
+		require.ErrorIs(t, err, context.Canceled)
+		require.NotErrorIs(t, err, context.DeadlineExceeded)
+	}
+}
+
 // Initialize creates the driver and fills the account-properties and routing caches. The cached
 // handle proves a later operation will not initialize again.
 func TestNativeInitializeCreatesTheDriver(t *testing.T) {

@@ -188,7 +188,10 @@ func (d *nativeDriver) ensureDriver(ctx context.Context) (*C.cosmos_driver_t, er
 			}
 			select {
 			case <-inFlight.done:
-				if isCancellation(inFlight.err) && ctx.Err() == nil {
+				if err := ctx.Err(); err != nil {
+					return nil, err
+				}
+				if isCancellation(inFlight.err) {
 					continue
 				}
 				return inFlight.driver, inFlight.err

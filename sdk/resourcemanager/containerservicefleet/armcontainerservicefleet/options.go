@@ -49,6 +49,50 @@ type AutoUpgradeProfilesClientListByFleetOptions struct {
 	Top *int32
 }
 
+// ClusterMeshProfilesClientBeginApplyOptions contains the optional parameters for the ClusterMeshProfilesClient.BeginApply
+// method.
+type ClusterMeshProfilesClientBeginApplyOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ClusterMeshProfilesClientBeginCreateOrUpdateOptions contains the optional parameters for the ClusterMeshProfilesClient.BeginCreateOrUpdate
+// method.
+type ClusterMeshProfilesClientBeginCreateOrUpdateOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// The request should only proceed if no entity matches this string.
+	IfNoneMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ClusterMeshProfilesClientBeginDeleteOptions contains the optional parameters for the ClusterMeshProfilesClient.BeginDelete
+// method.
+type ClusterMeshProfilesClientBeginDeleteOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ClusterMeshProfilesClientGetOptions contains the optional parameters for the ClusterMeshProfilesClient.Get method.
+type ClusterMeshProfilesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClusterMeshProfilesClientListByFleetOptions contains the optional parameters for the ClusterMeshProfilesClient.NewListByFleetPager
+// method.
+type ClusterMeshProfilesClientListByFleetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // FleetManagedNamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the FleetManagedNamespacesClient.BeginCreateOrUpdate
 // method.
 type FleetManagedNamespacesClientBeginCreateOrUpdateOptions struct {

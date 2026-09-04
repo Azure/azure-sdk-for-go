@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/StorageTargets_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01/StorageTargets_CreateOrUpdate.json
 func ExampleStorageTargetsClient_BeginCreateOrUpdate_storageTargetsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleStorageTargetsClient_BeginCreateOrUpdate_storageTargetsCreateOrUpdat
 	// }
 }
 
-// Generated from example definition: 2026-01-01/StorageTargets_CreateOrUpdate_BlobNfs.json
+// Generated from example definition: 2026-08-01/StorageTargets_CreateOrUpdate_BlobNfs.json
 func ExampleStorageTargetsClient_BeginCreateOrUpdate_storageTargetsCreateOrUpdateBlobNfs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleStorageTargetsClient_BeginCreateOrUpdate_storageTargetsCreateOrUpdat
 	// }
 }
 
-// Generated from example definition: 2026-01-01/StorageTargets_CreateOrUpdate_NoJunctions.json
+// Generated from example definition: 2026-08-01/StorageTargets_CreateOrUpdate_NoJunctions.json
 func ExampleStorageTargetsClient_BeginCreateOrUpdate_storageTargetsCreateOrUpdateNoJunctions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +223,7 @@ func ExampleStorageTargetsClient_BeginCreateOrUpdate_storageTargetsCreateOrUpdat
 	// }
 }
 
-// Generated from example definition: 2026-01-01/StorageTargets_DnsRefresh.json
+// Generated from example definition: 2026-08-01/StorageTargets_DnsRefresh.json
 func ExampleStorageTargetsClient_BeginDNSRefresh() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -249,7 +249,7 @@ func ExampleStorageTargetsClient_BeginDNSRefresh() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/StorageTargets_Delete.json
+// Generated from example definition: 2026-08-01/StorageTargets_Delete.json
 func ExampleStorageTargetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,7 +275,7 @@ func ExampleStorageTargetsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/StorageTargets_Get.json
+// Generated from example definition: 2026-08-01/StorageTargets_Get.json
 func ExampleStorageTargetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -333,7 +333,7 @@ func ExampleStorageTargetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/StorageTargets_ListByCache.json
+// Generated from example definition: 2026-08-01/StorageTargets_ListByCache.json
 func ExampleStorageTargetsClient_NewListByCachePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -460,7 +460,7 @@ func ExampleStorageTargetsClient_NewListByCachePager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/StorageTargets_RestoreDefaults.json
+// Generated from example definition: 2026-08-01/StorageTargets_RestoreDefaults.json
 func ExampleStorageTargetsClient_BeginRestoreDefaults() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

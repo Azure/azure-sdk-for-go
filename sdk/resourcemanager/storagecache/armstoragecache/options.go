@@ -307,6 +307,29 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// RebalanceJobsClientBeginDeleteOptions contains the optional parameters for the RebalanceJobsClient.BeginDelete method.
+type RebalanceJobsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// RebalanceJobsClientBeginUpdateOptions contains the optional parameters for the RebalanceJobsClient.BeginUpdate method.
+type RebalanceJobsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// RebalanceJobsClientGetOptions contains the optional parameters for the RebalanceJobsClient.Get method.
+type RebalanceJobsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RebalanceJobsClientListByAmlFilesystemOptions contains the optional parameters for the RebalanceJobsClient.NewListByAmlFilesystemPager
+// method.
+type RebalanceJobsClientListByAmlFilesystemOptions struct {
+	// placeholder for future optional parameters
+}
+
 // SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
 type SKUsClientListOptions struct {
 	// placeholder for future optional parameters

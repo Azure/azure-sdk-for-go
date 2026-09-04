@@ -19,7 +19,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/directory"
@@ -103,7 +102,7 @@ func Example_file_CreateFileWithExpiryRelativeToNow() {
 	handleError(err)
 	fmt.Println(*resp.ExpiresOn)
 
-	recording.Sleep(time.Second * 10)
+	time.Sleep(time.Second * 10)
 	_, err = fClient.GetProperties(context.Background(), nil)
 	// we expect datalakeerror.PathNotFound
 	handleError(err)

@@ -2087,6 +2087,23 @@ type PolicyParameters struct {
 	DataStoreParametersList []DataStoreParametersClassification
 }
 
+// PostgreSQLFlexibleServerBackupDatasourceParameters - Parameters to be used during configuration of backup of PostgreSQL
+// Flexible Servers
+type PostgreSQLFlexibleServerBackupDatasourceParameters struct {
+	// CONSTANT; Field has constant value "PostgreSqlFlexibleServerBackupDatasourceParameters", any specified value is ignored.
+	ObjectType *string
+
+	// Type of backup taken, Logical/Physical
+	BackupSolutionType *BackupSolutionType
+}
+
+// GetBackupDatasourceParameters implements the BackupDatasourceParametersClassification interface for type PostgreSQLFlexibleServerBackupDatasourceParameters.
+func (p *PostgreSQLFlexibleServerBackupDatasourceParameters) GetBackupDatasourceParameters() *BackupDatasourceParameters {
+	return &BackupDatasourceParameters{
+		ObjectType: p.ObjectType,
+	}
+}
+
 // ProtectionStatusDetails - Protection status details
 type ProtectionStatusDetails struct {
 	// Specifies the protection status error of the resource
@@ -2351,6 +2368,18 @@ type RestoreTargetInfoBase struct {
 
 // GetRestoreTargetInfoBase implements the RestoreTargetInfoBaseClassification interface for type RestoreTargetInfoBase.
 func (r *RestoreTargetInfoBase) GetRestoreTargetInfoBase() *RestoreTargetInfoBase { return r }
+
+// ResumeProtectionRequest - Request body of Resume protection when MSI is to be changed
+type ResumeProtectionRequest struct {
+	// REQUIRED; Type of Datasource object, used to initialize the right inherited type
+	ObjectType *ResumeProtectionRequestObjectType
+
+	// identity details of the MSI
+	IdentityDetails *IdentityDetails
+}
+
+// GetResumeProtectionRequest implements the ResumeProtectionRequestClassification interface for type ResumeProtectionRequest.
+func (r *ResumeProtectionRequest) GetResumeProtectionRequest() *ResumeProtectionRequest { return r }
 
 // RetentionTag - Retention tag
 type RetentionTag struct {

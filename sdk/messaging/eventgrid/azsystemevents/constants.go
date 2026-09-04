@@ -49,6 +49,42 @@ func PossibleACSCallParticipantRoleKindValues() []ACSCallParticipantRoleKind {
 	}
 }
 
+// ACSChatRetentionPolicyKind - Chat Retention Policy kind
+type ACSChatRetentionPolicyKind string
+
+const (
+	// ACSChatRetentionPolicyKindNone - None
+	ACSChatRetentionPolicyKindNone ACSChatRetentionPolicyKind = "none"
+	// ACSChatRetentionPolicyKindThreadCreationDate - ThreadCreationDate
+	ACSChatRetentionPolicyKindThreadCreationDate ACSChatRetentionPolicyKind = "threadCreationDate"
+)
+
+// PossibleACSChatRetentionPolicyKindValues returns the possible values for the ACSChatRetentionPolicyKind const type.
+func PossibleACSChatRetentionPolicyKindValues() []ACSChatRetentionPolicyKind {
+	return []ACSChatRetentionPolicyKind{
+		ACSChatRetentionPolicyKindNone,
+		ACSChatRetentionPolicyKindThreadCreationDate,
+	}
+}
+
+// ACSChatThreadDeletedReasonType - Chat Thread Deletion Reason Type
+type ACSChatThreadDeletedReasonType string
+
+const (
+	// ACSChatThreadDeletedReasonTypeDeletedByPolicy - DeletedByPolicy
+	ACSChatThreadDeletedReasonTypeDeletedByPolicy ACSChatThreadDeletedReasonType = "deletedByPolicy"
+	// ACSChatThreadDeletedReasonTypeDeletedByUser - DeletedByUser
+	ACSChatThreadDeletedReasonTypeDeletedByUser ACSChatThreadDeletedReasonType = "deletedByUser"
+)
+
+// PossibleACSChatThreadDeletedReasonTypeValues returns the possible values for the ACSChatThreadDeletedReasonType const type.
+func PossibleACSChatThreadDeletedReasonTypeValues() []ACSChatThreadDeletedReasonType {
+	return []ACSChatThreadDeletedReasonType{
+		ACSChatThreadDeletedReasonTypeDeletedByPolicy,
+		ACSChatThreadDeletedReasonTypeDeletedByUser,
+	}
+}
+
 // ACSEmailDeliveryReportStatus - The status of the email. Any value other than Delivered is considered failed.
 type ACSEmailDeliveryReportStatus string
 
@@ -344,42 +380,6 @@ func PossibleACSUserEngagementValues() []ACSUserEngagement {
 	return []ACSUserEngagement{
 		ACSUserEngagementClick,
 		ACSUserEngagementView,
-	}
-}
-
-// AcsChatRetentionPolicyKind - Chat Retention Policy kind
-type AcsChatRetentionPolicyKind string
-
-const (
-	// AcsChatRetentionPolicyKindNone - None
-	AcsChatRetentionPolicyKindNone AcsChatRetentionPolicyKind = "none"
-	// AcsChatRetentionPolicyKindThreadCreationDate - ThreadCreationDate
-	AcsChatRetentionPolicyKindThreadCreationDate AcsChatRetentionPolicyKind = "threadCreationDate"
-)
-
-// PossibleAcsChatRetentionPolicyKindValues returns the possible values for the AcsChatRetentionPolicyKind const type.
-func PossibleAcsChatRetentionPolicyKindValues() []AcsChatRetentionPolicyKind {
-	return []AcsChatRetentionPolicyKind{
-		AcsChatRetentionPolicyKindNone,
-		AcsChatRetentionPolicyKindThreadCreationDate,
-	}
-}
-
-// AcsChatThreadDeletedReasonType - Chat Thread Deletion Reason Type
-type AcsChatThreadDeletedReasonType string
-
-const (
-	// AcsChatThreadDeletedReasonTypeDeletedByPolicy - DeletedByPolicy
-	AcsChatThreadDeletedReasonTypeDeletedByPolicy AcsChatThreadDeletedReasonType = "deletedByPolicy"
-	// AcsChatThreadDeletedReasonTypeDeletedByUser - DeletedByUser
-	AcsChatThreadDeletedReasonTypeDeletedByUser AcsChatThreadDeletedReasonType = "deletedByUser"
-)
-
-// PossibleAcsChatThreadDeletedReasonTypeValues returns the possible values for the AcsChatThreadDeletedReasonType const type.
-func PossibleAcsChatThreadDeletedReasonTypeValues() []AcsChatThreadDeletedReasonType {
-	return []AcsChatThreadDeletedReasonType{
-		AcsChatThreadDeletedReasonTypeDeletedByPolicy,
-		AcsChatThreadDeletedReasonTypeDeletedByUser,
 	}
 }
 

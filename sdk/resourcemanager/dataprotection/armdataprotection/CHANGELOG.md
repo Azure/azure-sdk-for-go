@@ -1,6 +1,6 @@
 # Release History
 
-## 4.2.0 (2026-08-14)
+## 4.2.0 (2026-09-04)
 ### Features Added
 
 - New enum type `GranularityLevel` with values `GranularityLevelProtectedItemLevel`, `GranularityLevelProtectedItemWithParentTag`, `GranularityLevelVaultLevel`

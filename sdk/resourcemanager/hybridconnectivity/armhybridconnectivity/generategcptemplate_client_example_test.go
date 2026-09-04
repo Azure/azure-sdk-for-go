@@ -13,8 +13,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity"
 )
 
-// Generated from example definition: 2027-01-01/GenerateAwsTemplate_Post_MaximumSet_Gen.json
-func ExampleGenerateAwsTemplateClient_Post_generateAwsTemplatePostGeneratedByMaximumSetRule() {
+// Generated from example definition: 2027-01-01/GenerateGcpTemplate_Post_MaximumSet_Gen.json
+func ExampleGenerateGcpTemplateClient_Post_generateGcpTemplatePostMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -24,12 +24,30 @@ func ExampleGenerateAwsTemplateClient_Post_generateAwsTemplatePostGeneratedByMax
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewGenerateAwsTemplateClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").Post(ctx, armhybridconnectivity.GenerateAwsTemplateRequest{
-		ConnectorID: to.Ptr("pnxcfjidglabnwxit"),
+	res, err := clientFactory.NewGenerateGcpTemplateClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").Post(ctx, armhybridconnectivity.GenerateGcpTemplateRequest{
+		ConnectorID:       to.Ptr("lvrdneuerxztxiixlzswcbm"),
+		GcpTemplateFormat: to.Ptr(armhybridconnectivity.GcpTemplateFormatTerraform),
 		SolutionTypes: []*armhybridconnectivity.SolutionTypeSettings{
 			{
 				SolutionType:     to.Ptr("hjyownzpfxwiufmd"),
 				SolutionSettings: &armhybridconnectivity.SolutionSettings{},
+			},
+		},
+		GcpCloudProfile: &armhybridconnectivity.GcpCloudProfile{
+			ProjectProperties: &armhybridconnectivity.GcpProjectProperties{
+				ProjectNumber: to.Ptr("mjubieitixhpm"),
+				ProjectID:     to.Ptr("mjubieitixhpmid"),
+			},
+			OrganizationProperties: &armhybridconnectivity.GcpOrganizationProperties{
+				OrganizationID:          to.Ptr("vqlzghfdinlamurmg"),
+				ManagementProjectNumber: to.Ptr("mjubieitixhpm"),
+				ManagementProjectID:     to.Ptr("mjubieitixhpmid"),
+				ExcludedProjectNumbers: []*string{
+					to.Ptr("sepdnfxmhcrubtklwllxfbhju"),
+				},
+				ExcludedFolderIDs: []*string{
+					to.Ptr("xxl"),
+				},
 			},
 		},
 	}, nil)
@@ -39,14 +57,14 @@ func ExampleGenerateAwsTemplateClient_Post_generateAwsTemplatePostGeneratedByMax
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhybridconnectivity.GenerateAwsTemplateClientPostResponse{
-	// 	GenerateAwsTemplateResponse: armhybridconnectivity.GenerateAwsTemplateResponse{
+	// res = armhybridconnectivity.GenerateGcpTemplateClientPostResponse{
+	// 	GenerateGcpTemplateResponse: armhybridconnectivity.GenerateGcpTemplateResponse{
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2027-01-01/GenerateAwsTemplate_Post_MinimumSet_Gen.json
-func ExampleGenerateAwsTemplateClient_Post_generateAwsTemplatePostGeneratedByMinimumSetRule() {
+// Generated from example definition: 2027-01-01/GenerateGcpTemplate_Post_MinimumSet_Gen.json
+func ExampleGenerateGcpTemplateClient_Post_generateGcpTemplatePostMaximumSetGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -56,8 +74,8 @@ func ExampleGenerateAwsTemplateClient_Post_generateAwsTemplatePostGeneratedByMin
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewGenerateAwsTemplateClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").Post(ctx, armhybridconnectivity.GenerateAwsTemplateRequest{
-		ConnectorID: to.Ptr("pnxcfjidglabnwxit"),
+	res, err := clientFactory.NewGenerateGcpTemplateClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").Post(ctx, armhybridconnectivity.GenerateGcpTemplateRequest{
+		ConnectorID: to.Ptr("lvrdneuerxztxiixlzswcbm"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -65,8 +83,8 @@ func ExampleGenerateAwsTemplateClient_Post_generateAwsTemplatePostGeneratedByMin
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhybridconnectivity.GenerateAwsTemplateClientPostResponse{
-	// 	GenerateAwsTemplateResponse: armhybridconnectivity.GenerateAwsTemplateResponse{
+	// res = armhybridconnectivity.GenerateGcpTemplateClientPostResponse{
+	// 	GenerateGcpTemplateResponse: armhybridconnectivity.GenerateGcpTemplateResponse{
 	// 	},
 	// }
 }

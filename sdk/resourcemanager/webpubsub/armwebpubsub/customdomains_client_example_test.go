@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01-preview/WebPubSubCustomDomains_CreateOrUpdate.json
+// Generated from example definition: 2025-12-01-preview/WebPubSubCustomDomains_CreateOrUpdate.json
 func ExampleCustomDomainsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,10 +25,10 @@ func ExampleCustomDomainsClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewCustomDomainsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myWebPubSubService", "myDomain", armwebpubsub.CustomDomain{
 		Properties: &armwebpubsub.CustomDomainProperties{
+			DomainName: to.Ptr("example.com"),
 			CustomCertificate: &armwebpubsub.ResourceReference{
 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/customCertificates/myCert"),
 			},
-			DomainName: to.Ptr("example.com"),
 		},
 	}, nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleCustomDomainsClient_BeginCreateOrUpdate() {
 	}
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSubCustomDomains_Delete.json
+// Generated from example definition: 2025-12-01-preview/WebPubSubCustomDomains_Delete.json
 func ExampleCustomDomainsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleCustomDomainsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSubCustomDomains_Get.json
+// Generated from example definition: 2025-12-01-preview/WebPubSubCustomDomains_Get.json
 func ExampleCustomDomainsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,20 +86,20 @@ func ExampleCustomDomainsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armwebpubsub.CustomDomainsClientGetResponse{
 	// 	CustomDomain: armwebpubsub.CustomDomain{
-	// 		Name: to.Ptr("myDomain"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/customDomains/myDomain"),
 	// 		Properties: &armwebpubsub.CustomDomainProperties{
+	// 			ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
+	// 			DomainName: to.Ptr("example.com"),
 	// 			CustomCertificate: &armwebpubsub.ResourceReference{
 	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/customCertificates/myCert"),
 	// 			},
-	// 			DomainName: to.Ptr("example.com"),
-	// 			ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/customDomains/myDomain"),
+	// 		Name: to.Ptr("myDomain"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSubCustomDomains_List.json
+// Generated from example definition: 2025-12-01-preview/WebPubSubCustomDomains_List.json
 func ExampleCustomDomainsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,15 +125,15 @@ func ExampleCustomDomainsClient_NewListPager() {
 		// 	CustomDomainList: armwebpubsub.CustomDomainList{
 		// 		Value: []*armwebpubsub.CustomDomain{
 		// 			{
-		// 				Name: to.Ptr("myDomain"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/customDomains/myDomain"),
 		// 				Properties: &armwebpubsub.CustomDomainProperties{
+		// 					ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
+		// 					DomainName: to.Ptr("example.com"),
 		// 					CustomCertificate: &armwebpubsub.ResourceReference{
 		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/customCertificates/myCert"),
 		// 					},
-		// 					DomainName: to.Ptr("example.com"),
-		// 					ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 		// 				},
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/customDomains/myDomain"),
+		// 				Name: to.Ptr("myDomain"),
 		// 			},
 		// 		},
 		// 	},

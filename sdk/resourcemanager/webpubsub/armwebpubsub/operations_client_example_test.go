@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01-preview/Operations_List.json
+// Generated from example definition: 2025-12-01-preview/Operations_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,21 +35,21 @@ func ExampleOperationsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armwebpubsub.OperationsClientListResponse{
 		// 	OperationList: armwebpubsub.OperationList{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/example-rg/providers/Microsoft.SignalRService/operations?api-version=2025-01-01-preview&$skipToken=abcd1234"),
 		// 		Value: []*armwebpubsub.Operation{
 		// 			{
 		// 				Name: to.Ptr("Microsoft.SignalRService/WebPubSub/read"),
+		// 				IsDataAction: to.Ptr(false),
 		// 				Display: &armwebpubsub.OperationDisplay{
-		// 					Description: to.Ptr("View the resource settings and configurations in the management portal or through API"),
-		// 					Operation: to.Ptr("Manage WebPubSub (read-only)"),
 		// 					Provider: to.Ptr("Microsoft.SignalRService"),
 		// 					Resource: to.Ptr("WebPubSub"),
+		// 					Operation: to.Ptr("Manage WebPubSub (read-only)"),
+		// 					Description: to.Ptr("View the resource settings and configurations in the management portal or through API"),
 		// 				},
-		// 				IsDataAction: to.Ptr(false),
 		// 				Properties: &armwebpubsub.OperationProperties{
 		// 				},
 		// 			},
 		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.SignalRService?$skipToken=opaqueString"),
 		// 	},
 		// }
 	}

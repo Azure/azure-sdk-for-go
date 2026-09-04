@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01-preview/Usages_List.json
+// Generated from example definition: 2025-12-01-preview/Usages_List.json
 func ExampleUsagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,29 +35,29 @@ func ExampleUsagesClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armwebpubsub.UsagesClientListResponse{
 		// 	SignalRServiceUsageList: armwebpubsub.SignalRServiceUsageList{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subid/providers/Microsoft.SignalRService/...pathToMoreResults..."),
 		// 		Value: []*armwebpubsub.SignalRServiceUsage{
 		// 			{
-		// 				Name: &armwebpubsub.SignalRServiceUsageName{
-		// 					LocalizedValue: to.Ptr("Usage1"),
-		// 					Value: to.Ptr("Usage1"),
-		// 				},
-		// 				CurrentValue: to.Ptr[int64](0),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.SignalRService/locations/eastus/usages/Usage1"),
+		// 				CurrentValue: to.Ptr[int64](0),
 		// 				Limit: to.Ptr[int64](100),
+		// 				Name: &armwebpubsub.SignalRServiceUsageName{
+		// 					Value: to.Ptr("Usage1"),
+		// 					LocalizedValue: to.Ptr("Usage1"),
+		// 				},
 		// 				Unit: to.Ptr("Count"),
 		// 			},
 		// 			{
-		// 				Name: &armwebpubsub.SignalRServiceUsageName{
-		// 					LocalizedValue: to.Ptr("Usage2"),
-		// 					Value: to.Ptr("Usage2"),
-		// 				},
-		// 				CurrentValue: to.Ptr[int64](0),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.SignalRService/locations/eastus/usages/Usage2"),
+		// 				CurrentValue: to.Ptr[int64](0),
 		// 				Limit: to.Ptr[int64](100),
+		// 				Name: &armwebpubsub.SignalRServiceUsageName{
+		// 					Value: to.Ptr("Usage2"),
+		// 					LocalizedValue: to.Ptr("Usage2"),
+		// 				},
 		// 				Unit: to.Ptr("Count"),
 		// 			},
 		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subid/providers/Microsoft.SignalRService/...pathToMoreResults..."),
 		// 	},
 		// }
 	}

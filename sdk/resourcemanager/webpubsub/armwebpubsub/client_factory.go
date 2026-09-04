@@ -71,6 +71,14 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
+// NewPersistentStoragesClient creates a new instance of PersistentStoragesClient.
+func (c *ClientFactory) NewPersistentStoragesClient() *PersistentStoragesClient {
+	return &PersistentStoragesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewPrivateEndpointConnectionsClient creates a new instance of PrivateEndpointConnectionsClient.
 func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient {
 	return &PrivateEndpointConnectionsClient{

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01-preview/WebPubSubHubs_CreateOrUpdate.json
+// Generated from example definition: 2025-12-01-preview/WebPubSubHubs_CreateOrUpdate.json
 func ExampleHubsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,30 +25,33 @@ func ExampleHubsClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewHubsClient().BeginCreateOrUpdate(ctx, "exampleHub", "myResourceGroup", "myWebPubSubService", armwebpubsub.Hub{
 		Properties: &armwebpubsub.HubProperties{
-			AnonymousConnectPolicy: to.Ptr("allow"),
 			EventHandlers: []*armwebpubsub.EventHandler{
 				{
+					URLTemplate:      to.Ptr("http://host.com"),
+					UserEventPattern: to.Ptr("*"),
+					SystemEvents: []*string{
+						to.Ptr("connect"),
+						to.Ptr("connected"),
+					},
 					Auth: &armwebpubsub.UpstreamAuthSettings{
 						Type: to.Ptr(armwebpubsub.UpstreamAuthTypeManagedIdentity),
 						ManagedIdentity: &armwebpubsub.ManagedIdentitySettings{
 							Resource: to.Ptr("abc"),
 						},
 					},
-					SystemEvents: []*string{
-						to.Ptr("connect"),
-						to.Ptr("connected"),
+					GroupPresenceEvents: &armwebpubsub.GroupPresenceEventFilters{
+						EventNames: []*armwebpubsub.GroupPresenceEventName{
+							to.Ptr(armwebpubsub.GroupPresenceEventNameJoined),
+							to.Ptr(armwebpubsub.GroupPresenceEventNameLeft),
+						},
+						GroupFilters: []*string{
+							to.Ptr("chat*"),
+						},
 					},
-					URLTemplate:      to.Ptr("http://host.com"),
-					UserEventPattern: to.Ptr("*"),
 				},
 			},
 			EventListeners: []*armwebpubsub.EventListener{
 				{
-					Endpoint: &armwebpubsub.EventHubEndpoint{
-						Type:                    to.Ptr(armwebpubsub.EventListenerEndpointDiscriminatorEventHub),
-						EventHubName:            to.Ptr("eventHubName1"),
-						FullyQualifiedNamespace: to.Ptr("example.servicebus.windows.net"),
-					},
 					Filter: &armwebpubsub.EventNameFilter{
 						Type: to.Ptr(armwebpubsub.EventListenerFilterDiscriminatorEventName),
 						SystemEvents: []*string{
@@ -57,9 +60,21 @@ func ExampleHubsClient_BeginCreateOrUpdate() {
 						},
 						UserEventPattern: to.Ptr("*"),
 					},
+					Endpoint: &armwebpubsub.EventHubEndpoint{
+						Type:                    to.Ptr(armwebpubsub.EventListenerEndpointDiscriminatorEventHub),
+						FullyQualifiedNamespace: to.Ptr("example.servicebus.windows.net"),
+						EventHubName:            to.Ptr("eventHubName1"),
+					},
 				},
 			},
+			AnonymousConnectPolicy:              to.Ptr("allow"),
 			WebSocketKeepAliveIntervalInSeconds: to.Ptr[int32](50),
+			Chat: &armwebpubsub.ChatSettings{
+				Mode: to.Ptr("Enabled"),
+				PersistentStorage: &armwebpubsub.ResourceReference{
+					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/persistentStorages/myStor"),
+				},
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -74,34 +89,34 @@ func ExampleHubsClient_BeginCreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armwebpubsub.HubsClientCreateOrUpdateResponse{
 	// 	Hub: armwebpubsub.Hub{
-	// 		Name: to.Ptr("exampleHub"),
-	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub/hubs"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/hubs/exampleHub"),
 	// 		Properties: &armwebpubsub.HubProperties{
-	// 			AnonymousConnectPolicy: to.Ptr("allow"),
 	// 			EventHandlers: []*armwebpubsub.EventHandler{
 	// 				{
+	// 					URLTemplate: to.Ptr("http://host.com"),
+	// 					UserEventPattern: to.Ptr("*"),
+	// 					SystemEvents: []*string{
+	// 						to.Ptr("connect"),
+	// 						to.Ptr("connected"),
+	// 					},
 	// 					Auth: &armwebpubsub.UpstreamAuthSettings{
 	// 						Type: to.Ptr(armwebpubsub.UpstreamAuthTypeManagedIdentity),
 	// 						ManagedIdentity: &armwebpubsub.ManagedIdentitySettings{
 	// 							Resource: to.Ptr("abc"),
 	// 						},
 	// 					},
-	// 					SystemEvents: []*string{
-	// 						to.Ptr("connect"),
-	// 						to.Ptr("connected"),
+	// 					GroupPresenceEvents: &armwebpubsub.GroupPresenceEventFilters{
+	// 						EventNames: []*armwebpubsub.GroupPresenceEventName{
+	// 							to.Ptr(armwebpubsub.GroupPresenceEventNameJoined),
+	// 							to.Ptr(armwebpubsub.GroupPresenceEventNameLeft),
+	// 						},
+	// 						GroupFilters: []*string{
+	// 							to.Ptr("chat*"),
+	// 						},
 	// 					},
-	// 					URLTemplate: to.Ptr("http://host.com"),
-	// 					UserEventPattern: to.Ptr("*"),
 	// 				},
 	// 			},
 	// 			EventListeners: []*armwebpubsub.EventListener{
 	// 				{
-	// 					Endpoint: &armwebpubsub.EventHubEndpoint{
-	// 						Type: to.Ptr(armwebpubsub.EventListenerEndpointDiscriminatorEventHub),
-	// 						EventHubName: to.Ptr("eventHubName1"),
-	// 						FullyQualifiedNamespace: to.Ptr("example.servicebus.windows.net"),
-	// 					},
 	// 					Filter: &armwebpubsub.EventNameFilter{
 	// 						Type: to.Ptr(armwebpubsub.EventListenerFilterDiscriminatorEventName),
 	// 						SystemEvents: []*string{
@@ -110,15 +125,30 @@ func ExampleHubsClient_BeginCreateOrUpdate() {
 	// 						},
 	// 						UserEventPattern: to.Ptr("*"),
 	// 					},
+	// 					Endpoint: &armwebpubsub.EventHubEndpoint{
+	// 						Type: to.Ptr(armwebpubsub.EventListenerEndpointDiscriminatorEventHub),
+	// 						FullyQualifiedNamespace: to.Ptr("example.servicebus.windows.net"),
+	// 						EventHubName: to.Ptr("eventHubName1"),
+	// 					},
 	// 				},
 	// 			},
+	// 			AnonymousConnectPolicy: to.Ptr("allow"),
 	// 			WebSocketKeepAliveIntervalInSeconds: to.Ptr[int32](50),
+	// 			Chat: &armwebpubsub.ChatSettings{
+	// 				Mode: to.Ptr("Enabled"),
+	// 				PersistentStorage: &armwebpubsub.ResourceReference{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/persistentStorages/myStor"),
+	// 				},
+	// 			},
 	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/hubs/exampleHub"),
+	// 		Name: to.Ptr("exampleHub"),
+	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub/hubs"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSubHubs_Delete.json
+// Generated from example definition: 2025-12-01-preview/WebPubSubHubs_Delete.json
 func ExampleHubsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +174,7 @@ func ExampleHubsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSubHubs_Get.json
+// Generated from example definition: 2025-12-01-preview/WebPubSubHubs_Get.json
 func ExampleHubsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,34 +194,34 @@ func ExampleHubsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armwebpubsub.HubsClientGetResponse{
 	// 	Hub: armwebpubsub.Hub{
-	// 		Name: to.Ptr("exampleHub"),
-	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub/hubs"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/hubs/exampleHub"),
 	// 		Properties: &armwebpubsub.HubProperties{
-	// 			AnonymousConnectPolicy: to.Ptr("allow"),
 	// 			EventHandlers: []*armwebpubsub.EventHandler{
 	// 				{
+	// 					URLTemplate: to.Ptr("http://host.com"),
+	// 					UserEventPattern: to.Ptr("*"),
+	// 					SystemEvents: []*string{
+	// 						to.Ptr("connect"),
+	// 						to.Ptr("connected"),
+	// 					},
 	// 					Auth: &armwebpubsub.UpstreamAuthSettings{
 	// 						Type: to.Ptr(armwebpubsub.UpstreamAuthTypeManagedIdentity),
 	// 						ManagedIdentity: &armwebpubsub.ManagedIdentitySettings{
 	// 							Resource: to.Ptr("abc"),
 	// 						},
 	// 					},
-	// 					SystemEvents: []*string{
-	// 						to.Ptr("connect"),
-	// 						to.Ptr("connected"),
+	// 					GroupPresenceEvents: &armwebpubsub.GroupPresenceEventFilters{
+	// 						EventNames: []*armwebpubsub.GroupPresenceEventName{
+	// 							to.Ptr(armwebpubsub.GroupPresenceEventNameJoined),
+	// 							to.Ptr(armwebpubsub.GroupPresenceEventNameLeft),
+	// 						},
+	// 						GroupFilters: []*string{
+	// 							to.Ptr("chat*"),
+	// 						},
 	// 					},
-	// 					URLTemplate: to.Ptr("http://host.com"),
-	// 					UserEventPattern: to.Ptr("*"),
 	// 				},
 	// 			},
 	// 			EventListeners: []*armwebpubsub.EventListener{
 	// 				{
-	// 					Endpoint: &armwebpubsub.EventHubEndpoint{
-	// 						Type: to.Ptr(armwebpubsub.EventListenerEndpointDiscriminatorEventHub),
-	// 						EventHubName: to.Ptr("eventHubName1"),
-	// 						FullyQualifiedNamespace: to.Ptr("example.servicebus.windows.net"),
-	// 					},
 	// 					Filter: &armwebpubsub.EventNameFilter{
 	// 						Type: to.Ptr(armwebpubsub.EventListenerFilterDiscriminatorEventName),
 	// 						SystemEvents: []*string{
@@ -200,15 +230,30 @@ func ExampleHubsClient_Get() {
 	// 						},
 	// 						UserEventPattern: to.Ptr("*"),
 	// 					},
+	// 					Endpoint: &armwebpubsub.EventHubEndpoint{
+	// 						Type: to.Ptr(armwebpubsub.EventListenerEndpointDiscriminatorEventHub),
+	// 						FullyQualifiedNamespace: to.Ptr("example.servicebus.windows.net"),
+	// 						EventHubName: to.Ptr("eventHubName1"),
+	// 					},
 	// 				},
 	// 			},
+	// 			AnonymousConnectPolicy: to.Ptr("allow"),
 	// 			WebSocketKeepAliveIntervalInSeconds: to.Ptr[int32](50),
+	// 			Chat: &armwebpubsub.ChatSettings{
+	// 				Mode: to.Ptr("Enabled"),
+	// 				PersistentStorage: &armwebpubsub.ResourceReference{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/persistentStorages/myStor"),
+	// 				},
+	// 			},
 	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/hubs/exampleHub"),
+	// 		Name: to.Ptr("exampleHub"),
+	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub/hubs"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSubHubs_List.json
+// Generated from example definition: 2025-12-01-preview/WebPubSubHubs_List.json
 func ExampleHubsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -234,34 +279,34 @@ func ExampleHubsClient_NewListPager() {
 		// 	HubList: armwebpubsub.HubList{
 		// 		Value: []*armwebpubsub.Hub{
 		// 			{
-		// 				Name: to.Ptr("exampleHub"),
-		// 				Type: to.Ptr("Microsoft.SignalRService/WebPubSub/hubs"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/hubs/exampleHub"),
 		// 				Properties: &armwebpubsub.HubProperties{
-		// 					AnonymousConnectPolicy: to.Ptr("allow"),
 		// 					EventHandlers: []*armwebpubsub.EventHandler{
 		// 						{
+		// 							URLTemplate: to.Ptr("http://host.com"),
+		// 							UserEventPattern: to.Ptr("*"),
+		// 							SystemEvents: []*string{
+		// 								to.Ptr("connect"),
+		// 								to.Ptr("connected"),
+		// 							},
 		// 							Auth: &armwebpubsub.UpstreamAuthSettings{
 		// 								Type: to.Ptr(armwebpubsub.UpstreamAuthTypeManagedIdentity),
 		// 								ManagedIdentity: &armwebpubsub.ManagedIdentitySettings{
 		// 									Resource: to.Ptr("abc"),
 		// 								},
 		// 							},
-		// 							SystemEvents: []*string{
-		// 								to.Ptr("connect"),
-		// 								to.Ptr("connected"),
+		// 							GroupPresenceEvents: &armwebpubsub.GroupPresenceEventFilters{
+		// 								EventNames: []*armwebpubsub.GroupPresenceEventName{
+		// 									to.Ptr(armwebpubsub.GroupPresenceEventNameJoined),
+		// 									to.Ptr(armwebpubsub.GroupPresenceEventNameLeft),
+		// 								},
+		// 								GroupFilters: []*string{
+		// 									to.Ptr("chat*"),
+		// 								},
 		// 							},
-		// 							URLTemplate: to.Ptr("http://host.com"),
-		// 							UserEventPattern: to.Ptr("*"),
 		// 						},
 		// 					},
 		// 					EventListeners: []*armwebpubsub.EventListener{
 		// 						{
-		// 							Endpoint: &armwebpubsub.EventHubEndpoint{
-		// 								Type: to.Ptr(armwebpubsub.EventListenerEndpointDiscriminatorEventHub),
-		// 								EventHubName: to.Ptr("eventHubName1"),
-		// 								FullyQualifiedNamespace: to.Ptr("example.servicebus.windows.net"),
-		// 							},
 		// 							Filter: &armwebpubsub.EventNameFilter{
 		// 								Type: to.Ptr(armwebpubsub.EventListenerFilterDiscriminatorEventName),
 		// 								SystemEvents: []*string{
@@ -270,10 +315,25 @@ func ExampleHubsClient_NewListPager() {
 		// 								},
 		// 								UserEventPattern: to.Ptr("*"),
 		// 							},
+		// 							Endpoint: &armwebpubsub.EventHubEndpoint{
+		// 								Type: to.Ptr(armwebpubsub.EventListenerEndpointDiscriminatorEventHub),
+		// 								FullyQualifiedNamespace: to.Ptr("example.servicebus.windows.net"),
+		// 								EventHubName: to.Ptr("eventHubName1"),
+		// 							},
 		// 						},
 		// 					},
+		// 					AnonymousConnectPolicy: to.Ptr("allow"),
 		// 					WebSocketKeepAliveIntervalInSeconds: to.Ptr[int32](50),
+		// 					Chat: &armwebpubsub.ChatSettings{
+		// 						Mode: to.Ptr("Enabled"),
+		// 						PersistentStorage: &armwebpubsub.ResourceReference{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/persistentStorages/myStor"),
+		// 						},
+		// 					},
 		// 				},
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/hubs/exampleHub"),
+		// 				Name: to.Ptr("exampleHub"),
+		// 				Type: to.Ptr("Microsoft.SignalRService/WebPubSub/hubs"),
 		// 			},
 		// 		},
 		// 	},

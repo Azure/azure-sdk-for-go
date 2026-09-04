@@ -18,6 +18,15 @@ type ApplicationFirewallSettings struct {
 	MaxClientConnectionLifetimeInSeconds *int64
 }
 
+// ChatSettings - Chat settings.
+type ChatSettings struct {
+	// Enable or disable the chat feature.
+	Mode *string
+
+	// Reference to the the persistent storage for perisisting chat states.
+	PersistentStorage *ResourceReference
+}
+
 // ClientConnectionCountRule - A base class for client connection count rules
 type ClientConnectionCountRule struct {
 	// REQUIRED
@@ -148,6 +157,10 @@ type EventHandler struct {
 	// Upstream auth settings. If not set, no auth is used for upstream messages.
 	Auth *UpstreamAuthSettings
 
+	// The group presence events that this event handler is concerned with. Group presence events are triggered when connections
+	// join or leave groups in the hub. If the value is null, no presence events will be sent to this event handler.
+	GroupPresenceEvents *GroupPresenceEventFilters
+
 	// Gets or sets the list of system events.
 	SystemEvents []*string
 
@@ -233,6 +246,17 @@ func (e *EventNameFilter) GetEventListenerFilter() *EventListenerFilter {
 	}
 }
 
+// GroupPresenceEventFilters - Represents presence event filters for event handler configuration.
+type GroupPresenceEventFilters struct {
+	// REQUIRED; The concerning event names. Valid values are "joined", "left". If the value is null or empty, no presence events
+	// will be sent to the event handler.
+	EventNames []*GroupPresenceEventName
+
+	// The group filters. Only events from these groups will be sent to the event handler. Each element is a pattern that may
+	// match multiple groups. If null or empty, events from all groups will be sent (subject to eventNames).
+	GroupFilters []*string
+}
+
 // Hub - A hub setting
 type Hub struct {
 	// REQUIRED; Properties of a hub.
@@ -264,6 +288,9 @@ type HubList struct {
 type HubProperties struct {
 	// The settings for configuring if anonymous connections are allowed for this hub: "allow" or "deny". Default to "deny".
 	AnonymousConnectPolicy *string
+
+	// The chat settings for the hub.
+	Chat *ChatSettings
 
 	// Event handler of a hub.
 	EventHandlers []*EventHandler
@@ -487,6 +514,42 @@ type OperationList struct {
 type OperationProperties struct {
 	// An object that describes a specification.
 	ServiceSpecification *ServiceSpecification
+}
+
+// PersistentStorage - A persistent storage
+type PersistentStorage struct {
+	// REQUIRED; Properties of a persistent storage.
+	Properties *PersistentStorageProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PersistentStorageList - Persistent storages list
+type PersistentStorageList struct {
+	// REQUIRED; The PersistentStorage items on this page
+	Value []*PersistentStorage
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// PersistentStorageProperties - Properties of a persistent storage.
+type PersistentStorageProperties struct {
+	// REQUIRED; Reference to the storage account to be used for persistent storage.
+	StorageAccount *ResourceReference
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
 }
 
 // PrivateEndpoint - Private endpoint

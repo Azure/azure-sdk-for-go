@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01-preview/WebPubSubReplicaSharedPrivateLinkResources_CreateOrUpdate.json
+// Generated from example definition: 2025-12-01-preview/WebPubSubReplicaSharedPrivateLinkResources_CreateOrUpdate.json
 func ExampleReplicaSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,9 +42,6 @@ func ExampleReplicaSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armwebpubsub.ReplicaSharedPrivateLinkResourcesClientCreateOrUpdateResponse{
 	// 	SharedPrivateLinkResource: armwebpubsub.SharedPrivateLinkResource{
-	// 		Name: to.Ptr("upstream"),
-	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/upstream"),
 	// 		Properties: &armwebpubsub.SharedPrivateLinkResourceProperties{
 	// 			GroupID: to.Ptr("sites"),
 	// 			PrivateLinkResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Web/sites/myWebApp"),
@@ -52,11 +49,14 @@ func ExampleReplicaSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 	// 			RequestMessage: to.Ptr("Please approve"),
 	// 			Status: to.Ptr(armwebpubsub.SharedPrivateLinkResourceStatusApproved),
 	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/upstream"),
+	// 		Name: to.Ptr("upstream"),
+	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSubReplicaSharedPrivateLinkResources_Get.json
+// Generated from example definition: 2025-12-01-preview/WebPubSubReplicaSharedPrivateLinkResources_Get.json
 func ExampleReplicaSharedPrivateLinkResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,9 +76,6 @@ func ExampleReplicaSharedPrivateLinkResourcesClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armwebpubsub.ReplicaSharedPrivateLinkResourcesClientGetResponse{
 	// 	SharedPrivateLinkResource: armwebpubsub.SharedPrivateLinkResource{
-	// 		Name: to.Ptr("upstream"),
-	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/upstream"),
 	// 		Properties: &armwebpubsub.SharedPrivateLinkResourceProperties{
 	// 			GroupID: to.Ptr("sites"),
 	// 			PrivateLinkResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Web/sites/myWebApp"),
@@ -86,11 +83,14 @@ func ExampleReplicaSharedPrivateLinkResourcesClient_Get() {
 	// 			RequestMessage: to.Ptr("Please approve"),
 	// 			Status: to.Ptr(armwebpubsub.SharedPrivateLinkResourceStatusApproved),
 	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/upstream"),
+	// 		Name: to.Ptr("upstream"),
+	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSubReplicaSharedPrivateLinkResources_List.json
+// Generated from example definition: 2025-12-01-preview/WebPubSubReplicaSharedPrivateLinkResources_List.json
 func ExampleReplicaSharedPrivateLinkResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,9 +116,6 @@ func ExampleReplicaSharedPrivateLinkResourcesClient_NewListPager() {
 		// 	SharedPrivateLinkResourceList: armwebpubsub.SharedPrivateLinkResourceList{
 		// 		Value: []*armwebpubsub.SharedPrivateLinkResource{
 		// 			{
-		// 				Name: to.Ptr("upstream"),
-		// 				Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/upstream"),
 		// 				Properties: &armwebpubsub.SharedPrivateLinkResourceProperties{
 		// 					GroupID: to.Ptr("sites"),
 		// 					PrivateLinkResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Web/sites/myWebApp"),
@@ -126,6 +123,9 @@ func ExampleReplicaSharedPrivateLinkResourcesClient_NewListPager() {
 		// 					RequestMessage: to.Ptr("Please approve"),
 		// 					Status: to.Ptr(armwebpubsub.SharedPrivateLinkResourceStatusApproved),
 		// 				},
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/upstream"),
+		// 				Name: to.Ptr("upstream"),
+		// 				Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
 		// 			},
 		// 		},
 		// 	},

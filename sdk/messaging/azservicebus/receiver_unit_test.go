@@ -41,6 +41,23 @@ func TestReceiver_ReceiveMessages_AMQPLinksFailure(t *testing.T) {
 	require.Empty(t, messages)
 }
 
+func TestReceiver_ReceiveMessages_IssueCreditError(t *testing.T) {
+	issueCreditErr := &amqp.ConnError{}
+	amqpReceiver := &internal.FakeAMQPReceiver{IssueCreditErr: issueCreditErr}
+	receiver := &Receiver{
+		amqpLinks:         &internal.FakeAMQPLinks{Receiver: amqpReceiver},
+		cancelReleaser:    &atomic.Value{},
+		maxAllowedCredits: defaultLinkRxBuffer,
+	}
+	receiver.cancelReleaser.Store(emptyCancelFn)
+
+	messages, err := receiver.receiveMessagesImpl(context.Background(), 1, nil)
+
+	require.ErrorIs(t, err, issueCreditErr)
+	require.Empty(t, messages)
+	require.Zero(t, amqpReceiver.ReceiveCalled)
+}
+
 var receiveModesForTests = []struct {
 	Name string
 	Val  ReceiveMode

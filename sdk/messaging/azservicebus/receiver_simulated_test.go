@@ -5,6 +5,7 @@ package azservicebus
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"testing"
 	"time"
@@ -141,6 +142,100 @@ func TestReceiver_Simulated_Recovery(t *testing.T) {
 	require.NoError(t, err)
 
 	emulation.RequireNoLeaks(t, md.Events)
+}
+
+func TestReceiver_ReceiveMessages_RecoversFromConnectionScopedNotAllowed(t *testing.T) {
+	var receiveAttempts int
+	var md *emulation.MockData
+	md, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
+		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
+			if mr.Source == "queue" {
+				mr.EXPECT().Receive(gomock.Any(), gomock.Nil()).DoAndReturn(func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
+					receiveAttempts++
+					if receiveAttempts == 1 {
+						return nil, fmt.Errorf("wrapped: %w", &amqp.ConnError{RemoteErr: &amqp.Error{Condition: amqp.ErrCondNotAllowed}})
+					}
+
+					return mr.InternalReceive(ctx, o)
+				}).AnyTimes()
+			}
+
+			return nil
+		},
+	}, &ClientOptions{
+		RetryOptions: exported.RetryOptions{
+			MaxRetries:    1,
+			RetryDelay:    time.Millisecond,
+			MaxRetryDelay: time.Millisecond,
+		},
+	})
+	defer cleanup()
+
+	sender, err := client.NewSender("queue", nil)
+	require.NoError(t, err)
+	err = sender.SendMessage(context.Background(), &Message{Body: []byte("hello")}, nil)
+	require.NoError(t, err)
+	test.RequireClose(t, sender)
+
+	receiver, err := client.NewReceiverForQueue("queue", &ReceiverOptions{ReceiveMode: ReceiveModeReceiveAndDelete})
+	require.NoError(t, err)
+	receiverLinks := receiver.amqpLinks
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.Len(t, messages, 1)
+	require.Equal(t, 2, receiveAttempts)
+	require.Equal(t, 2, countEmulationEvents(md.Events.All(), emulation.EventTypeConnOpen))
+	require.Equal(t, 3, len(md.Events.GetOpenLinks()))
+	require.Same(t, receiverLinks, receiver.amqpLinks)
+}
+
+func TestReceiver_ReceiveMessages_RecoveryExhaustionLeavesReceiverUsable(t *testing.T) {
+	failReceives := true
+	var receiveAttempts int
+	_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
+		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
+			if mr.Source == "queue" {
+				mr.EXPECT().Receive(gomock.Any(), gomock.Nil()).DoAndReturn(func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
+					receiveAttempts++
+					if failReceives {
+						return nil, fmt.Errorf("wrapped: %w", &amqp.ConnError{RemoteErr: &amqp.Error{Condition: amqp.ErrCondNotAllowed}})
+					}
+
+					return mr.InternalReceive(ctx, o)
+				}).AnyTimes()
+			}
+
+			return nil
+		},
+	}, &ClientOptions{
+		RetryOptions: exported.RetryOptions{
+			MaxRetries:    1,
+			RetryDelay:    time.Millisecond,
+			MaxRetryDelay: time.Millisecond,
+		},
+	})
+	defer cleanup()
+
+	sender, err := client.NewSender("queue", nil)
+	require.NoError(t, err)
+	err = sender.SendMessage(context.Background(), &Message{Body: []byte("hello")}, nil)
+	require.NoError(t, err)
+	test.RequireClose(t, sender)
+
+	receiver, err := client.NewReceiverForQueue("queue", &ReceiverOptions{ReceiveMode: ReceiveModeReceiveAndDelete})
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.Error(t, err)
+	require.Empty(t, messages)
+	require.Equal(t, 2, receiveAttempts)
+
+	failReceives = false
+	messages, err = receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.Len(t, messages, 1)
+	require.Equal(t, 3, receiveAttempts)
 }
 
 func TestReceiver_ReceiveMessages_SomeMessagesAndCancelled(t *testing.T) {
@@ -320,6 +415,53 @@ func TestReceiver_ReceiveMessages_SomeMessagesAndError(t *testing.T) {
 
 	require.Equal(t, 0, len(md.Events.GetOpenConns()))
 	require.Equal(t, 0, len(md.Events.GetOpenLinks()), "Receive links are still open")
+}
+
+func TestReceiver_ReceiveMessages_SomeMessagesAndConnectionScopedNotAllowed(t *testing.T) {
+	var receiveAttempts int
+	var md *emulation.MockData
+	md, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
+		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
+			if mr.Source == "queue" {
+				mr.EXPECT().Receive(gomock.Any(), gomock.Nil()).DoAndReturn(func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
+					receiveAttempts++
+					switch receiveAttempts {
+					case 1:
+						return mr.InternalReceive(ctx, o)
+					case 2:
+						return nil, fmt.Errorf("wrapped: %w", &amqp.ConnError{RemoteErr: &amqp.Error{Condition: amqp.ErrCondNotAllowed}})
+					default:
+						return nil, internal.NewErrNonRetriable("unexpected extra receive")
+					}
+				}).AnyTimes()
+			}
+
+			return nil
+		},
+	}, &ClientOptions{
+		RetryOptions: exported.RetryOptions{
+			MaxRetries:    1,
+			RetryDelay:    time.Millisecond,
+			MaxRetryDelay: time.Millisecond,
+		},
+	})
+	defer cleanup()
+
+	sender, err := client.NewSender("queue", nil)
+	require.NoError(t, err)
+	err = sender.SendMessage(context.Background(), &Message{Body: []byte("hello")}, nil)
+	require.NoError(t, err)
+	test.RequireClose(t, sender)
+
+	receiver, err := client.NewReceiverForQueue("queue", &ReceiverOptions{ReceiveMode: ReceiveModeReceiveAndDelete})
+	require.NoError(t, err)
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	messages, err := receiver.ReceiveMessages(ctx, 2, nil)
+	require.Equal(t, []int{2, 1}, []int{receiveAttempts, countEmulationEvents(md.Events.All(), emulation.EventTypeConnOpen)}, "receive attempts and connection opens")
+	require.NoError(t, err)
+	require.Equal(t, []string{"hello"}, getSortedBodies(messages))
 }
 
 func TestReceiver_UserFacingErrors(t *testing.T) {
@@ -710,6 +852,7 @@ func TestSessionReceiverUserFacingErrors_Methods(t *testing.T) {
 				}).AnyTimes()
 
 				mr.EXPECT().LinkSourceFilterValue("com.microsoft:session-filter").Return("session ID").AnyTimes()
+				mr.EXPECT().Properties().Return(map[string]any(nil)).AnyTimes()
 			}
 
 			return nil

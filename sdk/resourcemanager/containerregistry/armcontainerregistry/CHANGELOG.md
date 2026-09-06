@@ -1,5 +1,19 @@
 # Release History
 
+## 3.1.0-beta.3 (2026-09-06)
+### Features Added
+
+- New enum type `AuthType` with values `AuthTypeManagedIdentity`, `AuthTypeSyncToken`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New struct `ManagedServiceIdentity`
+- New struct `UserAssignedIdentity`
+- New field `Identity` in struct `ConnectedRegistry`
+- New field `Identity` in struct `ConnectedRegistryUpdateParameters`
+- New field `AvailableGib`, `TotalGib` in struct `StatusDetailProperties`
+- New field `AuthType` in struct `SyncProperties`
+- New field `AuthType` in struct `SyncUpdateProperties`
+
+
 ## 3.1.0-beta.2 (2026-07-03)
 ### Features Added
 

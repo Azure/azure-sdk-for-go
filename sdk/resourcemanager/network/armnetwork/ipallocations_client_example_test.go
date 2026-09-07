@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/IpAllocationCreate.json
+// Generated from example definition: 2025-09-01/IpAllocationCreate.json
 func ExampleIPAllocationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleIPAllocationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/IpAllocationDelete.json
+// Generated from example definition: 2025-09-01/IpAllocationDelete.json
 func ExampleIPAllocationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleIPAllocationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/IpAllocationGet.json
+// Generated from example definition: 2025-09-01/IpAllocationGet.json
 func ExampleIPAllocationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleIPAllocationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/IpAllocationList.json
+// Generated from example definition: 2025-09-01/IpAllocationList.json
 func ExampleIPAllocationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,7 +182,7 @@ func ExampleIPAllocationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/IpAllocationListByResourceGroup.json
+// Generated from example definition: 2025-09-01/IpAllocationListByResourceGroup.json
 func ExampleIPAllocationsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -241,7 +241,7 @@ func ExampleIPAllocationsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/IpAllocationUpdateTags.json
+// Generated from example definition: 2025-09-01/IpAllocationUpdateTags.json
 func ExampleIPAllocationsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

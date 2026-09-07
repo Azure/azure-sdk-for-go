@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-02-preview/AlertConfigurations_CreateOrUpdate.json
+// Generated from example definition: 2026-06-02-preview/AlertConfigurations_CreateOrUpdate.json
 func ExampleAlertConfigurationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,10 +54,10 @@ func ExampleAlertConfigurationsClient_BeginCreateOrUpdate() {
 	// 			ProvisioningState: to.Ptr(armcontainerservice.AlertConfigurationProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armcontainerservice.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00.0000000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@example.com"),
 	// 			CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00.0000000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@example.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 	// 		},
@@ -65,7 +65,7 @@ func ExampleAlertConfigurationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/AlertConfigurations_Delete.json
+// Generated from example definition: 2026-06-02-preview/AlertConfigurations_Delete.json
 func ExampleAlertConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleAlertConfigurationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-02-preview/AlertConfigurations_Get.json
+// Generated from example definition: 2026-06-02-preview/AlertConfigurations_Get.json
 func ExampleAlertConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,10 +117,10 @@ func ExampleAlertConfigurationsClient_Get() {
 	// 			ProvisioningState: to.Ptr(armcontainerservice.AlertConfigurationProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armcontainerservice.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00.0000000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@example.com"),
 	// 			CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00.0000000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@example.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 	// 		},
@@ -128,7 +128,7 @@ func ExampleAlertConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/AlertConfigurations_ListByManagedCluster.json
+// Generated from example definition: 2026-06-02-preview/AlertConfigurations_ListByManagedCluster.json
 func ExampleAlertConfigurationsClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,10 +165,10 @@ func ExampleAlertConfigurationsClient_NewListByManagedClusterPager() {
 		// 					ProvisioningState: to.Ptr(armcontainerservice.AlertConfigurationProvisioningStateSucceeded),
 		// 				},
 		// 				SystemData: &armcontainerservice.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00.0000000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("user@example.com"),
 		// 					CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00.0000000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@example.com"),
 		// 					LastModifiedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 		// 				},

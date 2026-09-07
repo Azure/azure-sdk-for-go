@@ -60,12 +60,7 @@ func (client *AvailableBalancesClient) GetByBillingAccount(ctx context.Context, 
 	if err != nil {
 		return AvailableBalancesClientGetByBillingAccountResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AvailableBalancesClientGetByBillingAccountResponse{}, err
-	}
-	resp, err := client.getByBillingAccountHandleResponse(httpResp)
-	return resp, err
+	return client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.
@@ -87,8 +82,11 @@ func (client *AvailableBalancesClient) getByBillingAccountCreateRequest(ctx cont
 }
 
 // getByBillingAccountHandleResponse handles the GetByBillingAccount response.
-func (client *AvailableBalancesClient) getByBillingAccountHandleResponse(resp *http.Response) (AvailableBalancesClientGetByBillingAccountResponse, error) {
+func (client *AvailableBalancesClient) getByBillingAccountHandleResponse(resp *http.Response, successCodes ...int) (AvailableBalancesClientGetByBillingAccountResponse, error) {
 	result := AvailableBalancesClientGetByBillingAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailableBalance); err != nil {
 		return AvailableBalancesClientGetByBillingAccountResponse{}, err
 	}
@@ -117,12 +115,7 @@ func (client *AvailableBalancesClient) GetByBillingProfile(ctx context.Context, 
 	if err != nil {
 		return AvailableBalancesClientGetByBillingProfileResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AvailableBalancesClientGetByBillingProfileResponse{}, err
-	}
-	resp, err := client.getByBillingProfileHandleResponse(httpResp)
-	return resp, err
+	return client.getByBillingProfileHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByBillingProfileCreateRequest creates the GetByBillingProfile request.
@@ -148,8 +141,11 @@ func (client *AvailableBalancesClient) getByBillingProfileCreateRequest(ctx cont
 }
 
 // getByBillingProfileHandleResponse handles the GetByBillingProfile response.
-func (client *AvailableBalancesClient) getByBillingProfileHandleResponse(resp *http.Response) (AvailableBalancesClientGetByBillingProfileResponse, error) {
+func (client *AvailableBalancesClient) getByBillingProfileHandleResponse(resp *http.Response, successCodes ...int) (AvailableBalancesClientGetByBillingProfileResponse, error) {
 	result := AvailableBalancesClientGetByBillingProfileResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailableBalance); err != nil {
 		return AvailableBalancesClientGetByBillingProfileResponse{}, err
 	}

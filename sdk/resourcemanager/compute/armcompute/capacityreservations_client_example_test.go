@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/BlockCapacityReservation_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/BlockCapacityReservation_CreateOrUpdate.json
 func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateABlockCapacityReservation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,13 +76,13 @@ func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateABlockC
 	// 				Start: to.Ptr("2025-08-01"),
 	// 				End: to.Ptr("2025-08-02"),
 	// 			},
-	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
+	// 			ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservation_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/CapacityReservation_CreateOrUpdate.json
 func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateACapacityReservation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,13 +135,83 @@ func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateACapaci
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
 	// 			ReservationID: to.Ptr("{GUID}"),
 	// 			ProvisioningState: to.Ptr("Creating"),
-	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
+	// 			ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/TargetedCapacityReservation_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/FutureCapacityReservation_CreateOrUpdate.json
+func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateAFutureCapacityReservation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCapacityReservationsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "futureCapacityReservationGroup", "futureCapacityReservation", armcompute.CapacityReservation{
+		Location: to.Ptr("westus"),
+		Tags: map[string]*string{
+			"department": to.Ptr("HR"),
+		},
+		SKU: &armcompute.SKU{
+			Name:     to.Ptr("Standard_DS1_v2"),
+			Capacity: to.Ptr[int64](4),
+		},
+		Properties: &armcompute.CapacityReservationProperties{
+			ScheduleProfile: &armcompute.ScheduleProfile{
+				Start:                 to.Ptr("2026-08-01T12:00:00Z"),
+				MinimumCommitmentDays: to.Ptr[int32](30),
+			},
+		},
+		Zones: []*string{
+			to.Ptr("1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.CapacityReservationsClientCreateOrUpdateResponse{
+	// 	CapacityReservation: armcompute.CapacityReservation{
+	// 		Name: to.Ptr("futureCapacityReservation"),
+	// 		Location: to.Ptr("westus"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/capacityReservationGroups/futureCapacityReservationGroup/capacityReservations/futureCapacityReservation"),
+	// 		Tags: map[string]*string{
+	// 			"department": to.Ptr("HR"),
+	// 		},
+	// 		SKU: &armcompute.SKU{
+	// 			Name: to.Ptr("Standard_DS1_v2"),
+	// 			Capacity: to.Ptr[int64](4),
+	// 		},
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
+	// 		Properties: &armcompute.CapacityReservationProperties{
+	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
+	// 			ReservationID: to.Ptr("{GUID}"),
+	// 			ProvisioningState: to.Ptr("Creating"),
+	// 			ScheduleProfile: &armcompute.ScheduleProfile{
+	// 				Start: to.Ptr("2026-08-01T12:00:00Z"),
+	// 				MinimumCommitmentDays: to.Ptr[int32](30),
+	// 				ModifiableUntil: to.Ptr(time.Date(2026, time.June, 6, 12, 0, 0, 0, time.UTC)),
+	// 			},
+	// 			ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/capacityReservationExamples/TargetedCapacityReservation_CreateOrUpdate.json
 func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateATargetedCapacityReservation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,13 +264,13 @@ func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateATarget
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
 	// 			ReservationID: to.Ptr("{GUID}"),
 	// 			ProvisioningState: to.Ptr("Creating"),
-	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
+	// 			ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservation_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/CapacityReservation_Delete_MaximumSet_Gen.json
 func ExampleCapacityReservationsClient_BeginDelete_capacityReservationDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -226,7 +296,7 @@ func ExampleCapacityReservationsClient_BeginDelete_capacityReservationDeleteMaxi
 	// }
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservation_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/CapacityReservation_Delete_MinimumSet_Gen.json
 func ExampleCapacityReservationsClient_BeginDelete_capacityReservationDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -252,7 +322,7 @@ func ExampleCapacityReservationsClient_BeginDelete_capacityReservationDeleteMini
 	// }
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/BlockCapacityReservation_Get.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/BlockCapacityReservation_Get.json
 func ExampleCapacityReservationsClient_Get_getABlockCapacityReservation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -277,7 +347,7 @@ func ExampleCapacityReservationsClient_Get_getABlockCapacityReservation() {
 	// 		Properties: &armcompute.CapacityReservationProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
 	// 			ReservationID: to.Ptr("{GUID}"),
-	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
+	// 			ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
 	// 			VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
@@ -314,7 +384,7 @@ func ExampleCapacityReservationsClient_Get_getABlockCapacityReservation() {
 	// 				Start: to.Ptr("2025-08-01T12:00:00Z"),
 	// 				End: to.Ptr("2025-08-02T11:30:00Z"),
 	// 			},
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
 	// 		},
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
@@ -332,7 +402,7 @@ func ExampleCapacityReservationsClient_Get_getABlockCapacityReservation() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservation_Get.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/CapacityReservation_Get.json
 func ExampleCapacityReservationsClient_Get_getACapacityReservation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -357,7 +427,7 @@ func ExampleCapacityReservationsClient_Get_getACapacityReservation() {
 	// 		Properties: &armcompute.CapacityReservationProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
 	// 			ReservationID: to.Ptr("{GUID}"),
-	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
+	// 			ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
 	// 			VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
@@ -390,7 +460,7 @@ func ExampleCapacityReservationsClient_Get_getACapacityReservation() {
 	// 					},
 	// 				},
 	// 			},
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
 	// 		},
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
@@ -408,7 +478,152 @@ func ExampleCapacityReservationsClient_Get_getACapacityReservation() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/TargetedCapacityReservation_Get.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/FutureCapacityReservation_Get.json
+func ExampleCapacityReservationsClient_Get_getAFutureCapacityReservation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCapacityReservationsClient().Get(ctx, "myResourceGroup", "futureCapacityReservationGroup", "futureCapacityReservation", &armcompute.CapacityReservationsClientGetOptions{
+		Expand: to.Ptr(armcompute.CapacityReservationInstanceViewTypesInstanceView)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.CapacityReservationsClientGetResponse{
+	// 	CapacityReservation: armcompute.CapacityReservation{
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/capacityReservationGroups/futureCapacityReservationGroup/capacityReservations/futureCapacityReservation"),
+	// 		Properties: &armcompute.CapacityReservationProperties{
+	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
+	// 			ReservationID: to.Ptr("{GUID}"),
+	// 			ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+	// 			VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
+	// 				},
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM2"),
+	// 				},
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM3"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			InstanceView: &armcompute.CapacityReservationInstanceView{
+	// 				UtilizationInfo: &armcompute.CapacityReservationUtilization{
+	// 					CurrentCapacity: to.Ptr[int32](4),
+	// 					VirtualMachinesAllocated: []*armcompute.SubResourceReadOnly{
+	// 						{
+	// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
+	// 						},
+	// 						{
+	// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM2"),
+	// 						},
+	// 					},
+	// 				},
+	// 				Statuses: []*armcompute.InstanceViewStatus{
+	// 					{
+	// 						Code: to.Ptr("ProvisioningState/succeeded"),
+	// 						Level: to.Ptr(armcompute.StatusLevelTypesInfo),
+	// 						DisplayStatus: to.Ptr("Provisioning succeeded"),
+	// 					},
+	// 				},
+	// 				ReservationStateInfo: &armcompute.CapacityReservationStateInfo{
+	// 					ReservationState: to.Ptr(armcompute.ReservationStateLive),
+	// 				},
+	// 			},
+	// 			ScheduleProfile: &armcompute.ScheduleProfile{
+	// 				Start: to.Ptr("2026-08-01T12:00:00Z"),
+	// 				MinimumCommitmentDays: to.Ptr[int32](30),
+	// 				ModifiableUntil: to.Ptr(time.Date(2026, time.June, 6, 12, 0, 0, 0, time.UTC)),
+	// 			},
+	// 			TimeCreated: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+	// 		},
+	// 		Location: to.Ptr("westus"),
+	// 		Tags: map[string]*string{
+	// 			"department": to.Ptr("HR"),
+	// 		},
+	// 		SKU: &armcompute.SKU{
+	// 			Name: to.Ptr("Standard_DS1_v2"),
+	// 			Capacity: to.Ptr[int64](4),
+	// 		},
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
+	// 		Name: to.Ptr("futureCapacityReservation"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/capacityReservationExamples/OpenCapacityReservation_Get.json
+func ExampleCapacityReservationsClient_Get_getAnOpenCapacityReservationWithInstanceView() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCapacityReservationsClient().Get(ctx, "myResourceGroup", "openCapacityReservationGroup", "openCapacityReservation", &armcompute.CapacityReservationsClientGetOptions{
+		Expand: to.Ptr(armcompute.CapacityReservationInstanceViewTypesInstanceView)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.CapacityReservationsClientGetResponse{
+	// 	CapacityReservation: armcompute.CapacityReservation{
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/capacityReservationGroups/openCapacityReservationGroup/capacityReservations/openCapacityReservation"),
+	// 		Properties: &armcompute.CapacityReservationProperties{
+	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
+	// 			ReservationID: to.Ptr("{GUID}"),
+	// 			ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			InstanceView: &armcompute.CapacityReservationInstanceView{
+	// 				UtilizationInfo: &armcompute.CapacityReservationUtilization{
+	// 					CurrentCapacity: to.Ptr[int32](10),
+	// 					UsedReservedCountBySubscription: map[string]*int32{
+	// 						"{subscription-id1}": to.Ptr[int32](3),
+	// 						"{subscription-id2}": to.Ptr[int32](2),
+	// 					},
+	// 				},
+	// 				Statuses: []*armcompute.InstanceViewStatus{
+	// 					{
+	// 						Code: to.Ptr("ProvisioningState/succeeded"),
+	// 						Level: to.Ptr(armcompute.StatusLevelTypesInfo),
+	// 						DisplayStatus: to.Ptr("Provisioning succeeded"),
+	// 					},
+	// 				},
+	// 			},
+	// 			TimeCreated: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+	// 		},
+	// 		Location: to.Ptr("westus"),
+	// 		Tags: map[string]*string{
+	// 			"{tagName}": to.Ptr("{tagValue}"),
+	// 		},
+	// 		SKU: &armcompute.SKU{
+	// 			Name: to.Ptr("Standard_DS1_v2"),
+	// 			Capacity: to.Ptr[int64](10),
+	// 		},
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
+	// 		Name: to.Ptr("openCapacityReservation"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/capacityReservationExamples/TargetedCapacityReservation_Get.json
 func ExampleCapacityReservationsClient_Get_getATargetedCapacityReservation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -433,7 +648,7 @@ func ExampleCapacityReservationsClient_Get_getATargetedCapacityReservation() {
 	// 		Properties: &armcompute.CapacityReservationProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
 	// 			ReservationID: to.Ptr("{GUID}"),
-	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
+	// 			ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
 	// 			VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
@@ -466,7 +681,7 @@ func ExampleCapacityReservationsClient_Get_getATargetedCapacityReservation() {
 	// 					},
 	// 				},
 	// 			},
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
 	// 		},
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
@@ -484,7 +699,7 @@ func ExampleCapacityReservationsClient_Get_getATargetedCapacityReservation() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/BlockCapacityReservation_ListByReservationGroup.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/BlockCapacityReservation_ListByReservationGroup.json
 func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_listBlockCapacityReservationsInReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -518,7 +733,7 @@ func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_li
 		// 				Properties: &armcompute.CapacityReservationProperties{
 		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
 		// 					ReservationID: to.Ptr("{GUID}"),
-		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
+		// 					ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
 		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
@@ -555,7 +770,7 @@ func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_li
 		// 				Properties: &armcompute.CapacityReservationProperties{
 		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
 		// 					ReservationID: to.Ptr("{GUID}"),
-		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
+		// 					ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
 		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM4"),
@@ -584,7 +799,7 @@ func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_li
 	}
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservation_ListByReservationGroup.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/CapacityReservation_ListByReservationGroup.json
 func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_listCapacityReservationsInReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -618,7 +833,7 @@ func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_li
 		// 				Properties: &armcompute.CapacityReservationProperties{
 		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
 		// 					ReservationID: to.Ptr("{GUID}"),
-		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
+		// 					ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
 		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
@@ -651,7 +866,7 @@ func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_li
 		// 				Properties: &armcompute.CapacityReservationProperties{
 		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
 		// 					ReservationID: to.Ptr("{GUID}"),
-		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
+		// 					ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
 		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM4"),
@@ -676,7 +891,109 @@ func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_li
 	}
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/TargetedCapacityReservation_ListByReservationGroup.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/FutureCapacityReservation_ListByReservationGroup.json
+func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_listFutureCapacityReservationsInReservationGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewCapacityReservationsClient().NewListByCapacityReservationGroupPager("myResourceGroup", "futureCapacityReservationGroup", &armcompute.CapacityReservationsClientListByCapacityReservationGroupOptions{
+		Expand: to.Ptr(armcompute.ExpandTypesForGetCapacityReservationGroupsVirtualMachinesRef)})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcompute.CapacityReservationsClientListByCapacityReservationGroupResponse{
+		// 	CapacityReservationListResult: armcompute.CapacityReservationListResult{
+		// 		Value: []*armcompute.CapacityReservation{
+		// 			{
+		// 				Name: to.Ptr("{capacityReservationName}"),
+		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations/{capacityReservationName}"),
+		// 				Type: to.Ptr("Microsoft.Compute/CapacityReservations"),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armcompute.CapacityReservationProperties{
+		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
+		// 					ReservationID: to.Ptr("{GUID}"),
+		// 					ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
+		// 						},
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM2"),
+		// 						},
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM3"),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					ScheduleProfile: &armcompute.ScheduleProfile{
+		// 						Start: to.Ptr("2026-08-01T12:00:00Z"),
+		// 						MinimumCommitmentDays: to.Ptr[int32](30),
+		// 						ModifiableUntil: to.Ptr(time.Date(2026, time.June, 6, 12, 0, 0, 0, time.UTC)),
+		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"department": to.Ptr("HR"),
+		// 				},
+		// 				SKU: &armcompute.SKU{
+		// 					Name: to.Ptr("Standard_DS1_v2"),
+		// 					Capacity: to.Ptr[int64](4),
+		// 				},
+		// 				Zones: []*string{
+		// 					to.Ptr("1"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("{capacityReservationName}"),
+		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations/{capacityReservationName}"),
+		// 				Type: to.Ptr("Microsoft.Compute/CapacityReservations"),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armcompute.CapacityReservationProperties{
+		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
+		// 					ReservationID: to.Ptr("{GUID}"),
+		// 					ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM4"),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					ScheduleProfile: &armcompute.ScheduleProfile{
+		// 						Start: to.Ptr("2026-08-15T12:00:00Z"),
+		// 						MinimumCommitmentDays: to.Ptr[int32](30),
+		// 						ModifiableUntil: to.Ptr(time.Date(2026, time.June, 20, 12, 0, 0, 0, time.UTC)),
+		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"department": to.Ptr("HR"),
+		// 				},
+		// 				SKU: &armcompute.SKU{
+		// 					Name: to.Ptr("Standard_A1_v2"),
+		// 					Capacity: to.Ptr[int64](4),
+		// 				},
+		// 				Zones: []*string{
+		// 					to.Ptr("1"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-04-01/capacityReservationExamples/TargetedCapacityReservation_ListByReservationGroup.json
 func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_listCapacityReservationsInTargetedReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -710,7 +1027,7 @@ func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_li
 		// 				Properties: &armcompute.CapacityReservationProperties{
 		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
 		// 					ReservationID: to.Ptr("{GUID}"),
-		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
+		// 					ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
 		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
@@ -743,7 +1060,7 @@ func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_li
 		// 				Properties: &armcompute.CapacityReservationProperties{
 		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
 		// 					ReservationID: to.Ptr("{GUID}"),
-		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
+		// 					ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
 		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM4"),
@@ -768,7 +1085,7 @@ func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_li
 	}
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservation_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/CapacityReservation_Update_MaximumSet_Gen.json
 func ExampleCapacityReservationsClient_BeginUpdate_capacityReservationUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -789,7 +1106,7 @@ func ExampleCapacityReservationsClient_BeginUpdate_capacityReservationUpdateMaxi
 						Level:         to.Ptr(armcompute.StatusLevelTypesInfo),
 						DisplayStatus: to.Ptr("aaaaaa"),
 						Message:       to.Ptr("a"),
-						Time:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t }()),
+						Time:          to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 522000000, time.UTC)),
 					},
 				},
 			},
@@ -834,7 +1151,7 @@ func ExampleCapacityReservationsClient_BeginUpdate_capacityReservationUpdateMaxi
 	// 					ID: to.Ptr("aaaa"),
 	// 				},
 	// 			},
-	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
+	// 			ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 			InstanceView: &armcompute.CapacityReservationInstanceView{
 	// 				UtilizationInfo: &armcompute.CapacityReservationUtilization{
@@ -850,7 +1167,7 @@ func ExampleCapacityReservationsClient_BeginUpdate_capacityReservationUpdateMaxi
 	// 						Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 	// 						DisplayStatus: to.Ptr("aaaaaa"),
 	// 						Message: to.Ptr("a"),
-	// 						Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t}()),
+	// 						Time: to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 522000000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -862,7 +1179,7 @@ func ExampleCapacityReservationsClient_BeginUpdate_capacityReservationUpdateMaxi
 	// }
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservation_Update_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/CapacityReservation_Update_MinimumSet_Gen.json
 func ExampleCapacityReservationsClient_BeginUpdate_capacityReservationUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

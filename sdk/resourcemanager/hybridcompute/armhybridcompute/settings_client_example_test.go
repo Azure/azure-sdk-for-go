@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-16-preview/settings/SettingsGet.json
+// Generated from example definition: 2026-07-15/settings/SettingsGet.json
 func ExampleSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/settings/SettingsPatch.json
+// Generated from example definition: 2026-07-15/settings/SettingsPatch.json
 func ExampleSettingsClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleSettingsClient_Patch() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/settings/SettingsUpdate.json
+// Generated from example definition: 2026-07-15/settings/SettingsUpdate.json
 func ExampleSettingsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

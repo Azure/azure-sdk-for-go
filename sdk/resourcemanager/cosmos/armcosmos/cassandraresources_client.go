@@ -30,6 +30,9 @@ type CassandraResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCassandraResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CassandraResourcesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -83,8 +86,7 @@ func (client *CassandraResourcesClient) createUpdateCassandraKeyspace(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -93,7 +95,7 @@ func (client *CassandraResourcesClient) createUpdateCassandraKeyspace(ctx contex
 func (client *CassandraResourcesClient) createUpdateCassandraKeyspaceCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, createUpdateCassandraKeyspaceParameters CassandraKeyspaceCreateUpdateParameters, _ *CassandraResourcesClientBeginCreateUpdateCassandraKeyspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -165,8 +167,7 @@ func (client *CassandraResourcesClient) createUpdateCassandraRoleAssignment(ctx 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -175,7 +176,7 @@ func (client *CassandraResourcesClient) createUpdateCassandraRoleAssignment(ctx 
 func (client *CassandraResourcesClient) createUpdateCassandraRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateCassandraRoleAssignmentParameters CassandraRoleAssignmentResource, _ *CassandraResourcesClientBeginCreateUpdateCassandraRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraRoleAssignments/{roleAssignmentId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -247,8 +248,7 @@ func (client *CassandraResourcesClient) createUpdateCassandraRoleDefinition(ctx 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -257,7 +257,7 @@ func (client *CassandraResourcesClient) createUpdateCassandraRoleDefinition(ctx 
 func (client *CassandraResourcesClient) createUpdateCassandraRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateCassandraRoleDefinitionParameters CassandraRoleDefinitionResource, _ *CassandraResourcesClientBeginCreateUpdateCassandraRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraRoleDefinitions/{roleDefinitionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -330,8 +330,7 @@ func (client *CassandraResourcesClient) createUpdateCassandraTable(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -340,7 +339,7 @@ func (client *CassandraResourcesClient) createUpdateCassandraTable(ctx context.C
 func (client *CassandraResourcesClient) createUpdateCassandraTableCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, createUpdateCassandraTableParameters CassandraTableCreateUpdateParameters, _ *CassandraResourcesClientBeginCreateUpdateCassandraTableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/tables/{tableName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -415,8 +414,7 @@ func (client *CassandraResourcesClient) deleteCassandraKeyspace(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -425,7 +423,7 @@ func (client *CassandraResourcesClient) deleteCassandraKeyspace(ctx context.Cont
 func (client *CassandraResourcesClient) deleteCassandraKeyspaceCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, _ *CassandraResourcesClientBeginDeleteCassandraKeyspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -491,8 +489,7 @@ func (client *CassandraResourcesClient) deleteCassandraRoleAssignment(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -501,7 +498,7 @@ func (client *CassandraResourcesClient) deleteCassandraRoleAssignment(ctx contex
 func (client *CassandraResourcesClient) deleteCassandraRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, _ *CassandraResourcesClientBeginDeleteCassandraRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraRoleAssignments/{roleAssignmentId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -567,8 +564,7 @@ func (client *CassandraResourcesClient) deleteCassandraRoleDefinition(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -577,7 +573,7 @@ func (client *CassandraResourcesClient) deleteCassandraRoleDefinition(ctx contex
 func (client *CassandraResourcesClient) deleteCassandraRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, _ *CassandraResourcesClientBeginDeleteCassandraRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraRoleDefinitions/{roleDefinitionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -644,8 +640,7 @@ func (client *CassandraResourcesClient) deleteCassandraTable(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -654,7 +649,7 @@ func (client *CassandraResourcesClient) deleteCassandraTable(ctx context.Context
 func (client *CassandraResourcesClient) deleteCassandraTableCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, _ *CassandraResourcesClientBeginDeleteCassandraTableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/tables/{tableName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -705,19 +700,14 @@ func (client *CassandraResourcesClient) GetCassandraKeyspace(ctx context.Context
 	if err != nil {
 		return CassandraResourcesClientGetCassandraKeyspaceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CassandraResourcesClientGetCassandraKeyspaceResponse{}, err
-	}
-	resp, err := client.getCassandraKeyspaceHandleResponse(httpResp)
-	return resp, err
+	return client.getCassandraKeyspaceHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCassandraKeyspaceCreateRequest creates the GetCassandraKeyspace request.
 func (client *CassandraResourcesClient) getCassandraKeyspaceCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, _ *CassandraResourcesClientGetCassandraKeyspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -744,8 +734,11 @@ func (client *CassandraResourcesClient) getCassandraKeyspaceCreateRequest(ctx co
 }
 
 // getCassandraKeyspaceHandleResponse handles the GetCassandraKeyspace response.
-func (client *CassandraResourcesClient) getCassandraKeyspaceHandleResponse(resp *http.Response) (CassandraResourcesClientGetCassandraKeyspaceResponse, error) {
+func (client *CassandraResourcesClient) getCassandraKeyspaceHandleResponse(resp *http.Response, successCodes ...int) (CassandraResourcesClientGetCassandraKeyspaceResponse, error) {
 	result := CassandraResourcesClientGetCassandraKeyspaceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CassandraKeyspaceGetResults); err != nil {
 		return CassandraResourcesClientGetCassandraKeyspaceResponse{}, err
 	}
@@ -774,19 +767,14 @@ func (client *CassandraResourcesClient) GetCassandraKeyspaceThroughput(ctx conte
 	if err != nil {
 		return CassandraResourcesClientGetCassandraKeyspaceThroughputResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CassandraResourcesClientGetCassandraKeyspaceThroughputResponse{}, err
-	}
-	resp, err := client.getCassandraKeyspaceThroughputHandleResponse(httpResp)
-	return resp, err
+	return client.getCassandraKeyspaceThroughputHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCassandraKeyspaceThroughputCreateRequest creates the GetCassandraKeyspaceThroughput request.
 func (client *CassandraResourcesClient) getCassandraKeyspaceThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, _ *CassandraResourcesClientGetCassandraKeyspaceThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/throughputSettings/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -813,8 +801,11 @@ func (client *CassandraResourcesClient) getCassandraKeyspaceThroughputCreateRequ
 }
 
 // getCassandraKeyspaceThroughputHandleResponse handles the GetCassandraKeyspaceThroughput response.
-func (client *CassandraResourcesClient) getCassandraKeyspaceThroughputHandleResponse(resp *http.Response) (CassandraResourcesClientGetCassandraKeyspaceThroughputResponse, error) {
+func (client *CassandraResourcesClient) getCassandraKeyspaceThroughputHandleResponse(resp *http.Response, successCodes ...int) (CassandraResourcesClientGetCassandraKeyspaceThroughputResponse, error) {
 	result := CassandraResourcesClientGetCassandraKeyspaceThroughputResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputSettingsGetResults); err != nil {
 		return CassandraResourcesClientGetCassandraKeyspaceThroughputResponse{}, err
 	}
@@ -843,19 +834,14 @@ func (client *CassandraResourcesClient) GetCassandraRoleAssignment(ctx context.C
 	if err != nil {
 		return CassandraResourcesClientGetCassandraRoleAssignmentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CassandraResourcesClientGetCassandraRoleAssignmentResponse{}, err
-	}
-	resp, err := client.getCassandraRoleAssignmentHandleResponse(httpResp)
-	return resp, err
+	return client.getCassandraRoleAssignmentHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCassandraRoleAssignmentCreateRequest creates the GetCassandraRoleAssignment request.
 func (client *CassandraResourcesClient) getCassandraRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, _ *CassandraResourcesClientGetCassandraRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraRoleAssignments/{roleAssignmentId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -882,8 +868,11 @@ func (client *CassandraResourcesClient) getCassandraRoleAssignmentCreateRequest(
 }
 
 // getCassandraRoleAssignmentHandleResponse handles the GetCassandraRoleAssignment response.
-func (client *CassandraResourcesClient) getCassandraRoleAssignmentHandleResponse(resp *http.Response) (CassandraResourcesClientGetCassandraRoleAssignmentResponse, error) {
+func (client *CassandraResourcesClient) getCassandraRoleAssignmentHandleResponse(resp *http.Response, successCodes ...int) (CassandraResourcesClientGetCassandraRoleAssignmentResponse, error) {
 	result := CassandraResourcesClientGetCassandraRoleAssignmentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CassandraRoleAssignmentResource); err != nil {
 		return CassandraResourcesClientGetCassandraRoleAssignmentResponse{}, err
 	}
@@ -912,19 +901,14 @@ func (client *CassandraResourcesClient) GetCassandraRoleDefinition(ctx context.C
 	if err != nil {
 		return CassandraResourcesClientGetCassandraRoleDefinitionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CassandraResourcesClientGetCassandraRoleDefinitionResponse{}, err
-	}
-	resp, err := client.getCassandraRoleDefinitionHandleResponse(httpResp)
-	return resp, err
+	return client.getCassandraRoleDefinitionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCassandraRoleDefinitionCreateRequest creates the GetCassandraRoleDefinition request.
 func (client *CassandraResourcesClient) getCassandraRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, _ *CassandraResourcesClientGetCassandraRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraRoleDefinitions/{roleDefinitionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -951,8 +935,11 @@ func (client *CassandraResourcesClient) getCassandraRoleDefinitionCreateRequest(
 }
 
 // getCassandraRoleDefinitionHandleResponse handles the GetCassandraRoleDefinition response.
-func (client *CassandraResourcesClient) getCassandraRoleDefinitionHandleResponse(resp *http.Response) (CassandraResourcesClientGetCassandraRoleDefinitionResponse, error) {
+func (client *CassandraResourcesClient) getCassandraRoleDefinitionHandleResponse(resp *http.Response, successCodes ...int) (CassandraResourcesClientGetCassandraRoleDefinitionResponse, error) {
 	result := CassandraResourcesClientGetCassandraRoleDefinitionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CassandraRoleDefinitionResource); err != nil {
 		return CassandraResourcesClientGetCassandraRoleDefinitionResponse{}, err
 	}
@@ -981,19 +968,14 @@ func (client *CassandraResourcesClient) GetCassandraTable(ctx context.Context, r
 	if err != nil {
 		return CassandraResourcesClientGetCassandraTableResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CassandraResourcesClientGetCassandraTableResponse{}, err
-	}
-	resp, err := client.getCassandraTableHandleResponse(httpResp)
-	return resp, err
+	return client.getCassandraTableHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCassandraTableCreateRequest creates the GetCassandraTable request.
 func (client *CassandraResourcesClient) getCassandraTableCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, _ *CassandraResourcesClientGetCassandraTableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/tables/{tableName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1024,8 +1006,11 @@ func (client *CassandraResourcesClient) getCassandraTableCreateRequest(ctx conte
 }
 
 // getCassandraTableHandleResponse handles the GetCassandraTable response.
-func (client *CassandraResourcesClient) getCassandraTableHandleResponse(resp *http.Response) (CassandraResourcesClientGetCassandraTableResponse, error) {
+func (client *CassandraResourcesClient) getCassandraTableHandleResponse(resp *http.Response, successCodes ...int) (CassandraResourcesClientGetCassandraTableResponse, error) {
 	result := CassandraResourcesClientGetCassandraTableResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CassandraTableGetResults); err != nil {
 		return CassandraResourcesClientGetCassandraTableResponse{}, err
 	}
@@ -1055,19 +1040,14 @@ func (client *CassandraResourcesClient) GetCassandraTableThroughput(ctx context.
 	if err != nil {
 		return CassandraResourcesClientGetCassandraTableThroughputResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CassandraResourcesClientGetCassandraTableThroughputResponse{}, err
-	}
-	resp, err := client.getCassandraTableThroughputHandleResponse(httpResp)
-	return resp, err
+	return client.getCassandraTableThroughputHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCassandraTableThroughputCreateRequest creates the GetCassandraTableThroughput request.
 func (client *CassandraResourcesClient) getCassandraTableThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, _ *CassandraResourcesClientGetCassandraTableThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/tables/{tableName}/throughputSettings/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1098,8 +1078,11 @@ func (client *CassandraResourcesClient) getCassandraTableThroughputCreateRequest
 }
 
 // getCassandraTableThroughputHandleResponse handles the GetCassandraTableThroughput response.
-func (client *CassandraResourcesClient) getCassandraTableThroughputHandleResponse(resp *http.Response) (CassandraResourcesClientGetCassandraTableThroughputResponse, error) {
+func (client *CassandraResourcesClient) getCassandraTableThroughputHandleResponse(resp *http.Response, successCodes ...int) (CassandraResourcesClientGetCassandraTableThroughputResponse, error) {
 	result := CassandraResourcesClientGetCassandraTableThroughputResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputSettingsGetResults); err != nil {
 		return CassandraResourcesClientGetCassandraTableThroughputResponse{}, err
 	}
@@ -1122,47 +1105,61 @@ func (client *CassandraResourcesClient) NewListCassandraKeyspacesPager(resourceG
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCassandraKeyspacesCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listCassandraKeyspacesCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return CassandraResourcesClientListCassandraKeyspacesResponse{}, err
 			}
-			return client.listCassandraKeyspacesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CassandraResourcesClientListCassandraKeyspacesResponse{}, err
+			}
+			return client.listCassandraKeyspacesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCassandraKeyspacesCreateRequest creates the ListCassandraKeyspaces request.
-func (client *CassandraResourcesClient) listCassandraKeyspacesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *CassandraResourcesClientListCassandraKeyspacesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CassandraResourcesClient) listCassandraKeyspacesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *CassandraResourcesClientListCassandraKeyspacesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listCassandraKeyspacesHandleResponse handles the ListCassandraKeyspaces response.
-func (client *CassandraResourcesClient) listCassandraKeyspacesHandleResponse(resp *http.Response) (CassandraResourcesClientListCassandraKeyspacesResponse, error) {
+func (client *CassandraResourcesClient) listCassandraKeyspacesHandleResponse(resp *http.Response, successCodes ...int) (CassandraResourcesClientListCassandraKeyspacesResponse, error) {
 	result := CassandraResourcesClientListCassandraKeyspacesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CassandraKeyspaceListResult); err != nil {
 		return CassandraResourcesClientListCassandraKeyspacesResponse{}, err
 	}
@@ -1185,47 +1182,61 @@ func (client *CassandraResourcesClient) NewListCassandraRoleAssignmentsPager(res
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCassandraRoleAssignmentsCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listCassandraRoleAssignmentsCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return CassandraResourcesClientListCassandraRoleAssignmentsResponse{}, err
 			}
-			return client.listCassandraRoleAssignmentsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CassandraResourcesClientListCassandraRoleAssignmentsResponse{}, err
+			}
+			return client.listCassandraRoleAssignmentsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCassandraRoleAssignmentsCreateRequest creates the ListCassandraRoleAssignments request.
-func (client *CassandraResourcesClient) listCassandraRoleAssignmentsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *CassandraResourcesClientListCassandraRoleAssignmentsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraRoleAssignments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CassandraResourcesClient) listCassandraRoleAssignmentsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *CassandraResourcesClientListCassandraRoleAssignmentsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraRoleAssignments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listCassandraRoleAssignmentsHandleResponse handles the ListCassandraRoleAssignments response.
-func (client *CassandraResourcesClient) listCassandraRoleAssignmentsHandleResponse(resp *http.Response) (CassandraResourcesClientListCassandraRoleAssignmentsResponse, error) {
+func (client *CassandraResourcesClient) listCassandraRoleAssignmentsHandleResponse(resp *http.Response, successCodes ...int) (CassandraResourcesClientListCassandraRoleAssignmentsResponse, error) {
 	result := CassandraResourcesClientListCassandraRoleAssignmentsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CassandraRoleAssignmentListResult); err != nil {
 		return CassandraResourcesClientListCassandraRoleAssignmentsResponse{}, err
 	}
@@ -1248,47 +1259,61 @@ func (client *CassandraResourcesClient) NewListCassandraRoleDefinitionsPager(res
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCassandraRoleDefinitionsCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listCassandraRoleDefinitionsCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return CassandraResourcesClientListCassandraRoleDefinitionsResponse{}, err
 			}
-			return client.listCassandraRoleDefinitionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CassandraResourcesClientListCassandraRoleDefinitionsResponse{}, err
+			}
+			return client.listCassandraRoleDefinitionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCassandraRoleDefinitionsCreateRequest creates the ListCassandraRoleDefinitions request.
-func (client *CassandraResourcesClient) listCassandraRoleDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *CassandraResourcesClientListCassandraRoleDefinitionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraRoleDefinitions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CassandraResourcesClient) listCassandraRoleDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *CassandraResourcesClientListCassandraRoleDefinitionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraRoleDefinitions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listCassandraRoleDefinitionsHandleResponse handles the ListCassandraRoleDefinitions response.
-func (client *CassandraResourcesClient) listCassandraRoleDefinitionsHandleResponse(resp *http.Response) (CassandraResourcesClientListCassandraRoleDefinitionsResponse, error) {
+func (client *CassandraResourcesClient) listCassandraRoleDefinitionsHandleResponse(resp *http.Response, successCodes ...int) (CassandraResourcesClientListCassandraRoleDefinitionsResponse, error) {
 	result := CassandraResourcesClientListCassandraRoleDefinitionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CassandraRoleDefinitionListResult); err != nil {
 		return CassandraResourcesClientListCassandraRoleDefinitionsResponse{}, err
 	}
@@ -1312,51 +1337,65 @@ func (client *CassandraResourcesClient) NewListCassandraTablesPager(resourceGrou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCassandraTablesCreateRequest(ctx, resourceGroupName, accountName, keyspaceName, options)
-			}, nil)
+			req, err := client.listCassandraTablesCreateRequest(ctx, resourceGroupName, accountName, keyspaceName, nextLink, options)
 			if err != nil {
 				return CassandraResourcesClientListCassandraTablesResponse{}, err
 			}
-			return client.listCassandraTablesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CassandraResourcesClientListCassandraTablesResponse{}, err
+			}
+			return client.listCassandraTablesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCassandraTablesCreateRequest creates the ListCassandraTables request.
-func (client *CassandraResourcesClient) listCassandraTablesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, _ *CassandraResourcesClientListCassandraTablesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/tables"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CassandraResourcesClient) listCassandraTablesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, nextLink string, _ *CassandraResourcesClientListCassandraTablesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/tables"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		if keyspaceName == "" {
+			return nil, errors.New("parameter keyspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{keyspaceName}", url.PathEscape(keyspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if keyspaceName == "" {
-		return nil, errors.New("parameter keyspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{keyspaceName}", url.PathEscape(keyspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listCassandraTablesHandleResponse handles the ListCassandraTables response.
-func (client *CassandraResourcesClient) listCassandraTablesHandleResponse(resp *http.Response) (CassandraResourcesClientListCassandraTablesResponse, error) {
+func (client *CassandraResourcesClient) listCassandraTablesHandleResponse(resp *http.Response, successCodes ...int) (CassandraResourcesClientListCassandraTablesResponse, error) {
 	result := CassandraResourcesClientListCassandraTablesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CassandraTableListResult); err != nil {
 		return CassandraResourcesClientListCassandraTablesResponse{}, err
 	}
@@ -1404,8 +1443,7 @@ func (client *CassandraResourcesClient) migrateCassandraKeyspaceToAutoscale(ctx 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1414,7 +1452,7 @@ func (client *CassandraResourcesClient) migrateCassandraKeyspaceToAutoscale(ctx 
 func (client *CassandraResourcesClient) migrateCassandraKeyspaceToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, _ *CassandraResourcesClientBeginMigrateCassandraKeyspaceToAutoscaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/throughputSettings/default/migrateToAutoscale"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1482,8 +1520,7 @@ func (client *CassandraResourcesClient) migrateCassandraKeyspaceToManualThroughp
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1492,7 +1529,7 @@ func (client *CassandraResourcesClient) migrateCassandraKeyspaceToManualThroughp
 func (client *CassandraResourcesClient) migrateCassandraKeyspaceToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, _ *CassandraResourcesClientBeginMigrateCassandraKeyspaceToManualThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/throughputSettings/default/migrateToManualThroughput"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1560,8 +1597,7 @@ func (client *CassandraResourcesClient) migrateCassandraTableToAutoscale(ctx con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1570,7 +1606,7 @@ func (client *CassandraResourcesClient) migrateCassandraTableToAutoscale(ctx con
 func (client *CassandraResourcesClient) migrateCassandraTableToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, _ *CassandraResourcesClientBeginMigrateCassandraTableToAutoscaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/tables/{tableName}/throughputSettings/default/migrateToAutoscale"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1642,8 +1678,7 @@ func (client *CassandraResourcesClient) migrateCassandraTableToManualThroughput(
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1652,7 +1687,7 @@ func (client *CassandraResourcesClient) migrateCassandraTableToManualThroughput(
 func (client *CassandraResourcesClient) migrateCassandraTableToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, _ *CassandraResourcesClientBeginMigrateCassandraTableToManualThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/tables/{tableName}/throughputSettings/default/migrateToManualThroughput"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1724,8 +1759,7 @@ func (client *CassandraResourcesClient) updateCassandraKeyspaceThroughput(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1734,7 +1768,7 @@ func (client *CassandraResourcesClient) updateCassandraKeyspaceThroughput(ctx co
 func (client *CassandraResourcesClient) updateCassandraKeyspaceThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, updateThroughputParameters ThroughputSettingsUpdateParameters, _ *CassandraResourcesClientBeginUpdateCassandraKeyspaceThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/throughputSettings/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1807,8 +1841,7 @@ func (client *CassandraResourcesClient) updateCassandraTableThroughput(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1817,7 +1850,7 @@ func (client *CassandraResourcesClient) updateCassandraTableThroughput(ctx conte
 func (client *CassandraResourcesClient) updateCassandraTableThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, updateThroughputParameters ThroughputSettingsUpdateParameters, _ *CassandraResourcesClientBeginUpdateCassandraTableThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/tables/{tableName}/throughputSettings/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

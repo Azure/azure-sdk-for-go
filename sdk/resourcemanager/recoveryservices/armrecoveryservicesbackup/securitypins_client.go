@@ -18,6 +18,8 @@ import (
 
 // SecurityPINsClient contains the methods for the SecurityPINs group.
 // Don't use this type directly, use NewSecurityPINsClient() instead.
+//
+// Generated from API version 2026-07-01
 type SecurityPINsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type SecurityPINsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSecurityPINsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecurityPINsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,8 +46,6 @@ func NewSecurityPINsClient(subscriptionID string, credential azcore.TokenCredent
 
 // Get - Get the security PIN.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - SecurityPINsClientGetOptions contains the optional parameters for the SecurityPINsClient.Get method.
@@ -60,19 +63,14 @@ func (client *SecurityPINsClient) Get(ctx context.Context, vaultName string, res
 	if err != nil {
 		return SecurityPINsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SecurityPINsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *SecurityPINsClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, options *SecurityPINsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupSecurityPIN"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if vaultName == "" {
@@ -88,8 +86,8 @@ func (client *SecurityPINsClient) getCreateRequest(ctx context.Context, vaultNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
 		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
@@ -105,8 +103,11 @@ func (client *SecurityPINsClient) getCreateRequest(ctx context.Context, vaultNam
 }
 
 // getHandleResponse handles the Get response.
-func (client *SecurityPINsClient) getHandleResponse(resp *http.Response) (SecurityPINsClientGetResponse, error) {
+func (client *SecurityPINsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SecurityPINsClientGetResponse, error) {
 	result := SecurityPINsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TokenInformation); err != nil {
 		return SecurityPINsClientGetResponse{}, err
 	}

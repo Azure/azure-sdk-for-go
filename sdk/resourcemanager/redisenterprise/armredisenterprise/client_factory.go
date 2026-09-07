@@ -56,14 +56,6 @@ func (c *ClientFactory) NewDatabasesClient() *DatabasesClient {
 	}
 }
 
-// NewMigrationClient creates a new instance of MigrationClient.
-func (c *ClientFactory) NewMigrationClient() *MigrationClient {
-	return &MigrationClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewMigrationsClient creates a new instance of MigrationsClient.
 func (c *ClientFactory) NewMigrationsClient() *MigrationsClient {
 	return &MigrationsClient{

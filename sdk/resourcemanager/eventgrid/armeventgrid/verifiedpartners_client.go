@@ -59,12 +59,7 @@ func (client *VerifiedPartnersClient) Get(ctx context.Context, verifiedPartnerNa
 	if err != nil {
 		return VerifiedPartnersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VerifiedPartnersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -86,8 +81,11 @@ func (client *VerifiedPartnersClient) getCreateRequest(ctx context.Context, veri
 }
 
 // getHandleResponse handles the Get response.
-func (client *VerifiedPartnersClient) getHandleResponse(resp *http.Response) (VerifiedPartnersClientGetResponse, error) {
+func (client *VerifiedPartnersClient) getHandleResponse(resp *http.Response, successCodes ...int) (VerifiedPartnersClientGetResponse, error) {
 	result := VerifiedPartnersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VerifiedPartner); err != nil {
 		return VerifiedPartnersClientGetResponse{}, err
 	}
@@ -110,41 +108,55 @@ func (client *VerifiedPartnersClient) NewListPager(options *VerifiedPartnersClie
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return VerifiedPartnersClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VerifiedPartnersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *VerifiedPartnersClient) listCreateRequest(ctx context.Context, options *VerifiedPartnersClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.EventGrid/verifiedPartners"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *VerifiedPartnersClient) listCreateRequest(ctx context.Context, nextLink string, options *VerifiedPartnersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.EventGrid/verifiedPartners"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *VerifiedPartnersClient) listHandleResponse(resp *http.Response) (VerifiedPartnersClientListResponse, error) {
+func (client *VerifiedPartnersClient) listHandleResponse(resp *http.Response, successCodes ...int) (VerifiedPartnersClientListResponse, error) {
 	result := VerifiedPartnersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VerifiedPartnersListResult); err != nil {
 		return VerifiedPartnersClientListResponse{}, err
 	}

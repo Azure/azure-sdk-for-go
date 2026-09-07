@@ -730,27 +730,33 @@ type BackupSchedule struct {
 	// Each value must follow the format: `R/YYYY-MM-DDThh:mm:ss[.fff][Z|(+/-)hh:mm]/Duration`
 	// Only the exact formats listed below are supported. Other ISO 8601 variations are not accepted.
 	// Supported time formats:
-	// - `Thh:mm:ss.fff` (with milliseconds)
-	// - `Thh:mm:ss` (with seconds)
-	// - `Thh:mm` (hours and minutes only)
+	//
+	//   - `Thh:mm:ss.fff` (with milliseconds)
+	//   - `Thh:mm:ss` (with seconds)
+	//   - `Thh:mm` (hours and minutes only)
+	//
 	// A timezone indicator (`Z`, `+hh:mm`, or `-hh:mm`) may be appended to any of the above.
 	// Unsupported formats include compact notation such as `T1430`, `T143045`, or `T14.5`.
 	// Examples:
-	// - `R/2023-10-15T14:30:00Z/P1W`
-	// - `R/2023-10-15T14:30:45.123+05:30/P1D`
-	// - `R/2023-10-15T14:30Z/P1D`
+	//
+	//   - `R/2023-10-15T14:30:00Z/P1W`
+	//   - `R/2023-10-15T14:30:45.123+05:30/P1D`
+	//   - `R/2023-10-15T14:30Z/P1D`
 	RepeatingTimeIntervals []*string
 
 	// Time Zone for a schedule.
 	// Supported timezone indicators include:
-	// - 'Z' for UTC
-	// - '+00:00'
-	// - '+05:30'
-	// - '-08:00'
+	//
+	//   - 'Z' for UTC
+	//   - '+00:00'
+	//   - '+05:30'
+	//   - '-08:00'
+	//
 	// Examples:
-	// - 2023-10-15T14:30:45Z
-	// - 2023-10-15T14:30:45.123+05:30
-	// - 2023-10-15T14:30-08:00
+	//
+	//   - 2023-10-15T14:30:45Z
+	//   - 2023-10-15T14:30:45.123+05:30
+	//   - 2023-10-15T14:30-08:00
 	TimeZone *string
 }
 

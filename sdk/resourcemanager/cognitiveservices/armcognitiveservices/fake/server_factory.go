@@ -30,11 +30,20 @@ type ServerFactory struct {
 	// AgentDeploymentsServer contains the fakes for client AgentDeploymentsClient
 	AgentDeploymentsServer AgentDeploymentsServer
 
+	// ArcDeploymentsServer contains the fakes for client ArcDeploymentsClient
+	ArcDeploymentsServer ArcDeploymentsServer
+
 	// CommitmentPlansServer contains the fakes for client CommitmentPlansClient
 	CommitmentPlansServer CommitmentPlansServer
 
 	// CommitmentTiersServer contains the fakes for client CommitmentTiersClient
 	CommitmentTiersServer CommitmentTiersServer
+
+	// ComputeOperationsServer contains the fakes for client ComputeOperationsClient
+	ComputeOperationsServer ComputeOperationsServer
+
+	// ComputesServer contains the fakes for client ComputesClient
+	ComputesServer ComputesServer
 
 	// DefenderForAISettingsServer contains the fakes for client DefenderForAISettingsClient
 	DefenderForAISettingsServer DefenderForAISettingsServer
@@ -50,6 +59,15 @@ type ServerFactory struct {
 
 	// LocationBasedModelCapacitiesServer contains the fakes for client LocationBasedModelCapacitiesClient
 	LocationBasedModelCapacitiesServer LocationBasedModelCapacitiesServer
+
+	// ManagedComputeCapacitiesServer contains the fakes for client ManagedComputeCapacitiesClient
+	ManagedComputeCapacitiesServer ManagedComputeCapacitiesServer
+
+	// ManagedComputeDeploymentsServer contains the fakes for client ManagedComputeDeploymentsClient
+	ManagedComputeDeploymentsServer ManagedComputeDeploymentsServer
+
+	// ManagedComputeUsagesOperationGroupServer contains the fakes for client ManagedComputeUsagesOperationGroupClient
+	ManagedComputeUsagesOperationGroupServer ManagedComputeUsagesOperationGroupServer
 
 	// ManagedNetworkProvisionsServer contains the fakes for client ManagedNetworkProvisionsClient
 	ManagedNetworkProvisionsServer ManagedNetworkProvisionsServer
@@ -131,6 +149,9 @@ type ServerFactory struct {
 
 	// UsagesServer contains the fakes for client UsagesClient
 	UsagesServer UsagesServer
+
+	// WorkbenchesServer contains the fakes for client WorkbenchesClient
+	WorkbenchesServer WorkbenchesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -152,13 +173,19 @@ type ServerFactoryTransport struct {
 	trAccountsServer                               *AccountsServerTransport
 	trAgentApplicationsServer                      *AgentApplicationsServerTransport
 	trAgentDeploymentsServer                       *AgentDeploymentsServerTransport
+	trArcDeploymentsServer                         *ArcDeploymentsServerTransport
 	trCommitmentPlansServer                        *CommitmentPlansServerTransport
 	trCommitmentTiersServer                        *CommitmentTiersServerTransport
+	trComputeOperationsServer                      *ComputeOperationsServerTransport
+	trComputesServer                               *ComputesServerTransport
 	trDefenderForAISettingsServer                  *DefenderForAISettingsServerTransport
 	trDeletedAccountsServer                        *DeletedAccountsServerTransport
 	trDeploymentsServer                            *DeploymentsServerTransport
 	trEncryptionScopesServer                       *EncryptionScopesServerTransport
 	trLocationBasedModelCapacitiesServer           *LocationBasedModelCapacitiesServerTransport
+	trManagedComputeCapacitiesServer               *ManagedComputeCapacitiesServerTransport
+	trManagedComputeDeploymentsServer              *ManagedComputeDeploymentsServerTransport
+	trManagedComputeUsagesOperationGroupServer     *ManagedComputeUsagesOperationGroupServerTransport
 	trManagedNetworkProvisionsServer               *ManagedNetworkProvisionsServerTransport
 	trManagedNetworkSettingsServer                 *ManagedNetworkSettingsServerTransport
 	trManagementServer                             *ManagementServerTransport
@@ -186,6 +213,7 @@ type ServerFactoryTransport struct {
 	trSubscriptionRaiPolicyServer                  *SubscriptionRaiPolicyServerTransport
 	trTestRaiExternalSafetyProviderServer          *TestRaiExternalSafetyProviderServerTransport
 	trUsagesServer                                 *UsagesServerTransport
+	trWorkbenchesServer                            *WorkbenchesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -224,6 +252,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAgentDeploymentsServerTransport(&s.srv.AgentDeploymentsServer)
 		})
 		resp, err = s.trAgentDeploymentsServer.Do(req)
+	case "ArcDeploymentsClient":
+		initServer(&s.trMu, &s.trArcDeploymentsServer, func() *ArcDeploymentsServerTransport {
+			return NewArcDeploymentsServerTransport(&s.srv.ArcDeploymentsServer)
+		})
+		resp, err = s.trArcDeploymentsServer.Do(req)
 	case "CommitmentPlansClient":
 		initServer(&s.trMu, &s.trCommitmentPlansServer, func() *CommitmentPlansServerTransport {
 			return NewCommitmentPlansServerTransport(&s.srv.CommitmentPlansServer)
@@ -234,6 +267,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewCommitmentTiersServerTransport(&s.srv.CommitmentTiersServer)
 		})
 		resp, err = s.trCommitmentTiersServer.Do(req)
+	case "ComputeOperationsClient":
+		initServer(&s.trMu, &s.trComputeOperationsServer, func() *ComputeOperationsServerTransport {
+			return NewComputeOperationsServerTransport(&s.srv.ComputeOperationsServer)
+		})
+		resp, err = s.trComputeOperationsServer.Do(req)
+	case "ComputesClient":
+		initServer(&s.trMu, &s.trComputesServer, func() *ComputesServerTransport { return NewComputesServerTransport(&s.srv.ComputesServer) })
+		resp, err = s.trComputesServer.Do(req)
 	case "DefenderForAISettingsClient":
 		initServer(&s.trMu, &s.trDefenderForAISettingsServer, func() *DefenderForAISettingsServerTransport {
 			return NewDefenderForAISettingsServerTransport(&s.srv.DefenderForAISettingsServer)
@@ -257,6 +298,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewLocationBasedModelCapacitiesServerTransport(&s.srv.LocationBasedModelCapacitiesServer)
 		})
 		resp, err = s.trLocationBasedModelCapacitiesServer.Do(req)
+	case "ManagedComputeCapacitiesClient":
+		initServer(&s.trMu, &s.trManagedComputeCapacitiesServer, func() *ManagedComputeCapacitiesServerTransport {
+			return NewManagedComputeCapacitiesServerTransport(&s.srv.ManagedComputeCapacitiesServer)
+		})
+		resp, err = s.trManagedComputeCapacitiesServer.Do(req)
+	case "ManagedComputeDeploymentsClient":
+		initServer(&s.trMu, &s.trManagedComputeDeploymentsServer, func() *ManagedComputeDeploymentsServerTransport {
+			return NewManagedComputeDeploymentsServerTransport(&s.srv.ManagedComputeDeploymentsServer)
+		})
+		resp, err = s.trManagedComputeDeploymentsServer.Do(req)
+	case "ManagedComputeUsagesOperationGroupClient":
+		initServer(&s.trMu, &s.trManagedComputeUsagesOperationGroupServer, func() *ManagedComputeUsagesOperationGroupServerTransport {
+			return NewManagedComputeUsagesOperationGroupServerTransport(&s.srv.ManagedComputeUsagesOperationGroupServer)
+		})
+		resp, err = s.trManagedComputeUsagesOperationGroupServer.Do(req)
 	case "ManagedNetworkProvisionsClient":
 		initServer(&s.trMu, &s.trManagedNetworkProvisionsServer, func() *ManagedNetworkProvisionsServerTransport {
 			return NewManagedNetworkProvisionsServerTransport(&s.srv.ManagedNetworkProvisionsServer)
@@ -372,6 +428,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "UsagesClient":
 		initServer(&s.trMu, &s.trUsagesServer, func() *UsagesServerTransport { return NewUsagesServerTransport(&s.srv.UsagesServer) })
 		resp, err = s.trUsagesServer.Do(req)
+	case "WorkbenchesClient":
+		initServer(&s.trMu, &s.trWorkbenchesServer, func() *WorkbenchesServerTransport { return NewWorkbenchesServerTransport(&s.srv.WorkbenchesServer) })
+		resp, err = s.trWorkbenchesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

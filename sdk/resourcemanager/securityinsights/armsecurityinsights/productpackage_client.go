@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultProductPackageClientVersion string = "2025-07-01-preview"
-
 // ProductPackageClient contains the methods for the ProductPackage group.
 // Don't use this type directly, use NewProductPackageClient() instead.
 //
@@ -32,6 +30,9 @@ type ProductPackageClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProductPackageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProductPackageClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +64,14 @@ func (client *ProductPackageClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ProductPackageClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProductPackageClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ProductPackageClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, packageID string, _ *ProductPackageClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/contentProductPackages/{packageId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -95,15 +91,18 @@ func (client *ProductPackageClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultProductPackageClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProductPackageClient) getHandleResponse(resp *http.Response) (ProductPackageClientGetResponse, error) {
+func (client *ProductPackageClient) getHandleResponse(resp *http.Response, successCodes ...int) (ProductPackageClientGetResponse, error) {
 	result := ProductPackageClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductPackageModel); err != nil {
 		return ProductPackageClientGetResponse{}, err
 	}

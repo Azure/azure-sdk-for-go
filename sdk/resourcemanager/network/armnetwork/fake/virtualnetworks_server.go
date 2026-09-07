@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -54,6 +54,10 @@ type VirtualNetworksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListUsagePager func(resourceGroupName string, virtualNetworkName string, options *armnetwork.VirtualNetworksClientListUsageOptions) (resp azfake.PagerResponder[armnetwork.VirtualNetworksClientListUsageResponse])
 
+	// BeginMoveIPConfigurations is the fake for method VirtualNetworksClient.BeginMoveIPConfigurations
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginMoveIPConfigurations func(ctx context.Context, resourceGroupName string, virtualNetworkName string, body armnetwork.MoveIPConfigurationsRequest, options *armnetwork.VirtualNetworksClientBeginMoveIPConfigurationsOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworksClientMoveIPConfigurationsResponse], errResp azfake.ErrorResponder)
+
 	// UpdateTags is the fake for method VirtualNetworksClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
 	UpdateTags func(ctx context.Context, resourceGroupName string, virtualNetworkName string, parameters armnetwork.TagsObject, options *armnetwork.VirtualNetworksClientUpdateTagsOptions) (resp azfake.Responder[armnetwork.VirtualNetworksClientUpdateTagsResponse], errResp azfake.ErrorResponder)
@@ -71,6 +75,7 @@ func NewVirtualNetworksServerTransport(srv *VirtualNetworksServer) *VirtualNetwo
 		newListAllPager:               newTracker[azfake.PagerResponder[armnetwork.VirtualNetworksClientListAllResponse]](),
 		beginListDdosProtectionStatus: newTracker[azfake.PollerResponder[azfake.PagerResponder[armnetwork.VirtualNetworksClientListDdosProtectionStatusResponse]]](),
 		newListUsagePager:             newTracker[azfake.PagerResponder[armnetwork.VirtualNetworksClientListUsageResponse]](),
+		beginMoveIPConfigurations:     newTracker[azfake.PollerResponder[armnetwork.VirtualNetworksClientMoveIPConfigurationsResponse]](),
 	}
 }
 
@@ -84,6 +89,7 @@ type VirtualNetworksServerTransport struct {
 	newListAllPager               *tracker[azfake.PagerResponder[armnetwork.VirtualNetworksClientListAllResponse]]
 	beginListDdosProtectionStatus *tracker[azfake.PollerResponder[azfake.PagerResponder[armnetwork.VirtualNetworksClientListDdosProtectionStatusResponse]]]
 	newListUsagePager             *tracker[azfake.PagerResponder[armnetwork.VirtualNetworksClientListUsageResponse]]
+	beginMoveIPConfigurations     *tracker[azfake.PollerResponder[armnetwork.VirtualNetworksClientMoveIPConfigurationsResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualNetworksServerTransport.
@@ -123,6 +129,8 @@ func (v *VirtualNetworksServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = v.dispatchBeginListDdosProtectionStatus(req)
 			case "VirtualNetworksClient.NewListUsagePager":
 				res.resp, res.err = v.dispatchNewListUsagePager(req)
+			case "VirtualNetworksClient.BeginMoveIPConfigurations":
+				res.resp, res.err = v.dispatchBeginMoveIPConfigurations(req)
 			case "VirtualNetworksClient.UpdateTags":
 				res.resp, res.err = v.dispatchUpdateTags(req)
 			default:
@@ -145,7 +153,7 @@ func (v *VirtualNetworksServerTransport) dispatchCheckIPAddressAvailability(req 
 	if v.srv.CheckIPAddressAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckIPAddressAvailability not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworks/(?P<virtualNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkIPAddressAvailability`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworks/(?P<virtualNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkIPAddressAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -181,7 +189,7 @@ func (v *VirtualNetworksServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 	}
 	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworks/(?P<virtualNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworks/(?P<virtualNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -229,7 +237,7 @@ func (v *VirtualNetworksServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	beginDelete := v.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworks/(?P<virtualNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworks/(?P<virtualNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -271,7 +279,7 @@ func (v *VirtualNetworksServerTransport) dispatchGet(req *http.Request) (*http.R
 	if v.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworks/(?P<virtualNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworks/(?P<virtualNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -314,7 +322,7 @@ func (v *VirtualNetworksServerTransport) dispatchNewListPager(req *http.Request)
 	}
 	newListPager := v.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -351,7 +359,7 @@ func (v *VirtualNetworksServerTransport) dispatchNewListAllPager(req *http.Reque
 	}
 	newListAllPager := v.newListAllPager.get(req)
 	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -384,7 +392,7 @@ func (v *VirtualNetworksServerTransport) dispatchBeginListDdosProtectionStatus(r
 	}
 	beginListDdosProtectionStatus := v.beginListDdosProtectionStatus.get(req)
 	if beginListDdosProtectionStatus == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworks/(?P<virtualNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ddosProtectionStatus`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworks/(?P<virtualNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ddosProtectionStatus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -447,7 +455,7 @@ func (v *VirtualNetworksServerTransport) dispatchNewListUsagePager(req *http.Req
 	}
 	newListUsagePager := v.newListUsagePager.get(req)
 	if newListUsagePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworks/(?P<virtualNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworks/(?P<virtualNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/usages`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -482,11 +490,59 @@ func (v *VirtualNetworksServerTransport) dispatchNewListUsagePager(req *http.Req
 	return resp, nil
 }
 
+func (v *VirtualNetworksServerTransport) dispatchBeginMoveIPConfigurations(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginMoveIPConfigurations == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMoveIPConfigurations not implemented")}
+	}
+	beginMoveIPConfigurations := v.beginMoveIPConfigurations.get(req)
+	if beginMoveIPConfigurations == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworks/(?P<virtualNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/moveIpConfigurations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetwork.MoveIPConfigurationsRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		virtualNetworkNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginMoveIPConfigurations(req.Context(), resourceGroupNameParam, virtualNetworkNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMoveIPConfigurations = &respr
+		v.beginMoveIPConfigurations.add(req, beginMoveIPConfigurations)
+	}
+
+	resp, err := server.PollerResponderNext(beginMoveIPConfigurations, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginMoveIPConfigurations.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMoveIPConfigurations) {
+		v.beginMoveIPConfigurations.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (v *VirtualNetworksServerTransport) dispatchUpdateTags(req *http.Request) (*http.Response, error) {
 	if v.srv.UpdateTags == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateTags not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworks/(?P<virtualNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworks/(?P<virtualNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

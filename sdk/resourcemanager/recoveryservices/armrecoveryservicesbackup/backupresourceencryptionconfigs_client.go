@@ -18,6 +18,8 @@ import (
 
 // BackupResourceEncryptionConfigsClient contains the methods for the BackupResourceEncryptionConfigs group.
 // Don't use this type directly, use NewBackupResourceEncryptionConfigsClient() instead.
+//
+// Generated from API version 2026-07-01
 type BackupResourceEncryptionConfigsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type BackupResourceEncryptionConfigsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBackupResourceEncryptionConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupResourceEncryptionConfigsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,8 +46,6 @@ func NewBackupResourceEncryptionConfigsClient(subscriptionID string, credential 
 
 // Get - Fetches Vault Encryption config.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupResourceEncryptionConfigsClientGetOptions contains the optional parameters for the BackupResourceEncryptionConfigsClient.Get
 //     method.
@@ -60,19 +63,14 @@ func (client *BackupResourceEncryptionConfigsClient) Get(ctx context.Context, va
 	if err != nil {
 		return BackupResourceEncryptionConfigsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BackupResourceEncryptionConfigsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *BackupResourceEncryptionConfigsClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, _ *BackupResourceEncryptionConfigsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupEncryptionConfigs/backupResourceEncryptionConfig"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if vaultName == "" {
@@ -88,15 +86,18 @@ func (client *BackupResourceEncryptionConfigsClient) getCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *BackupResourceEncryptionConfigsClient) getHandleResponse(resp *http.Response) (BackupResourceEncryptionConfigsClientGetResponse, error) {
+func (client *BackupResourceEncryptionConfigsClient) getHandleResponse(resp *http.Response, successCodes ...int) (BackupResourceEncryptionConfigsClientGetResponse, error) {
 	result := BackupResourceEncryptionConfigsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupResourceEncryptionConfigExtendedResource); err != nil {
 		return BackupResourceEncryptionConfigsClientGetResponse{}, err
 	}
@@ -105,8 +106,6 @@ func (client *BackupResourceEncryptionConfigsClient) getHandleResponse(resp *htt
 
 // Update - Updates Vault encryption config.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupResourceEncryptionConfigsClientUpdateOptions contains the optional parameters for the BackupResourceEncryptionConfigsClient.Update
 //     method.
@@ -125,8 +124,7 @@ func (client *BackupResourceEncryptionConfigsClient) Update(ctx context.Context,
 		return BackupResourceEncryptionConfigsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BackupResourceEncryptionConfigsClientUpdateResponse{}, err
+		return BackupResourceEncryptionConfigsClientUpdateResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return BackupResourceEncryptionConfigsClientUpdateResponse{}, nil
 }
@@ -135,7 +133,7 @@ func (client *BackupResourceEncryptionConfigsClient) Update(ctx context.Context,
 func (client *BackupResourceEncryptionConfigsClient) updateCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, parameters BackupResourceEncryptionConfigResource, _ *BackupResourceEncryptionConfigsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupEncryptionConfigs/backupResourceEncryptionConfig"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if vaultName == "" {
@@ -151,8 +149,8 @@ func (client *BackupResourceEncryptionConfigsClient) updateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err

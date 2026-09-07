@@ -14,11 +14,21 @@ import (
 
 type TransactionalContentSetter interface {
 	SetMD5([]byte)
-	// add SetCRC64() when Azure File service starts supporting it.
+	SetCRC64([]byte)
+	SetStructuredBody(bodyType string, contentLength int64)
 }
 
 func (f *FileClientUploadRangeOptions) SetMD5(v []byte) {
 	f.ContentMD5 = v
+}
+
+func (f *FileClientUploadRangeOptions) SetCRC64([]byte) {
+	// no-op: Azure Files does not yet support transactional CRC64 headers on UploadRange
+}
+
+func (f *FileClientUploadRangeOptions) SetStructuredBody(bodyType string, contentLength int64) {
+	f.StructuredBodyType = &bodyType
+	f.StructuredContentLength = &contentLength
 }
 
 type SourceContentSetter interface {

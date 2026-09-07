@@ -5,7 +5,7 @@
 package armbulkactions
 
 const (
-	version20260706Preview string = "2026-07-06-preview"
+	version20260806Preview string = "2026-08-06-preview"
 )
 
 // AcceleratorManufacturer - Accelerator manufacturers supported by Azure VMs.
@@ -186,6 +186,30 @@ func PossibleCachingTypesValues() []CachingTypes {
 		CachingTypesNone,
 		CachingTypesReadOnly,
 		CachingTypesReadWrite,
+	}
+}
+
+// CapacityRecommendationStatus - The lifecycle status of the capacity recommendation for an operation
+type CapacityRecommendationStatus string
+
+const (
+	// CapacityRecommendationStatusFailed - The capacity recommendation failed
+	CapacityRecommendationStatusFailed CapacityRecommendationStatus = "Failed"
+	// CapacityRecommendationStatusNotInitiated - The capacity recommendation has not been initiated
+	CapacityRecommendationStatusNotInitiated CapacityRecommendationStatus = "NotInitiated"
+	// CapacityRecommendationStatusSkipped - The capacity recommendation was skipped
+	CapacityRecommendationStatusSkipped CapacityRecommendationStatus = "Skipped"
+	// CapacityRecommendationStatusSucceeded - The capacity recommendation completed successfully
+	CapacityRecommendationStatusSucceeded CapacityRecommendationStatus = "Succeeded"
+)
+
+// PossibleCapacityRecommendationStatusValues returns the possible values for the CapacityRecommendationStatus const type.
+func PossibleCapacityRecommendationStatusValues() []CapacityRecommendationStatus {
+	return []CapacityRecommendationStatus{
+		CapacityRecommendationStatusFailed,
+		CapacityRecommendationStatusNotInitiated,
+		CapacityRecommendationStatusSkipped,
+		CapacityRecommendationStatusSucceeded,
 	}
 }
 
@@ -817,6 +841,42 @@ func PossibleNotificationTypeValues() []NotificationType {
 	}
 }
 
+// OccurrenceResourceProvisioningState - The provisioning state of a scheduled-action resource within an occurrence.
+type OccurrenceResourceProvisioningState string
+
+const (
+	// OccurrenceResourceProvisioningStateCanceled - Resource creation was canceled.
+	OccurrenceResourceProvisioningStateCanceled OccurrenceResourceProvisioningState = "Canceled"
+	// OccurrenceResourceProvisioningStateCancelling - The resource is going through cancellation
+	OccurrenceResourceProvisioningStateCancelling OccurrenceResourceProvisioningState = "Cancelling"
+	// OccurrenceResourceProvisioningStateCreated - The resource has been created
+	OccurrenceResourceProvisioningStateCreated OccurrenceResourceProvisioningState = "Created"
+	// OccurrenceResourceProvisioningStateFailed - Resource creation failed.
+	OccurrenceResourceProvisioningStateFailed OccurrenceResourceProvisioningState = "Failed"
+	// OccurrenceResourceProvisioningStateInvalidState - The resource is in an invalid state
+	OccurrenceResourceProvisioningStateInvalidState OccurrenceResourceProvisioningState = "InvalidState"
+	// OccurrenceResourceProvisioningStateRescheduling - The resource is being rescheduled
+	OccurrenceResourceProvisioningStateRescheduling OccurrenceResourceProvisioningState = "Rescheduling"
+	// OccurrenceResourceProvisioningStateScheduled - The resource has been scheduled
+	OccurrenceResourceProvisioningStateScheduled OccurrenceResourceProvisioningState = "Scheduled"
+	// OccurrenceResourceProvisioningStateSucceeded - Resource has been created.
+	OccurrenceResourceProvisioningStateSucceeded OccurrenceResourceProvisioningState = "Succeeded"
+)
+
+// PossibleOccurrenceResourceProvisioningStateValues returns the possible values for the OccurrenceResourceProvisioningState const type.
+func PossibleOccurrenceResourceProvisioningStateValues() []OccurrenceResourceProvisioningState {
+	return []OccurrenceResourceProvisioningState{
+		OccurrenceResourceProvisioningStateCanceled,
+		OccurrenceResourceProvisioningStateCancelling,
+		OccurrenceResourceProvisioningStateCreated,
+		OccurrenceResourceProvisioningStateFailed,
+		OccurrenceResourceProvisioningStateInvalidState,
+		OccurrenceResourceProvisioningStateRescheduling,
+		OccurrenceResourceProvisioningStateScheduled,
+		OccurrenceResourceProvisioningStateSucceeded,
+	}
+}
+
 // OccurrenceState - The state the occurrence is at a given time
 type OccurrenceState string
 
@@ -969,6 +1029,48 @@ func PossibleOsTypeValues() []OsType {
 	}
 }
 
+// PartialFulfillmentMode - Whether the service may launch fewer instances than requested when the full capacity cannot be
+// satisfied.
+type PartialFulfillmentMode string
+
+const (
+	// PartialFulfillmentModeDisabled - Partial fulfillment is not allowed.
+	PartialFulfillmentModeDisabled PartialFulfillmentMode = "Disabled"
+	// PartialFulfillmentModeEnabled - Partial fulfillment is allowed.
+	PartialFulfillmentModeEnabled PartialFulfillmentMode = "Enabled"
+)
+
+// PossiblePartialFulfillmentModeValues returns the possible values for the PartialFulfillmentMode const type.
+func PossiblePartialFulfillmentModeValues() []PartialFulfillmentMode {
+	return []PartialFulfillmentMode{
+		PartialFulfillmentModeDisabled,
+		PartialFulfillmentModeEnabled,
+	}
+}
+
+// PartialFulfillmentReason - The reason the requested capacity could only be partially fulfilled.
+type PartialFulfillmentReason string
+
+const (
+	// PartialFulfillmentReasonInsufficientCapacity - The requested capacity could not be fully satisfied due to insufficient
+	// capacity in the region.
+	PartialFulfillmentReasonInsufficientCapacity PartialFulfillmentReason = "InsufficientCapacity"
+	// PartialFulfillmentReasonInsufficientQuota - The requested capacity could not be fully satisfied due to insufficient quota
+	// in the subscription.
+	PartialFulfillmentReasonInsufficientQuota PartialFulfillmentReason = "InsufficientQuota"
+	// PartialFulfillmentReasonNone - The requested capacity was successfully satisfied without any partial fulfillment.
+	PartialFulfillmentReasonNone PartialFulfillmentReason = "None"
+)
+
+// PossiblePartialFulfillmentReasonValues returns the possible values for the PartialFulfillmentReason const type.
+func PossiblePartialFulfillmentReasonValues() []PartialFulfillmentReason {
+	return []PartialFulfillmentReason{
+		PartialFulfillmentReasonInsufficientCapacity,
+		PartialFulfillmentReasonInsufficientQuota,
+		PartialFulfillmentReasonNone,
+	}
+}
+
 // PriorityType - The priority type for VM allocation
 type PriorityType string
 
@@ -1086,81 +1188,6 @@ func PossiblePublicIPAllocationMethodValues() []PublicIPAllocationMethod {
 	}
 }
 
-// RecurringScheduledActionsDeadlineType - The type of deadline the scheduled action follows for its schedule.
-type RecurringScheduledActionsDeadlineType string
-
-const (
-	// RecurringScheduledActionsDeadlineTypeCompleteBy - Complete the operation by the given deadline.
-	RecurringScheduledActionsDeadlineTypeCompleteBy RecurringScheduledActionsDeadlineType = "CompleteBy"
-	// RecurringScheduledActionsDeadlineTypeInitiateAt - Initiate the operation at the given deadline.
-	RecurringScheduledActionsDeadlineTypeInitiateAt RecurringScheduledActionsDeadlineType = "InitiateAt"
-	// RecurringScheduledActionsDeadlineTypeUnknown - Default value of Unknown.
-	RecurringScheduledActionsDeadlineTypeUnknown RecurringScheduledActionsDeadlineType = "Unknown"
-)
-
-// PossibleRecurringScheduledActionsDeadlineTypeValues returns the possible values for the RecurringScheduledActionsDeadlineType const type.
-func PossibleRecurringScheduledActionsDeadlineTypeValues() []RecurringScheduledActionsDeadlineType {
-	return []RecurringScheduledActionsDeadlineType{
-		RecurringScheduledActionsDeadlineTypeCompleteBy,
-		RecurringScheduledActionsDeadlineTypeInitiateAt,
-		RecurringScheduledActionsDeadlineTypeUnknown,
-	}
-}
-
-// RecurringScheduledActionsProvisioningState - Provisioning state of the scheduled action resource.
-type RecurringScheduledActionsProvisioningState string
-
-const (
-	// RecurringScheduledActionsProvisioningStateCanceled - Resource creation was canceled.
-	RecurringScheduledActionsProvisioningStateCanceled RecurringScheduledActionsProvisioningState = "Canceled"
-	// RecurringScheduledActionsProvisioningStateDeleting - Resource is being deleted.
-	RecurringScheduledActionsProvisioningStateDeleting RecurringScheduledActionsProvisioningState = "Deleting"
-	// RecurringScheduledActionsProvisioningStateFailed - Resource creation failed.
-	RecurringScheduledActionsProvisioningStateFailed RecurringScheduledActionsProvisioningState = "Failed"
-	// RecurringScheduledActionsProvisioningStateSucceeded - Resource has been created.
-	RecurringScheduledActionsProvisioningStateSucceeded RecurringScheduledActionsProvisioningState = "Succeeded"
-)
-
-// PossibleRecurringScheduledActionsProvisioningStateValues returns the possible values for the RecurringScheduledActionsProvisioningState const type.
-func PossibleRecurringScheduledActionsProvisioningStateValues() []RecurringScheduledActionsProvisioningState {
-	return []RecurringScheduledActionsProvisioningState{
-		RecurringScheduledActionsProvisioningStateCanceled,
-		RecurringScheduledActionsProvisioningStateDeleting,
-		RecurringScheduledActionsProvisioningStateFailed,
-		RecurringScheduledActionsProvisioningStateSucceeded,
-	}
-}
-
-// RecurringScheduledActionsResourceOperationType - The resource operation to take on a scheduled-action failure.
-type RecurringScheduledActionsResourceOperationType string
-
-const (
-	// RecurringScheduledActionsResourceOperationTypeCreate - Create operations on the resources
-	RecurringScheduledActionsResourceOperationTypeCreate RecurringScheduledActionsResourceOperationType = "Create"
-	// RecurringScheduledActionsResourceOperationTypeDeallocate - Deallocate operations on the resources
-	RecurringScheduledActionsResourceOperationTypeDeallocate RecurringScheduledActionsResourceOperationType = "Deallocate"
-	// RecurringScheduledActionsResourceOperationTypeDelete - Delete operations on the resources
-	RecurringScheduledActionsResourceOperationTypeDelete RecurringScheduledActionsResourceOperationType = "Delete"
-	// RecurringScheduledActionsResourceOperationTypeHibernate - Hibernate operations on the resources
-	RecurringScheduledActionsResourceOperationTypeHibernate RecurringScheduledActionsResourceOperationType = "Hibernate"
-	// RecurringScheduledActionsResourceOperationTypeStart - Start operations on the resources
-	RecurringScheduledActionsResourceOperationTypeStart RecurringScheduledActionsResourceOperationType = "Start"
-	// RecurringScheduledActionsResourceOperationTypeUnknown - The default value for this enum type
-	RecurringScheduledActionsResourceOperationTypeUnknown RecurringScheduledActionsResourceOperationType = "Unknown"
-)
-
-// PossibleRecurringScheduledActionsResourceOperationTypeValues returns the possible values for the RecurringScheduledActionsResourceOperationType const type.
-func PossibleRecurringScheduledActionsResourceOperationTypeValues() []RecurringScheduledActionsResourceOperationType {
-	return []RecurringScheduledActionsResourceOperationType{
-		RecurringScheduledActionsResourceOperationTypeCreate,
-		RecurringScheduledActionsResourceOperationTypeDeallocate,
-		RecurringScheduledActionsResourceOperationTypeDelete,
-		RecurringScheduledActionsResourceOperationTypeHibernate,
-		RecurringScheduledActionsResourceOperationTypeStart,
-		RecurringScheduledActionsResourceOperationTypeUnknown,
-	}
-}
-
 // ResourceIdentityType - The type of identity used for the virtual machine scale set. The type 'SystemAssigned, UserAssigned'
 // includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities
 // from the virtual machine scale set.
@@ -1235,27 +1262,6 @@ func PossibleResourceOperationTypeValues() []ResourceOperationType {
 	}
 }
 
-// ResourceProvisioningState - The provisioning state of a resource type.
-type ResourceProvisioningState string
-
-const (
-	// ResourceProvisioningStateCanceled - Resource creation was canceled.
-	ResourceProvisioningStateCanceled ResourceProvisioningState = "Canceled"
-	// ResourceProvisioningStateFailed - Resource creation failed.
-	ResourceProvisioningStateFailed ResourceProvisioningState = "Failed"
-	// ResourceProvisioningStateSucceeded - Resource has been created.
-	ResourceProvisioningStateSucceeded ResourceProvisioningState = "Succeeded"
-)
-
-// PossibleResourceProvisioningStateValues returns the possible values for the ResourceProvisioningState const type.
-func PossibleResourceProvisioningStateValues() []ResourceProvisioningState {
-	return []ResourceProvisioningState{
-		ResourceProvisioningStateCanceled,
-		ResourceProvisioningStateFailed,
-		ResourceProvisioningStateSucceeded,
-	}
-}
-
 // ResourceType - The type of resource being targeted
 type ResourceType string
 
@@ -1292,6 +1298,81 @@ func PossibleScheduledActionTypeValues() []ScheduledActionType {
 		ScheduledActionTypeDeallocate,
 		ScheduledActionTypeHibernate,
 		ScheduledActionTypeStart,
+	}
+}
+
+// ScheduledActionsDeadlineType - The type of deadline the scheduled action follows for its schedule.
+type ScheduledActionsDeadlineType string
+
+const (
+	// ScheduledActionsDeadlineTypeCompleteBy - Complete the operation by the given deadline.
+	ScheduledActionsDeadlineTypeCompleteBy ScheduledActionsDeadlineType = "CompleteBy"
+	// ScheduledActionsDeadlineTypeInitiateAt - Initiate the operation at the given deadline.
+	ScheduledActionsDeadlineTypeInitiateAt ScheduledActionsDeadlineType = "InitiateAt"
+	// ScheduledActionsDeadlineTypeUnknown - Default value of Unknown.
+	ScheduledActionsDeadlineTypeUnknown ScheduledActionsDeadlineType = "Unknown"
+)
+
+// PossibleScheduledActionsDeadlineTypeValues returns the possible values for the ScheduledActionsDeadlineType const type.
+func PossibleScheduledActionsDeadlineTypeValues() []ScheduledActionsDeadlineType {
+	return []ScheduledActionsDeadlineType{
+		ScheduledActionsDeadlineTypeCompleteBy,
+		ScheduledActionsDeadlineTypeInitiateAt,
+		ScheduledActionsDeadlineTypeUnknown,
+	}
+}
+
+// ScheduledActionsProvisioningState - Provisioning state of the scheduled action resource.
+type ScheduledActionsProvisioningState string
+
+const (
+	// ScheduledActionsProvisioningStateCanceled - Resource creation was canceled.
+	ScheduledActionsProvisioningStateCanceled ScheduledActionsProvisioningState = "Canceled"
+	// ScheduledActionsProvisioningStateDeleting - Resource is being deleted.
+	ScheduledActionsProvisioningStateDeleting ScheduledActionsProvisioningState = "Deleting"
+	// ScheduledActionsProvisioningStateFailed - Resource creation failed.
+	ScheduledActionsProvisioningStateFailed ScheduledActionsProvisioningState = "Failed"
+	// ScheduledActionsProvisioningStateSucceeded - Resource has been created.
+	ScheduledActionsProvisioningStateSucceeded ScheduledActionsProvisioningState = "Succeeded"
+)
+
+// PossibleScheduledActionsProvisioningStateValues returns the possible values for the ScheduledActionsProvisioningState const type.
+func PossibleScheduledActionsProvisioningStateValues() []ScheduledActionsProvisioningState {
+	return []ScheduledActionsProvisioningState{
+		ScheduledActionsProvisioningStateCanceled,
+		ScheduledActionsProvisioningStateDeleting,
+		ScheduledActionsProvisioningStateFailed,
+		ScheduledActionsProvisioningStateSucceeded,
+	}
+}
+
+// ScheduledActionsResourceOperationType - The resource operation to take on a scheduled-action failure.
+type ScheduledActionsResourceOperationType string
+
+const (
+	// ScheduledActionsResourceOperationTypeCreate - Create operations on the resources
+	ScheduledActionsResourceOperationTypeCreate ScheduledActionsResourceOperationType = "Create"
+	// ScheduledActionsResourceOperationTypeDeallocate - Deallocate operations on the resources
+	ScheduledActionsResourceOperationTypeDeallocate ScheduledActionsResourceOperationType = "Deallocate"
+	// ScheduledActionsResourceOperationTypeDelete - Delete operations on the resources
+	ScheduledActionsResourceOperationTypeDelete ScheduledActionsResourceOperationType = "Delete"
+	// ScheduledActionsResourceOperationTypeHibernate - Hibernate operations on the resources
+	ScheduledActionsResourceOperationTypeHibernate ScheduledActionsResourceOperationType = "Hibernate"
+	// ScheduledActionsResourceOperationTypeStart - Start operations on the resources
+	ScheduledActionsResourceOperationTypeStart ScheduledActionsResourceOperationType = "Start"
+	// ScheduledActionsResourceOperationTypeUnknown - The default value for this enum type
+	ScheduledActionsResourceOperationTypeUnknown ScheduledActionsResourceOperationType = "Unknown"
+)
+
+// PossibleScheduledActionsResourceOperationTypeValues returns the possible values for the ScheduledActionsResourceOperationType const type.
+func PossibleScheduledActionsResourceOperationTypeValues() []ScheduledActionsResourceOperationType {
+	return []ScheduledActionsResourceOperationType{
+		ScheduledActionsResourceOperationTypeCreate,
+		ScheduledActionsResourceOperationTypeDeallocate,
+		ScheduledActionsResourceOperationTypeDelete,
+		ScheduledActionsResourceOperationTypeHibernate,
+		ScheduledActionsResourceOperationTypeStart,
+		ScheduledActionsResourceOperationTypeUnknown,
 	}
 }
 

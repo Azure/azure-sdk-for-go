@@ -242,7 +242,7 @@ func ExampleWebhooksClient_NewListEventsPager() {
 		// 				EventRequestMessage: &armcontainerregistry.EventRequestMessage{
 		// 					Content: &armcontainerregistry.EventContent{
 		// 						ID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-01T23:14:37.0707808Z"); return t}()),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.March, 1, 23, 14, 37, 70780800, time.UTC)),
 		// 						Action: to.Ptr("push"),
 		// 						Target: &armcontainerregistry.Target{
 		// 							MediaType: to.Ptr("application/vnd.docker.distribution.manifest.v2+json"),

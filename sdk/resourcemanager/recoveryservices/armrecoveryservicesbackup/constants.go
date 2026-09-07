@@ -4,6 +4,28 @@
 
 package armrecoveryservicesbackup
 
+const (
+	version20260701 string = "2026-07-01"
+)
+
+// AccessType - Whether access to the storage account is key-based or identity-based.
+type AccessType string
+
+const (
+	// AccessTypeIdentityBased - Access using managed identity.
+	AccessTypeIdentityBased AccessType = "IdentityBased"
+	// AccessTypeKeyBased - Access using storage account keys.
+	AccessTypeKeyBased AccessType = "KeyBased"
+)
+
+// PossibleAccessTypeValues returns the possible values for the AccessType const type.
+func PossibleAccessTypeValues() []AccessType {
+	return []AccessType{
+		AccessTypeIdentityBased,
+		AccessTypeKeyBased,
+	}
+}
+
 // AcquireStorageAccountLock - Whether storage account lock is to be acquired for this container or not.
 type AcquireStorageAccountLock string
 
@@ -570,33 +592,6 @@ func PossibleInquiryStatusValues() []InquiryStatus {
 	}
 }
 
-// InstanceProtectionReadiness - The state of instance protection.
-type InstanceProtectionReadiness string
-
-const (
-	// InstanceProtectionReadinessPartialProtection - Instance is partially protected
-	InstanceProtectionReadinessPartialProtection InstanceProtectionReadiness = "PartialProtection"
-	// InstanceProtectionReadinessProtectionError - Instance protection encountered an error
-	InstanceProtectionReadinessProtectionError InstanceProtectionReadiness = "ProtectionError"
-	// InstanceProtectionReadinessReady - Instance is ready for protection
-	InstanceProtectionReadinessReady InstanceProtectionReadiness = "Ready"
-	// InstanceProtectionReadinessScheduleDisabled - Backup schedule is disabled for this instance
-	InstanceProtectionReadinessScheduleDisabled InstanceProtectionReadiness = "ScheduleDisabled"
-	// InstanceProtectionReadinessUnknown - Instance protection readiness is unknown
-	InstanceProtectionReadinessUnknown InstanceProtectionReadiness = "Unknown"
-)
-
-// PossibleInstanceProtectionReadinessValues returns the possible values for the InstanceProtectionReadiness const type.
-func PossibleInstanceProtectionReadinessValues() []InstanceProtectionReadiness {
-	return []InstanceProtectionReadiness{
-		InstanceProtectionReadinessPartialProtection,
-		InstanceProtectionReadinessProtectionError,
-		InstanceProtectionReadinessReady,
-		InstanceProtectionReadinessScheduleDisabled,
-		InstanceProtectionReadinessUnknown,
-	}
-}
-
 type JobSupportedAction string
 
 const (
@@ -849,8 +844,9 @@ func PossiblePrivateEndpointConnectionStatusValues() []PrivateEndpointConnection
 }
 
 // ProtectableContainerType - Type of the container. The value of this property for
-// 1. Compute Azure VM is Microsoft.Compute/virtualMachines
-// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
+//
+//  1. Compute Azure VM is Microsoft.Compute/virtualMachines
+//  2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
 type ProtectableContainerType string
 
 const (
@@ -967,24 +963,6 @@ func PossibleProtectionIntentItemTypeValues() []ProtectionIntentItemType {
 		ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent,
 		ProtectionIntentItemTypeInvalid,
 		ProtectionIntentItemTypeRecoveryServiceVaultItem,
-	}
-}
-
-// ProtectionLevel - Protection type in case protected as part of a parent.
-type ProtectionLevel string
-
-const (
-	// ProtectionLevelDatabase - Protected at database level
-	ProtectionLevelDatabase ProtectionLevel = "Database"
-	// ProtectionLevelDatabaseUnderInstance - Database protected under an instance
-	ProtectionLevelDatabaseUnderInstance ProtectionLevel = "DatabaseUnderInstance"
-)
-
-// PossibleProtectionLevelValues returns the possible values for the ProtectionLevel const type.
-func PossibleProtectionLevelValues() []ProtectionLevel {
-	return []ProtectionLevel{
-		ProtectionLevelDatabase,
-		ProtectionLevelDatabaseUnderInstance,
 	}
 }
 
@@ -1326,10 +1304,30 @@ func PossibleSoftDeleteFeatureStateValues() []SoftDeleteFeatureState {
 	}
 }
 
+// SourceScanAction - Source scan configuration status for enabling or disabling source scan
+type SourceScanAction string
+
+const (
+	// SourceScanActionDisable - Disable source scan
+	SourceScanActionDisable SourceScanAction = "Disable"
+	// SourceScanActionEnable - Enable source scan
+	SourceScanActionEnable SourceScanAction = "Enable"
+)
+
+// PossibleSourceScanActionValues returns the possible values for the SourceScanAction const type.
+func PossibleSourceScanActionValues() []SourceScanAction {
+	return []SourceScanAction{
+		SourceScanActionDisable,
+		SourceScanActionEnable,
+	}
+}
+
 // SourceSideScanStatus - Threat status of the container
 type SourceSideScanStatus string
 
 const (
+	// SourceSideScanStatusConfigurationFailed - Source side scan configuration failed
+	SourceSideScanStatusConfigurationFailed SourceSideScanStatus = "ConfigurationFailed"
 	// SourceSideScanStatusConfigured - Source side scan is configured
 	SourceSideScanStatusConfigured SourceSideScanStatus = "Configured"
 	// SourceSideScanStatusNotApplicable - Source side scan is not applicable
@@ -1341,6 +1339,7 @@ const (
 // PossibleSourceSideScanStatusValues returns the possible values for the SourceSideScanStatus const type.
 func PossibleSourceSideScanStatusValues() []SourceSideScanStatus {
 	return []SourceSideScanStatus{
+		SourceSideScanStatusConfigurationFailed,
 		SourceSideScanStatusConfigured,
 		SourceSideScanStatusNotApplicable,
 		SourceSideScanStatusNotConfigured,
@@ -1353,6 +1352,8 @@ type SourceSideScanSummary string
 const (
 	// SourceSideScanSummaryHealthy - Scan summary indicates healthy state
 	SourceSideScanSummaryHealthy SourceSideScanSummary = "Healthy"
+	// SourceSideScanSummaryNoThreatsReported - No threats reported
+	SourceSideScanSummaryNoThreatsReported SourceSideScanSummary = "NoThreatsReported"
 	// SourceSideScanSummaryNotApplicable - Scan summary is not applicable
 	SourceSideScanSummaryNotApplicable SourceSideScanSummary = "NotApplicable"
 	// SourceSideScanSummarySuspicious - Scan summary is suspicious
@@ -1365,6 +1366,7 @@ const (
 func PossibleSourceSideScanSummaryValues() []SourceSideScanSummary {
 	return []SourceSideScanSummary{
 		SourceSideScanSummaryHealthy,
+		SourceSideScanSummaryNoThreatsReported,
 		SourceSideScanSummaryNotApplicable,
 		SourceSideScanSummarySuspicious,
 		SourceSideScanSummaryUnknown,
@@ -1528,9 +1530,10 @@ func PossibleThreatStatusValues() []ThreatStatus {
 }
 
 // TieringMode - Tiering Mode to control automatic tiering of recovery points. Supported values are:
-// 1. TierRecommended: Tier all recovery points recommended to be tiered
-// 2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.
-// 3. DoNotTier: Do not tier any recovery points
+//
+//  1. TierRecommended: Tier all recovery points recommended to be tiered
+//  2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.
+//  3. DoNotTier: Do not tier any recovery points
 type TieringMode string
 
 const (
@@ -1571,30 +1574,6 @@ func PossibleUsagesUnitValues() []UsagesUnit {
 		UsagesUnitCountPerSecond,
 		UsagesUnitPercent,
 		UsagesUnitSeconds,
-	}
-}
-
-// VMWorkloadPolicyType - Type of the protection policy
-type VMWorkloadPolicyType string
-
-const (
-	// VMWorkloadPolicyTypeInvalid - Invalid policy type
-	VMWorkloadPolicyTypeInvalid VMWorkloadPolicyType = "Invalid"
-	// VMWorkloadPolicyTypeSnapshotV1 - Snapshot V1 policy type
-	VMWorkloadPolicyTypeSnapshotV1 VMWorkloadPolicyType = "SnapshotV1"
-	// VMWorkloadPolicyTypeSnapshotV2 - Snapshot V2 policy type
-	VMWorkloadPolicyTypeSnapshotV2 VMWorkloadPolicyType = "SnapshotV2"
-	// VMWorkloadPolicyTypeStreaming - Streaming policy type
-	VMWorkloadPolicyTypeStreaming VMWorkloadPolicyType = "Streaming"
-)
-
-// PossibleVMWorkloadPolicyTypeValues returns the possible values for the VMWorkloadPolicyType const type.
-func PossibleVMWorkloadPolicyTypeValues() []VMWorkloadPolicyType {
-	return []VMWorkloadPolicyType{
-		VMWorkloadPolicyTypeInvalid,
-		VMWorkloadPolicyTypeSnapshotV1,
-		VMWorkloadPolicyTypeSnapshotV2,
-		VMWorkloadPolicyTypeStreaming,
 	}
 }
 

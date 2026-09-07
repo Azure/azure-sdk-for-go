@@ -124,7 +124,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreate() {
 	// 		},
 	// 		Properties: &armcontainerregistry.RegistryProperties{
 	// 			LoginServer: to.Ptr("myregistry.azurecr.io"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:38:26.1537861Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2021, time.June, 15, 21, 38, 26, 153786100, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 			AdminUserEnabled: to.Ptr(true),
 	// 			NetworkRuleSet: &armcontainerregistry.NetworkRuleSet{
@@ -144,7 +144,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreate() {
 	// 				},
 	// 				RetentionPolicy: &armcontainerregistry.RetentionPolicy{
 	// 					Days: to.Ptr[int32](7),
-	// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:40:12.8506835+00:00"); return t}()),
+	// 					LastUpdatedTime: to.Ptr(time.Date(2021, time.June, 15, 21, 40, 12, 850683500, time.UTC)),
 	// 					Status: to.Ptr(armcontainerregistry.PolicyStatusDisabled),
 	// 				},
 	// 				ExportPolicy: &armcontainerregistry.ExportPolicy{
@@ -225,7 +225,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateAbac() {
 	// 		},
 	// 		Properties: &armcontainerregistry.RegistryProperties{
 	// 			LoginServer: to.Ptr("myregistry.azurecr.io"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:38:26.1537861Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2021, time.June, 15, 21, 38, 26, 153786100, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 			AdminUserEnabled: to.Ptr(true),
 	// 			NetworkRuleSet: &armcontainerregistry.NetworkRuleSet{
@@ -245,7 +245,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateAbac() {
 	// 				},
 	// 				RetentionPolicy: &armcontainerregistry.RetentionPolicy{
 	// 					Days: to.Ptr[int32](7),
-	// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:40:12.8506835+00:00"); return t}()),
+	// 					LastUpdatedTime: to.Ptr(time.Date(2021, time.June, 15, 21, 40, 12, 850683500, time.UTC)),
 	// 					Status: to.Ptr(armcontainerregistry.PolicyStatusDisabled),
 	// 				},
 	// 				ExportPolicy: &armcontainerregistry.ExportPolicy{
@@ -326,7 +326,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateDomainNameLabelScope() {
 	// 		},
 	// 		Properties: &armcontainerregistry.RegistryProperties{
 	// 			LoginServer: to.Ptr("myRegistry-a1b2c3d4e5f6.azurecr.io"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:38:26.1537861Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2021, time.June, 15, 21, 38, 26, 153786100, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 			AdminUserEnabled: to.Ptr(false),
 	// 			NetworkRuleSet: &armcontainerregistry.NetworkRuleSet{
@@ -346,7 +346,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateDomainNameLabelScope() {
 	// 				},
 	// 				RetentionPolicy: &armcontainerregistry.RetentionPolicy{
 	// 					Days: to.Ptr[int32](7),
-	// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:40:12.8506835+00:00"); return t}()),
+	// 					LastUpdatedTime: to.Ptr(time.Date(2021, time.June, 15, 21, 40, 12, 850683500, time.UTC)),
 	// 					Status: to.Ptr(armcontainerregistry.PolicyStatusDisabled),
 	// 				},
 	// 				ExportPolicy: &armcontainerregistry.ExportPolicy{
@@ -427,7 +427,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateZoneRedundant() {
 	// 		},
 	// 		Properties: &armcontainerregistry.RegistryProperties{
 	// 			LoginServer: to.Ptr("myregistry.azurecr.io"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:38:26.1537861Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2021, time.June, 15, 21, 38, 26, 153786100, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 			AdminUserEnabled: to.Ptr(false),
 	// 			NetworkRuleSet: &armcontainerregistry.NetworkRuleSet{
@@ -447,7 +447,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateZoneRedundant() {
 	// 				},
 	// 				RetentionPolicy: &armcontainerregistry.RetentionPolicy{
 	// 					Days: to.Ptr[int32](7),
-	// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:40:12.8506835+00:00"); return t}()),
+	// 					LastUpdatedTime: to.Ptr(time.Date(2021, time.June, 15, 21, 40, 12, 850683500, time.UTC)),
 	// 					Status: to.Ptr(armcontainerregistry.PolicyStatusDisabled),
 	// 				},
 	// 				ExportPolicy: &armcontainerregistry.ExportPolicy{
@@ -519,7 +519,7 @@ func ExampleRegistriesClient_BeginGenerateCredentials() {
 	}
 	poller, err := clientFactory.NewRegistriesClient().BeginGenerateCredentials(ctx, "myResourceGroup", "myRegistry", armcontainerregistry.GenerateCredentialsParameters{
 		TokenID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/myToken"),
-		Expiry:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T15:59:59.0707808Z"); return t }()),
+		Expiry:  to.Ptr(time.Date(2020, time.December, 31, 15, 59, 59, 70780800, time.UTC)),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -536,12 +536,12 @@ func ExampleRegistriesClient_BeginGenerateCredentials() {
 	// 		Username: to.Ptr("myToken"),
 	// 		Passwords: []*armcontainerregistry.TokenPassword{
 	// 			{
-	// 				Expiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T15:59:59.0707808Z"); return t}()),
+	// 				Expiry: to.Ptr(time.Date(2020, time.December, 31, 15, 59, 59, 70780800, time.UTC)),
 	// 				Name: to.Ptr(armcontainerregistry.TokenPasswordNamePassword1),
 	// 				Value: to.Ptr("00000000000000000000000000000000"),
 	// 			},
 	// 			{
-	// 				Expiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T15:59:59.0707808Z"); return t}()),
+	// 				Expiry: to.Ptr(time.Date(2020, time.December, 31, 15, 59, 59, 70780800, time.UTC)),
 	// 				Name: to.Ptr(armcontainerregistry.TokenPasswordNamePassword2),
 	// 				Value: to.Ptr("00000000000000000000000000000000"),
 	// 			},
@@ -583,7 +583,7 @@ func ExampleRegistriesClient_Get() {
 	// 		},
 	// 		Properties: &armcontainerregistry.RegistryProperties{
 	// 			LoginServer: to.Ptr("myregistry.azurecr.io"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:38:26.1537861Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2021, time.June, 15, 21, 38, 26, 153786100, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 			AdminUserEnabled: to.Ptr(false),
 	// 			NetworkRuleSet: &armcontainerregistry.NetworkRuleSet{
@@ -603,7 +603,7 @@ func ExampleRegistriesClient_Get() {
 	// 				},
 	// 				RetentionPolicy: &armcontainerregistry.RetentionPolicy{
 	// 					Days: to.Ptr[int32](7),
-	// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:40:12.8506835+00:00"); return t}()),
+	// 					LastUpdatedTime: to.Ptr(time.Date(2021, time.June, 15, 21, 40, 12, 850683500, time.UTC)),
 	// 					Status: to.Ptr(armcontainerregistry.PolicyStatusDisabled),
 	// 				},
 	// 				ExportPolicy: &armcontainerregistry.ExportPolicy{
@@ -826,7 +826,7 @@ func ExampleRegistriesClient_NewListPager() {
 		// 				},
 		// 				Properties: &armcontainerregistry.RegistryProperties{
 		// 					LoginServer: to.Ptr("myregistry.azurecr.io"),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:38:26.1537861Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2021, time.June, 15, 21, 38, 26, 153786100, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 		// 					AdminUserEnabled: to.Ptr(false),
 		// 					NetworkRuleSet: &armcontainerregistry.NetworkRuleSet{
@@ -846,7 +846,7 @@ func ExampleRegistriesClient_NewListPager() {
 		// 						},
 		// 						RetentionPolicy: &armcontainerregistry.RetentionPolicy{
 		// 							Days: to.Ptr[int32](7),
-		// 							LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:40:12.8506835+00:00"); return t}()),
+		// 							LastUpdatedTime: to.Ptr(time.Date(2021, time.June, 15, 21, 40, 12, 850683500, time.UTC)),
 		// 							Status: to.Ptr(armcontainerregistry.PolicyStatusDisabled),
 		// 						},
 		// 						ExportPolicy: &armcontainerregistry.ExportPolicy{
@@ -921,7 +921,7 @@ func ExampleRegistriesClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				Properties: &armcontainerregistry.RegistryProperties{
 		// 					LoginServer: to.Ptr("myregistry.azurecr.io"),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:38:26.1537861Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2021, time.June, 15, 21, 38, 26, 153786100, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 		// 					AdminUserEnabled: to.Ptr(false),
 		// 					NetworkRuleSet: &armcontainerregistry.NetworkRuleSet{
@@ -941,7 +941,7 @@ func ExampleRegistriesClient_NewListByResourceGroupPager() {
 		// 						},
 		// 						RetentionPolicy: &armcontainerregistry.RetentionPolicy{
 		// 							Days: to.Ptr[int32](7),
-		// 							LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:40:12.8506835+00:00"); return t}()),
+		// 							LastUpdatedTime: to.Ptr(time.Date(2021, time.June, 15, 21, 40, 12, 850683500, time.UTC)),
 		// 							Status: to.Ptr(armcontainerregistry.PolicyStatusDisabled),
 		// 						},
 		// 						ExportPolicy: &armcontainerregistry.ExportPolicy{
@@ -1181,7 +1181,7 @@ func ExampleRegistriesClient_BeginUpdate() {
 	// 		},
 	// 		Properties: &armcontainerregistry.RegistryProperties{
 	// 			LoginServer: to.Ptr("myregistry.azurecr.io"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:38:26.1537861Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2021, time.June, 15, 21, 38, 26, 153786100, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 			AdminUserEnabled: to.Ptr(true),
 	// 			NetworkRuleSet: &armcontainerregistry.NetworkRuleSet{
@@ -1201,7 +1201,7 @@ func ExampleRegistriesClient_BeginUpdate() {
 	// 				},
 	// 				RetentionPolicy: &armcontainerregistry.RetentionPolicy{
 	// 					Days: to.Ptr[int32](7),
-	// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:40:12.8506835+00:00"); return t}()),
+	// 					LastUpdatedTime: to.Ptr(time.Date(2021, time.June, 15, 21, 40, 12, 850683500, time.UTC)),
 	// 					Status: to.Ptr(armcontainerregistry.PolicyStatusDisabled),
 	// 				},
 	// 				ExportPolicy: &armcontainerregistry.ExportPolicy{

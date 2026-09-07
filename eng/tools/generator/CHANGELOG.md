@@ -1,5 +1,11 @@
 # Release History
 
+## 0.4.18 (unreleased)
+
+### Other Changes
+
+- Updated `github.com/go-git/go-git` to latest `v6` alpha due to breaking change in `v5` that prevents upgrading to avoid CVE flagging.
+
 ## 0.4.17 (2026-07-28)
 
 ### Bugs Fixed

@@ -37,6 +37,10 @@ type VolumesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByVolumeGroupPager func(resourceGroupName string, storagePoolName string, volumeGroupName string, options *armpurestorageblock.VolumesClientListByVolumeGroupOptions) (resp azfake.PagerResponder[armpurestorageblock.VolumesClientListByVolumeGroupResponse])
 
+	// BeginOverwrite is the fake for method VolumesClient.BeginOverwrite
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginOverwrite func(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, volumeName string, body armpurestorageblock.VolumeOverwriteRequest, options *armpurestorageblock.VolumesClientBeginOverwriteOptions) (resp azfake.PollerResponder[armpurestorageblock.VolumesClientOverwriteResponse], errResp azfake.ErrorResponder)
+
 	// BeginUpdate is the fake for method VolumesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, volumeName string, properties armpurestorageblock.VolumeUpdate, options *armpurestorageblock.VolumesClientBeginUpdateOptions) (resp azfake.PollerResponder[armpurestorageblock.VolumesClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -51,6 +55,7 @@ func NewVolumesServerTransport(srv *VolumesServer) *VolumesServerTransport {
 		beginCreate:               newTracker[azfake.PollerResponder[armpurestorageblock.VolumesClientCreateResponse]](),
 		beginDelete:               newTracker[azfake.PollerResponder[armpurestorageblock.VolumesClientDeleteResponse]](),
 		newListByVolumeGroupPager: newTracker[azfake.PagerResponder[armpurestorageblock.VolumesClientListByVolumeGroupResponse]](),
+		beginOverwrite:            newTracker[azfake.PollerResponder[armpurestorageblock.VolumesClientOverwriteResponse]](),
 		beginUpdate:               newTracker[azfake.PollerResponder[armpurestorageblock.VolumesClientUpdateResponse]](),
 	}
 }
@@ -62,6 +67,7 @@ type VolumesServerTransport struct {
 	beginCreate               *tracker[azfake.PollerResponder[armpurestorageblock.VolumesClientCreateResponse]]
 	beginDelete               *tracker[azfake.PollerResponder[armpurestorageblock.VolumesClientDeleteResponse]]
 	newListByVolumeGroupPager *tracker[azfake.PagerResponder[armpurestorageblock.VolumesClientListByVolumeGroupResponse]]
+	beginOverwrite            *tracker[azfake.PollerResponder[armpurestorageblock.VolumesClientOverwriteResponse]]
 	beginUpdate               *tracker[azfake.PollerResponder[armpurestorageblock.VolumesClientUpdateResponse]]
 }
 
@@ -94,6 +100,8 @@ func (v *VolumesServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = v.dispatchGet(req)
 			case "VolumesClient.NewListByVolumeGroupPager":
 				res.resp, res.err = v.dispatchNewListByVolumeGroupPager(req)
+			case "VolumesClient.BeginOverwrite":
+				res.resp, res.err = v.dispatchBeginOverwrite(req)
 			case "VolumesClient.BeginUpdate":
 				res.resp, res.err = v.dispatchBeginUpdate(req)
 			default:
@@ -118,7 +126,7 @@ func (v *VolumesServerTransport) dispatchBeginCreate(req *http.Request) (*http.R
 	}
 	beginCreate := v.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumeGroups/(?P<volumeGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumeGroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -174,7 +182,7 @@ func (v *VolumesServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 	}
 	beginDelete := v.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumeGroups/(?P<volumeGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumeGroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -224,7 +232,7 @@ func (v *VolumesServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	if v.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumeGroups/(?P<volumeGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumeGroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -267,7 +275,7 @@ func (v *VolumesServerTransport) dispatchNewListByVolumeGroupPager(req *http.Req
 	}
 	newListByVolumeGroupPager := v.newListByVolumeGroupPager.get(req)
 	if newListByVolumeGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumeGroups/(?P<volumeGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumeGroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -306,13 +314,69 @@ func (v *VolumesServerTransport) dispatchNewListByVolumeGroupPager(req *http.Req
 	return resp, nil
 }
 
+func (v *VolumesServerTransport) dispatchBeginOverwrite(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginOverwrite == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginOverwrite not implemented")}
+	}
+	beginOverwrite := v.beginOverwrite.get(req)
+	if beginOverwrite == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumeGroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/overwrite`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armpurestorageblock.VolumeOverwriteRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		storagePoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storagePoolName")])
+		if err != nil {
+			return nil, err
+		}
+		volumeGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginOverwrite(req.Context(), resourceGroupNameParam, storagePoolNameParam, volumeGroupNameParam, volumeNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginOverwrite = &respr
+		v.beginOverwrite.add(req, beginOverwrite)
+	}
+
+	resp, err := server.PollerResponderNext(beginOverwrite, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginOverwrite.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginOverwrite) {
+		v.beginOverwrite.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (v *VolumesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := v.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumeGroups/(?P<volumeGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumeGroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {

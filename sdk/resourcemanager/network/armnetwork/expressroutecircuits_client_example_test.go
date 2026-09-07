@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitCreate.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitCreate.json
 func ExampleExpressRouteCircuitsClient_BeginCreateOrUpdate_createExpressRouteCircuit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleExpressRouteCircuitsClient_BeginCreateOrUpdate_createExpressRouteCir
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitCreateOnExpressRoutePort.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitCreateOnExpressRoutePort.json
 func ExampleExpressRouteCircuitsClient_BeginCreateOrUpdate_createExpressRouteCircuitOnExpressRoutePort() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,8 +154,156 @@ func ExampleExpressRouteCircuitsClient_BeginCreateOrUpdate_createExpressRouteCir
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitDelete.json
-func ExampleExpressRouteCircuitsClient_BeginDelete() {
+// Generated from example definition: 2025-09-01/ExpressRouteMultiCloudCircuitCreateWithActivationKey.json
+func ExampleExpressRouteCircuitsClient_BeginCreateOrUpdate_createMultiCloudExpressRouteCircuitWithActivationKey() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExpressRouteCircuitsClient().BeginCreateOrUpdate(ctx, "rg1", "circuitName", armnetwork.ExpressRouteCircuit{
+		Properties: &armnetwork.ExpressRouteCircuitPropertiesFormat{
+			ServiceProviderProperties: &armnetwork.ExpressRouteCircuitServiceProviderProperties{
+				ServiceProviderName: to.Ptr("AWS"),
+				PeeringLocation:     to.Ptr("uswest2"),
+				BandwidthInMbps:     to.Ptr[int32](200),
+			},
+			ActivationKey: to.Ptr("eyJzaGFyZWRDb25uZWN0aW9uVXVpZCI6IjE1ODliMDhhLTNmYWQtNDkzNi05MGQyLWE5ZDg3Y2JkNmM3MCIsImNvbm5lY3Rpb25TaXplTWJwcyI6MTAwMC4wLCJkZXN0aW5hdGlvbkFjY291bnRJZCI6IjEyMzQ1Njc4OSIsImVudmlyb25tZW50IjoidXN3ZXN0MiIsImRlc3RpbmF0aW9uRW52aXJvbm1lbnRVcmkiOiIvc3Vic2NyaXB0aW9ucy85OWMzMzc3Ni05ZjRlLTRlNTgtYWJlOC05MjYzZGIxYjljNmUvcmVzb3VyY2VHcm91cHMvQ3Jvc3NDb25uZWN0aW9uLXVzd2VzdDIvcHJvdmlkZXJzL01pY3Jvc29mdC5OZXR3b3JrL2V4cHJlc3NSb3V0ZUNyb3NzQ29ubmVjdGlvbnMvMTU4OWIwOGEtM2ZhZC00OTM2LTkwZDItYTlkODdjYmQ2YzcwIiwidmVyc2lvbiI6MX0="),
+		},
+		SKU: &armnetwork.ExpressRouteCircuitSKU{
+			Name:   to.Ptr("MultiCloud_MeteredData"),
+			Tier:   to.Ptr(armnetwork.ExpressRouteCircuitSKUTierMultiCloud),
+			Family: to.Ptr(armnetwork.ExpressRouteCircuitSKUFamilyMeteredData),
+		},
+		Location: to.Ptr("eastus2euap"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCircuitsClientCreateOrUpdateResponse{
+	// 	ExpressRouteCircuit: armnetwork.ExpressRouteCircuit{
+	// 		Name: to.Ptr("circuitName"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName"),
+	// 		Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+	// 		Type: to.Ptr("Microsoft.Network/expressRouteCircuits"),
+	// 		Location: to.Ptr("eastus2euap"),
+	// 		Properties: &armnetwork.ExpressRouteCircuitPropertiesFormat{
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateUpdating),
+	// 			Peerings: []*armnetwork.ExpressRouteCircuitPeering{
+	// 			},
+	// 			Authorizations: []*armnetwork.ExpressRouteCircuitAuthorization{
+	// 			},
+	// 			ServiceProviderProperties: &armnetwork.ExpressRouteCircuitServiceProviderProperties{
+	// 				ServiceProviderName: to.Ptr("AWS"),
+	// 				PeeringLocation: to.Ptr("uswest2"),
+	// 				BandwidthInMbps: to.Ptr[int32](200),
+	// 			},
+	// 			CircuitProvisioningState: to.Ptr("Enabled"),
+	// 			AllowClassicOperations: to.Ptr(false),
+	// 			GatewayManagerEtag: to.Ptr(""),
+	// 			ServiceKey: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateNotProvisioned),
+	// 			GlobalReachEnabled: to.Ptr(false),
+	// 			EnableDirectPortRateLimit: to.Ptr(false),
+	// 			ActivationKey: to.Ptr("eyJzaGFyZWRDb25uZWN0aW9uVXVpZCI6IjE1ODliMDhhLTNmYWQtNDkzNi05MGQyLWE5ZDg3Y2JkNmM3MCIsImNvbm5lY3Rpb25TaXplTWJwcyI6MTAwMC4wLCJkZXN0aW5hdGlvbkFjY291bnRJZCI6IjEyMzQ1Njc4OSIsImVudmlyb25tZW50IjoidXN3ZXN0MiIsImRlc3RpbmF0aW9uRW52aXJvbm1lbnRVcmkiOiIvc3Vic2NyaXB0aW9ucy85OWMzMzc3Ni05ZjRlLTRlNTgtYWJlOC05MjYzZGIxYjljNmUvcmVzb3VyY2VHcm91cHMvQ3Jvc3NDb25uZWN0aW9uLXVzd2VzdDIvcHJvdmlkZXJzL01pY3Jvc29mdC5OZXR3b3JrL2V4cHJlc3NSb3V0ZUNyb3NzQ29ubmVjdGlvbnMvMTU4OWIwOGEtM2ZhZC00OTM2LTkwZDItYTlkODdjYmQ2YzcwIiwidmVyc2lvbiI6MX0="),
+	// 			ResiliencyLevel: to.Ptr(armnetwork.ResiliencyLevelMaximum),
+	// 		},
+	// 		SKU: &armnetwork.ExpressRouteCircuitSKU{
+	// 			Name: to.Ptr("MultiCloud_MeteredData"),
+	// 			Tier: to.Ptr(armnetwork.ExpressRouteCircuitSKUTierMultiCloud),
+	// 			Family: to.Ptr(armnetwork.ExpressRouteCircuitSKUFamilyMeteredData),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/ExpressRouteMultiCloudCircuitCreateWithPartnerAccountId.json
+func ExampleExpressRouteCircuitsClient_BeginCreateOrUpdate_createMultiCloudExpressRouteCircuitWithPartnerAccountId() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExpressRouteCircuitsClient().BeginCreateOrUpdate(ctx, "rg1", "circuitName", armnetwork.ExpressRouteCircuit{
+		Properties: &armnetwork.ExpressRouteCircuitPropertiesFormat{
+			ServiceProviderProperties: &armnetwork.ExpressRouteCircuitServiceProviderProperties{
+				ServiceProviderName: to.Ptr("AWS"),
+				PeeringLocation:     to.Ptr("uswest2"),
+				BandwidthInMbps:     to.Ptr[int32](200),
+			},
+			PartnerAccountID: to.Ptr("123456789"),
+		},
+		SKU: &armnetwork.ExpressRouteCircuitSKU{
+			Name:   to.Ptr("MultiCloud_MeteredData"),
+			Tier:   to.Ptr(armnetwork.ExpressRouteCircuitSKUTierMultiCloud),
+			Family: to.Ptr(armnetwork.ExpressRouteCircuitSKUFamilyMeteredData),
+		},
+		Location: to.Ptr("eastus2euap"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCircuitsClientCreateOrUpdateResponse{
+	// 	ExpressRouteCircuit: armnetwork.ExpressRouteCircuit{
+	// 		Name: to.Ptr("circuitName"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName"),
+	// 		Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+	// 		Type: to.Ptr("Microsoft.Network/expressRouteCircuits"),
+	// 		Location: to.Ptr("eastus2euap"),
+	// 		Properties: &armnetwork.ExpressRouteCircuitPropertiesFormat{
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateUpdating),
+	// 			Peerings: []*armnetwork.ExpressRouteCircuitPeering{
+	// 			},
+	// 			Authorizations: []*armnetwork.ExpressRouteCircuitAuthorization{
+	// 			},
+	// 			ServiceProviderProperties: &armnetwork.ExpressRouteCircuitServiceProviderProperties{
+	// 				ServiceProviderName: to.Ptr("AWS"),
+	// 				PeeringLocation: to.Ptr("uswest2"),
+	// 				BandwidthInMbps: to.Ptr[int32](200),
+	// 			},
+	// 			CircuitProvisioningState: to.Ptr("Enabled"),
+	// 			AllowClassicOperations: to.Ptr(false),
+	// 			GatewayManagerEtag: to.Ptr(""),
+	// 			ServiceKey: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateNotProvisioned),
+	// 			GlobalReachEnabled: to.Ptr(false),
+	// 			EnableDirectPortRateLimit: to.Ptr(false),
+	// 			PartnerAccountID: to.Ptr("123456789"),
+	// 			ResiliencyLevel: to.Ptr(armnetwork.ResiliencyLevelMaximum),
+	// 		},
+	// 		SKU: &armnetwork.ExpressRouteCircuitSKU{
+	// 			Name: to.Ptr("MultiCloud_MeteredData"),
+	// 			Tier: to.Ptr(armnetwork.ExpressRouteCircuitSKUTierMultiCloud),
+	// 			Family: to.Ptr(armnetwork.ExpressRouteCircuitSKUFamilyMeteredData),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitDelete.json
+func ExampleExpressRouteCircuitsClient_BeginDelete_deleteExpressRouteCircuit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -180,8 +328,34 @@ func ExampleExpressRouteCircuitsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitGet.json
-func ExampleExpressRouteCircuitsClient_Get() {
+// Generated from example definition: 2025-09-01/ExpressRouteMultiCloudCircuitDelete.json
+func ExampleExpressRouteCircuitsClient_BeginDelete_deleteMultiCloudExpressRouteCircuit() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExpressRouteCircuitsClient().BeginDelete(ctx, "rg1", "circuitName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCircuitsClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitGet.json
+func ExampleExpressRouteCircuitsClient_Get_getExpressRouteCircuit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -219,6 +393,7 @@ func ExampleExpressRouteCircuitsClient_Get() {
 	// 				PeeringLocation: to.Ptr("peeringLocation"),
 	// 				ServiceProviderName: to.Ptr("providerName"),
 	// 			},
+	// 			ResiliencyLevel: to.Ptr(armnetwork.ResiliencyLevelStandard),
 	// 			ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateNotProvisioned),
 	// 		},
 	// 		SKU: &armnetwork.ExpressRouteCircuitSKU{
@@ -230,7 +405,58 @@ func ExampleExpressRouteCircuitsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitGetCircuitLinkFailoverAllTestsDetails.json
+// Generated from example definition: 2025-09-01/ExpressRouteMultiCloudCircuitGet.json
+func ExampleExpressRouteCircuitsClient_Get_getMultiCloudExpressRouteCircuit() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewExpressRouteCircuitsClient().Get(ctx, "rg1", "circuitName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCircuitsClientGetResponse{
+	// 	ExpressRouteCircuit: armnetwork.ExpressRouteCircuit{
+	// 		Name: to.Ptr("circuitName"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName"),
+	// 		Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+	// 		Type: to.Ptr("Microsoft.Network/expressRouteCircuits"),
+	// 		Location: to.Ptr("eastus2euap"),
+	// 		Properties: &armnetwork.ExpressRouteCircuitPropertiesFormat{
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 			Authorizations: []*armnetwork.ExpressRouteCircuitAuthorization{
+	// 			},
+	// 			ServiceProviderProperties: &armnetwork.ExpressRouteCircuitServiceProviderProperties{
+	// 				ServiceProviderName: to.Ptr("AWS"),
+	// 				PeeringLocation: to.Ptr("uswest2"),
+	// 				BandwidthInMbps: to.Ptr[int32](200),
+	// 			},
+	// 			PartnerAccountID: to.Ptr("123-456-789"),
+	// 			ActivationKey: to.Ptr("ew0KICAic2hhcmVkQ29ubmVjdGlvblV1aWQiOiAiM2YxYTZjOWUtOGIzZi00YjllLTljM2EtMmU2ZDdmNGExYzU5IiwNCiAgImNvbm5lY3Rpb25TaXplTWJwcyI6IDIwMCwNCiAgImRlc3RpbmF0aW9uQWNjb3VudCI6ICI3ZDc0N2VlZC1iNDRjLTQyNTctOGQ0My1kZjllYmQ5NDU0NmIiDQp9"),
+	// 			ResiliencyLevel: to.Ptr(armnetwork.ResiliencyLevelMaximum),
+	// 			CircuitProvisioningState: to.Ptr("Enabled"),
+	// 			AllowClassicOperations: to.Ptr(false),
+	// 			ServiceKey: to.Ptr("a1410692-0000-4ceb-b94a-b90b94d398d1"),
+	// 			ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateDeProvisioned),
+	// 		},
+	// 		SKU: &armnetwork.ExpressRouteCircuitSKU{
+	// 			Name: to.Ptr("MultiCloud_MeteredData"),
+	// 			Tier: to.Ptr(armnetwork.ExpressRouteCircuitSKUTierMultiCloud),
+	// 			Family: to.Ptr(armnetwork.ExpressRouteCircuitSKUFamilyMeteredData),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitGetCircuitLinkFailoverAllTestsDetails.json
 func ExampleExpressRouteCircuitsClient_BeginGetCircuitLinkFailoverAllTestsDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -280,7 +506,7 @@ func ExampleExpressRouteCircuitsClient_BeginGetCircuitLinkFailoverAllTestsDetail
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitGetCircuitLinkFailoverSingleTestDetails.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitGetCircuitLinkFailoverSingleTestDetails.json
 func ExampleExpressRouteCircuitsClient_BeginGetCircuitLinkFailoverSingleTestDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -349,7 +575,7 @@ func ExampleExpressRouteCircuitsClient_BeginGetCircuitLinkFailoverSingleTestDeta
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitPeeringStats.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitPeeringStats.json
 func ExampleExpressRouteCircuitsClient_GetPeeringStats() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -377,7 +603,7 @@ func ExampleExpressRouteCircuitsClient_GetPeeringStats() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitStats.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitStats.json
 func ExampleExpressRouteCircuitsClient_GetStats() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -405,7 +631,7 @@ func ExampleExpressRouteCircuitsClient_GetStats() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitListByResourceGroup.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitListByResourceGroup.json
 func ExampleExpressRouteCircuitsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -514,7 +740,7 @@ func ExampleExpressRouteCircuitsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitListBySubscription.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitListBySubscription.json
 func ExampleExpressRouteCircuitsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -623,7 +849,7 @@ func ExampleExpressRouteCircuitsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitARPTableList.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitARPTableList.json
 func ExampleExpressRouteCircuitsClient_BeginListArpTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -659,7 +885,7 @@ func ExampleExpressRouteCircuitsClient_BeginListArpTable() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitRouteTableList.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitRouteTableList.json
 func ExampleExpressRouteCircuitsClient_BeginListRoutesTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -696,7 +922,7 @@ func ExampleExpressRouteCircuitsClient_BeginListRoutesTable() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitRouteTableSummaryList.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitRouteTableSummaryList.json
 func ExampleExpressRouteCircuitsClient_BeginListRoutesTableSummary() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -733,7 +959,7 @@ func ExampleExpressRouteCircuitsClient_BeginListRoutesTableSummary() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitStartCircuitLinkFailoverTest.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitStartCircuitLinkFailoverTest.json
 func ExampleExpressRouteCircuitsClient_BeginStartCircuitLinkFailoverTest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -760,7 +986,7 @@ func ExampleExpressRouteCircuitsClient_BeginStartCircuitLinkFailoverTest() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitStopCircuitLinkFailoverTest.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitStopCircuitLinkFailoverTest.json
 func ExampleExpressRouteCircuitsClient_BeginStopCircuitLinkFailoverTest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -792,7 +1018,7 @@ func ExampleExpressRouteCircuitsClient_BeginStopCircuitLinkFailoverTest() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitUpdateTags.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitUpdateTags.json
 func ExampleExpressRouteCircuitsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

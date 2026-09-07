@@ -59,12 +59,7 @@ func (client *SettingsClient) CreateOrUpdateByScope(ctx context.Context, scope s
 	if err != nil {
 		return SettingsClientCreateOrUpdateByScopeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return SettingsClientCreateOrUpdateByScopeResponse{}, err
-	}
-	resp, err := client.createOrUpdateByScopeHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateByScopeHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateByScopeCreateRequest creates the CreateOrUpdateByScope request.
@@ -94,8 +89,11 @@ func (client *SettingsClient) createOrUpdateByScopeCreateRequest(ctx context.Con
 }
 
 // createOrUpdateByScopeHandleResponse handles the CreateOrUpdateByScope response.
-func (client *SettingsClient) createOrUpdateByScopeHandleResponse(resp *http.Response) (SettingsClientCreateOrUpdateByScopeResponse, error) {
+func (client *SettingsClient) createOrUpdateByScopeHandleResponse(resp *http.Response, successCodes ...int) (SettingsClientCreateOrUpdateByScopeResponse, error) {
 	result := SettingsClientCreateOrUpdateByScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return SettingsClientCreateOrUpdateByScopeResponse{}, err
 	}
@@ -122,8 +120,7 @@ func (client *SettingsClient) DeleteByScope(ctx context.Context, scope string, t
 		return SettingsClientDeleteByScopeResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SettingsClientDeleteByScopeResponse{}, err
+		return SettingsClientDeleteByScopeResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SettingsClientDeleteByScopeResponse{}, nil
 }
@@ -168,12 +165,7 @@ func (client *SettingsClient) GetByScope(ctx context.Context, scope string, type
 	if err != nil {
 		return SettingsClientGetByScopeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SettingsClientGetByScopeResponse{}, err
-	}
-	resp, err := client.getByScopeHandleResponse(httpResp)
-	return resp, err
+	return client.getByScopeHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByScopeCreateRequest creates the GetByScope request.
@@ -199,8 +191,11 @@ func (client *SettingsClient) getByScopeCreateRequest(ctx context.Context, scope
 }
 
 // getByScopeHandleResponse handles the GetByScope response.
-func (client *SettingsClient) getByScopeHandleResponse(resp *http.Response) (SettingsClientGetByScopeResponse, error) {
+func (client *SettingsClient) getByScopeHandleResponse(resp *http.Response, successCodes ...int) (SettingsClientGetByScopeResponse, error) {
 	result := SettingsClientGetByScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return SettingsClientGetByScopeResponse{}, err
 	}
@@ -225,12 +220,7 @@ func (client *SettingsClient) List(ctx context.Context, scope string, options *S
 	if err != nil {
 		return SettingsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SettingsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -252,8 +242,11 @@ func (client *SettingsClient) listCreateRequest(ctx context.Context, scope strin
 }
 
 // listHandleResponse handles the List response.
-func (client *SettingsClient) listHandleResponse(resp *http.Response) (SettingsClientListResponse, error) {
+func (client *SettingsClient) listHandleResponse(resp *http.Response, successCodes ...int) (SettingsClientListResponse, error) {
 	result := SettingsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SettingsListResult); err != nil {
 		return SettingsClientListResponse{}, err
 	}

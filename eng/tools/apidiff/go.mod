@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/Azure/azure-sdk-for-go v68.0.0+incompatible
-	github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20260727183921-c01f3f9aef9d
+	github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20260817053628-13507ce06a1c
 	github.com/spf13/cobra v1.10.2
 )
 

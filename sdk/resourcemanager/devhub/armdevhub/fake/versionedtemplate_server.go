@@ -98,7 +98,7 @@ func (v *VersionedTemplateServerTransport) dispatchGenerate(req *http.Request) (
 	if v.srv.Generate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Generate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevHub/templates/(?P<templateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<templateVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generate`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevHub/templates/(?P<templateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<templateVersion>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/generate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -135,7 +135,7 @@ func (v *VersionedTemplateServerTransport) dispatchGet(req *http.Request) (*http
 	if v.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevHub/templates/(?P<templateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<templateVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevHub/templates/(?P<templateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<templateVersion>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -170,7 +170,7 @@ func (v *VersionedTemplateServerTransport) dispatchNewListPager(req *http.Reques
 	}
 	newListPager := v.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevHub/templates/(?P<templateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevHub/templates/(?P<templateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

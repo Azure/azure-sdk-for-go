@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/AzureFirewallPut.json
+// Generated from example definition: 2025-09-01/AzureFirewallPut.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewall() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -365,7 +365,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewall() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/AzureFirewallPutInHub.json
+// Generated from example definition: 2025-09-01/AzureFirewallPutInHub.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallInVirtualHub() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -455,7 +455,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallInVirtua
 	// }
 }
 
-// Generated from example definition: 2025-07-01/AzureFirewallPutWithAdditionalProperties.json
+// Generated from example definition: 2025-09-01/AzureFirewallPutWithAdditionalProperties.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAdditionalProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -812,7 +812,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAddi
 	// }
 }
 
-// Generated from example definition: 2025-07-01/AzureFirewallPutWithAfcConfiguration.json
+// Generated from example definition: 2025-09-01/AzureFirewallPutWithAfcConfiguration.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAfcControlPlane() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -905,7 +905,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAfcC
 	// }
 }
 
-// Generated from example definition: 2025-07-01/AzureFirewallPutWithIpGroups.json
+// Generated from example definition: 2025-09-01/AzureFirewallPutWithIpGroups.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithIPGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1256,7 +1256,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithIPGr
 	// }
 }
 
-// Generated from example definition: 2025-07-01/AzureFirewallPutWithMgmtSubnet.json
+// Generated from example definition: 2025-09-01/AzureFirewallPutWithMgmtSubnet.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithManagementSubnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1618,7 +1618,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithMana
 	// }
 }
 
-// Generated from example definition: 2025-07-01/AzureFirewallPutWithZones.json
+// Generated from example definition: 2025-09-01/AzureFirewallPutWithZones.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1978,7 +1978,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithZone
 	// }
 }
 
-// Generated from example definition: 2025-07-01/AzureFirewallDelete.json
+// Generated from example definition: 2025-09-01/AzureFirewallDelete.json
 func ExampleAzureFirewallsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2004,7 +2004,7 @@ func ExampleAzureFirewallsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/AzureFirewallGet.json
+// Generated from example definition: 2025-09-01/AzureFirewallGet.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewall() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2201,7 +2201,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewall() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/AzureFirewallGetWithAdditionalProperties.json
+// Generated from example definition: 2025-09-01/AzureFirewallGetWithAdditionalProperties.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewallWithAdditionalProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2394,7 +2394,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithAdditionalProperties() 
 	// }
 }
 
-// Generated from example definition: 2025-07-01/AzureFirewallGetWithAfcConfiguration.json
+// Generated from example definition: 2025-09-01/AzureFirewallGetWithAfcConfiguration.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewallWithAfcControlPlane() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2456,7 +2456,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithAfcControlPlane() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/AzureFirewallGetWithIpGroups.json
+// Generated from example definition: 2025-09-01/AzureFirewallGetWithIpGroups.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewallWithIPGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2660,7 +2660,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithIPGroups() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/AzureFirewallGetWithMgmtSubnet.json
+// Generated from example definition: 2025-09-01/AzureFirewallGetWithMgmtSubnet.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewallWithManagementSubnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2865,7 +2865,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithManagementSubnet() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/AzureFirewallGetWithZones.json
+// Generated from example definition: 2025-09-01/AzureFirewallGetWithZones.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewallWithZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3061,7 +3061,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithZones() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/AzureFirewallListByResourceGroup.json
+// Generated from example definition: 2025-09-01/AzureFirewallListByResourceGroup.json
 func ExampleAzureFirewallsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3275,7 +3275,7 @@ func ExampleAzureFirewallsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/AzureFirewallListBySubscription.json
+// Generated from example definition: 2025-09-01/AzureFirewallListBySubscription.json
 func ExampleAzureFirewallsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3489,7 +3489,7 @@ func ExampleAzureFirewallsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/AzureFirewallListLearnedIPPrefixes.json
+// Generated from example definition: 2025-09-01/AzureFirewallListLearnedIPPrefixes.json
 func ExampleAzureFirewallsClient_BeginListLearnedPrefixes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3521,7 +3521,7 @@ func ExampleAzureFirewallsClient_BeginListLearnedPrefixes() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/AzureFirewallPacketCapture.json
+// Generated from example definition: 2025-09-01/AzureFirewallPacketCapture.json
 func ExampleAzureFirewallsClient_BeginPacketCapture() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3582,7 +3582,7 @@ func ExampleAzureFirewallsClient_BeginPacketCapture() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/AzureFirewallPacketCaptureOperation.json
+// Generated from example definition: 2025-09-01/AzureFirewallPacketCaptureOperation.json
 func ExampleAzureFirewallsClient_BeginPacketCaptureOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3653,7 +3653,7 @@ func ExampleAzureFirewallsClient_BeginPacketCaptureOperation() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/AzureFirewallUpdateTags.json
+// Generated from example definition: 2025-09-01/AzureFirewallUpdateTags.json
 func ExampleAzureFirewallsClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/Experiments_Cancel.json
+// Generated from example definition: 2026-08-01-preview/Experiments_Cancel.json
 func ExampleExperimentsClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleExperimentsClient_BeginCancel() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Experiments_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01-preview/Experiments_CreateOrUpdate.json
 func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,10 +165,10 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	// 			},
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("User"),
 	// 			CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("User"),
 	// 			LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
 	// 		},
@@ -176,7 +176,7 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Experiments_Delete.json
+// Generated from example definition: 2026-08-01-preview/Experiments_Delete.json
 func ExampleExperimentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,7 +197,7 @@ func ExampleExperimentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Experiments_ExecutionDetails.json
+// Generated from example definition: 2026-08-01-preview/Experiments_ExecutionDetails.json
 func ExampleExperimentsClient_ExecutionDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +222,7 @@ func ExampleExperimentsClient_ExecutionDetails() {
 	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/f24500ad-744e-4a26-864b-b76199eac333/getExecutionDetails"),
 	// 		Properties: &armchaos.ExperimentExecutionDetailsProperties{
 	// 			FailureReason: to.Ptr("Dependency failure"),
-	// 			LastActionAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.2552574Z"); return t}()),
+	// 			LastActionAt: to.Ptr(time.Date(2020, time.December, 14, 21, 52, 52, 255257400, time.UTC)),
 	// 			RunInformation: &armchaos.ExperimentExecutionDetailsPropertiesRunInformation{
 	// 				Steps: []*armchaos.StepStatus{
 	// 					{
@@ -232,21 +232,21 @@ func ExampleExperimentsClient_ExecutionDetails() {
 	// 									{
 	// 										ActionID: to.Ptr("59499d33-6751-4b6e-a1f6-58f4d56a040a"),
 	// 										ActionName: to.Ptr("urn:provider:agent-v2:Microsoft.Azure.Chaos.Fault.CPUPressureAllProcessors"),
-	// 										EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T13:56:13.6270153-08:00"); return t}()),
-	// 										StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T13:56:13.6270153-08:00"); return t}()),
+	// 										EndTime: to.Ptr(time.Date(2020, time.December, 14, 21, 56, 13, 627015300, time.UTC)),
+	// 										StartTime: to.Ptr(time.Date(2020, time.December, 14, 21, 56, 13, 627015300, time.UTC)),
 	// 										Status: to.Ptr("failed"),
 	// 										Targets: []*armchaos.ExperimentExecutionActionTargetDetailsProperties{
 	// 											{
 	// 												Status: to.Ptr("succeeded"),
 	// 												Target: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/VM1"),
-	// 												TargetCompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T17:30:55+00:00"); return t}()),
-	// 												TargetFailedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T16:30:55+00:00"); return t}()),
+	// 												TargetCompletedTime: to.Ptr(time.Date(2021, time.April, 2, 17, 30, 55, 0, time.UTC)),
+	// 												TargetFailedTime: to.Ptr(time.Date(2021, time.April, 2, 16, 30, 55, 0, time.UTC)),
 	// 											},
 	// 											{
 	// 												Status: to.Ptr("failed"),
 	// 												Target: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/VM1"),
-	// 												TargetCompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T17:30:55+00:00"); return t}()),
-	// 												TargetFailedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T16:30:55+00:00"); return t}()),
+	// 												TargetCompletedTime: to.Ptr(time.Date(2021, time.April, 2, 17, 30, 55, 0, time.UTC)),
+	// 												TargetFailedTime: to.Ptr(time.Date(2021, time.April, 2, 16, 30, 55, 0, time.UTC)),
 	// 											},
 	// 										},
 	// 									},
@@ -262,15 +262,15 @@ func ExampleExperimentsClient_ExecutionDetails() {
 	// 					},
 	// 				},
 	// 			},
-	// 			StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.2552574Z"); return t}()),
+	// 			StartedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 52, 52, 255257400, time.UTC)),
 	// 			Status: to.Ptr("failed"),
-	// 			StoppedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:56:18.9281956Z"); return t}()),
+	// 			StoppedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 56, 18, 928195600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Experiments_Get.json
+// Generated from example definition: 2026-08-01-preview/Experiments_Get.json
 func ExampleExperimentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -342,10 +342,10 @@ func ExampleExperimentsClient_Get() {
 	// 			},
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("User"),
 	// 			CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("User"),
 	// 			LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
 	// 		},
@@ -353,7 +353,7 @@ func ExampleExperimentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Experiments_GetExecution.json
+// Generated from example definition: 2026-08-01-preview/Experiments_GetExecution.json
 func ExampleExperimentsClient_GetExecution() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -377,15 +377,15 @@ func ExampleExperimentsClient_GetExecution() {
 	// 		Type: to.Ptr("Microsoft.Chaos/experiments/executions"),
 	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/f24500ad-744e-4a26-864b-b76199eac333"),
 	// 		Properties: &armchaos.ExperimentExecutionProperties{
-	// 			StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.2552574Z"); return t}()),
+	// 			StartedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 52, 52, 255257400, time.UTC)),
 	// 			Status: to.Ptr("failed"),
-	// 			StoppedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:56:18.9281956Z"); return t}()),
+	// 			StoppedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 56, 18, 928195600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Experiments_List.json
+// Generated from example definition: 2026-08-01-preview/Experiments_List.json
 func ExampleExperimentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -409,7 +409,7 @@ func ExampleExperimentsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armchaos.ExperimentsClientListResponse{
 		// 	ExperimentListResult: armchaos.ExperimentListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments?continuationToken=&api-version=2026-05-01-preview"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments?continuationToken=&api-version=2026-08-01-preview"),
 		// 		Value: []*armchaos.Experiment{
 		// 			{
 		// 				Name: to.Ptr("exampleExperiment"),
@@ -464,10 +464,10 @@ func ExampleExperimentsClient_NewListPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("User"),
 		// 					CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("User"),
 		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
 		// 				},
@@ -478,7 +478,7 @@ func ExampleExperimentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Experiments_ListAll.json
+// Generated from example definition: 2026-08-01-preview/Experiments_ListAll.json
 func ExampleExperimentsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -502,7 +502,7 @@ func ExampleExperimentsClient_NewListAllPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armchaos.ExperimentsClientListAllResponse{
 		// 	ExperimentListResult: armchaos.ExperimentListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/experiments?continuationToken=&api-version=2026-05-01-preview"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/experiments?continuationToken=&api-version=2026-08-01-preview"),
 		// 		Value: []*armchaos.Experiment{
 		// 			{
 		// 				Name: to.Ptr("exampleExperiment"),
@@ -557,10 +557,10 @@ func ExampleExperimentsClient_NewListAllPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("User"),
 		// 					CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("User"),
 		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
 		// 				},
@@ -571,7 +571,7 @@ func ExampleExperimentsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Experiments_ListAllExecutions.json
+// Generated from example definition: 2026-08-01-preview/Experiments_ListAllExecutions.json
 func ExampleExperimentsClient_NewListAllExecutionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -602,9 +602,9 @@ func ExampleExperimentsClient_NewListAllExecutionsPager() {
 		// 				Type: to.Ptr("Microsoft.Chaos/experiments/executions"),
 		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/f24500ad-744e-4a26-864b-b76199eac333"),
 		// 				Properties: &armchaos.ExperimentExecutionProperties{
-		// 					StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.2552574Z"); return t}()),
+		// 					StartedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 52, 52, 255257400, time.UTC)),
 		// 					Status: to.Ptr("failed"),
-		// 					StoppedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:56:18.9281956Z"); return t}()),
+		// 					StoppedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 56, 18, 928195600, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -612,9 +612,9 @@ func ExampleExperimentsClient_NewListAllExecutionsPager() {
 		// 				Type: to.Ptr("Microsoft.Chaos/experiments/executions"),
 		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/14d98367-52ef-4596-be4f-53fc81bbfc33"),
 		// 				Properties: &armchaos.ExperimentExecutionProperties{
-		// 					StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.2552574Z"); return t}()),
+		// 					StartedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 52, 52, 255257400, time.UTC)),
 		// 					Status: to.Ptr("success"),
-		// 					StoppedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:56:18.9281956Z"); return t}()),
+		// 					StoppedAt: to.Ptr(time.Date(2020, time.December, 14, 21, 56, 18, 928195600, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -623,7 +623,7 @@ func ExampleExperimentsClient_NewListAllExecutionsPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Experiments_Start.json
+// Generated from example definition: 2026-08-01-preview/Experiments_Start.json
 func ExampleExperimentsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -644,7 +644,7 @@ func ExampleExperimentsClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Experiments_Update.json
+// Generated from example definition: 2026-08-01-preview/Experiments_Update.json
 func ExampleExperimentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -735,10 +735,10 @@ func ExampleExperimentsClient_BeginUpdate() {
 	// 			},
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("User"),
 	// 			CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("User"),
 	// 			LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
 	// 		},

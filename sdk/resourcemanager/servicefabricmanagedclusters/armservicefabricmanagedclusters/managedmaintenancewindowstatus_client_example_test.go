@@ -35,9 +35,9 @@ func ExampleManagedMaintenanceWindowStatusClient_Get() {
 	// 		IsRegionReady: to.Ptr(true),
 	// 		IsWindowActive: to.Ptr(true),
 	// 		IsWindowEnabled: to.Ptr(false),
-	// 		LastWindowEndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-30T00:00:00Z"); return t}()),
-	// 		LastWindowStartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-30T00:00:00Z"); return t}()),
-	// 		LastWindowStatusUpdateAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-30T00:00:00Z"); return t}()),
+	// 		LastWindowEndTimeUTC: to.Ptr(time.Date(2023, time.April, 30, 0, 0, 0, 0, time.UTC)),
+	// 		LastWindowStartTimeUTC: to.Ptr(time.Date(2023, time.April, 30, 0, 0, 0, 0, time.UTC)),
+	// 		LastWindowStatusUpdateAtUTC: to.Ptr(time.Date(2023, time.April, 30, 0, 0, 0, 0, time.UTC)),
 	// 	},
 	// }
 }

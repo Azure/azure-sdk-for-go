@@ -20,7 +20,7 @@ import (
 // ManagementGroupNetworkManagerConnectionsClient contains the methods for the ManagementGroupNetworkManagerConnections group.
 // Don't use this type directly, use NewManagementGroupNetworkManagerConnectionsClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type ManagementGroupNetworkManagerConnectionsClient struct {
 	internal *arm.Client
 }
@@ -60,12 +60,7 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) CreateOrUpdate(ctx
 	if err != nil {
 		return ManagementGroupNetworkManagerConnectionsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagementGroupNetworkManagerConnectionsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -84,7 +79,7 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) createOrUpdateCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -95,8 +90,11 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) createOrUpdateCrea
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ManagementGroupNetworkManagerConnectionsClient) createOrUpdateHandleResponse(resp *http.Response) (ManagementGroupNetworkManagerConnectionsClientCreateOrUpdateResponse, error) {
+func (client *ManagementGroupNetworkManagerConnectionsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ManagementGroupNetworkManagerConnectionsClientCreateOrUpdateResponse, error) {
 	result := ManagementGroupNetworkManagerConnectionsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagerConnection); err != nil {
 		return ManagementGroupNetworkManagerConnectionsClientCreateOrUpdateResponse{}, err
 	}
@@ -124,8 +122,7 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) Delete(ctx context
 		return ManagementGroupNetworkManagerConnectionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagementGroupNetworkManagerConnectionsClientDeleteResponse{}, err
+		return ManagementGroupNetworkManagerConnectionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ManagementGroupNetworkManagerConnectionsClientDeleteResponse{}, nil
 }
@@ -146,7 +143,7 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) deleteCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -171,12 +168,7 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) Get(ctx context.Co
 	if err != nil {
 		return ManagementGroupNetworkManagerConnectionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagementGroupNetworkManagerConnectionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -195,15 +187,18 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) getCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagementGroupNetworkManagerConnectionsClient) getHandleResponse(resp *http.Response) (ManagementGroupNetworkManagerConnectionsClientGetResponse, error) {
+func (client *ManagementGroupNetworkManagerConnectionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagementGroupNetworkManagerConnectionsClientGetResponse, error) {
 	result := ManagementGroupNetworkManagerConnectionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagerConnection); err != nil {
 		return ManagementGroupNetworkManagerConnectionsClientGetResponse{}, err
 	}
@@ -225,45 +220,59 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) NewListPager(manag
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, managementGroupID, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, managementGroupID, nextLink, options)
 			if err != nil {
 				return ManagementGroupNetworkManagerConnectionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagementGroupNetworkManagerConnectionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ManagementGroupNetworkManagerConnectionsClient) listCreateRequest(ctx context.Context, managementGroupID string, options *ManagementGroupNetworkManagerConnectionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Network/networkManagerConnections"
-	if managementGroupID == "" {
-		return nil, errors.New("parameter managementGroupID cannot be empty")
+func (client *ManagementGroupNetworkManagerConnectionsClient) listCreateRequest(ctx context.Context, managementGroupID string, nextLink string, options *ManagementGroupNetworkManagerConnectionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Network/networkManagerConnections"
+		if managementGroupID == "" {
+			return nil, errors.New("parameter managementGroupID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ManagementGroupNetworkManagerConnectionsClient) listHandleResponse(resp *http.Response) (ManagementGroupNetworkManagerConnectionsClientListResponse, error) {
+func (client *ManagementGroupNetworkManagerConnectionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ManagementGroupNetworkManagerConnectionsClientListResponse, error) {
 	result := ManagementGroupNetworkManagerConnectionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagerConnectionListResult); err != nil {
 		return ManagementGroupNetworkManagerConnectionsClientListResponse{}, err
 	}

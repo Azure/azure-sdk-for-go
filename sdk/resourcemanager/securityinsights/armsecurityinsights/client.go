@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultClientVersion string = "2025-07-01-preview"
-
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
 //
@@ -32,6 +30,9 @@ type Client struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,19 +65,14 @@ func (client *Client) ListGeodataByIP(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return ClientListGeodataByIPResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientListGeodataByIPResponse{}, err
-	}
-	resp, err := client.listGeodataByIPHandleResponse(httpResp)
-	return resp, err
+	return client.listGeodataByIPHandleResponse(httpResp, http.StatusOK)
 }
 
 // listGeodataByIPCreateRequest creates the ListGeodataByIP request.
 func (client *Client) listGeodataByIPCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, enrichmentType EnrichmentType, ipAddressBody EnrichmentIPAddressBody, _ *ClientListGeodataByIPOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/enrichment/{enrichmentType}/listGeodataByIp"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -96,7 +92,7 @@ func (client *Client) listGeodataByIPCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -107,8 +103,11 @@ func (client *Client) listGeodataByIPCreateRequest(ctx context.Context, resource
 }
 
 // listGeodataByIPHandleResponse handles the ListGeodataByIP response.
-func (client *Client) listGeodataByIPHandleResponse(resp *http.Response) (ClientListGeodataByIPResponse, error) {
+func (client *Client) listGeodataByIPHandleResponse(resp *http.Response, successCodes ...int) (ClientListGeodataByIPResponse, error) {
 	result := ClientListGeodataByIPResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnrichmentIPGeodata); err != nil {
 		return ClientListGeodataByIPResponse{}, err
 	}
@@ -136,19 +135,14 @@ func (client *Client) ListWhoisByDomain(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ClientListWhoisByDomainResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientListWhoisByDomainResponse{}, err
-	}
-	resp, err := client.listWhoisByDomainHandleResponse(httpResp)
-	return resp, err
+	return client.listWhoisByDomainHandleResponse(httpResp, http.StatusOK)
 }
 
 // listWhoisByDomainCreateRequest creates the ListWhoisByDomain request.
 func (client *Client) listWhoisByDomainCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, enrichmentType EnrichmentType, domainBody EnrichmentDomainBody, _ *ClientListWhoisByDomainOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/enrichment/{enrichmentType}/listWhoisByDomain"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -168,7 +162,7 @@ func (client *Client) listWhoisByDomainCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -179,8 +173,11 @@ func (client *Client) listWhoisByDomainCreateRequest(ctx context.Context, resour
 }
 
 // listWhoisByDomainHandleResponse handles the ListWhoisByDomain response.
-func (client *Client) listWhoisByDomainHandleResponse(resp *http.Response) (ClientListWhoisByDomainResponse, error) {
+func (client *Client) listWhoisByDomainHandleResponse(resp *http.Response, successCodes ...int) (ClientListWhoisByDomainResponse, error) {
 	result := ClientListWhoisByDomainResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnrichmentDomainWhois); err != nil {
 		return ClientListWhoisByDomainResponse{}, err
 	}

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/FirewallPolicySignatureOverridesGet.json
+// Generated from example definition: 2025-09-01/FirewallPolicySignatureOverridesGet.json
 func ExampleFirewallPolicyIdpsSignaturesOverridesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleFirewallPolicyIdpsSignaturesOverridesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicySignatureOverridesList.json
+// Generated from example definition: 2025-09-01/FirewallPolicySignatureOverridesList.json
 func ExampleFirewallPolicyIdpsSignaturesOverridesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleFirewallPolicyIdpsSignaturesOverridesClient_List() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicySignatureOverridesPatch.json
+// Generated from example definition: 2025-09-01/FirewallPolicySignatureOverridesPatch.json
 func ExampleFirewallPolicyIdpsSignaturesOverridesClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleFirewallPolicyIdpsSignaturesOverridesClient_Patch() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicySignatureOverridesPut.json
+// Generated from example definition: 2025-09-01/FirewallPolicySignatureOverridesPut.json
 func ExampleFirewallPolicyIdpsSignaturesOverridesClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

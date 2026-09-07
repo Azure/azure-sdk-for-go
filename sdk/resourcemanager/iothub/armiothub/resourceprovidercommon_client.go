@@ -19,7 +19,7 @@ import (
 // ResourceProviderCommonClient contains the methods for the ResourceProviderCommon group.
 // Don't use this type directly, use NewResourceProviderCommonClient() instead.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-05-01-preview
 type ResourceProviderCommonClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ResourceProviderCommonClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewResourceProviderCommonClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceProviderCommonClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *ResourceProviderCommonClient) GetSubscriptionQuota(ctx context.Con
 	if err != nil {
 		return ResourceProviderCommonClientGetSubscriptionQuotaResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceProviderCommonClientGetSubscriptionQuotaResponse{}, err
-	}
-	resp, err := client.getSubscriptionQuotaHandleResponse(httpResp)
-	return resp, err
+	return client.getSubscriptionQuotaHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSubscriptionQuotaCreateRequest creates the GetSubscriptionQuota request.
 func (client *ResourceProviderCommonClient) getSubscriptionQuotaCreateRequest(ctx context.Context, _ *ResourceProviderCommonClientGetSubscriptionQuotaOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Devices/usages"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -81,15 +79,18 @@ func (client *ResourceProviderCommonClient) getSubscriptionQuotaCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getSubscriptionQuotaHandleResponse handles the GetSubscriptionQuota response.
-func (client *ResourceProviderCommonClient) getSubscriptionQuotaHandleResponse(resp *http.Response) (ResourceProviderCommonClientGetSubscriptionQuotaResponse, error) {
+func (client *ResourceProviderCommonClient) getSubscriptionQuotaHandleResponse(resp *http.Response, successCodes ...int) (ResourceProviderCommonClientGetSubscriptionQuotaResponse, error) {
 	result := ResourceProviderCommonClientGetSubscriptionQuotaResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserSubscriptionQuotaListResult); err != nil {
 		return ResourceProviderCommonClientGetSubscriptionQuotaResponse{}, err
 	}

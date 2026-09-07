@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-16-preview/extension/Extension_Add.json
+// Generated from example definition: 2026-07-15/extension/Extension_Add.json
 func ExampleManagementClient_BeginSetupExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleManagementClient_BeginSetupExtensions() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/extension/Extensions_Upgrade.json
+// Generated from example definition: 2026-07-15/extension/Extensions_Upgrade.json
 func ExampleManagementClient_BeginUpgradeExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

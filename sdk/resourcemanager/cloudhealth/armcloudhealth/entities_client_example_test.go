@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-05-01-preview/Entities_AddDataAnnotation.json
+// Generated from example definition: 2026-09-01-preview/Entities_AddDataAnnotation.json
 func ExampleEntitiesClient_AddDataAnnotation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleEntitiesClient_AddDataAnnotation() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Entities_CreateOrUpdate.json
+// Generated from example definition: 2026-09-01-preview/Entities_CreateOrUpdate.json
 func ExampleEntitiesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,10 +202,33 @@ func ExampleEntitiesClient_BeginCreateOrUpdate() {
 					},
 				},
 				Dependencies: &armcloudhealth.DependenciesSignalGroupV2{
-					AggregationType:    to.Ptr(armcloudhealth.DependenciesAggregationTypeMinHealthy),
-					Unit:               to.Ptr(armcloudhealth.DependenciesAggregationUnitPercentage),
+					AggregationType:    to.Ptr(armcloudhealth.AggregationTypeMinHealthy),
+					Unit:               to.Ptr(armcloudhealth.AggregationUnitPercentage),
 					DegradedThreshold:  to.Ptr[float64](100),
 					UnhealthyThreshold: to.Ptr[float64](50),
+					IgnoreUnknown:      to.Ptr(true),
+				},
+			},
+			SignalAggregationGroups: []*armcloudhealth.SignalAggregationGroup{
+				{
+					Name:            to.Ptr("latency-and-errors"),
+					DisplayName:     to.Ptr("Latency and errors"),
+					AggregationType: to.Ptr(armcloudhealth.AggregationTypeWorstOf),
+					Members: []*string{
+						to.Ptr("error-rate"),
+						to.Ptr("p95-latency"),
+					},
+				},
+				{
+					Name:            to.Ptr("compute-utilization"),
+					DisplayName:     to.Ptr("Compute utilization"),
+					AggregationType: to.Ptr(armcloudhealth.AggregationTypeMinHealthy),
+					Members: []*string{
+						to.Ptr("node-cpu"),
+						to.Ptr("pod-cpu"),
+					},
+					UnhealthyThreshold: to.Ptr[float64](50),
+					Unit:               to.Ptr(armcloudhealth.AggregationUnitPercentage),
 					IgnoreUnknown:      to.Ptr(true),
 				},
 			},
@@ -409,11 +432,36 @@ func ExampleEntitiesClient_BeginCreateOrUpdate() {
 	// 					},
 	// 				},
 	// 				Dependencies: &armcloudhealth.DependenciesSignalGroupV2{
-	// 					AggregationType: to.Ptr(armcloudhealth.DependenciesAggregationTypeMinHealthy),
-	// 					Unit: to.Ptr(armcloudhealth.DependenciesAggregationUnitPercentage),
+	// 					AggregationType: to.Ptr(armcloudhealth.AggregationTypeMinHealthy),
+	// 					Unit: to.Ptr(armcloudhealth.AggregationUnitPercentage),
 	// 					DegradedThreshold: to.Ptr[float64](100),
 	// 					UnhealthyThreshold: to.Ptr[float64](50),
 	// 					IgnoreUnknown: to.Ptr(true),
+	// 				},
+	// 			},
+	// 			SignalAggregationGroups: []*armcloudhealth.SignalAggregationGroup{
+	// 				{
+	// 					Name: to.Ptr("latency-and-errors"),
+	// 					DisplayName: to.Ptr("Latency and errors"),
+	// 					AggregationType: to.Ptr(armcloudhealth.AggregationTypeWorstOf),
+	// 					Members: []*string{
+	// 						to.Ptr("error-rate"),
+	// 						to.Ptr("p95-latency"),
+	// 					},
+	// 					AggregatedHealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("compute-utilization"),
+	// 					DisplayName: to.Ptr("Compute utilization"),
+	// 					AggregationType: to.Ptr(armcloudhealth.AggregationTypeMinHealthy),
+	// 					Members: []*string{
+	// 						to.Ptr("node-cpu"),
+	// 						to.Ptr("pod-cpu"),
+	// 					},
+	// 					UnhealthyThreshold: to.Ptr[float64](50),
+	// 					Unit: to.Ptr(armcloudhealth.AggregationUnitPercentage),
+	// 					IgnoreUnknown: to.Ptr(true),
+	// 					AggregatedHealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 	// 				},
 	// 			},
 	// 			Alerts: &armcloudhealth.EntityAlerts{
@@ -450,7 +498,7 @@ func ExampleEntitiesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Entities_Delete.json
+// Generated from example definition: 2026-09-01-preview/Entities_Delete.json
 func ExampleEntitiesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -471,7 +519,7 @@ func ExampleEntitiesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Entities_Get.json
+// Generated from example definition: 2026-09-01-preview/Entities_Get.json
 func ExampleEntitiesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -577,7 +625,19 @@ func ExampleEntitiesClient_Get() {
 	// 					},
 	// 				},
 	// 				Dependencies: &armcloudhealth.DependenciesSignalGroupV2{
-	// 					AggregationType: to.Ptr(armcloudhealth.DependenciesAggregationTypeWorstOf),
+	// 					AggregationType: to.Ptr(armcloudhealth.AggregationTypeWorstOf),
+	// 				},
+	// 			},
+	// 			SignalAggregationGroups: []*armcloudhealth.SignalAggregationGroup{
+	// 				{
+	// 					Name: to.Ptr("capacity"),
+	// 					DisplayName: to.Ptr("Database capacity"),
+	// 					AggregationType: to.Ptr(armcloudhealth.AggregationTypeWorstOf),
+	// 					Members: []*string{
+	// 						to.Ptr("sql-cpu"),
+	// 						to.Ptr("sql-dtu"),
+	// 					},
+	// 					AggregatedHealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
@@ -598,7 +658,7 @@ func ExampleEntitiesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Entities_GetDataAnnotations.json
+// Generated from example definition: 2026-09-01-preview/Entities_GetDataAnnotations.json
 func ExampleEntitiesClient_GetDataAnnotations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -647,7 +707,7 @@ func ExampleEntitiesClient_GetDataAnnotations() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Entities_GetHistory.json
+// Generated from example definition: 2026-09-01-preview/Entities_GetHistory.json
 func ExampleEntitiesClient_GetHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -703,7 +763,7 @@ func ExampleEntitiesClient_GetHistory() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Entities_GetSignalHistory.json
+// Generated from example definition: 2026-09-01-preview/Entities_GetSignalHistory.json
 func ExampleEntitiesClient_GetSignalHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -772,7 +832,7 @@ func ExampleEntitiesClient_GetSignalHistory() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Entities_GetSignalRecommendations.json
+// Generated from example definition: 2026-09-01-preview/Entities_GetSignalRecommendations.json
 func ExampleEntitiesClient_GetSignalRecommendations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -868,7 +928,7 @@ func ExampleEntitiesClient_GetSignalRecommendations() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Entities_IngestHealthReport.json
+// Generated from example definition: 2026-09-01-preview/Entities_IngestHealthReport.json
 func ExampleEntitiesClient_IngestHealthReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -901,7 +961,7 @@ func ExampleEntitiesClient_IngestHealthReport() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Entities_ListByHealthModel.json
+// Generated from example definition: 2026-09-01-preview/Entities_ListByHealthModel.json
 func ExampleEntitiesClient_NewListByHealthModelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -944,7 +1004,7 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 					},
 		// 					SignalGroups: &armcloudhealth.SignalGroups{
 		// 						Dependencies: &armcloudhealth.DependenciesSignalGroupV2{
-		// 							AggregationType: to.Ptr(armcloudhealth.DependenciesAggregationTypeWorstOf),
+		// 							AggregationType: to.Ptr(armcloudhealth.AggregationTypeWorstOf),
 		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
@@ -1080,7 +1140,7 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 							},
 		// 						},
 		// 						Dependencies: &armcloudhealth.DependenciesSignalGroupV2{
-		// 							AggregationType: to.Ptr(armcloudhealth.DependenciesAggregationTypeWorstOf),
+		// 							AggregationType: to.Ptr(armcloudhealth.AggregationTypeWorstOf),
 		// 						},
 		// 					},
 		// 					Alerts: &armcloudhealth.EntityAlerts{
@@ -1285,11 +1345,36 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 							},
 		// 						},
 		// 						Dependencies: &armcloudhealth.DependenciesSignalGroupV2{
-		// 							AggregationType: to.Ptr(armcloudhealth.DependenciesAggregationTypeMinHealthy),
-		// 							Unit: to.Ptr(armcloudhealth.DependenciesAggregationUnitPercentage),
+		// 							AggregationType: to.Ptr(armcloudhealth.AggregationTypeMinHealthy),
+		// 							Unit: to.Ptr(armcloudhealth.AggregationUnitPercentage),
 		// 							DegradedThreshold: to.Ptr[float64](100),
 		// 							UnhealthyThreshold: to.Ptr[float64](50),
 		// 							IgnoreUnknown: to.Ptr(true),
+		// 						},
+		// 					},
+		// 					SignalAggregationGroups: []*armcloudhealth.SignalAggregationGroup{
+		// 						{
+		// 							Name: to.Ptr("latency-and-errors"),
+		// 							DisplayName: to.Ptr("Latency and errors"),
+		// 							AggregationType: to.Ptr(armcloudhealth.AggregationTypeWorstOf),
+		// 							Members: []*string{
+		// 								to.Ptr("error-rate"),
+		// 								to.Ptr("p95-latency"),
+		// 							},
+		// 							AggregatedHealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("compute-utilization"),
+		// 							DisplayName: to.Ptr("Compute utilization"),
+		// 							AggregationType: to.Ptr(armcloudhealth.AggregationTypeMinHealthy),
+		// 							Members: []*string{
+		// 								to.Ptr("node-cpu"),
+		// 								to.Ptr("pod-cpu"),
+		// 							},
+		// 							UnhealthyThreshold: to.Ptr[float64](50),
+		// 							Unit: to.Ptr(armcloudhealth.AggregationUnitPercentage),
+		// 							IgnoreUnknown: to.Ptr(true),
+		// 							AggregatedHealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 		// 						},
 		// 					},
 		// 					Alerts: &armcloudhealth.EntityAlerts{
@@ -1410,7 +1495,19 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 							},
 		// 						},
 		// 						Dependencies: &armcloudhealth.DependenciesSignalGroupV2{
-		// 							AggregationType: to.Ptr(armcloudhealth.DependenciesAggregationTypeWorstOf),
+		// 							AggregationType: to.Ptr(armcloudhealth.AggregationTypeWorstOf),
+		// 						},
+		// 					},
+		// 					SignalAggregationGroups: []*armcloudhealth.SignalAggregationGroup{
+		// 						{
+		// 							Name: to.Ptr("capacity"),
+		// 							DisplayName: to.Ptr("Database capacity"),
+		// 							AggregationType: to.Ptr(armcloudhealth.AggregationTypeWorstOf),
+		// 							Members: []*string{
+		// 								to.Ptr("sql-cpu"),
+		// 								to.Ptr("sql-dtu"),
+		// 							},
+		// 							AggregatedHealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),

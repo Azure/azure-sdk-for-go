@@ -39,13 +39,6 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_directProviderRegist
 				IncidentRoutingService: to.Ptr("Contoso Resource Provider"),
 				IncidentRoutingTeam:    to.Ptr("Contoso Triage"),
 				IncidentContactEmail:   to.Ptr("helpme@contoso.com"),
-				ServiceTreeInfos: []*armproviderhub.ServiceTreeInfo{
-					{
-						ServiceID:   to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-						ComponentID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-						Readiness:   to.Ptr(armproviderhub.ReadinessInDevelopment),
-					},
-				},
 			},
 			Capabilities: []*armproviderhub.ResourceProviderCapabilities{
 				{
@@ -79,10 +72,6 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_directProviderRegist
 						},
 					},
 				},
-			},
-			DstsConfiguration: &armproviderhub.ResourceProviderManifestPropertiesDstsConfiguration{
-				ServiceName:    to.Ptr("prds-shim"),
-				ServiceDNSName: to.Ptr("prds.sparta.azure.com"),
 			},
 			NotificationOptions: to.Ptr(armproviderhub.NotificationOptionsEmitSpendingLimit),
 			ResourceHydrationAccounts: []*armproviderhub.ResourceHydrationAccount{
@@ -149,13 +138,6 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_directProviderRegist
 	// 				IncidentRoutingService: to.Ptr(""),
 	// 				IncidentRoutingTeam: to.Ptr(""),
 	// 				IncidentContactEmail: to.Ptr("helpme@contoso.com"),
-	// 				ServiceTreeInfos: []*armproviderhub.ServiceTreeInfo{
-	// 					{
-	// 						ServiceID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-	// 						ComponentID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-	// 						Readiness: to.Ptr(armproviderhub.ReadinessInDevelopment),
-	// 					},
-	// 				},
 	// 				ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
 	// 			},
 	// 			Capabilities: []*armproviderhub.ResourceProviderCapabilities{
@@ -203,10 +185,6 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_directProviderRegist
 	// 						},
 	// 					},
 	// 				},
-	// 			},
-	// 			DstsConfiguration: &armproviderhub.ResourceProviderManifestPropertiesDstsConfiguration{
-	// 				ServiceName: to.Ptr("prds-shim"),
-	// 				ServiceDNSName: to.Ptr("prds.sparta.azure.com"),
 	// 			},
 	// 			NotificationOptions: to.Ptr(armproviderhub.NotificationOptionsEmitSpendingLimit),
 	// 			ResourceHydrationAccounts: []*armproviderhub.ResourceHydrationAccount{
@@ -278,15 +256,8 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_providerRegistration
 				IncidentRoutingService: to.Ptr("Contoso Resource Provider"),
 				IncidentRoutingTeam:    to.Ptr("Contoso Triage"),
 				IncidentContactEmail:   to.Ptr("helpme@contoso.com"),
-				ServiceTreeInfos: []*armproviderhub.ServiceTreeInfo{
-					{
-						ServiceID:   to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-						ComponentID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-						Readiness:   to.Ptr(armproviderhub.ReadinessInDevelopment),
-					},
-				},
 				ExpeditedRolloutSubmitters: []*string{
-					to.Ptr("SPARTA-PlatformServiceOperator"),
+					to.Ptr("Contoso-PlatformServiceOperator"),
 				},
 				ExpeditedRolloutMetadata: &armproviderhub.ResourceProviderManagementExpeditedRolloutMetadata{
 					Enabled:                to.Ptr(false),
@@ -296,7 +267,7 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_providerRegistration
 					ServerFailureResponseMessageType: to.Ptr(armproviderhub.ServerFailureResponseMessageTypeOutageReporting),
 				},
 				CanaryManifestOwners: []*string{
-					to.Ptr("SPARTA-PlatformServiceAdmin"),
+					to.Ptr("Contoso-PlatformServiceAdmin"),
 				},
 				PcCode:                to.Ptr("P1234"),
 				ProfitCenterProgramID: to.Ptr("1234"),
@@ -373,16 +344,9 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_providerRegistration
 	// 				IncidentRoutingService: to.Ptr(""),
 	// 				IncidentRoutingTeam: to.Ptr(""),
 	// 				IncidentContactEmail: to.Ptr("helpme@contoso.com"),
-	// 				ServiceTreeInfos: []*armproviderhub.ServiceTreeInfo{
-	// 					{
-	// 						ServiceID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-	// 						ComponentID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-	// 						Readiness: to.Ptr(armproviderhub.ReadinessInDevelopment),
-	// 					},
-	// 				},
 	// 				ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
 	// 				ExpeditedRolloutSubmitters: []*string{
-	// 					to.Ptr("SPARTA-PlatformServiceOperator"),
+	// 					to.Ptr("Contoso-PlatformServiceOperator"),
 	// 				},
 	// 				ExpeditedRolloutMetadata: &armproviderhub.ResourceProviderManagementExpeditedRolloutMetadata{
 	// 					Enabled: to.Ptr(false),
@@ -392,7 +356,7 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_providerRegistration
 	// 					ServerFailureResponseMessageType: to.Ptr(armproviderhub.ServerFailureResponseMessageTypeOutageReporting),
 	// 				},
 	// 				CanaryManifestOwners: []*string{
-	// 					to.Ptr("SPARTA-PlatformServiceAdmin"),
+	// 					to.Ptr("Contoso-PlatformServiceAdmin"),
 	// 				},
 	// 				PcCode: to.Ptr("P1234"),
 	// 				ProfitCenterProgramID: to.Ptr("1234"),
@@ -540,7 +504,7 @@ func ExampleProviderRegistrationsClient_Get() {
 	// 			CrossTenantTokenValidation: to.Ptr(armproviderhub.CrossTenantTokenValidationEnsureSecureValidation),
 	// 			Management: &armproviderhub.ResourceProviderManifestPropertiesManagement{
 	// 				ManifestOwners: []*string{
-	// 					to.Ptr("SPARTA-PlatformServiceAdministrator"),
+	// 					to.Ptr("Contoso-PlatformServiceAdministrator"),
 	// 				},
 	// 				AuthorizationOwners: []*string{
 	// 					to.Ptr("RPAAS-PlatformServiceAdministrator"),
@@ -548,13 +512,6 @@ func ExampleProviderRegistrationsClient_Get() {
 	// 				IncidentRoutingService: to.Ptr(""),
 	// 				IncidentRoutingTeam: to.Ptr(""),
 	// 				IncidentContactEmail: to.Ptr("helpme@contoso.com"),
-	// 				ServiceTreeInfos: []*armproviderhub.ServiceTreeInfo{
-	// 					{
-	// 						ServiceID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-	// 						ComponentID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-	// 						Readiness: to.Ptr(armproviderhub.ReadinessInDevelopment),
-	// 					},
-	// 				},
 	// 				ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
 	// 				PcCode: to.Ptr("P1234"),
 	// 				ProfitCenterProgramID: to.Ptr("1234"),
@@ -646,13 +603,6 @@ func ExampleProviderRegistrationsClient_NewListPager() {
 		// 						IncidentRoutingService: to.Ptr(""),
 		// 						IncidentRoutingTeam: to.Ptr(""),
 		// 						IncidentContactEmail: to.Ptr("helpme@contoso.com"),
-		// 						ServiceTreeInfos: []*armproviderhub.ServiceTreeInfo{
-		// 							{
-		// 								ServiceID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-		// 								ComponentID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-		// 								Readiness: to.Ptr(armproviderhub.ReadinessInDevelopment),
-		// 							},
-		// 						},
 		// 						ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
 		// 						PcCode: to.Ptr("P1234"),
 		// 						ProfitCenterProgramID: to.Ptr("1234"),

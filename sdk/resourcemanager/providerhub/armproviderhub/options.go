@@ -104,30 +104,6 @@ type ManifestsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NewRegionFrontloadReleaseClientCreateOrUpdateOptions contains the optional parameters for the NewRegionFrontloadReleaseClient.CreateOrUpdate
-// method.
-type NewRegionFrontloadReleaseClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NewRegionFrontloadReleaseClientGenerateManifestOptions contains the optional parameters for the NewRegionFrontloadReleaseClient.GenerateManifest
-// method.
-type NewRegionFrontloadReleaseClientGenerateManifestOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NewRegionFrontloadReleaseClientGetOptions contains the optional parameters for the NewRegionFrontloadReleaseClient.Get
-// method.
-type NewRegionFrontloadReleaseClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NewRegionFrontloadReleaseClientStopOptions contains the optional parameters for the NewRegionFrontloadReleaseClient.Stop
-// method.
-type NewRegionFrontloadReleaseClientStopOptions struct {
-	// placeholder for future optional parameters
-}
-
 // NotificationRegistrationsClientCreateOrUpdateOptions contains the optional parameters for the NotificationRegistrationsClient.CreateOrUpdate
 // method.
 type NotificationRegistrationsClientCreateOrUpdateOptions struct {

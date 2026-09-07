@@ -89,30 +89,6 @@ func PossibleAvailabilityZonePolicyValues() []AvailabilityZonePolicy {
 	}
 }
 
-// AvailableCheckInManifestEnvironment - The environment type.
-type AvailableCheckInManifestEnvironment string
-
-const (
-	AvailableCheckInManifestEnvironmentAll          AvailableCheckInManifestEnvironment = "All"
-	AvailableCheckInManifestEnvironmentCanary       AvailableCheckInManifestEnvironment = "Canary"
-	AvailableCheckInManifestEnvironmentFairfax      AvailableCheckInManifestEnvironment = "Fairfax"
-	AvailableCheckInManifestEnvironmentMooncake     AvailableCheckInManifestEnvironment = "Mooncake"
-	AvailableCheckInManifestEnvironmentNotSpecified AvailableCheckInManifestEnvironment = "NotSpecified"
-	AvailableCheckInManifestEnvironmentProd         AvailableCheckInManifestEnvironment = "Prod"
-)
-
-// PossibleAvailableCheckInManifestEnvironmentValues returns the possible values for the AvailableCheckInManifestEnvironment const type.
-func PossibleAvailableCheckInManifestEnvironmentValues() []AvailableCheckInManifestEnvironment {
-	return []AvailableCheckInManifestEnvironment{
-		AvailableCheckInManifestEnvironmentAll,
-		AvailableCheckInManifestEnvironmentCanary,
-		AvailableCheckInManifestEnvironmentFairfax,
-		AvailableCheckInManifestEnvironmentMooncake,
-		AvailableCheckInManifestEnvironmentNotSpecified,
-		AvailableCheckInManifestEnvironmentProd,
-	}
-}
-
 // BlockActionVerb - The action verb that will be blocked when the resource group is locked during move.
 type BlockActionVerb string
 
@@ -955,36 +931,6 @@ func PossibleRPaaSResourceDeletionPolicyValues() []RPaaSResourceDeletionPolicy {
 	}
 }
 
-// Readiness - The readiness.
-type Readiness string
-
-const (
-	ReadinessClosingDown    Readiness = "ClosingDown"
-	ReadinessDeprecated     Readiness = "Deprecated"
-	ReadinessGA             Readiness = "GA"
-	ReadinessInDevelopment  Readiness = "InDevelopment"
-	ReadinessInternalOnly   Readiness = "InternalOnly"
-	ReadinessPrivatePreview Readiness = "PrivatePreview"
-	ReadinessPublicPreview  Readiness = "PublicPreview"
-	ReadinessRemovedFromARM Readiness = "RemovedFromARM"
-	ReadinessRetired        Readiness = "Retired"
-)
-
-// PossibleReadinessValues returns the possible values for the Readiness const type.
-func PossibleReadinessValues() []Readiness {
-	return []Readiness{
-		ReadinessClosingDown,
-		ReadinessDeprecated,
-		ReadinessGA,
-		ReadinessInDevelopment,
-		ReadinessInternalOnly,
-		ReadinessPrivatePreview,
-		ReadinessPublicPreview,
-		ReadinessRemovedFromARM,
-		ReadinessRetired,
-	}
-}
-
 // Regionality - The regionality.
 type Regionality string
 
@@ -1007,16 +953,12 @@ func PossibleRegionalityValues() []Regionality {
 type ResourceAccessPolicy string
 
 const (
-	ResourceAccessPolicyAcisActionAllowed ResourceAccessPolicy = "AcisActionAllowed"
-	ResourceAccessPolicyAcisReadAllowed   ResourceAccessPolicy = "AcisReadAllowed"
-	ResourceAccessPolicyNotSpecified      ResourceAccessPolicy = "NotSpecified"
+	ResourceAccessPolicyNotSpecified ResourceAccessPolicy = "NotSpecified"
 )
 
 // PossibleResourceAccessPolicyValues returns the possible values for the ResourceAccessPolicy const type.
 func PossibleResourceAccessPolicyValues() []ResourceAccessPolicy {
 	return []ResourceAccessPolicy{
-		ResourceAccessPolicyAcisActionAllowed,
-		ResourceAccessPolicyAcisReadAllowed,
 		ResourceAccessPolicyNotSpecified,
 	}
 }
@@ -1320,22 +1262,6 @@ func PossibleServiceClientOptionsTypeValues() []ServiceClientOptionsType {
 	return []ServiceClientOptionsType{
 		ServiceClientOptionsTypeDisableAutomaticDecompression,
 		ServiceClientOptionsTypeNotSpecified,
-	}
-}
-
-// ServiceFeatureFlagAction - The service feature flag.
-type ServiceFeatureFlagAction string
-
-const (
-	ServiceFeatureFlagActionCreate      ServiceFeatureFlagAction = "Create"
-	ServiceFeatureFlagActionDoNotCreate ServiceFeatureFlagAction = "DoNotCreate"
-)
-
-// PossibleServiceFeatureFlagActionValues returns the possible values for the ServiceFeatureFlagAction const type.
-func PossibleServiceFeatureFlagActionValues() []ServiceFeatureFlagAction {
-	return []ServiceFeatureFlagAction{
-		ServiceFeatureFlagActionCreate,
-		ServiceFeatureFlagActionDoNotCreate,
 	}
 }
 

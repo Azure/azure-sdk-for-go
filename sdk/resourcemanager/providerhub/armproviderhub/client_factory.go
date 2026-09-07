@@ -72,14 +72,6 @@ func (c *ClientFactory) NewManifestsClient() *ManifestsClient {
 	}
 }
 
-// NewNewRegionFrontloadReleaseClient creates a new instance of NewRegionFrontloadReleaseClient.
-func (c *ClientFactory) NewNewRegionFrontloadReleaseClient() *NewRegionFrontloadReleaseClient {
-	return &NewRegionFrontloadReleaseClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewNotificationRegistrationsClient creates a new instance of NotificationRegistrationsClient.
 func (c *ClientFactory) NewNotificationRegistrationsClient() *NotificationRegistrationsClient {
 	return &NotificationRegistrationsClient{

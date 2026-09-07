@@ -5,9 +5,11 @@
 ### Features Added
 
 ### Breaking Changes
+* `DownloadBuffer` and `DownloadFile` now use ETag locking to ensure consistency across parallel chunk requests when the blob size is not specified upfront (i.e., `Range.Count` is zero). If a blob is modified during a multi-chunk download, subsequent requests will fail with `ConditionNotMet` instead of silently returning data from mixed blob versions.
 
 ### Bugs Fixed
 
+* Fixed CRLF injection vulnerability in Blob Batch subrequest serialization. Header values containing CR or LF characters are now rejected before serialization, preventing header injection in batch requests.
 * Fixed WASM compilation by using heap-allocated buffers on JS targets.
 * Fixed Structured Message CRC64 download validation being skipped when the final payload byte exactly fills the caller's read buffer; the trailing segment footer and message trailer CRC64 are now drained and validated in the same `Read`.
 * Fixed transient `net.Error`/`io.ErrUnexpectedEOF` failures during a Structured Message download not being retried: the decoder now preserves the error chain with `%w` and the retry reader classifies retryable errors with `errors.Is`/`errors.As`.
@@ -19,6 +21,7 @@
 * Premature EOF during Structured Message framing reads (header, segment footer, or message trailer) now wraps `io.ErrUnexpectedEOF` so `RetryReader` classifies truncated framing as retryable.
 
 ### Other Changes
+* Optimized `DownloadBuffer` and `DownloadFile` to use an initial GET request instead of a HEAD (GetProperties) call for blob size discovery. For small blobs (<=4MB), the entire content is returned in a single request, reducing download latency by ~50%.
 
 ## 1.8.1-beta.1 (2026-07-24)
 
@@ -34,6 +37,7 @@
 ### Other Changes
 * Updated code generator to `@autorest/go@4.0.0-preview.80`.
 * Default upload/download concurrency is now based on CPU core count (clamped between 8 and 96) instead of the fixed value of 5. Set `AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true` to revert to previous defaults.
+* Enhanced performance tests with OAuth authentication, parallel blob setup for list tests, and optional CPU profiling.
 * Updated `azidentity` version to `1.14.0`
 
 ## 1.8.0 (2026-06-15)

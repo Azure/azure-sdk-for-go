@@ -30,9 +30,6 @@ type ServerFactory struct {
 	// ManifestsServer contains the fakes for client ManifestsClient
 	ManifestsServer ManifestsServer
 
-	// NewRegionFrontloadReleaseServer contains the fakes for client NewRegionFrontloadReleaseClient
-	NewRegionFrontloadReleaseServer NewRegionFrontloadReleaseServer
-
 	// NotificationRegistrationsServer contains the fakes for client NotificationRegistrationsClient
 	NotificationRegistrationsServer NotificationRegistrationsServer
 
@@ -74,7 +71,6 @@ type ServerFactoryTransport struct {
 	trCustomRolloutsServer            *CustomRolloutsServerTransport
 	trDefaultRolloutsServer           *DefaultRolloutsServerTransport
 	trManifestsServer                 *ManifestsServerTransport
-	trNewRegionFrontloadReleaseServer *NewRegionFrontloadReleaseServerTransport
 	trNotificationRegistrationsServer *NotificationRegistrationsServerTransport
 	trOperationsServer                *OperationsServerTransport
 	trProviderMonitorSettingsServer   *ProviderMonitorSettingsServerTransport
@@ -118,11 +114,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ManifestsClient":
 		initServer(&s.trMu, &s.trManifestsServer, func() *ManifestsServerTransport { return NewManifestsServerTransport(&s.srv.ManifestsServer) })
 		resp, err = s.trManifestsServer.Do(req)
-	case "NewRegionFrontloadReleaseClient":
-		initServer(&s.trMu, &s.trNewRegionFrontloadReleaseServer, func() *NewRegionFrontloadReleaseServerTransport {
-			return NewNewRegionFrontloadReleaseServerTransport(&s.srv.NewRegionFrontloadReleaseServer)
-		})
-		resp, err = s.trNewRegionFrontloadReleaseServer.Do(req)
 	case "NotificationRegistrationsClient":
 		initServer(&s.trMu, &s.trNotificationRegistrationsServer, func() *NotificationRegistrationsServerTransport {
 			return NewNotificationRegistrationsServerTransport(&s.srv.NotificationRegistrationsServer)

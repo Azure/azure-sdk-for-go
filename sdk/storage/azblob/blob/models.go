@@ -155,16 +155,6 @@ type downloadOptions struct {
 	TransactionalValidation TransferValidationType
 }
 
-func (o *downloadOptions) getBlobPropertiesOptions() *GetPropertiesOptions {
-	if o == nil {
-		return nil
-	}
-	return &GetPropertiesOptions{
-		AccessConditions: o.AccessConditions,
-		CPKInfo:          o.CPKInfo,
-	}
-}
-
 func (o *downloadOptions) getDownloadBlobOptions(rnge HTTPRange, rangeGetContentMD5 *bool) *DownloadStreamOptions {
 	if o == nil {
 		return nil

@@ -68,7 +68,7 @@ func ExampleResourceTypeRegistrationsClient_BeginCreateOrUpdate_directResourceTy
 			},
 			Management: &armproviderhub.ResourceTypeRegistrationPropertiesManagement{
 				ManifestOwners: []*string{
-					to.Ptr("SPARTA-PlatformServiceAdministrator"),
+					to.Ptr("Contoso-PlatformServiceAdministrator"),
 				},
 				AuthorizationOwners: []*string{
 					to.Ptr("RPAAS-PlatformServiceAdministrator"),
@@ -76,14 +76,7 @@ func ExampleResourceTypeRegistrationsClient_BeginCreateOrUpdate_directResourceTy
 				IncidentRoutingService: to.Ptr(""),
 				IncidentRoutingTeam:    to.Ptr(""),
 				IncidentContactEmail:   to.Ptr("helpme@contoso.com"),
-				ServiceTreeInfos: []*armproviderhub.ServiceTreeInfo{
-					{
-						ServiceID:   to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-						ComponentID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-						Readiness:   to.Ptr(armproviderhub.ReadinessInDevelopment),
-					},
-				},
-				ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
+				ResourceAccessPolicy:   to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
 			},
 			Metadata: map[string]any{},
 			Notifications: []*armproviderhub.Notification{
@@ -124,10 +117,6 @@ func ExampleResourceTypeRegistrationsClient_BeginCreateOrUpdate_directResourceTy
 			PolicyExecutionType:       to.Ptr(armproviderhub.PolicyExecutionTypeBypassPolicies),
 			AvailabilityZoneRule: &armproviderhub.ResourceTypeRegistrationPropertiesAvailabilityZoneRule{
 				AvailabilityZonePolicy: to.Ptr(armproviderhub.AvailabilityZonePolicyMultiZoned),
-			},
-			DstsConfiguration: &armproviderhub.ResourceTypeRegistrationPropertiesDstsConfiguration{
-				ServiceName:    to.Ptr("prds-shim"),
-				ServiceDNSName: to.Ptr("prds.sparta.azure.com"),
 			},
 			AsyncTimeoutRules: []*armproviderhub.AsyncTimeoutRule{
 				{
@@ -299,18 +288,11 @@ func ExampleResourceTypeRegistrationsClient_BeginCreateOrUpdate_directResourceTy
 	// 			},
 	// 			Management: &armproviderhub.ResourceTypeRegistrationPropertiesManagement{
 	// 				ManifestOwners: []*string{
-	// 					to.Ptr("SPARTA-PlatformServiceAdministrator"),
+	// 					to.Ptr("Contoso-PlatformServiceAdministrator"),
 	// 				},
 	// 				IncidentRoutingService: to.Ptr(""),
 	// 				IncidentRoutingTeam: to.Ptr(""),
 	// 				IncidentContactEmail: to.Ptr("helpme@contoso.com"),
-	// 				ServiceTreeInfos: []*armproviderhub.ServiceTreeInfo{
-	// 					{
-	// 						ServiceID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-	// 						ComponentID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-	// 						Readiness: to.Ptr(armproviderhub.ReadinessInDevelopment),
-	// 					},
-	// 				},
 	// 				ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
 	// 			},
 	// 			Metadata: map[string]any{
@@ -338,10 +320,6 @@ func ExampleResourceTypeRegistrationsClient_BeginCreateOrUpdate_directResourceTy
 	// 			PolicyExecutionType: to.Ptr(armproviderhub.PolicyExecutionTypeBypassPolicies),
 	// 			AvailabilityZoneRule: &armproviderhub.ResourceTypeRegistrationPropertiesAvailabilityZoneRule{
 	// 				AvailabilityZonePolicy: to.Ptr(armproviderhub.AvailabilityZonePolicyMultiZoned),
-	// 			},
-	// 			DstsConfiguration: &armproviderhub.ResourceTypeRegistrationPropertiesDstsConfiguration{
-	// 				ServiceName: to.Ptr("prds-shim"),
-	// 				ServiceDNSName: to.Ptr("prds.sparta.azure.com"),
 	// 			},
 	// 			AsyncTimeoutRules: []*armproviderhub.AsyncTimeoutRule{
 	// 				{
@@ -506,7 +484,7 @@ func ExampleResourceTypeRegistrationsClient_BeginCreateOrUpdate_resourceTypeRegi
 			},
 			Management: &armproviderhub.ResourceTypeRegistrationPropertiesManagement{
 				ManifestOwners: []*string{
-					to.Ptr("SPARTA-PlatformServiceAdministrator"),
+					to.Ptr("Contoso-PlatformServiceAdministrator"),
 				},
 				AuthorizationOwners: []*string{
 					to.Ptr("RPAAS-PlatformServiceAdministrator"),
@@ -514,14 +492,7 @@ func ExampleResourceTypeRegistrationsClient_BeginCreateOrUpdate_resourceTypeRegi
 				IncidentRoutingService: to.Ptr(""),
 				IncidentRoutingTeam:    to.Ptr(""),
 				IncidentContactEmail:   to.Ptr("helpme@contoso.com"),
-				ServiceTreeInfos: []*armproviderhub.ServiceTreeInfo{
-					{
-						ServiceID:   to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-						ComponentID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-						Readiness:   to.Ptr(armproviderhub.ReadinessInDevelopment),
-					},
-				},
-				ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
+				ResourceAccessPolicy:   to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
 			},
 			Metadata: map[string]any{},
 			Notifications: []*armproviderhub.Notification{
@@ -671,18 +642,11 @@ func ExampleResourceTypeRegistrationsClient_BeginCreateOrUpdate_resourceTypeRegi
 	// 			},
 	// 			Management: &armproviderhub.ResourceTypeRegistrationPropertiesManagement{
 	// 				ManifestOwners: []*string{
-	// 					to.Ptr("SPARTA-PlatformServiceAdministrator"),
+	// 					to.Ptr("Contoso-PlatformServiceAdministrator"),
 	// 				},
 	// 				IncidentRoutingService: to.Ptr(""),
 	// 				IncidentRoutingTeam: to.Ptr(""),
 	// 				IncidentContactEmail: to.Ptr("helpme@contoso.com"),
-	// 				ServiceTreeInfos: []*armproviderhub.ServiceTreeInfo{
-	// 					{
-	// 						ServiceID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-	// 						ComponentID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-	// 						Readiness: to.Ptr(armproviderhub.ReadinessInDevelopment),
-	// 					},
-	// 				},
 	// 				ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
 	// 			},
 	// 			Metadata: map[string]any{
@@ -845,7 +809,7 @@ func ExampleResourceTypeRegistrationsClient_Get() {
 	// 			},
 	// 			Management: &armproviderhub.ResourceTypeRegistrationPropertiesManagement{
 	// 				ManifestOwners: []*string{
-	// 					to.Ptr("SPARTA-PlatformServiceAdministrator"),
+	// 					to.Ptr("Contoso-PlatformServiceAdministrator"),
 	// 				},
 	// 				AuthorizationOwners: []*string{
 	// 					to.Ptr("RPAAS-PlatformServiceAdministrator"),
@@ -853,13 +817,6 @@ func ExampleResourceTypeRegistrationsClient_Get() {
 	// 				IncidentRoutingService: to.Ptr(""),
 	// 				IncidentRoutingTeam: to.Ptr(""),
 	// 				IncidentContactEmail: to.Ptr("helpme@contoso.com"),
-	// 				ServiceTreeInfos: []*armproviderhub.ServiceTreeInfo{
-	// 					{
-	// 						ServiceID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-	// 						ComponentID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-	// 						Readiness: to.Ptr(armproviderhub.ReadinessInDevelopment),
-	// 					},
-	// 				},
 	// 				ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
 	// 			},
 	// 			Metadata: map[string]any{
@@ -1013,7 +970,7 @@ func ExampleResourceTypeRegistrationsClient_NewListByProviderRegistrationPager()
 		// 					},
 		// 					Management: &armproviderhub.ResourceTypeRegistrationPropertiesManagement{
 		// 						ManifestOwners: []*string{
-		// 							to.Ptr("SPARTA-PlatformServiceAdministrator"),
+		// 							to.Ptr("Contoso-PlatformServiceAdministrator"),
 		// 						},
 		// 						AuthorizationOwners: []*string{
 		// 							to.Ptr("RPAAS-PlatformServiceAdministrator"),
@@ -1021,13 +978,6 @@ func ExampleResourceTypeRegistrationsClient_NewListByProviderRegistrationPager()
 		// 						IncidentRoutingService: to.Ptr(""),
 		// 						IncidentRoutingTeam: to.Ptr(""),
 		// 						IncidentContactEmail: to.Ptr("helpme@contoso.com"),
-		// 						ServiceTreeInfos: []*armproviderhub.ServiceTreeInfo{
-		// 							{
-		// 								ServiceID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-		// 								ComponentID: to.Ptr("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69"),
-		// 								Readiness: to.Ptr(armproviderhub.ReadinessInDevelopment),
-		// 							},
-		// 						},
 		// 						ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
 		// 					},
 		// 					Metadata: map[string]any{

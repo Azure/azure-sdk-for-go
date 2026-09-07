@@ -2,6 +2,8 @@ module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/arm
 
 go 1.25.0
 
+retract v4.0.0-beta.1 // contains an API spec bug in an operation ID
+
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.23.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.14.0

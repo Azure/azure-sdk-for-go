@@ -535,23 +535,11 @@ type FanoutLinkedNotificationRule struct {
 	// The actions.
 	Actions []*string
 
-	// The dsts configuration.
-	DstsConfiguration *FanoutLinkedNotificationRuleDstsConfiguration
-
 	// The endpoints.
 	Endpoints []*ResourceProviderEndpoint
 
 	// The token auth configuration.
 	TokenAuthConfiguration *TokenAuthConfiguration
-}
-
-// FanoutLinkedNotificationRuleDstsConfiguration - The dsts configuration.
-type FanoutLinkedNotificationRuleDstsConfiguration struct {
-	// REQUIRED; The service name.
-	ServiceName *string
-
-	// This is a URI property.
-	ServiceDNSName *string
 }
 
 type FilterRule struct {
@@ -560,91 +548,6 @@ type FilterRule struct {
 
 	// The filter query.
 	FilterQuery *string
-}
-
-type FrontloadPayload struct {
-	// REQUIRED; Properties of the frontload payload.
-	Properties *FrontloadPayloadProperties
-}
-
-type FrontloadPayloadProperties struct {
-	// REQUIRED; The copy from location.
-	CopyFromLocation *string
-
-	// REQUIRED; The environment type.
-	EnvironmentType *AvailableCheckInManifestEnvironment
-
-	// REQUIRED; The resource types to exclude.
-	ExcludeResourceTypes []*string
-
-	// REQUIRED; The frontload location.
-	FrontloadLocation *string
-
-	// REQUIRED; The fields to ignore.
-	IgnoreFields []*string
-
-	// REQUIRED; The resource types to include.
-	IncludeResourceTypes []*string
-
-	// REQUIRED; The operation type.
-	OperationType *string
-
-	// REQUIRED; The endpoint level fields to override.
-	OverrideEndpointLevelFields *FrontloadPayloadPropertiesOverrideEndpointLevelFields
-
-	// REQUIRED; The manifest level fields to override.
-	OverrideManifestLevelFields *FrontloadPayloadPropertiesOverrideManifestLevelFields
-
-	// REQUIRED; The provider namespace.
-	ProviderNamespace *string
-
-	// REQUIRED; The service feature flag.
-	ServiceFeatureFlag *ServiceFeatureFlagAction
-}
-
-// FrontloadPayloadPropertiesOverrideEndpointLevelFields - The endpoint level fields to override.
-type FrontloadPayloadPropertiesOverrideEndpointLevelFields struct {
-	// REQUIRED; The api version.
-	APIVersion *string
-
-	// REQUIRED; The api versions.
-	APIVersions []*string
-
-	// REQUIRED; The dsts configuration.
-	DstsConfiguration *ResourceTypeEndpointBaseDstsConfiguration
-
-	// REQUIRED; Whether it's enabled.
-	Enabled *bool
-
-	// REQUIRED; The endpoint type.
-	EndpointType *EndpointType
-
-	// REQUIRED; The endpoint uri.
-	EndpointURI *string
-
-	// REQUIRED; The features rule.
-	FeaturesRule *ResourceTypeEndpointBaseFeaturesRule
-
-	// REQUIRED; The locations.
-	Locations []*string
-
-	// REQUIRED; The required features.
-	RequiredFeatures []*string
-
-	// REQUIRED; The sku link.
-	SKULink *string
-
-	// REQUIRED; This is a TimeSpan property.
-	Timeout *string
-
-	// REQUIRED; The zones.
-	Zones []*string
-}
-
-// FrontloadPayloadPropertiesOverrideManifestLevelFields - The manifest level fields to override.
-type FrontloadPayloadPropertiesOverrideManifestLevelFields struct {
-	// The resource hydration accounts.
-	ResourceHydrationAccounts []*ResourceHydrationAccount
 }
 
 type GroupConnectivityInformation struct {
@@ -1408,9 +1311,6 @@ type ProviderRegistrationProperties struct {
 	// Custom manifest version.
 	CustomManifestVersion *string
 
-	// The dsts configuration.
-	DstsConfiguration *ResourceProviderManifestPropertiesDstsConfiguration
-
 	// Indicates whether automatic registration for the preset resource types is enabled or disabled.
 	EnablePresetResourceTypes *bool
 
@@ -1843,18 +1743,6 @@ type ResourceProviderManifestManagement struct {
 
 	// The schema owners.
 	SchemaOwners []*string
-
-	// The service tree infos.
-	ServiceTreeInfos []*ServiceTreeInfo
-}
-
-// ResourceProviderManifestPropertiesDstsConfiguration - The dsts configuration.
-type ResourceProviderManifestPropertiesDstsConfiguration struct {
-	// REQUIRED; The service name.
-	ServiceName *string
-
-	// This is a URI property.
-	ServiceDNSName *string
 }
 
 // ResourceProviderManifestPropertiesFeaturesRule - The features rule.
@@ -1909,9 +1797,6 @@ type ResourceProviderManifestPropertiesManagement struct {
 
 	// The schema owners.
 	SchemaOwners []*string
-
-	// The service tree infos.
-	ServiceTreeInfos []*ServiceTreeInfo
 }
 
 // ResourceProviderManifestPropertiesNotificationSettings - Notification settings.
@@ -2072,9 +1957,6 @@ type ResourceType struct {
 	// The sku link.
 	SKULink *string
 
-	// The service tree infos.
-	ServiceTreeInfos []*ServiceTreeInfo
-
 	// The subscription state rules.
 	SubscriptionStateRules []*SubscriptionStateRule
 
@@ -2094,9 +1976,6 @@ type ResourceTypeEndpoint struct {
 
 	// The data boundary.
 	DataBoundary *DataBoundary
-
-	// The dsts configuration.
-	DstsConfiguration *ResourceTypeEndpointDstsConfiguration
 
 	// Whether the endpoint is enabled.
 	Enabled *bool
@@ -2134,30 +2013,6 @@ type ResourceTypeEndpoint struct {
 
 	// List of zones.
 	Zones []*string
-}
-
-// ResourceTypeEndpointBaseDstsConfiguration - The dsts configuration.
-type ResourceTypeEndpointBaseDstsConfiguration struct {
-	// REQUIRED; The service name.
-	ServiceName *string
-
-	// This is a URI property.
-	ServiceDNSName *string
-}
-
-// ResourceTypeEndpointBaseFeaturesRule - The features rule.
-type ResourceTypeEndpointBaseFeaturesRule struct {
-	// REQUIRED; The required feature policy.
-	RequiredFeaturesPolicy *FeaturesPolicy
-}
-
-// ResourceTypeEndpointDstsConfiguration - The dsts configuration.
-type ResourceTypeEndpointDstsConfiguration struct {
-	// REQUIRED; The service name.
-	ServiceName *string
-
-	// This is a URI property.
-	ServiceDNSName *string
 }
 
 // ResourceTypeEndpointFeaturesRule - The features rule.
@@ -2312,9 +2167,6 @@ type ResourceTypeRegistrationProperties struct {
 	// The disallowed end user operations.
 	DisallowedEndUserOperations []*string
 
-	// The dsts configuration.
-	DstsConfiguration *ResourceTypeRegistrationPropertiesDstsConfiguration
-
 	// Whether async operation is enabled.
 	EnableAsyncOperation *bool
 
@@ -2456,9 +2308,6 @@ type ResourceTypeRegistrationProperties struct {
 	// The sku link.
 	SKULink *string
 
-	// The service tree infos.
-	ServiceTreeInfos []*ServiceTreeInfo
-
 	// The subscription lifecycle notification specifications.
 	SubscriptionLifecycleNotificationSpecifications *ResourceTypeRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications
 
@@ -2514,15 +2363,6 @@ type ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications struc
 
 	// The resource types with custom validation.
 	ResourceTypesWithCustomValidation []*string
-}
-
-// ResourceTypeRegistrationPropertiesDstsConfiguration - The dsts configuration.
-type ResourceTypeRegistrationPropertiesDstsConfiguration struct {
-	// REQUIRED; The service name.
-	ServiceName *string
-
-	// This is a URI property.
-	ServiceDNSName *string
 }
 
 // ResourceTypeRegistrationPropertiesExtensionOptions - The extension options.
@@ -2604,9 +2444,6 @@ type ResourceTypeRegistrationPropertiesManagement struct {
 
 	// The schema owners.
 	SchemaOwners []*string
-
-	// The service tree infos.
-	ServiceTreeInfos []*ServiceTreeInfo
 }
 
 // ResourceTypeRegistrationPropertiesMarketplaceOptions - Marketplace options.
@@ -2892,17 +2729,6 @@ type SKUZoneDetail struct {
 
 	// The name.
 	Name []*string
-}
-
-type ServiceTreeInfo struct {
-	// The component id.
-	ComponentID *string
-
-	// The readiness.
-	Readiness *Readiness
-
-	// The service id.
-	ServiceID *string
 }
 
 type SubscriberSetting struct {

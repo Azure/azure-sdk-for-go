@@ -31,6 +31,9 @@ type VirtualMachineBulkOperationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewVirtualMachineBulkOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachineBulkOperationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -70,7 +73,7 @@ func (client *VirtualMachineBulkOperationsClient) BulkAcknowledgeOperationErrors
 func (client *VirtualMachineBulkOperationsClient) bulkAcknowledgeOperationErrorsCreateRequest(ctx context.Context, resourceGroupName string, location string, body AcknowledgeBulkOperationErrorsRequest, _ *VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/acknowledgeBulkOperationErrors"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -136,7 +139,7 @@ func (client *VirtualMachineBulkOperationsClient) BulkCancelOperations(ctx conte
 func (client *VirtualMachineBulkOperationsClient) bulkCancelOperationsCreateRequest(ctx context.Context, resourceGroupName string, location string, requestBody CancelOperationsContent, _ *VirtualMachineBulkOperationsClientBulkCancelOperationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/virtualMachinesBulkCancel"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -203,7 +206,7 @@ func (client *VirtualMachineBulkOperationsClient) BulkCreateOperation(ctx contex
 func (client *VirtualMachineBulkOperationsClient) bulkCreateOperationCreateRequest(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteCreateContent, _ *VirtualMachineBulkOperationsClientBulkCreateOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/virtualMachinesBulkCreate"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -270,7 +273,7 @@ func (client *VirtualMachineBulkOperationsClient) BulkDeallocateOperation(ctx co
 func (client *VirtualMachineBulkOperationsClient) bulkDeallocateOperationCreateRequest(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteDeallocateContent, _ *VirtualMachineBulkOperationsClientBulkDeallocateOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/virtualMachinesBulkDeallocate"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -337,7 +340,7 @@ func (client *VirtualMachineBulkOperationsClient) BulkDeleteOperation(ctx contex
 func (client *VirtualMachineBulkOperationsClient) bulkDeleteOperationCreateRequest(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteDeleteContent, _ *VirtualMachineBulkOperationsClientBulkDeleteOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/virtualMachinesBulkDelete"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -403,7 +406,7 @@ func (client *VirtualMachineBulkOperationsClient) BulkGetOperationsStatus(ctx co
 func (client *VirtualMachineBulkOperationsClient) bulkGetOperationsStatusCreateRequest(ctx context.Context, resourceGroupName string, location string, requestBody GetOperationStatusContent, _ *VirtualMachineBulkOperationsClientBulkGetOperationsStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/virtualMachinesBulkGetOperationStatus"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -470,7 +473,7 @@ func (client *VirtualMachineBulkOperationsClient) BulkHibernateOperation(ctx con
 func (client *VirtualMachineBulkOperationsClient) bulkHibernateOperationCreateRequest(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteHibernateContent, _ *VirtualMachineBulkOperationsClientBulkHibernateOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/virtualMachinesBulkHibernate"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -546,7 +549,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkListOperationErrorsCreateR
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/listBulkOperationErrors"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -617,7 +620,7 @@ func (client *VirtualMachineBulkOperationsClient) BulkReimageOperation(ctx conte
 func (client *VirtualMachineBulkOperationsClient) bulkReimageOperationCreateRequest(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteReimageRequest, _ *VirtualMachineBulkOperationsClientBulkReimageOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/virtualMachinesBulkReimage"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -684,7 +687,7 @@ func (client *VirtualMachineBulkOperationsClient) BulkStartOperation(ctx context
 func (client *VirtualMachineBulkOperationsClient) bulkStartOperationCreateRequest(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteStartContent, _ *VirtualMachineBulkOperationsClientBulkStartOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/virtualMachinesBulkStart"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -751,7 +754,7 @@ func (client *VirtualMachineBulkOperationsClient) BulkVdiFlexCreateOperation(ctx
 func (client *VirtualMachineBulkOperationsClient) bulkVdiFlexCreateOperationCreateRequest(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteVdiCreateRequest, _ *VirtualMachineBulkOperationsClientBulkVdiFlexCreateOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/virtualMachinesBulkVdiFlexCreate"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

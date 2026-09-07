@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/Community_PostCheckAddressSpaceAvailability.json
+// Generated from example definition: 2026-04-01/Community_PostCheckAddressSpaceAvailability.json
 func ExampleCommunityClient_CheckAddressSpaceAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleCommunityClient_CheckAddressSpaceAvailability() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Community_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/Community_CreateOrUpdate.json
 func ExampleCommunityClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -594,7 +594,7 @@ func ExampleCommunityClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Community_Delete.json
+// Generated from example definition: 2026-04-01/Community_Delete.json
 func ExampleCommunityClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -615,7 +615,7 @@ func ExampleCommunityClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Community_Get.json
+// Generated from example definition: 2026-04-01/Community_Get.json
 func ExampleCommunityClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -921,7 +921,7 @@ func ExampleCommunityClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Community_ListByResourceGroup.json
+// Generated from example definition: 2026-04-01/Community_ListByResourceGroup.json
 func ExampleCommunityClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1204,7 +1204,7 @@ func ExampleCommunityClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Community_ListBySubscription.json
+// Generated from example definition: 2026-04-01/Community_ListBySubscription.json
 func ExampleCommunityClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1487,7 +1487,7 @@ func ExampleCommunityClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Community_Update.json
+// Generated from example definition: 2026-04-01/Community_Update.json
 func ExampleCommunityClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

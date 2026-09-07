@@ -105,28 +105,6 @@ type ManifestsClientGetResponse struct {
 	ManifestInfo
 }
 
-// NewRegionFrontloadReleaseClientCreateOrUpdateResponse contains the response from method NewRegionFrontloadReleaseClient.CreateOrUpdate.
-type NewRegionFrontloadReleaseClientCreateOrUpdateResponse struct {
-	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
-	DefaultRollout
-}
-
-// NewRegionFrontloadReleaseClientGenerateManifestResponse contains the response from method NewRegionFrontloadReleaseClient.GenerateManifest.
-type NewRegionFrontloadReleaseClientGenerateManifestResponse struct {
-	ResourceProviderManifest
-}
-
-// NewRegionFrontloadReleaseClientGetResponse contains the response from method NewRegionFrontloadReleaseClient.Get.
-type NewRegionFrontloadReleaseClientGetResponse struct {
-	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
-	DefaultRollout
-}
-
-// NewRegionFrontloadReleaseClientStopResponse contains the response from method NewRegionFrontloadReleaseClient.Stop.
-type NewRegionFrontloadReleaseClientStopResponse struct {
-	// placeholder for future response values
-}
-
 // NotificationRegistrationsClientCreateOrUpdateResponse contains the response from method NotificationRegistrationsClient.CreateOrUpdate.
 type NotificationRegistrationsClientCreateOrUpdateResponse struct {
 	// Concrete proxy resource types can be created by aliasing this type using a specific property type.

@@ -1,13 +1,42 @@
 # Release History
 
-## 4.0.0 (2026-08-25)
+## 4.0.0 (2026-09-02)
 ### Breaking Changes
 
 - Type of `ResourceType.ResourceDeletionPolicy` has been changed from `*ManifestResourceDeletionPolicy` to `*ResourceDeletionPolicy`
 - Type of `ResourceTypeRegistrationProperties.ResourceDeletionPolicy` has been changed from `*ResourceDeletionPolicy` to `*RPaaSResourceDeletionPolicy`
+- `ResourceAccessPolicyAcisActionAllowed`, `ResourceAccessPolicyAcisReadAllowed` from enum `ResourceAccessPolicy` has been removed
 - `ResourceDeletionPolicyCascadeDeleteAll`, `ResourceDeletionPolicyCascadeDeleteProxyOnlyChildren` from enum `ResourceDeletionPolicy` has been removed
+- Enum `AvailableCheckInManifestEnvironment` has been removed
 - Enum `ManifestResourceDeletionPolicy` has been removed
+- Enum `Readiness` has been removed
+- Enum `ServiceFeatureFlagAction` has been removed
+- Function `*ClientFactory.NewNewRegionFrontloadReleaseClient` has been removed
+- Function `NewNewRegionFrontloadReleaseClient` has been removed
+- Function `*NewRegionFrontloadReleaseClient.CreateOrUpdate` has been removed
+- Function `*NewRegionFrontloadReleaseClient.GenerateManifest` has been removed
+- Function `*NewRegionFrontloadReleaseClient.Get` has been removed
+- Function `*NewRegionFrontloadReleaseClient.Stop` has been removed
+- Struct `FanoutLinkedNotificationRuleDstsConfiguration` has been removed
+- Struct `FrontloadPayload` has been removed
+- Struct `FrontloadPayloadProperties` has been removed
+- Struct `FrontloadPayloadPropertiesOverrideEndpointLevelFields` has been removed
+- Struct `FrontloadPayloadPropertiesOverrideManifestLevelFields` has been removed
+- Struct `ResourceProviderManifestPropertiesDstsConfiguration` has been removed
+- Struct `ResourceTypeEndpointBaseDstsConfiguration` has been removed
+- Struct `ResourceTypeEndpointBaseFeaturesRule` has been removed
+- Struct `ResourceTypeEndpointDstsConfiguration` has been removed
+- Struct `ResourceTypeRegistrationPropertiesDstsConfiguration` has been removed
+- Struct `ServiceTreeInfo` has been removed
+- Field `DstsConfiguration` of struct `FanoutLinkedNotificationRule` has been removed
 - Field `OperationsDefinitionArray` of struct `OperationsClientListByProviderRegistrationResponse` has been removed
+- Field `DstsConfiguration` of struct `ProviderRegistrationProperties` has been removed
+- Field `ServiceTreeInfos` of struct `ResourceProviderManifestManagement` has been removed
+- Field `ServiceTreeInfos` of struct `ResourceProviderManifestPropertiesManagement` has been removed
+- Field `ServiceTreeInfos` of struct `ResourceType` has been removed
+- Field `DstsConfiguration` of struct `ResourceTypeEndpoint` has been removed
+- Field `DstsConfiguration`, `ServiceTreeInfos` of struct `ResourceTypeRegistrationProperties` has been removed
+- Field `ServiceTreeInfos` of struct `ResourceTypeRegistrationPropertiesManagement` has been removed
 
 ### Features Added
 

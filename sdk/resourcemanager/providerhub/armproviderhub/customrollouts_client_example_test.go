@@ -202,7 +202,7 @@ func ExampleCustomRolloutsClient_Get() {
 	// 						ProviderType: to.Ptr(armproviderhub.ResourceProviderType("Internal, Hidden")),
 	// 						Management: &armproviderhub.ResourceProviderManifestPropertiesManagement{
 	// 							ManifestOwners: []*string{
-	// 								to.Ptr("SPARTA-PlatformServiceAdministrator"),
+	// 								to.Ptr("Contoso-PlatformServiceAdministrator"),
 	// 							},
 	// 							AuthorizationOwners: []*string{
 	// 								to.Ptr("RPAAS-PlatformServiceAdministrator"),

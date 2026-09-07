@@ -30,6 +30,9 @@ type ConnectionRaiPolicyClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConnectionRaiPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectionRaiPolicyClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -87,8 +90,7 @@ func (client *ConnectionRaiPolicyClient) create(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -97,7 +99,7 @@ func (client *ConnectionRaiPolicyClient) create(ctx context.Context, resourceGro
 func (client *ConnectionRaiPolicyClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, raiPolicyName string, body RaiPolicyPropertiesBasicResource, options *ConnectionRaiPolicyClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/raiPolicies/{raiPolicyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -180,8 +182,7 @@ func (client *ConnectionRaiPolicyClient) deleteOperation(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -190,7 +191,7 @@ func (client *ConnectionRaiPolicyClient) deleteOperation(ctx context.Context, re
 func (client *ConnectionRaiPolicyClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, raiPolicyName string, options *ConnectionRaiPolicyClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/raiPolicies/{raiPolicyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -245,19 +246,14 @@ func (client *ConnectionRaiPolicyClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ConnectionRaiPolicyClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectionRaiPolicyClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ConnectionRaiPolicyClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, raiPolicyName string, _ *ConnectionRaiPolicyClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/raiPolicies/{raiPolicyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -288,8 +284,11 @@ func (client *ConnectionRaiPolicyClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConnectionRaiPolicyClient) getHandleResponse(resp *http.Response) (ConnectionRaiPolicyClientGetResponse, error) {
+func (client *ConnectionRaiPolicyClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConnectionRaiPolicyClientGetResponse, error) {
 	result := ConnectionRaiPolicyClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RaiPolicyPropertiesBasicResource); err != nil {
 		return ConnectionRaiPolicyClientGetResponse{}, err
 	}

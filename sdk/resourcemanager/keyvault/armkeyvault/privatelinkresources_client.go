@@ -30,6 +30,9 @@ type PrivateLinkResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *PrivateLinkResourcesClient) ListByVault(ctx context.Context, resou
 	if err != nil {
 		return PrivateLinkResourcesClientListByVaultResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateLinkResourcesClientListByVaultResponse{}, err
-	}
-	resp, err := client.listByVaultHandleResponse(httpResp)
-	return resp, err
+	return client.listByVaultHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByVaultCreateRequest creates the ListByVault request.
 func (client *PrivateLinkResourcesClient) listByVaultCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, _ *PrivateLinkResourcesClientListByVaultOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/privateLinkResources"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -96,8 +94,11 @@ func (client *PrivateLinkResourcesClient) listByVaultCreateRequest(ctx context.C
 }
 
 // listByVaultHandleResponse handles the ListByVault response.
-func (client *PrivateLinkResourcesClient) listByVaultHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListByVaultResponse, error) {
+func (client *PrivateLinkResourcesClient) listByVaultHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinkResourcesClientListByVaultResponse, error) {
 	result := PrivateLinkResourcesClientListByVaultResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
 		return PrivateLinkResourcesClientListByVaultResponse{}, err
 	}

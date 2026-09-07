@@ -5,7 +5,7 @@
 package armnetapp
 
 const (
-	version20260415Preview string = "2026-04-15-preview"
+	version20260615Preview string = "2026-06-15-preview"
 )
 
 // AcceptGrowCapacityPoolForShortTermCloneSplit - While auto splitting the short term clone volume, if the parent pool does
@@ -821,6 +821,7 @@ func PossibleElasticVolumeRestorationStateValues() []ElasticVolumeRestorationSta
 }
 
 // EnableSubvolumes - Flag indicating whether subvolume operations are enabled on the volume
+// Deprecated. This type will be removed in a future API version.
 type EnableSubvolumes string
 
 const (
@@ -1567,6 +1568,24 @@ func PossibleReplicationTypeValues() []ReplicationType {
 	return []ReplicationType{
 		ReplicationTypeCrossRegionReplication,
 		ReplicationTypeCrossZoneReplication,
+	}
+}
+
+// SecureLdapType - Indicates the secure LDAP mode for encrypting communication between ANF storage and customer LDAP servers.
+type SecureLdapType string
+
+const (
+	// SecureLdapTypeLdapOverTLS - LDAP traffic is encrypted using LDAP over TLS.
+	SecureLdapTypeLdapOverTLS SecureLdapType = "LdapOverTLS"
+	// SecureLdapTypeNone - LDAP traffic is not encrypted.
+	SecureLdapTypeNone SecureLdapType = "None"
+)
+
+// PossibleSecureLdapTypeValues returns the possible values for the SecureLdapType const type.
+func PossibleSecureLdapTypeValues() []SecureLdapType {
+	return []SecureLdapType{
+		SecureLdapTypeLdapOverTLS,
+		SecureLdapTypeNone,
 	}
 }
 

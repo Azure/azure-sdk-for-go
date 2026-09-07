@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_Get_MaximumSet_Gen.json
 func ExampleVirtualMachineExtensionImagesClient_Get_virtualMachineExtensionImageGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,6 +38,18 @@ func ExampleVirtualMachineExtensionImagesClient_Get_virtualMachineExtensionImage
 	// 			HandlerSchema: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
 	// 			VMScaleSetEnabled: to.Ptr(true),
 	// 			SupportsMultipleExtensions: to.Ptr(true),
+	// 			ReleaseNotes: to.Ptr("Fixed a critical bug in the extension handler."),
+	// 			ReleaseCategory: to.Ptr(armcompute.ReleaseCategoryBugFix),
+	// 			UrgencyLevel: to.Ptr(armcompute.UrgencyLevelExpedited),
+	// 			RunProfile: to.Ptr(armcompute.RunProfileRunOnce),
+	// 			ExtensionFeatureMetadata: &armcompute.ExtensionFeatureMetadata{
+	// 				ExtensionFeatureTags: []*armcompute.ExtensionFeatureTag{
+	// 					{
+	// 						Key: to.Ptr("FipsCompliantVersion"),
+	// 						Value: to.Ptr("140-3"),
+	// 					},
+	// 				},
+	// 			},
 	// 		},
 	// 		ID: to.Ptr("aaaaaaaaaaaaaaaaa"),
 	// 		Name: to.Ptr("aaaaaaaaaaaaaaa"),
@@ -50,7 +62,7 @@ func ExampleVirtualMachineExtensionImagesClient_Get_virtualMachineExtensionImage
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_Get_MinimumSet_Gen.json
 func ExampleVirtualMachineExtensionImagesClient_Get_virtualMachineExtensionImageGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +89,7 @@ func ExampleVirtualMachineExtensionImagesClient_Get_virtualMachineExtensionImage
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListTypes_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListTypes_MaximumSet_Gen.json
 func ExampleVirtualMachineExtensionImagesClient_ListTypes_virtualMachineExtensionImageListTypesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +129,7 @@ func ExampleVirtualMachineExtensionImagesClient_ListTypes_virtualMachineExtensio
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListTypes_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListTypes_MinimumSet_Gen.json
 func ExampleVirtualMachineExtensionImagesClient_ListTypes_virtualMachineExtensionImageListTypesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +158,7 @@ func ExampleVirtualMachineExtensionImagesClient_ListTypes_virtualMachineExtensio
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListVersions_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListVersions_MaximumSet_Gen.json
 func ExampleVirtualMachineExtensionImagesClient_ListVersions_virtualMachineExtensionImageListVersionsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -189,7 +201,7 @@ func ExampleVirtualMachineExtensionImagesClient_ListVersions_virtualMachineExten
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListVersions_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListVersions_MinimumSet_Gen.json
 func ExampleVirtualMachineExtensionImagesClient_ListVersions_virtualMachineExtensionImageListVersionsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,6 +225,53 @@ func ExampleVirtualMachineExtensionImagesClient_ListVersions_virtualMachineExten
 	// 			Name: to.Ptr("aaaaaaaaaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaa"),
 	// 			ID: to.Ptr("aaaaaaaaaaaaaaaaa"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListVersions_WithExpandProperties_Gen.json
+func ExampleVirtualMachineExtensionImagesClient_ListVersions_virtualMachineExtensionImageListVersionsWithExpandPropertiesGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineExtensionImagesClient().ListVersions(ctx, "aaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaa", &armcompute.VirtualMachineExtensionImagesClientListVersionsOptions{
+		Filter:  to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
+		Top:     to.Ptr[int32](22),
+		Orderby: to.Ptr("a"),
+		Expand:  to.Ptr(armcompute.ListVersionsExpandOptionsProperties)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachineExtensionImagesClientListVersionsResponse{
+	// 	VirtualMachineExtensionImageArray: []*armcompute.VirtualMachineExtensionImage{
+	// 		{
+	// 			Properties: &armcompute.VirtualMachineExtensionImageProperties{
+	// 				OperatingSystem: to.Ptr("aaaaaaaaaaaaaaaaaa"),
+	// 				ComputeRole: to.Ptr("aaaaaaaaaaaaaaaaa"),
+	// 				HandlerSchema: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+	// 				VMScaleSetEnabled: to.Ptr(true),
+	// 				SupportsMultipleExtensions: to.Ptr(true),
+	// 				ReleaseCategory: to.Ptr(armcompute.ReleaseCategorySecurityFix),
+	// 				UrgencyLevel: to.Ptr(armcompute.UrgencyLevelEmergency),
+	// 				RunProfile: to.Ptr(armcompute.RunProfileLongRunning),
+	// 			},
+	// 			ID: to.Ptr("aaaaaaaaaaaaaaaaa"),
+	// 			Name: to.Ptr("aaaaaaaaaaaaaaa"),
+	// 			Type: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+	// 			Location: to.Ptr("aaaaaaaaaaaaa"),
+	// 			Tags: map[string]*string{
+	// 				"key9885": to.Ptr("aaaaaaaaa"),
+	// 			},
 	// 		},
 	// 	},
 	// }

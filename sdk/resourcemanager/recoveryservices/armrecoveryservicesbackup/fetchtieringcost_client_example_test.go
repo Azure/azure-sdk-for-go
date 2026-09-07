@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-31-preview/TieringCost/FetchTieringCostForPolicy.json
+// Generated from example definition: 2026-07-01/TieringCost/FetchTieringCostForPolicy.json
 func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForPoli
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.FetchTieringCostClientPostResponse{
-	// 	TieringCostSavingInfo: &armrecoveryservicesbackup.TieringCostSavingInfo{
+	// 	TieringCostInfoClassification: &armrecoveryservicesbackup.TieringCostSavingInfo{
 	// 		ObjectType: to.Ptr("TieringCostSavingInfo"),
 	// 		RetailSourceTierCostPerGBPerMonth: to.Ptr[float64](0.02),
 	// 		RetailTargetTierCostPerGBPerMonth: to.Ptr[float64](0.003),
@@ -50,7 +50,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForPoli
 	// }
 }
 
-// Generated from example definition: 2026-01-31-preview/TieringCost/FetchTieringCostForProtectedItem.json
+// Generated from example definition: 2026-07-01/TieringCost/FetchTieringCostForProtectedItem.json
 func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForProtectedItem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForProt
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.FetchTieringCostClientPostResponse{
-	// 	TieringCostSavingInfo: &armrecoveryservicesbackup.TieringCostSavingInfo{
+	// 	TieringCostInfoClassification: &armrecoveryservicesbackup.TieringCostSavingInfo{
 	// 		ObjectType: to.Ptr("TieringCostSavingInfo"),
 	// 		RetailSourceTierCostPerGBPerMonth: to.Ptr[float64](0.02),
 	// 		RetailTargetTierCostPerGBPerMonth: to.Ptr[float64](0.003),
@@ -89,7 +89,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForProt
 	// }
 }
 
-// Generated from example definition: 2026-01-31-preview/TieringCost/FetchTieringCostForRehydrate.json
+// Generated from example definition: 2026-07-01/TieringCost/FetchTieringCostForRehydrate.json
 func ExampleFetchTieringCostClient_BeginPost_getTheRehydrationCostForRecoveryPoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheRehydrationCostForRecoveryPoi
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.FetchTieringCostClientPostResponse{
-	// 	TieringCostRehydrationInfo: &armrecoveryservicesbackup.TieringCostRehydrationInfo{
+	// 	TieringCostInfoClassification: &armrecoveryservicesbackup.TieringCostRehydrationInfo{
 	// 		ObjectType: to.Ptr("TieringCostRehydrationInfo"),
 	// 		RehydrationSizeInBytes: to.Ptr[int64](1204000),
 	// 		RetailRehydrationCostPerGBPerMonth: to.Ptr[float64](0.02),
@@ -128,7 +128,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheRehydrationCostForRecoveryPoi
 	// }
 }
 
-// Generated from example definition: 2026-01-31-preview/TieringCost/FetchTieringCostForVault.json
+// Generated from example definition: 2026-07-01/TieringCost/FetchTieringCostForVault.json
 func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForVaul
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.FetchTieringCostClientPostResponse{
-	// 	TieringCostSavingInfo: &armrecoveryservicesbackup.TieringCostSavingInfo{
+	// 	TieringCostInfoClassification: &armrecoveryservicesbackup.TieringCostSavingInfo{
 	// 		ObjectType: to.Ptr("TieringCostSavingInfo"),
 	// 		RetailSourceTierCostPerGBPerMonth: to.Ptr[float64](0.02),
 	// 		RetailTargetTierCostPerGBPerMonth: to.Ptr[float64](0.003),

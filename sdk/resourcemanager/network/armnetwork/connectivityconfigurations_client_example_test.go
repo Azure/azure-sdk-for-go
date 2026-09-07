@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/NetworkManagerConnectivityConfigurationPut.json
+// Generated from example definition: 2025-09-01/NetworkManagerConnectivityConfigurationPut.json
 func ExampleConnectivityConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,10 +89,10 @@ func ExampleConnectivityConfigurationsClient_CreateOrUpdate() {
 	// 			ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		SystemData: &armnetwork.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 	// 		},
@@ -100,7 +100,7 @@ func ExampleConnectivityConfigurationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkManagerConnectivityConfigurationDelete.json
+// Generated from example definition: 2025-09-01/NetworkManagerConnectivityConfigurationDelete.json
 func ExampleConnectivityConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleConnectivityConfigurationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkManagerConnectivityConfigurationGet.json
+// Generated from example definition: 2025-09-01/NetworkManagerConnectivityConfigurationGet.json
 func ExampleConnectivityConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,10 +178,10 @@ func ExampleConnectivityConfigurationsClient_Get() {
 	// 			ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		SystemData: &armnetwork.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 	// 		},
@@ -189,7 +189,7 @@ func ExampleConnectivityConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkManagerConnectivityConfigurationList.json
+// Generated from example definition: 2025-09-01/NetworkManagerConnectivityConfigurationList.json
 func ExampleConnectivityConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,10 +247,10 @@ func ExampleConnectivityConfigurationsClient_NewListPager() {
 		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				},
 		// 				SystemData: &armnetwork.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 		// 					CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 		// 					LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 		// 				},

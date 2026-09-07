@@ -107,11 +107,11 @@ func ExampleComputeClient_BeginCreateOrUpdate_updateAAmlCompute() {
 	// 		Properties: &armmachinelearning.AmlCompute{
 	// 			Description: to.Ptr("some compute"),
 	// 			ComputeType: to.Ptr(armmachinelearning.ComputeTypeAmlCompute),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
-	// 			ModifiedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
+	// 			ModifiedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
 	// 			Properties: &armmachinelearning.AmlComputeProperties{
 	// 				AllocationState: to.Ptr(armmachinelearning.AllocationStateResizing),
-	// 				AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-27T22:28:08.998Z"); return t}()),
+	// 				AllocationStateTransitionTime: to.Ptr(time.Date(2017, time.September, 27, 22, 28, 8, 998000000, time.UTC)),
 	// 				CurrentNodeCount: to.Ptr[int32](0),
 	// 				EnableNodePublicIP: to.Ptr(true),
 	// 				Errors: nil,
@@ -646,8 +646,8 @@ func ExampleComputeClient_Get_getAAksCompute() {
 	// 		Properties: &armmachinelearning.AKS{
 	// 			Description: to.Ptr("some compute"),
 	// 			ComputeType: to.Ptr(armmachinelearning.ComputeTypeAKS),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
-	// 			ModifiedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
+	// 			ModifiedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armmachinelearning.ProvisioningStateSucceeded),
 	// 			ResourceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/Microsoft.ContainerService/managedClusters/compute123-56826-c9b00420020b2"),
 	// 		},
@@ -682,11 +682,11 @@ func ExampleComputeClient_Get_getAAmlCompute() {
 	// 		Properties: &armmachinelearning.AmlCompute{
 	// 			Description: to.Ptr("some compute"),
 	// 			ComputeType: to.Ptr(armmachinelearning.ComputeTypeAmlCompute),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
-	// 			ModifiedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
+	// 			ModifiedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
 	// 			Properties: &armmachinelearning.AmlComputeProperties{
 	// 				AllocationState: to.Ptr(armmachinelearning.AllocationStateResizing),
-	// 				AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-27T22:28:08.998Z"); return t}()),
+	// 				AllocationStateTransitionTime: to.Ptr(time.Date(2017, time.September, 27, 22, 28, 8, 998000000, time.UTC)),
 	// 				CurrentNodeCount: to.Ptr[int32](0),
 	// 				EnableNodePublicIP: to.Ptr(true),
 	// 				Errors: nil,
@@ -747,8 +747,8 @@ func ExampleComputeClient_Get_getAnComputeInstance() {
 	// 		Properties: &armmachinelearning.ComputeInstance{
 	// 			Description: to.Ptr("some compute"),
 	// 			ComputeType: to.Ptr(armmachinelearning.ComputeTypeComputeInstance),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
-	// 			ModifiedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
+	// 			ModifiedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
 	// 			Properties: &armmachinelearning.ComputeInstanceProperties{
 	// 				ApplicationSharingPolicy: to.Ptr(armmachinelearning.ApplicationSharingPolicyShared),
 	// 				Applications: []*armmachinelearning.ComputeInstanceApplication{
@@ -873,9 +873,9 @@ func ExampleComputeClient_Get_getAKubernetesCompute() {
 	// 		Properties: &armmachinelearning.Kubernetes{
 	// 			Description: to.Ptr("some compute"),
 	// 			ComputeType: to.Ptr(armmachinelearning.ComputeTypeKubernetes),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
 	// 			IsAttachedCompute: to.Ptr(true),
-	// 			ModifiedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
+	// 			ModifiedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
 	// 			Properties: &armmachinelearning.KubernetesProperties{
 	// 				DefaultInstanceType: to.Ptr("defaultInstanceType"),
 	// 				ExtensionInstanceReleaseTrain: to.Ptr("stable"),
@@ -1204,8 +1204,8 @@ func ExampleComputeClient_NewListPager() {
 		// 				Properties: &armmachinelearning.AKS{
 		// 					Description: to.Ptr("some compute"),
 		// 					ComputeType: to.Ptr(armmachinelearning.ComputeTypeAKS),
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
-		// 					ModifiedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
+		// 					ModifiedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armmachinelearning.ProvisioningStateSucceeded),
 		// 					ResourceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/Microsoft.ContainerService/managedClusters/compute123-56826-c9b00420020b2"),
 		// 				},
@@ -1218,8 +1218,8 @@ func ExampleComputeClient_NewListPager() {
 		// 				Properties: &armmachinelearning.AKS{
 		// 					Description: to.Ptr("some compute"),
 		// 					ComputeType: to.Ptr(armmachinelearning.ComputeTypeAKS),
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
-		// 					ModifiedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
+		// 					ModifiedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armmachinelearning.ProvisioningStateSucceeded),
 		// 					ResourceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/Microsoft.ContainerService/managedClusters/compute1234-56826-c9b00420020b2"),
 		// 				},

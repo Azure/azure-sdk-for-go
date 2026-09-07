@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/SubnetCreate.json
+// Generated from example definition: 2025-09-01/SubnetCreate.json
 func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnet() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/SubnetCreateServiceEndpoint.json
+// Generated from example definition: 2025-09-01/SubnetCreateServiceEndpoint.json
 func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithServiceEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithServiceEndpoints()
 	// }
 }
 
-// Generated from example definition: 2025-07-01/SubnetCreateServiceEndpointNetworkIdentifier.json
+// Generated from example definition: 2025-09-01/SubnetCreateServiceEndpointNetworkIdentifier.json
 func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithServiceEndpointsWithNetworkIdentifier() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithServiceEndpointsWi
 	// }
 }
 
-// Generated from example definition: 2025-07-01/SubnetCreateWithDelegation.json
+// Generated from example definition: 2025-09-01/SubnetCreateWithDelegation.json
 func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithADelegation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithADelegation() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/SubnetCreateWithServiceGateway.json
+// Generated from example definition: 2025-09-01/SubnetCreateWithServiceGateway.json
 func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithServiceGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,7 +257,7 @@ func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithServiceGateway() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/SubnetCreateWithSharingScope.json
+// Generated from example definition: 2025-09-01/SubnetCreateWithSharingScope.json
 func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithSharingScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -297,7 +297,7 @@ func ExampleSubnetsClient_BeginCreateOrUpdate_createSubnetWithSharingScope() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/SubnetDelete.json
+// Generated from example definition: 2025-09-01/SubnetDelete.json
 func ExampleSubnetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -323,7 +323,7 @@ func ExampleSubnetsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/SubnetGet.json
+// Generated from example definition: 2025-09-01/SubnetGet.json
 func ExampleSubnetsClient_Get_getSubnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,7 +353,7 @@ func ExampleSubnetsClient_Get_getSubnet() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/SubnetGetWithDelegation.json
+// Generated from example definition: 2025-09-01/SubnetGetWithDelegation.json
 func ExampleSubnetsClient_Get_getSubnetWithADelegation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -396,7 +396,7 @@ func ExampleSubnetsClient_Get_getSubnetWithADelegation() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/SubnetGetWithSharingScope.json
+// Generated from example definition: 2025-09-01/SubnetGetWithSharingScope.json
 func ExampleSubnetsClient_Get_getSubnetWithSharingScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -428,7 +428,7 @@ func ExampleSubnetsClient_Get_getSubnetWithSharingScope() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/SubnetList.json
+// Generated from example definition: 2025-09-01/SubnetList.json
 func ExampleSubnetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -475,7 +475,7 @@ func ExampleSubnetsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/SubnetPrepareNetworkPolicies.json
+// Generated from example definition: 2025-09-01/SubnetPrepareNetworkPolicies.json
 func ExampleSubnetsClient_BeginPrepareNetworkPolicies() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -503,7 +503,7 @@ func ExampleSubnetsClient_BeginPrepareNetworkPolicies() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/SubnetUnprepareNetworkPolicies.json
+// Generated from example definition: 2025-09-01/SubnetUnprepareNetworkPolicies.json
 func ExampleSubnetsClient_BeginUnprepareNetworkPolicies() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

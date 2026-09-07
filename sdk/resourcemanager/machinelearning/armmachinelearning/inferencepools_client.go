@@ -31,6 +31,9 @@ type InferencePoolsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewInferencePoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InferencePoolsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -89,8 +92,7 @@ func (client *InferencePoolsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -99,7 +101,7 @@ func (client *InferencePoolsClient) createOrUpdate(ctx context.Context, resource
 func (client *InferencePoolsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, inferencePoolName string, body InferencePool, _ *InferencePoolsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/inferencePools/{inferencePoolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -174,8 +176,7 @@ func (client *InferencePoolsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -184,7 +185,7 @@ func (client *InferencePoolsClient) deleteOperation(ctx context.Context, resourc
 func (client *InferencePoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, inferencePoolName string, _ *InferencePoolsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/inferencePools/{inferencePoolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -231,19 +232,14 @@ func (client *InferencePoolsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return InferencePoolsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return InferencePoolsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *InferencePoolsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, inferencePoolName string, _ *InferencePoolsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/inferencePools/{inferencePoolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -270,8 +266,11 @@ func (client *InferencePoolsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *InferencePoolsClient) getHandleResponse(resp *http.Response) (InferencePoolsClientGetResponse, error) {
+func (client *InferencePoolsClient) getHandleResponse(resp *http.Response, successCodes ...int) (InferencePoolsClientGetResponse, error) {
 	result := InferencePoolsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InferencePool); err != nil {
 		return InferencePoolsClientGetResponse{}, err
 	}
@@ -295,62 +294,76 @@ func (client *InferencePoolsClient) NewListPager(resourceGroupName string, works
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, nextLink, options)
 			if err != nil {
 				return InferencePoolsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return InferencePoolsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *InferencePoolsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *InferencePoolsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/inferencePools"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *InferencePoolsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, nextLink string, options *InferencePoolsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/inferencePools"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", *options.Skip)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", *options.Skip)
+		}
+		reqQP.Set("api-version", version20260515Preview)
+		if options != nil && options.Count != nil {
+			reqQP.Set("count", strconv.FormatInt(int64(*options.Count), 10))
+		}
+		if options != nil && options.OrderBy != nil {
+			reqQP.Set("orderBy", string(*options.OrderBy))
+		}
+		if options != nil && options.Properties != nil {
+			reqQP.Set("properties", *options.Properties)
+		}
+		if options != nil && options.Tags != nil {
+			reqQP.Set("tags", *options.Tags)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260515Preview)
-	if options != nil && options.Count != nil {
-		reqQP.Set("count", strconv.FormatInt(int64(*options.Count), 10))
-	}
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("orderBy", string(*options.OrderBy))
-	}
-	if options != nil && options.Properties != nil {
-		reqQP.Set("properties", *options.Properties)
-	}
-	if options != nil && options.Tags != nil {
-		reqQP.Set("tags", *options.Tags)
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *InferencePoolsClient) listHandleResponse(resp *http.Response) (InferencePoolsClientListResponse, error) {
+func (client *InferencePoolsClient) listHandleResponse(resp *http.Response, successCodes ...int) (InferencePoolsClientListResponse, error) {
 	result := InferencePoolsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InferencePoolTrackedResourceArmPaginatedResult); err != nil {
 		return InferencePoolsClientListResponse{}, err
 	}
@@ -403,8 +416,7 @@ func (client *InferencePoolsClient) update(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -413,7 +425,7 @@ func (client *InferencePoolsClient) update(ctx context.Context, resourceGroupNam
 func (client *InferencePoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, inferencePoolName string, body PartialMinimalTrackedResourceWithSKUAndIdentity, _ *InferencePoolsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/inferencePools/{inferencePoolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

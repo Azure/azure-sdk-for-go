@@ -60,15 +60,15 @@ func ExamplePipelineRunsClient_Get() {
 	// 			Name: to.Ptr("Manual"),
 	// 			ID: to.Ptr("80a01654a9d34ad18b3fcac5d5d76b67"),
 	// 		},
-	// 		LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:38:12.7314495Z"); return t}()),
+	// 		LastUpdated: to.Ptr(time.Date(2018, time.June, 16, 0, 38, 12, 731449500, time.UTC)),
 	// 		Message: to.Ptr(""),
 	// 		Parameters: map[string]*string{
 	// 			"OutputBlobNameList": to.Ptr("[\"exampleoutput.csv\"]"),
 	// 		},
 	// 		PipelineName: to.Ptr("examplePipeline"),
-	// 		RunEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:38:12.7314495Z"); return t}()),
+	// 		RunEnd: to.Ptr(time.Date(2018, time.June, 16, 0, 38, 12, 731449500, time.UTC)),
 	// 		RunID: to.Ptr("2f7fdb90-5df1-4b8e-ac2f-064cfa58202b"),
-	// 		RunStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:37:44.6257014Z"); return t}()),
+	// 		RunStart: to.Ptr(time.Date(2018, time.June, 16, 0, 37, 44, 625701400, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 		AdditionalProperties: map[string]any{
 	// 		"annotations": []any{
@@ -99,8 +99,8 @@ func ExamplePipelineRunsClient_QueryByFactory() {
 				},
 			},
 		},
-		LastUpdatedAfter:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:36:44.3345758Z"); return t }()),
-		LastUpdatedBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:49:48.3686473Z"); return t }()),
+		LastUpdatedAfter:  to.Ptr(time.Date(2018, time.June, 16, 0, 36, 44, 334575800, time.UTC)),
+		LastUpdatedBefore: to.Ptr(time.Date(2018, time.June, 16, 0, 49, 48, 368647300, time.UTC)),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -117,15 +117,15 @@ func ExamplePipelineRunsClient_QueryByFactory() {
 	// 					Name: to.Ptr("Manual"),
 	// 					ID: to.Ptr("80a01654a9d34ad18b3fcac5d5d76b67"),
 	// 				},
-	// 				LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:38:12.7314495Z"); return t}()),
+	// 				LastUpdated: to.Ptr(time.Date(2018, time.June, 16, 0, 38, 12, 731449500, time.UTC)),
 	// 				Message: to.Ptr(""),
 	// 				Parameters: map[string]*string{
 	// 					"OutputBlobNameList": to.Ptr("[\"exampleoutput.csv\"]"),
 	// 				},
 	// 				PipelineName: to.Ptr("examplePipeline"),
-	// 				RunEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:38:12.7314495Z"); return t}()),
+	// 				RunEnd: to.Ptr(time.Date(2018, time.June, 16, 0, 38, 12, 731449500, time.UTC)),
 	// 				RunID: to.Ptr("2f7fdb90-5df1-4b8e-ac2f-064cfa58202b"),
-	// 				RunStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:37:44.6257014Z"); return t}()),
+	// 				RunStart: to.Ptr(time.Date(2018, time.June, 16, 0, 37, 44, 625701400, time.UTC)),
 	// 				Status: to.Ptr("Succeeded"),
 	// 				AdditionalProperties: map[string]any{
 	// 				"annotations": []any{
@@ -140,14 +140,14 @@ func ExamplePipelineRunsClient_QueryByFactory() {
 	// 					Name: to.Ptr("Manual"),
 	// 					ID: to.Ptr("7c5fd7ef7e8a464b98b931cf15fcac66"),
 	// 				},
-	// 				LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:39:51.216097Z"); return t}()),
+	// 				LastUpdated: to.Ptr(time.Date(2018, time.June, 16, 0, 39, 51, 216097000, time.UTC)),
 	// 				Message: to.Ptr(""),
 	// 				Parameters: map[string]*string{
 	// 					"OutputBlobNameList": to.Ptr("[\"exampleoutput.csv\"]"),
 	// 				},
 	// 				PipelineName: to.Ptr("examplePipeline"),
 	// 				RunID: to.Ptr("16ac5348-ff82-4f95-a80d-638c1d47b721"),
-	// 				RunStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:39:49.2745128Z"); return t}()),
+	// 				RunStart: to.Ptr(time.Date(2018, time.June, 16, 0, 39, 49, 274512800, time.UTC)),
 	// 				Status: to.Ptr("Cancelled"),
 	// 				AdditionalProperties: map[string]any{
 	// 				"annotations": []any{

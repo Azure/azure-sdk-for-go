@@ -655,6 +655,43 @@ type FileClientGetSymbolicLinkOptions struct {
 	Timeout *int32
 }
 
+// FileClientListAllRangesOptions contains the optional parameters for the FileClient.ListAllRanges method.
+type FileClientListAllRangesOptions struct {
+	// If true, the trailing dot will not be trimmed from the target file/directory path.
+	AllowTrailingDot *bool
+
+	// Valid values are 'backup'.
+	FileRequestIntent *ShareTokenIntent
+
+	// If specified, the lease ID must match the lease ID of the file.
+	LeaseID *string
+
+	// A string value that identifies the portion of the list to be returned with the next listing operation.
+	Marker *string
+
+	// Specifies the maximum number of items to return.
+	Maxresults *int32
+
+	// The previous snapshot parameter is an opaque DateTime value that specifies a previous file snapshot to compare against.
+	Prevsharesnapshot *string
+
+	// Return file data only from the specified byte range.
+	Range *string
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	RequestID *string
+
+	// The snapshot parameter is an opaque DateTime value that specifies a share snapshot.
+	Sharesnapshot *string
+
+	// This header is allowed only when PrevShareSnapshot query parameter is set. Determines whether the changed ranges for a
+	// file that has been renamed or moved should be listed.
+	SupportRename *bool
+
+	// The timeout parameter is expressed in seconds.
+	Timeout *int32
+}
+
 // FileClientListHandlesOptions contains the optional parameters for the FileClient.ListHandles method.
 type FileClientListHandlesOptions struct {
 	// If true, the trailing dot will not be trimmed from the target file/directory path.

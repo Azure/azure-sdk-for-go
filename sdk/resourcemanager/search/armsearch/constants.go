@@ -4,6 +4,10 @@
 
 package armsearch
 
+const (
+	version20260301Preview string = "2026-03-01-preview"
+)
+
 // AADAuthFailureMode - Describes what response the data plane API of a search service would send for requests that failed
 // authentication.
 type AADAuthFailureMode string
@@ -218,13 +222,21 @@ func PossibleKnowledgeRetrievalValues() []KnowledgeRetrieval {
 type NetworkSecurityPerimeterConfigurationProvisioningState string
 
 const (
-	NetworkSecurityPerimeterConfigurationProvisioningStateAccepted  NetworkSecurityPerimeterConfigurationProvisioningState = "Accepted"
-	NetworkSecurityPerimeterConfigurationProvisioningStateCanceled  NetworkSecurityPerimeterConfigurationProvisioningState = "Canceled"
-	NetworkSecurityPerimeterConfigurationProvisioningStateCreating  NetworkSecurityPerimeterConfigurationProvisioningState = "Creating"
-	NetworkSecurityPerimeterConfigurationProvisioningStateDeleting  NetworkSecurityPerimeterConfigurationProvisioningState = "Deleting"
-	NetworkSecurityPerimeterConfigurationProvisioningStateFailed    NetworkSecurityPerimeterConfigurationProvisioningState = "Failed"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateAccepted - The configuration request was accepted and provisioning
+	// has not started yet.
+	NetworkSecurityPerimeterConfigurationProvisioningStateAccepted NetworkSecurityPerimeterConfigurationProvisioningState = "Accepted"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateCanceled - The configuration provisioning was canceled.
+	NetworkSecurityPerimeterConfigurationProvisioningStateCanceled NetworkSecurityPerimeterConfigurationProvisioningState = "Canceled"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateCreating - The configuration is being created.
+	NetworkSecurityPerimeterConfigurationProvisioningStateCreating NetworkSecurityPerimeterConfigurationProvisioningState = "Creating"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateDeleting - The configuration is being deleted.
+	NetworkSecurityPerimeterConfigurationProvisioningStateDeleting NetworkSecurityPerimeterConfigurationProvisioningState = "Deleting"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateFailed - The configuration failed to provision.
+	NetworkSecurityPerimeterConfigurationProvisioningStateFailed NetworkSecurityPerimeterConfigurationProvisioningState = "Failed"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded - The configuration was provisioned successfully.
 	NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded NetworkSecurityPerimeterConfigurationProvisioningState = "Succeeded"
-	NetworkSecurityPerimeterConfigurationProvisioningStateUpdating  NetworkSecurityPerimeterConfigurationProvisioningState = "Updating"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateUpdating - The configuration is being updated.
+	NetworkSecurityPerimeterConfigurationProvisioningStateUpdating NetworkSecurityPerimeterConfigurationProvisioningState = "Updating"
 )
 
 // PossibleNetworkSecurityPerimeterConfigurationProvisioningStateValues returns the possible values for the NetworkSecurityPerimeterConfigurationProvisioningState const type.
@@ -594,7 +606,9 @@ func PossibleSearchServiceStatusValues() []SearchServiceStatus {
 type Severity string
 
 const (
-	SeverityError   Severity = "Error"
+	// SeverityError - The issue is an error and prevents the configuration from being applied.
+	SeverityError Severity = "Error"
+	// SeverityWarning - The issue is a warning and does not prevent the configuration from being applied.
 	SeverityWarning Severity = "Warning"
 )
 

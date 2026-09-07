@@ -30,6 +30,9 @@ type ServerlessEndpointsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewServerlessEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServerlessEndpointsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -88,8 +91,7 @@ func (client *ServerlessEndpointsClient) createOrUpdate(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -98,7 +100,7 @@ func (client *ServerlessEndpointsClient) createOrUpdate(ctx context.Context, res
 func (client *ServerlessEndpointsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, body ServerlessEndpoint, _ *ServerlessEndpointsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/serverlessEndpoints/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -173,8 +175,7 @@ func (client *ServerlessEndpointsClient) deleteOperation(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -183,7 +184,7 @@ func (client *ServerlessEndpointsClient) deleteOperation(ctx context.Context, re
 func (client *ServerlessEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, _ *ServerlessEndpointsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/serverlessEndpoints/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -230,19 +231,14 @@ func (client *ServerlessEndpointsClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ServerlessEndpointsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServerlessEndpointsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ServerlessEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, _ *ServerlessEndpointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/serverlessEndpoints/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -269,8 +265,11 @@ func (client *ServerlessEndpointsClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServerlessEndpointsClient) getHandleResponse(resp *http.Response) (ServerlessEndpointsClientGetResponse, error) {
+func (client *ServerlessEndpointsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ServerlessEndpointsClientGetResponse, error) {
 	result := ServerlessEndpointsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerlessEndpoint); err != nil {
 		return ServerlessEndpointsClientGetResponse{}, err
 	}
@@ -295,50 +294,64 @@ func (client *ServerlessEndpointsClient) NewListPager(resourceGroupName string, 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, nextLink, options)
 			if err != nil {
 				return ServerlessEndpointsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ServerlessEndpointsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ServerlessEndpointsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *ServerlessEndpointsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/serverlessEndpoints"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ServerlessEndpointsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, nextLink string, options *ServerlessEndpointsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/serverlessEndpoints"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", *options.Skip)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", *options.Skip)
+		}
+		reqQP.Set("api-version", version20260515Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ServerlessEndpointsClient) listHandleResponse(resp *http.Response) (ServerlessEndpointsClientListResponse, error) {
+func (client *ServerlessEndpointsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ServerlessEndpointsClientListResponse, error) {
 	result := ServerlessEndpointsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerlessEndpointTrackedResourceArmPaginatedResult); err != nil {
 		return ServerlessEndpointsClientListResponse{}, err
 	}
@@ -368,19 +381,14 @@ func (client *ServerlessEndpointsClient) ListKeys(ctx context.Context, resourceG
 	if err != nil {
 		return ServerlessEndpointsClientListKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServerlessEndpointsClientListKeysResponse{}, err
-	}
-	resp, err := client.listKeysHandleResponse(httpResp)
-	return resp, err
+	return client.listKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // listKeysCreateRequest creates the ListKeys request.
 func (client *ServerlessEndpointsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, _ *ServerlessEndpointsClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/serverlessEndpoints/{name}/listKeys"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -407,8 +415,11 @@ func (client *ServerlessEndpointsClient) listKeysCreateRequest(ctx context.Conte
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *ServerlessEndpointsClient) listKeysHandleResponse(resp *http.Response) (ServerlessEndpointsClientListKeysResponse, error) {
+func (client *ServerlessEndpointsClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (ServerlessEndpointsClientListKeysResponse, error) {
 	result := ServerlessEndpointsClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointAuthKeys); err != nil {
 		return ServerlessEndpointsClientListKeysResponse{}, err
 	}
@@ -461,8 +472,7 @@ func (client *ServerlessEndpointsClient) regenerateKeys(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -471,7 +481,7 @@ func (client *ServerlessEndpointsClient) regenerateKeys(ctx context.Context, res
 func (client *ServerlessEndpointsClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, body RegenerateEndpointKeysRequest, _ *ServerlessEndpointsClientBeginRegenerateKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/serverlessEndpoints/{name}/regenerateKeys"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -547,8 +557,7 @@ func (client *ServerlessEndpointsClient) update(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -557,7 +566,7 @@ func (client *ServerlessEndpointsClient) update(ctx context.Context, resourceGro
 func (client *ServerlessEndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, body PartialMinimalTrackedResourceWithSKUAndIdentity, _ *ServerlessEndpointsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/serverlessEndpoints/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

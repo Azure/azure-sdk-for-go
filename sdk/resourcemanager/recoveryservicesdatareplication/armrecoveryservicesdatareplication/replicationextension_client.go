@@ -30,6 +30,9 @@ type ReplicationExtensionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewReplicationExtensionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationExtensionClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -83,8 +86,7 @@ func (client *ReplicationExtensionClient) create(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -93,7 +95,7 @@ func (client *ReplicationExtensionClient) create(ctx context.Context, resourceGr
 func (client *ReplicationExtensionClient) createCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, replicationExtensionName string, resource ReplicationExtensionModel, _ *ReplicationExtensionClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions/{replicationExtensionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -164,8 +166,7 @@ func (client *ReplicationExtensionClient) deleteOperation(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -174,7 +175,7 @@ func (client *ReplicationExtensionClient) deleteOperation(ctx context.Context, r
 func (client *ReplicationExtensionClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, replicationExtensionName string, _ *ReplicationExtensionClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions/{replicationExtensionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -220,19 +221,14 @@ func (client *ReplicationExtensionClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return ReplicationExtensionClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ReplicationExtensionClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ReplicationExtensionClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, replicationExtensionName string, _ *ReplicationExtensionClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions/{replicationExtensionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -259,8 +255,11 @@ func (client *ReplicationExtensionClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReplicationExtensionClient) getHandleResponse(resp *http.Response) (ReplicationExtensionClientGetResponse, error) {
+func (client *ReplicationExtensionClient) getHandleResponse(resp *http.Response, successCodes ...int) (ReplicationExtensionClientGetResponse, error) {
 	result := ReplicationExtensionClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationExtensionModel); err != nil {
 		return ReplicationExtensionClientGetResponse{}, err
 	}
@@ -283,47 +282,61 @@ func (client *ReplicationExtensionClient) NewListPager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, vaultName, nextLink, options)
 			if err != nil {
 				return ReplicationExtensionClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ReplicationExtensionClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicationExtensionClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, _ *ReplicationExtensionClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ReplicationExtensionClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, nextLink string, _ *ReplicationExtensionClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if vaultName == "" {
+			return nil, errors.New("parameter vaultName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ReplicationExtensionClient) listHandleResponse(resp *http.Response) (ReplicationExtensionClientListResponse, error) {
+func (client *ReplicationExtensionClient) listHandleResponse(resp *http.Response, successCodes ...int) (ReplicationExtensionClientListResponse, error) {
 	result := ReplicationExtensionClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationExtensionModelListResult); err != nil {
 		return ReplicationExtensionClientListResponse{}, err
 	}

@@ -57,10 +57,10 @@ func ExampleDiscoverySourcesClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armdependencymap.SystemData{
 	// 			CreatedBy: to.Ptr("dgycvdwmcmlllzqi"),
 	// 			CreatedByType: to.Ptr(armdependencymap.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-29T07:35:13.318Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.March, 29, 7, 35, 13, 318000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("wfntygzyylkddshm"),
 	// 			LastModifiedByType: to.Ptr(armdependencymap.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-29T07:35:13.318Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.March, 29, 7, 35, 13, 318000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -121,10 +121,10 @@ func ExampleDiscoverySourcesClient_Get() {
 	// 		SystemData: &armdependencymap.SystemData{
 	// 			CreatedBy: to.Ptr("dgycvdwmcmlllzqi"),
 	// 			CreatedByType: to.Ptr(armdependencymap.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-29T07:35:13.318Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.March, 29, 7, 35, 13, 318000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("wfntygzyylkddshm"),
 	// 			LastModifiedByType: to.Ptr(armdependencymap.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-29T07:35:13.318Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.March, 29, 7, 35, 13, 318000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -170,10 +170,10 @@ func ExampleDiscoverySourcesClient_NewListByMapsResourcePager() {
 		// 				SystemData: &armdependencymap.SystemData{
 		// 					CreatedBy: to.Ptr("dgycvdwmcmlllzqi"),
 		// 					CreatedByType: to.Ptr(armdependencymap.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-29T07:35:13.318Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.March, 29, 7, 35, 13, 318000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("wfntygzyylkddshm"),
 		// 					LastModifiedByType: to.Ptr(armdependencymap.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-29T07:35:13.318Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.March, 29, 7, 35, 13, 318000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -223,10 +223,10 @@ func ExampleDiscoverySourcesClient_BeginUpdate() {
 	// 		SystemData: &armdependencymap.SystemData{
 	// 			CreatedBy: to.Ptr("dgycvdwmcmlllzqi"),
 	// 			CreatedByType: to.Ptr(armdependencymap.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-29T07:35:13.318Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.March, 29, 7, 35, 13, 318000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("wfntygzyylkddshm"),
 	// 			LastModifiedByType: to.Ptr(armdependencymap.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-29T07:35:13.318Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.March, 29, 7, 35, 13, 318000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

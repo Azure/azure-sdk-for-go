@@ -30,6 +30,9 @@ type ProjectCatalogEnvironmentDefinitionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProjectCatalogEnvironmentDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProjectCatalogEnvironmentDefinitionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *ProjectCatalogEnvironmentDefinitionsClient) GetErrorDetails(ctx co
 	if err != nil {
 		return ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsResponse{}, err
-	}
-	resp, err := client.getErrorDetailsHandleResponse(httpResp)
-	return resp, err
+	return client.getErrorDetailsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getErrorDetailsCreateRequest creates the GetErrorDetails request.
 func (client *ProjectCatalogEnvironmentDefinitionsClient) getErrorDetailsCreateRequest(ctx context.Context, resourceGroupName string, projectName string, catalogName string, environmentDefinitionName string, _ *ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/catalogs/{catalogName}/environmentDefinitions/{environmentDefinitionName}/getErrorDetails"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -106,8 +104,11 @@ func (client *ProjectCatalogEnvironmentDefinitionsClient) getErrorDetailsCreateR
 }
 
 // getErrorDetailsHandleResponse handles the GetErrorDetails response.
-func (client *ProjectCatalogEnvironmentDefinitionsClient) getErrorDetailsHandleResponse(resp *http.Response) (ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsResponse, error) {
+func (client *ProjectCatalogEnvironmentDefinitionsClient) getErrorDetailsHandleResponse(resp *http.Response, successCodes ...int) (ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsResponse, error) {
 	result := ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CatalogResourceValidationErrorDetails); err != nil {
 		return ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsResponse{}, err
 	}

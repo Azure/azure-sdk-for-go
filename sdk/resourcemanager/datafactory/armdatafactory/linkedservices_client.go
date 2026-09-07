@@ -30,6 +30,9 @@ type LinkedServicesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLinkedServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LinkedServicesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *LinkedServicesClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return LinkedServicesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LinkedServicesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *LinkedServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, linkedService LinkedServiceResource, options *LinkedServicesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices/{linkedServiceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -109,8 +107,11 @@ func (client *LinkedServicesClient) createOrUpdateCreateRequest(ctx context.Cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *LinkedServicesClient) createOrUpdateHandleResponse(resp *http.Response) (LinkedServicesClientCreateOrUpdateResponse, error) {
+func (client *LinkedServicesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (LinkedServicesClientCreateOrUpdateResponse, error) {
 	result := LinkedServicesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedServiceResource); err != nil {
 		return LinkedServicesClientCreateOrUpdateResponse{}, err
 	}
@@ -138,8 +139,7 @@ func (client *LinkedServicesClient) Delete(ctx context.Context, resourceGroupNam
 		return LinkedServicesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return LinkedServicesClientDeleteResponse{}, err
+		return LinkedServicesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return LinkedServicesClientDeleteResponse{}, nil
 }
@@ -148,7 +148,7 @@ func (client *LinkedServicesClient) Delete(ctx context.Context, resourceGroupNam
 func (client *LinkedServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, _ *LinkedServicesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices/{linkedServiceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -193,19 +193,14 @@ func (client *LinkedServicesClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return LinkedServicesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNotModified) {
-		err = runtime.NewResponseError(httpResp)
-		return LinkedServicesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusNotModified)
 }
 
 // getCreateRequest creates the Get request.
 func (client *LinkedServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, options *LinkedServicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices/{linkedServiceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -235,8 +230,11 @@ func (client *LinkedServicesClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *LinkedServicesClient) getHandleResponse(resp *http.Response) (LinkedServicesClientGetResponse, error) {
+func (client *LinkedServicesClient) getHandleResponse(resp *http.Response, successCodes ...int) (LinkedServicesClientGetResponse, error) {
 	result := LinkedServicesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedServiceResource); err != nil {
 		return LinkedServicesClientGetResponse{}, err
 	}
@@ -259,47 +257,61 @@ func (client *LinkedServicesClient) NewListByFactoryPager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
-			}, nil)
+			req, err := client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, nextLink, options)
 			if err != nil {
 				return LinkedServicesClientListByFactoryResponse{}, err
 			}
-			return client.listByFactoryHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LinkedServicesClientListByFactoryResponse{}, err
+			}
+			return client.listByFactoryHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByFactoryCreateRequest creates the ListByFactory request.
-func (client *LinkedServicesClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, _ *LinkedServicesClientListByFactoryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LinkedServicesClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, nextLink string, _ *LinkedServicesClientListByFactoryOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if factoryName == "" {
+			return nil, errors.New("parameter factoryName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if factoryName == "" {
-		return nil, errors.New("parameter factoryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20180601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByFactoryHandleResponse handles the ListByFactory response.
-func (client *LinkedServicesClient) listByFactoryHandleResponse(resp *http.Response) (LinkedServicesClientListByFactoryResponse, error) {
+func (client *LinkedServicesClient) listByFactoryHandleResponse(resp *http.Response, successCodes ...int) (LinkedServicesClientListByFactoryResponse, error) {
 	result := LinkedServicesClientListByFactoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedServiceListResponse); err != nil {
 		return LinkedServicesClientListByFactoryResponse{}, err
 	}

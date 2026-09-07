@@ -71,7 +71,7 @@ func ExampleFetchCrossRegionRestoreJobClient_Get() {
 	// 			ProgressEnabled: to.Ptr(false),
 	// 			SourceResourceGroup: to.Ptr("DppPostgresTestingCcy"),
 	// 			SourceSubscriptionID: to.Ptr("62b829ee-7936-40c9-a1c9-47a93f9f3965"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-17T03:00:03.7604146Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2021, time.March, 17, 3, 0, 3, 760414600, time.UTC)),
 	// 			Status: to.Ptr("Started"),
 	// 			SubscriptionID: to.Ptr("62b829ee-7936-40c9-a1c9-47a93f9f3965"),
 	// 			SupportedActions: []*string{

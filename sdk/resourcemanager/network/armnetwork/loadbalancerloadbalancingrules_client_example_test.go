@@ -7,11 +7,11 @@ package armnetwork_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/LoadBalancerLoadBalancingRuleGet.json
+// Generated from example definition: 2025-09-01/LoadBalancerLoadBalancingRuleGet.json
 func ExampleLoadBalancerLoadBalancingRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleLoadBalancerLoadBalancingRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/LoadBalancerHealth.json
+// Generated from example definition: 2025-09-01/LoadBalancerHealth.json
 func ExampleLoadBalancerLoadBalancingRulesClient_BeginHealth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleLoadBalancerLoadBalancingRulesClient_BeginHealth() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/LoadBalancerLoadBalancingRuleList.json
+// Generated from example definition: 2025-09-01/LoadBalancerLoadBalancingRuleList.json
 func ExampleLoadBalancerLoadBalancingRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -30,6 +30,9 @@ type NamespacesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNamespacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NamespacesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,19 +67,14 @@ func (client *NamespacesClient) CheckNameAvailability(ctx context.Context, resou
 	if err != nil {
 		return NamespacesClientCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
 func (client *NamespacesClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, checkNameAvailabilityRequest CheckNameAvailabilityRequest, _ *NamespacesClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/checkNameAvailability"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -103,8 +101,11 @@ func (client *NamespacesClient) checkNameAvailabilityCreateRequest(ctx context.C
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *NamespacesClient) checkNameAvailabilityHandleResponse(resp *http.Response) (NamespacesClientCheckNameAvailabilityResponse, error) {
+func (client *NamespacesClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientCheckNameAvailabilityResponse, error) {
 	result := NamespacesClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResponse); err != nil {
 		return NamespacesClientCheckNameAvailabilityResponse{}, err
 	}

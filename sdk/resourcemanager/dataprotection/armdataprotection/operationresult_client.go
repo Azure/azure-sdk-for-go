@@ -31,6 +31,9 @@ type OperationResultClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOperationResultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationResultClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *OperationResultClient) Get(ctx context.Context, operationID string
 	if err != nil {
 		return OperationResultClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return OperationResultClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // getCreateRequest creates the Get request.
 func (client *OperationResultClient) getCreateRequest(ctx context.Context, operationID string, location string, _ *OperationResultClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataProtection/locations/{location}/operationResults/{operationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if operationID == "" {
@@ -97,9 +95,12 @@ func (client *OperationResultClient) getCreateRequest(ctx context.Context, opera
 }
 
 // getHandleResponse handles the Get response.
-func (client *OperationResultClient) getHandleResponse(resp *http.Response) (OperationResultClientGetResponse, error) {
+func (client *OperationResultClient) getHandleResponse(resp *http.Response, successCodes ...int) (OperationResultClientGetResponse, error) {
 	result := OperationResultClientGetResponse{}
-	if val := resp.Header.Get("Azure-AsyncOperation"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Azure-Asyncoperation"); val != "" {
 		result.AzureAsyncOperation = &val
 	}
 	if val := resp.Header.Get("Location"); val != "" {

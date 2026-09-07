@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-31/CloudHsmClusterPrivateEndpointConnection_ListByCloudHsmCluster_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmClusterPrivateEndpointConnection_ListByCloudHsmCluster_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_NewListByCloudHsmClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,10 +52,10 @@ func ExamplePrivateEndpointConnectionsClient_NewListByCloudHsmClusterPager() {
 		// 					ProvisioningState: to.Ptr(armhardwaresecuritymodules.PrivateEndpointConnectionProvisioningStateSucceeded),
 		// 				},
 		// 				SystemData: &armhardwaresecuritymodules.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.0000000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("User1"),
 		// 					CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.0000000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("User2"),
 		// 					LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 		// 				},
@@ -76,10 +76,10 @@ func ExamplePrivateEndpointConnectionsClient_NewListByCloudHsmClusterPager() {
 		// 					ProvisioningState: to.Ptr(armhardwaresecuritymodules.PrivateEndpointConnectionProvisioningStateSucceeded),
 		// 				},
 		// 				SystemData: &armhardwaresecuritymodules.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.0000000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("User1"),
 		// 					CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.0000000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("User2"),
 		// 					LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 		// 				},

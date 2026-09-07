@@ -31,9 +31,9 @@ func ExampleRunbookDraftClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armautomation.RunbookDraftClientGetResponse{
 	// 	RunbookDraft: armautomation.RunbookDraft{
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-09T03:25:59.11+00:00"); return t}()),
+	// 		CreationTime: to.Ptr(time.Date(2018, time.February, 9, 3, 25, 59, 110000000, time.UTC)),
 	// 		InEdit: to.Ptr(true),
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-09T04:48:56.43+00:00"); return t}()),
+	// 		LastModifiedTime: to.Ptr(time.Date(2018, time.February, 9, 4, 48, 56, 430000000, time.UTC)),
 	// 		OutputTypes: []*string{
 	// 		},
 	// 		Parameters: map[string]*armautomation.RunbookParameter{

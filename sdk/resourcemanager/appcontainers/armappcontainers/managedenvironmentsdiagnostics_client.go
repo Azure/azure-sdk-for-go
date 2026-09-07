@@ -30,6 +30,9 @@ type ManagedEnvironmentsDiagnosticsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedEnvironmentsDiagnosticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedEnvironmentsDiagnosticsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *ManagedEnvironmentsDiagnosticsClient) GetRoot(ctx context.Context,
 	if err != nil {
 		return ManagedEnvironmentsDiagnosticsClientGetRootResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedEnvironmentsDiagnosticsClientGetRootResponse{}, err
-	}
-	resp, err := client.getRootHandleResponse(httpResp)
-	return resp, err
+	return client.getRootHandleResponse(httpResp, http.StatusOK)
 }
 
 // getRootCreateRequest creates the GetRoot request.
 func (client *ManagedEnvironmentsDiagnosticsClient) getRootCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, _ *ManagedEnvironmentsDiagnosticsClientGetRootOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/detectorProperties/rootApi/"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -98,8 +96,11 @@ func (client *ManagedEnvironmentsDiagnosticsClient) getRootCreateRequest(ctx con
 }
 
 // getRootHandleResponse handles the GetRoot response.
-func (client *ManagedEnvironmentsDiagnosticsClient) getRootHandleResponse(resp *http.Response) (ManagedEnvironmentsDiagnosticsClientGetRootResponse, error) {
+func (client *ManagedEnvironmentsDiagnosticsClient) getRootHandleResponse(resp *http.Response, successCodes ...int) (ManagedEnvironmentsDiagnosticsClientGetRootResponse, error) {
 	result := ManagedEnvironmentsDiagnosticsClientGetRootResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedEnvironment); err != nil {
 		return ManagedEnvironmentsDiagnosticsClientGetRootResponse{}, err
 	}

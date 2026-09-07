@@ -110,7 +110,7 @@ func (r *RegistryEndpointServerTransport) dispatchBeginCreateOrUpdate(req *http.
 	}
 	beginCreateOrUpdate := r.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/registryEndpoints/(?P<registryEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/registryEndpoints/(?P<registryEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -162,7 +162,7 @@ func (r *RegistryEndpointServerTransport) dispatchBeginDelete(req *http.Request)
 	}
 	beginDelete := r.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/registryEndpoints/(?P<registryEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/registryEndpoints/(?P<registryEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -208,7 +208,7 @@ func (r *RegistryEndpointServerTransport) dispatchGet(req *http.Request) (*http.
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/registryEndpoints/(?P<registryEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/registryEndpoints/(?P<registryEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -247,7 +247,7 @@ func (r *RegistryEndpointServerTransport) dispatchNewListByInstanceResourcePager
 	}
 	newListByInstanceResourcePager := r.newListByInstanceResourcePager.get(req)
 	if newListByInstanceResourcePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/registryEndpoints`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/registryEndpoints`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

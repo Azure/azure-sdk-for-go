@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultAFDProfilesClientVersion string = "2025-06-01"
-
 // AFDProfilesClient contains the methods for the AFDProfiles group.
 // Don't use this type directly, use NewAFDProfilesClient() instead.
 //
@@ -32,6 +30,9 @@ type AFDProfilesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAFDProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AFDProfilesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,19 +67,14 @@ func (client *AFDProfilesClient) CheckEndpointNameAvailability(ctx context.Conte
 	if err != nil {
 		return AFDProfilesClientCheckEndpointNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AFDProfilesClientCheckEndpointNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkEndpointNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkEndpointNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkEndpointNameAvailabilityCreateRequest creates the CheckEndpointNameAvailability request.
 func (client *AFDProfilesClient) checkEndpointNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, profileName string, checkEndpointNameAvailabilityInput CheckEndpointNameAvailabilityInput, _ *AFDProfilesClientCheckEndpointNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/checkEndpointNameAvailability"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -94,7 +90,7 @@ func (client *AFDProfilesClient) checkEndpointNameAvailabilityCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAFDProfilesClientVersion)
+	reqQP.Set("api-version", version20250601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -105,8 +101,11 @@ func (client *AFDProfilesClient) checkEndpointNameAvailabilityCreateRequest(ctx 
 }
 
 // checkEndpointNameAvailabilityHandleResponse handles the CheckEndpointNameAvailability response.
-func (client *AFDProfilesClient) checkEndpointNameAvailabilityHandleResponse(resp *http.Response) (AFDProfilesClientCheckEndpointNameAvailabilityResponse, error) {
+func (client *AFDProfilesClient) checkEndpointNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (AFDProfilesClientCheckEndpointNameAvailabilityResponse, error) {
 	result := AFDProfilesClientCheckEndpointNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckEndpointNameAvailabilityOutput); err != nil {
 		return AFDProfilesClientCheckEndpointNameAvailabilityResponse{}, err
 	}
@@ -136,19 +135,14 @@ func (client *AFDProfilesClient) CheckHostNameAvailability(ctx context.Context, 
 	if err != nil {
 		return AFDProfilesClientCheckHostNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AFDProfilesClientCheckHostNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkHostNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkHostNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkHostNameAvailabilityCreateRequest creates the CheckHostNameAvailability request.
 func (client *AFDProfilesClient) checkHostNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, profileName string, checkHostNameAvailabilityInput CheckHostNameAvailabilityInput, _ *AFDProfilesClientCheckHostNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/checkHostNameAvailability"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -164,7 +158,7 @@ func (client *AFDProfilesClient) checkHostNameAvailabilityCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAFDProfilesClientVersion)
+	reqQP.Set("api-version", version20250601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -175,8 +169,11 @@ func (client *AFDProfilesClient) checkHostNameAvailabilityCreateRequest(ctx cont
 }
 
 // checkHostNameAvailabilityHandleResponse handles the CheckHostNameAvailability response.
-func (client *AFDProfilesClient) checkHostNameAvailabilityHandleResponse(resp *http.Response) (AFDProfilesClientCheckHostNameAvailabilityResponse, error) {
+func (client *AFDProfilesClient) checkHostNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (AFDProfilesClientCheckHostNameAvailabilityResponse, error) {
 	result := AFDProfilesClientCheckHostNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityOutput); err != nil {
 		return AFDProfilesClientCheckHostNameAvailabilityResponse{}, err
 	}
@@ -200,47 +197,61 @@ func (client *AFDProfilesClient) NewListResourceUsagePager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listResourceUsageCreateRequest(ctx, resourceGroupName, profileName, options)
-			}, nil)
+			req, err := client.listResourceUsageCreateRequest(ctx, resourceGroupName, profileName, nextLink, options)
 			if err != nil {
 				return AFDProfilesClientListResourceUsageResponse{}, err
 			}
-			return client.listResourceUsageHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AFDProfilesClientListResourceUsageResponse{}, err
+			}
+			return client.listResourceUsageHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listResourceUsageCreateRequest creates the ListResourceUsage request.
-func (client *AFDProfilesClient) listResourceUsageCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *AFDProfilesClientListResourceUsageOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/usages"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AFDProfilesClient) listResourceUsageCreateRequest(ctx context.Context, resourceGroupName string, profileName string, nextLink string, _ *AFDProfilesClientListResourceUsageOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/usages"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if profileName == "" {
+			return nil, errors.New("parameter profileName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if profileName == "" {
-		return nil, errors.New("parameter profileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAFDProfilesClientVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listResourceUsageHandleResponse handles the ListResourceUsage response.
-func (client *AFDProfilesClient) listResourceUsageHandleResponse(resp *http.Response) (AFDProfilesClientListResourceUsageResponse, error) {
+func (client *AFDProfilesClient) listResourceUsageHandleResponse(resp *http.Response, successCodes ...int) (AFDProfilesClientListResourceUsageResponse, error) {
 	result := AFDProfilesClientListResourceUsageResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesListResult); err != nil {
 		return AFDProfilesClientListResourceUsageResponse{}, err
 	}
@@ -289,8 +300,7 @@ func (client *AFDProfilesClient) upgrade(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -299,7 +309,7 @@ func (client *AFDProfilesClient) upgrade(ctx context.Context, resourceGroupName 
 func (client *AFDProfilesClient) upgradeCreateRequest(ctx context.Context, resourceGroupName string, profileName string, profileUpgradeParameters ProfileUpgradeParameters, _ *AFDProfilesClientBeginUpgradeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/upgrade"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -315,7 +325,7 @@ func (client *AFDProfilesClient) upgradeCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAFDProfilesClientVersion)
+	reqQP.Set("api-version", version20250601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -347,19 +357,14 @@ func (client *AFDProfilesClient) ValidateSecret(ctx context.Context, resourceGro
 	if err != nil {
 		return AFDProfilesClientValidateSecretResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AFDProfilesClientValidateSecretResponse{}, err
-	}
-	resp, err := client.validateSecretHandleResponse(httpResp)
-	return resp, err
+	return client.validateSecretHandleResponse(httpResp, http.StatusOK)
 }
 
 // validateSecretCreateRequest creates the ValidateSecret request.
 func (client *AFDProfilesClient) validateSecretCreateRequest(ctx context.Context, resourceGroupName string, profileName string, validateSecretInput ValidateSecretInput, _ *AFDProfilesClientValidateSecretOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/validateSecret"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -375,7 +380,7 @@ func (client *AFDProfilesClient) validateSecretCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAFDProfilesClientVersion)
+	reqQP.Set("api-version", version20250601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -386,8 +391,11 @@ func (client *AFDProfilesClient) validateSecretCreateRequest(ctx context.Context
 }
 
 // validateSecretHandleResponse handles the ValidateSecret response.
-func (client *AFDProfilesClient) validateSecretHandleResponse(resp *http.Response) (AFDProfilesClientValidateSecretResponse, error) {
+func (client *AFDProfilesClient) validateSecretHandleResponse(resp *http.Response, successCodes ...int) (AFDProfilesClientValidateSecretResponse, error) {
 	result := AFDProfilesClientValidateSecretResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateSecretOutput); err != nil {
 		return AFDProfilesClientValidateSecretResponse{}, err
 	}

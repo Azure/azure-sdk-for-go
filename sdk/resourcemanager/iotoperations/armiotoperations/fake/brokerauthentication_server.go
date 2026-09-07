@@ -110,7 +110,7 @@ func (b *BrokerAuthenticationServerTransport) dispatchBeginCreateOrUpdate(req *h
 	}
 	beginCreateOrUpdate := b.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/brokers/(?P<brokerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authentications/(?P<authenticationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/brokers/(?P<brokerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authentications/(?P<authenticationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -166,7 +166,7 @@ func (b *BrokerAuthenticationServerTransport) dispatchBeginDelete(req *http.Requ
 	}
 	beginDelete := b.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/brokers/(?P<brokerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authentications/(?P<authenticationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/brokers/(?P<brokerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authentications/(?P<authenticationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -216,7 +216,7 @@ func (b *BrokerAuthenticationServerTransport) dispatchGet(req *http.Request) (*h
 	if b.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/brokers/(?P<brokerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authentications/(?P<authenticationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/brokers/(?P<brokerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authentications/(?P<authenticationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -259,7 +259,7 @@ func (b *BrokerAuthenticationServerTransport) dispatchNewListByResourceGroupPage
 	}
 	newListByResourceGroupPager := b.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/brokers/(?P<brokerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authentications`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.IoTOperations/instances/(?P<instanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/brokers/(?P<brokerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authentications`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

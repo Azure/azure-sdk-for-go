@@ -106,7 +106,7 @@ func (t *TroubleshootersServerTransport) dispatchContinue(req *http.Request) (*h
 	if t.srv.Continue == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Continue not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Help/troubleshooters/(?P<troubleshooterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/continue`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Help/troubleshooters/(?P<troubleshooterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/continue`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -143,7 +143,7 @@ func (t *TroubleshootersServerTransport) dispatchContinue(req *http.Request) (*h
 		return nil, err
 	}
 	if val := server.GetResponse(respr).Location; val != nil {
-		resp.Header.Set("location", *val)
+		resp.Header.Set("Location", *val)
 	}
 	return resp, nil
 }
@@ -152,7 +152,7 @@ func (t *TroubleshootersServerTransport) dispatchCreate(req *http.Request) (*htt
 	if t.srv.Create == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Help/troubleshooters/(?P<troubleshooterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Help/troubleshooters/(?P<troubleshooterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -189,7 +189,7 @@ func (t *TroubleshootersServerTransport) dispatchEnd(req *http.Request) (*http.R
 	if t.srv.End == nil {
 		return nil, &nonRetriableError{errors.New("fake for method End not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Help/troubleshooters/(?P<troubleshooterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/end`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Help/troubleshooters/(?P<troubleshooterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/end`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -216,7 +216,7 @@ func (t *TroubleshootersServerTransport) dispatchEnd(req *http.Request) (*http.R
 		return nil, err
 	}
 	if val := server.GetResponse(respr).Location; val != nil {
-		resp.Header.Set("location", *val)
+		resp.Header.Set("Location", *val)
 	}
 	return resp, nil
 }
@@ -225,7 +225,7 @@ func (t *TroubleshootersServerTransport) dispatchGet(req *http.Request) (*http.R
 	if t.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Help/troubleshooters/(?P<troubleshooterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Help/troubleshooters/(?P<troubleshooterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -258,7 +258,7 @@ func (t *TroubleshootersServerTransport) dispatchRestart(req *http.Request) (*ht
 	if t.srv.Restart == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Restart not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Help/troubleshooters/(?P<troubleshooterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Help/troubleshooters/(?P<troubleshooterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restart`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -285,7 +285,7 @@ func (t *TroubleshootersServerTransport) dispatchRestart(req *http.Request) (*ht
 		return nil, err
 	}
 	if val := server.GetResponse(respr).Location; val != nil {
-		resp.Header.Set("location", *val)
+		resp.Header.Set("Location", *val)
 	}
 	return resp, nil
 }

@@ -30,6 +30,9 @@ type VirtualMachineImageTemplatesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewVirtualMachineImageTemplatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachineImageTemplatesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -82,8 +85,7 @@ func (client *VirtualMachineImageTemplatesClient) cancel(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -92,7 +94,7 @@ func (client *VirtualMachineImageTemplatesClient) cancel(ctx context.Context, re
 func (client *VirtualMachineImageTemplatesClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, _ *VirtualMachineImageTemplatesClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/cancel"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -154,8 +156,7 @@ func (client *VirtualMachineImageTemplatesClient) createOrUpdate(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -164,7 +165,7 @@ func (client *VirtualMachineImageTemplatesClient) createOrUpdate(ctx context.Con
 func (client *VirtualMachineImageTemplatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplate, _ *VirtualMachineImageTemplatesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -230,8 +231,7 @@ func (client *VirtualMachineImageTemplatesClient) deleteOperation(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -240,7 +240,7 @@ func (client *VirtualMachineImageTemplatesClient) deleteOperation(ctx context.Co
 func (client *VirtualMachineImageTemplatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, _ *VirtualMachineImageTemplatesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -281,19 +281,14 @@ func (client *VirtualMachineImageTemplatesClient) Get(ctx context.Context, resou
 	if err != nil {
 		return VirtualMachineImageTemplatesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VirtualMachineImageTemplatesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *VirtualMachineImageTemplatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, _ *VirtualMachineImageTemplatesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -316,8 +311,11 @@ func (client *VirtualMachineImageTemplatesClient) getCreateRequest(ctx context.C
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualMachineImageTemplatesClient) getHandleResponse(resp *http.Response) (VirtualMachineImageTemplatesClientGetResponse, error) {
+func (client *VirtualMachineImageTemplatesClient) getHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineImageTemplatesClientGetResponse, error) {
 	result := VirtualMachineImageTemplatesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageTemplate); err != nil {
 		return VirtualMachineImageTemplatesClientGetResponse{}, err
 	}
@@ -345,19 +343,14 @@ func (client *VirtualMachineImageTemplatesClient) GetRunOutput(ctx context.Conte
 	if err != nil {
 		return VirtualMachineImageTemplatesClientGetRunOutputResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VirtualMachineImageTemplatesClientGetRunOutputResponse{}, err
-	}
-	resp, err := client.getRunOutputHandleResponse(httpResp)
-	return resp, err
+	return client.getRunOutputHandleResponse(httpResp, http.StatusOK)
 }
 
 // getRunOutputCreateRequest creates the GetRunOutput request.
 func (client *VirtualMachineImageTemplatesClient) getRunOutputCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, runOutputName string, _ *VirtualMachineImageTemplatesClientGetRunOutputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/runOutputs/{runOutputName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -384,8 +377,11 @@ func (client *VirtualMachineImageTemplatesClient) getRunOutputCreateRequest(ctx 
 }
 
 // getRunOutputHandleResponse handles the GetRunOutput response.
-func (client *VirtualMachineImageTemplatesClient) getRunOutputHandleResponse(resp *http.Response) (VirtualMachineImageTemplatesClientGetRunOutputResponse, error) {
+func (client *VirtualMachineImageTemplatesClient) getRunOutputHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineImageTemplatesClientGetRunOutputResponse, error) {
 	result := VirtualMachineImageTemplatesClientGetRunOutputResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RunOutput); err != nil {
 		return VirtualMachineImageTemplatesClientGetRunOutputResponse{}, err
 	}
@@ -406,39 +402,53 @@ func (client *VirtualMachineImageTemplatesClient) NewListPager(options *VirtualM
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return VirtualMachineImageTemplatesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VirtualMachineImageTemplatesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *VirtualMachineImageTemplatesClient) listCreateRequest(ctx context.Context, _ *VirtualMachineImageTemplatesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.VirtualMachineImages/imageTemplates"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *VirtualMachineImageTemplatesClient) listCreateRequest(ctx context.Context, nextLink string, _ *VirtualMachineImageTemplatesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.VirtualMachineImages/imageTemplates"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251001)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *VirtualMachineImageTemplatesClient) listHandleResponse(resp *http.Response) (VirtualMachineImageTemplatesClientListResponse, error) {
+func (client *VirtualMachineImageTemplatesClient) listHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineImageTemplatesClientListResponse, error) {
 	result := VirtualMachineImageTemplatesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageTemplateListResult); err != nil {
 		return VirtualMachineImageTemplatesClientListResponse{}, err
 	}
@@ -460,43 +470,57 @@ func (client *VirtualMachineImageTemplatesClient) NewListByResourceGroupPager(re
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return VirtualMachineImageTemplatesClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VirtualMachineImageTemplatesClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *VirtualMachineImageTemplatesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *VirtualMachineImageTemplatesClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *VirtualMachineImageTemplatesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *VirtualMachineImageTemplatesClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251001)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *VirtualMachineImageTemplatesClient) listByResourceGroupHandleResponse(resp *http.Response) (VirtualMachineImageTemplatesClientListByResourceGroupResponse, error) {
+func (client *VirtualMachineImageTemplatesClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineImageTemplatesClientListByResourceGroupResponse, error) {
 	result := VirtualMachineImageTemplatesClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageTemplateListResult); err != nil {
 		return VirtualMachineImageTemplatesClientListByResourceGroupResponse{}, err
 	}
@@ -519,47 +543,61 @@ func (client *VirtualMachineImageTemplatesClient) NewListRunOutputsPager(resourc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listRunOutputsCreateRequest(ctx, resourceGroupName, imageTemplateName, options)
-			}, nil)
+			req, err := client.listRunOutputsCreateRequest(ctx, resourceGroupName, imageTemplateName, nextLink, options)
 			if err != nil {
 				return VirtualMachineImageTemplatesClientListRunOutputsResponse{}, err
 			}
-			return client.listRunOutputsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VirtualMachineImageTemplatesClientListRunOutputsResponse{}, err
+			}
+			return client.listRunOutputsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listRunOutputsCreateRequest creates the ListRunOutputs request.
-func (client *VirtualMachineImageTemplatesClient) listRunOutputsCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, _ *VirtualMachineImageTemplatesClientListRunOutputsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/runOutputs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *VirtualMachineImageTemplatesClient) listRunOutputsCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, nextLink string, _ *VirtualMachineImageTemplatesClientListRunOutputsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/runOutputs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if imageTemplateName == "" {
+			return nil, errors.New("parameter imageTemplateName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{imageTemplateName}", url.PathEscape(imageTemplateName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if imageTemplateName == "" {
-		return nil, errors.New("parameter imageTemplateName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{imageTemplateName}", url.PathEscape(imageTemplateName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251001)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listRunOutputsHandleResponse handles the ListRunOutputs response.
-func (client *VirtualMachineImageTemplatesClient) listRunOutputsHandleResponse(resp *http.Response) (VirtualMachineImageTemplatesClientListRunOutputsResponse, error) {
+func (client *VirtualMachineImageTemplatesClient) listRunOutputsHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineImageTemplatesClientListRunOutputsResponse, error) {
 	result := VirtualMachineImageTemplatesClientListRunOutputsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RunOutputCollection); err != nil {
 		return VirtualMachineImageTemplatesClientListRunOutputsResponse{}, err
 	}
@@ -607,8 +645,7 @@ func (client *VirtualMachineImageTemplatesClient) run(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -617,7 +654,7 @@ func (client *VirtualMachineImageTemplatesClient) run(ctx context.Context, resou
 func (client *VirtualMachineImageTemplatesClient) runCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, _ *VirtualMachineImageTemplatesClientBeginRunOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/run"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -680,8 +717,7 @@ func (client *VirtualMachineImageTemplatesClient) update(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -690,7 +726,7 @@ func (client *VirtualMachineImageTemplatesClient) update(ctx context.Context, re
 func (client *VirtualMachineImageTemplatesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplateUpdateParameters, _ *VirtualMachineImageTemplatesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

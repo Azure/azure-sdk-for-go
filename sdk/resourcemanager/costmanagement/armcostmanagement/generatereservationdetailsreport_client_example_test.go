@@ -37,7 +37,7 @@ func ExampleGenerateReservationDetailsReportClient_BeginByBillingAccountID() {
 	// 	OperationStatus: armcostmanagement.OperationStatus{
 	// 		Properties: &armcostmanagement.ReportURL{
 	// 			ReportURL: to.Ptr(armcostmanagement.ReservationReportSchema("https://storage.blob.core.windows.net/details/20200911/00000000-0000-0000-0000-000000000000?sv=2016-05-31&sr=b&sig=jep8HT2aphfUkyERRZa5LRfd9RPzjXbzB%2F9TNiQ")),
-	// 			ValidUntil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-12T02:56:55.5021869Z"); return t}()),
+	// 			ValidUntil: to.Ptr(time.Date(2020, time.September, 12, 2, 56, 55, 502186900, time.UTC)),
 	// 		},
 	// 		Status: to.Ptr(armcostmanagement.OperationStatusTypeCompleted),
 	// 	},
@@ -70,7 +70,7 @@ func ExampleGenerateReservationDetailsReportClient_BeginByBillingProfileID() {
 	// 	OperationStatus: armcostmanagement.OperationStatus{
 	// 		Properties: &armcostmanagement.ReportURL{
 	// 			ReportURL: to.Ptr(armcostmanagement.ReservationReportSchema("https://storage.blob.core.windows.net/details/20200911/00000000-0000-0000-0000-000000000000?sv=2016-05-31&sr=b&sig=jep8HT2aphfUkyERRZa5LRfd9RPzjXbzB%2F9TNiQ")),
-	// 			ValidUntil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-12T02:56:55.5021869Z"); return t}()),
+	// 			ValidUntil: to.Ptr(time.Date(2020, time.September, 12, 2, 56, 55, 502186900, time.UTC)),
 	// 		},
 	// 		Status: to.Ptr(armcostmanagement.OperationStatusTypeCompleted),
 	// 	},

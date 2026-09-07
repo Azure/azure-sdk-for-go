@@ -20,7 +20,7 @@ func (a AADAuthTypeWorkspaceConnectionProperties) MarshalJSON() ([]byte, error) 
 	populate(objectMap, "category", a.Category)
 	populate(objectMap, "createdByWorkspaceArmId", a.CreatedByWorkspaceArmID)
 	populate(objectMap, "error", a.Error)
-	populateTime[datetime.RFC3339](objectMap, "expiryTime", a.ExpiryTime)
+	populateTime[datetime.RFC3339](objectMap, "expiryTime", a.ExpiryTime, true)
 	populate(objectMap, "group", a.Group)
 	populate(objectMap, "isSharedToAll", a.IsSharedToAll)
 	populate(objectMap, "metadata", a.Metadata)
@@ -93,11 +93,11 @@ func (a AKS) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "computeLocation", a.ComputeLocation)
 	objectMap["computeType"] = ComputeTypeAKS
-	populateTime[datetime.RFC3339](objectMap, "createdOn", a.CreatedOn)
+	populateTime[datetime.RFC3339](objectMap, "createdOn", a.CreatedOn, true)
 	populate(objectMap, "description", a.Description)
 	populate(objectMap, "disableLocalAuth", a.DisableLocalAuth)
 	populate(objectMap, "isAttachedCompute", a.IsAttachedCompute)
-	populateTime[datetime.RFC3339](objectMap, "modifiedOn", a.ModifiedOn)
+	populateTime[datetime.RFC3339](objectMap, "modifiedOn", a.ModifiedOn, true)
 	populate(objectMap, "properties", a.Properties)
 	populate(objectMap, "provisioningErrors", a.ProvisioningErrors)
 	populate(objectMap, "provisioningState", a.ProvisioningState)
@@ -222,7 +222,7 @@ func (a APIKeyAuthWorkspaceConnectionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "createdByWorkspaceArmId", a.CreatedByWorkspaceArmID)
 	populate(objectMap, "credentials", a.Credentials)
 	populate(objectMap, "error", a.Error)
-	populateTime[datetime.RFC3339](objectMap, "expiryTime", a.ExpiryTime)
+	populateTime[datetime.RFC3339](objectMap, "expiryTime", a.ExpiryTime, true)
 	populate(objectMap, "group", a.Group)
 	populate(objectMap, "isSharedToAll", a.IsSharedToAll)
 	populate(objectMap, "metadata", a.Metadata)
@@ -301,7 +301,7 @@ func (a AccessKeyAuthTypeWorkspaceConnectionProperties) MarshalJSON() ([]byte, e
 	populate(objectMap, "createdByWorkspaceArmId", a.CreatedByWorkspaceArmID)
 	populate(objectMap, "credentials", a.Credentials)
 	populate(objectMap, "error", a.Error)
-	populateTime[datetime.RFC3339](objectMap, "expiryTime", a.ExpiryTime)
+	populateTime[datetime.RFC3339](objectMap, "expiryTime", a.ExpiryTime, true)
 	populate(objectMap, "group", a.Group)
 	populate(objectMap, "isSharedToAll", a.IsSharedToAll)
 	populate(objectMap, "metadata", a.Metadata)
@@ -411,7 +411,7 @@ func (a AccountKeyAuthTypeWorkspaceConnectionProperties) MarshalJSON() ([]byte, 
 	populate(objectMap, "createdByWorkspaceArmId", a.CreatedByWorkspaceArmID)
 	populate(objectMap, "credentials", a.Credentials)
 	populate(objectMap, "error", a.Error)
-	populateTime[datetime.RFC3339](objectMap, "expiryTime", a.ExpiryTime)
+	populateTime[datetime.RFC3339](objectMap, "expiryTime", a.ExpiryTime, true)
 	populate(objectMap, "group", a.Group)
 	populate(objectMap, "isSharedToAll", a.IsSharedToAll)
 	populate(objectMap, "metadata", a.Metadata)
@@ -751,11 +751,11 @@ func (a AmlCompute) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "computeLocation", a.ComputeLocation)
 	objectMap["computeType"] = ComputeTypeAmlCompute
-	populateTime[datetime.RFC3339](objectMap, "createdOn", a.CreatedOn)
+	populateTime[datetime.RFC3339](objectMap, "createdOn", a.CreatedOn, true)
 	populate(objectMap, "description", a.Description)
 	populate(objectMap, "disableLocalAuth", a.DisableLocalAuth)
 	populate(objectMap, "isAttachedCompute", a.IsAttachedCompute)
-	populateTime[datetime.RFC3339](objectMap, "modifiedOn", a.ModifiedOn)
+	populateTime[datetime.RFC3339](objectMap, "modifiedOn", a.ModifiedOn, true)
 	populate(objectMap, "properties", a.Properties)
 	populate(objectMap, "provisioningErrors", a.ProvisioningErrors)
 	populate(objectMap, "provisioningState", a.ProvisioningState)
@@ -895,7 +895,7 @@ func (a *AmlComputeNodesInformation) UnmarshalJSON(data []byte) error {
 func (a AmlComputeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "allocationState", a.AllocationState)
-	populateTime[datetime.RFC3339](objectMap, "allocationStateTransitionTime", a.AllocationStateTransitionTime)
+	populateTime[datetime.RFC3339](objectMap, "allocationStateTransitionTime", a.AllocationStateTransitionTime, true)
 	populate(objectMap, "currentNodeCount", a.CurrentNodeCount)
 	populate(objectMap, "enableNodePublicIp", a.EnableNodePublicIP)
 	populate(objectMap, "errors", a.Errors)
@@ -3949,11 +3949,11 @@ func (c Compute) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "computeLocation", c.ComputeLocation)
 	populate(objectMap, "computeType", c.ComputeType)
-	populateTime[datetime.RFC3339](objectMap, "createdOn", c.CreatedOn)
+	populateTime[datetime.RFC3339](objectMap, "createdOn", c.CreatedOn, true)
 	populate(objectMap, "description", c.Description)
 	populate(objectMap, "disableLocalAuth", c.DisableLocalAuth)
 	populate(objectMap, "isAttachedCompute", c.IsAttachedCompute)
-	populateTime[datetime.RFC3339](objectMap, "modifiedOn", c.ModifiedOn)
+	populateTime[datetime.RFC3339](objectMap, "modifiedOn", c.ModifiedOn, true)
 	populate(objectMap, "provisioningErrors", c.ProvisioningErrors)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
 	populate(objectMap, "resourceId", c.ResourceID)
@@ -4012,11 +4012,11 @@ func (c ComputeInstance) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "computeLocation", c.ComputeLocation)
 	objectMap["computeType"] = ComputeTypeComputeInstance
-	populateTime[datetime.RFC3339](objectMap, "createdOn", c.CreatedOn)
+	populateTime[datetime.RFC3339](objectMap, "createdOn", c.CreatedOn, true)
 	populate(objectMap, "description", c.Description)
 	populate(objectMap, "disableLocalAuth", c.DisableLocalAuth)
 	populate(objectMap, "isAttachedCompute", c.IsAttachedCompute)
-	populateTime[datetime.RFC3339](objectMap, "modifiedOn", c.ModifiedOn)
+	populateTime[datetime.RFC3339](objectMap, "modifiedOn", c.ModifiedOn, true)
 	populate(objectMap, "properties", c.Properties)
 	populate(objectMap, "provisioningErrors", c.ProvisioningErrors)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
@@ -4294,7 +4294,7 @@ func (c ComputeInstanceDataMount) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "mountName", c.MountName)
 	populate(objectMap, "mountPath", c.MountPath)
 	populate(objectMap, "mountState", c.MountState)
-	populateTime[datetime.RFC3339](objectMap, "mountedOn", c.MountedOn)
+	populateTime[datetime.RFC3339](objectMap, "mountedOn", c.MountedOn, true)
 	populate(objectMap, "source", c.Source)
 	populate(objectMap, "sourceType", c.SourceType)
 	return json.Marshal(objectMap)
@@ -4383,7 +4383,7 @@ func (c ComputeInstanceLastOperation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "operationName", c.OperationName)
 	populate(objectMap, "operationStatus", c.OperationStatus)
-	populateTime[datetime.RFC3339](objectMap, "operationTime", c.OperationTime)
+	populateTime[datetime.RFC3339](objectMap, "operationTime", c.OperationTime, true)
 	populate(objectMap, "operationTrigger", c.OperationTrigger)
 	return json.Marshal(objectMap)
 }
@@ -5257,7 +5257,7 @@ func (c CustomKeysWorkspaceConnectionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "createdByWorkspaceArmId", c.CreatedByWorkspaceArmID)
 	populate(objectMap, "credentials", c.Credentials)
 	populate(objectMap, "error", c.Error)
-	populateTime[datetime.RFC3339](objectMap, "expiryTime", c.ExpiryTime)
+	populateTime[datetime.RFC3339](objectMap, "expiryTime", c.ExpiryTime, true)
 	populate(objectMap, "group", c.Group)
 	populate(objectMap, "isSharedToAll", c.IsSharedToAll)
 	populate(objectMap, "metadata", c.Metadata)
@@ -5992,11 +5992,11 @@ func (d DataFactory) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "computeLocation", d.ComputeLocation)
 	objectMap["computeType"] = ComputeTypeDataFactory
-	populateTime[datetime.RFC3339](objectMap, "createdOn", d.CreatedOn)
+	populateTime[datetime.RFC3339](objectMap, "createdOn", d.CreatedOn, true)
 	populate(objectMap, "description", d.Description)
 	populate(objectMap, "disableLocalAuth", d.DisableLocalAuth)
 	populate(objectMap, "isAttachedCompute", d.IsAttachedCompute)
-	populateTime[datetime.RFC3339](objectMap, "modifiedOn", d.ModifiedOn)
+	populateTime[datetime.RFC3339](objectMap, "modifiedOn", d.ModifiedOn, true)
 	populate(objectMap, "provisioningErrors", d.ProvisioningErrors)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
 	populate(objectMap, "resourceId", d.ResourceID)
@@ -6098,11 +6098,11 @@ func (d DataLakeAnalytics) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "computeLocation", d.ComputeLocation)
 	objectMap["computeType"] = ComputeTypeDataLakeAnalytics
-	populateTime[datetime.RFC3339](objectMap, "createdOn", d.CreatedOn)
+	populateTime[datetime.RFC3339](objectMap, "createdOn", d.CreatedOn, true)
 	populate(objectMap, "description", d.Description)
 	populate(objectMap, "disableLocalAuth", d.DisableLocalAuth)
 	populate(objectMap, "isAttachedCompute", d.IsAttachedCompute)
-	populateTime[datetime.RFC3339](objectMap, "modifiedOn", d.ModifiedOn)
+	populateTime[datetime.RFC3339](objectMap, "modifiedOn", d.ModifiedOn, true)
 	populate(objectMap, "properties", d.Properties)
 	populate(objectMap, "provisioningErrors", d.ProvisioningErrors)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
@@ -6469,11 +6469,11 @@ func (d Databricks) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "computeLocation", d.ComputeLocation)
 	objectMap["computeType"] = ComputeTypeDatabricks
-	populateTime[datetime.RFC3339](objectMap, "createdOn", d.CreatedOn)
+	populateTime[datetime.RFC3339](objectMap, "createdOn", d.CreatedOn, true)
 	populate(objectMap, "description", d.Description)
 	populate(objectMap, "disableLocalAuth", d.DisableLocalAuth)
 	populate(objectMap, "isAttachedCompute", d.IsAttachedCompute)
-	populateTime[datetime.RFC3339](objectMap, "modifiedOn", d.ModifiedOn)
+	populateTime[datetime.RFC3339](objectMap, "modifiedOn", d.ModifiedOn, true)
 	populate(objectMap, "properties", d.Properties)
 	populate(objectMap, "provisioningErrors", d.ProvisioningErrors)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
@@ -7974,8 +7974,8 @@ func (e *EndpointKeys) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type EndpointModelDeprecationProperties.
 func (e EndpointModelDeprecationProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "fineTune", e.FineTune)
-	populateTime[datetime.RFC3339](objectMap, "inference", e.Inference)
+	populateTime[datetime.RFC3339](objectMap, "fineTune", e.FineTune, true)
+	populateTime[datetime.RFC3339](objectMap, "inference", e.Inference, true)
 	return json.Marshal(objectMap)
 }
 
@@ -8105,7 +8105,7 @@ func (e EndpointModelSKUProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "capacity", e.Capacity)
 	populate(objectMap, "connectionIds", e.ConnectionIDs)
-	populateTime[datetime.RFC3339](objectMap, "deprecationDate", e.DeprecationDate)
+	populateTime[datetime.RFC3339](objectMap, "deprecationDate", e.DeprecationDate, true)
 	populate(objectMap, "name", e.Name)
 	populate(objectMap, "rateLimits", e.RateLimits)
 	populate(objectMap, "usageName", e.UsageName)
@@ -9400,8 +9400,8 @@ func (f *FeatureSubset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type FeatureWindow.
 func (f FeatureWindow) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "featureWindowEnd", f.FeatureWindowEnd)
-	populateTime[datetime.RFC3339](objectMap, "featureWindowStart", f.FeatureWindowStart)
+	populateTime[datetime.RFC3339](objectMap, "featureWindowEnd", f.FeatureWindowEnd, true)
+	populateTime[datetime.RFC3339](objectMap, "featureWindowStart", f.FeatureWindowStart, true)
 	return json.Marshal(objectMap)
 }
 
@@ -10821,11 +10821,11 @@ func (h HDInsight) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "computeLocation", h.ComputeLocation)
 	objectMap["computeType"] = ComputeTypeHDInsight
-	populateTime[datetime.RFC3339](objectMap, "createdOn", h.CreatedOn)
+	populateTime[datetime.RFC3339](objectMap, "createdOn", h.CreatedOn, true)
 	populate(objectMap, "description", h.Description)
 	populate(objectMap, "disableLocalAuth", h.DisableLocalAuth)
 	populate(objectMap, "isAttachedCompute", h.IsAttachedCompute)
-	populateTime[datetime.RFC3339](objectMap, "modifiedOn", h.ModifiedOn)
+	populateTime[datetime.RFC3339](objectMap, "modifiedOn", h.ModifiedOn, true)
 	populate(objectMap, "properties", h.Properties)
 	populate(objectMap, "provisioningErrors", h.ProvisioningErrors)
 	populate(objectMap, "provisioningState", h.ProvisioningState)
@@ -13294,11 +13294,11 @@ func (k Kubernetes) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "computeLocation", k.ComputeLocation)
 	objectMap["computeType"] = ComputeTypeKubernetes
-	populateTime[datetime.RFC3339](objectMap, "createdOn", k.CreatedOn)
+	populateTime[datetime.RFC3339](objectMap, "createdOn", k.CreatedOn, true)
 	populate(objectMap, "description", k.Description)
 	populate(objectMap, "disableLocalAuth", k.DisableLocalAuth)
 	populate(objectMap, "isAttachedCompute", k.IsAttachedCompute)
-	populateTime[datetime.RFC3339](objectMap, "modifiedOn", k.ModifiedOn)
+	populateTime[datetime.RFC3339](objectMap, "modifiedOn", k.ModifiedOn, true)
 	populate(objectMap, "properties", k.Properties)
 	populate(objectMap, "provisioningErrors", k.ProvisioningErrors)
 	populate(objectMap, "provisioningState", k.ProvisioningState)
@@ -14134,7 +14134,7 @@ func (m ManagedIdentityAuthTypeWorkspaceConnectionProperties) MarshalJSON() ([]b
 	populate(objectMap, "createdByWorkspaceArmId", m.CreatedByWorkspaceArmID)
 	populate(objectMap, "credentials", m.Credentials)
 	populate(objectMap, "error", m.Error)
-	populateTime[datetime.RFC3339](objectMap, "expiryTime", m.ExpiryTime)
+	populateTime[datetime.RFC3339](objectMap, "expiryTime", m.ExpiryTime, true)
 	populate(objectMap, "group", m.Group)
 	populate(objectMap, "isSharedToAll", m.IsSharedToAll)
 	populate(objectMap, "metadata", m.Metadata)
@@ -16021,7 +16021,7 @@ func (n NoneAuthTypeWorkspaceConnectionProperties) MarshalJSON() ([]byte, error)
 	populate(objectMap, "category", n.Category)
 	populate(objectMap, "createdByWorkspaceArmId", n.CreatedByWorkspaceArmID)
 	populate(objectMap, "error", n.Error)
-	populateTime[datetime.RFC3339](objectMap, "expiryTime", n.ExpiryTime)
+	populateTime[datetime.RFC3339](objectMap, "expiryTime", n.ExpiryTime, true)
 	populate(objectMap, "group", n.Group)
 	populate(objectMap, "isSharedToAll", n.IsSharedToAll)
 	populate(objectMap, "metadata", n.Metadata)
@@ -16389,7 +16389,7 @@ func (o OAuth2AuthTypeWorkspaceConnectionProperties) MarshalJSON() ([]byte, erro
 	populate(objectMap, "createdByWorkspaceArmId", o.CreatedByWorkspaceArmID)
 	populate(objectMap, "credentials", o.Credentials)
 	populate(objectMap, "error", o.Error)
-	populateTime[datetime.RFC3339](objectMap, "expiryTime", o.ExpiryTime)
+	populateTime[datetime.RFC3339](objectMap, "expiryTime", o.ExpiryTime, true)
 	populate(objectMap, "group", o.Group)
 	populate(objectMap, "isSharedToAll", o.IsSharedToAll)
 	populate(objectMap, "metadata", o.Metadata)
@@ -17423,7 +17423,7 @@ func (p PATAuthTypeWorkspaceConnectionProperties) MarshalJSON() ([]byte, error) 
 	populate(objectMap, "createdByWorkspaceArmId", p.CreatedByWorkspaceArmID)
 	populate(objectMap, "credentials", p.Credentials)
 	populate(objectMap, "error", p.Error)
-	populateTime[datetime.RFC3339](objectMap, "expiryTime", p.ExpiryTime)
+	populateTime[datetime.RFC3339](objectMap, "expiryTime", p.ExpiryTime, true)
 	populate(objectMap, "group", p.Group)
 	populate(objectMap, "isSharedToAll", p.IsSharedToAll)
 	populate(objectMap, "metadata", p.Metadata)
@@ -20317,7 +20317,7 @@ func (s SASAuthTypeWorkspaceConnectionProperties) MarshalJSON() ([]byte, error) 
 	populate(objectMap, "createdByWorkspaceArmId", s.CreatedByWorkspaceArmID)
 	populate(objectMap, "credentials", s.Credentials)
 	populate(objectMap, "error", s.Error)
-	populateTime[datetime.RFC3339](objectMap, "expiryTime", s.ExpiryTime)
+	populateTime[datetime.RFC3339](objectMap, "expiryTime", s.ExpiryTime, true)
 	populate(objectMap, "group", s.Group)
 	populate(objectMap, "isSharedToAll", s.IsSharedToAll)
 	populate(objectMap, "metadata", s.Metadata)
@@ -21661,7 +21661,7 @@ func (s ServicePrincipalAuthTypeWorkspaceConnectionProperties) MarshalJSON() ([]
 	populate(objectMap, "createdByWorkspaceArmId", s.CreatedByWorkspaceArmID)
 	populate(objectMap, "credentials", s.Credentials)
 	populate(objectMap, "error", s.Error)
-	populateTime[datetime.RFC3339](objectMap, "expiryTime", s.ExpiryTime)
+	populateTime[datetime.RFC3339](objectMap, "expiryTime", s.ExpiryTime, true)
 	populate(objectMap, "group", s.Group)
 	populate(objectMap, "isSharedToAll", s.IsSharedToAll)
 	populate(objectMap, "metadata", s.Metadata)
@@ -22406,8 +22406,8 @@ func (s StaticInputData) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "jobInputType", s.JobInputType)
 	populate(objectMap, "preprocessingComponentId", s.PreprocessingComponentID)
 	populate(objectMap, "uri", s.URI)
-	populateTime[datetime.RFC3339](objectMap, "windowEnd", s.WindowEnd)
-	populateTime[datetime.RFC3339](objectMap, "windowStart", s.WindowStart)
+	populateTime[datetime.RFC3339](objectMap, "windowEnd", s.WindowEnd, true)
+	populateTime[datetime.RFC3339](objectMap, "windowStart", s.WindowStart, true)
 	return json.Marshal(objectMap)
 }
 
@@ -22704,11 +22704,11 @@ func (s SynapseSpark) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "computeLocation", s.ComputeLocation)
 	objectMap["computeType"] = ComputeTypeSynapseSpark
-	populateTime[datetime.RFC3339](objectMap, "createdOn", s.CreatedOn)
+	populateTime[datetime.RFC3339](objectMap, "createdOn", s.CreatedOn, true)
 	populate(objectMap, "description", s.Description)
 	populate(objectMap, "disableLocalAuth", s.DisableLocalAuth)
 	populate(objectMap, "isAttachedCompute", s.IsAttachedCompute)
-	populateTime[datetime.RFC3339](objectMap, "modifiedOn", s.ModifiedOn)
+	populateTime[datetime.RFC3339](objectMap, "modifiedOn", s.ModifiedOn, true)
 	populate(objectMap, "properties", s.Properties)
 	populate(objectMap, "provisioningErrors", s.ProvisioningErrors)
 	populate(objectMap, "provisioningState", s.ProvisioningState)
@@ -22910,10 +22910,10 @@ func (s *SystemCreatedStorageAccount) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt, true)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt, true)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -24351,7 +24351,7 @@ func (u UsernamePasswordAuthTypeWorkspaceConnectionProperties) MarshalJSON() ([]
 	populate(objectMap, "createdByWorkspaceArmId", u.CreatedByWorkspaceArmID)
 	populate(objectMap, "credentials", u.Credentials)
 	populate(objectMap, "error", u.Error)
-	populateTime[datetime.RFC3339](objectMap, "expiryTime", u.ExpiryTime)
+	populateTime[datetime.RFC3339](objectMap, "expiryTime", u.ExpiryTime, true)
 	populate(objectMap, "group", u.Group)
 	populate(objectMap, "isSharedToAll", u.IsSharedToAll)
 	populate(objectMap, "metadata", u.Metadata)
@@ -24427,11 +24427,11 @@ func (v VirtualMachine) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "computeLocation", v.ComputeLocation)
 	objectMap["computeType"] = ComputeTypeVirtualMachine
-	populateTime[datetime.RFC3339](objectMap, "createdOn", v.CreatedOn)
+	populateTime[datetime.RFC3339](objectMap, "createdOn", v.CreatedOn, true)
 	populate(objectMap, "description", v.Description)
 	populate(objectMap, "disableLocalAuth", v.DisableLocalAuth)
 	populate(objectMap, "isAttachedCompute", v.IsAttachedCompute)
-	populateTime[datetime.RFC3339](objectMap, "modifiedOn", v.ModifiedOn)
+	populateTime[datetime.RFC3339](objectMap, "modifiedOn", v.ModifiedOn, true)
 	populate(objectMap, "properties", v.Properties)
 	populate(objectMap, "provisioningErrors", v.ProvisioningErrors)
 	populate(objectMap, "provisioningState", v.ProvisioningState)
@@ -24814,12 +24814,12 @@ func (v VulnerabilityDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "cve", v.Cve)
 	populate(objectMap, "cveUrl", v.CveURL)
-	populateTime[datetime.RFC3339](objectMap, "dueDate", v.DueDate)
+	populateTime[datetime.RFC3339](objectMap, "dueDate", v.DueDate, true)
 	populate(objectMap, "id", v.ID)
 	populate(objectMap, "packageDetails", v.PackageDetails)
 	populate(objectMap, "patchable", v.Patchable)
 	populate(objectMap, "providerId", v.ProviderID)
-	populateTime[datetime.RFC3339](objectMap, "publishDate", v.PublishDate)
+	populateTime[datetime.RFC3339](objectMap, "publishDate", v.PublishDate, true)
 	populate(objectMap, "risk", v.Risk)
 	populate(objectMap, "solution", v.Solution)
 	populate(objectMap, "title", v.Title)
@@ -24890,9 +24890,9 @@ func (v VulnerabilityFindings) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "assetId", v.AssetID)
 	populate(objectMap, "criticalFindingsCount", v.CriticalFindingsCount)
 	populate(objectMap, "data", v.Data)
-	populateTime[datetime.RFC3339](objectMap, "generatedTime", v.GeneratedTime)
+	populateTime[datetime.RFC3339](objectMap, "generatedTime", v.GeneratedTime, true)
 	populate(objectMap, "highFindingsCount", v.HighFindingsCount)
-	populateTime[datetime.RFC3339](objectMap, "lastScanDate", v.LastScanDate)
+	populateTime[datetime.RFC3339](objectMap, "lastScanDate", v.LastScanDate, true)
 	populate(objectMap, "scanner", v.Scanner)
 	populate(objectMap, "source", v.Source)
 	populate(objectMap, "totalFindingsCount", v.TotalFindingsCount)
@@ -25242,7 +25242,7 @@ func (w WorkspaceConnectionPropertiesV2) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "category", w.Category)
 	populate(objectMap, "createdByWorkspaceArmId", w.CreatedByWorkspaceArmID)
 	populate(objectMap, "error", w.Error)
-	populateTime[datetime.RFC3339](objectMap, "expiryTime", w.ExpiryTime)
+	populateTime[datetime.RFC3339](objectMap, "expiryTime", w.ExpiryTime, true)
 	populate(objectMap, "group", w.Group)
 	populate(objectMap, "isSharedToAll", w.IsSharedToAll)
 	populate(objectMap, "metadata", w.Metadata)
@@ -25960,13 +25960,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
-func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time, utc bool) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {
 		m[k] = nil
 	} else if !reflect.ValueOf(t).IsNil() {
-		newTime := T(*t)
+		tt := *t
+		if utc {
+			tt = tt.UTC()
+		}
+		newTime := T(tt)
 		m[k] = (*T)(&newTime)
 	}
 }
@@ -25986,7 +25990,7 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	return nil
 }
@@ -25997,7 +26001,7 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 	}
 	var aux T
 	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	newTime := time.Time(aux)
 	*t = &newTime

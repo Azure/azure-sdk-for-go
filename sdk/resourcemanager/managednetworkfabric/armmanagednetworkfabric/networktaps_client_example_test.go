@@ -60,13 +60,13 @@ func ExampleNetworkTapsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkTapsClientCreateResponse{
-	// 	NetworkTap: &armmanagednetworkfabric.NetworkTap{
+	// 	NetworkTap: armmanagednetworkfabric.NetworkTap{
 	// 		Properties: &armmanagednetworkfabric.NetworkTapProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			NetworkPacketBrokerID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/example-networkPacketBroker"),
@@ -111,10 +111,10 @@ func ExampleNetworkTapsClient_BeginCreate() {
 	// 		SystemData: &armmanagednetworkfabric.SystemData{
 	// 			CreatedBy: to.Ptr("email@address.com"),
 	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("UserId"),
 	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -137,7 +137,7 @@ func ExampleNetworkTapsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -160,7 +160,7 @@ func ExampleNetworkTapsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkTapsClientGetResponse{
-	// 	NetworkTap: &armmanagednetworkfabric.NetworkTap{
+	// 	NetworkTap: armmanagednetworkfabric.NetworkTap{
 	// 		Properties: &armmanagednetworkfabric.NetworkTapProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			NetworkPacketBrokerID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/example-networkPacketBroker"),
@@ -211,10 +211,10 @@ func ExampleNetworkTapsClient_Get() {
 	// 		SystemData: &armmanagednetworkfabric.SystemData{
 	// 			CreatedBy: to.Ptr("email@address.com"),
 	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("UserId"),
 	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -296,10 +296,10 @@ func ExampleNetworkTapsClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armmanagednetworkfabric.SystemData{
 		// 					CreatedBy: to.Ptr("email@address.com"),
 		// 					CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("UserId"),
 		// 					LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -385,10 +385,10 @@ func ExampleNetworkTapsClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armmanagednetworkfabric.SystemData{
 		// 					CreatedBy: to.Ptr("email@address.com"),
 		// 					CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("UserId"),
 		// 					LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -415,13 +415,13 @@ func ExampleNetworkTapsClient_BeginResync() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkTapsClientResyncResponse{
-	// 	NetworkTapResyncResponse: &armmanagednetworkfabric.NetworkTapResyncResponse{
+	// 	NetworkTapResyncResponse: armmanagednetworkfabric.NetworkTapResyncResponse{
 	// 		Status: to.Ptr("Failed"),
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr(""),
@@ -486,13 +486,13 @@ func ExampleNetworkTapsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkTapsClientUpdateResponse{
-	// 	NetworkTap: &armmanagednetworkfabric.NetworkTap{
+	// 	NetworkTap: armmanagednetworkfabric.NetworkTap{
 	// 		Properties: &armmanagednetworkfabric.NetworkTapProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			NetworkPacketBrokerID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/example-networkPacketBroker"),
@@ -537,10 +537,10 @@ func ExampleNetworkTapsClient_BeginUpdate() {
 	// 		SystemData: &armmanagednetworkfabric.SystemData{
 	// 			CreatedBy: to.Ptr("email@address.com"),
 	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("UserId"),
 	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -568,13 +568,13 @@ func ExampleNetworkTapsClient_BeginUpdateAdministrativeState() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkTapsClientUpdateAdministrativeStateResponse{
-	// 	UpdateAdministrativeStateResponse: &armmanagednetworkfabric.UpdateAdministrativeStateResponse{
+	// 	UpdateAdministrativeStateResponse: armmanagednetworkfabric.UpdateAdministrativeStateResponse{
 	// 		Status: to.Ptr("Failed"),
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr(""),

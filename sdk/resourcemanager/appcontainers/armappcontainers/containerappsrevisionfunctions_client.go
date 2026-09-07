@@ -30,6 +30,9 @@ type ContainerAppsRevisionFunctionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewContainerAppsRevisionFunctionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsRevisionFunctionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,19 +68,14 @@ func (client *ContainerAppsRevisionFunctionsClient) Get(ctx context.Context, res
 	if err != nil {
 		return ContainerAppsRevisionFunctionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainerAppsRevisionFunctionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ContainerAppsRevisionFunctionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, revisionName string, functionName string, _ *ContainerAppsRevisionFunctionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/revisions/{revisionName}/functions/{functionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -108,8 +106,11 @@ func (client *ContainerAppsRevisionFunctionsClient) getCreateRequest(ctx context
 }
 
 // getHandleResponse handles the Get response.
-func (client *ContainerAppsRevisionFunctionsClient) getHandleResponse(resp *http.Response) (ContainerAppsRevisionFunctionsClientGetResponse, error) {
+func (client *ContainerAppsRevisionFunctionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsRevisionFunctionsClientGetResponse, error) {
 	result := ContainerAppsRevisionFunctionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerAppsFunction); err != nil {
 		return ContainerAppsRevisionFunctionsClientGetResponse{}, err
 	}
@@ -135,51 +136,65 @@ func (client *ContainerAppsRevisionFunctionsClient) NewListPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, containerAppName, revisionName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, containerAppName, revisionName, nextLink, options)
 			if err != nil {
 				return ContainerAppsRevisionFunctionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ContainerAppsRevisionFunctionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ContainerAppsRevisionFunctionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, revisionName string, _ *ContainerAppsRevisionFunctionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/revisions/{revisionName}/functions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ContainerAppsRevisionFunctionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, revisionName string, nextLink string, _ *ContainerAppsRevisionFunctionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/revisions/{revisionName}/functions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if containerAppName == "" {
+			return nil, errors.New("parameter containerAppName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
+		if revisionName == "" {
+			return nil, errors.New("parameter revisionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{revisionName}", url.PathEscape(revisionName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if containerAppName == "" {
-		return nil, errors.New("parameter containerAppName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
-	if revisionName == "" {
-		return nil, errors.New("parameter revisionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{revisionName}", url.PathEscape(revisionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251002Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ContainerAppsRevisionFunctionsClient) listHandleResponse(resp *http.Response) (ContainerAppsRevisionFunctionsClientListResponse, error) {
+func (client *ContainerAppsRevisionFunctionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsRevisionFunctionsClientListResponse, error) {
 	result := ContainerAppsRevisionFunctionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerAppsFunctionCollection); err != nil {
 		return ContainerAppsRevisionFunctionsClientListResponse{}, err
 	}

@@ -30,6 +30,9 @@ type DaprComponentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDaprComponentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DaprComponentsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,19 +68,14 @@ func (client *DaprComponentsClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return DaprComponentsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DaprComponentsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *DaprComponentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, componentName string, daprComponentEnvelope DaprComponent, _ *DaprComponentsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -108,8 +106,11 @@ func (client *DaprComponentsClient) createOrUpdateCreateRequest(ctx context.Cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DaprComponentsClient) createOrUpdateHandleResponse(resp *http.Response) (DaprComponentsClientCreateOrUpdateResponse, error) {
+func (client *DaprComponentsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (DaprComponentsClientCreateOrUpdateResponse, error) {
 	result := DaprComponentsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DaprComponent); err != nil {
 		return DaprComponentsClientCreateOrUpdateResponse{}, err
 	}
@@ -139,8 +140,7 @@ func (client *DaprComponentsClient) Delete(ctx context.Context, resourceGroupNam
 		return DaprComponentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return DaprComponentsClientDeleteResponse{}, err
+		return DaprComponentsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DaprComponentsClientDeleteResponse{}, nil
 }
@@ -149,7 +149,7 @@ func (client *DaprComponentsClient) Delete(ctx context.Context, resourceGroupNam
 func (client *DaprComponentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, componentName string, _ *DaprComponentsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -196,19 +196,14 @@ func (client *DaprComponentsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return DaprComponentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DaprComponentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *DaprComponentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, componentName string, _ *DaprComponentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -235,8 +230,11 @@ func (client *DaprComponentsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *DaprComponentsClient) getHandleResponse(resp *http.Response) (DaprComponentsClientGetResponse, error) {
+func (client *DaprComponentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DaprComponentsClientGetResponse, error) {
 	result := DaprComponentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DaprComponent); err != nil {
 		return DaprComponentsClientGetResponse{}, err
 	}
@@ -260,47 +258,61 @@ func (client *DaprComponentsClient) NewListPager(resourceGroupName string, envir
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, environmentName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, environmentName, nextLink, options)
 			if err != nil {
 				return DaprComponentsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DaprComponentsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *DaprComponentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, _ *DaprComponentsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DaprComponentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, nextLink string, _ *DaprComponentsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if environmentName == "" {
+			return nil, errors.New("parameter environmentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if environmentName == "" {
-		return nil, errors.New("parameter environmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251002Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DaprComponentsClient) listHandleResponse(resp *http.Response) (DaprComponentsClientListResponse, error) {
+func (client *DaprComponentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (DaprComponentsClientListResponse, error) {
 	result := DaprComponentsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DaprComponentsCollection); err != nil {
 		return DaprComponentsClientListResponse{}, err
 	}
@@ -330,19 +342,14 @@ func (client *DaprComponentsClient) ListSecrets(ctx context.Context, resourceGro
 	if err != nil {
 		return DaprComponentsClientListSecretsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DaprComponentsClientListSecretsResponse{}, err
-	}
-	resp, err := client.listSecretsHandleResponse(httpResp)
-	return resp, err
+	return client.listSecretsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listSecretsCreateRequest creates the ListSecrets request.
 func (client *DaprComponentsClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, componentName string, _ *DaprComponentsClientListSecretsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/listSecrets"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -369,8 +376,11 @@ func (client *DaprComponentsClient) listSecretsCreateRequest(ctx context.Context
 }
 
 // listSecretsHandleResponse handles the ListSecrets response.
-func (client *DaprComponentsClient) listSecretsHandleResponse(resp *http.Response) (DaprComponentsClientListSecretsResponse, error) {
+func (client *DaprComponentsClient) listSecretsHandleResponse(resp *http.Response, successCodes ...int) (DaprComponentsClientListSecretsResponse, error) {
 	result := DaprComponentsClientListSecretsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DaprSecretsCollection); err != nil {
 		return DaprComponentsClientListSecretsResponse{}, err
 	}

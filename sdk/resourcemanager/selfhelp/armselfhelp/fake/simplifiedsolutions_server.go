@@ -93,7 +93,7 @@ func (s *SimplifiedSolutionsServerTransport) dispatchBeginCreate(req *http.Reque
 	}
 	beginCreate := s.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Help/simplifiedSolutions/(?P<simplifiedSolutionsResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Help/simplifiedSolutions/(?P<simplifiedSolutionsResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -139,7 +139,7 @@ func (s *SimplifiedSolutionsServerTransport) dispatchGet(req *http.Request) (*ht
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Help/simplifiedSolutions/(?P<simplifiedSolutionsResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Help/simplifiedSolutions/(?P<simplifiedSolutionsResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

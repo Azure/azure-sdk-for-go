@@ -122,7 +122,7 @@ func ExampleClient_CreateOrUpdate() {
 	// 			EvaluationType: to.Ptr(armslis.EvaluationTypeWindowBased),
 	// 			ProvisioningState: to.Ptr(armslis.ProvisioningStateSucceeded),
 	// 			StreamingRuleID: to.Ptr("123"),
-	// 			StreamingRuleLastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-01T00:00:00Z"); return t}()),
+	// 			StreamingRuleLastUpdatedTimestamp: to.Ptr(time.Date(2025, time.March, 1, 0, 0, 0, 0, time.UTC)),
 	// 			EnableAlert: to.Ptr(true),
 	// 			ExecutionState: &armslis.ExecutionState{
 	// 				Message: to.Ptr(""),
@@ -272,7 +272,7 @@ func ExampleClient_Get() {
 	// 			EvaluationType: to.Ptr(armslis.EvaluationTypeWindowBased),
 	// 			ProvisioningState: to.Ptr(armslis.ProvisioningStateSucceeded),
 	// 			StreamingRuleID: to.Ptr("123"),
-	// 			StreamingRuleLastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-01T00:00:00Z"); return t}()),
+	// 			StreamingRuleLastUpdatedTimestamp: to.Ptr(time.Date(2025, time.March, 1, 0, 0, 0, 0, time.UTC)),
 	// 			EnableAlert: to.Ptr(true),
 	// 			ExecutionState: &armslis.ExecutionState{
 	// 				Message: to.Ptr(""),
@@ -406,7 +406,7 @@ func ExampleClient_NewListByParentPager() {
 		// 					EvaluationType: to.Ptr(armslis.EvaluationTypeWindowBased),
 		// 					ProvisioningState: to.Ptr(armslis.ProvisioningStateSucceeded),
 		// 					StreamingRuleID: to.Ptr("123"),
-		// 					StreamingRuleLastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-01T00:00:00Z"); return t}()),
+		// 					StreamingRuleLastUpdatedTimestamp: to.Ptr(time.Date(2025, time.March, 1, 0, 0, 0, 0, time.UTC)),
 		// 					EnableAlert: to.Ptr(true),
 		// 					ExecutionState: &armslis.ExecutionState{
 		// 						Message: to.Ptr(""),

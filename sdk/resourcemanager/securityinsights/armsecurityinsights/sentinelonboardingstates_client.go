@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultSentinelOnboardingStatesClientVersion string = "2025-07-01-preview"
-
 // SentinelOnboardingStatesClient contains the methods for the SentinelOnboardingStates group.
 // Don't use this type directly, use NewSentinelOnboardingStatesClient() instead.
 //
@@ -32,6 +30,9 @@ type SentinelOnboardingStatesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSentinelOnboardingStatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SentinelOnboardingStatesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,19 +66,14 @@ func (client *SentinelOnboardingStatesClient) Create(ctx context.Context, resour
 	if err != nil {
 		return SentinelOnboardingStatesClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return SentinelOnboardingStatesClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
 func (client *SentinelOnboardingStatesClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sentinelOnboardingStateName string, sentinelOnboardingStateParameter SentinelOnboardingState, _ *SentinelOnboardingStatesClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/onboardingStates/{sentinelOnboardingStateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -97,7 +93,7 @@ func (client *SentinelOnboardingStatesClient) createCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSentinelOnboardingStatesClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -108,8 +104,11 @@ func (client *SentinelOnboardingStatesClient) createCreateRequest(ctx context.Co
 }
 
 // createHandleResponse handles the Create response.
-func (client *SentinelOnboardingStatesClient) createHandleResponse(resp *http.Response) (SentinelOnboardingStatesClientCreateResponse, error) {
+func (client *SentinelOnboardingStatesClient) createHandleResponse(resp *http.Response, successCodes ...int) (SentinelOnboardingStatesClientCreateResponse, error) {
 	result := SentinelOnboardingStatesClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SentinelOnboardingState); err != nil {
 		return SentinelOnboardingStatesClientCreateResponse{}, err
 	}
@@ -138,8 +137,7 @@ func (client *SentinelOnboardingStatesClient) Delete(ctx context.Context, resour
 		return SentinelOnboardingStatesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SentinelOnboardingStatesClientDeleteResponse{}, err
+		return SentinelOnboardingStatesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SentinelOnboardingStatesClientDeleteResponse{}, nil
 }
@@ -148,7 +146,7 @@ func (client *SentinelOnboardingStatesClient) Delete(ctx context.Context, resour
 func (client *SentinelOnboardingStatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sentinelOnboardingStateName string, _ *SentinelOnboardingStatesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/onboardingStates/{sentinelOnboardingStateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -168,7 +166,7 @@ func (client *SentinelOnboardingStatesClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSentinelOnboardingStatesClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -194,19 +192,14 @@ func (client *SentinelOnboardingStatesClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return SentinelOnboardingStatesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SentinelOnboardingStatesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *SentinelOnboardingStatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sentinelOnboardingStateName string, _ *SentinelOnboardingStatesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/onboardingStates/{sentinelOnboardingStateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -226,15 +219,18 @@ func (client *SentinelOnboardingStatesClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSentinelOnboardingStatesClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SentinelOnboardingStatesClient) getHandleResponse(resp *http.Response) (SentinelOnboardingStatesClientGetResponse, error) {
+func (client *SentinelOnboardingStatesClient) getHandleResponse(resp *http.Response, successCodes ...int) (SentinelOnboardingStatesClientGetResponse, error) {
 	result := SentinelOnboardingStatesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SentinelOnboardingState); err != nil {
 		return SentinelOnboardingStatesClientGetResponse{}, err
 	}
@@ -261,19 +257,14 @@ func (client *SentinelOnboardingStatesClient) List(ctx context.Context, resource
 	if err != nil {
 		return SentinelOnboardingStatesClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SentinelOnboardingStatesClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
 func (client *SentinelOnboardingStatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *SentinelOnboardingStatesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/onboardingStates"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -289,15 +280,18 @@ func (client *SentinelOnboardingStatesClient) listCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSentinelOnboardingStatesClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SentinelOnboardingStatesClient) listHandleResponse(resp *http.Response) (SentinelOnboardingStatesClientListResponse, error) {
+func (client *SentinelOnboardingStatesClient) listHandleResponse(resp *http.Response, successCodes ...int) (SentinelOnboardingStatesClientListResponse, error) {
 	result := SentinelOnboardingStatesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SentinelOnboardingStatesList); err != nil {
 		return SentinelOnboardingStatesClientListResponse{}, err
 	}

@@ -20,7 +20,7 @@ import (
 // FileClient contains the methods for the File group.
 // Don't use this type directly, use a constructor function instead.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-10-06
 type FileClient struct {
 	internal *azcore.Client
 	url      string
@@ -74,7 +74,7 @@ func (client *FileClient) abortCopyCreateRequest(ctx context.Context, copyid str
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -149,7 +149,7 @@ func (client *FileClient) acquireLeaseCreateRequest(ctx context.Context, options
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -234,7 +234,7 @@ func (client *FileClient) breakLeaseCreateRequest(ctx context.Context, options *
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -329,7 +329,7 @@ func (client *FileClient) changeLeaseCreateRequest(ctx context.Context, leaseID 
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -488,7 +488,7 @@ func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLe
 		req.Raw().Header["x-ms-structured-content-length"] = []string{strconv.FormatInt(*options.StructuredContentLength, 10)}
 	}
 	req.Raw().Header["x-ms-type"] = []string{"file"}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	if options != nil && options.Optionalbody != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/octet-stream"}
 		if err := req.SetBody(options.Optionalbody, "application/octet-stream"); err != nil {
@@ -646,7 +646,7 @@ func (client *FileClient) createHardLinkCreateRequest(ctx context.Context, targe
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
 	req.Raw().Header["x-ms-type"] = []string{"file"}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -791,7 +791,7 @@ func (client *FileClient) createSymbolicLinkCreateRequest(ctx context.Context, l
 	if options != nil && options.Owner != nil {
 		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -910,7 +910,7 @@ func (client *FileClient) deleteCreateRequest(ctx context.Context, options *File
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -998,7 +998,7 @@ func (client *FileClient) downloadCreateRequest(ctx context.Context, options *Fi
 	if options != nil && options.StructuredBodyType != nil {
 		req.Raw().Header["x-ms-structured-body"] = []string{*options.StructuredBodyType}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -1232,7 +1232,7 @@ func (client *FileClient) forceCloseHandlesCreateRequest(ctx context.Context, ha
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
 	req.Raw().Header["x-ms-handle-id"] = []string{handleID}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -1324,7 +1324,7 @@ func (client *FileClient) getPropertiesCreateRequest(ctx context.Context, option
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -1548,7 +1548,7 @@ func (client *FileClient) getRangeListCreateRequest(ctx context.Context, options
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -1636,7 +1636,7 @@ func (client *FileClient) getSymbolicLinkCreateRequest(ctx context.Context, opti
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -1671,6 +1671,116 @@ func (client *FileClient) getSymbolicLinkHandleResponse(resp *http.Response) (Fi
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
 		result.Version = &val
+	}
+	return result, nil
+}
+
+// ListAllRanges - Returns a paginated list of valid page ranges for a file or snapshot of a file.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - options - FileClientListAllRangesOptions contains the optional parameters for the FileClient.ListAllRanges method.
+func (client *FileClient) ListAllRanges(ctx context.Context, options *FileClientListAllRangesOptions) (FileClientListAllRangesResponse, error) {
+	var err error
+	req, err := client.listAllRangesCreateRequest(ctx, options)
+	if err != nil {
+		return FileClientListAllRangesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return FileClientListAllRangesResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return FileClientListAllRangesResponse{}, err
+	}
+	resp, err := client.listAllRangesHandleResponse(httpResp)
+	return resp, err
+}
+
+// listAllRangesCreateRequest creates the ListAllRanges request.
+func (client *FileClient) listAllRangesCreateRequest(ctx context.Context, options *FileClientListAllRangesOptions) (*policy.Request, error) {
+	urlPath := "?comp=rangelist"
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.url, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Marker != nil {
+		reqQP.Set("marker", *options.Marker)
+	}
+	if options != nil && options.Maxresults != nil {
+		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
+	}
+	if options != nil && options.Prevsharesnapshot != nil {
+		reqQP.Set("prevsharesnapshot", *options.Prevsharesnapshot)
+	}
+	if options != nil && options.Sharesnapshot != nil {
+		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
+	}
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if options != nil && options.Range != nil {
+		req.Raw().Header["Range"] = []string{*options.Range}
+	}
+	if options != nil && options.AllowTrailingDot != nil {
+		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*options.AllowTrailingDot)}
+	}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	if options != nil && options.FileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
+	}
+	if options != nil && options.SupportRename != nil {
+		req.Raw().Header["x-ms-file-support-rename"] = []string{strconv.FormatBool(*options.SupportRename)}
+	}
+	if options != nil && options.LeaseID != nil {
+		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
+	}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	return req, nil
+}
+
+// listAllRangesHandleResponse handles the ListAllRanges response.
+func (client *FileClient) listAllRangesHandleResponse(resp *http.Response) (FileClientListAllRangesResponse, error) {
+	result := FileClientListAllRangesResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return FileClientListAllRangesResponse{}, err
+		}
+		result.Date = &date
+	}
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = (*azcore.ETag)(&val)
+	}
+	if val := resp.Header.Get("x-ms-content-length"); val != "" {
+		fileContentLength, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return FileClientListAllRangesResponse{}, err
+		}
+		result.FileContentLength = &fileContentLength
+	}
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return FileClientListAllRangesResponse{}, err
+		}
+		result.LastModified = &lastModified
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestID = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if err := runtime.UnmarshalAsXML(resp, &result.ShareFileRangeListSegment); err != nil {
+		return FileClientListAllRangesResponse{}, err
 	}
 	return result, nil
 }
@@ -1727,7 +1837,7 @@ func (client *FileClient) listHandlesCreateRequest(ctx context.Context, options 
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -1804,7 +1914,7 @@ func (client *FileClient) releaseLeaseCreateRequest(ctx context.Context, leaseID
 	}
 	req.Raw().Header["x-ms-lease-action"] = []string{"release"}
 	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -1931,7 +2041,7 @@ func (client *FileClient) renameCreateRequest(ctx context.Context, renameSource 
 	if options != nil && options.SourceLeaseID != nil {
 		req.Raw().Header["x-ms-source-lease-id"] = []string{*options.SourceLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -2103,7 +2213,7 @@ func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, optio
 	if options != nil && options.Owner != nil {
 		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -2247,7 +2357,7 @@ func (client *FileClient) setMetadataCreateRequest(ctx context.Context, options 
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -2391,7 +2501,7 @@ func (client *FileClient) startCopyCreateRequest(ctx context.Context, copySource
 	if options != nil && options.AllowSourceTrailingDot != nil {
 		req.Raw().Header["x-ms-source-allow-trailing-dot"] = []string{strconv.FormatBool(*options.AllowSourceTrailingDot)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -2496,7 +2606,7 @@ func (client *FileClient) uploadRangeCreateRequest(ctx context.Context, rangePar
 	if options != nil && options.StructuredContentLength != nil {
 		req.Raw().Header["x-ms-structured-content-length"] = []string{strconv.FormatInt(*options.StructuredContentLength, 10)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	req.Raw().Header["x-ms-write"] = []string{string(fileRangeWrite)}
 	if options != nil && options.Optionalbody != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/octet-stream"}
@@ -2637,7 +2747,7 @@ func (client *FileClient) uploadRangeFromURLCreateRequest(ctx context.Context, r
 	if options != nil && options.SourceRange != nil {
 		req.Raw().Header["x-ms-source-range"] = []string{*options.SourceRange}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	req.Raw().Header["x-ms-write"] = []string{string(fileRangeWriteFromURL)}
 	return req, nil
 }

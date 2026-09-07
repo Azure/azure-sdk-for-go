@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/IpamPools_Create.json
+// Generated from example definition: 2025-09-01/IpamPools_Create.json
 func ExampleIpamPoolsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,10 +62,10 @@ func ExampleIpamPoolsClient_BeginCreate() {
 	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateUpdating),
 	// 		},
 	// 		SystemData: &armnetwork.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 	// 		},
@@ -75,7 +75,7 @@ func ExampleIpamPoolsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/IpamPools_Delete.json
+// Generated from example definition: 2025-09-01/IpamPools_Delete.json
 func ExampleIpamPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleIpamPoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/IpamPools_Get.json
+// Generated from example definition: 2025-09-01/IpamPools_Get.json
 func ExampleIpamPoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,10 +133,10 @@ func ExampleIpamPoolsClient_Get() {
 	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armnetwork.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 	// 		},
@@ -146,7 +146,7 @@ func ExampleIpamPoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/IpamPools_GetPoolUsage.json
+// Generated from example definition: 2025-09-01/IpamPools_GetPoolUsage.json
 func ExampleIpamPoolsClient_GetPoolUsage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +221,7 @@ func ExampleIpamPoolsClient_GetPoolUsage() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/IpamPools_List.json
+// Generated from example definition: 2025-09-01/IpamPools_List.json
 func ExampleIpamPoolsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -265,10 +265,10 @@ func ExampleIpamPoolsClient_NewListPager() {
 		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 				},
 		// 				SystemData: &armnetwork.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 		// 					CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 		// 					LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 		// 				},
@@ -281,7 +281,7 @@ func ExampleIpamPoolsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/IpamPools_ListAssociatedResources.json
+// Generated from example definition: 2025-09-01/IpamPools_ListAssociatedResources.json
 func ExampleIpamPoolsClient_NewListAssociatedResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -312,7 +312,7 @@ func ExampleIpamPoolsClient_NewListAssociatedResourcesPager() {
 		// 				AddressPrefixes: []*string{
 		// 					to.Ptr("10.0.0.0/24"),
 		// 				},
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-09T20:00:00.0000000Z"); return t}()),
+		// 				CreatedAt: to.Ptr(time.Date(2020, time.September, 9, 20, 0, 0, 0, time.UTC)),
 		// 				NumberOfReservedIPAddresses: to.Ptr("0"),
 		// 				PoolID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/TestNetworkManager/ipamPools/TestPool"),
 		// 				ReservedPrefixes: []*string{
@@ -326,7 +326,7 @@ func ExampleIpamPoolsClient_NewListAssociatedResourcesPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/IpamPools_Update.json
+// Generated from example definition: 2025-09-01/IpamPools_Update.json
 func ExampleIpamPoolsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -363,10 +363,10 @@ func ExampleIpamPoolsClient_Update() {
 	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armnetwork.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 	// 		},

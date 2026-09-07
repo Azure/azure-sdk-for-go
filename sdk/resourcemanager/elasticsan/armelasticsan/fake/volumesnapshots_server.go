@@ -110,7 +110,7 @@ func (v *VolumeSnapshotsServerTransport) dispatchBeginCreate(req *http.Request) 
 	}
 	beginCreate := v.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumegroups/(?P<volumeGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/snapshots/(?P<snapshotName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumegroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/snapshots/(?P<snapshotName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -166,7 +166,7 @@ func (v *VolumeSnapshotsServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	beginDelete := v.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumegroups/(?P<volumeGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/snapshots/(?P<snapshotName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumegroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/snapshots/(?P<snapshotName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -216,7 +216,7 @@ func (v *VolumeSnapshotsServerTransport) dispatchGet(req *http.Request) (*http.R
 	if v.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumegroups/(?P<volumeGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/snapshots/(?P<snapshotName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumegroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/snapshots/(?P<snapshotName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -259,7 +259,7 @@ func (v *VolumeSnapshotsServerTransport) dispatchNewListByVolumeGroupPager(req *
 	}
 	newListByVolumeGroupPager := v.newListByVolumeGroupPager.get(req)
 	if newListByVolumeGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumegroups/(?P<volumeGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/snapshots`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ElasticSan/elasticSans/(?P<elasticSanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumegroups/(?P<volumeGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/snapshots`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

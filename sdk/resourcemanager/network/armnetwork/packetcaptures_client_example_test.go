@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/NetworkWatcherPacketCaptureCreate.json
+// Generated from example definition: 2025-09-01/NetworkWatcherPacketCaptureCreate.json
 func ExamplePacketCapturesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExamplePacketCapturesClient_BeginCreate() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/NetworkWatcherPacketCaptureDelete.json
+// Generated from example definition: 2025-09-01/NetworkWatcherPacketCaptureDelete.json
 func ExamplePacketCapturesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExamplePacketCapturesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/NetworkWatcherPacketCaptureGet.json
+// Generated from example definition: 2025-09-01/NetworkWatcherPacketCaptureGet.json
 func ExamplePacketCapturesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExamplePacketCapturesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkWatcherPacketCaptureQueryStatus.json
+// Generated from example definition: 2025-09-01/NetworkWatcherPacketCaptureQueryStatus.json
 func ExamplePacketCapturesClient_BeginGetStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +144,7 @@ func ExamplePacketCapturesClient_BeginGetStatus() {
 	// res = armnetwork.PacketCapturesClientGetStatusResponse{
 	// 	PacketCaptureQueryStatusResult: armnetwork.PacketCaptureQueryStatusResult{
 	// 		Name: to.Ptr("pc1"),
-	// 		CaptureStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-07T12:35:24Z"); return t}()),
+	// 		CaptureStartTime: to.Ptr(time.Date(2016, time.September, 7, 12, 35, 24, 0, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkWatchers/nw1/packetCaptures/pc1"),
 	// 		PacketCaptureError: []*armnetwork.PcError{
 	// 		},
@@ -154,7 +154,7 @@ func ExamplePacketCapturesClient_BeginGetStatus() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkWatcherPacketCapturesList.json
+// Generated from example definition: 2025-09-01/NetworkWatcherPacketCapturesList.json
 func ExamplePacketCapturesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,7 +228,7 @@ func ExamplePacketCapturesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/NetworkWatcherPacketCaptureStop.json
+// Generated from example definition: 2025-09-01/NetworkWatcherPacketCaptureStop.json
 func ExamplePacketCapturesClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

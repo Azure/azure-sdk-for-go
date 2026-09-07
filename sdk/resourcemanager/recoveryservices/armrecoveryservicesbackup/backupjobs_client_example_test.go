@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-31-preview/Common/ListJobs.json
+// Generated from example definition: 2026-07-01/Common/ListJobs.json
 func ExampleBackupJobsClient_NewListPager_listAllJobs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleBackupJobsClient_NewListPager_listAllJobs() {
 		// 					EntityFriendlyName: to.Ptr("testvm"),
 		// 					JobType: to.Ptr("AzureIaaSVMJob"),
 		// 					Operation: to.Ptr("Backup"),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:31:07.014604Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2017, time.August, 3, 5, 31, 7, 14604000, time.UTC)),
 		// 					Status: to.Ptr("InProgress"),
 		// 					VirtualMachineVersion: to.Ptr("Compute"),
 		// 				},
@@ -61,11 +61,11 @@ func ExampleBackupJobsClient_NewListPager_listAllJobs() {
 		// 					ActivityID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					BackupManagementType: to.Ptr(armrecoveryservicesbackup.BackupManagementTypeAzureIaasVM),
 		// 					Duration: to.Ptr("PT31.3066291S"),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:31:03.7553376Z"); return t}()),
+		// 					EndTime: to.Ptr(time.Date(2017, time.August, 3, 5, 31, 3, 755337600, time.UTC)),
 		// 					EntityFriendlyName: to.Ptr("testvm"),
 		// 					JobType: to.Ptr("AzureIaaSVMJob"),
 		// 					Operation: to.Ptr("ConfigureBackup"),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:30:32.4487085Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2017, time.August, 3, 5, 30, 32, 448708500, time.UTC)),
 		// 					Status: to.Ptr("Completed"),
 		// 					VirtualMachineVersion: to.Ptr("Compute"),
 		// 				},
@@ -76,7 +76,7 @@ func ExampleBackupJobsClient_NewListPager_listAllJobs() {
 	}
 }
 
-// Generated from example definition: 2026-01-31-preview/Common/ListJobsWithAllSupportedFilters.json
+// Generated from example definition: 2026-07-01/Common/ListJobsWithAllSupportedFilters.json
 func ExampleBackupJobsClient_NewListPager_listJobsWithFilters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +113,7 @@ func ExampleBackupJobsClient_NewListPager_listJobsWithFilters() {
 		// 					EntityFriendlyName: to.Ptr("testvm"),
 		// 					JobType: to.Ptr("AzureIaaSVMJob"),
 		// 					Operation: to.Ptr("Backup"),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:31:07.014604Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2017, time.August, 3, 5, 31, 7, 14604000, time.UTC)),
 		// 					Status: to.Ptr("InProgress"),
 		// 					VirtualMachineVersion: to.Ptr("Compute"),
 		// 				},
@@ -124,7 +124,7 @@ func ExampleBackupJobsClient_NewListPager_listJobsWithFilters() {
 	}
 }
 
-// Generated from example definition: 2026-01-31-preview/Common/ListJobsWithStartTimeAndEndTimeFilters.json
+// Generated from example definition: 2026-07-01/Common/ListJobsWithStartTimeAndEndTimeFilters.json
 func ExampleBackupJobsClient_NewListPager_listJobsWithTimeFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleBackupJobsClient_NewListPager_listJobsWithTimeFilter() {
 		// 					EntityFriendlyName: to.Ptr("testvm"),
 		// 					JobType: to.Ptr("AzureIaaSVMJob"),
 		// 					Operation: to.Ptr("Backup"),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:31:07.014604Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2017, time.August, 3, 5, 31, 7, 14604000, time.UTC)),
 		// 					Status: to.Ptr("InProgress"),
 		// 					VirtualMachineVersion: to.Ptr("Compute"),
 		// 				},
@@ -175,11 +175,11 @@ func ExampleBackupJobsClient_NewListPager_listJobsWithTimeFilter() {
 		// 					ActivityID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					BackupManagementType: to.Ptr(armrecoveryservicesbackup.BackupManagementTypeAzureIaasVM),
 		// 					Duration: to.Ptr("PT31.3066291S"),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:31:03.7553376Z"); return t}()),
+		// 					EndTime: to.Ptr(time.Date(2017, time.August, 3, 5, 31, 3, 755337600, time.UTC)),
 		// 					EntityFriendlyName: to.Ptr("testvm"),
 		// 					JobType: to.Ptr("AzureIaaSVMJob"),
 		// 					Operation: to.Ptr("ConfigureBackup"),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:30:32.4487085Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2017, time.August, 3, 5, 30, 32, 448708500, time.UTC)),
 		// 					Status: to.Ptr("Completed"),
 		// 					VirtualMachineVersion: to.Ptr("Compute"),
 		// 				},

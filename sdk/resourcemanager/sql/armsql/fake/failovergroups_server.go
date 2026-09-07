@@ -142,7 +142,7 @@ func (f *FailoverGroupsServerTransport) dispatchBeginCreateOrUpdate(req *http.Re
 	}
 	beginCreateOrUpdate := f.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failoverGroups/(?P<failoverGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/failoverGroups/(?P<failoverGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -194,7 +194,7 @@ func (f *FailoverGroupsServerTransport) dispatchBeginDelete(req *http.Request) (
 	}
 	beginDelete := f.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failoverGroups/(?P<failoverGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/failoverGroups/(?P<failoverGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -242,7 +242,7 @@ func (f *FailoverGroupsServerTransport) dispatchBeginFailover(req *http.Request)
 	}
 	beginFailover := f.beginFailover.get(req)
 	if beginFailover == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failoverGroups/(?P<failoverGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failover`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/failoverGroups/(?P<failoverGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/failover`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -290,7 +290,7 @@ func (f *FailoverGroupsServerTransport) dispatchBeginForceFailoverAllowDataLoss(
 	}
 	beginForceFailoverAllowDataLoss := f.beginForceFailoverAllowDataLoss.get(req)
 	if beginForceFailoverAllowDataLoss == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failoverGroups/(?P<failoverGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/forceFailoverAllowDataLoss`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/failoverGroups/(?P<failoverGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/forceFailoverAllowDataLoss`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -336,7 +336,7 @@ func (f *FailoverGroupsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if f.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failoverGroups/(?P<failoverGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/failoverGroups/(?P<failoverGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -375,7 +375,7 @@ func (f *FailoverGroupsServerTransport) dispatchNewListByServerPager(req *http.R
 	}
 	newListByServerPager := f.newListByServerPager.get(req)
 	if newListByServerPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failoverGroups`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/failoverGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -416,7 +416,7 @@ func (f *FailoverGroupsServerTransport) dispatchBeginTryPlannedBeforeForcedFailo
 	}
 	beginTryPlannedBeforeForcedFailover := f.beginTryPlannedBeforeForcedFailover.get(req)
 	if beginTryPlannedBeforeForcedFailover == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failoverGroups/(?P<failoverGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tryPlannedBeforeForcedFailover`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/failoverGroups/(?P<failoverGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tryPlannedBeforeForcedFailover`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -464,7 +464,7 @@ func (f *FailoverGroupsServerTransport) dispatchBeginUpdate(req *http.Request) (
 	}
 	beginUpdate := f.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failoverGroups/(?P<failoverGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/failoverGroups/(?P<failoverGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

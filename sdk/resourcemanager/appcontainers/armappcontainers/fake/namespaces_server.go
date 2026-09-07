@@ -81,7 +81,7 @@ func (n *NamespacesServerTransport) dispatchCheckNameAvailability(req *http.Requ
 	if n.srv.CheckNameAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkNameAvailability`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

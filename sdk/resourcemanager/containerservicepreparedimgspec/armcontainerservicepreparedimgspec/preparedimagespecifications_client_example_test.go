@@ -89,10 +89,10 @@ func ExamplePreparedImageSpecificationsClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armcontainerservicepreparedimgspec.SystemData{
 	// 			CreatedBy: to.Ptr("someUser"),
 	// 			CreatedByType: to.Ptr(armcontainerservicepreparedimgspec.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-02T04:08:43.702Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.May, 2, 4, 8, 43, 702000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("someOtherUser"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicepreparedimgspec.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-02T04:08:43.702Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.May, 2, 4, 8, 43, 702000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -192,10 +192,10 @@ func ExamplePreparedImageSpecificationsClient_Get() {
 	// 		SystemData: &armcontainerservicepreparedimgspec.SystemData{
 	// 			CreatedBy: to.Ptr("someUser"),
 	// 			CreatedByType: to.Ptr(armcontainerservicepreparedimgspec.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-02T04:08:43.702Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.May, 2, 4, 8, 43, 702000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("someOtherUser"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicepreparedimgspec.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-02T04:08:43.702Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.May, 2, 4, 8, 43, 702000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -248,10 +248,10 @@ func ExamplePreparedImageSpecificationsClient_GetVersion() {
 	// 		SystemData: &armcontainerservicepreparedimgspec.SystemData{
 	// 			CreatedBy: to.Ptr("someUser"),
 	// 			CreatedByType: to.Ptr(armcontainerservicepreparedimgspec.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-02T04:08:43.702Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.May, 2, 4, 8, 43, 702000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("someOtherUser"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicepreparedimgspec.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-02T04:08:43.702Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.May, 2, 4, 8, 43, 702000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -315,10 +315,10 @@ func ExamplePreparedImageSpecificationsClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armcontainerservicepreparedimgspec.SystemData{
 		// 					CreatedBy: to.Ptr("someUser"),
 		// 					CreatedByType: to.Ptr(armcontainerservicepreparedimgspec.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-02T04:08:43.702Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.May, 2, 4, 8, 43, 702000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("someOtherUser"),
 		// 					LastModifiedByType: to.Ptr(armcontainerservicepreparedimgspec.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-02T04:08:43.702Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.May, 2, 4, 8, 43, 702000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -386,10 +386,10 @@ func ExamplePreparedImageSpecificationsClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armcontainerservicepreparedimgspec.SystemData{
 		// 					CreatedBy: to.Ptr("someUser"),
 		// 					CreatedByType: to.Ptr(armcontainerservicepreparedimgspec.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-02T04:08:43.702Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.May, 2, 4, 8, 43, 702000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("someOtherUser"),
 		// 					LastModifiedByType: to.Ptr(armcontainerservicepreparedimgspec.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-02T04:08:43.702Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.May, 2, 4, 8, 43, 702000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -452,10 +452,10 @@ func ExamplePreparedImageSpecificationsClient_NewListVersionsPager() {
 		// 				SystemData: &armcontainerservicepreparedimgspec.SystemData{
 		// 					CreatedBy: to.Ptr("someUser"),
 		// 					CreatedByType: to.Ptr(armcontainerservicepreparedimgspec.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-02T04:08:43.702Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.May, 2, 4, 8, 43, 702000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("someOtherUser"),
 		// 					LastModifiedByType: to.Ptr(armcontainerservicepreparedimgspec.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-02T04:08:43.702Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.May, 2, 4, 8, 43, 702000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -520,10 +520,10 @@ func ExamplePreparedImageSpecificationsClient_Update() {
 	// 		SystemData: &armcontainerservicepreparedimgspec.SystemData{
 	// 			CreatedBy: to.Ptr("someUser"),
 	// 			CreatedByType: to.Ptr(armcontainerservicepreparedimgspec.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-02T04:08:43.702Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.May, 2, 4, 8, 43, 702000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("someOtherUser"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicepreparedimgspec.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-02T04:08:43.702Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.May, 2, 4, 8, 43, 702000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

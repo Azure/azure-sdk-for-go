@@ -324,7 +324,9 @@ type DeploymentStatus struct {
 // Diagnostic - A Diagnostic resource.
 type Diagnostic struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location         *string
+	Location *string
+
+	// The extended location of the resource.
 	ExtendedLocation *ExtendedLocation
 
 	// The resource-specific properties for this resource.
@@ -496,6 +498,7 @@ type ErrorDetail struct {
 
 // Execution Resource
 type Execution struct {
+	// The extended location of the resource.
 	ExtendedLocation *ExtendedLocation
 
 	// The resource-specific properties for this resource.
@@ -585,6 +588,7 @@ type InstallSolutionParameter struct {
 
 // Instance Resource. Represents a deployment object.
 type Instance struct {
+	// The extended location of the resource.
 	ExtendedLocation *ExtendedLocation
 
 	// The resource-specific properties for this resource.
@@ -611,6 +615,7 @@ type Instance struct {
 
 // InstanceHistory Resource
 type InstanceHistory struct {
+	// The extended location of the resource.
 	ExtendedLocation *ExtendedLocation
 
 	// The resource-specific properties for this resource.
@@ -1040,6 +1045,7 @@ type SiteReferenceProperties struct {
 
 // Solution Resource attached to a Target
 type Solution struct {
+	// The extended location of the resource.
 	ExtendedLocation *ExtendedLocation
 
 	// The resource-specific properties for this resource.
@@ -1296,6 +1302,7 @@ type SolutionUpdateProperties struct {
 
 // SolutionVersion - Solution Version Resource. It has the resolved configuration along with edge specification.
 type SolutionVersion struct {
+	// The extended location of the resource.
 	ExtendedLocation *ExtendedLocation
 
 	// The resource-specific properties for this resource.
@@ -1458,7 +1465,9 @@ type SystemData struct {
 // Target Resource. Represents a resource to be deployed on the edge.
 type Target struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location         *string
+	Location *string
+
+	// The extended location of the resource.
 	ExtendedLocation *ExtendedLocation
 
 	// The resource-specific properties for this resource.
@@ -1641,6 +1650,7 @@ type VersionParameter struct {
 
 // Workflow Resource
 type Workflow struct {
+	// The extended location of the resource.
 	ExtendedLocation *ExtendedLocation
 
 	// The resource-specific properties for this resource.
@@ -1685,6 +1695,7 @@ type WorkflowProperties struct {
 
 // WorkflowVersion - Workflow Version Resource
 type WorkflowVersion struct {
+	// The extended location of the resource.
 	ExtendedLocation *ExtendedLocation
 
 	// The resource-specific properties for this resource.

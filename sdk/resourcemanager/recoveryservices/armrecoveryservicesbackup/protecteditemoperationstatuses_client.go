@@ -18,6 +18,8 @@ import (
 
 // ProtectedItemOperationStatusesClient contains the methods for the ProtectedItemOperationStatuses group.
 // Don't use this type directly, use NewProtectedItemOperationStatusesClient() instead.
+//
+// Generated from API version 2026-07-01
 type ProtectedItemOperationStatusesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type ProtectedItemOperationStatusesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProtectedItemOperationStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectedItemOperationStatusesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -43,8 +48,6 @@ func NewProtectedItemOperationStatusesClient(subscriptionID string, credential a
 // or failed. You can refer to the OperationStatus enum for all the possible states of the operation. Some operations
 // create jobs. This method returns the list of jobs associated with the operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectedItemOperationStatusesClientGetOptions contains the optional parameters for the ProtectedItemOperationStatusesClient.Get
 //     method.
@@ -62,19 +65,14 @@ func (client *ProtectedItemOperationStatusesClient) Get(ctx context.Context, vau
 	if err != nil {
 		return ProtectedItemOperationStatusesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProtectedItemOperationStatusesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ProtectedItemOperationStatusesClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, operationID string, _ *ProtectedItemOperationStatusesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/operationsStatus/{operationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if vaultName == "" {
@@ -106,15 +104,18 @@ func (client *ProtectedItemOperationStatusesClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProtectedItemOperationStatusesClient) getHandleResponse(resp *http.Response) (ProtectedItemOperationStatusesClientGetResponse, error) {
+func (client *ProtectedItemOperationStatusesClient) getHandleResponse(resp *http.Response, successCodes ...int) (ProtectedItemOperationStatusesClientGetResponse, error) {
 	result := ProtectedItemOperationStatusesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatus); err != nil {
 		return ProtectedItemOperationStatusesClientGetResponse{}, err
 	}

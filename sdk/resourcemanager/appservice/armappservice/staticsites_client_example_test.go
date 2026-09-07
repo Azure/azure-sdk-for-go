@@ -371,7 +371,7 @@ func ExampleStaticSitesClient_BeginCreateOrUpdateStaticSiteCustomDomain() {
 	// 	StaticSiteCustomDomainOverviewARMResource: armappservice.StaticSiteCustomDomainOverviewARMResource{
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSitesBuilds/testStaticSite0/customDomains/custom.domain.net"),
 	// 		Properties: &armappservice.StaticSiteCustomDomainOverviewARMResourceProperties{
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 	// 			DomainName: to.Ptr("custom.domain.net"),
 	// 		},
 	// 	},
@@ -441,7 +441,7 @@ func ExampleStaticSitesClient_CreateUserRolesInvitationLink() {
 	// res = armappservice.StaticSitesClientCreateUserRolesInvitationLinkResponse{
 	// 	StaticSiteUserInvitationResponseResource: armappservice.StaticSiteUserInvitationResponseResource{
 	// 		Properties: &armappservice.StaticSiteUserInvitationResponseResourceProperties{
-	// 			ExpiresOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-28T16:53:56.211Z"); return t}()),
+	// 			ExpiresOn: to.Ptr(time.Date(2020, time.February, 28, 16, 53, 56, 211000000, time.UTC)),
 	// 			InvitationURL: to.Ptr("https://happy-sea-15afae3e.azurestaticwebsites.net?invite=asdf"),
 	// 		},
 	// 	},
@@ -1157,7 +1157,7 @@ func ExampleStaticSitesClient_GetLinkedBackend() {
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/linkedBackends/testBackend"),
 	// 		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
 	// 			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-24T17:33:11.641Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2021, time.December, 24, 17, 33, 11, 641000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			Region: to.Ptr("West US 2"),
 	// 		},
@@ -1190,7 +1190,7 @@ func ExampleStaticSitesClient_GetLinkedBackendForBuild() {
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/linkedBackends/testBackend"),
 	// 		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
 	// 			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-24T17:33:11.641Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2021, time.December, 24, 17, 33, 11, 641000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			Region: to.Ptr("West US 2"),
 	// 		},
@@ -1229,7 +1229,7 @@ func ExampleStaticSitesClient_NewGetLinkedBackendsPager() {
 		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/linkedBackends/testBackend"),
 		// 				Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
 		// 					BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testBackend"),
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					Region: to.Ptr("West US 2"),
 		// 				},
@@ -1271,7 +1271,7 @@ func ExampleStaticSitesClient_NewGetLinkedBackendsForBuildPager() {
 		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/linkedBackends/testBackend"),
 		// 				Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
 		// 					BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testBackend"),
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					Region: to.Ptr("West US 2"),
 		// 				},
@@ -1438,7 +1438,7 @@ func ExampleStaticSitesClient_GetStaticSite() {
 	// 			LinkedBackends: []*armappservice.StaticSiteLinkedBackend{
 	// 				{
 	// 					BackendResourceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.ApiManagement/service/apimService0"),
-	// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-27T04:57:24.8058474"); return t}()),
+	// 					CreatedOn: to.Ptr(time.Time{}),
 	// 					ProvisioningState: to.Ptr("Succeeded"),
 	// 				},
 	// 			},
@@ -1478,13 +1478,13 @@ func ExampleStaticSitesClient_GetStaticSiteBuild() {
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/12"),
 	// 		Properties: &armappservice.StaticSiteBuildARMResourceProperties{
 	// 			BuildID: to.Ptr("12"),
-	// 			CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+	// 			CreatedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 	// 			Hostname: to.Ptr("happy-sea-15afae3e-12.westus2.azurestaticwebsites.net"),
-	// 			LastUpdatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+	// 			LastUpdatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 	// 			LinkedBackends: []*armappservice.StaticSiteLinkedBackend{
 	// 				{
 	// 					BackendResourceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.ApiManagement/service/apimService0"),
-	// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-27T04:57:24.8058474"); return t}()),
+	// 					CreatedOn: to.Ptr(time.Time{}),
 	// 					ProvisioningState: to.Ptr("Succeeded"),
 	// 				},
 	// 			},
@@ -1525,9 +1525,9 @@ func ExampleStaticSitesClient_NewGetStaticSiteBuildsPager() {
 		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default"),
 		// 				Properties: &armappservice.StaticSiteBuildARMResourceProperties{
 		// 					BuildID: to.Ptr("default"),
-		// 					CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+		// 					CreatedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 		// 					Hostname: to.Ptr("happy-sea-15afae3e.azurestaticwebsites.net"),
-		// 					LastUpdatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+		// 					LastUpdatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 		// 					LinkedBackends: []*armappservice.StaticSiteLinkedBackend{
 		// 					},
 		// 					SourceBranch: to.Ptr("demo"),
@@ -1538,13 +1538,13 @@ func ExampleStaticSitesClient_NewGetStaticSiteBuildsPager() {
 		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/12"),
 		// 				Properties: &armappservice.StaticSiteBuildARMResourceProperties{
 		// 					BuildID: to.Ptr("12"),
-		// 					CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+		// 					CreatedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 		// 					Hostname: to.Ptr("happy-sea-15afae3e-12.westus2.azurestaticwebsites.net"),
-		// 					LastUpdatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+		// 					LastUpdatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 		// 					LinkedBackends: []*armappservice.StaticSiteLinkedBackend{
 		// 						{
 		// 							BackendResourceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.ApiManagement/service/apimService0"),
-		// 							CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-27T04:57:24.8058474"); return t}()),
+		// 							CreatedOn: to.Ptr(time.Time{}),
 		// 							ProvisioningState: to.Ptr("Succeeded"),
 		// 						},
 		// 					},
@@ -1581,7 +1581,7 @@ func ExampleStaticSitesClient_GetStaticSiteCustomDomain() {
 	// 	StaticSiteCustomDomainOverviewARMResource: armappservice.StaticSiteCustomDomainOverviewARMResource{
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSitesBuilds/testStaticSite0/customDomains/custom.domain.net"),
 	// 		Properties: &armappservice.StaticSiteCustomDomainOverviewARMResourceProperties{
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 	// 			DomainName: to.Ptr("custom.domain.net"),
 	// 		},
 	// 	},
@@ -1668,7 +1668,7 @@ func ExampleStaticSitesClient_GetUserProvidedFunctionAppForStaticSite() {
 	// 		Type: to.Ptr("Microsoft.Web/staticSites/builds/userProvidedFunctionApps"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/userProvidedFunctionApps/testFunctionApp"),
 	// 		Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 	// 			FunctionAppRegion: to.Ptr("West US 2"),
 	// 			FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
 	// 		},
@@ -1700,7 +1700,7 @@ func ExampleStaticSitesClient_GetUserProvidedFunctionAppForStaticSiteBuild() {
 	// 		Type: to.Ptr("Microsoft.Web/staticSites/builds/userProvidedFunctionApps"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/userProvidedFunctionApps/testFunctionApp"),
 	// 		Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 	// 			FunctionAppRegion: to.Ptr("West US 2"),
 	// 			FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
 	// 		},
@@ -1738,7 +1738,7 @@ func ExampleStaticSitesClient_NewGetUserProvidedFunctionAppsForStaticSitePager()
 		// 				Type: to.Ptr("Microsoft.Web/staticSites/builds/userProvidedFunctionApps"),
 		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/userProvidedFunctionApps/testFunctionApp"),
 		// 				Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 		// 					FunctionAppRegion: to.Ptr("West US 2"),
 		// 					FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
 		// 				},
@@ -1779,7 +1779,7 @@ func ExampleStaticSitesClient_NewGetUserProvidedFunctionAppsForStaticSiteBuildPa
 		// 				Type: to.Ptr("Microsoft.Web/staticSites/builds/userProvidedFunctionApps"),
 		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/userProvidedFunctionApps/testFunctionApp"),
 		// 				Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 		// 					FunctionAppRegion: to.Ptr("West US 2"),
 		// 					FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
 		// 				},
@@ -1824,7 +1824,7 @@ func ExampleStaticSitesClient_BeginLinkBackend() {
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/linkedBackends/testBackend"),
 	// 		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
 	// 			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-24T17:33:11.641Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2021, time.December, 24, 17, 33, 11, 641000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			Region: to.Ptr("West US 2"),
 	// 		},
@@ -1866,7 +1866,7 @@ func ExampleStaticSitesClient_BeginLinkBackendToBuild() {
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/linkedBackends/testBackend"),
 	// 		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
 	// 			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-24T17:33:11.641Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2021, time.December, 24, 17, 33, 11, 641000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			Region: to.Ptr("West US 2"),
 	// 		},
@@ -2148,7 +2148,7 @@ func ExampleStaticSitesClient_NewListStaticSiteCustomDomainsPager() {
 		// 			{
 		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSitesBuilds/testStaticSite0/customDomains/custom.domain.net"),
 		// 				Properties: &armappservice.StaticSiteCustomDomainOverviewARMResourceProperties{
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 		// 					DomainName: to.Ptr("custom.domain.net"),
 		// 				},
 		// 			},
@@ -2363,7 +2363,7 @@ func ExampleStaticSitesClient_BeginRegisterUserProvidedFunctionAppWithStaticSite
 	// 		Type: to.Ptr("Microsoft.Web/staticSites/builds/userProvidedFunctionApps"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/userProvidedFunctionApps/testFunctionApp"),
 	// 		Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 	// 			FunctionAppRegion: to.Ptr("West US 2"),
 	// 			FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
 	// 		},
@@ -2405,7 +2405,7 @@ func ExampleStaticSitesClient_BeginRegisterUserProvidedFunctionAppWithStaticSite
 	// 		Type: to.Ptr("Microsoft.Web/staticSites/builds/userProvidedFunctionApps"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/userProvidedFunctionApps/testFunctionApp"),
 	// 		Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 	// 			FunctionAppRegion: to.Ptr("West US 2"),
 	// 			FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
 	// 		},

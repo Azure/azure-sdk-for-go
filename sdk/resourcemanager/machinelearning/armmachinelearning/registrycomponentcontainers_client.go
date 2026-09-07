@@ -30,6 +30,9 @@ type RegistryComponentContainersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRegistryComponentContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegistryComponentContainersClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -88,8 +91,7 @@ func (client *RegistryComponentContainersClient) createOrUpdate(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -98,7 +100,7 @@ func (client *RegistryComponentContainersClient) createOrUpdate(ctx context.Cont
 func (client *RegistryComponentContainersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, componentName string, body ComponentContainer, _ *RegistryComponentContainersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/components/{componentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -173,8 +175,7 @@ func (client *RegistryComponentContainersClient) deleteOperation(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -183,7 +184,7 @@ func (client *RegistryComponentContainersClient) deleteOperation(ctx context.Con
 func (client *RegistryComponentContainersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, componentName string, _ *RegistryComponentContainersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/components/{componentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -231,19 +232,14 @@ func (client *RegistryComponentContainersClient) Get(ctx context.Context, resour
 	if err != nil {
 		return RegistryComponentContainersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RegistryComponentContainersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *RegistryComponentContainersClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, componentName string, _ *RegistryComponentContainersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/components/{componentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -270,8 +266,11 @@ func (client *RegistryComponentContainersClient) getCreateRequest(ctx context.Co
 }
 
 // getHandleResponse handles the Get response.
-func (client *RegistryComponentContainersClient) getHandleResponse(resp *http.Response) (RegistryComponentContainersClientGetResponse, error) {
+func (client *RegistryComponentContainersClient) getHandleResponse(resp *http.Response, successCodes ...int) (RegistryComponentContainersClientGetResponse, error) {
 	result := RegistryComponentContainersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentContainer); err != nil {
 		return RegistryComponentContainersClientGetResponse{}, err
 	}
@@ -296,50 +295,64 @@ func (client *RegistryComponentContainersClient) NewListPager(resourceGroupName 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, registryName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, registryName, nextLink, options)
 			if err != nil {
 				return RegistryComponentContainersClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RegistryComponentContainersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *RegistryComponentContainersClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *RegistryComponentContainersClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/components"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RegistryComponentContainersClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, nextLink string, options *RegistryComponentContainersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/components"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if registryName == "" {
+			return nil, errors.New("parameter registryName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if registryName == "" {
-		return nil, errors.New("parameter registryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", *options.Skip)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", *options.Skip)
+		}
+		reqQP.Set("api-version", version20260515Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RegistryComponentContainersClient) listHandleResponse(resp *http.Response) (RegistryComponentContainersClientListResponse, error) {
+func (client *RegistryComponentContainersClient) listHandleResponse(resp *http.Response, successCodes ...int) (RegistryComponentContainersClientListResponse, error) {
 	result := RegistryComponentContainersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentContainerResourceArmPaginatedResult); err != nil {
 		return RegistryComponentContainersClientListResponse{}, err
 	}

@@ -46,10 +46,10 @@ func ExampleSaaSOperationGroupClient_BeginActivateResource_saaSOperationGroupAct
 	// 		SystemData: &armnapsteromniagentapi.SystemData{
 	// 			CreatedBy: to.Ptr("john.doe@contoso.com"),
 	// 			CreatedByType: to.Ptr(armnapsteromniagentapi.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-24T15:55:17.787Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.December, 24, 15, 55, 17, 787000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("jane.smith@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armnapsteromniagentapi.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-24T15:55:17.787Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.December, 24, 15, 55, 17, 787000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

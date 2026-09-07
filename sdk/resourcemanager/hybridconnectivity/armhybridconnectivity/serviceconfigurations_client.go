@@ -59,12 +59,7 @@ func (client *ServiceConfigurationsClient) CreateOrupdate(ctx context.Context, r
 	if err != nil {
 		return ServiceConfigurationsClientCreateOrupdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ServiceConfigurationsClientCreateOrupdateResponse{}, err
-	}
-	resp, err := client.createOrupdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrupdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrupdateCreateRequest creates the CreateOrupdate request.
@@ -98,8 +93,11 @@ func (client *ServiceConfigurationsClient) createOrupdateCreateRequest(ctx conte
 }
 
 // createOrupdateHandleResponse handles the CreateOrupdate response.
-func (client *ServiceConfigurationsClient) createOrupdateHandleResponse(resp *http.Response) (ServiceConfigurationsClientCreateOrupdateResponse, error) {
+func (client *ServiceConfigurationsClient) createOrupdateHandleResponse(resp *http.Response, successCodes ...int) (ServiceConfigurationsClientCreateOrupdateResponse, error) {
 	result := ServiceConfigurationsClientCreateOrupdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceConfigurationResource); err != nil {
 		return ServiceConfigurationsClientCreateOrupdateResponse{}, err
 	}
@@ -128,8 +126,7 @@ func (client *ServiceConfigurationsClient) Delete(ctx context.Context, resourceU
 		return ServiceConfigurationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ServiceConfigurationsClientDeleteResponse{}, err
+		return ServiceConfigurationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ServiceConfigurationsClientDeleteResponse{}, nil
 }
@@ -180,12 +177,7 @@ func (client *ServiceConfigurationsClient) Get(ctx context.Context, resourceURI 
 	if err != nil {
 		return ServiceConfigurationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServiceConfigurationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -215,8 +207,11 @@ func (client *ServiceConfigurationsClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServiceConfigurationsClient) getHandleResponse(resp *http.Response) (ServiceConfigurationsClientGetResponse, error) {
+func (client *ServiceConfigurationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ServiceConfigurationsClientGetResponse, error) {
 	result := ServiceConfigurationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceConfigurationResource); err != nil {
 		return ServiceConfigurationsClientGetResponse{}, err
 	}
@@ -241,43 +236,57 @@ func (client *ServiceConfigurationsClient) NewListByEndpointResourcePager(resour
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByEndpointResourceCreateRequest(ctx, resourceURI, endpointName, options)
-			}, nil)
+			req, err := client.listByEndpointResourceCreateRequest(ctx, resourceURI, endpointName, nextLink, options)
 			if err != nil {
 				return ServiceConfigurationsClientListByEndpointResourceResponse{}, err
 			}
-			return client.listByEndpointResourceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ServiceConfigurationsClientListByEndpointResourceResponse{}, err
+			}
+			return client.listByEndpointResourceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByEndpointResourceCreateRequest creates the ListByEndpointResource request.
-func (client *ServiceConfigurationsClient) listByEndpointResourceCreateRequest(ctx context.Context, resourceURI string, endpointName string, _ *ServiceConfigurationsClientListByEndpointResourceOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
+func (client *ServiceConfigurationsClient) listByEndpointResourceCreateRequest(ctx context.Context, resourceURI string, endpointName string, nextLink string, _ *ServiceConfigurationsClientListByEndpointResourceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations"
+		if resourceURI == "" {
+			return nil, errors.New("parameter resourceURI cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+		if endpointName == "" {
+			return nil, errors.New("parameter endpointName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	if endpointName == "" {
-		return nil, errors.New("parameter endpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241201)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByEndpointResourceHandleResponse handles the ListByEndpointResource response.
-func (client *ServiceConfigurationsClient) listByEndpointResourceHandleResponse(resp *http.Response) (ServiceConfigurationsClientListByEndpointResourceResponse, error) {
+func (client *ServiceConfigurationsClient) listByEndpointResourceHandleResponse(resp *http.Response, successCodes ...int) (ServiceConfigurationsClientListByEndpointResourceResponse, error) {
 	result := ServiceConfigurationsClientListByEndpointResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceConfigurationList); err != nil {
 		return ServiceConfigurationsClientListByEndpointResourceResponse{}, err
 	}
@@ -306,12 +315,7 @@ func (client *ServiceConfigurationsClient) Update(ctx context.Context, resourceU
 	if err != nil {
 		return ServiceConfigurationsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServiceConfigurationsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -345,8 +349,11 @@ func (client *ServiceConfigurationsClient) updateCreateRequest(ctx context.Conte
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ServiceConfigurationsClient) updateHandleResponse(resp *http.Response) (ServiceConfigurationsClientUpdateResponse, error) {
+func (client *ServiceConfigurationsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ServiceConfigurationsClientUpdateResponse, error) {
 	result := ServiceConfigurationsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceConfigurationResource); err != nil {
 		return ServiceConfigurationsClientUpdateResponse{}, err
 	}

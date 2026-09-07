@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultContentTemplateClientVersion string = "2025-07-01-preview"
-
 // ContentTemplateClient contains the methods for the ContentTemplate group.
 // Don't use this type directly, use NewContentTemplateClient() instead.
 //
@@ -32,6 +30,9 @@ type ContentTemplateClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewContentTemplateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContentTemplateClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,8 +65,7 @@ func (client *ContentTemplateClient) Delete(ctx context.Context, resourceGroupNa
 		return ContentTemplateClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ContentTemplateClientDeleteResponse{}, err
+		return ContentTemplateClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ContentTemplateClientDeleteResponse{}, nil
 }
@@ -74,7 +74,7 @@ func (client *ContentTemplateClient) Delete(ctx context.Context, resourceGroupNa
 func (client *ContentTemplateClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, templateID string, _ *ContentTemplateClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/contentTemplates/{templateId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -94,15 +94,17 @@ func (client *ContentTemplateClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultContentTemplateClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets a template byt its identifier.
 // Expandable properties:
-// - properties/mainTemplate
-// - properties/dependantTemplates
+//
+//   - properties/mainTemplate
+//   - properties/dependantTemplates
+//
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
@@ -122,19 +124,14 @@ func (client *ContentTemplateClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ContentTemplateClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContentTemplateClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ContentTemplateClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, templateID string, _ *ContentTemplateClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/contentTemplates/{templateId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -154,15 +151,18 @@ func (client *ContentTemplateClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultContentTemplateClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ContentTemplateClient) getHandleResponse(resp *http.Response) (ContentTemplateClientGetResponse, error) {
+func (client *ContentTemplateClient) getHandleResponse(resp *http.Response, successCodes ...int) (ContentTemplateClientGetResponse, error) {
 	result := ContentTemplateClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TemplateModel); err != nil {
 		return ContentTemplateClientGetResponse{}, err
 	}
@@ -190,19 +190,14 @@ func (client *ContentTemplateClient) Install(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ContentTemplateClientInstallResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ContentTemplateClientInstallResponse{}, err
-	}
-	resp, err := client.installHandleResponse(httpResp)
-	return resp, err
+	return client.installHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // installCreateRequest creates the Install request.
 func (client *ContentTemplateClient) installCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, templateID string, templateInstallationProperties TemplateModel, _ *ContentTemplateClientInstallOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/contentTemplates/{templateId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -222,7 +217,7 @@ func (client *ContentTemplateClient) installCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultContentTemplateClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -233,8 +228,11 @@ func (client *ContentTemplateClient) installCreateRequest(ctx context.Context, r
 }
 
 // installHandleResponse handles the Install response.
-func (client *ContentTemplateClient) installHandleResponse(resp *http.Response) (ContentTemplateClientInstallResponse, error) {
+func (client *ContentTemplateClient) installHandleResponse(resp *http.Response, successCodes ...int) (ContentTemplateClientInstallResponse, error) {
 	result := ContentTemplateClientInstallResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TemplateModel); err != nil {
 		return ContentTemplateClientInstallResponse{}, err
 	}

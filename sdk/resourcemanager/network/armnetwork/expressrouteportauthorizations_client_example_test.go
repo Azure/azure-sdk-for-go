@@ -7,11 +7,11 @@ package armnetwork_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/ExpressRoutePortAuthorizationCreate.json
+// Generated from example definition: 2025-09-01/ExpressRoutePortAuthorizationCreate.json
 func ExampleExpressRoutePortAuthorizationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleExpressRoutePortAuthorizationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRoutePortAuthorizationDelete.json
+// Generated from example definition: 2025-09-01/ExpressRoutePortAuthorizationDelete.json
 func ExampleExpressRoutePortAuthorizationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleExpressRoutePortAuthorizationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRoutePortAuthorizationGet.json
+// Generated from example definition: 2025-09-01/ExpressRoutePortAuthorizationGet.json
 func ExampleExpressRoutePortAuthorizationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleExpressRoutePortAuthorizationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRoutePortAuthorizationList.json
+// Generated from example definition: 2025-09-01/ExpressRoutePortAuthorizationList.json
 func ExampleExpressRoutePortAuthorizationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

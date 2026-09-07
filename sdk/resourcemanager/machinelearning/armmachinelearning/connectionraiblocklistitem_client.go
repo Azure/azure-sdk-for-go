@@ -30,6 +30,9 @@ type ConnectionRaiBlocklistItemClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConnectionRaiBlocklistItemClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectionRaiBlocklistItemClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -88,8 +91,7 @@ func (client *ConnectionRaiBlocklistItemClient) addBulk(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -98,7 +100,7 @@ func (client *ConnectionRaiBlocklistItemClient) addBulk(ctx context.Context, res
 func (client *ConnectionRaiBlocklistItemClient) addBulkCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, raiBlocklistName string, body []*RaiBlocklistItemBulkRequest, _ *ConnectionRaiBlocklistItemClientBeginAddBulkOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/raiBlocklists/{raiBlocklistName}/addRaiBlocklistItems"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -179,8 +181,7 @@ func (client *ConnectionRaiBlocklistItemClient) create(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -189,7 +190,7 @@ func (client *ConnectionRaiBlocklistItemClient) create(ctx context.Context, reso
 func (client *ConnectionRaiBlocklistItemClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, raiBlocklistName string, raiBlocklistItemName string, body RaiBlocklistItemPropertiesBasicResource, options *ConnectionRaiBlocklistItemClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -277,8 +278,7 @@ func (client *ConnectionRaiBlocklistItemClient) deleteOperation(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -287,7 +287,7 @@ func (client *ConnectionRaiBlocklistItemClient) deleteOperation(ctx context.Cont
 func (client *ConnectionRaiBlocklistItemClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, raiBlocklistName string, raiBlocklistItemName string, options *ConnectionRaiBlocklistItemClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -370,8 +370,7 @@ func (client *ConnectionRaiBlocklistItemClient) deleteBulk(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -380,7 +379,7 @@ func (client *ConnectionRaiBlocklistItemClient) deleteBulk(ctx context.Context, 
 func (client *ConnectionRaiBlocklistItemClient) deleteBulkCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, raiBlocklistName string, body []*string, _ *ConnectionRaiBlocklistItemClientBeginDeleteBulkOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/raiBlocklists/{raiBlocklistName}/deleteRaiBlocklistItems"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -438,19 +437,14 @@ func (client *ConnectionRaiBlocklistItemClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return ConnectionRaiBlocklistItemClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectionRaiBlocklistItemClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ConnectionRaiBlocklistItemClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, raiBlocklistName string, raiBlocklistItemName string, _ *ConnectionRaiBlocklistItemClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -485,8 +479,11 @@ func (client *ConnectionRaiBlocklistItemClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConnectionRaiBlocklistItemClient) getHandleResponse(resp *http.Response) (ConnectionRaiBlocklistItemClientGetResponse, error) {
+func (client *ConnectionRaiBlocklistItemClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConnectionRaiBlocklistItemClientGetResponse, error) {
 	result := ConnectionRaiBlocklistItemClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RaiBlocklistItemPropertiesBasicResource); err != nil {
 		return ConnectionRaiBlocklistItemClientGetResponse{}, err
 	}

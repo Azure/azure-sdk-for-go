@@ -168,6 +168,9 @@ type CloudEndpointCreateParametersProperties struct {
 	// Azure file share name
 	AzureFileShareName *string
 
+	// The interval for enumerating changes on the cloud endpoint.
+	ChangeEnumerationIntervalDays *int32
+
 	// Friendly Name
 	FriendlyName *string
 
@@ -204,6 +207,9 @@ type CloudEndpointProperties struct {
 	// Azure file share name
 	AzureFileShareName *string
 
+	// The interval for enumerating changes on the cloud endpoint.
+	ChangeEnumerationIntervalDays *int32
+
 	// Friendly Name
 	FriendlyName *string
 
@@ -230,6 +236,18 @@ type CloudEndpointProperties struct {
 
 	// READ-ONLY; Cloud endpoint change enumeration status
 	ChangeEnumerationStatus *CloudEndpointChangeEnumerationStatus
+}
+
+// CloudEndpointUpdateParameters - The parameters used when updating a cloud endpoint.
+type CloudEndpointUpdateParameters struct {
+	// The properties of the cloud endpoint.
+	Properties *CloudEndpointUpdateProperties
+}
+
+// CloudEndpointUpdateProperties - CloudEndpoint Update Properties object.
+type CloudEndpointUpdateProperties struct {
+	// The interval for enumerating changes on the cloud endpoint.
+	ChangeEnumerationIntervalDays *int32
 }
 
 // CloudTieringCachePerformance - Server endpoint cloud tiering status object.
@@ -1171,8 +1189,38 @@ type ServerEndpointSyncActivityStatus struct {
 	// READ-ONLY; Applied item count.
 	AppliedItemCount *int64
 
+	// READ-ONLY; Path of large file currently in progress
+	InProgressLargeFilePath *string
+
+	// READ-ONLY; Percent complete (0-100) of large file currently in progress
+	InProgressLargeFilePercentComplete *int32
+
+	// READ-ONLY; Size in bytes of large file currently in progress
+	InProgressLargeFileSizeBytes *int64
+
+	// READ-ONLY; Whether the remaining counts are final
+	IsRemainingFinal *bool
+
 	// READ-ONLY; Per item error count
 	PerItemErrorCount *int64
+
+	// READ-ONLY; Recent throughput in items per second
+	RecentItemsPerSecond *float64
+
+	// READ-ONLY; Recent throughput in megabytes per second
+	RecentMegabytesPerSecond *float64
+
+	// READ-ONLY; Remaining delete count (if totals are final)
+	RemainingDeleteCount *int64
+
+	// READ-ONLY; Remaining directory count (if totals are final)
+	RemainingDirectoryCount *int64
+
+	// READ-ONLY; Remaining file count (if totals are final)
+	RemainingFileCount *int64
+
+	// READ-ONLY; Remaining logical size in bytes (if totals are final)
+	RemainingLogicalSizeBytes *int64
 
 	// READ-ONLY; Session minutes remaining (if available)
 	SessionMinutesRemaining *int32
@@ -1188,6 +1236,9 @@ type ServerEndpointSyncActivityStatus struct {
 
 	// READ-ONLY; Total item count (if available)
 	TotalItemCount *int64
+
+	// READ-ONLY; Warning type (if any)
+	Warning *ServerEndpointSyncSessionWarningType
 }
 
 // ServerEndpointSyncSessionStatus - Sync Session status object.

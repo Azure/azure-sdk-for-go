@@ -15,8 +15,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/link"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
-	"github.com/go-git/go-git/v5"
-	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/go-git/go-git/v6"
+	"github.com/go-git/go-git/v6/plumbing"
 )
 
 type SDKRepository interface {

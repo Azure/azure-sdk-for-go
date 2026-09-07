@@ -28,6 +28,17 @@ type RetryOptions = exported.RetryOptions
 
 // ClientOptions allows you to set optional configuration for `Client`.
 type ClientOptions struct {
+	// Administration operations run against service api-version 2024-05. Set APIVersion to pin a
+	// different one, for example "2021-05" or "2017-04". APIVersion is promoted from the embedded
+	// type, so a composite literal has to name that type:
+	//
+	//	opts := &admin.ClientOptions{
+	//		ClientOptions: azcore.ClientOptions{APIVersion: "2021-05"},
+	//	}
+	//
+	// The value is sent as-is, so it has to be a version the Service Bus management endpoint
+	// supports. A version earlier than 2024-05 omits TopicRuntimeProperties.SQLFilterCount and
+	// CorrelationFilterCount, which then read 0.
 	azcore.ClientOptions
 }
 

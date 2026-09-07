@@ -52,7 +52,7 @@ func ExampleAutomationRulesClient_CreateOrUpdate() {
 	// 				ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 	// 				UserPrincipalName: to.Ptr("john@contoso.com"),
 	// 			},
-	// 			CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:00Z"); return t}()),
+	// 			CreatedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 0, 0, 0, time.UTC)),
 	// 			DisplayName: to.Ptr("Suspicious user sign-in events"),
 	// 			LastModifiedBy: &armsecurityinsights.ClientInfo{
 	// 				Name: to.Ptr("john doe"),
@@ -60,7 +60,7 @@ func ExampleAutomationRulesClient_CreateOrUpdate() {
 	// 				ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 	// 				UserPrincipalName: to.Ptr("john@contoso.com"),
 	// 			},
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:30Z"); return t}()),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 0, 30, 0, time.UTC)),
 	// 			Order: to.Ptr[int32](1),
 	// 			TriggeringLogic: &armsecurityinsights.AutomationRuleTriggeringLogic{
 	// 				Conditions: []armsecurityinsights.AutomationRuleConditionClassification{
@@ -158,7 +158,7 @@ func ExampleAutomationRulesClient_Get() {
 	// 				ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 	// 				UserPrincipalName: to.Ptr("john@contoso.com"),
 	// 			},
-	// 			CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:00Z"); return t}()),
+	// 			CreatedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 0, 0, 0, time.UTC)),
 	// 			DisplayName: to.Ptr("Suspicious user sign-in events"),
 	// 			LastModifiedBy: &armsecurityinsights.ClientInfo{
 	// 				Name: to.Ptr("john doe"),
@@ -166,7 +166,7 @@ func ExampleAutomationRulesClient_Get() {
 	// 				ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 	// 				UserPrincipalName: to.Ptr("john@contoso.com"),
 	// 			},
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:30Z"); return t}()),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 0, 30, 0, time.UTC)),
 	// 			Order: to.Ptr[int32](1),
 	// 			TriggeringLogic: &armsecurityinsights.AutomationRuleTriggeringLogic{
 	// 				Conditions: []armsecurityinsights.AutomationRuleConditionClassification{
@@ -246,7 +246,7 @@ func ExampleAutomationRulesClient_NewListPager() {
 		// 						ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 		// 						UserPrincipalName: to.Ptr("john@contoso.com"),
 		// 					},
-		// 					CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:00Z"); return t}()),
+		// 					CreatedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 0, 0, 0, time.UTC)),
 		// 					DisplayName: to.Ptr("Suspicious user sign-in events"),
 		// 					LastModifiedBy: &armsecurityinsights.ClientInfo{
 		// 						Name: to.Ptr("john doe"),
@@ -254,7 +254,7 @@ func ExampleAutomationRulesClient_NewListPager() {
 		// 						ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 		// 						UserPrincipalName: to.Ptr("john@contoso.com"),
 		// 					},
-		// 					LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:30Z"); return t}()),
+		// 					LastModifiedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 0, 30, 0, time.UTC)),
 		// 					Order: to.Ptr[int32](1),
 		// 					TriggeringLogic: &armsecurityinsights.AutomationRuleTriggeringLogic{
 		// 						Conditions: []armsecurityinsights.AutomationRuleConditionClassification{

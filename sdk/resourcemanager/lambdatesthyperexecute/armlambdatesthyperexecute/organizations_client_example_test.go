@@ -126,10 +126,10 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armlambdatesthyperexecute.SystemData{
 	// 			CreatedBy: to.Ptr("muialblsfdrvcxxwenlybddkar"),
 	// 			CreatedByType: to.Ptr(armlambdatesthyperexecute.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-05T12:10:42.989Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.September, 5, 12, 10, 42, 989000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("qnkeaiefwrcpgihdwkesrjw"),
 	// 			LastModifiedByType: to.Ptr(armlambdatesthyperexecute.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-05T12:10:42.989Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.September, 5, 12, 10, 42, 989000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -226,10 +226,10 @@ func ExampleOrganizationsClient_Get() {
 	// 		SystemData: &armlambdatesthyperexecute.SystemData{
 	// 			CreatedBy: to.Ptr("muialblsfdrvcxxwenlybddkar"),
 	// 			CreatedByType: to.Ptr(armlambdatesthyperexecute.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-05T12:10:42.989Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.September, 5, 12, 10, 42, 989000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("qnkeaiefwrcpgihdwkesrjw"),
 	// 			LastModifiedByType: to.Ptr(armlambdatesthyperexecute.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-05T12:10:42.989Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.September, 5, 12, 10, 42, 989000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -311,10 +311,10 @@ func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByR
 		// 				SystemData: &armlambdatesthyperexecute.SystemData{
 		// 					CreatedBy: to.Ptr("muialblsfdrvcxxwenlybddkar"),
 		// 					CreatedByType: to.Ptr(armlambdatesthyperexecute.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-05T12:10:42.989Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.September, 5, 12, 10, 42, 989000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("qnkeaiefwrcpgihdwkesrjw"),
 		// 					LastModifiedByType: to.Ptr(armlambdatesthyperexecute.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-05T12:10:42.989Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.September, 5, 12, 10, 42, 989000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -435,10 +435,10 @@ func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySu
 		// 				SystemData: &armlambdatesthyperexecute.SystemData{
 		// 					CreatedBy: to.Ptr("muialblsfdrvcxxwenlybddkar"),
 		// 					CreatedByType: to.Ptr(armlambdatesthyperexecute.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-05T12:10:42.989Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.September, 5, 12, 10, 42, 989000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("qnkeaiefwrcpgihdwkesrjw"),
 		// 					LastModifiedByType: to.Ptr(armlambdatesthyperexecute.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-05T12:10:42.989Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.September, 5, 12, 10, 42, 989000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -559,10 +559,10 @@ func ExampleOrganizationsClient_Update() {
 	// 		SystemData: &armlambdatesthyperexecute.SystemData{
 	// 			CreatedBy: to.Ptr("muialblsfdrvcxxwenlybddkar"),
 	// 			CreatedByType: to.Ptr(armlambdatesthyperexecute.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-05T12:10:42.989Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.September, 5, 12, 10, 42, 989000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("qnkeaiefwrcpgihdwkesrjw"),
 	// 			LastModifiedByType: to.Ptr(armlambdatesthyperexecute.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-05T12:10:42.989Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.September, 5, 12, 10, 42, 989000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

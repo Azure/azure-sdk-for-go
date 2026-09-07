@@ -57,55 +57,69 @@ func (client *DimensionsClient) NewByExternalCloudProviderTypePager(externalClou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.byExternalCloudProviderTypeCreateRequest(ctx, externalCloudProviderType, externalCloudProviderID, options)
-			}, nil)
+			req, err := client.byExternalCloudProviderTypeCreateRequest(ctx, externalCloudProviderType, externalCloudProviderID, nextLink, options)
 			if err != nil {
 				return DimensionsClientByExternalCloudProviderTypeResponse{}, err
 			}
-			return client.byExternalCloudProviderTypeHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DimensionsClientByExternalCloudProviderTypeResponse{}, err
+			}
+			return client.byExternalCloudProviderTypeHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // byExternalCloudProviderTypeCreateRequest creates the ByExternalCloudProviderType request.
-func (client *DimensionsClient) byExternalCloudProviderTypeCreateRequest(ctx context.Context, externalCloudProviderType ExternalCloudProviderType, externalCloudProviderID string, options *DimensionsClientByExternalCloudProviderTypeOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.CostManagement/{externalCloudProviderType}/{externalCloudProviderId}/dimensions"
-	if externalCloudProviderType == "" {
-		return nil, errors.New("parameter externalCloudProviderType cannot be empty")
+func (client *DimensionsClient) byExternalCloudProviderTypeCreateRequest(ctx context.Context, externalCloudProviderType ExternalCloudProviderType, externalCloudProviderID string, nextLink string, options *DimensionsClientByExternalCloudProviderTypeOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.CostManagement/{externalCloudProviderType}/{externalCloudProviderId}/dimensions"
+		if externalCloudProviderType == "" {
+			return nil, errors.New("parameter externalCloudProviderType cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{externalCloudProviderType}", url.PathEscape(string(externalCloudProviderType)))
+		if externalCloudProviderID == "" {
+			return nil, errors.New("parameter externalCloudProviderID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{externalCloudProviderId}", url.PathEscape(externalCloudProviderID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{externalCloudProviderType}", url.PathEscape(string(externalCloudProviderType)))
-	if externalCloudProviderID == "" {
-		return nil, errors.New("parameter externalCloudProviderID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{externalCloudProviderId}", url.PathEscape(externalCloudProviderID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", *options.Expand)
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Skiptoken != nil {
+			reqQP.Set("$skiptoken", *options.Skiptoken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250301)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	if options != nil && options.Skiptoken != nil {
-		reqQP.Set("$skiptoken", *options.Skiptoken)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250301)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // byExternalCloudProviderTypeHandleResponse handles the ByExternalCloudProviderType response.
-func (client *DimensionsClient) byExternalCloudProviderTypeHandleResponse(resp *http.Response) (DimensionsClientByExternalCloudProviderTypeResponse, error) {
+func (client *DimensionsClient) byExternalCloudProviderTypeHandleResponse(resp *http.Response, successCodes ...int) (DimensionsClientByExternalCloudProviderTypeResponse, error) {
 	result := DimensionsClientByExternalCloudProviderTypeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DimensionsListResult); err != nil {
 		return DimensionsClientByExternalCloudProviderTypeResponse{}, err
 	}
@@ -134,51 +148,65 @@ func (client *DimensionsClient) NewListPager(scope string, options *DimensionsCl
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, scope, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, scope, nextLink, options)
 			if err != nil {
 				return DimensionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DimensionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK, http.StatusNoContent)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *DimensionsClient) listCreateRequest(ctx context.Context, scope string, options *DimensionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.CostManagement/dimensions"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
+func (client *DimensionsClient) listCreateRequest(ctx context.Context, scope string, nextLink string, options *DimensionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{scope}/providers/Microsoft.CostManagement/dimensions"
+		if scope == "" {
+			return nil, errors.New("parameter scope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", *options.Expand)
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Skiptoken != nil {
+			reqQP.Set("$skiptoken", *options.Skiptoken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250301)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	if options != nil && options.Skiptoken != nil {
-		reqQP.Set("$skiptoken", *options.Skiptoken)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250301)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DimensionsClient) listHandleResponse(resp *http.Response) (DimensionsClientListResponse, error) {
+func (client *DimensionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (DimensionsClientListResponse, error) {
 	result := DimensionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DimensionsListResult); err != nil {
 		return DimensionsClientListResponse{}, err
 	}

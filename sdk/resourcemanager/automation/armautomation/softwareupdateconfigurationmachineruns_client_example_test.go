@@ -37,20 +37,20 @@ func ExampleSoftwareUpdateConfigurationMachineRunsClient_GetByID() {
 	// 		Properties: &armautomation.UpdateConfigurationMachineRunProperties{
 	// 			ConfiguredDuration: to.Ptr("PT2H"),
 	// 			CorrelationID: to.Ptr("0b943e57-44d3-4f05-898c-6e92aa617e59"),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:33:30.7484961+00:00"); return t}()),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:33:36.4166667+00:00"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.October, 23, 2, 33, 30, 748496100, time.UTC)),
+	// 			EndTime: to.Ptr(time.Date(2017, time.October, 23, 2, 33, 36, 416666700, time.UTC)),
 	// 			Error: &armautomation.ErrorResponse{
 	// 			},
 	// 			Job: &armautomation.JobNavigation{
 	// 			},
 	// 			LastModifiedBy: to.Ptr(""),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:34:32.4366667+00:00"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2017, time.October, 23, 2, 34, 32, 436666700, time.UTC)),
 	// 			OSType: to.Ptr("Windows"),
 	// 			SoftwareUpdateConfiguration: &armautomation.UpdateConfigurationNavigation{
 	// 				Name: to.Ptr("mypatch"),
 	// 			},
 	// 			SourceComputerID: to.Ptr("3d3f24bf-7037-424e-bfba-aae3b9752f8e"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:33:30.7484961+00:00"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2017, time.October, 23, 2, 33, 30, 748496100, time.UTC)),
 	// 			Status: to.Ptr("Succeeded"),
 	// 			TargetComputer: to.Ptr("/subscriptions/51766542-3ed7-4a72-a187-0c8ab644ddab/resourceGroups/mygroup/providers/Microsoft.Compute/virtualMachines/myvm"),
 	// 			TargetComputerType: to.Ptr("AzureVirtualMachines"),
@@ -87,20 +87,20 @@ func ExampleSoftwareUpdateConfigurationMachineRunsClient_List_listSoftwareUpdate
 	// 				Properties: &armautomation.UpdateConfigurationMachineRunProperties{
 	// 					ConfiguredDuration: to.Ptr("PT2H"),
 	// 					CorrelationID: to.Ptr("0b943e57-44d3-4f05-898c-6e92aa617e59"),
-	// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:33:30.7484961+00:00"); return t}()),
-	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:33:36.4166667+00:00"); return t}()),
+	// 					CreationTime: to.Ptr(time.Date(2017, time.October, 23, 2, 33, 30, 748496100, time.UTC)),
+	// 					EndTime: to.Ptr(time.Date(2017, time.October, 23, 2, 33, 36, 416666700, time.UTC)),
 	// 					Error: &armautomation.ErrorResponse{
 	// 					},
 	// 					Job: &armautomation.JobNavigation{
 	// 					},
 	// 					LastModifiedBy: to.Ptr(""),
-	// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:34:32.4366667+00:00"); return t}()),
+	// 					LastModifiedTime: to.Ptr(time.Date(2017, time.October, 23, 2, 34, 32, 436666700, time.UTC)),
 	// 					OSType: to.Ptr("Windows"),
 	// 					SoftwareUpdateConfiguration: &armautomation.UpdateConfigurationNavigation{
 	// 						Name: to.Ptr("mypatch"),
 	// 					},
 	// 					SourceComputerID: to.Ptr("3d3f24bf-7037-424e-bfba-aae3b9752f8e"),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:33:30.7484961+00:00"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2017, time.October, 23, 2, 33, 30, 748496100, time.UTC)),
 	// 					Status: to.Ptr("Succeeded"),
 	// 					TargetComputer: to.Ptr("/subscriptions/51766542-3ed7-4a72-a187-0c8ab644ddab/resourceGroups/mygroup/providers/Microsoft.Compute/virtualMachines/myvm"),
 	// 					TargetComputerType: to.Ptr("AzureVirtualMachines"),
@@ -112,20 +112,20 @@ func ExampleSoftwareUpdateConfigurationMachineRunsClient_List_listSoftwareUpdate
 	// 				Properties: &armautomation.UpdateConfigurationMachineRunProperties{
 	// 					ConfiguredDuration: to.Ptr("PT2H"),
 	// 					CorrelationID: to.Ptr("0b943e57-44d3-4f05-898c-6e92aa617e59"),
-	// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:33:30.7484961+00:00"); return t}()),
-	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:33:36.4166667+00:00"); return t}()),
+	// 					CreationTime: to.Ptr(time.Date(2017, time.October, 23, 2, 33, 30, 748496100, time.UTC)),
+	// 					EndTime: to.Ptr(time.Date(2017, time.October, 23, 2, 33, 36, 416666700, time.UTC)),
 	// 					Error: &armautomation.ErrorResponse{
 	// 					},
 	// 					Job: &armautomation.JobNavigation{
 	// 					},
 	// 					LastModifiedBy: to.Ptr(""),
-	// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:34:32.4366667+00:00"); return t}()),
+	// 					LastModifiedTime: to.Ptr(time.Date(2017, time.October, 23, 2, 34, 32, 436666700, time.UTC)),
 	// 					OSType: to.Ptr("Windows"),
 	// 					SoftwareUpdateConfiguration: &armautomation.UpdateConfigurationNavigation{
 	// 						Name: to.Ptr("mypatch"),
 	// 					},
 	// 					SourceComputerID: to.Ptr("3d3f24bf-7037-424e-bfba-aae3b9752f8e"),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:33:30.7484961+00:00"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2017, time.October, 23, 2, 33, 30, 748496100, time.UTC)),
 	// 					Status: to.Ptr("Succeeded"),
 	// 					TargetComputer: to.Ptr("/subscriptions/51766542-3ed7-4a72-a187-0c8ab644ddab/resourceGroups/mygroup/providers/Microsoft.Compute/virtualMachines/myvm2"),
 	// 					TargetComputerType: to.Ptr("AzureVirtualMachines"),
@@ -165,20 +165,20 @@ func ExampleSoftwareUpdateConfigurationMachineRunsClient_List_listSoftwareUpdate
 	// 				Properties: &armautomation.UpdateConfigurationMachineRunProperties{
 	// 					ConfiguredDuration: to.Ptr("PT2H"),
 	// 					CorrelationID: to.Ptr("0b943e57-44d3-4f05-898c-6e92aa617e59"),
-	// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:33:30.7484961+00:00"); return t}()),
-	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:33:36.4166667+00:00"); return t}()),
+	// 					CreationTime: to.Ptr(time.Date(2017, time.October, 23, 2, 33, 30, 748496100, time.UTC)),
+	// 					EndTime: to.Ptr(time.Date(2017, time.October, 23, 2, 33, 36, 416666700, time.UTC)),
 	// 					Error: &armautomation.ErrorResponse{
 	// 					},
 	// 					Job: &armautomation.JobNavigation{
 	// 					},
 	// 					LastModifiedBy: to.Ptr(""),
-	// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:34:32.4366667+00:00"); return t}()),
+	// 					LastModifiedTime: to.Ptr(time.Date(2017, time.October, 23, 2, 34, 32, 436666700, time.UTC)),
 	// 					OSType: to.Ptr("Windows"),
 	// 					SoftwareUpdateConfiguration: &armautomation.UpdateConfigurationNavigation{
 	// 						Name: to.Ptr("mypatch"),
 	// 					},
 	// 					SourceComputerID: to.Ptr("3d3f24bf-7037-424e-bfba-aae3b9752f8e"),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:33:30.7484961+00:00"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2017, time.October, 23, 2, 33, 30, 748496100, time.UTC)),
 	// 					Status: to.Ptr("Succeeded"),
 	// 					TargetComputer: to.Ptr("/subscriptions/51766542-3ed7-4a72-a187-0c8ab644ddab/resourceGroups/mygroup/providers/Microsoft.Compute/virtualMachines/myvm"),
 	// 					TargetComputerType: to.Ptr("AzureVirtualMachines"),
@@ -190,20 +190,20 @@ func ExampleSoftwareUpdateConfigurationMachineRunsClient_List_listSoftwareUpdate
 	// 				Properties: &armautomation.UpdateConfigurationMachineRunProperties{
 	// 					ConfiguredDuration: to.Ptr("PT2H"),
 	// 					CorrelationID: to.Ptr("0b943e57-44d3-4f05-898c-6e92aa617e59"),
-	// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:33:30.7484961+00:00"); return t}()),
-	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:33:36.4166667+00:00"); return t}()),
+	// 					CreationTime: to.Ptr(time.Date(2017, time.October, 23, 2, 33, 30, 748496100, time.UTC)),
+	// 					EndTime: to.Ptr(time.Date(2017, time.October, 23, 2, 33, 36, 416666700, time.UTC)),
 	// 					Error: &armautomation.ErrorResponse{
 	// 					},
 	// 					Job: &armautomation.JobNavigation{
 	// 					},
 	// 					LastModifiedBy: to.Ptr(""),
-	// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:34:32.4366667+00:00"); return t}()),
+	// 					LastModifiedTime: to.Ptr(time.Date(2017, time.October, 23, 2, 34, 32, 436666700, time.UTC)),
 	// 					OSType: to.Ptr("Windows"),
 	// 					SoftwareUpdateConfiguration: &armautomation.UpdateConfigurationNavigation{
 	// 						Name: to.Ptr("mypatch"),
 	// 					},
 	// 					SourceComputerID: to.Ptr("3d3f24bf-7037-424e-bfba-aae3b9752f8e"),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:33:30.7484961+00:00"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2017, time.October, 23, 2, 33, 30, 748496100, time.UTC)),
 	// 					Status: to.Ptr("Succeeded"),
 	// 					TargetComputer: to.Ptr("/subscriptions/51766542-3ed7-4a72-a187-0c8ab644ddab/resourceGroups/mygroup/providers/Microsoft.Compute/virtualMachines/myvm2"),
 	// 					TargetComputerType: to.Ptr("AzureVirtualMachines"),

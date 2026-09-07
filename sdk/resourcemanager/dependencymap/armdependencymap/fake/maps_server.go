@@ -158,7 +158,7 @@ func (m *MapsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*h
 	}
 	beginCreateOrUpdate := m.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -206,7 +206,7 @@ func (m *MapsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Resp
 	}
 	beginDelete := m.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -250,7 +250,7 @@ func (m *MapsServerTransport) dispatchBeginExportDependencies(req *http.Request)
 	}
 	beginExportDependencies := m.beginExportDependencies.get(req)
 	if beginExportDependencies == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportDependencies`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/exportDependencies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -296,7 +296,7 @@ func (m *MapsServerTransport) dispatchGet(req *http.Request) (*http.Response, er
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -331,7 +331,7 @@ func (m *MapsServerTransport) dispatchBeginGetConnectionsForProcessOnFocusedMach
 	}
 	beginGetConnectionsForProcessOnFocusedMachine := m.beginGetConnectionsForProcessOnFocusedMachine.get(req)
 	if beginGetConnectionsForProcessOnFocusedMachine == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getConnectionsForProcessOnFocusedMachine`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getConnectionsForProcessOnFocusedMachine`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -379,7 +379,7 @@ func (m *MapsServerTransport) dispatchBeginGetConnectionsWithConnectedMachineFor
 	}
 	beginGetConnectionsWithConnectedMachineForFocusedMachine := m.beginGetConnectionsWithConnectedMachineForFocusedMachine.get(req)
 	if beginGetConnectionsWithConnectedMachineForFocusedMachine == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getConnectionsWithConnectedMachineForFocusedMachine`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getConnectionsWithConnectedMachineForFocusedMachine`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -427,7 +427,7 @@ func (m *MapsServerTransport) dispatchBeginGetDependencyViewForFocusedMachine(re
 	}
 	beginGetDependencyViewForFocusedMachine := m.beginGetDependencyViewForFocusedMachine.get(req)
 	if beginGetDependencyViewForFocusedMachine == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getDependencyViewForFocusedMachine`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getDependencyViewForFocusedMachine`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -475,7 +475,7 @@ func (m *MapsServerTransport) dispatchNewListByResourceGroupPager(req *http.Requ
 	}
 	newListByResourceGroupPager := m.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DependencyMap/maps`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DependencyMap/maps`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -512,7 +512,7 @@ func (m *MapsServerTransport) dispatchNewListBySubscriptionPager(req *http.Reque
 	}
 	newListBySubscriptionPager := m.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DependencyMap/maps`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DependencyMap/maps`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -545,7 +545,7 @@ func (m *MapsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Resp
 	}
 	beginUpdate := m.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

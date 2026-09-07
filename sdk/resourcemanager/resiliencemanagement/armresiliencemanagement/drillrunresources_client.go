@@ -59,12 +59,7 @@ func (client *DrillRunResourcesClient) Get(ctx context.Context, serviceGroupName
 	if err != nil {
 		return DrillRunResourcesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DrillRunResourcesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -98,8 +93,11 @@ func (client *DrillRunResourcesClient) getCreateRequest(ctx context.Context, ser
 }
 
 // getHandleResponse handles the Get response.
-func (client *DrillRunResourcesClient) getHandleResponse(resp *http.Response) (DrillRunResourcesClientGetResponse, error) {
+func (client *DrillRunResourcesClient) getHandleResponse(resp *http.Response, successCodes ...int) (DrillRunResourcesClientGetResponse, error) {
 	result := DrillRunResourcesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DrillRunResource); err != nil {
 		return DrillRunResourcesClientGetResponse{}, err
 	}
@@ -123,47 +121,61 @@ func (client *DrillRunResourcesClient) NewListPager(serviceGroupName string, dri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, serviceGroupName, drillName, drillRunName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, serviceGroupName, drillName, drillRunName, nextLink, options)
 			if err != nil {
 				return DrillRunResourcesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DrillRunResourcesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *DrillRunResourcesClient) listCreateRequest(ctx context.Context, serviceGroupName string, drillName string, drillRunName string, _ *DrillRunResourcesClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/drills/{drillName}/drillRuns/{drillRunName}/drillRunResources"
-	if serviceGroupName == "" {
-		return nil, errors.New("parameter serviceGroupName cannot be empty")
+func (client *DrillRunResourcesClient) listCreateRequest(ctx context.Context, serviceGroupName string, drillName string, drillRunName string, nextLink string, _ *DrillRunResourcesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/drills/{drillName}/drillRuns/{drillRunName}/drillRunResources"
+		if serviceGroupName == "" {
+			return nil, errors.New("parameter serviceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
+		if drillName == "" {
+			return nil, errors.New("parameter drillName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{drillName}", url.PathEscape(drillName))
+		if drillRunName == "" {
+			return nil, errors.New("parameter drillRunName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{drillRunName}", url.PathEscape(drillRunName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
-	if drillName == "" {
-		return nil, errors.New("parameter drillName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{drillName}", url.PathEscape(drillName))
-	if drillRunName == "" {
-		return nil, errors.New("parameter drillRunName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{drillRunName}", url.PathEscape(drillRunName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260401Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DrillRunResourcesClient) listHandleResponse(resp *http.Response) (DrillRunResourcesClientListResponse, error) {
+func (client *DrillRunResourcesClient) listHandleResponse(resp *http.Response, successCodes ...int) (DrillRunResourcesClientListResponse, error) {
 	result := DrillRunResourcesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DrillRunResourceListResult); err != nil {
 		return DrillRunResourcesClientListResponse{}, err
 	}

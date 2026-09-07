@@ -47,10 +47,10 @@ func ExampleProjectCatalogImageDefinitionBuildsClient_NewListByImageDefinitionPa
 		// 					Status: to.Ptr(armdevcenter.ImageDefinitionBuildStatusSucceeded),
 		// 				},
 		// 				SystemData: &armdevcenter.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-18T18:24:24.818Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.November, 18, 18, 24, 24, 818000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("User1"),
 		// 					CreatedByType: to.Ptr(armdevcenter.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-18T18:24:24.818Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.November, 18, 18, 24, 24, 818000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("User1"),
 		// 					LastModifiedByType: to.Ptr(armdevcenter.CreatedByTypeUser),
 		// 				},

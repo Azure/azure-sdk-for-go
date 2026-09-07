@@ -30,6 +30,9 @@ type AkriConnectorClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAkriConnectorClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AkriConnectorClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -84,8 +87,7 @@ func (client *AkriConnectorClient) createOrUpdate(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -94,7 +96,7 @@ func (client *AkriConnectorClient) createOrUpdate(ctx context.Context, resourceG
 func (client *AkriConnectorClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, akriConnectorTemplateName string, connectorName string, resource AkriConnectorResource, _ *AkriConnectorClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriConnectorTemplates/{akriConnectorTemplateName}/connectors/{connectorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -170,8 +172,7 @@ func (client *AkriConnectorClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -180,7 +181,7 @@ func (client *AkriConnectorClient) deleteOperation(ctx context.Context, resource
 func (client *AkriConnectorClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, akriConnectorTemplateName string, connectorName string, _ *AkriConnectorClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriConnectorTemplates/{akriConnectorTemplateName}/connectors/{connectorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -230,19 +231,14 @@ func (client *AkriConnectorClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return AkriConnectorClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AkriConnectorClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *AkriConnectorClient) getCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, akriConnectorTemplateName string, connectorName string, _ *AkriConnectorClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriConnectorTemplates/{akriConnectorTemplateName}/connectors/{connectorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -273,8 +269,11 @@ func (client *AkriConnectorClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *AkriConnectorClient) getHandleResponse(resp *http.Response) (AkriConnectorClientGetResponse, error) {
+func (client *AkriConnectorClient) getHandleResponse(resp *http.Response, successCodes ...int) (AkriConnectorClientGetResponse, error) {
 	result := AkriConnectorClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AkriConnectorResource); err != nil {
 		return AkriConnectorClientGetResponse{}, err
 	}
@@ -298,51 +297,65 @@ func (client *AkriConnectorClient) NewListByTemplatePager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByTemplateCreateRequest(ctx, resourceGroupName, instanceName, akriConnectorTemplateName, options)
-			}, nil)
+			req, err := client.listByTemplateCreateRequest(ctx, resourceGroupName, instanceName, akriConnectorTemplateName, nextLink, options)
 			if err != nil {
 				return AkriConnectorClientListByTemplateResponse{}, err
 			}
-			return client.listByTemplateHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AkriConnectorClientListByTemplateResponse{}, err
+			}
+			return client.listByTemplateHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByTemplateCreateRequest creates the ListByTemplate request.
-func (client *AkriConnectorClient) listByTemplateCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, akriConnectorTemplateName string, _ *AkriConnectorClientListByTemplateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriConnectorTemplates/{akriConnectorTemplateName}/connectors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AkriConnectorClient) listByTemplateCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, akriConnectorTemplateName string, nextLink string, _ *AkriConnectorClientListByTemplateOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriConnectorTemplates/{akriConnectorTemplateName}/connectors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if instanceName == "" {
+			return nil, errors.New("parameter instanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{instanceName}", url.PathEscape(instanceName))
+		if akriConnectorTemplateName == "" {
+			return nil, errors.New("parameter akriConnectorTemplateName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{akriConnectorTemplateName}", url.PathEscape(akriConnectorTemplateName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if instanceName == "" {
-		return nil, errors.New("parameter instanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{instanceName}", url.PathEscape(instanceName))
-	if akriConnectorTemplateName == "" {
-		return nil, errors.New("parameter akriConnectorTemplateName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{akriConnectorTemplateName}", url.PathEscape(akriConnectorTemplateName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260701)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByTemplateHandleResponse handles the ListByTemplate response.
-func (client *AkriConnectorClient) listByTemplateHandleResponse(resp *http.Response) (AkriConnectorClientListByTemplateResponse, error) {
+func (client *AkriConnectorClient) listByTemplateHandleResponse(resp *http.Response, successCodes ...int) (AkriConnectorClientListByTemplateResponse, error) {
 	result := AkriConnectorClientListByTemplateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AkriConnectorResourceListResult); err != nil {
 		return AkriConnectorClientListByTemplateResponse{}, err
 	}

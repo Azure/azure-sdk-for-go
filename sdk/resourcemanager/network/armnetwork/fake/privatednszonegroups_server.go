@@ -110,7 +110,7 @@ func (p *PrivateDNSZoneGroupsServerTransport) dispatchBeginCreateOrUpdate(req *h
 	}
 	beginCreateOrUpdate := p.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/privateEndpoints/(?P<privateEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateDnsZoneGroups/(?P<privateDnsZoneGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/privateEndpoints/(?P<privateEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateDnsZoneGroups/(?P<privateDnsZoneGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -162,7 +162,7 @@ func (p *PrivateDNSZoneGroupsServerTransport) dispatchBeginDelete(req *http.Requ
 	}
 	beginDelete := p.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/privateEndpoints/(?P<privateEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateDnsZoneGroups/(?P<privateDnsZoneGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/privateEndpoints/(?P<privateEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateDnsZoneGroups/(?P<privateDnsZoneGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -208,7 +208,7 @@ func (p *PrivateDNSZoneGroupsServerTransport) dispatchGet(req *http.Request) (*h
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/privateEndpoints/(?P<privateEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateDnsZoneGroups/(?P<privateDnsZoneGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/privateEndpoints/(?P<privateEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateDnsZoneGroups/(?P<privateDnsZoneGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -247,7 +247,7 @@ func (p *PrivateDNSZoneGroupsServerTransport) dispatchNewListPager(req *http.Req
 	}
 	newListPager := p.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/privateEndpoints/(?P<privateEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateDnsZoneGroups`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/privateEndpoints/(?P<privateEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateDnsZoneGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

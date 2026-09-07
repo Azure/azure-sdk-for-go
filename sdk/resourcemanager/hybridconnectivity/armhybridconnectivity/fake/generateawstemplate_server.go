@@ -80,7 +80,7 @@ func (g *GenerateAwsTemplateServerTransport) dispatchPost(req *http.Request) (*h
 	if g.srv.Post == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Post not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/generateAwsTemplate`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridConnectivity/generateAwsTemplate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

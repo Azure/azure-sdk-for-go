@@ -53,7 +53,7 @@ func ExamplePropertyClient_Get_billingPropertyGetMca() {
 	// 			SubscriptionBillingStatus: to.Ptr(armbilling.BillingSubscriptionStatusActive),
 	// 			SubscriptionBillingStatusDetails: []*armbilling.SubscriptionStatusDetails{
 	// 				{
-	// 					EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:32:28Z"); return t}()),
+	// 					EffectiveDate: to.Ptr(time.Date(2023, time.January, 1, 17, 32, 28, 0, time.UTC)),
 	// 					Reason: to.Ptr(armbilling.SubscriptionStatusReasonCancelled),
 	// 				},
 	// 			},
@@ -152,7 +152,7 @@ func ExamplePropertyClient_Get_billingPropertyGetMpa() {
 	// 			SubscriptionBillingStatus: to.Ptr(armbilling.BillingSubscriptionStatusActive),
 	// 			SubscriptionBillingStatusDetails: []*armbilling.SubscriptionStatusDetails{
 	// 				{
-	// 					EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:32:28Z"); return t}()),
+	// 					EffectiveDate: to.Ptr(time.Date(2023, time.January, 1, 17, 32, 28, 0, time.UTC)),
 	// 					Reason: to.Ptr(armbilling.SubscriptionStatusReasonCancelled),
 	// 				},
 	// 			},
@@ -208,7 +208,7 @@ func ExamplePropertyClient_Update_billingPropertyPatchCostCenter() {
 	// 			SubscriptionBillingStatus: to.Ptr(armbilling.BillingSubscriptionStatusActive),
 	// 			SubscriptionBillingStatusDetails: []*armbilling.SubscriptionStatusDetails{
 	// 				{
-	// 					EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:32:28Z"); return t}()),
+	// 					EffectiveDate: to.Ptr(time.Date(2023, time.January, 1, 17, 32, 28, 0, time.UTC)),
 	// 					Reason: to.Ptr(armbilling.SubscriptionStatusReasonCancelled),
 	// 				},
 	// 			},

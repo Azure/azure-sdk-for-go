@@ -19,6 +19,8 @@ import (
 // ManagedDatabaseRecommendedSensitivityLabelsClient contains the methods for the ManagedDatabaseRecommendedSensitivityLabels
 // group.
 // Don't use this type directly, use NewManagedDatabaseRecommendedSensitivityLabelsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ManagedDatabaseRecommendedSensitivityLabelsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -29,6 +31,9 @@ type ManagedDatabaseRecommendedSensitivityLabelsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedDatabaseRecommendedSensitivityLabelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedDatabaseRecommendedSensitivityLabelsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -42,8 +47,6 @@ func NewManagedDatabaseRecommendedSensitivityLabelsClient(subscriptionID string,
 
 // Update - Update recommended sensitivity labels states of a given database using an operations batch.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -64,8 +67,7 @@ func (client *ManagedDatabaseRecommendedSensitivityLabelsClient) Update(ctx cont
 		return ManagedDatabaseRecommendedSensitivityLabelsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedDatabaseRecommendedSensitivityLabelsClientUpdateResponse{}, err
+		return ManagedDatabaseRecommendedSensitivityLabelsClientUpdateResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ManagedDatabaseRecommendedSensitivityLabelsClientUpdateResponse{}, nil
 }
@@ -74,7 +76,7 @@ func (client *ManagedDatabaseRecommendedSensitivityLabelsClient) Update(ctx cont
 func (client *ManagedDatabaseRecommendedSensitivityLabelsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters RecommendedSensitivityLabelUpdateList, _ *ManagedDatabaseRecommendedSensitivityLabelsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/recommendedSensitivityLabels"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -94,8 +96,8 @@ func (client *ManagedDatabaseRecommendedSensitivityLabelsClient) updateCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err

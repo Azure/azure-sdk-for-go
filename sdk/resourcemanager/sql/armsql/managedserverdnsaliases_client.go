@@ -18,6 +18,8 @@ import (
 
 // ManagedServerDNSAliasesClient contains the methods for the ManagedServerDNSAliases group.
 // Don't use this type directly, use NewManagedServerDNSAliasesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ManagedServerDNSAliasesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type ManagedServerDNSAliasesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedServerDNSAliasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedServerDNSAliasesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,8 +46,6 @@ func NewManagedServerDNSAliasesClient(subscriptionID string, credential azcore.T
 
 // BeginAcquire - Acquires managed server DNS alias from another managed server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedServerDNSAliasesClientBeginAcquireOptions contains the optional parameters for the ManagedServerDNSAliasesClient.BeginAcquire
@@ -66,8 +69,6 @@ func (client *ManagedServerDNSAliasesClient) BeginAcquire(ctx context.Context, r
 
 // Acquire - Acquires managed server DNS alias from another managed server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ManagedServerDNSAliasesClient) acquire(ctx context.Context, resourceGroupName string, managedInstanceName string, dnsAliasName string, parameters ManagedServerDNSAliasAcquisition, options *ManagedServerDNSAliasesClientBeginAcquireOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedServerDNSAliasesClient.BeginAcquire"
@@ -83,8 +84,7 @@ func (client *ManagedServerDNSAliasesClient) acquire(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -93,7 +93,7 @@ func (client *ManagedServerDNSAliasesClient) acquire(ctx context.Context, resour
 func (client *ManagedServerDNSAliasesClient) acquireCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, dnsAliasName string, parameters ManagedServerDNSAliasAcquisition, _ *ManagedServerDNSAliasesClientBeginAcquireOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/dnsAliases/{dnsAliasName}/acquire"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -113,8 +113,8 @@ func (client *ManagedServerDNSAliasesClient) acquireCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -125,8 +125,6 @@ func (client *ManagedServerDNSAliasesClient) acquireCreateRequest(ctx context.Co
 
 // BeginCreateOrUpdate - Creates a managed server DNS alias.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedServerDNSAliasesClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedServerDNSAliasesClient.BeginCreateOrUpdate
@@ -150,8 +148,6 @@ func (client *ManagedServerDNSAliasesClient) BeginCreateOrUpdate(ctx context.Con
 
 // CreateOrUpdate - Creates a managed server DNS alias.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ManagedServerDNSAliasesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, dnsAliasName string, parameters ManagedServerDNSAliasCreation, options *ManagedServerDNSAliasesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedServerDNSAliasesClient.BeginCreateOrUpdate"
@@ -167,8 +163,7 @@ func (client *ManagedServerDNSAliasesClient) createOrUpdate(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -177,7 +172,7 @@ func (client *ManagedServerDNSAliasesClient) createOrUpdate(ctx context.Context,
 func (client *ManagedServerDNSAliasesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, dnsAliasName string, parameters ManagedServerDNSAliasCreation, _ *ManagedServerDNSAliasesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/dnsAliases/{dnsAliasName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -197,8 +192,8 @@ func (client *ManagedServerDNSAliasesClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -209,8 +204,6 @@ func (client *ManagedServerDNSAliasesClient) createOrUpdateCreateRequest(ctx con
 
 // BeginDelete - Deletes the managed server DNS alias with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedServerDNSAliasesClientBeginDeleteOptions contains the optional parameters for the ManagedServerDNSAliasesClient.BeginDelete
@@ -234,8 +227,6 @@ func (client *ManagedServerDNSAliasesClient) BeginDelete(ctx context.Context, re
 
 // Delete - Deletes the managed server DNS alias with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ManagedServerDNSAliasesClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, dnsAliasName string, options *ManagedServerDNSAliasesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedServerDNSAliasesClient.BeginDelete"
@@ -251,8 +242,7 @@ func (client *ManagedServerDNSAliasesClient) deleteOperation(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -261,7 +251,7 @@ func (client *ManagedServerDNSAliasesClient) deleteOperation(ctx context.Context
 func (client *ManagedServerDNSAliasesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, dnsAliasName string, _ *ManagedServerDNSAliasesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/dnsAliases/{dnsAliasName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -281,15 +271,13 @@ func (client *ManagedServerDNSAliasesClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets a server DNS alias.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedServerDNSAliasesClientGetOptions contains the optional parameters for the ManagedServerDNSAliasesClient.Get
@@ -308,19 +296,14 @@ func (client *ManagedServerDNSAliasesClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return ManagedServerDNSAliasesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedServerDNSAliasesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ManagedServerDNSAliasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, dnsAliasName string, _ *ManagedServerDNSAliasesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/dnsAliases/{dnsAliasName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -340,15 +323,18 @@ func (client *ManagedServerDNSAliasesClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedServerDNSAliasesClient) getHandleResponse(resp *http.Response) (ManagedServerDNSAliasesClientGetResponse, error) {
+func (client *ManagedServerDNSAliasesClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedServerDNSAliasesClientGetResponse, error) {
 	result := ManagedServerDNSAliasesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedServerDNSAlias); err != nil {
 		return ManagedServerDNSAliasesClientGetResponse{}, err
 	}
@@ -356,8 +342,6 @@ func (client *ManagedServerDNSAliasesClient) getHandleResponse(resp *http.Respon
 }
 
 // NewListByManagedInstancePager - Gets a list of managed server DNS aliases for a managed server.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedServerDNSAliasesClientListByManagedInstanceOptions contains the optional parameters for the ManagedServerDNSAliasesClient.NewListByManagedInstancePager
@@ -373,47 +357,61 @@ func (client *ManagedServerDNSAliasesClient) NewListByManagedInstancePager(resou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByManagedInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
-			}, nil)
+			req, err := client.listByManagedInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, nextLink, options)
 			if err != nil {
 				return ManagedServerDNSAliasesClientListByManagedInstanceResponse{}, err
 			}
-			return client.listByManagedInstanceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedServerDNSAliasesClientListByManagedInstanceResponse{}, err
+			}
+			return client.listByManagedInstanceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByManagedInstanceCreateRequest creates the ListByManagedInstance request.
-func (client *ManagedServerDNSAliasesClient) listByManagedInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, _ *ManagedServerDNSAliasesClientListByManagedInstanceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/dnsAliases"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedServerDNSAliasesClient) listByManagedInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, nextLink string, _ *ManagedServerDNSAliasesClientListByManagedInstanceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/dnsAliases"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if managedInstanceName == "" {
+			return nil, errors.New("parameter managedInstanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByManagedInstanceHandleResponse handles the ListByManagedInstance response.
-func (client *ManagedServerDNSAliasesClient) listByManagedInstanceHandleResponse(resp *http.Response) (ManagedServerDNSAliasesClientListByManagedInstanceResponse, error) {
+func (client *ManagedServerDNSAliasesClient) listByManagedInstanceHandleResponse(resp *http.Response, successCodes ...int) (ManagedServerDNSAliasesClientListByManagedInstanceResponse, error) {
 	result := ManagedServerDNSAliasesClientListByManagedInstanceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedServerDNSAliasListResult); err != nil {
 		return ManagedServerDNSAliasesClientListByManagedInstanceResponse{}, err
 	}

@@ -18,6 +18,8 @@ import (
 
 // DatabaseRecommendedActionsClient contains the methods for the DatabaseRecommendedActions group.
 // Don't use this type directly, use NewDatabaseRecommendedActionsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type DatabaseRecommendedActionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type DatabaseRecommendedActionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDatabaseRecommendedActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseRecommendedActionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,8 +46,6 @@ func NewDatabaseRecommendedActionsClient(subscriptionID string, credential azcor
 
 // Get - Gets a database recommended action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -64,19 +67,14 @@ func (client *DatabaseRecommendedActionsClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return DatabaseRecommendedActionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabaseRecommendedActionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *DatabaseRecommendedActionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, recommendedActionName string, _ *DatabaseRecommendedActionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/advisors/{advisorName}/recommendedActions/{recommendedActionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -104,15 +102,18 @@ func (client *DatabaseRecommendedActionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatabaseRecommendedActionsClient) getHandleResponse(resp *http.Response) (DatabaseRecommendedActionsClientGetResponse, error) {
+func (client *DatabaseRecommendedActionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DatabaseRecommendedActionsClientGetResponse, error) {
 	result := DatabaseRecommendedActionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendedAction); err != nil {
 		return DatabaseRecommendedActionsClientGetResponse{}, err
 	}
@@ -121,8 +122,6 @@ func (client *DatabaseRecommendedActionsClient) getHandleResponse(resp *http.Res
 
 // ListByDatabaseAdvisor - Gets list of Database Recommended Actions.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -143,19 +142,14 @@ func (client *DatabaseRecommendedActionsClient) ListByDatabaseAdvisor(ctx contex
 	if err != nil {
 		return DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse{}, err
-	}
-	resp, err := client.listByDatabaseAdvisorHandleResponse(httpResp)
-	return resp, err
+	return client.listByDatabaseAdvisorHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByDatabaseAdvisorCreateRequest creates the ListByDatabaseAdvisor request.
 func (client *DatabaseRecommendedActionsClient) listByDatabaseAdvisorCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, _ *DatabaseRecommendedActionsClientListByDatabaseAdvisorOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/advisors/{advisorName}/recommendedActions"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -179,15 +173,18 @@ func (client *DatabaseRecommendedActionsClient) listByDatabaseAdvisorCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByDatabaseAdvisorHandleResponse handles the ListByDatabaseAdvisor response.
-func (client *DatabaseRecommendedActionsClient) listByDatabaseAdvisorHandleResponse(resp *http.Response) (DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse, error) {
+func (client *DatabaseRecommendedActionsClient) listByDatabaseAdvisorHandleResponse(resp *http.Response, successCodes ...int) (DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse, error) {
 	result := DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendedActionArray); err != nil {
 		return DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse{}, err
 	}
@@ -196,8 +193,6 @@ func (client *DatabaseRecommendedActionsClient) listByDatabaseAdvisorHandleRespo
 
 // Update - Updates a database recommended action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -220,19 +215,14 @@ func (client *DatabaseRecommendedActionsClient) Update(ctx context.Context, reso
 	if err != nil {
 		return DatabaseRecommendedActionsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabaseRecommendedActionsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *DatabaseRecommendedActionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, recommendedActionName string, parameters RecommendedAction, _ *DatabaseRecommendedActionsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/advisors/{advisorName}/recommendedActions/{recommendedActionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -260,8 +250,8 @@ func (client *DatabaseRecommendedActionsClient) updateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -271,8 +261,11 @@ func (client *DatabaseRecommendedActionsClient) updateCreateRequest(ctx context.
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DatabaseRecommendedActionsClient) updateHandleResponse(resp *http.Response) (DatabaseRecommendedActionsClientUpdateResponse, error) {
+func (client *DatabaseRecommendedActionsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (DatabaseRecommendedActionsClientUpdateResponse, error) {
 	result := DatabaseRecommendedActionsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendedAction); err != nil {
 		return DatabaseRecommendedActionsClientUpdateResponse{}, err
 	}

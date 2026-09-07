@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-06-preview/OccurrenceExtension_ListOccurrenceByVms_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/OccurrenceExtension_ListOccurrenceByVms_MaximumSet_Gen.json
 func ExampleOccurrenceExtensionClient_NewListOccurrenceByVMsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,8 +38,8 @@ func ExampleOccurrenceExtensionClient_NewListOccurrenceByVMsPager() {
 		// 		Value: []*armbulkactions.OccurrenceExtensionResource{
 		// 			{
 		// 				Properties: &armbulkactions.OccurrenceExtensionProperties{
-		// 					ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T00:22:10.427Z"); return t}()),
-		// 					ProvisioningState: to.Ptr(armbulkactions.ResourceProvisioningState("Created")),
+		// 					ScheduledTime: to.Ptr(time.Date(2025, time.May, 15, 0, 22, 10, 427000000, time.UTC)),
+		// 					ProvisioningState: to.Ptr(armbulkactions.OccurrenceResourceProvisioningStateCreated),
 		// 					ScheduledActionID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.Compute/scheduledActions/myScheduledAction"),
 		// 					ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm"),
 		// 					NotificationSettings: []*armbulkactions.NotificationProperties{
@@ -67,10 +67,10 @@ func ExampleOccurrenceExtensionClient_NewListOccurrenceByVMsPager() {
 		// 				SystemData: &armbulkactions.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

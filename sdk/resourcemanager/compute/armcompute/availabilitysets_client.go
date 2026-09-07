@@ -19,7 +19,7 @@ import (
 // AvailabilitySetsClient contains the methods for the AvailabilitySets group.
 // Don't use this type directly, use NewAvailabilitySetsClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-04-01
 type AvailabilitySetsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type AvailabilitySetsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAvailabilitySetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailabilitySetsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,8 +65,7 @@ func (client *AvailabilitySetsClient) CancelMigrationToVirtualMachineScaleSet(ct
 		return AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse{}, err
+		return AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse{}, nil
 }
@@ -72,7 +74,7 @@ func (client *AvailabilitySetsClient) CancelMigrationToVirtualMachineScaleSet(ct
 func (client *AvailabilitySetsClient) cancelMigrationToVirtualMachineScaleSetCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, _ *AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/cancelMigrationToVirtualMachineScaleSet"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -88,7 +90,7 @@ func (client *AvailabilitySetsClient) cancelMigrationToVirtualMachineScaleSetCre
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -135,8 +137,7 @@ func (client *AvailabilitySetsClient) convertToVirtualMachineScaleSet(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -145,7 +146,7 @@ func (client *AvailabilitySetsClient) convertToVirtualMachineScaleSet(ctx contex
 func (client *AvailabilitySetsClient) convertToVirtualMachineScaleSetCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientBeginConvertToVirtualMachineScaleSetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/convertToVirtualMachineScaleSet"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -161,7 +162,7 @@ func (client *AvailabilitySetsClient) convertToVirtualMachineScaleSetCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.Parameters != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -194,19 +195,14 @@ func (client *AvailabilitySetsClient) CreateOrUpdate(ctx context.Context, resour
 	if err != nil {
 		return AvailabilitySetsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AvailabilitySetsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *AvailabilitySetsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters AvailabilitySet, _ *AvailabilitySetsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -222,7 +218,7 @@ func (client *AvailabilitySetsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -233,8 +229,11 @@ func (client *AvailabilitySetsClient) createOrUpdateCreateRequest(ctx context.Co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AvailabilitySetsClient) createOrUpdateHandleResponse(resp *http.Response) (AvailabilitySetsClientCreateOrUpdateResponse, error) {
+func (client *AvailabilitySetsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (AvailabilitySetsClientCreateOrUpdateResponse, error) {
 	result := AvailabilitySetsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilitySet); err != nil {
 		return AvailabilitySetsClientCreateOrUpdateResponse{}, err
 	}
@@ -261,8 +260,7 @@ func (client *AvailabilitySetsClient) Delete(ctx context.Context, resourceGroupN
 		return AvailabilitySetsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return AvailabilitySetsClientDeleteResponse{}, err
+		return AvailabilitySetsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return AvailabilitySetsClientDeleteResponse{}, nil
 }
@@ -271,7 +269,7 @@ func (client *AvailabilitySetsClient) Delete(ctx context.Context, resourceGroupN
 func (client *AvailabilitySetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, _ *AvailabilitySetsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -287,7 +285,7 @@ func (client *AvailabilitySetsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -311,19 +309,14 @@ func (client *AvailabilitySetsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return AvailabilitySetsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AvailabilitySetsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *AvailabilitySetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, _ *AvailabilitySetsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -339,15 +332,18 @@ func (client *AvailabilitySetsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AvailabilitySetsClient) getHandleResponse(resp *http.Response) (AvailabilitySetsClientGetResponse, error) {
+func (client *AvailabilitySetsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AvailabilitySetsClientGetResponse, error) {
 	result := AvailabilitySetsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilitySet); err != nil {
 		return AvailabilitySetsClientGetResponse{}, err
 	}
@@ -369,43 +365,57 @@ func (client *AvailabilitySetsClient) NewListPager(resourceGroupName string, opt
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return AvailabilitySetsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AvailabilitySetsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AvailabilitySetsClient) listCreateRequest(ctx context.Context, resourceGroupName string, _ *AvailabilitySetsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AvailabilitySetsClient) listCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *AvailabilitySetsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AvailabilitySetsClient) listHandleResponse(resp *http.Response) (AvailabilitySetsClientListResponse, error) {
+func (client *AvailabilitySetsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AvailabilitySetsClientListResponse, error) {
 	result := AvailabilitySetsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilitySetListResult); err != nil {
 		return AvailabilitySetsClientListResponse{}, err
 	}
@@ -429,47 +439,61 @@ func (client *AvailabilitySetsClient) NewListAvailableSizesPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAvailableSizesCreateRequest(ctx, resourceGroupName, availabilitySetName, options)
-			}, nil)
+			req, err := client.listAvailableSizesCreateRequest(ctx, resourceGroupName, availabilitySetName, nextLink, options)
 			if err != nil {
 				return AvailabilitySetsClientListAvailableSizesResponse{}, err
 			}
-			return client.listAvailableSizesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AvailabilitySetsClientListAvailableSizesResponse{}, err
+			}
+			return client.listAvailableSizesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAvailableSizesCreateRequest creates the ListAvailableSizes request.
-func (client *AvailabilitySetsClient) listAvailableSizesCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, _ *AvailabilitySetsClientListAvailableSizesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/vmSizes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AvailabilitySetsClient) listAvailableSizesCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, nextLink string, _ *AvailabilitySetsClientListAvailableSizesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/vmSizes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if availabilitySetName == "" {
+			return nil, errors.New("parameter availabilitySetName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{availabilitySetName}", url.PathEscape(availabilitySetName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if availabilitySetName == "" {
-		return nil, errors.New("parameter availabilitySetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{availabilitySetName}", url.PathEscape(availabilitySetName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAvailableSizesHandleResponse handles the ListAvailableSizes response.
-func (client *AvailabilitySetsClient) listAvailableSizesHandleResponse(resp *http.Response) (AvailabilitySetsClientListAvailableSizesResponse, error) {
+func (client *AvailabilitySetsClient) listAvailableSizesHandleResponse(resp *http.Response, successCodes ...int) (AvailabilitySetsClientListAvailableSizesResponse, error) {
 	result := AvailabilitySetsClientListAvailableSizesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineSizeListResult); err != nil {
 		return AvailabilitySetsClientListAvailableSizesResponse{}, err
 	}
@@ -490,42 +514,56 @@ func (client *AvailabilitySetsClient) NewListBySubscriptionPager(options *Availa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return AvailabilitySetsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AvailabilitySetsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *AvailabilitySetsClient) listBySubscriptionCreateRequest(ctx context.Context, options *AvailabilitySetsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/availabilitySets"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AvailabilitySetsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, options *AvailabilitySetsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/availabilitySets"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", *options.Expand)
+		}
+		reqQP.Set("api-version", version20260401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260301)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *AvailabilitySetsClient) listBySubscriptionHandleResponse(resp *http.Response) (AvailabilitySetsClientListBySubscriptionResponse, error) {
+func (client *AvailabilitySetsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (AvailabilitySetsClientListBySubscriptionResponse, error) {
 	result := AvailabilitySetsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilitySetListResult); err != nil {
 		return AvailabilitySetsClientListBySubscriptionResponse{}, err
 	}
@@ -556,8 +594,7 @@ func (client *AvailabilitySetsClient) StartMigrationToVirtualMachineScaleSet(ctx
 		return AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetResponse{}, err
+		return AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetResponse{}, nil
 }
@@ -566,7 +603,7 @@ func (client *AvailabilitySetsClient) StartMigrationToVirtualMachineScaleSet(ctx
 func (client *AvailabilitySetsClient) startMigrationToVirtualMachineScaleSetCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters MigrateToVirtualMachineScaleSetInput, _ *AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/startMigrationToVirtualMachineScaleSet"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -582,7 +619,7 @@ func (client *AvailabilitySetsClient) startMigrationToVirtualMachineScaleSetCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -611,19 +648,14 @@ func (client *AvailabilitySetsClient) Update(ctx context.Context, resourceGroupN
 	if err != nil {
 		return AvailabilitySetsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AvailabilitySetsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *AvailabilitySetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters AvailabilitySetUpdate, _ *AvailabilitySetsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -639,7 +671,7 @@ func (client *AvailabilitySetsClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -650,8 +682,11 @@ func (client *AvailabilitySetsClient) updateCreateRequest(ctx context.Context, r
 }
 
 // updateHandleResponse handles the Update response.
-func (client *AvailabilitySetsClient) updateHandleResponse(resp *http.Response) (AvailabilitySetsClientUpdateResponse, error) {
+func (client *AvailabilitySetsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (AvailabilitySetsClientUpdateResponse, error) {
 	result := AvailabilitySetsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilitySet); err != nil {
 		return AvailabilitySetsClientUpdateResponse{}, err
 	}
@@ -681,8 +716,7 @@ func (client *AvailabilitySetsClient) ValidateMigrationToVirtualMachineScaleSet(
 		return AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetResponse{}, err
+		return AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetResponse{}, nil
 }
@@ -691,7 +725,7 @@ func (client *AvailabilitySetsClient) ValidateMigrationToVirtualMachineScaleSet(
 func (client *AvailabilitySetsClient) validateMigrationToVirtualMachineScaleSetCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters MigrateToVirtualMachineScaleSetInput, _ *AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/validateMigrationToVirtualMachineScaleSet"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -707,7 +741,7 @@ func (client *AvailabilitySetsClient) validateMigrationToVirtualMachineScaleSetC
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -45,10 +45,10 @@ func ExampleConnectionRaiBlocklistsClient_NewListPager() {
 		// 					Description: to.Ptr("Basic blocklist description"),
 		// 				},
 		// 				SystemData: &armmachinelearning.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T00:00:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("00000000-1111-2222-3333-444444444444"),
 		// 					CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T00:00:00Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("00000000-1111-2222-3333-444444444444"),
 		// 					LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeApplication),
 		// 				},

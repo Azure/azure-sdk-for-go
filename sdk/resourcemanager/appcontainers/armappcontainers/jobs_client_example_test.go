@@ -1353,30 +1353,30 @@ func ExampleJobsClient_BeginStopMultipleExecutions() {
 	// 			{
 	// 				Name: to.Ptr("jobExecution-27944453"),
 	// 				Properties: &armappcontainers.JobExecutionProperties{
-	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-13T20:47:30+00:00"); return t}()),
+	// 					EndTime: to.Ptr(time.Date(2023, time.February, 13, 20, 47, 30, 0, time.UTC)),
 	// 					Message: to.Ptr("Job has reached the specified backoff limit"),
 	// 					Reason: to.Ptr("BackoffLimitExceeded"),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-13T20:37:30+00:00"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2023, time.February, 13, 20, 37, 30, 0, time.UTC)),
 	// 					Status: to.Ptr(armappcontainers.JobExecutionRunningStateRunning),
 	// 				},
 	// 			},
 	// 			{
 	// 				Name: to.Ptr("jobExecution-27944452"),
 	// 				Properties: &armappcontainers.JobExecutionProperties{
-	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-13T21:47:30+00:00"); return t}()),
+	// 					EndTime: to.Ptr(time.Date(2023, time.February, 13, 21, 47, 30, 0, time.UTC)),
 	// 					Message: to.Ptr("Job has reached the specified backoff limit"),
 	// 					Reason: to.Ptr("BackoffLimitExceeded"),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-13T21:37:30+00:00"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2023, time.February, 13, 21, 37, 30, 0, time.UTC)),
 	// 					Status: to.Ptr(armappcontainers.JobExecutionRunningStateRunning),
 	// 				},
 	// 			},
 	// 			{
 	// 				Name: to.Ptr("jobExecution-27944453"),
 	// 				Properties: &armappcontainers.JobExecutionProperties{
-	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-13T22:47:30+00:00"); return t}()),
+	// 					EndTime: to.Ptr(time.Date(2023, time.February, 13, 22, 47, 30, 0, time.UTC)),
 	// 					Message: to.Ptr("Job has reached the specified backoff limit"),
 	// 					Reason: to.Ptr("BackoffLimitExceeded"),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-13T22:37:30+00:00"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2023, time.February, 13, 22, 37, 30, 0, time.UTC)),
 	// 					Status: to.Ptr(armappcontainers.JobExecutionRunningStateRunning),
 	// 				},
 	// 			},

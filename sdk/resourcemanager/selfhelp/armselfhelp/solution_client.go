@@ -90,8 +90,7 @@ func (client *SolutionClient) create(ctx context.Context, scope string, solution
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -141,12 +140,7 @@ func (client *SolutionClient) Get(ctx context.Context, scope string, solutionRes
 	if err != nil {
 		return SolutionClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SolutionClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -172,8 +166,11 @@ func (client *SolutionClient) getCreateRequest(ctx context.Context, scope string
 }
 
 // getHandleResponse handles the Get response.
-func (client *SolutionClient) getHandleResponse(resp *http.Response) (SolutionClientGetResponse, error) {
+func (client *SolutionClient) getHandleResponse(resp *http.Response, successCodes ...int) (SolutionClientGetResponse, error) {
 	result := SolutionClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SolutionResource); err != nil {
 		return SolutionClientGetResponse{}, err
 	}
@@ -220,8 +217,7 @@ func (client *SolutionClient) update(ctx context.Context, scope string, solution
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -272,8 +268,7 @@ func (client *SolutionClient) WarmUp(ctx context.Context, scope string, solution
 		return SolutionClientWarmUpResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SolutionClientWarmUpResponse{}, err
+		return SolutionClientWarmUpResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SolutionClientWarmUpResponse{}, nil
 }

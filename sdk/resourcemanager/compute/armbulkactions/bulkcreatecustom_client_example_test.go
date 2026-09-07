@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-06-preview/BulkCreateCustom_Cancel_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_Cancel_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleBulkCreateCustomClient_BeginCancel() {
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/BulkCreateCustom_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,8 +46,12 @@ func ExampleBulkCreateCustomClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewBulkCreateCustomClient().BeginCreateOrUpdate(ctx, "rgBulkactions", "eastus", "89f31926-145c-410c-a56a-5bc97359274c", armbulkactions.LocationBasedBulkCreateCustom{
 		Properties: &armbulkactions.BulkCreateCustomProperties{
-			Capacity:     to.Ptr[int32](10),
+			Capacity:     to.Ptr[int32](2),
 			CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
+			MinCapacity:  to.Ptr[int32](1),
+			PartialFulfillmentPolicy: &armbulkactions.PartialFulfillmentPolicy{
+				Mode: to.Ptr(armbulkactions.PartialFulfillmentModeEnabled),
+			},
 			PriorityProfile: &armbulkactions.BulkCreateCustomPriorityProfile{
 				Type:               to.Ptr(armbulkactions.PriorityTypeSpot),
 				MaxPricePerVM:      to.Ptr[float32](0.2),
@@ -198,10 +202,16 @@ func ExampleBulkCreateCustomClient_BeginCreateOrUpdate() {
 	// res = armbulkactions.BulkCreateCustomClientCreateOrUpdateResponse{
 	// 	LocationBasedBulkCreateCustom: armbulkactions.LocationBasedBulkCreateCustom{
 	// 		Properties: &armbulkactions.BulkCreateCustomProperties{
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+	// 			CreatedTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
-	// 			Capacity: to.Ptr[int32](10),
+	// 			Capacity: to.Ptr[int32](2),
 	// 			CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
+	// 			MinCapacity: to.Ptr[int32](1),
+	// 			PartialFulfillmentPolicy: &armbulkactions.PartialFulfillmentPolicy{
+	// 				Mode: to.Ptr(armbulkactions.PartialFulfillmentModeEnabled),
+	// 				FulfilledCapacity: to.Ptr[int32](1),
+	// 				Reason: to.Ptr(armbulkactions.PartialFulfillmentReasonInsufficientCapacity),
+	// 			},
 	// 			PriorityProfile: &armbulkactions.BulkCreateCustomPriorityProfile{
 	// 				Type: to.Ptr(armbulkactions.PriorityTypeSpot),
 	// 				MaxPricePerVM: to.Ptr[float32](0.2),
@@ -309,6 +319,15 @@ func ExampleBulkCreateCustomClient_BeginCreateOrUpdate() {
 	// 					OnFailureAction: to.Ptr(armbulkactions.ResourceOperationTypeDelete),
 	// 				},
 	// 			},
+	// 			Resources: []*armbulkactions.BulkCreateCustomResource{
+	// 				{
+	// 					VirtualMachineInfo: &armbulkactions.BulkCreateCustomVirtualMachineInfo{
+	// 						Name: to.Ptr("bulkvm-payments-0"),
+	// 						VMSize: to.Ptr("Standard_D2s_v5"),
+	// 						Zone: to.Ptr("1"),
+	// 					},
+	// 				},
+	// 			},
 	// 		},
 	// 		Zones: []*string{
 	// 			to.Ptr("1"),
@@ -329,16 +348,16 @@ func ExampleBulkCreateCustomClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armbulkactions.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:25:00Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 25, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/BulkCreateCustom_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_Delete_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -360,7 +379,7 @@ func ExampleBulkCreateCustomClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/BulkCreateCustom_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_Get_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -381,7 +400,7 @@ func ExampleBulkCreateCustomClient_Get() {
 	// res = armbulkactions.BulkCreateCustomClientGetResponse{
 	// 	LocationBasedBulkCreateCustom: armbulkactions.LocationBasedBulkCreateCustom{
 	// 		Properties: &armbulkactions.BulkCreateCustomProperties{
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+	// 			CreatedTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
 	// 			Capacity: to.Ptr[int32](10),
 	// 			CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
@@ -480,6 +499,15 @@ func ExampleBulkCreateCustomClient_Get() {
 	// 					OnFailureAction: to.Ptr(armbulkactions.ResourceOperationTypeDelete),
 	// 				},
 	// 			},
+	// 			Resources: []*armbulkactions.BulkCreateCustomResource{
+	// 				{
+	// 					VirtualMachineInfo: &armbulkactions.BulkCreateCustomVirtualMachineInfo{
+	// 						Name: to.Ptr("bulkvm-payments-0"),
+	// 						VMSize: to.Ptr("Standard_D2s_v5"),
+	// 						Zone: to.Ptr("1"),
+	// 					},
+	// 				},
+	// 			},
 	// 		},
 	// 		Zones: []*string{
 	// 			to.Ptr("1"),
@@ -500,16 +528,16 @@ func ExampleBulkCreateCustomClient_Get() {
 	// 		SystemData: &armbulkactions.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:25:00Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 25, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/BulkCreateCustom_GetAsyncOperationStatus_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_GetAsyncOperationStatus_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_GetAsyncOperationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -533,8 +561,8 @@ func ExampleBulkCreateCustomClient_GetAsyncOperationStatus() {
 	// 		Name: to.Ptr("f1ac145b-9d8b-417d-8101-9962d03c0904"),
 	// 		Status: to.Ptr("Failed"),
 	// 		PercentComplete: to.Ptr[float64](100),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:35:00Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2026, time.July, 8, 18, 35, 0, 0, time.UTC)),
 	// 		Operations: []*armbulkactions.OperationStatusResult{
 	// 			{
 	// 				ID: to.Ptr("/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/providers/Microsoft.Compute/locations/eastus/bulkCreateCustom/9d8e1f2a-3b4c-4d5e-6f7a-8b9c0d1e2f3a"),
@@ -542,8 +570,8 @@ func ExampleBulkCreateCustomClient_GetAsyncOperationStatus() {
 	// 				ResourceID: to.Ptr("/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/virtualMachines/bulkvm-payments-0"),
 	// 				Status: to.Ptr("Failed"),
 	// 				PercentComplete: to.Ptr[float64](100),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
-	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:32:00Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
+	// 				EndTime: to.Ptr(time.Date(2026, time.July, 8, 18, 32, 0, 0, time.UTC)),
 	// 				Operations: []*armbulkactions.OperationStatusResult{
 	// 				},
 	// 				Error: &armbulkactions.ErrorDetail{
@@ -579,7 +607,7 @@ func ExampleBulkCreateCustomClient_GetAsyncOperationStatus() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/BulkCreateCustom_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -606,7 +634,7 @@ func ExampleBulkCreateCustomClient_NewListByResourceGroupPager() {
 		// 		Value: []*armbulkactions.LocationBasedBulkCreateCustom{
 		// 			{
 		// 				Properties: &armbulkactions.BulkCreateCustomProperties{
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+		// 					CreatedTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
 		// 					Capacity: to.Ptr[int32](10),
 		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
@@ -725,15 +753,15 @@ func ExampleBulkCreateCustomClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armbulkactions.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:25:00Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 25, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Properties: &armbulkactions.BulkCreateCustomProperties{
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+		// 					CreatedTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateCreating),
 		// 					Capacity: to.Ptr[int32](10),
 		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
@@ -852,20 +880,20 @@ func ExampleBulkCreateCustomClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armbulkactions.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:25:00Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 25, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/locations/eastus/bulkCreateCustom?api-version=2026-07-06-preview&$skiptoken=page2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/locations/eastus/bulkCreateCustom?api-version=2026-08-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/BulkCreateCustom_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_ListBySubscription_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -892,7 +920,7 @@ func ExampleBulkCreateCustomClient_NewListBySubscriptionPager() {
 		// 		Value: []*armbulkactions.LocationBasedBulkCreateCustom{
 		// 			{
 		// 				Properties: &armbulkactions.BulkCreateCustomProperties{
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+		// 					CreatedTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
 		// 					Capacity: to.Ptr[int32](10),
 		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
@@ -1011,15 +1039,15 @@ func ExampleBulkCreateCustomClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armbulkactions.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:25:00Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 25, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Properties: &armbulkactions.BulkCreateCustomProperties{
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+		// 					CreatedTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateCreating),
 		// 					Capacity: to.Ptr[int32](10),
 		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
@@ -1138,14 +1166,67 @@ func ExampleBulkCreateCustomClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armbulkactions.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:25:00Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 25, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/providers/Microsoft.Compute/locations/eastus/bulkCreateCustom?api-version=2026-07-06-preview&$skiptoken=page2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/providers/Microsoft.Compute/locations/eastus/bulkCreateCustom?api-version=2026-08-06-preview&$skiptoken=page2"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_VirtualMachinesGetOperationStatus_MaximumSet_Gen.json
+func ExampleBulkCreateCustomClient_NewVirtualMachinesGetOperationStatusPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("700935bc-adf2-4176-b9ad-c571731c09fc", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewBulkCreateCustomClient().NewVirtualMachinesGetOperationStatusPager("local-test-rg", "eastus", "00000000-0000-0000-0000-000000000102", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Results {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armbulkactions.BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse{
+		// 	BulkCreateCustomOperationStatusListResult: armbulkactions.BulkCreateCustomOperationStatusListResult{
+		// 		Results: []*armbulkactions.ResourceOperation{
+		// 			{
+		// 				ResourceID: to.Ptr("/subscriptions/700935bc-adf2-4176-b9ad-c571731c09fc/resourceGroups/local-test-rg/providers/Microsoft.Compute/virtualMachines/vm-001"),
+		// 				Operation: &armbulkactions.ResourceOperationDetails{
+		// 					OperationID: to.Ptr("3303b164-d533-4f5d-8cb2-54f9585fc55c"),
+		// 					ResourceID: to.Ptr("/subscriptions/700935bc-adf2-4176-b9ad-c571731c09fc/resourceGroups/local-test-rg/providers/Microsoft.Compute/virtualMachines/vm-001"),
+		// 					OpType: to.Ptr(armbulkactions.ResourceOperationTypeCreate),
+		// 					SubscriptionID: to.Ptr("700935bc-adf2-4176-b9ad-c571731c09fc"),
+		// 					Deadline: to.Ptr(time.Date(2026, time.August, 4, 15, 40, 8, 280208200, time.UTC)),
+		// 					DeadlineType: to.Ptr(armbulkactions.DeadlineTypeInitiateAt),
+		// 					State: to.Ptr(armbulkactions.OperationStatePendingScheduling),
+		// 					Timezone: to.Ptr("UTC"),
+		// 					RetryPolicy: &armbulkactions.RetryPolicy{
+		// 						RetryCount: to.Ptr[int32](1),
+		// 						RetryWindowInMinutes: to.Ptr[int32](60),
+		// 					},
+		// 				},
+		// 				VirtualMachineInfo: &armbulkactions.VirtualMachineInfo{
+		// 					VMSize: to.Ptr("Standard_D4as_v5"),
+		// 					Zone: to.Ptr("1"),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/700935bc-adf2-4176-b9ad-c571731c09fc/resourceGroups/local-test-rg/providers/Microsoft.Compute/locations/eastus/bulkCreateCustom/00000000-0000-0000-0000-000000000102/virtualMachinesGetOperationStatus?api-version=2026-08-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}

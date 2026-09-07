@@ -57,12 +57,7 @@ func (client *Client) GetScope(ctx context.Context, scope string, defaultParam D
 	if err != nil {
 		return ClientGetScopeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientGetScopeResponse{}, err
-	}
-	resp, err := client.getScopeHandleResponse(httpResp)
-	return resp, err
+	return client.getScopeHandleResponse(httpResp, http.StatusOK)
 }
 
 // getScopeCreateRequest creates the GetScope request.
@@ -88,8 +83,11 @@ func (client *Client) getScopeCreateRequest(ctx context.Context, scope string, d
 }
 
 // getScopeHandleResponse handles the GetScope response.
-func (client *Client) getScopeHandleResponse(resp *http.Response) (ClientGetScopeResponse, error) {
+func (client *Client) getScopeHandleResponse(resp *http.Response, successCodes ...int) (ClientGetScopeResponse, error) {
 	result := ClientGetScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataBoundaryDefinition); err != nil {
 		return ClientGetScopeResponse{}, err
 	}
@@ -114,12 +112,7 @@ func (client *Client) GetTenant(ctx context.Context, defaultParam DefaultName, o
 	if err != nil {
 		return ClientGetTenantResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientGetTenantResponse{}, err
-	}
-	resp, err := client.getTenantHandleResponse(httpResp)
-	return resp, err
+	return client.getTenantHandleResponse(httpResp, http.StatusOK)
 }
 
 // getTenantCreateRequest creates the GetTenant request.
@@ -141,8 +134,11 @@ func (client *Client) getTenantCreateRequest(ctx context.Context, defaultParam D
 }
 
 // getTenantHandleResponse handles the GetTenant response.
-func (client *Client) getTenantHandleResponse(resp *http.Response) (ClientGetTenantResponse, error) {
+func (client *Client) getTenantHandleResponse(resp *http.Response, successCodes ...int) (ClientGetTenantResponse, error) {
 	result := ClientGetTenantResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataBoundaryDefinition); err != nil {
 		return ClientGetTenantResponse{}, err
 	}
@@ -168,12 +164,7 @@ func (client *Client) Put(ctx context.Context, defaultParam DefaultName, dataBou
 	if err != nil {
 		return ClientPutResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientPutResponse{}, err
-	}
-	resp, err := client.putHandleResponse(httpResp)
-	return resp, err
+	return client.putHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // putCreateRequest creates the Put request.
@@ -199,8 +190,11 @@ func (client *Client) putCreateRequest(ctx context.Context, defaultParam Default
 }
 
 // putHandleResponse handles the Put response.
-func (client *Client) putHandleResponse(resp *http.Response) (ClientPutResponse, error) {
+func (client *Client) putHandleResponse(resp *http.Response, successCodes ...int) (ClientPutResponse, error) {
 	result := ClientPutResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataBoundaryDefinition); err != nil {
 		return ClientPutResponse{}, err
 	}

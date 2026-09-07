@@ -87,7 +87,7 @@ func (s *ServerTransport) dispatchNewListNodeImageVersionsPager(req *http.Reques
 	}
 	newListNodeImageVersionsPager := s.newListNodeImageVersionsPager.get(req)
 	if newListNodeImageVersionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/nodeImageVersions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/nodeImageVersions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

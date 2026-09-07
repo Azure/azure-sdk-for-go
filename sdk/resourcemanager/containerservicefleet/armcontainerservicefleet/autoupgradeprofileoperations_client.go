@@ -30,6 +30,9 @@ type AutoUpgradeProfileOperationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAutoUpgradeProfileOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AutoUpgradeProfileOperationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -83,8 +86,7 @@ func (client *AutoUpgradeProfileOperationsClient) generateUpdateRun(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -93,7 +95,7 @@ func (client *AutoUpgradeProfileOperationsClient) generateUpdateRun(ctx context.
 func (client *AutoUpgradeProfileOperationsClient) generateUpdateRunCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, autoUpgradeProfileName string, _ *AutoUpgradeProfileOperationsClientBeginGenerateUpdateRunOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/autoUpgradeProfiles/{autoUpgradeProfileName}/generateUpdateRun"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

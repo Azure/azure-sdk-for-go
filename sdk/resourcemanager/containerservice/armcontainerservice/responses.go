@@ -60,6 +60,12 @@ type AgentPoolsClientListResponse struct {
 	AgentPoolListResult
 }
 
+// AgentPoolsClientUpdateResponse contains the response from method AgentPoolsClient.BeginUpdate.
+type AgentPoolsClientUpdateResponse struct {
+	// Agent Pool.
+	AgentPool
+}
+
 // AgentPoolsClientUpgradeNodeImageVersionResponse contains the response from method AgentPoolsClient.BeginUpgradeNodeImageVersion.
 type AgentPoolsClientUpgradeNodeImageVersionResponse struct {
 	// placeholder for future response values
@@ -539,6 +545,12 @@ type OperationStatusResultClientGetByAgentPoolResponse struct {
 type OperationStatusResultClientGetResponse struct {
 	// The current status of an async operation.
 	OperationStatusResult
+}
+
+// OperationStatusResultClientListByAgentPoolResponse contains the response from method OperationStatusResultClient.NewListByAgentPoolPager.
+type OperationStatusResultClientListByAgentPoolResponse struct {
+	// The operations list. It contains an URL link to get the next set of results.
+	OperationStatusResultList
 }
 
 // OperationStatusResultClientListResponse contains the response from method OperationStatusResultClient.NewListPager.

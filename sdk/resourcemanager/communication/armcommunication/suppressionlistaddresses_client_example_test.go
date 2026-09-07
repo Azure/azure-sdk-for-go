@@ -43,7 +43,7 @@ func ExampleSuppressionListAddressesClient_CreateOrUpdate() {
 	// 		Properties: &armcommunication.SuppressionListAddressProperties{
 	// 			Email: to.Ptr("newuser1@fabrikam.com"),
 	// 			FirstName: to.Ptr("updatedFirstName"),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-24T01:06:26.100Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2023, time.June, 24, 1, 6, 26, 100000000, time.UTC)),
 	// 			LastName: to.Ptr("lastName"),
 	// 			Notes: to.Ptr("This user was added as a test."),
 	// 		},
@@ -99,7 +99,7 @@ func ExampleSuppressionListAddressesClient_Get() {
 	// 		Properties: &armcommunication.SuppressionListAddressProperties{
 	// 			Email: to.Ptr("newuser1@fabrikam.com"),
 	// 			FirstName: to.Ptr("updatedFirstName"),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-24T01:06:26.100Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2023, time.June, 24, 1, 6, 26, 100000000, time.UTC)),
 	// 			LastName: to.Ptr("lastName"),
 	// 			Notes: to.Ptr("This user was added as a test."),
 	// 		},
@@ -139,7 +139,7 @@ func ExampleSuppressionListAddressesClient_NewListPager() {
 		// 				Properties: &armcommunication.SuppressionListAddressProperties{
 		// 					Email: to.Ptr("abc@fabrikam.com"),
 		// 					FirstName: to.Ptr("firstName"),
-		// 					LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-24T01:06:26.100Z"); return t}()),
+		// 					LastModified: to.Ptr(time.Date(2023, time.June, 24, 1, 6, 26, 100000000, time.UTC)),
 		// 					LastName: to.Ptr("lastName"),
 		// 					Notes: to.Ptr("This user was added as a test."),
 		// 				},
@@ -151,7 +151,7 @@ func ExampleSuppressionListAddressesClient_NewListPager() {
 		// 				Properties: &armcommunication.SuppressionListAddressProperties{
 		// 					Email: to.Ptr("user@contoso.com"),
 		// 					FirstName: to.Ptr("firstName"),
-		// 					LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-24T01:06:26.100Z"); return t}()),
+		// 					LastModified: to.Ptr(time.Date(2023, time.June, 24, 1, 6, 26, 100000000, time.UTC)),
 		// 					LastName: to.Ptr("lastName"),
 		// 					Notes: to.Ptr("This user was added as a test."),
 		// 				},

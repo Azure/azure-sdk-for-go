@@ -30,6 +30,9 @@ type SerialPortsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSerialPortsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SerialPortsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *SerialPortsClient) Connect(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return SerialPortsClientConnectResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SerialPortsClientConnectResponse{}, err
-	}
-	resp, err := client.connectHandleResponse(httpResp)
-	return resp, err
+	return client.connectHandleResponse(httpResp, http.StatusOK)
 }
 
 // connectCreateRequest creates the Connect request.
 func (client *SerialPortsClient) connectCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, _ *SerialPortsClientConnectOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourceType}/{parentResource}/providers/Microsoft.SerialConsole/serialPorts/{serialPort}/connect"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -110,8 +108,11 @@ func (client *SerialPortsClient) connectCreateRequest(ctx context.Context, resou
 }
 
 // connectHandleResponse handles the Connect response.
-func (client *SerialPortsClient) connectHandleResponse(resp *http.Response) (SerialPortsClientConnectResponse, error) {
+func (client *SerialPortsClient) connectHandleResponse(resp *http.Response, successCodes ...int) (SerialPortsClientConnectResponse, error) {
 	result := SerialPortsClientConnectResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SerialPortConnectResult); err != nil {
 		return SerialPortsClientConnectResponse{}, err
 	}
@@ -141,19 +142,14 @@ func (client *SerialPortsClient) Create(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return SerialPortsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return SerialPortsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
 func (client *SerialPortsClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, parameters SerialPort, _ *SerialPortsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourceType}/{parentResource}/providers/Microsoft.SerialConsole/serialPorts/{serialPort}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -192,8 +188,11 @@ func (client *SerialPortsClient) createCreateRequest(ctx context.Context, resour
 }
 
 // createHandleResponse handles the Create response.
-func (client *SerialPortsClient) createHandleResponse(resp *http.Response) (SerialPortsClientCreateResponse, error) {
+func (client *SerialPortsClient) createHandleResponse(resp *http.Response, successCodes ...int) (SerialPortsClientCreateResponse, error) {
 	result := SerialPortsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SerialPort); err != nil {
 		return SerialPortsClientCreateResponse{}, err
 	}
@@ -222,19 +221,14 @@ func (client *SerialPortsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return SerialPortsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SerialPortsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *SerialPortsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, _ *SerialPortsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourceType}/{parentResource}/providers/Microsoft.SerialConsole/serialPorts/{serialPort}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -269,8 +263,11 @@ func (client *SerialPortsClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *SerialPortsClient) getHandleResponse(resp *http.Response) (SerialPortsClientGetResponse, error) {
+func (client *SerialPortsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SerialPortsClientGetResponse, error) {
 	result := SerialPortsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SerialPort); err != nil {
 		return SerialPortsClientGetResponse{}, err
 	}
@@ -298,19 +295,14 @@ func (client *SerialPortsClient) List(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return SerialPortsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SerialPortsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
 func (client *SerialPortsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, _ *SerialPortsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourceType}/{parentResource}/providers/Microsoft.SerialConsole/serialPorts"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -341,8 +333,11 @@ func (client *SerialPortsClient) listCreateRequest(ctx context.Context, resource
 }
 
 // listHandleResponse handles the List response.
-func (client *SerialPortsClient) listHandleResponse(resp *http.Response) (SerialPortsClientListResponse, error) {
+func (client *SerialPortsClient) listHandleResponse(resp *http.Response, successCodes ...int) (SerialPortsClientListResponse, error) {
 	result := SerialPortsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SerialPortListResult); err != nil {
 		return SerialPortsClientListResponse{}, err
 	}
@@ -367,19 +362,14 @@ func (client *SerialPortsClient) ListBySubscriptions(ctx context.Context, option
 	if err != nil {
 		return SerialPortsClientListBySubscriptionsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SerialPortsClientListBySubscriptionsResponse{}, err
-	}
-	resp, err := client.listBySubscriptionsHandleResponse(httpResp)
-	return resp, err
+	return client.listBySubscriptionsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listBySubscriptionsCreateRequest creates the ListBySubscriptions request.
 func (client *SerialPortsClient) listBySubscriptionsCreateRequest(ctx context.Context, _ *SerialPortsClientListBySubscriptionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.SerialConsole/serialPorts"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -394,8 +384,11 @@ func (client *SerialPortsClient) listBySubscriptionsCreateRequest(ctx context.Co
 }
 
 // listBySubscriptionsHandleResponse handles the ListBySubscriptions response.
-func (client *SerialPortsClient) listBySubscriptionsHandleResponse(resp *http.Response) (SerialPortsClientListBySubscriptionsResponse, error) {
+func (client *SerialPortsClient) listBySubscriptionsHandleResponse(resp *http.Response, successCodes ...int) (SerialPortsClientListBySubscriptionsResponse, error) {
 	result := SerialPortsClientListBySubscriptionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SerialPortListResult); err != nil {
 		return SerialPortsClientListBySubscriptionsResponse{}, err
 	}

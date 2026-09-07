@@ -69,17 +69,17 @@ func ExampleUpdateSummariesClient_Get() {
 	// 			OemFamily: to.Ptr("DellEMC"),
 	// 			PackageVersions: []*armazurestackhci.PackageVersionInfo{
 	// 				{
-	// 					LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-07T18:04:07Z"); return t}()),
+	// 					LastUpdated: to.Ptr(time.Date(2022, time.April, 7, 18, 4, 7, 0, time.UTC)),
 	// 					PackageType: to.Ptr("OEM"),
 	// 					Version: to.Ptr("2.2.2108.6"),
 	// 				},
 	// 				{
-	// 					LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-07T18:04:07Z"); return t}()),
+	// 					LastUpdated: to.Ptr(time.Date(2022, time.April, 7, 18, 4, 7, 0, time.UTC)),
 	// 					PackageType: to.Ptr("Services"),
 	// 					Version: to.Ptr("4.2203.2.32"),
 	// 				},
 	// 				{
-	// 					LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-07T18:04:07Z"); return t}()),
+	// 					LastUpdated: to.Ptr(time.Date(2022, time.April, 7, 18, 4, 7, 0, time.UTC)),
 	// 					PackageType: to.Ptr("Infrastructure"),
 	// 					Version: to.Ptr("4.2203.2.32"),
 	// 				},
@@ -126,17 +126,17 @@ func ExampleUpdateSummariesClient_NewListPager() {
 		// 					OemFamily: to.Ptr("DellEMC"),
 		// 					PackageVersions: []*armazurestackhci.PackageVersionInfo{
 		// 						{
-		// 							LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-07T18:04:07Z"); return t}()),
+		// 							LastUpdated: to.Ptr(time.Date(2022, time.April, 7, 18, 4, 7, 0, time.UTC)),
 		// 							PackageType: to.Ptr("OEM"),
 		// 							Version: to.Ptr("2.2.2108.6"),
 		// 						},
 		// 						{
-		// 							LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-07T18:04:07Z"); return t}()),
+		// 							LastUpdated: to.Ptr(time.Date(2022, time.April, 7, 18, 4, 7, 0, time.UTC)),
 		// 							PackageType: to.Ptr("Services"),
 		// 							Version: to.Ptr("4.2203.2.32"),
 		// 						},
 		// 						{
-		// 							LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-07T18:04:07Z"); return t}()),
+		// 							LastUpdated: to.Ptr(time.Date(2022, time.April, 7, 18, 4, 7, 0, time.UTC)),
 		// 							PackageType: to.Ptr("Infrastructure"),
 		// 							Version: to.Ptr("4.2203.2.32"),
 		// 						},
@@ -165,8 +165,8 @@ func ExampleUpdateSummariesClient_Put() {
 		Properties: &armazurestackhci.UpdateSummariesProperties{
 			CurrentVersion: to.Ptr("4.2203.2.32"),
 			HardwareModel:  to.Ptr("PowerEdge R730xd"),
-			LastChecked:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-07T18:04:07Z"); return t }()),
-			LastUpdated:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-06T14:08:18.254Z"); return t }()),
+			LastChecked:    to.Ptr(time.Date(2022, time.April, 7, 18, 4, 7, 0, time.UTC)),
+			LastUpdated:    to.Ptr(time.Date(2022, time.April, 6, 14, 8, 18, 254000000, time.UTC)),
 			OemFamily:      to.Ptr("DellEMC"),
 			State:          to.Ptr(armazurestackhci.UpdateSummariesPropertiesStateAppliedSuccessfully),
 		},
@@ -189,17 +189,17 @@ func ExampleUpdateSummariesClient_Put() {
 	// 			OemFamily: to.Ptr("DellEMC"),
 	// 			PackageVersions: []*armazurestackhci.PackageVersionInfo{
 	// 				{
-	// 					LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-07T18:04:07Z"); return t}()),
+	// 					LastUpdated: to.Ptr(time.Date(2022, time.April, 7, 18, 4, 7, 0, time.UTC)),
 	// 					PackageType: to.Ptr("OEM"),
 	// 					Version: to.Ptr("2.2.2108.6"),
 	// 				},
 	// 				{
-	// 					LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-07T18:04:07Z"); return t}()),
+	// 					LastUpdated: to.Ptr(time.Date(2022, time.April, 7, 18, 4, 7, 0, time.UTC)),
 	// 					PackageType: to.Ptr("Services"),
 	// 					Version: to.Ptr("4.2203.2.32"),
 	// 				},
 	// 				{
-	// 					LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-07T18:04:07Z"); return t}()),
+	// 					LastUpdated: to.Ptr(time.Date(2022, time.April, 7, 18, 4, 7, 0, time.UTC)),
 	// 					PackageType: to.Ptr("Infrastructure"),
 	// 					Version: to.Ptr("4.2203.2.32"),
 	// 				},

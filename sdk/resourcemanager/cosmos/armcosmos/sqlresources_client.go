@@ -30,6 +30,9 @@ type SQLResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSQLResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SQLResourcesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -86,8 +89,7 @@ func (client *SQLResourcesClient) createUpdateClientEncryptionKey(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -96,7 +98,7 @@ func (client *SQLResourcesClient) createUpdateClientEncryptionKey(ctx context.Co
 func (client *SQLResourcesClient) createUpdateClientEncryptionKeyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, clientEncryptionKeyName string, createUpdateClientEncryptionKeyParameters ClientEncryptionKeyCreateUpdateParameters, _ *SQLResourcesClientBeginCreateUpdateClientEncryptionKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys/{clientEncryptionKeyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -173,8 +175,7 @@ func (client *SQLResourcesClient) createUpdateSQLContainer(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -183,7 +184,7 @@ func (client *SQLResourcesClient) createUpdateSQLContainer(ctx context.Context, 
 func (client *SQLResourcesClient) createUpdateSQLContainerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, createUpdateSQLContainerParameters SQLContainerCreateUpdateParameters, _ *SQLResourcesClientBeginCreateUpdateSQLContainerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -259,8 +260,7 @@ func (client *SQLResourcesClient) createUpdateSQLDatabase(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -269,7 +269,7 @@ func (client *SQLResourcesClient) createUpdateSQLDatabase(ctx context.Context, r
 func (client *SQLResourcesClient) createUpdateSQLDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateSQLDatabaseParameters SQLDatabaseCreateUpdateParameters, _ *SQLResourcesClientBeginCreateUpdateSQLDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -338,8 +338,7 @@ func (client *SQLResourcesClient) createUpdateSQLRoleAssignment(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -348,7 +347,7 @@ func (client *SQLResourcesClient) createUpdateSQLRoleAssignment(ctx context.Cont
 func (client *SQLResourcesClient) createUpdateSQLRoleAssignmentCreateRequest(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, createUpdateSQLRoleAssignmentParameters SQLRoleAssignmentCreateUpdateParameters, _ *SQLResourcesClientBeginCreateUpdateSQLRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if roleAssignmentID == "" {
@@ -417,8 +416,7 @@ func (client *SQLResourcesClient) createUpdateSQLRoleDefinition(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -427,7 +425,7 @@ func (client *SQLResourcesClient) createUpdateSQLRoleDefinition(ctx context.Cont
 func (client *SQLResourcesClient) createUpdateSQLRoleDefinitionCreateRequest(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, createUpdateSQLRoleDefinitionParameters SQLRoleDefinitionCreateUpdateParameters, _ *SQLResourcesClientBeginCreateUpdateSQLRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if roleDefinitionID == "" {
@@ -501,8 +499,7 @@ func (client *SQLResourcesClient) createUpdateSQLStoredProcedure(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -511,7 +508,7 @@ func (client *SQLResourcesClient) createUpdateSQLStoredProcedure(ctx context.Con
 func (client *SQLResourcesClient) createUpdateSQLStoredProcedureCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, createUpdateSQLStoredProcedureParameters SQLStoredProcedureCreateUpdateParameters, _ *SQLResourcesClientBeginCreateUpdateSQLStoredProcedureOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures/{storedProcedureName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -593,8 +590,7 @@ func (client *SQLResourcesClient) createUpdateSQLTrigger(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -603,7 +599,7 @@ func (client *SQLResourcesClient) createUpdateSQLTrigger(ctx context.Context, re
 func (client *SQLResourcesClient) createUpdateSQLTriggerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, createUpdateSQLTriggerParameters SQLTriggerCreateUpdateParameters, _ *SQLResourcesClientBeginCreateUpdateSQLTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers/{triggerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -685,8 +681,7 @@ func (client *SQLResourcesClient) createUpdateSQLUserDefinedFunction(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -695,7 +690,7 @@ func (client *SQLResourcesClient) createUpdateSQLUserDefinedFunction(ctx context
 func (client *SQLResourcesClient) createUpdateSQLUserDefinedFunctionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, createUpdateSQLUserDefinedFunctionParameters SQLUserDefinedFunctionCreateUpdateParameters, _ *SQLResourcesClientBeginCreateUpdateSQLUserDefinedFunctionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions/{userDefinedFunctionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -775,8 +770,7 @@ func (client *SQLResourcesClient) deleteSQLContainer(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -785,7 +779,7 @@ func (client *SQLResourcesClient) deleteSQLContainer(ctx context.Context, resour
 func (client *SQLResourcesClient) deleteSQLContainerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, _ *SQLResourcesClientBeginDeleteSQLContainerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -855,8 +849,7 @@ func (client *SQLResourcesClient) deleteSQLDatabase(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -865,7 +858,7 @@ func (client *SQLResourcesClient) deleteSQLDatabase(ctx context.Context, resourc
 func (client *SQLResourcesClient) deleteSQLDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *SQLResourcesClientBeginDeleteSQLDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -929,8 +922,7 @@ func (client *SQLResourcesClient) deleteSQLRoleAssignment(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -939,7 +931,7 @@ func (client *SQLResourcesClient) deleteSQLRoleAssignment(ctx context.Context, r
 func (client *SQLResourcesClient) deleteSQLRoleAssignmentCreateRequest(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, _ *SQLResourcesClientBeginDeleteSQLRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if roleAssignmentID == "" {
@@ -1003,8 +995,7 @@ func (client *SQLResourcesClient) deleteSQLRoleDefinition(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1013,7 +1004,7 @@ func (client *SQLResourcesClient) deleteSQLRoleDefinition(ctx context.Context, r
 func (client *SQLResourcesClient) deleteSQLRoleDefinitionCreateRequest(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, _ *SQLResourcesClientBeginDeleteSQLRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if roleDefinitionID == "" {
@@ -1081,8 +1072,7 @@ func (client *SQLResourcesClient) deleteSQLStoredProcedure(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1091,7 +1081,7 @@ func (client *SQLResourcesClient) deleteSQLStoredProcedure(ctx context.Context, 
 func (client *SQLResourcesClient) deleteSQLStoredProcedureCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, _ *SQLResourcesClientBeginDeleteSQLStoredProcedureOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures/{storedProcedureName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1167,8 +1157,7 @@ func (client *SQLResourcesClient) deleteSQLTrigger(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1177,7 +1166,7 @@ func (client *SQLResourcesClient) deleteSQLTrigger(ctx context.Context, resource
 func (client *SQLResourcesClient) deleteSQLTriggerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, _ *SQLResourcesClientBeginDeleteSQLTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers/{triggerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1253,8 +1242,7 @@ func (client *SQLResourcesClient) deleteSQLUserDefinedFunction(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1263,7 +1251,7 @@ func (client *SQLResourcesClient) deleteSQLUserDefinedFunction(ctx context.Conte
 func (client *SQLResourcesClient) deleteSQLUserDefinedFunctionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, _ *SQLResourcesClientBeginDeleteSQLUserDefinedFunctionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions/{userDefinedFunctionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1318,19 +1306,14 @@ func (client *SQLResourcesClient) GetClientEncryptionKey(ctx context.Context, re
 	if err != nil {
 		return SQLResourcesClientGetClientEncryptionKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SQLResourcesClientGetClientEncryptionKeyResponse{}, err
-	}
-	resp, err := client.getClientEncryptionKeyHandleResponse(httpResp)
-	return resp, err
+	return client.getClientEncryptionKeyHandleResponse(httpResp, http.StatusOK)
 }
 
 // getClientEncryptionKeyCreateRequest creates the GetClientEncryptionKey request.
 func (client *SQLResourcesClient) getClientEncryptionKeyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, clientEncryptionKeyName string, _ *SQLResourcesClientGetClientEncryptionKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys/{clientEncryptionKeyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1361,8 +1344,11 @@ func (client *SQLResourcesClient) getClientEncryptionKeyCreateRequest(ctx contex
 }
 
 // getClientEncryptionKeyHandleResponse handles the GetClientEncryptionKey response.
-func (client *SQLResourcesClient) getClientEncryptionKeyHandleResponse(resp *http.Response) (SQLResourcesClientGetClientEncryptionKeyResponse, error) {
+func (client *SQLResourcesClient) getClientEncryptionKeyHandleResponse(resp *http.Response, successCodes ...int) (SQLResourcesClientGetClientEncryptionKeyResponse, error) {
 	result := SQLResourcesClientGetClientEncryptionKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClientEncryptionKeyGetResults); err != nil {
 		return SQLResourcesClientGetClientEncryptionKeyResponse{}, err
 	}
@@ -1391,19 +1377,14 @@ func (client *SQLResourcesClient) GetSQLContainer(ctx context.Context, resourceG
 	if err != nil {
 		return SQLResourcesClientGetSQLContainerResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SQLResourcesClientGetSQLContainerResponse{}, err
-	}
-	resp, err := client.getSQLContainerHandleResponse(httpResp)
-	return resp, err
+	return client.getSQLContainerHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSQLContainerCreateRequest creates the GetSQLContainer request.
 func (client *SQLResourcesClient) getSQLContainerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, _ *SQLResourcesClientGetSQLContainerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1434,8 +1415,11 @@ func (client *SQLResourcesClient) getSQLContainerCreateRequest(ctx context.Conte
 }
 
 // getSQLContainerHandleResponse handles the GetSQLContainer response.
-func (client *SQLResourcesClient) getSQLContainerHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLContainerResponse, error) {
+func (client *SQLResourcesClient) getSQLContainerHandleResponse(resp *http.Response, successCodes ...int) (SQLResourcesClientGetSQLContainerResponse, error) {
 	result := SQLResourcesClientGetSQLContainerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLContainerGetResults); err != nil {
 		return SQLResourcesClientGetSQLContainerResponse{}, err
 	}
@@ -1464,19 +1448,14 @@ func (client *SQLResourcesClient) GetSQLContainerThroughput(ctx context.Context,
 	if err != nil {
 		return SQLResourcesClientGetSQLContainerThroughputResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SQLResourcesClientGetSQLContainerThroughputResponse{}, err
-	}
-	resp, err := client.getSQLContainerThroughputHandleResponse(httpResp)
-	return resp, err
+	return client.getSQLContainerThroughputHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSQLContainerThroughputCreateRequest creates the GetSQLContainerThroughput request.
 func (client *SQLResourcesClient) getSQLContainerThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, _ *SQLResourcesClientGetSQLContainerThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1507,8 +1486,11 @@ func (client *SQLResourcesClient) getSQLContainerThroughputCreateRequest(ctx con
 }
 
 // getSQLContainerThroughputHandleResponse handles the GetSQLContainerThroughput response.
-func (client *SQLResourcesClient) getSQLContainerThroughputHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLContainerThroughputResponse, error) {
+func (client *SQLResourcesClient) getSQLContainerThroughputHandleResponse(resp *http.Response, successCodes ...int) (SQLResourcesClientGetSQLContainerThroughputResponse, error) {
 	result := SQLResourcesClientGetSQLContainerThroughputResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputSettingsGetResults); err != nil {
 		return SQLResourcesClientGetSQLContainerThroughputResponse{}, err
 	}
@@ -1536,19 +1518,14 @@ func (client *SQLResourcesClient) GetSQLDatabase(ctx context.Context, resourceGr
 	if err != nil {
 		return SQLResourcesClientGetSQLDatabaseResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SQLResourcesClientGetSQLDatabaseResponse{}, err
-	}
-	resp, err := client.getSQLDatabaseHandleResponse(httpResp)
-	return resp, err
+	return client.getSQLDatabaseHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSQLDatabaseCreateRequest creates the GetSQLDatabase request.
 func (client *SQLResourcesClient) getSQLDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *SQLResourcesClientGetSQLDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1575,8 +1552,11 @@ func (client *SQLResourcesClient) getSQLDatabaseCreateRequest(ctx context.Contex
 }
 
 // getSQLDatabaseHandleResponse handles the GetSQLDatabase response.
-func (client *SQLResourcesClient) getSQLDatabaseHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLDatabaseResponse, error) {
+func (client *SQLResourcesClient) getSQLDatabaseHandleResponse(resp *http.Response, successCodes ...int) (SQLResourcesClientGetSQLDatabaseResponse, error) {
 	result := SQLResourcesClientGetSQLDatabaseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLDatabaseGetResults); err != nil {
 		return SQLResourcesClientGetSQLDatabaseResponse{}, err
 	}
@@ -1605,19 +1585,14 @@ func (client *SQLResourcesClient) GetSQLDatabaseThroughput(ctx context.Context, 
 	if err != nil {
 		return SQLResourcesClientGetSQLDatabaseThroughputResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SQLResourcesClientGetSQLDatabaseThroughputResponse{}, err
-	}
-	resp, err := client.getSQLDatabaseThroughputHandleResponse(httpResp)
-	return resp, err
+	return client.getSQLDatabaseThroughputHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSQLDatabaseThroughputCreateRequest creates the GetSQLDatabaseThroughput request.
 func (client *SQLResourcesClient) getSQLDatabaseThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *SQLResourcesClientGetSQLDatabaseThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1644,8 +1619,11 @@ func (client *SQLResourcesClient) getSQLDatabaseThroughputCreateRequest(ctx cont
 }
 
 // getSQLDatabaseThroughputHandleResponse handles the GetSQLDatabaseThroughput response.
-func (client *SQLResourcesClient) getSQLDatabaseThroughputHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLDatabaseThroughputResponse, error) {
+func (client *SQLResourcesClient) getSQLDatabaseThroughputHandleResponse(resp *http.Response, successCodes ...int) (SQLResourcesClientGetSQLDatabaseThroughputResponse, error) {
 	result := SQLResourcesClientGetSQLDatabaseThroughputResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputSettingsGetResults); err != nil {
 		return SQLResourcesClientGetSQLDatabaseThroughputResponse{}, err
 	}
@@ -1671,19 +1649,14 @@ func (client *SQLResourcesClient) GetSQLRoleAssignment(ctx context.Context, role
 	if err != nil {
 		return SQLResourcesClientGetSQLRoleAssignmentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SQLResourcesClientGetSQLRoleAssignmentResponse{}, err
-	}
-	resp, err := client.getSQLRoleAssignmentHandleResponse(httpResp)
-	return resp, err
+	return client.getSQLRoleAssignmentHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSQLRoleAssignmentCreateRequest creates the GetSQLRoleAssignment request.
 func (client *SQLResourcesClient) getSQLRoleAssignmentCreateRequest(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, _ *SQLResourcesClientGetSQLRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if roleAssignmentID == "" {
@@ -1710,8 +1683,11 @@ func (client *SQLResourcesClient) getSQLRoleAssignmentCreateRequest(ctx context.
 }
 
 // getSQLRoleAssignmentHandleResponse handles the GetSQLRoleAssignment response.
-func (client *SQLResourcesClient) getSQLRoleAssignmentHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLRoleAssignmentResponse, error) {
+func (client *SQLResourcesClient) getSQLRoleAssignmentHandleResponse(resp *http.Response, successCodes ...int) (SQLResourcesClientGetSQLRoleAssignmentResponse, error) {
 	result := SQLResourcesClientGetSQLRoleAssignmentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLRoleAssignmentGetResults); err != nil {
 		return SQLResourcesClientGetSQLRoleAssignmentResponse{}, err
 	}
@@ -1737,19 +1713,14 @@ func (client *SQLResourcesClient) GetSQLRoleDefinition(ctx context.Context, role
 	if err != nil {
 		return SQLResourcesClientGetSQLRoleDefinitionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SQLResourcesClientGetSQLRoleDefinitionResponse{}, err
-	}
-	resp, err := client.getSQLRoleDefinitionHandleResponse(httpResp)
-	return resp, err
+	return client.getSQLRoleDefinitionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSQLRoleDefinitionCreateRequest creates the GetSQLRoleDefinition request.
 func (client *SQLResourcesClient) getSQLRoleDefinitionCreateRequest(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, _ *SQLResourcesClientGetSQLRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if roleDefinitionID == "" {
@@ -1776,8 +1747,11 @@ func (client *SQLResourcesClient) getSQLRoleDefinitionCreateRequest(ctx context.
 }
 
 // getSQLRoleDefinitionHandleResponse handles the GetSQLRoleDefinition response.
-func (client *SQLResourcesClient) getSQLRoleDefinitionHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLRoleDefinitionResponse, error) {
+func (client *SQLResourcesClient) getSQLRoleDefinitionHandleResponse(resp *http.Response, successCodes ...int) (SQLResourcesClientGetSQLRoleDefinitionResponse, error) {
 	result := SQLResourcesClientGetSQLRoleDefinitionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLRoleDefinitionGetResults); err != nil {
 		return SQLResourcesClientGetSQLRoleDefinitionResponse{}, err
 	}
@@ -1807,19 +1781,14 @@ func (client *SQLResourcesClient) GetSQLStoredProcedure(ctx context.Context, res
 	if err != nil {
 		return SQLResourcesClientGetSQLStoredProcedureResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SQLResourcesClientGetSQLStoredProcedureResponse{}, err
-	}
-	resp, err := client.getSQLStoredProcedureHandleResponse(httpResp)
-	return resp, err
+	return client.getSQLStoredProcedureHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSQLStoredProcedureCreateRequest creates the GetSQLStoredProcedure request.
 func (client *SQLResourcesClient) getSQLStoredProcedureCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, _ *SQLResourcesClientGetSQLStoredProcedureOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures/{storedProcedureName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1854,8 +1823,11 @@ func (client *SQLResourcesClient) getSQLStoredProcedureCreateRequest(ctx context
 }
 
 // getSQLStoredProcedureHandleResponse handles the GetSQLStoredProcedure response.
-func (client *SQLResourcesClient) getSQLStoredProcedureHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLStoredProcedureResponse, error) {
+func (client *SQLResourcesClient) getSQLStoredProcedureHandleResponse(resp *http.Response, successCodes ...int) (SQLResourcesClientGetSQLStoredProcedureResponse, error) {
 	result := SQLResourcesClientGetSQLStoredProcedureResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLStoredProcedureGetResults); err != nil {
 		return SQLResourcesClientGetSQLStoredProcedureResponse{}, err
 	}
@@ -1885,19 +1857,14 @@ func (client *SQLResourcesClient) GetSQLTrigger(ctx context.Context, resourceGro
 	if err != nil {
 		return SQLResourcesClientGetSQLTriggerResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SQLResourcesClientGetSQLTriggerResponse{}, err
-	}
-	resp, err := client.getSQLTriggerHandleResponse(httpResp)
-	return resp, err
+	return client.getSQLTriggerHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSQLTriggerCreateRequest creates the GetSQLTrigger request.
 func (client *SQLResourcesClient) getSQLTriggerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, _ *SQLResourcesClientGetSQLTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers/{triggerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1932,8 +1899,11 @@ func (client *SQLResourcesClient) getSQLTriggerCreateRequest(ctx context.Context
 }
 
 // getSQLTriggerHandleResponse handles the GetSQLTrigger response.
-func (client *SQLResourcesClient) getSQLTriggerHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLTriggerResponse, error) {
+func (client *SQLResourcesClient) getSQLTriggerHandleResponse(resp *http.Response, successCodes ...int) (SQLResourcesClientGetSQLTriggerResponse, error) {
 	result := SQLResourcesClientGetSQLTriggerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLTriggerGetResults); err != nil {
 		return SQLResourcesClientGetSQLTriggerResponse{}, err
 	}
@@ -1963,19 +1933,14 @@ func (client *SQLResourcesClient) GetSQLUserDefinedFunction(ctx context.Context,
 	if err != nil {
 		return SQLResourcesClientGetSQLUserDefinedFunctionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SQLResourcesClientGetSQLUserDefinedFunctionResponse{}, err
-	}
-	resp, err := client.getSQLUserDefinedFunctionHandleResponse(httpResp)
-	return resp, err
+	return client.getSQLUserDefinedFunctionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSQLUserDefinedFunctionCreateRequest creates the GetSQLUserDefinedFunction request.
 func (client *SQLResourcesClient) getSQLUserDefinedFunctionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, _ *SQLResourcesClientGetSQLUserDefinedFunctionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions/{userDefinedFunctionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2010,8 +1975,11 @@ func (client *SQLResourcesClient) getSQLUserDefinedFunctionCreateRequest(ctx con
 }
 
 // getSQLUserDefinedFunctionHandleResponse handles the GetSQLUserDefinedFunction response.
-func (client *SQLResourcesClient) getSQLUserDefinedFunctionHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLUserDefinedFunctionResponse, error) {
+func (client *SQLResourcesClient) getSQLUserDefinedFunctionHandleResponse(resp *http.Response, successCodes ...int) (SQLResourcesClientGetSQLUserDefinedFunctionResponse, error) {
 	result := SQLResourcesClientGetSQLUserDefinedFunctionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLUserDefinedFunctionGetResults); err != nil {
 		return SQLResourcesClientGetSQLUserDefinedFunctionResponse{}, err
 	}
@@ -2035,51 +2003,65 @@ func (client *SQLResourcesClient) NewListClientEncryptionKeysPager(resourceGroup
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listClientEncryptionKeysCreateRequest(ctx, resourceGroupName, accountName, databaseName, options)
-			}, nil)
+			req, err := client.listClientEncryptionKeysCreateRequest(ctx, resourceGroupName, accountName, databaseName, nextLink, options)
 			if err != nil {
 				return SQLResourcesClientListClientEncryptionKeysResponse{}, err
 			}
-			return client.listClientEncryptionKeysHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SQLResourcesClientListClientEncryptionKeysResponse{}, err
+			}
+			return client.listClientEncryptionKeysHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listClientEncryptionKeysCreateRequest creates the ListClientEncryptionKeys request.
-func (client *SQLResourcesClient) listClientEncryptionKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *SQLResourcesClientListClientEncryptionKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SQLResourcesClient) listClientEncryptionKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, nextLink string, _ *SQLResourcesClientListClientEncryptionKeysOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		if databaseName == "" {
+			return nil, errors.New("parameter databaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listClientEncryptionKeysHandleResponse handles the ListClientEncryptionKeys response.
-func (client *SQLResourcesClient) listClientEncryptionKeysHandleResponse(resp *http.Response) (SQLResourcesClientListClientEncryptionKeysResponse, error) {
+func (client *SQLResourcesClient) listClientEncryptionKeysHandleResponse(resp *http.Response, successCodes ...int) (SQLResourcesClientListClientEncryptionKeysResponse, error) {
 	result := SQLResourcesClientListClientEncryptionKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClientEncryptionKeysListResult); err != nil {
 		return SQLResourcesClientListClientEncryptionKeysResponse{}, err
 	}
@@ -2103,51 +2085,65 @@ func (client *SQLResourcesClient) NewListSQLContainersPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSQLContainersCreateRequest(ctx, resourceGroupName, accountName, databaseName, options)
-			}, nil)
+			req, err := client.listSQLContainersCreateRequest(ctx, resourceGroupName, accountName, databaseName, nextLink, options)
 			if err != nil {
 				return SQLResourcesClientListSQLContainersResponse{}, err
 			}
-			return client.listSQLContainersHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SQLResourcesClientListSQLContainersResponse{}, err
+			}
+			return client.listSQLContainersHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSQLContainersCreateRequest creates the ListSQLContainers request.
-func (client *SQLResourcesClient) listSQLContainersCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *SQLResourcesClientListSQLContainersOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SQLResourcesClient) listSQLContainersCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, nextLink string, _ *SQLResourcesClientListSQLContainersOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		if databaseName == "" {
+			return nil, errors.New("parameter databaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSQLContainersHandleResponse handles the ListSQLContainers response.
-func (client *SQLResourcesClient) listSQLContainersHandleResponse(resp *http.Response) (SQLResourcesClientListSQLContainersResponse, error) {
+func (client *SQLResourcesClient) listSQLContainersHandleResponse(resp *http.Response, successCodes ...int) (SQLResourcesClientListSQLContainersResponse, error) {
 	result := SQLResourcesClientListSQLContainersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLContainerListResult); err != nil {
 		return SQLResourcesClientListSQLContainersResponse{}, err
 	}
@@ -2170,47 +2166,61 @@ func (client *SQLResourcesClient) NewListSQLDatabasesPager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSQLDatabasesCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listSQLDatabasesCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return SQLResourcesClientListSQLDatabasesResponse{}, err
 			}
-			return client.listSQLDatabasesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SQLResourcesClientListSQLDatabasesResponse{}, err
+			}
+			return client.listSQLDatabasesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSQLDatabasesCreateRequest creates the ListSQLDatabases request.
-func (client *SQLResourcesClient) listSQLDatabasesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *SQLResourcesClientListSQLDatabasesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SQLResourcesClient) listSQLDatabasesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *SQLResourcesClientListSQLDatabasesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSQLDatabasesHandleResponse handles the ListSQLDatabases response.
-func (client *SQLResourcesClient) listSQLDatabasesHandleResponse(resp *http.Response) (SQLResourcesClientListSQLDatabasesResponse, error) {
+func (client *SQLResourcesClient) listSQLDatabasesHandleResponse(resp *http.Response, successCodes ...int) (SQLResourcesClientListSQLDatabasesResponse, error) {
 	result := SQLResourcesClientListSQLDatabasesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLDatabaseListResult); err != nil {
 		return SQLResourcesClientListSQLDatabasesResponse{}, err
 	}
@@ -2233,47 +2243,61 @@ func (client *SQLResourcesClient) NewListSQLRoleAssignmentsPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSQLRoleAssignmentsCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listSQLRoleAssignmentsCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return SQLResourcesClientListSQLRoleAssignmentsResponse{}, err
 			}
-			return client.listSQLRoleAssignmentsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SQLResourcesClientListSQLRoleAssignmentsResponse{}, err
+			}
+			return client.listSQLRoleAssignmentsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSQLRoleAssignmentsCreateRequest creates the ListSQLRoleAssignments request.
-func (client *SQLResourcesClient) listSQLRoleAssignmentsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *SQLResourcesClientListSQLRoleAssignmentsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SQLResourcesClient) listSQLRoleAssignmentsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *SQLResourcesClientListSQLRoleAssignmentsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSQLRoleAssignmentsHandleResponse handles the ListSQLRoleAssignments response.
-func (client *SQLResourcesClient) listSQLRoleAssignmentsHandleResponse(resp *http.Response) (SQLResourcesClientListSQLRoleAssignmentsResponse, error) {
+func (client *SQLResourcesClient) listSQLRoleAssignmentsHandleResponse(resp *http.Response, successCodes ...int) (SQLResourcesClientListSQLRoleAssignmentsResponse, error) {
 	result := SQLResourcesClientListSQLRoleAssignmentsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLRoleAssignmentListResult); err != nil {
 		return SQLResourcesClientListSQLRoleAssignmentsResponse{}, err
 	}
@@ -2296,47 +2320,61 @@ func (client *SQLResourcesClient) NewListSQLRoleDefinitionsPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSQLRoleDefinitionsCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listSQLRoleDefinitionsCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return SQLResourcesClientListSQLRoleDefinitionsResponse{}, err
 			}
-			return client.listSQLRoleDefinitionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SQLResourcesClientListSQLRoleDefinitionsResponse{}, err
+			}
+			return client.listSQLRoleDefinitionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSQLRoleDefinitionsCreateRequest creates the ListSQLRoleDefinitions request.
-func (client *SQLResourcesClient) listSQLRoleDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *SQLResourcesClientListSQLRoleDefinitionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SQLResourcesClient) listSQLRoleDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *SQLResourcesClientListSQLRoleDefinitionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSQLRoleDefinitionsHandleResponse handles the ListSQLRoleDefinitions response.
-func (client *SQLResourcesClient) listSQLRoleDefinitionsHandleResponse(resp *http.Response) (SQLResourcesClientListSQLRoleDefinitionsResponse, error) {
+func (client *SQLResourcesClient) listSQLRoleDefinitionsHandleResponse(resp *http.Response, successCodes ...int) (SQLResourcesClientListSQLRoleDefinitionsResponse, error) {
 	result := SQLResourcesClientListSQLRoleDefinitionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLRoleDefinitionListResult); err != nil {
 		return SQLResourcesClientListSQLRoleDefinitionsResponse{}, err
 	}
@@ -2361,55 +2399,69 @@ func (client *SQLResourcesClient) NewListSQLStoredProceduresPager(resourceGroupN
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSQLStoredProceduresCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, options)
-			}, nil)
+			req, err := client.listSQLStoredProceduresCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, nextLink, options)
 			if err != nil {
 				return SQLResourcesClientListSQLStoredProceduresResponse{}, err
 			}
-			return client.listSQLStoredProceduresHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SQLResourcesClientListSQLStoredProceduresResponse{}, err
+			}
+			return client.listSQLStoredProceduresHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSQLStoredProceduresCreateRequest creates the ListSQLStoredProcedures request.
-func (client *SQLResourcesClient) listSQLStoredProceduresCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, _ *SQLResourcesClientListSQLStoredProceduresOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SQLResourcesClient) listSQLStoredProceduresCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, nextLink string, _ *SQLResourcesClientListSQLStoredProceduresOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		if databaseName == "" {
+			return nil, errors.New("parameter databaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+		if containerName == "" {
+			return nil, errors.New("parameter containerName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	if containerName == "" {
-		return nil, errors.New("parameter containerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSQLStoredProceduresHandleResponse handles the ListSQLStoredProcedures response.
-func (client *SQLResourcesClient) listSQLStoredProceduresHandleResponse(resp *http.Response) (SQLResourcesClientListSQLStoredProceduresResponse, error) {
+func (client *SQLResourcesClient) listSQLStoredProceduresHandleResponse(resp *http.Response, successCodes ...int) (SQLResourcesClientListSQLStoredProceduresResponse, error) {
 	result := SQLResourcesClientListSQLStoredProceduresResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLStoredProcedureListResult); err != nil {
 		return SQLResourcesClientListSQLStoredProceduresResponse{}, err
 	}
@@ -2434,55 +2486,69 @@ func (client *SQLResourcesClient) NewListSQLTriggersPager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSQLTriggersCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, options)
-			}, nil)
+			req, err := client.listSQLTriggersCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, nextLink, options)
 			if err != nil {
 				return SQLResourcesClientListSQLTriggersResponse{}, err
 			}
-			return client.listSQLTriggersHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SQLResourcesClientListSQLTriggersResponse{}, err
+			}
+			return client.listSQLTriggersHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSQLTriggersCreateRequest creates the ListSQLTriggers request.
-func (client *SQLResourcesClient) listSQLTriggersCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, _ *SQLResourcesClientListSQLTriggersOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SQLResourcesClient) listSQLTriggersCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, nextLink string, _ *SQLResourcesClientListSQLTriggersOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		if databaseName == "" {
+			return nil, errors.New("parameter databaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+		if containerName == "" {
+			return nil, errors.New("parameter containerName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	if containerName == "" {
-		return nil, errors.New("parameter containerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSQLTriggersHandleResponse handles the ListSQLTriggers response.
-func (client *SQLResourcesClient) listSQLTriggersHandleResponse(resp *http.Response) (SQLResourcesClientListSQLTriggersResponse, error) {
+func (client *SQLResourcesClient) listSQLTriggersHandleResponse(resp *http.Response, successCodes ...int) (SQLResourcesClientListSQLTriggersResponse, error) {
 	result := SQLResourcesClientListSQLTriggersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLTriggerListResult); err != nil {
 		return SQLResourcesClientListSQLTriggersResponse{}, err
 	}
@@ -2507,55 +2573,69 @@ func (client *SQLResourcesClient) NewListSQLUserDefinedFunctionsPager(resourceGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSQLUserDefinedFunctionsCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, options)
-			}, nil)
+			req, err := client.listSQLUserDefinedFunctionsCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, nextLink, options)
 			if err != nil {
 				return SQLResourcesClientListSQLUserDefinedFunctionsResponse{}, err
 			}
-			return client.listSQLUserDefinedFunctionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SQLResourcesClientListSQLUserDefinedFunctionsResponse{}, err
+			}
+			return client.listSQLUserDefinedFunctionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSQLUserDefinedFunctionsCreateRequest creates the ListSQLUserDefinedFunctions request.
-func (client *SQLResourcesClient) listSQLUserDefinedFunctionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, _ *SQLResourcesClientListSQLUserDefinedFunctionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SQLResourcesClient) listSQLUserDefinedFunctionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, nextLink string, _ *SQLResourcesClientListSQLUserDefinedFunctionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		if databaseName == "" {
+			return nil, errors.New("parameter databaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+		if containerName == "" {
+			return nil, errors.New("parameter containerName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	if containerName == "" {
-		return nil, errors.New("parameter containerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSQLUserDefinedFunctionsHandleResponse handles the ListSQLUserDefinedFunctions response.
-func (client *SQLResourcesClient) listSQLUserDefinedFunctionsHandleResponse(resp *http.Response) (SQLResourcesClientListSQLUserDefinedFunctionsResponse, error) {
+func (client *SQLResourcesClient) listSQLUserDefinedFunctionsHandleResponse(resp *http.Response, successCodes ...int) (SQLResourcesClientListSQLUserDefinedFunctionsResponse, error) {
 	result := SQLResourcesClientListSQLUserDefinedFunctionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLUserDefinedFunctionListResult); err != nil {
 		return SQLResourcesClientListSQLUserDefinedFunctionsResponse{}, err
 	}
@@ -2604,8 +2684,7 @@ func (client *SQLResourcesClient) migrateSQLContainerToAutoscale(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -2614,7 +2693,7 @@ func (client *SQLResourcesClient) migrateSQLContainerToAutoscale(ctx context.Con
 func (client *SQLResourcesClient) migrateSQLContainerToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, _ *SQLResourcesClientBeginMigrateSQLContainerToAutoscaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default/migrateToAutoscale"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2686,8 +2765,7 @@ func (client *SQLResourcesClient) migrateSQLContainerToManualThroughput(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -2696,7 +2774,7 @@ func (client *SQLResourcesClient) migrateSQLContainerToManualThroughput(ctx cont
 func (client *SQLResourcesClient) migrateSQLContainerToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, _ *SQLResourcesClientBeginMigrateSQLContainerToManualThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default/migrateToManualThroughput"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2767,8 +2845,7 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToAutoscale(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -2777,7 +2854,7 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToAutoscale(ctx context.Cont
 func (client *SQLResourcesClient) migrateSQLDatabaseToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *SQLResourcesClientBeginMigrateSQLDatabaseToAutoscaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default/migrateToAutoscale"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2844,8 +2921,7 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToManualThroughput(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -2854,7 +2930,7 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToManualThroughput(ctx conte
 func (client *SQLResourcesClient) migrateSQLDatabaseToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *SQLResourcesClientBeginMigrateSQLDatabaseToManualThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default/migrateToManualThroughput"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2923,8 +2999,7 @@ func (client *SQLResourcesClient) retrieveContinuousBackupInformation(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -2933,7 +3008,7 @@ func (client *SQLResourcesClient) retrieveContinuousBackupInformation(ctx contex
 func (client *SQLResourcesClient) retrieveContinuousBackupInformationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, location ContinuousBackupRestoreLocation, _ *SQLResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/retrieveContinuousBackupInformation"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -3010,8 +3085,7 @@ func (client *SQLResourcesClient) updateSQLContainerThroughput(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -3020,7 +3094,7 @@ func (client *SQLResourcesClient) updateSQLContainerThroughput(ctx context.Conte
 func (client *SQLResourcesClient) updateSQLContainerThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, updateThroughputParameters ThroughputSettingsUpdateParameters, _ *SQLResourcesClientBeginUpdateSQLContainerThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -3096,8 +3170,7 @@ func (client *SQLResourcesClient) updateSQLDatabaseThroughput(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -3106,7 +3179,7 @@ func (client *SQLResourcesClient) updateSQLDatabaseThroughput(ctx context.Contex
 func (client *SQLResourcesClient) updateSQLDatabaseThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, _ *SQLResourcesClientBeginUpdateSQLDatabaseThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

@@ -37,7 +37,7 @@ func ExampleConditionalCreditContributorsClient_GetFromPrimary() {
 	// 		Properties: &armbillingbenefits.ContributorConditionalCreditProperties{
 	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
 	// 			DisplayName: to.Ptr("caco contributor 20250801"),
-	// 			EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 			EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 			EntityType: to.Ptr(armbillingbenefits.ConditionalCreditEntityTypeContributor),
 	// 			Milestones: []*armbillingbenefits.ContributorConditionalCreditMilestone{
 	// 				{
@@ -52,7 +52,7 @@ func ExampleConditionalCreditContributorsClient_GetFromPrimary() {
 	// 						Duration: to.Ptr(armbillingbenefits.Term("P3M")),
 	// 						SystemID: to.Ptr("credit98765432"),
 	// 					},
-	// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 					EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 					MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440001"),
 	// 					SpendTarget: &armbillingbenefits.Price{
 	// 						Amount: to.Ptr[float64](50000),
@@ -65,7 +65,7 @@ func ExampleConditionalCreditContributorsClient_GetFromPrimary() {
 	// 			PrimaryResourceID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/conditionalCredits/conditionalCredit_20250801"),
 	// 			ProductCode: to.Ptr("000187f7-0000-0260-ab43-b8473ce57f1d"),
 	// 			ProvisioningState: to.Ptr(armbillingbenefits.ConditionalCreditsProvisioningStateSucceeded),
-	// 			StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T00:00:00Z"); return t}()),
+	// 			StartAt: to.Ptr(time.Date(2025, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 			Status: to.Ptr(armbillingbenefits.ConditionalCreditStatusActive),
 	// 			SystemID: to.Ptr("13810867107109237"),
 	// 		},
@@ -105,7 +105,7 @@ func ExampleConditionalCreditContributorsClient_NewListFromApplicableConditional
 		// 				Properties: &armbillingbenefits.ContributorConditionalCreditProperties{
 		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
 		// 					DisplayName: to.Ptr("Contributor Conditional Credit 20250801"),
-		// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 					EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 					EntityType: to.Ptr(armbillingbenefits.ConditionalCreditEntityTypeContributor),
 		// 					Milestones: []*armbillingbenefits.ContributorConditionalCreditMilestone{
 		// 						{
@@ -120,7 +120,7 @@ func ExampleConditionalCreditContributorsClient_NewListFromApplicableConditional
 		// 								Duration: to.Ptr(armbillingbenefits.Term("P3M")),
 		// 								SystemID: to.Ptr("credit98765432"),
 		// 							},
-		// 							EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 							EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 							MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440001"),
 		// 							SpendTarget: &armbillingbenefits.Price{
 		// 								Amount: to.Ptr[float64](50000),
@@ -133,7 +133,7 @@ func ExampleConditionalCreditContributorsClient_NewListFromApplicableConditional
 		// 					PrimaryResourceID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/conditionalCredits/conditionalCredit_20250801"),
 		// 					ProductCode: to.Ptr("000187f7-0000-0260-ab43-b8473ce57f1d"),
 		// 					ProvisioningState: to.Ptr(armbillingbenefits.ConditionalCreditsProvisioningStateSucceeded),
-		// 					StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T00:00:00Z"); return t}()),
+		// 					StartAt: to.Ptr(time.Date(2025, time.July, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armbillingbenefits.ConditionalCreditStatusActive),
 		// 					SystemID: to.Ptr("C20251028000000000000"),
 		// 				},
@@ -176,7 +176,7 @@ func ExampleConditionalCreditContributorsClient_NewListFromPrimaryPager() {
 		// 				Properties: &armbillingbenefits.ContributorConditionalCreditProperties{
 		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{acctId:orgId}"),
 		// 					DisplayName: to.Ptr("Contributor CACO 20250801"),
-		// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 					EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 					EntityType: to.Ptr(armbillingbenefits.ConditionalCreditEntityTypeContributor),
 		// 					Milestones: []*armbillingbenefits.ContributorConditionalCreditMilestone{
 		// 						{
@@ -191,7 +191,7 @@ func ExampleConditionalCreditContributorsClient_NewListFromPrimaryPager() {
 		// 								Duration: to.Ptr(armbillingbenefits.Term("P3M")),
 		// 								SystemID: to.Ptr("credit98765432"),
 		// 							},
-		// 							EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 							EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 							MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440001"),
 		// 							SpendTarget: &armbillingbenefits.Price{
 		// 								Amount: to.Ptr[float64](50000),
@@ -204,7 +204,7 @@ func ExampleConditionalCreditContributorsClient_NewListFromPrimaryPager() {
 		// 					PrimaryResourceID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/conditionalCredits/conditionalCredit_20250801"),
 		// 					ProductCode: to.Ptr("000187f7-0000-0260-ab43-b8473ce57f1d"),
 		// 					ProvisioningState: to.Ptr(armbillingbenefits.ConditionalCreditsProvisioningStateSucceeded),
-		// 					StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T00:00:00Z"); return t}()),
+		// 					StartAt: to.Ptr(time.Date(2025, time.July, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armbillingbenefits.ConditionalCreditStatusActive),
 		// 					SystemID: to.Ptr("13810867107109237"),
 		// 				},

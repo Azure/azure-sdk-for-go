@@ -112,7 +112,7 @@ func (c *ContainerAppsDiagnosticsServerTransport) dispatchGetDetector(req *http.
 	if c.srv.GetDetector == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetDetector not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detectors/(?P<detectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectors/(?P<detectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -149,7 +149,7 @@ func (c *ContainerAppsDiagnosticsServerTransport) dispatchGetRevision(req *http.
 	if c.srv.GetRevision == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetRevision not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detectorProperties/revisionsApi/revisions/(?P<revisionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectorProperties/revisionsApi/revisions/(?P<revisionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -186,7 +186,7 @@ func (c *ContainerAppsDiagnosticsServerTransport) dispatchGetRoot(req *http.Requ
 	if c.srv.GetRoot == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetRoot not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detectorProperties/rootApi/`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectorProperties/rootApi/`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -221,7 +221,7 @@ func (c *ContainerAppsDiagnosticsServerTransport) dispatchNewListDetectorsPager(
 	}
 	newListDetectorsPager := c.newListDetectorsPager.get(req)
 	if newListDetectorsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detectors`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectors`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -262,7 +262,7 @@ func (c *ContainerAppsDiagnosticsServerTransport) dispatchNewListRevisionsPager(
 	}
 	newListRevisionsPager := c.newListRevisionsPager.get(req)
 	if newListRevisionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detectorProperties/revisionsApi/revisions/`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectorProperties/revisionsApi/revisions/`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

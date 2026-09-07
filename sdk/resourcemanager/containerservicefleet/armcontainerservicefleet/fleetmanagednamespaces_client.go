@@ -30,6 +30,9 @@ type FleetManagedNamespacesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFleetManagedNamespacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FleetManagedNamespacesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -83,8 +86,7 @@ func (client *FleetManagedNamespacesClient) createOrUpdate(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -93,7 +95,7 @@ func (client *FleetManagedNamespacesClient) createOrUpdate(ctx context.Context, 
 func (client *FleetManagedNamespacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, resource FleetManagedNamespace, options *FleetManagedNamespacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -170,8 +172,7 @@ func (client *FleetManagedNamespacesClient) deleteOperation(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -180,7 +181,7 @@ func (client *FleetManagedNamespacesClient) deleteOperation(ctx context.Context,
 func (client *FleetManagedNamespacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, options *FleetManagedNamespacesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -229,19 +230,14 @@ func (client *FleetManagedNamespacesClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return FleetManagedNamespacesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FleetManagedNamespacesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *FleetManagedNamespacesClient) getCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, _ *FleetManagedNamespacesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -268,8 +264,11 @@ func (client *FleetManagedNamespacesClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *FleetManagedNamespacesClient) getHandleResponse(resp *http.Response) (FleetManagedNamespacesClientGetResponse, error) {
+func (client *FleetManagedNamespacesClient) getHandleResponse(resp *http.Response, successCodes ...int) (FleetManagedNamespacesClientGetResponse, error) {
 	result := FleetManagedNamespacesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FleetManagedNamespace); err != nil {
 		return FleetManagedNamespacesClientGetResponse{}, err
 	}
@@ -292,47 +291,61 @@ func (client *FleetManagedNamespacesClient) NewListByFleetPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByFleetCreateRequest(ctx, resourceGroupName, fleetName, options)
-			}, nil)
+			req, err := client.listByFleetCreateRequest(ctx, resourceGroupName, fleetName, nextLink, options)
 			if err != nil {
 				return FleetManagedNamespacesClientListByFleetResponse{}, err
 			}
-			return client.listByFleetHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FleetManagedNamespacesClientListByFleetResponse{}, err
+			}
+			return client.listByFleetHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByFleetCreateRequest creates the ListByFleet request.
-func (client *FleetManagedNamespacesClient) listByFleetCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, _ *FleetManagedNamespacesClientListByFleetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *FleetManagedNamespacesClient) listByFleetCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, nextLink string, _ *FleetManagedNamespacesClientListByFleetOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if fleetName == "" {
+			return nil, errors.New("parameter fleetName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{fleetName}", url.PathEscape(fleetName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if fleetName == "" {
-		return nil, errors.New("parameter fleetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fleetName}", url.PathEscape(fleetName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByFleetHandleResponse handles the ListByFleet response.
-func (client *FleetManagedNamespacesClient) listByFleetHandleResponse(resp *http.Response) (FleetManagedNamespacesClientListByFleetResponse, error) {
+func (client *FleetManagedNamespacesClient) listByFleetHandleResponse(resp *http.Response, successCodes ...int) (FleetManagedNamespacesClientListByFleetResponse, error) {
 	result := FleetManagedNamespacesClientListByFleetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FleetManagedNamespaceListResult); err != nil {
 		return FleetManagedNamespacesClientListByFleetResponse{}, err
 	}
@@ -381,8 +394,7 @@ func (client *FleetManagedNamespacesClient) update(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -391,7 +403,7 @@ func (client *FleetManagedNamespacesClient) update(ctx context.Context, resource
 func (client *FleetManagedNamespacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, properties FleetManagedNamespacePatch, options *FleetManagedNamespacesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

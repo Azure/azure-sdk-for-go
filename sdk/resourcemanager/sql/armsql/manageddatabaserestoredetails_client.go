@@ -18,6 +18,8 @@ import (
 
 // ManagedDatabaseRestoreDetailsClient contains the methods for the ManagedDatabaseRestoreDetails group.
 // Don't use this type directly, use NewManagedDatabaseRestoreDetailsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ManagedDatabaseRestoreDetailsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type ManagedDatabaseRestoreDetailsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedDatabaseRestoreDetailsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedDatabaseRestoreDetailsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,8 +46,6 @@ func NewManagedDatabaseRestoreDetailsClient(subscriptionID string, credential az
 
 // Get - Gets managed database restore details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -63,19 +66,14 @@ func (client *ManagedDatabaseRestoreDetailsClient) Get(ctx context.Context, reso
 	if err != nil {
 		return ManagedDatabaseRestoreDetailsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedDatabaseRestoreDetailsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ManagedDatabaseRestoreDetailsClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, restoreDetailsName RestoreDetailsName, _ *ManagedDatabaseRestoreDetailsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/restoreDetails/{restoreDetailsName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -99,15 +97,18 @@ func (client *ManagedDatabaseRestoreDetailsClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedDatabaseRestoreDetailsClient) getHandleResponse(resp *http.Response) (ManagedDatabaseRestoreDetailsClientGetResponse, error) {
+func (client *ManagedDatabaseRestoreDetailsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabaseRestoreDetailsClientGetResponse, error) {
 	result := ManagedDatabaseRestoreDetailsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDatabaseRestoreDetailsResult); err != nil {
 		return ManagedDatabaseRestoreDetailsClientGetResponse{}, err
 	}

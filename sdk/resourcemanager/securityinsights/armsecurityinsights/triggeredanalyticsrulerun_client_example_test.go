@@ -35,7 +35,7 @@ func ExampleTriggeredAnalyticsRuleRunClient_Get() {
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/TriggeredAnalyticsRuleRuns"),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/triggeredAnalyticsRuleRuns/65360bb0-8986-4ade-a89d-af3cf44d28aa"),
 	// 		Properties: &armsecurityinsights.TriggeredAnalyticsRuleRunProperties{
-	// 			ExecutionTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-22T15:37:03.074Z"); return t}()),
+	// 			ExecutionTimeUTC: to.Ptr(time.Date(2022, time.December, 22, 15, 37, 3, 74000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armsecurityinsights.ProvisioningStateInProgress),
 	// 			RuleID: to.Ptr("358e16da-ab76-4027-89e1-15937a6ed401"),
 	// 			RuleRunAdditionalData: map[string]any{

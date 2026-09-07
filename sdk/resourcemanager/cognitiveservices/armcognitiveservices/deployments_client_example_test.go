@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/PutDeployment.json
+// Generated from example definition: 2026-07-15-preview/PutDeployment.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_putDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_putDeployment() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/PutDeploymentWithSpeculativeDecoding.json
+// Generated from example definition: 2026-07-15-preview/PutDeploymentWithSpeculativeDecoding.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_putDeploymentWithSpeculativeDecoding() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_putDeploymentWithSpeculativeDe
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/DeleteDeployment.json
+// Generated from example definition: 2026-07-15-preview/DeleteDeployment.json
 func ExampleDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +174,7 @@ func ExampleDeploymentsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/GetDeployment.json
+// Generated from example definition: 2026-07-15-preview/GetDeployment.json
 func ExampleDeploymentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,7 +215,7 @@ func ExampleDeploymentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ListDeployments.json
+// Generated from example definition: 2026-07-15-preview/ListDeployments.json
 func ExampleDeploymentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -265,7 +265,7 @@ func ExampleDeploymentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/ListDeploymentSkus.json
+// Generated from example definition: 2026-07-15-preview/ListDeploymentSkus.json
 func ExampleDeploymentsClient_NewListSKUsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -313,7 +313,7 @@ func ExampleDeploymentsClient_NewListSKUsPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/PauseDeployment.json
+// Generated from example definition: 2026-07-15-preview/PauseDeployment.json
 func ExampleDeploymentsClient_Pause() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,7 +353,7 @@ func ExampleDeploymentsClient_Pause() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ResumeDeployment.json
+// Generated from example definition: 2026-07-15-preview/ResumeDeployment.json
 func ExampleDeploymentsClient_Resume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -393,7 +393,7 @@ func ExampleDeploymentsClient_Resume() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/UpdateDeployment.json
+// Generated from example definition: 2026-07-15-preview/UpdateDeployment.json
 func ExampleDeploymentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -27,8 +27,8 @@ func ExampleSupportPackagesClient_BeginTriggerSupportPackage() {
 	poller, err := clientFactory.NewSupportPackagesClient().BeginTriggerSupportPackage(ctx, "testedgedevice", "GroupForEdgeAutomation", armdataboxedge.TriggerSupportPackageRequest{
 		Properties: &armdataboxedge.SupportPackageRequestProperties{
 			Include:          to.Ptr("DefaultWithDumps"),
-			MaximumTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-18T02:19:51.4270267Z"); return t }()),
-			MinimumTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-18T02:18:51.4270267Z"); return t }()),
+			MaximumTimeStamp: to.Ptr(time.Date(2018, time.December, 18, 2, 19, 51, 427026700, time.UTC)),
+			MinimumTimeStamp: to.Ptr(time.Date(2018, time.December, 18, 2, 18, 51, 427026700, time.UTC)),
 		},
 	}, nil)
 	if err != nil {

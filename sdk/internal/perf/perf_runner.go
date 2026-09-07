@@ -32,8 +32,12 @@ type optionsSlice struct {
 //	            -> Cleanup -> GlobalCleanup
 type perfRunner struct {
 	// ticker is the runner for giving updates every status-interval seconds
-	ticker *time.Ticker
-	done   chan bool
+	ticker             *time.Ticker
+	done               chan struct{}
+	statusWG           sync.WaitGroup
+	statusErr          chan error
+	backgroundStopOnce sync.Once
+	backgroundErr      error
 
 	// name of the performance test
 	name string
@@ -42,6 +46,7 @@ type perfRunner struct {
 	perfToRun       PerfMethods
 	allOptions      optionsSlice
 	proxyTransports map[string]*RecordingHTTPClient
+	activePlaybacks map[string]bool
 
 	// All created tests
 	tests []PerfTest
@@ -52,6 +57,7 @@ type perfRunner struct {
 	// this is the previous prints total
 	warmupOperationStatusTracker int64
 	operationStatusTracker       int64
+	statusMu                     sync.Mutex
 
 	// writer and messagePrinter
 	w              *tabwriter.Writer
@@ -83,9 +89,11 @@ func newPerfRunner(p PerfMethods, name string) *perfRunner {
 	// leak the original *time.Ticker (it is never Stop'd before being
 	// overwritten by Run).
 	return &perfRunner{
-		done:                         make(chan bool),
+		done:                         make(chan struct{}),
+		statusErr:                    make(chan error, 1),
 		name:                         name,
 		proxyTransports:              map[string]*RecordingHTTPClient{},
+		activePlaybacks:              map[string]bool{},
 		perfToRun:                    p,
 		operationStatusTracker:       -1,
 		warmupOperationStatusTracker: -1,
@@ -93,13 +101,13 @@ func newPerfRunner(p PerfMethods, name string) *perfRunner {
 		messagePrinter:               message.NewPrinter(message.MatchLanguage("en")),
 		warmupFinished:               int32(warmupFinished),
 		warmupPrinted:                warmupPrinted,
-		latencyCollector:             &latencyCollector{},
-		callTypeCollector:            newCallTypeLatencyCollector(),
+		latencyCollector:             newLatencyCollector(defaultMaxLatencySamples),
+		callTypeCollector:            newBoundedCallTypeLatencyCollector(defaultMaxLatencySamples),
 		operationResults:             newOperationResultsCollector(maxResults),
 	}
 }
 
-func (r *perfRunner) Run() error {
+func (r *perfRunner) Run() (retErr error) {
 	err := r.globalSetup()
 	if err != nil {
 		return err
@@ -108,15 +116,20 @@ func (r *perfRunner) Run() error {
 		if noCleanup {
 			return
 		}
-		err = r.globalInstance.GlobalCleanup(context.Background())
-		if err != nil {
-			panic(err)
-		}
+		retErr = errors.Join(retErr, r.globalInstance.GlobalCleanup(context.Background()))
 	}()
 
 	if err = r.createPerfTests(); err != nil {
-		return err
+		return errors.Join(err, r.cleanup())
 	}
+	defer func() {
+		if !noCleanup {
+			retErr = errors.Join(retErr, r.cleanup())
+		}
+	}()
+	defer func() {
+		retErr = errors.Join(retErr, r.stopProxyPlaybacks())
+	}()
 
 	// The process-stats sampler runs for the lifetime of every perf run.
 	// Its output drives the CPU%/WorkingSet/PrivateMemory columns in the
@@ -124,6 +137,9 @@ func (r *perfRunner) Run() error {
 	// .NET runner where the same data is always collected.
 	r.processStats = newProcessStatsSampler(time.Second)
 	r.processStats.Start()
+	defer func() {
+		retErr = errors.Join(retErr, r.stopBackground())
+	}()
 
 	statusTick := time.Duration(statusInterval) * time.Second
 	if statusTick <= 0 {
@@ -133,20 +149,21 @@ func (r *perfRunner) Run() error {
 	// Ensure the ticker is released even if the run returns early (e.g. a
 	// setup/bootstrap error short-circuits the function before r.done is
 	// signaled). time.Ticker.Stop is safe to call multiple times.
-	defer r.ticker.Stop()
-
 	// Poller for printing
+	r.statusWG.Add(1)
 	go func() {
+		defer r.statusWG.Done()
 		for {
-			if r.ticker != nil {
-				select {
-				case <-r.done:
-					return
-				case <-r.ticker.C:
-					err := r.printStatus()
-					if err != nil {
-						panic(err)
+			select {
+			case <-r.done:
+				return
+			case <-r.ticker.C:
+				if err := r.printStatus(); err != nil {
+					select {
+					case r.statusErr <- err:
+					default:
 					}
+					return
 				}
 			}
 		}
@@ -165,7 +182,9 @@ func (r *perfRunner) Run() error {
 
 	// Warmup runs once before the first measurement iteration.
 	if warmUpDuration > 0 {
-		r.runPhase(true, nil)
+		if err = r.runPhase(true, nil); err != nil {
+			return err
+		}
 	}
 
 	// Run the measurement phase `iterations` times. The Go --iterations /
@@ -174,30 +193,28 @@ func (r *perfRunner) Run() error {
 	if loopCount < 1 {
 		loopCount = 1
 	}
+	r.resetMeasurementState()
 	for iter := 1; iter <= loopCount; iter++ {
 		if loopCount > 1 {
 			fmt.Printf("\n=== Test %d ===\n", iter)
 		}
-		// Reset per-iteration measurement counters/state on each worker
-		// and on the runner so each iteration produces independent stats.
-		r.resetMeasurementState()
-
 		var rateStop chan struct{}
 		var rateCh <-chan struct{}
 		if targetRate > 0 {
 			rateCh, rateStop = newRateLimiter(targetRate)
 		}
-		r.runPhase(false, rateCh)
+		err = r.runPhase(false, rateCh)
 		if rateStop != nil {
 			close(rateStop)
 		}
+		if err != nil {
+			return err
+		}
 	}
 
-	if r.processStats != nil {
-		r.processStats.Stop()
+	if err = r.stopBackground(); err != nil {
+		return err
 	}
-
-	r.done <- true
 
 	if err = r.printFinalUpdate(false); err != nil {
 		return err
@@ -222,23 +239,48 @@ func (r *perfRunner) Run() error {
 	if noCleanup {
 		return nil
 	}
-	return r.cleanup()
+	return nil
 }
 
 // runPhase spawns one goroutine per parallel worker that runs a single
 // warmup or measurement pass, then waits for them all to complete.
-func (r *perfRunner) runPhase(warmup bool, rateCh <-chan struct{}) {
+func (r *perfRunner) runPhase(warmup bool, rateCh <-chan struct{}) error {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	var phaseWG sync.WaitGroup
+	errs := make(chan error, len(r.tests))
 	for idx, test := range r.tests {
-		wg.Add(1)
-		go r.runWorkerPhase(test, idx, warmup, rateCh)
+		phaseWG.Add(1)
+		go func(p PerfTest, index int) {
+			defer phaseWG.Done()
+			if err := r.runWorkerPhase(ctx, p, index, warmup, rateCh); err != nil {
+				errs <- err
+				cancel()
+			}
+		}(test, idx)
 	}
-	wg.Wait()
+	phaseWG.Wait()
+	close(errs)
+	// Once a worker fails, cancel() tears down the shared context so in-flight
+	// siblings return context.Canceled. Those are noise in front of the real
+	// cause, so keep them only if no genuine error was recorded.
+	var phaseErr error
+	var canceledErr error
+	for err := range errs {
+		if errors.Is(err, context.Canceled) {
+			canceledErr = err
+			continue
+		}
+		phaseErr = errors.Join(phaseErr, err)
+	}
+	if phaseErr == nil {
+		phaseErr = canceledErr
+	}
+	return phaseErr
 }
 
 // runWorkerPhase executes a single warmup or measurement pass for one worker.
-func (r *perfRunner) runWorkerPhase(p PerfTest, index int, warmup bool, rateCh <-chan struct{}) {
-	defer wg.Done()
-
+func (r *perfRunner) runWorkerPhase(ctx context.Context, p PerfTest, index int, warmup bool, rateCh <-chan struct{}) error {
 	r.allOptions.mu.Lock()
 	opts := r.allOptions.opts[index]
 	r.allOptions.mu.Unlock()
@@ -251,13 +293,13 @@ func (r *perfRunner) runWorkerPhase(p PerfTest, index int, warmup bool, rateCh <
 	var localCallType *callTypeLatencyCollector
 	var localResults *operationResultsCollector
 	if !warmup {
-		localLatency = &latencyCollector{}
-		localCallType = newCallTypeLatencyCollector()
-		localResults = newOperationResultsCollector(maxResults)
+		localLatency = newLatencyCollector(perWorkerSampleLimit(defaultMaxLatencySamples, len(r.tests), index))
+		localCallType = newBoundedCallTypeLatencyCollector(perWorkerSampleLimit(defaultMaxLatencySamples, len(r.tests), index))
+		localResults = newOperationResultsCollector(perWorkerSampleLimit(maxResults, len(r.tests), index))
 	}
 
-	if err := r.runTestForDuration(p, opts, warmup, rateCh, localLatency, localCallType, localResults); err != nil {
-		panic(err)
+	if err := r.runTestForDuration(ctx, p, opts, warmup, rateCh, localLatency, localCallType, localResults); err != nil {
+		return err
 	}
 
 	if !warmup {
@@ -274,12 +316,16 @@ func (r *perfRunner) runWorkerPhase(p PerfTest, index int, warmup bool, rateCh <
 			fmt.Printf("finished %d warmups\n", val)
 		}
 	}
+	return nil
 }
 
 // resetMeasurementState clears per-worker measurement counters and the
 // shared latency/operation-result collectors so a fresh iteration starts
 // with empty stats.
 func (r *perfRunner) resetMeasurementState() {
+	r.statusMu.Lock()
+	defer r.statusMu.Unlock()
+
 	r.allOptions.mu.Lock()
 	for _, opt := range r.allOptions.opts {
 		atomic.StoreInt64(&opt.runCount, 0)
@@ -290,8 +336,8 @@ func (r *perfRunner) resetMeasurementState() {
 	}
 	r.allOptions.mu.Unlock()
 	r.operationStatusTracker = -1
-	r.latencyCollector = &latencyCollector{}
-	r.callTypeCollector = newCallTypeLatencyCollector()
+	r.latencyCollector = newLatencyCollector(defaultMaxLatencySamples)
+	r.callTypeCollector = newBoundedCallTypeLatencyCollector(defaultMaxLatencySamples)
 	r.operationResults = newOperationResultsCollector(maxResults)
 }
 
@@ -316,7 +362,7 @@ func (r *perfRunner) bootstrapProxies() error {
 		}
 		start = time.Now()
 		if err := p.Run(context.Background()); err != nil {
-			return err
+			return errors.Join(err, r.proxyTransports[id].stop())
 		}
 		r.callTypeCollector.Add("proxy-record", time.Since(start))
 		if err := r.proxyTransports[id].stop(); err != nil {
@@ -327,8 +373,42 @@ func (r *perfRunner) bootstrapProxies() error {
 		if err := r.proxyTransports[id].start(); err != nil {
 			return err
 		}
+		r.activePlaybacks[id] = true
 	}
 	return nil
+}
+
+func (r *perfRunner) stopProxyPlaybacks() error {
+	var stopErr error
+	for id := range r.activePlaybacks {
+		if err := r.proxyTransports[id].stop(); err != nil {
+			stopErr = errors.Join(stopErr, err)
+		}
+		delete(r.activePlaybacks, id)
+	}
+	return stopErr
+}
+
+func (r *perfRunner) stopBackground() error {
+	var err error
+	r.backgroundStopOnce.Do(func() {
+		if r.ticker != nil {
+			r.ticker.Stop()
+		}
+		close(r.done)
+		r.statusWG.Wait()
+		if r.processStats != nil {
+			r.processStats.Stop()
+		}
+		select {
+		case r.backgroundErr = <-r.statusErr:
+		default:
+		}
+		// Return the error only from the first call so it is not joined twice
+		// (explicit call plus the deferred call in run()).
+		err = r.backgroundErr
+	})
+	return err
 }
 
 // newRateLimiter starts a producer goroutine that emits one token every
@@ -417,17 +497,18 @@ func (r *perfRunner) createPerfTests() error {
 
 // cleanup runs the Cleanup on each of the r.tests
 func (r *perfRunner) cleanup() error {
+	var cleanupErr error
 	for _, t := range r.tests {
-		err := t.Cleanup(context.Background())
-		if err != nil {
-			return err
-		}
+		cleanupErr = errors.Join(cleanupErr, t.Cleanup(context.Background()))
 	}
-	return nil
+	return cleanupErr
 }
 
 // print an update for the last second
 func (r *perfRunner) printStatus() error {
+	r.statusMu.Lock()
+	defer r.statusMu.Unlock()
+
 	if !r.warmupPrinted {
 		if finishedWarmup, err := r.printWarmupStatus(); err != nil {
 			return err
@@ -641,13 +722,14 @@ func (r *perfRunner) printFinalUpdate(warmup bool) error {
 // throughput to the value of --rate. During the measurement phase latency
 // samples are recorded into the goroutine-local collectors passed in by the
 // caller (nil during warmup) so the hot loop never contends on shared state.
-func (r *perfRunner) runTestForDuration(p PerfTest, opts *PerfTestOptions, warmup bool, rateCh <-chan struct{}, localLatency *latencyCollector, localCallType *callTypeLatencyCollector, localResults *operationResultsCollector) error {
+func (r *perfRunner) runTestForDuration(parent context.Context, p PerfTest, opts *PerfTestOptions, warmup bool, rateCh <-chan struct{}, localLatency *latencyCollector, localCallType *callTypeLatencyCollector, localResults *operationResultsCollector) error {
 	if warmup && warmUpDuration <= 0 {
 		return nil
 	}
 
 	// startPtr is our base time for keeping track of how long a test has run
 	var startPtr *time.Time
+	var previousElapsed time.Duration
 	if warmup {
 		t := time.Now()
 		opts.warmupStart = &t
@@ -656,6 +738,7 @@ func (r *perfRunner) runTestForDuration(p PerfTest, opts *PerfTestOptions, warmu
 		t := time.Now()
 		opts.runStart = &t
 		startPtr = opts.runStart
+		previousElapsed = time.Duration(atomic.LoadInt64((*int64)(&opts.runElapsed)))
 	}
 
 	var runDuration int
@@ -667,7 +750,7 @@ func (r *perfRunner) runTestForDuration(p PerfTest, opts *PerfTestOptions, warmu
 
 	var ctx context.Context
 	var cancel context.CancelFunc
-	ctx, cancel = context.WithTimeout(context.Background(), time.Second*time.Duration(runDuration))
+	ctx, cancel = context.WithTimeout(parent, time.Second*time.Duration(runDuration))
 	defer cancel()
 
 	lastSavedTime := time.Now()
@@ -707,7 +790,7 @@ func (r *perfRunner) runTestForDuration(p PerfTest, opts *PerfTestOptions, warmu
 			if warmup {
 				atomic.StoreInt64((*int64)(&opts.warmupElapsed), int64(elapsed))
 			} else {
-				atomic.StoreInt64((*int64)(&opts.runElapsed), int64(elapsed))
+				atomic.StoreInt64((*int64)(&opts.runElapsed), int64(previousElapsed+elapsed))
 			}
 			lastSavedTime = time.Now()
 		}
@@ -717,7 +800,7 @@ func (r *perfRunner) runTestForDuration(p PerfTest, opts *PerfTestOptions, warmu
 	if warmup {
 		atomic.StoreInt64((*int64)(&opts.warmupElapsed), int64(elapsed))
 	} else {
-		atomic.StoreInt64((*int64)(&opts.runElapsed), int64(elapsed))
+		atomic.StoreInt64((*int64)(&opts.runElapsed), int64(previousElapsed+elapsed))
 	}
 
 	opts.finished = true

@@ -18,6 +18,8 @@ import (
 
 // ManagementClient contains the methods for the Management group.
 // Don't use this type directly, use NewManagementClient() instead.
+//
+// Generated from API version 2026-03-01-preview
 type ManagementClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type ManagementClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,8 +46,6 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 
 // UsageBySubscriptionSKU - Gets the quota usage for a search SKU in the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - location - The name of the Azure region.
 //   - skuName - The unique SKU name that identifies a billable tier.
 //   - options - ManagementClientUsageBySubscriptionSKUOptions contains the optional parameters for the ManagementClient.UsageBySubscriptionSKU
@@ -61,19 +64,14 @@ func (client *ManagementClient) UsageBySubscriptionSKU(ctx context.Context, loca
 	if err != nil {
 		return ManagementClientUsageBySubscriptionSKUResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagementClientUsageBySubscriptionSKUResponse{}, err
-	}
-	resp, err := client.usageBySubscriptionSKUHandleResponse(httpResp)
-	return resp, err
+	return client.usageBySubscriptionSKUHandleResponse(httpResp, http.StatusOK)
 }
 
 // usageBySubscriptionSKUCreateRequest creates the UsageBySubscriptionSKU request.
 func (client *ManagementClient) usageBySubscriptionSKUCreateRequest(ctx context.Context, location string, skuName string, options *ManagementClientUsageBySubscriptionSKUOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages/{skuName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -89,8 +87,8 @@ func (client *ManagementClient) usageBySubscriptionSKUCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -99,8 +97,11 @@ func (client *ManagementClient) usageBySubscriptionSKUCreateRequest(ctx context.
 }
 
 // usageBySubscriptionSKUHandleResponse handles the UsageBySubscriptionSKU response.
-func (client *ManagementClient) usageBySubscriptionSKUHandleResponse(resp *http.Response) (ManagementClientUsageBySubscriptionSKUResponse, error) {
+func (client *ManagementClient) usageBySubscriptionSKUHandleResponse(resp *http.Response, successCodes ...int) (ManagementClientUsageBySubscriptionSKUResponse, error) {
 	result := ManagementClientUsageBySubscriptionSKUResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaUsageResult); err != nil {
 		return ManagementClientUsageBySubscriptionSKUResponse{}, err
 	}

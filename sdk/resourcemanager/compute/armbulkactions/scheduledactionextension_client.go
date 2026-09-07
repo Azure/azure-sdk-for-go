@@ -18,7 +18,7 @@ import (
 // ScheduledActionExtensionClient contains the methods for the ScheduledActionExtension group.
 // Don't use this type directly, use NewScheduledActionExtensionClient() instead.
 //
-// Generated from API version 2026-07-06-preview
+// Generated from API version 2026-08-06-preview
 type ScheduledActionExtensionClient struct {
 	internal *arm.Client
 }
@@ -52,39 +52,53 @@ func (client *ScheduledActionExtensionClient) NewListByVMsPager(resourceURI stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByVMsCreateRequest(ctx, resourceURI, options)
-			}, nil)
+			req, err := client.listByVMsCreateRequest(ctx, resourceURI, nextLink, options)
 			if err != nil {
 				return ScheduledActionExtensionClientListByVMsResponse{}, err
 			}
-			return client.listByVMsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ScheduledActionExtensionClientListByVMsResponse{}, err
+			}
+			return client.listByVMsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByVMsCreateRequest creates the ListByVMs request.
-func (client *ScheduledActionExtensionClient) listByVMsCreateRequest(ctx context.Context, resourceURI string, _ *ScheduledActionExtensionClientListByVMsOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.Compute/associatedScheduledActions"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
+func (client *ScheduledActionExtensionClient) listByVMsCreateRequest(ctx context.Context, resourceURI string, nextLink string, _ *ScheduledActionExtensionClientListByVMsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceUri}/providers/Microsoft.Compute/associatedScheduledActions"
+		if resourceURI == "" {
+			return nil, errors.New("parameter resourceURI cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260806Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByVMsHandleResponse handles the ListByVMs response.
-func (client *ScheduledActionExtensionClient) listByVMsHandleResponse(resp *http.Response) (ScheduledActionExtensionClientListByVMsResponse, error) {
+func (client *ScheduledActionExtensionClient) listByVMsHandleResponse(resp *http.Response, successCodes ...int) (ScheduledActionExtensionClientListByVMsResponse, error) {
 	result := ScheduledActionExtensionClientListByVMsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScheduledActionResourcesListResult); err != nil {
 		return ScheduledActionExtensionClientListByVMsResponse{}, err
 	}

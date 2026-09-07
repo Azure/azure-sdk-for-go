@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/Workload_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/Workload_CreateOrUpdate.json
 func ExampleWorkloadClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,16 +59,16 @@ func ExampleWorkloadClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armenclave.SystemData{
 	// 			CreatedBy: to.Ptr("myAlias"),
 	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("myAlias"),
 	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Workload_Delete.json
+// Generated from example definition: 2026-04-01/Workload_Delete.json
 func ExampleWorkloadClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleWorkloadClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Workload_Get.json
+// Generated from example definition: 2026-04-01/Workload_Get.json
 func ExampleWorkloadClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,16 +132,16 @@ func ExampleWorkloadClient_Get() {
 	// 		SystemData: &armenclave.SystemData{
 	// 			CreatedBy: to.Ptr("myAlias"),
 	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("myAlias"),
 	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Workload_ListByEnclaveResource.json
+// Generated from example definition: 2026-04-01/Workload_ListByEnclaveResource.json
 func ExampleWorkloadClient_NewListByEnclaveResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,10 +183,10 @@ func ExampleWorkloadClient_NewListByEnclaveResourcePager() {
 		// 				SystemData: &armenclave.SystemData{
 		// 					CreatedBy: to.Ptr("myAlias"),
 		// 					CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("myAlias"),
 		// 					LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -196,7 +196,7 @@ func ExampleWorkloadClient_NewListByEnclaveResourcePager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Workload_ListBySubscription.json
+// Generated from example definition: 2026-04-01/Workload_ListBySubscription.json
 func ExampleWorkloadClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,10 +238,10 @@ func ExampleWorkloadClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armenclave.SystemData{
 		// 					CreatedBy: to.Ptr("myAlias"),
 		// 					CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("myAlias"),
 		// 					LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -251,7 +251,7 @@ func ExampleWorkloadClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Workload_Update.json
+// Generated from example definition: 2026-04-01/Workload_Update.json
 func ExampleWorkloadClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -300,10 +300,10 @@ func ExampleWorkloadClient_BeginUpdate() {
 	// 		SystemData: &armenclave.SystemData{
 	// 			CreatedBy: to.Ptr("myAlias"),
 	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("myAlias"),
 	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

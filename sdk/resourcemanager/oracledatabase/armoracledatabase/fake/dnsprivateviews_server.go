@@ -92,7 +92,7 @@ func (d *DNSPrivateViewsServerTransport) dispatchGet(req *http.Request) (*http.R
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Oracle\.Database/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dnsPrivateViews/(?P<dnsprivateviewocid>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dnsPrivateViews/(?P<dnsprivateviewocid>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -127,7 +127,7 @@ func (d *DNSPrivateViewsServerTransport) dispatchNewListByLocationPager(req *htt
 	}
 	newListByLocationPager := d.newListByLocationPager.get(req)
 	if newListByLocationPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Oracle\.Database/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dnsPrivateViews`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dnsPrivateViews`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

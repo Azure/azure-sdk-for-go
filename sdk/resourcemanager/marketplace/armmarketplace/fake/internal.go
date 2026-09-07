@@ -5,11 +5,10 @@
 package fake
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"net/http"
 	"reflect"
 	"sync"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 )
 
 type result struct {
@@ -23,15 +22,6 @@ type nonRetriableError struct {
 
 func (nonRetriableError) NonRetriable() {
 	// marker method
-}
-
-func contains[T comparable](s []T, v T) bool {
-	for _, vv := range s {
-		if vv == v {
-			return true
-		}
-	}
-	return false
 }
 
 func getHeaderValue(h http.Header, k string) string {

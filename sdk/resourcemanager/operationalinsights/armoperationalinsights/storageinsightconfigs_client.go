@@ -30,6 +30,9 @@ type StorageInsightConfigsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewStorageInsightConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StorageInsightConfigsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *StorageInsightConfigsClient) CreateOrUpdate(ctx context.Context, r
 	if err != nil {
 		return StorageInsightConfigsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return StorageInsightConfigsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *StorageInsightConfigsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, storageInsightName string, parameters StorageInsight, _ *StorageInsightConfigsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -106,8 +104,11 @@ func (client *StorageInsightConfigsClient) createOrUpdateCreateRequest(ctx conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *StorageInsightConfigsClient) createOrUpdateHandleResponse(resp *http.Response) (StorageInsightConfigsClientCreateOrUpdateResponse, error) {
+func (client *StorageInsightConfigsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (StorageInsightConfigsClientCreateOrUpdateResponse, error) {
 	result := StorageInsightConfigsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageInsight); err != nil {
 		return StorageInsightConfigsClientCreateOrUpdateResponse{}, err
 	}
@@ -136,8 +137,7 @@ func (client *StorageInsightConfigsClient) Delete(ctx context.Context, resourceG
 		return StorageInsightConfigsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return StorageInsightConfigsClientDeleteResponse{}, err
+		return StorageInsightConfigsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return StorageInsightConfigsClientDeleteResponse{}, nil
 }
@@ -146,7 +146,7 @@ func (client *StorageInsightConfigsClient) Delete(ctx context.Context, resourceG
 func (client *StorageInsightConfigsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, storageInsightName string, _ *StorageInsightConfigsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -192,19 +192,14 @@ func (client *StorageInsightConfigsClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return StorageInsightConfigsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return StorageInsightConfigsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *StorageInsightConfigsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, storageInsightName string, _ *StorageInsightConfigsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -231,8 +226,11 @@ func (client *StorageInsightConfigsClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *StorageInsightConfigsClient) getHandleResponse(resp *http.Response) (StorageInsightConfigsClientGetResponse, error) {
+func (client *StorageInsightConfigsClient) getHandleResponse(resp *http.Response, successCodes ...int) (StorageInsightConfigsClientGetResponse, error) {
 	result := StorageInsightConfigsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageInsight); err != nil {
 		return StorageInsightConfigsClientGetResponse{}, err
 	}
@@ -255,47 +253,61 @@ func (client *StorageInsightConfigsClient) NewListByWorkspacePager(resourceGroup
 			if page != nil {
 				nextLink = *page.ODataNextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
-			}, nil)
+			req, err := client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, nextLink, options)
 			if err != nil {
 				return StorageInsightConfigsClientListByWorkspaceResponse{}, err
 			}
-			return client.listByWorkspaceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return StorageInsightConfigsClientListByWorkspaceResponse{}, err
+			}
+			return client.listByWorkspaceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *StorageInsightConfigsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *StorageInsightConfigsClientListByWorkspaceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *StorageInsightConfigsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, nextLink string, _ *StorageInsightConfigsClientListByWorkspaceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250701)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
-func (client *StorageInsightConfigsClient) listByWorkspaceHandleResponse(resp *http.Response) (StorageInsightConfigsClientListByWorkspaceResponse, error) {
+func (client *StorageInsightConfigsClient) listByWorkspaceHandleResponse(resp *http.Response, successCodes ...int) (StorageInsightConfigsClientListByWorkspaceResponse, error) {
 	result := StorageInsightConfigsClientListByWorkspaceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageInsightListResult); err != nil {
 		return StorageInsightConfigsClientListByWorkspaceResponse{}, err
 	}

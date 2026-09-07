@@ -30,6 +30,9 @@ type SecurityPINsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSecurityPINsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecurityPINsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,7 +70,7 @@ func (client *SecurityPINsClient) Get(ctx context.Context, vaultName string, res
 func (client *SecurityPINsClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, options *SecurityPINsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupSecurityPIN"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if vaultName == "" {

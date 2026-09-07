@@ -30,6 +30,9 @@ type DiskAccessesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDiskAccessesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DiskAccessesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -83,8 +86,7 @@ func (client *DiskAccessesClient) createOrUpdate(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -93,7 +95,7 @@ func (client *DiskAccessesClient) createOrUpdate(ctx context.Context, resourceGr
 func (client *DiskAccessesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccess, _ *DiskAccessesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -160,8 +162,7 @@ func (client *DiskAccessesClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -170,7 +171,7 @@ func (client *DiskAccessesClient) deleteOperation(ctx context.Context, resourceG
 func (client *DiskAccessesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, _ *DiskAccessesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -233,8 +234,7 @@ func (client *DiskAccessesClient) deleteAPrivateEndpointConnection(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -243,7 +243,7 @@ func (client *DiskAccessesClient) deleteAPrivateEndpointConnection(ctx context.C
 func (client *DiskAccessesClient) deleteAPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, _ *DiskAccessesClientBeginDeleteAPrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -288,19 +288,14 @@ func (client *DiskAccessesClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return DiskAccessesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiskAccessesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *DiskAccessesClient) getCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, _ *DiskAccessesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -323,8 +318,11 @@ func (client *DiskAccessesClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *DiskAccessesClient) getHandleResponse(resp *http.Response) (DiskAccessesClientGetResponse, error) {
+func (client *DiskAccessesClient) getHandleResponse(resp *http.Response, successCodes ...int) (DiskAccessesClientGetResponse, error) {
 	result := DiskAccessesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskAccess); err != nil {
 		return DiskAccessesClientGetResponse{}, err
 	}
@@ -353,19 +351,14 @@ func (client *DiskAccessesClient) GetAPrivateEndpointConnection(ctx context.Cont
 	if err != nil {
 		return DiskAccessesClientGetAPrivateEndpointConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiskAccessesClientGetAPrivateEndpointConnectionResponse{}, err
-	}
-	resp, err := client.getAPrivateEndpointConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.getAPrivateEndpointConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAPrivateEndpointConnectionCreateRequest creates the GetAPrivateEndpointConnection request.
 func (client *DiskAccessesClient) getAPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, _ *DiskAccessesClientGetAPrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -392,8 +385,11 @@ func (client *DiskAccessesClient) getAPrivateEndpointConnectionCreateRequest(ctx
 }
 
 // getAPrivateEndpointConnectionHandleResponse handles the GetAPrivateEndpointConnection response.
-func (client *DiskAccessesClient) getAPrivateEndpointConnectionHandleResponse(resp *http.Response) (DiskAccessesClientGetAPrivateEndpointConnectionResponse, error) {
+func (client *DiskAccessesClient) getAPrivateEndpointConnectionHandleResponse(resp *http.Response, successCodes ...int) (DiskAccessesClientGetAPrivateEndpointConnectionResponse, error) {
 	result := DiskAccessesClientGetAPrivateEndpointConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
 		return DiskAccessesClientGetAPrivateEndpointConnectionResponse{}, err
 	}
@@ -421,19 +417,14 @@ func (client *DiskAccessesClient) GetPrivateLinkResources(ctx context.Context, r
 	if err != nil {
 		return DiskAccessesClientGetPrivateLinkResourcesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiskAccessesClientGetPrivateLinkResourcesResponse{}, err
-	}
-	resp, err := client.getPrivateLinkResourcesHandleResponse(httpResp)
-	return resp, err
+	return client.getPrivateLinkResourcesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPrivateLinkResourcesCreateRequest creates the GetPrivateLinkResources request.
 func (client *DiskAccessesClient) getPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, _ *DiskAccessesClientGetPrivateLinkResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privatelinkresources"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -456,8 +447,11 @@ func (client *DiskAccessesClient) getPrivateLinkResourcesCreateRequest(ctx conte
 }
 
 // getPrivateLinkResourcesHandleResponse handles the GetPrivateLinkResources response.
-func (client *DiskAccessesClient) getPrivateLinkResourcesHandleResponse(resp *http.Response) (DiskAccessesClientGetPrivateLinkResourcesResponse, error) {
+func (client *DiskAccessesClient) getPrivateLinkResourcesHandleResponse(resp *http.Response, successCodes ...int) (DiskAccessesClientGetPrivateLinkResourcesResponse, error) {
 	result := DiskAccessesClientGetPrivateLinkResourcesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
 		return DiskAccessesClientGetPrivateLinkResourcesResponse{}, err
 	}
@@ -477,39 +471,53 @@ func (client *DiskAccessesClient) NewListPager(options *DiskAccessesClientListOp
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return DiskAccessesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DiskAccessesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *DiskAccessesClient) listCreateRequest(ctx context.Context, _ *DiskAccessesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/diskAccesses"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DiskAccessesClient) listCreateRequest(ctx context.Context, nextLink string, _ *DiskAccessesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/diskAccesses"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260302)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DiskAccessesClient) listHandleResponse(resp *http.Response) (DiskAccessesClientListResponse, error) {
+func (client *DiskAccessesClient) listHandleResponse(resp *http.Response, successCodes ...int) (DiskAccessesClientListResponse, error) {
 	result := DiskAccessesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskAccessList); err != nil {
 		return DiskAccessesClientListResponse{}, err
 	}
@@ -531,43 +539,57 @@ func (client *DiskAccessesClient) NewListByResourceGroupPager(resourceGroupName 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return DiskAccessesClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DiskAccessesClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *DiskAccessesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *DiskAccessesClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DiskAccessesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *DiskAccessesClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260302)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *DiskAccessesClient) listByResourceGroupHandleResponse(resp *http.Response) (DiskAccessesClientListByResourceGroupResponse, error) {
+func (client *DiskAccessesClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (DiskAccessesClientListByResourceGroupResponse, error) {
 	result := DiskAccessesClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskAccessList); err != nil {
 		return DiskAccessesClientListByResourceGroupResponse{}, err
 	}
@@ -591,47 +613,61 @@ func (client *DiskAccessesClient) NewListPrivateEndpointConnectionsPager(resourc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listPrivateEndpointConnectionsCreateRequest(ctx, resourceGroupName, diskAccessName, options)
-			}, nil)
+			req, err := client.listPrivateEndpointConnectionsCreateRequest(ctx, resourceGroupName, diskAccessName, nextLink, options)
 			if err != nil {
 				return DiskAccessesClientListPrivateEndpointConnectionsResponse{}, err
 			}
-			return client.listPrivateEndpointConnectionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DiskAccessesClientListPrivateEndpointConnectionsResponse{}, err
+			}
+			return client.listPrivateEndpointConnectionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listPrivateEndpointConnectionsCreateRequest creates the ListPrivateEndpointConnections request.
-func (client *DiskAccessesClient) listPrivateEndpointConnectionsCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, _ *DiskAccessesClientListPrivateEndpointConnectionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privateEndpointConnections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DiskAccessesClient) listPrivateEndpointConnectionsCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, nextLink string, _ *DiskAccessesClientListPrivateEndpointConnectionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privateEndpointConnections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if diskAccessName == "" {
+			return nil, errors.New("parameter diskAccessName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{diskAccessName}", url.PathEscape(diskAccessName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if diskAccessName == "" {
-		return nil, errors.New("parameter diskAccessName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{diskAccessName}", url.PathEscape(diskAccessName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260302)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listPrivateEndpointConnectionsHandleResponse handles the ListPrivateEndpointConnections response.
-func (client *DiskAccessesClient) listPrivateEndpointConnectionsHandleResponse(resp *http.Response) (DiskAccessesClientListPrivateEndpointConnectionsResponse, error) {
+func (client *DiskAccessesClient) listPrivateEndpointConnectionsHandleResponse(resp *http.Response, successCodes ...int) (DiskAccessesClientListPrivateEndpointConnectionsResponse, error) {
 	result := DiskAccessesClientListPrivateEndpointConnectionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionListResult); err != nil {
 		return DiskAccessesClientListPrivateEndpointConnectionsResponse{}, err
 	}
@@ -680,8 +716,7 @@ func (client *DiskAccessesClient) update(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -690,7 +725,7 @@ func (client *DiskAccessesClient) update(ctx context.Context, resourceGroupName 
 func (client *DiskAccessesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccessUpdate, _ *DiskAccessesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -762,8 +797,7 @@ func (client *DiskAccessesClient) updateAPrivateEndpointConnection(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -772,7 +806,7 @@ func (client *DiskAccessesClient) updateAPrivateEndpointConnection(ctx context.C
 func (client *DiskAccessesClient) updateAPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, _ *DiskAccessesClientBeginUpdateAPrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

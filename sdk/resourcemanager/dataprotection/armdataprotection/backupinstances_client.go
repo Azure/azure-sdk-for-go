@@ -30,6 +30,9 @@ type BackupInstancesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBackupInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupInstancesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -83,8 +86,7 @@ func (client *BackupInstancesClient) adhocBackup(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -93,7 +95,7 @@ func (client *BackupInstancesClient) adhocBackup(ctx context.Context, resourceGr
 func (client *BackupInstancesClient) adhocBackupCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters TriggerBackupRequest, _ *BackupInstancesClientBeginAdhocBackupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/backup"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -165,8 +167,7 @@ func (client *BackupInstancesClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -175,7 +176,7 @@ func (client *BackupInstancesClient) createOrUpdate(ctx context.Context, resourc
 func (client *BackupInstancesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters BackupInstanceResource, options *BackupInstancesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -249,8 +250,7 @@ func (client *BackupInstancesClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -259,7 +259,7 @@ func (client *BackupInstancesClient) deleteOperation(ctx context.Context, resour
 func (client *BackupInstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *BackupInstancesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -307,19 +307,14 @@ func (client *BackupInstancesClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return BackupInstancesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BackupInstancesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *BackupInstancesClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, _ *BackupInstancesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -346,8 +341,11 @@ func (client *BackupInstancesClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *BackupInstancesClient) getHandleResponse(resp *http.Response) (BackupInstancesClientGetResponse, error) {
+func (client *BackupInstancesClient) getHandleResponse(resp *http.Response, successCodes ...int) (BackupInstancesClientGetResponse, error) {
 	result := BackupInstancesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupInstanceResource); err != nil {
 		return BackupInstancesClientGetResponse{}, err
 	}
@@ -376,19 +374,14 @@ func (client *BackupInstancesClient) GetBackupInstanceOperationResult(ctx contex
 	if err != nil {
 		return BackupInstancesClientGetBackupInstanceOperationResultResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return BackupInstancesClientGetBackupInstanceOperationResultResponse{}, err
-	}
-	resp, err := client.getBackupInstanceOperationResultHandleResponse(httpResp)
-	return resp, err
+	return client.getBackupInstanceOperationResultHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // getBackupInstanceOperationResultCreateRequest creates the GetBackupInstanceOperationResult request.
 func (client *BackupInstancesClient) getBackupInstanceOperationResultCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, operationID string, _ *BackupInstancesClientGetBackupInstanceOperationResultOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/operationResults/{operationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -419,8 +412,11 @@ func (client *BackupInstancesClient) getBackupInstanceOperationResultCreateReque
 }
 
 // getBackupInstanceOperationResultHandleResponse handles the GetBackupInstanceOperationResult response.
-func (client *BackupInstancesClient) getBackupInstanceOperationResultHandleResponse(resp *http.Response) (BackupInstancesClientGetBackupInstanceOperationResultResponse, error) {
+func (client *BackupInstancesClient) getBackupInstanceOperationResultHandleResponse(resp *http.Response, successCodes ...int) (BackupInstancesClientGetBackupInstanceOperationResultResponse, error) {
 	result := BackupInstancesClientGetBackupInstanceOperationResultResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupInstanceResource); err != nil {
 		return BackupInstancesClientGetBackupInstanceOperationResultResponse{}, err
 	}
@@ -443,47 +439,61 @@ func (client *BackupInstancesClient) NewListPager(resourceGroupName string, vaul
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, vaultName, nextLink, options)
 			if err != nil {
 				return BackupInstancesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BackupInstancesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *BackupInstancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, _ *BackupInstancesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *BackupInstancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, nextLink string, _ *BackupInstancesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if vaultName == "" {
+			return nil, errors.New("parameter vaultName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *BackupInstancesClient) listHandleResponse(resp *http.Response) (BackupInstancesClientListResponse, error) {
+func (client *BackupInstancesClient) listHandleResponse(resp *http.Response, successCodes ...int) (BackupInstancesClientListResponse, error) {
 	result := BackupInstancesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupInstanceResourceList); err != nil {
 		return BackupInstancesClientListResponse{}, err
 	}
@@ -531,8 +541,7 @@ func (client *BackupInstancesClient) resumeBackups(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -541,7 +550,7 @@ func (client *BackupInstancesClient) resumeBackups(ctx context.Context, resource
 func (client *BackupInstancesClient) resumeBackupsCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, _ *BackupInstancesClientBeginResumeBackupsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/resumeBackups"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -607,8 +616,7 @@ func (client *BackupInstancesClient) resumeProtection(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -617,7 +625,7 @@ func (client *BackupInstancesClient) resumeProtection(ctx context.Context, resou
 func (client *BackupInstancesClient) resumeProtectionCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, _ *BackupInstancesClientBeginResumeProtectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/resumeProtection"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -683,8 +691,7 @@ func (client *BackupInstancesClient) stopProtection(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -693,7 +700,7 @@ func (client *BackupInstancesClient) stopProtection(ctx context.Context, resourc
 func (client *BackupInstancesClient) stopProtectionCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *BackupInstancesClientBeginStopProtectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/stopProtection"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -771,8 +778,7 @@ func (client *BackupInstancesClient) suspendBackups(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -781,7 +787,7 @@ func (client *BackupInstancesClient) suspendBackups(ctx context.Context, resourc
 func (client *BackupInstancesClient) suspendBackupsCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *BackupInstancesClientBeginSuspendBackupsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/suspendBackups"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -860,8 +866,7 @@ func (client *BackupInstancesClient) syncBackupInstance(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -870,7 +875,7 @@ func (client *BackupInstancesClient) syncBackupInstance(ctx context.Context, res
 func (client *BackupInstancesClient) syncBackupInstanceCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters SyncBackupInstanceRequest, _ *BackupInstancesClientBeginSyncBackupInstanceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/sync"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -940,8 +945,7 @@ func (client *BackupInstancesClient) triggerCrossRegionRestore(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -950,7 +954,7 @@ func (client *BackupInstancesClient) triggerCrossRegionRestore(ctx context.Conte
 func (client *BackupInstancesClient) triggerCrossRegionRestoreCreateRequest(ctx context.Context, resourceGroupName string, location string, parameters CrossRegionRestoreRequestObject, _ *BackupInstancesClientBeginTriggerCrossRegionRestoreOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/locations/{location}/crossRegionRestore"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1018,8 +1022,7 @@ func (client *BackupInstancesClient) triggerRehydrate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1028,7 +1031,7 @@ func (client *BackupInstancesClient) triggerRehydrate(ctx context.Context, resou
 func (client *BackupInstancesClient) triggerRehydrateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters AzureBackupRehydrationRequest, _ *BackupInstancesClientBeginTriggerRehydrateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/rehydrate"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1099,8 +1102,7 @@ func (client *BackupInstancesClient) triggerRestore(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1109,7 +1111,7 @@ func (client *BackupInstancesClient) triggerRestore(ctx context.Context, resourc
 func (client *BackupInstancesClient) triggerRestoreCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters AzureBackupRestoreRequestClassification, options *BackupInstancesClientBeginTriggerRestoreOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/restore"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1183,8 +1185,7 @@ func (client *BackupInstancesClient) validateCrossRegionRestore(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1193,7 +1194,7 @@ func (client *BackupInstancesClient) validateCrossRegionRestore(ctx context.Cont
 func (client *BackupInstancesClient) validateCrossRegionRestoreCreateRequest(ctx context.Context, resourceGroupName string, location string, parameters ValidateCrossRegionRestoreRequestObject, _ *BackupInstancesClientBeginValidateCrossRegionRestoreOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/locations/{location}/validateCrossRegionRestore"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1260,8 +1261,7 @@ func (client *BackupInstancesClient) validateForBackup(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1270,7 +1270,7 @@ func (client *BackupInstancesClient) validateForBackup(ctx context.Context, reso
 func (client *BackupInstancesClient) validateForBackupCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, parameters ValidateForBackupRequest, _ *BackupInstancesClientBeginValidateForBackupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/validateForBackup"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1338,8 +1338,7 @@ func (client *BackupInstancesClient) validateForModifyBackup(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1348,7 +1347,7 @@ func (client *BackupInstancesClient) validateForModifyBackup(ctx context.Context
 func (client *BackupInstancesClient) validateForModifyBackupCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters ValidateForModifyBackupRequest, _ *BackupInstancesClientBeginValidateForModifyBackupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/validateForModifyBackup"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1419,8 +1418,7 @@ func (client *BackupInstancesClient) validateForRestore(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1429,7 +1427,7 @@ func (client *BackupInstancesClient) validateForRestore(ctx context.Context, res
 func (client *BackupInstancesClient) validateForRestoreCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters ValidateRestoreRequestObject, _ *BackupInstancesClientBeginValidateForRestoreOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/validateRestore"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

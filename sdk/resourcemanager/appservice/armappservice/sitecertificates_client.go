@@ -30,6 +30,9 @@ type SiteCertificatesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSiteCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SiteCertificatesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,19 +68,14 @@ func (client *SiteCertificatesClient) CreateOrUpdate(ctx context.Context, resour
 	if err != nil {
 		return SiteCertificatesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return SiteCertificatesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *SiteCertificatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, certificateName string, certificateEnvelope AppCertificate, _ *SiteCertificatesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/certificates/{certificateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -108,8 +106,11 @@ func (client *SiteCertificatesClient) createOrUpdateCreateRequest(ctx context.Co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SiteCertificatesClient) createOrUpdateHandleResponse(resp *http.Response) (SiteCertificatesClientCreateOrUpdateResponse, error) {
+func (client *SiteCertificatesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (SiteCertificatesClientCreateOrUpdateResponse, error) {
 	result := SiteCertificatesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppCertificate); err != nil {
 		return SiteCertificatesClientCreateOrUpdateResponse{}, err
 	}
@@ -141,19 +142,14 @@ func (client *SiteCertificatesClient) CreateOrUpdateSlot(ctx context.Context, re
 	if err != nil {
 		return SiteCertificatesClientCreateOrUpdateSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return SiteCertificatesClientCreateOrUpdateSlotResponse{}, err
-	}
-	resp, err := client.createOrUpdateSlotHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateSlotHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateSlotCreateRequest creates the CreateOrUpdateSlot request.
 func (client *SiteCertificatesClient) createOrUpdateSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, certificateName string, certificateEnvelope AppCertificate, _ *SiteCertificatesClientCreateOrUpdateSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/certificates/{certificateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -188,8 +184,11 @@ func (client *SiteCertificatesClient) createOrUpdateSlotCreateRequest(ctx contex
 }
 
 // createOrUpdateSlotHandleResponse handles the CreateOrUpdateSlot response.
-func (client *SiteCertificatesClient) createOrUpdateSlotHandleResponse(resp *http.Response) (SiteCertificatesClientCreateOrUpdateSlotResponse, error) {
+func (client *SiteCertificatesClient) createOrUpdateSlotHandleResponse(resp *http.Response, successCodes ...int) (SiteCertificatesClientCreateOrUpdateSlotResponse, error) {
 	result := SiteCertificatesClientCreateOrUpdateSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppCertificate); err != nil {
 		return SiteCertificatesClientCreateOrUpdateSlotResponse{}, err
 	}
@@ -219,8 +218,7 @@ func (client *SiteCertificatesClient) Delete(ctx context.Context, resourceGroupN
 		return SiteCertificatesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SiteCertificatesClientDeleteResponse{}, err
+		return SiteCertificatesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SiteCertificatesClientDeleteResponse{}, nil
 }
@@ -229,7 +227,7 @@ func (client *SiteCertificatesClient) Delete(ctx context.Context, resourceGroupN
 func (client *SiteCertificatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, certificateName string, _ *SiteCertificatesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/certificates/{certificateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -279,8 +277,7 @@ func (client *SiteCertificatesClient) DeleteSlot(ctx context.Context, resourceGr
 		return SiteCertificatesClientDeleteSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SiteCertificatesClientDeleteSlotResponse{}, err
+		return SiteCertificatesClientDeleteSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SiteCertificatesClientDeleteSlotResponse{}, nil
 }
@@ -289,7 +286,7 @@ func (client *SiteCertificatesClient) DeleteSlot(ctx context.Context, resourceGr
 func (client *SiteCertificatesClient) deleteSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, certificateName string, _ *SiteCertificatesClientDeleteSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/certificates/{certificateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -340,19 +337,14 @@ func (client *SiteCertificatesClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return SiteCertificatesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SiteCertificatesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *SiteCertificatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, certificateName string, _ *SiteCertificatesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/certificates/{certificateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -379,8 +371,11 @@ func (client *SiteCertificatesClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *SiteCertificatesClient) getHandleResponse(resp *http.Response) (SiteCertificatesClientGetResponse, error) {
+func (client *SiteCertificatesClient) getHandleResponse(resp *http.Response, successCodes ...int) (SiteCertificatesClientGetResponse, error) {
 	result := SiteCertificatesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppCertificate); err != nil {
 		return SiteCertificatesClientGetResponse{}, err
 	}
@@ -411,19 +406,14 @@ func (client *SiteCertificatesClient) GetSlot(ctx context.Context, resourceGroup
 	if err != nil {
 		return SiteCertificatesClientGetSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SiteCertificatesClientGetSlotResponse{}, err
-	}
-	resp, err := client.getSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSlotCreateRequest creates the GetSlot request.
 func (client *SiteCertificatesClient) getSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, certificateName string, _ *SiteCertificatesClientGetSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/certificates/{certificateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -454,8 +444,11 @@ func (client *SiteCertificatesClient) getSlotCreateRequest(ctx context.Context, 
 }
 
 // getSlotHandleResponse handles the GetSlot response.
-func (client *SiteCertificatesClient) getSlotHandleResponse(resp *http.Response) (SiteCertificatesClientGetSlotResponse, error) {
+func (client *SiteCertificatesClient) getSlotHandleResponse(resp *http.Response, successCodes ...int) (SiteCertificatesClientGetSlotResponse, error) {
 	result := SiteCertificatesClientGetSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppCertificate); err != nil {
 		return SiteCertificatesClientGetSlotResponse{}, err
 	}
@@ -480,47 +473,61 @@ func (client *SiteCertificatesClient) NewListPager(resourceGroupName string, nam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return SiteCertificatesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SiteCertificatesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *SiteCertificatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *SiteCertificatesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/certificates"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SiteCertificatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *SiteCertificatesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/certificates"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SiteCertificatesClient) listHandleResponse(resp *http.Response) (SiteCertificatesClientListResponse, error) {
+func (client *SiteCertificatesClient) listHandleResponse(resp *http.Response, successCodes ...int) (SiteCertificatesClientListResponse, error) {
 	result := SiteCertificatesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppCertificateCollection); err != nil {
 		return SiteCertificatesClientListResponse{}, err
 	}
@@ -546,51 +553,65 @@ func (client *SiteCertificatesClient) NewListSlotPager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return SiteCertificatesClientListSlotResponse{}, err
 			}
-			return client.listSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SiteCertificatesClientListSlotResponse{}, err
+			}
+			return client.listSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSlotCreateRequest creates the ListSlot request.
-func (client *SiteCertificatesClient) listSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *SiteCertificatesClientListSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/certificates"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SiteCertificatesClient) listSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *SiteCertificatesClientListSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/certificates"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSlotHandleResponse handles the ListSlot response.
-func (client *SiteCertificatesClient) listSlotHandleResponse(resp *http.Response) (SiteCertificatesClientListSlotResponse, error) {
+func (client *SiteCertificatesClient) listSlotHandleResponse(resp *http.Response, successCodes ...int) (SiteCertificatesClientListSlotResponse, error) {
 	result := SiteCertificatesClientListSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppCertificateCollection); err != nil {
 		return SiteCertificatesClientListSlotResponse{}, err
 	}
@@ -620,19 +641,14 @@ func (client *SiteCertificatesClient) Update(ctx context.Context, resourceGroupN
 	if err != nil {
 		return SiteCertificatesClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SiteCertificatesClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *SiteCertificatesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, name string, certificateName string, certificateEnvelope AppCertificatePatchResource, _ *SiteCertificatesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/certificates/{certificateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -663,8 +679,11 @@ func (client *SiteCertificatesClient) updateCreateRequest(ctx context.Context, r
 }
 
 // updateHandleResponse handles the Update response.
-func (client *SiteCertificatesClient) updateHandleResponse(resp *http.Response) (SiteCertificatesClientUpdateResponse, error) {
+func (client *SiteCertificatesClient) updateHandleResponse(resp *http.Response, successCodes ...int) (SiteCertificatesClientUpdateResponse, error) {
 	result := SiteCertificatesClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppCertificate); err != nil {
 		return SiteCertificatesClientUpdateResponse{}, err
 	}
@@ -696,19 +715,14 @@ func (client *SiteCertificatesClient) UpdateSlot(ctx context.Context, resourceGr
 	if err != nil {
 		return SiteCertificatesClientUpdateSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SiteCertificatesClientUpdateSlotResponse{}, err
-	}
-	resp, err := client.updateSlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateSlotCreateRequest creates the UpdateSlot request.
 func (client *SiteCertificatesClient) updateSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, certificateName string, certificateEnvelope AppCertificatePatchResource, _ *SiteCertificatesClientUpdateSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/certificates/{certificateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -743,8 +757,11 @@ func (client *SiteCertificatesClient) updateSlotCreateRequest(ctx context.Contex
 }
 
 // updateSlotHandleResponse handles the UpdateSlot response.
-func (client *SiteCertificatesClient) updateSlotHandleResponse(resp *http.Response) (SiteCertificatesClientUpdateSlotResponse, error) {
+func (client *SiteCertificatesClient) updateSlotHandleResponse(resp *http.Response, successCodes ...int) (SiteCertificatesClientUpdateSlotResponse, error) {
 	result := SiteCertificatesClientUpdateSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppCertificate); err != nil {
 		return SiteCertificatesClientUpdateSlotResponse{}, err
 	}

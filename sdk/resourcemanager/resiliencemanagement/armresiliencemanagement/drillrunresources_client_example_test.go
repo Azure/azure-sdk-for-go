@@ -36,8 +36,8 @@ func ExampleDrillRunResourcesClient_Get() {
 	// 			ResourceID: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/sampleResourceGroupName/providers/Microsoft.Compute/virtualMachines/iaasvm-1"),
 	// 			Operation: to.Ptr("failover"),
 	// 			Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-12T08:06:33.492Z"); return t}()),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-12T08:06:33.492Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2025, time.May, 12, 8, 6, 33, 492000000, time.UTC)),
+	// 			EndTime: to.Ptr(time.Date(2025, time.May, 12, 8, 6, 33, 492000000, time.UTC)),
 	// 			Duration: to.Ptr("PT36M"),
 	// 			ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 	// 				ErrorCode: to.Ptr("SampleErrorCode"),
@@ -50,8 +50,8 @@ func ExampleDrillRunResourcesClient_Get() {
 	// 				{
 	// 					RetryAttempt: to.Ptr[int32](20),
 	// 					Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-22T11:57:11.753Z"); return t}()),
-	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-22T11:57:11.753Z"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2025, time.April, 22, 11, 57, 11, 753000000, time.UTC)),
+	// 					EndTime: to.Ptr(time.Date(2025, time.April, 22, 11, 57, 11, 753000000, time.UTC)),
 	// 					ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 	// 						ErrorCode: to.Ptr("r"),
 	// 						ErrorMessage: to.Ptr("tecbakdadoucxrprmnaeoted"),
@@ -63,7 +63,7 @@ func ExampleDrillRunResourcesClient_Get() {
 	// 					UserComments: []*armresiliencemanagement.JobUserComment{
 	// 						{
 	// 							CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-	// 							CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-22T12:00:00.000Z"); return t}()),
+	// 							CommentTime: to.Ptr(time.Date(2025, time.April, 22, 12, 0, 0, 0, time.UTC)),
 	// 							Comments: to.Ptr("Retry comment"),
 	// 						},
 	// 					},
@@ -79,8 +79,8 @@ func ExampleDrillRunResourcesClient_Get() {
 	// 							to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/samplePlanName/recoveryJobs/dc6998ef-80ed-4001-b6d4-5325a0309beh"),
 	// 						},
 	// 						Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.412Z"); return t}()),
-	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.412Z"); return t}()),
+	// 						StartTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 412000000, time.UTC)),
+	// 						EndTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 412000000, time.UTC)),
 	// 						ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 	// 							ErrorCode: to.Ptr("qeh"),
 	// 							ErrorMessage: to.Ptr("xgtvlqabfcgszwkmqzlegdwtr"),
@@ -91,15 +91,15 @@ func ExampleDrillRunResourcesClient_Get() {
 	// 						UserComments: []*armresiliencemanagement.JobUserComment{
 	// 							{
 	// 								CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-	// 								CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
+	// 								CommentTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
 	// 								Comments: to.Ptr("lmmybouankjq"),
 	// 							},
 	// 						},
 	// 						SubTasksList: []*armresiliencemanagement.JobTaskDetail{
 	// 							{
 	// 								Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-	// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
-	// 								EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
+	// 								StartTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
+	// 								EndTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
 	// 								Duration: to.Ptr("PT50M"),
 	// 								ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 	// 									ErrorCode: to.Ptr("qeh"),
@@ -116,7 +116,7 @@ func ExampleDrillRunResourcesClient_Get() {
 	// 								UserComments: []*armresiliencemanagement.JobUserComment{
 	// 									{
 	// 										CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-	// 										CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
+	// 										CommentTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
 	// 										Comments: to.Ptr("lmmybouankjq"),
 	// 									},
 	// 								},
@@ -135,7 +135,7 @@ func ExampleDrillRunResourcesClient_Get() {
 	// 			UserComments: []*armresiliencemanagement.JobUserComment{
 	// 				{
 	// 					CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-	// 					CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T06:00:06.052Z"); return t}()),
+	// 					CommentTime: to.Ptr(time.Date(2025, time.September, 1, 6, 0, 6, 52000000, time.UTC)),
 	// 					Comments: to.Ptr("lqlawrisckjaaeoirnrerjwndovd"),
 	// 				},
 	// 			},
@@ -146,10 +146,10 @@ func ExampleDrillRunResourcesClient_Get() {
 	// 		SystemData: &armresiliencemanagement.SystemData{
 	// 			CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("lndhhaimomorael"),
 	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -186,8 +186,8 @@ func ExampleDrillRunResourcesClient_NewListPager() {
 		// 					ResourceID: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/sampleResourceGroupName/providers/Microsoft.Compute/virtualMachines/iaasvm-1"),
 		// 					Operation: to.Ptr("failover"),
 		// 					Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-12T08:06:33.492Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-12T08:06:33.492Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2025, time.May, 12, 8, 6, 33, 492000000, time.UTC)),
+		// 					EndTime: to.Ptr(time.Date(2025, time.May, 12, 8, 6, 33, 492000000, time.UTC)),
 		// 					Duration: to.Ptr("PT36M"),
 		// 					ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 		// 						ErrorCode: to.Ptr("SampleErrorCode"),
@@ -200,8 +200,8 @@ func ExampleDrillRunResourcesClient_NewListPager() {
 		// 						{
 		// 							RetryAttempt: to.Ptr[int32](20),
 		// 							Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-22T11:57:11.753Z"); return t}()),
-		// 							EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-22T11:57:11.753Z"); return t}()),
+		// 							StartTime: to.Ptr(time.Date(2025, time.April, 22, 11, 57, 11, 753000000, time.UTC)),
+		// 							EndTime: to.Ptr(time.Date(2025, time.April, 22, 11, 57, 11, 753000000, time.UTC)),
 		// 							ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 		// 								ErrorCode: to.Ptr("r"),
 		// 								ErrorMessage: to.Ptr("tecbakdadoucxrprmnaeoted"),
@@ -213,7 +213,7 @@ func ExampleDrillRunResourcesClient_NewListPager() {
 		// 							UserComments: []*armresiliencemanagement.JobUserComment{
 		// 								{
 		// 									CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-		// 									CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-22T12:00:00.000Z"); return t}()),
+		// 									CommentTime: to.Ptr(time.Date(2025, time.April, 22, 12, 0, 0, 0, time.UTC)),
 		// 									Comments: to.Ptr("Retry comment"),
 		// 								},
 		// 							},
@@ -229,8 +229,8 @@ func ExampleDrillRunResourcesClient_NewListPager() {
 		// 									to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/samplePlanName/recoveryJobs/dc6998ef-80ed-4001-b6d4-5325a0309beh"),
 		// 								},
 		// 								Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.412Z"); return t}()),
-		// 								EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.412Z"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 412000000, time.UTC)),
+		// 								EndTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 412000000, time.UTC)),
 		// 								ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 		// 									ErrorCode: to.Ptr("qeh"),
 		// 									ErrorMessage: to.Ptr("xgtvlqabfcgszwkmqzlegdwtr"),
@@ -241,15 +241,15 @@ func ExampleDrillRunResourcesClient_NewListPager() {
 		// 								UserComments: []*armresiliencemanagement.JobUserComment{
 		// 									{
 		// 										CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-		// 										CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
+		// 										CommentTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
 		// 										Comments: to.Ptr("lmmybouankjq"),
 		// 									},
 		// 								},
 		// 								SubTasksList: []*armresiliencemanagement.JobTaskDetail{
 		// 									{
 		// 										Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-		// 										StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
-		// 										EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
+		// 										StartTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
+		// 										EndTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
 		// 										Duration: to.Ptr("PT50M"),
 		// 										ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 		// 											ErrorCode: to.Ptr("qeh"),
@@ -266,7 +266,7 @@ func ExampleDrillRunResourcesClient_NewListPager() {
 		// 										UserComments: []*armresiliencemanagement.JobUserComment{
 		// 											{
 		// 												CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-		// 												CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
+		// 												CommentTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
 		// 												Comments: to.Ptr("lmmybouankjq"),
 		// 											},
 		// 										},
@@ -284,7 +284,7 @@ func ExampleDrillRunResourcesClient_NewListPager() {
 		// 					UserComments: []*armresiliencemanagement.JobUserComment{
 		// 						{
 		// 							CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-		// 							CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T06:00:06.052Z"); return t}()),
+		// 							CommentTime: to.Ptr(time.Date(2025, time.September, 1, 6, 0, 6, 52000000, time.UTC)),
 		// 							Comments: to.Ptr("lqlawrisckjaaeoirnrerjwndovd"),
 		// 						},
 		// 					},
@@ -295,10 +295,10 @@ func ExampleDrillRunResourcesClient_NewListPager() {
 		// 				SystemData: &armresiliencemanagement.SystemData{
 		// 					CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("lndhhaimomorael"),
 		// 					LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

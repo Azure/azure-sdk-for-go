@@ -54,42 +54,56 @@ func (client *LotsClient) NewListByBillingAccountPager(billingAccountID string, 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByBillingAccountCreateRequest(ctx, billingAccountID, options)
-			}, nil)
+			req, err := client.listByBillingAccountCreateRequest(ctx, billingAccountID, nextLink, options)
 			if err != nil {
 				return LotsClientListByBillingAccountResponse{}, err
 			}
-			return client.listByBillingAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LotsClientListByBillingAccountResponse{}, err
+			}
+			return client.listByBillingAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByBillingAccountCreateRequest creates the ListByBillingAccount request.
-func (client *LotsClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountID string, options *LotsClientListByBillingAccountOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.Consumption/lots"
-	if billingAccountID == "" {
-		return nil, errors.New("parameter billingAccountID cannot be empty")
+func (client *LotsClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountID string, nextLink string, options *LotsClientListByBillingAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.Consumption/lots"
+		if billingAccountID == "" {
+			return nil, errors.New("parameter billingAccountID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20240801)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20240801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByBillingAccountHandleResponse handles the ListByBillingAccount response.
-func (client *LotsClient) listByBillingAccountHandleResponse(resp *http.Response) (LotsClientListByBillingAccountResponse, error) {
+func (client *LotsClient) listByBillingAccountHandleResponse(resp *http.Response, successCodes ...int) (LotsClientListByBillingAccountResponse, error) {
 	result := LotsClientListByBillingAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Lots); err != nil {
 		return LotsClientListByBillingAccountResponse{}, err
 	}
@@ -113,43 +127,57 @@ func (client *LotsClient) NewListByBillingProfilePager(billingAccountID string, 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByBillingProfileCreateRequest(ctx, billingAccountID, billingProfileID, options)
-			}, nil)
+			req, err := client.listByBillingProfileCreateRequest(ctx, billingAccountID, billingProfileID, nextLink, options)
 			if err != nil {
 				return LotsClientListByBillingProfileResponse{}, err
 			}
-			return client.listByBillingProfileHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LotsClientListByBillingProfileResponse{}, err
+			}
+			return client.listByBillingProfileHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByBillingProfileCreateRequest creates the ListByBillingProfile request.
-func (client *LotsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountID string, billingProfileID string, _ *LotsClientListByBillingProfileOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.Consumption/lots"
-	if billingAccountID == "" {
-		return nil, errors.New("parameter billingAccountID cannot be empty")
+func (client *LotsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountID string, billingProfileID string, nextLink string, _ *LotsClientListByBillingProfileOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.Consumption/lots"
+		if billingAccountID == "" {
+			return nil, errors.New("parameter billingAccountID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
+		if billingProfileID == "" {
+			return nil, errors.New("parameter billingProfileID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingProfileId}", url.PathEscape(billingProfileID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
-	if billingProfileID == "" {
-		return nil, errors.New("parameter billingProfileID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingProfileId}", url.PathEscape(billingProfileID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240801)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByBillingProfileHandleResponse handles the ListByBillingProfile response.
-func (client *LotsClient) listByBillingProfileHandleResponse(resp *http.Response) (LotsClientListByBillingProfileResponse, error) {
+func (client *LotsClient) listByBillingProfileHandleResponse(resp *http.Response, successCodes ...int) (LotsClientListByBillingProfileResponse, error) {
 	result := LotsClientListByBillingProfileResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Lots); err != nil {
 		return LotsClientListByBillingProfileResponse{}, err
 	}
@@ -172,46 +200,60 @@ func (client *LotsClient) NewListByCustomerPager(billingAccountID string, custom
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByCustomerCreateRequest(ctx, billingAccountID, customerID, options)
-			}, nil)
+			req, err := client.listByCustomerCreateRequest(ctx, billingAccountID, customerID, nextLink, options)
 			if err != nil {
 				return LotsClientListByCustomerResponse{}, err
 			}
-			return client.listByCustomerHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LotsClientListByCustomerResponse{}, err
+			}
+			return client.listByCustomerHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByCustomerCreateRequest creates the ListByCustomer request.
-func (client *LotsClient) listByCustomerCreateRequest(ctx context.Context, billingAccountID string, customerID string, options *LotsClientListByCustomerOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}/providers/Microsoft.Consumption/lots"
-	if billingAccountID == "" {
-		return nil, errors.New("parameter billingAccountID cannot be empty")
+func (client *LotsClient) listByCustomerCreateRequest(ctx context.Context, billingAccountID string, customerID string, nextLink string, options *LotsClientListByCustomerOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}/providers/Microsoft.Consumption/lots"
+		if billingAccountID == "" {
+			return nil, errors.New("parameter billingAccountID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
+		if customerID == "" {
+			return nil, errors.New("parameter customerID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{customerId}", url.PathEscape(customerID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
-	if customerID == "" {
-		return nil, errors.New("parameter customerID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{customerId}", url.PathEscape(customerID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20240801)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20240801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByCustomerHandleResponse handles the ListByCustomer response.
-func (client *LotsClient) listByCustomerHandleResponse(resp *http.Response) (LotsClientListByCustomerResponse, error) {
+func (client *LotsClient) listByCustomerHandleResponse(resp *http.Response, successCodes ...int) (LotsClientListByCustomerResponse, error) {
 	result := LotsClientListByCustomerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Lots); err != nil {
 		return LotsClientListByCustomerResponse{}, err
 	}

@@ -30,6 +30,9 @@ type ArcDeploymentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewArcDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ArcDeploymentsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -93,7 +96,7 @@ func (client *ArcDeploymentsClient) createOrUpdate(ctx context.Context, resource
 func (client *ArcDeploymentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, resource ArcDeployment, _ *ArcDeploymentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/arcDeployments/{deploymentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -174,7 +177,7 @@ func (client *ArcDeploymentsClient) deleteOperation(ctx context.Context, resourc
 func (client *ArcDeploymentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, _ *ArcDeploymentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/arcDeployments/{deploymentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -227,7 +230,7 @@ func (client *ArcDeploymentsClient) Get(ctx context.Context, resourceGroupName s
 func (client *ArcDeploymentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, _ *ArcDeploymentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/arcDeployments/{deploymentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -302,7 +305,7 @@ func (client *ArcDeploymentsClient) listCreateRequest(ctx context.Context, resou
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/arcDeployments"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -393,7 +396,7 @@ func (client *ArcDeploymentsClient) update(ctx context.Context, resourceGroupNam
 func (client *ArcDeploymentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, properties ArcDeploymentUpdate, _ *ArcDeploymentsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/arcDeployments/{deploymentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

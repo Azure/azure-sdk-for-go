@@ -92,7 +92,7 @@ func (h *HcpOperatorIdentityRoleSetsServerTransport) dispatchGet(req *http.Reque
 	if h.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RedHatOpenShift/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hcpOperatorIdentityRoleSets/(?P<hcpOperatorIdentityRoleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hcpOperatorIdentityRoleSets/(?P<hcpOperatorIdentityRoleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -127,7 +127,7 @@ func (h *HcpOperatorIdentityRoleSetsServerTransport) dispatchNewListPager(req *h
 	}
 	newListPager := h.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RedHatOpenShift/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hcpOperatorIdentityRoleSets`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hcpOperatorIdentityRoleSets`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

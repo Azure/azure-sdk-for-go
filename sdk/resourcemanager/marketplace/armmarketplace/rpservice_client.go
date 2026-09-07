@@ -7,18 +7,19 @@ package armmarketplace
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // RPServiceClient contains the methods for the RPService group.
 // Don't use this type directly, use NewRPServiceClient() instead.
+//
+// Generated from API version 2025-01-01
 type RPServiceClient struct {
 	internal *arm.Client
 }
@@ -39,8 +40,6 @@ func NewRPServiceClient(credential azcore.TokenCredential, options *arm.ClientOp
 
 // QueryRules - Get a list of all private store rules in the given private store and collection
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - collectionID - The collection ID
 //   - options - RPServiceClientQueryRulesOptions contains the optional parameters for the RPServiceClient.QueryRules method.
@@ -58,12 +57,7 @@ func (client *RPServiceClient) QueryRules(ctx context.Context, privateStoreID st
 	if err != nil {
 		return RPServiceClientQueryRulesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RPServiceClientQueryRulesResponse{}, err
-	}
-	resp, err := client.queryRulesHandleResponse(httpResp)
-	return resp, err
+	return client.queryRulesHandleResponse(httpResp, http.StatusOK)
 }
 
 // queryRulesCreateRequest creates the QueryRules request.
@@ -82,15 +76,18 @@ func (client *RPServiceClient) queryRulesCreateRequest(ctx context.Context, priv
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // queryRulesHandleResponse handles the QueryRules response.
-func (client *RPServiceClient) queryRulesHandleResponse(resp *http.Response) (RPServiceClientQueryRulesResponse, error) {
+func (client *RPServiceClient) queryRulesHandleResponse(resp *http.Response, successCodes ...int) (RPServiceClientQueryRulesResponse, error) {
 	result := RPServiceClientQueryRulesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RuleListResponse); err != nil {
 		return RPServiceClientQueryRulesResponse{}, err
 	}
@@ -99,8 +96,6 @@ func (client *RPServiceClient) queryRulesHandleResponse(resp *http.Response) (RP
 
 // QueryUserRules - All rules approved in the private store that are relevant for user subscriptions
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - options - RPServiceClientQueryUserRulesOptions contains the optional parameters for the RPServiceClient.QueryUserRules
 //     method.
@@ -118,12 +113,7 @@ func (client *RPServiceClient) QueryUserRules(ctx context.Context, privateStoreI
 	if err != nil {
 		return RPServiceClientQueryUserRulesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RPServiceClientQueryUserRulesResponse{}, err
-	}
-	resp, err := client.queryUserRulesHandleResponse(httpResp)
-	return resp, err
+	return client.queryUserRulesHandleResponse(httpResp, http.StatusOK)
 }
 
 // queryUserRulesCreateRequest creates the QueryUserRules request.
@@ -138,8 +128,8 @@ func (client *RPServiceClient) queryUserRulesCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Payload != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -152,8 +142,11 @@ func (client *RPServiceClient) queryUserRulesCreateRequest(ctx context.Context, 
 }
 
 // queryUserRulesHandleResponse handles the QueryUserRules response.
-func (client *RPServiceClient) queryUserRulesHandleResponse(resp *http.Response) (RPServiceClientQueryUserRulesResponse, error) {
+func (client *RPServiceClient) queryUserRulesHandleResponse(resp *http.Response, successCodes ...int) (RPServiceClientQueryUserRulesResponse, error) {
 	result := RPServiceClientQueryUserRulesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RuleListResponse); err != nil {
 		return RPServiceClientQueryUserRulesResponse{}, err
 	}
@@ -162,8 +155,6 @@ func (client *RPServiceClient) queryUserRulesHandleResponse(resp *http.Response)
 
 // SetCollectionRules - Set rule for specific private store and collection
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - collectionID - The collection ID
 //   - options - RPServiceClientSetCollectionRulesOptions contains the optional parameters for the RPServiceClient.SetCollectionRules
@@ -183,8 +174,7 @@ func (client *RPServiceClient) SetCollectionRules(ctx context.Context, privateSt
 		return RPServiceClientSetCollectionRulesResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RPServiceClientSetCollectionRulesResponse{}, err
+		return RPServiceClientSetCollectionRulesResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return RPServiceClientSetCollectionRulesResponse{}, nil
 }
@@ -205,8 +195,8 @@ func (client *RPServiceClient) setCollectionRulesCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.Payload != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
 		if err := runtime.MarshalAsJSON(req, *options.Payload); err != nil {

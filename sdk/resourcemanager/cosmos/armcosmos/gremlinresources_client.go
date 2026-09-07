@@ -30,6 +30,9 @@ type GremlinResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGremlinResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GremlinResourcesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -83,8 +86,7 @@ func (client *GremlinResourcesClient) createUpdateGremlinDatabase(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -93,7 +95,7 @@ func (client *GremlinResourcesClient) createUpdateGremlinDatabase(ctx context.Co
 func (client *GremlinResourcesClient) createUpdateGremlinDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateGremlinDatabaseParameters GremlinDatabaseCreateUpdateParameters, _ *GremlinResourcesClientBeginCreateUpdateGremlinDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -166,8 +168,7 @@ func (client *GremlinResourcesClient) createUpdateGremlinGraph(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -176,7 +177,7 @@ func (client *GremlinResourcesClient) createUpdateGremlinGraph(ctx context.Conte
 func (client *GremlinResourcesClient) createUpdateGremlinGraphCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, createUpdateGremlinGraphParameters GremlinGraphCreateUpdateParameters, _ *GremlinResourcesClientBeginCreateUpdateGremlinGraphOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -252,8 +253,7 @@ func (client *GremlinResourcesClient) createUpdateGremlinRoleAssignment(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -262,7 +262,7 @@ func (client *GremlinResourcesClient) createUpdateGremlinRoleAssignment(ctx cont
 func (client *GremlinResourcesClient) createUpdateGremlinRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateGremlinRoleAssignmentParameters GremlinRoleAssignmentResource, _ *GremlinResourcesClientBeginCreateUpdateGremlinRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleAssignments/{roleAssignmentId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -334,8 +334,7 @@ func (client *GremlinResourcesClient) createUpdateGremlinRoleDefinition(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -344,7 +343,7 @@ func (client *GremlinResourcesClient) createUpdateGremlinRoleDefinition(ctx cont
 func (client *GremlinResourcesClient) createUpdateGremlinRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateGremlinRoleDefinitionParameters GremlinRoleDefinitionResource, _ *GremlinResourcesClientBeginCreateUpdateGremlinRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleDefinitions/{roleDefinitionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -415,8 +414,7 @@ func (client *GremlinResourcesClient) deleteGremlinDatabase(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -425,7 +423,7 @@ func (client *GremlinResourcesClient) deleteGremlinDatabase(ctx context.Context,
 func (client *GremlinResourcesClient) deleteGremlinDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *GremlinResourcesClientBeginDeleteGremlinDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -492,8 +490,7 @@ func (client *GremlinResourcesClient) deleteGremlinGraph(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -502,7 +499,7 @@ func (client *GremlinResourcesClient) deleteGremlinGraph(ctx context.Context, re
 func (client *GremlinResourcesClient) deleteGremlinGraphCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, _ *GremlinResourcesClientBeginDeleteGremlinGraphOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -572,8 +569,7 @@ func (client *GremlinResourcesClient) deleteGremlinRoleAssignment(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -582,7 +578,7 @@ func (client *GremlinResourcesClient) deleteGremlinRoleAssignment(ctx context.Co
 func (client *GremlinResourcesClient) deleteGremlinRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, _ *GremlinResourcesClientBeginDeleteGremlinRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleAssignments/{roleAssignmentId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -648,8 +644,7 @@ func (client *GremlinResourcesClient) deleteGremlinRoleDefinition(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -658,7 +653,7 @@ func (client *GremlinResourcesClient) deleteGremlinRoleDefinition(ctx context.Co
 func (client *GremlinResourcesClient) deleteGremlinRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, _ *GremlinResourcesClientBeginDeleteGremlinRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleDefinitions/{roleDefinitionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -704,19 +699,14 @@ func (client *GremlinResourcesClient) GetGremlinDatabase(ctx context.Context, re
 	if err != nil {
 		return GremlinResourcesClientGetGremlinDatabaseResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GremlinResourcesClientGetGremlinDatabaseResponse{}, err
-	}
-	resp, err := client.getGremlinDatabaseHandleResponse(httpResp)
-	return resp, err
+	return client.getGremlinDatabaseHandleResponse(httpResp, http.StatusOK)
 }
 
 // getGremlinDatabaseCreateRequest creates the GetGremlinDatabase request.
 func (client *GremlinResourcesClient) getGremlinDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *GremlinResourcesClientGetGremlinDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -743,8 +733,11 @@ func (client *GremlinResourcesClient) getGremlinDatabaseCreateRequest(ctx contex
 }
 
 // getGremlinDatabaseHandleResponse handles the GetGremlinDatabase response.
-func (client *GremlinResourcesClient) getGremlinDatabaseHandleResponse(resp *http.Response) (GremlinResourcesClientGetGremlinDatabaseResponse, error) {
+func (client *GremlinResourcesClient) getGremlinDatabaseHandleResponse(resp *http.Response, successCodes ...int) (GremlinResourcesClientGetGremlinDatabaseResponse, error) {
 	result := GremlinResourcesClientGetGremlinDatabaseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GremlinDatabaseGetResults); err != nil {
 		return GremlinResourcesClientGetGremlinDatabaseResponse{}, err
 	}
@@ -773,19 +766,14 @@ func (client *GremlinResourcesClient) GetGremlinDatabaseThroughput(ctx context.C
 	if err != nil {
 		return GremlinResourcesClientGetGremlinDatabaseThroughputResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GremlinResourcesClientGetGremlinDatabaseThroughputResponse{}, err
-	}
-	resp, err := client.getGremlinDatabaseThroughputHandleResponse(httpResp)
-	return resp, err
+	return client.getGremlinDatabaseThroughputHandleResponse(httpResp, http.StatusOK)
 }
 
 // getGremlinDatabaseThroughputCreateRequest creates the GetGremlinDatabaseThroughput request.
 func (client *GremlinResourcesClient) getGremlinDatabaseThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *GremlinResourcesClientGetGremlinDatabaseThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/throughputSettings/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -812,8 +800,11 @@ func (client *GremlinResourcesClient) getGremlinDatabaseThroughputCreateRequest(
 }
 
 // getGremlinDatabaseThroughputHandleResponse handles the GetGremlinDatabaseThroughput response.
-func (client *GremlinResourcesClient) getGremlinDatabaseThroughputHandleResponse(resp *http.Response) (GremlinResourcesClientGetGremlinDatabaseThroughputResponse, error) {
+func (client *GremlinResourcesClient) getGremlinDatabaseThroughputHandleResponse(resp *http.Response, successCodes ...int) (GremlinResourcesClientGetGremlinDatabaseThroughputResponse, error) {
 	result := GremlinResourcesClientGetGremlinDatabaseThroughputResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputSettingsGetResults); err != nil {
 		return GremlinResourcesClientGetGremlinDatabaseThroughputResponse{}, err
 	}
@@ -842,19 +833,14 @@ func (client *GremlinResourcesClient) GetGremlinGraph(ctx context.Context, resou
 	if err != nil {
 		return GremlinResourcesClientGetGremlinGraphResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GremlinResourcesClientGetGremlinGraphResponse{}, err
-	}
-	resp, err := client.getGremlinGraphHandleResponse(httpResp)
-	return resp, err
+	return client.getGremlinGraphHandleResponse(httpResp, http.StatusOK)
 }
 
 // getGremlinGraphCreateRequest creates the GetGremlinGraph request.
 func (client *GremlinResourcesClient) getGremlinGraphCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, _ *GremlinResourcesClientGetGremlinGraphOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -885,8 +871,11 @@ func (client *GremlinResourcesClient) getGremlinGraphCreateRequest(ctx context.C
 }
 
 // getGremlinGraphHandleResponse handles the GetGremlinGraph response.
-func (client *GremlinResourcesClient) getGremlinGraphHandleResponse(resp *http.Response) (GremlinResourcesClientGetGremlinGraphResponse, error) {
+func (client *GremlinResourcesClient) getGremlinGraphHandleResponse(resp *http.Response, successCodes ...int) (GremlinResourcesClientGetGremlinGraphResponse, error) {
 	result := GremlinResourcesClientGetGremlinGraphResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GremlinGraphGetResults); err != nil {
 		return GremlinResourcesClientGetGremlinGraphResponse{}, err
 	}
@@ -916,19 +905,14 @@ func (client *GremlinResourcesClient) GetGremlinGraphThroughput(ctx context.Cont
 	if err != nil {
 		return GremlinResourcesClientGetGremlinGraphThroughputResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GremlinResourcesClientGetGremlinGraphThroughputResponse{}, err
-	}
-	resp, err := client.getGremlinGraphThroughputHandleResponse(httpResp)
-	return resp, err
+	return client.getGremlinGraphThroughputHandleResponse(httpResp, http.StatusOK)
 }
 
 // getGremlinGraphThroughputCreateRequest creates the GetGremlinGraphThroughput request.
 func (client *GremlinResourcesClient) getGremlinGraphThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, _ *GremlinResourcesClientGetGremlinGraphThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}/throughputSettings/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -959,8 +943,11 @@ func (client *GremlinResourcesClient) getGremlinGraphThroughputCreateRequest(ctx
 }
 
 // getGremlinGraphThroughputHandleResponse handles the GetGremlinGraphThroughput response.
-func (client *GremlinResourcesClient) getGremlinGraphThroughputHandleResponse(resp *http.Response) (GremlinResourcesClientGetGremlinGraphThroughputResponse, error) {
+func (client *GremlinResourcesClient) getGremlinGraphThroughputHandleResponse(resp *http.Response, successCodes ...int) (GremlinResourcesClientGetGremlinGraphThroughputResponse, error) {
 	result := GremlinResourcesClientGetGremlinGraphThroughputResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputSettingsGetResults); err != nil {
 		return GremlinResourcesClientGetGremlinGraphThroughputResponse{}, err
 	}
@@ -989,19 +976,14 @@ func (client *GremlinResourcesClient) GetGremlinRoleAssignment(ctx context.Conte
 	if err != nil {
 		return GremlinResourcesClientGetGremlinRoleAssignmentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GremlinResourcesClientGetGremlinRoleAssignmentResponse{}, err
-	}
-	resp, err := client.getGremlinRoleAssignmentHandleResponse(httpResp)
-	return resp, err
+	return client.getGremlinRoleAssignmentHandleResponse(httpResp, http.StatusOK)
 }
 
 // getGremlinRoleAssignmentCreateRequest creates the GetGremlinRoleAssignment request.
 func (client *GremlinResourcesClient) getGremlinRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, _ *GremlinResourcesClientGetGremlinRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleAssignments/{roleAssignmentId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1028,8 +1010,11 @@ func (client *GremlinResourcesClient) getGremlinRoleAssignmentCreateRequest(ctx 
 }
 
 // getGremlinRoleAssignmentHandleResponse handles the GetGremlinRoleAssignment response.
-func (client *GremlinResourcesClient) getGremlinRoleAssignmentHandleResponse(resp *http.Response) (GremlinResourcesClientGetGremlinRoleAssignmentResponse, error) {
+func (client *GremlinResourcesClient) getGremlinRoleAssignmentHandleResponse(resp *http.Response, successCodes ...int) (GremlinResourcesClientGetGremlinRoleAssignmentResponse, error) {
 	result := GremlinResourcesClientGetGremlinRoleAssignmentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GremlinRoleAssignmentResource); err != nil {
 		return GremlinResourcesClientGetGremlinRoleAssignmentResponse{}, err
 	}
@@ -1058,19 +1043,14 @@ func (client *GremlinResourcesClient) GetGremlinRoleDefinition(ctx context.Conte
 	if err != nil {
 		return GremlinResourcesClientGetGremlinRoleDefinitionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GremlinResourcesClientGetGremlinRoleDefinitionResponse{}, err
-	}
-	resp, err := client.getGremlinRoleDefinitionHandleResponse(httpResp)
-	return resp, err
+	return client.getGremlinRoleDefinitionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getGremlinRoleDefinitionCreateRequest creates the GetGremlinRoleDefinition request.
 func (client *GremlinResourcesClient) getGremlinRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, _ *GremlinResourcesClientGetGremlinRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleDefinitions/{roleDefinitionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1097,8 +1077,11 @@ func (client *GremlinResourcesClient) getGremlinRoleDefinitionCreateRequest(ctx 
 }
 
 // getGremlinRoleDefinitionHandleResponse handles the GetGremlinRoleDefinition response.
-func (client *GremlinResourcesClient) getGremlinRoleDefinitionHandleResponse(resp *http.Response) (GremlinResourcesClientGetGremlinRoleDefinitionResponse, error) {
+func (client *GremlinResourcesClient) getGremlinRoleDefinitionHandleResponse(resp *http.Response, successCodes ...int) (GremlinResourcesClientGetGremlinRoleDefinitionResponse, error) {
 	result := GremlinResourcesClientGetGremlinRoleDefinitionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GremlinRoleDefinitionResource); err != nil {
 		return GremlinResourcesClientGetGremlinRoleDefinitionResponse{}, err
 	}
@@ -1121,47 +1104,61 @@ func (client *GremlinResourcesClient) NewListGremlinDatabasesPager(resourceGroup
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listGremlinDatabasesCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listGremlinDatabasesCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return GremlinResourcesClientListGremlinDatabasesResponse{}, err
 			}
-			return client.listGremlinDatabasesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GremlinResourcesClientListGremlinDatabasesResponse{}, err
+			}
+			return client.listGremlinDatabasesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listGremlinDatabasesCreateRequest creates the ListGremlinDatabases request.
-func (client *GremlinResourcesClient) listGremlinDatabasesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *GremlinResourcesClientListGremlinDatabasesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *GremlinResourcesClient) listGremlinDatabasesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *GremlinResourcesClientListGremlinDatabasesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listGremlinDatabasesHandleResponse handles the ListGremlinDatabases response.
-func (client *GremlinResourcesClient) listGremlinDatabasesHandleResponse(resp *http.Response) (GremlinResourcesClientListGremlinDatabasesResponse, error) {
+func (client *GremlinResourcesClient) listGremlinDatabasesHandleResponse(resp *http.Response, successCodes ...int) (GremlinResourcesClientListGremlinDatabasesResponse, error) {
 	result := GremlinResourcesClientListGremlinDatabasesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GremlinDatabaseListResult); err != nil {
 		return GremlinResourcesClientListGremlinDatabasesResponse{}, err
 	}
@@ -1185,51 +1182,65 @@ func (client *GremlinResourcesClient) NewListGremlinGraphsPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listGremlinGraphsCreateRequest(ctx, resourceGroupName, accountName, databaseName, options)
-			}, nil)
+			req, err := client.listGremlinGraphsCreateRequest(ctx, resourceGroupName, accountName, databaseName, nextLink, options)
 			if err != nil {
 				return GremlinResourcesClientListGremlinGraphsResponse{}, err
 			}
-			return client.listGremlinGraphsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GremlinResourcesClientListGremlinGraphsResponse{}, err
+			}
+			return client.listGremlinGraphsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listGremlinGraphsCreateRequest creates the ListGremlinGraphs request.
-func (client *GremlinResourcesClient) listGremlinGraphsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *GremlinResourcesClientListGremlinGraphsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *GremlinResourcesClient) listGremlinGraphsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, nextLink string, _ *GremlinResourcesClientListGremlinGraphsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		if databaseName == "" {
+			return nil, errors.New("parameter databaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listGremlinGraphsHandleResponse handles the ListGremlinGraphs response.
-func (client *GremlinResourcesClient) listGremlinGraphsHandleResponse(resp *http.Response) (GremlinResourcesClientListGremlinGraphsResponse, error) {
+func (client *GremlinResourcesClient) listGremlinGraphsHandleResponse(resp *http.Response, successCodes ...int) (GremlinResourcesClientListGremlinGraphsResponse, error) {
 	result := GremlinResourcesClientListGremlinGraphsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GremlinGraphListResult); err != nil {
 		return GremlinResourcesClientListGremlinGraphsResponse{}, err
 	}
@@ -1252,47 +1263,61 @@ func (client *GremlinResourcesClient) NewListGremlinRoleAssignmentsPager(resourc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listGremlinRoleAssignmentsCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listGremlinRoleAssignmentsCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return GremlinResourcesClientListGremlinRoleAssignmentsResponse{}, err
 			}
-			return client.listGremlinRoleAssignmentsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GremlinResourcesClientListGremlinRoleAssignmentsResponse{}, err
+			}
+			return client.listGremlinRoleAssignmentsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listGremlinRoleAssignmentsCreateRequest creates the ListGremlinRoleAssignments request.
-func (client *GremlinResourcesClient) listGremlinRoleAssignmentsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *GremlinResourcesClientListGremlinRoleAssignmentsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleAssignments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *GremlinResourcesClient) listGremlinRoleAssignmentsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *GremlinResourcesClientListGremlinRoleAssignmentsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleAssignments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listGremlinRoleAssignmentsHandleResponse handles the ListGremlinRoleAssignments response.
-func (client *GremlinResourcesClient) listGremlinRoleAssignmentsHandleResponse(resp *http.Response) (GremlinResourcesClientListGremlinRoleAssignmentsResponse, error) {
+func (client *GremlinResourcesClient) listGremlinRoleAssignmentsHandleResponse(resp *http.Response, successCodes ...int) (GremlinResourcesClientListGremlinRoleAssignmentsResponse, error) {
 	result := GremlinResourcesClientListGremlinRoleAssignmentsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GremlinRoleAssignmentListResult); err != nil {
 		return GremlinResourcesClientListGremlinRoleAssignmentsResponse{}, err
 	}
@@ -1315,47 +1340,61 @@ func (client *GremlinResourcesClient) NewListGremlinRoleDefinitionsPager(resourc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listGremlinRoleDefinitionsCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listGremlinRoleDefinitionsCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return GremlinResourcesClientListGremlinRoleDefinitionsResponse{}, err
 			}
-			return client.listGremlinRoleDefinitionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GremlinResourcesClientListGremlinRoleDefinitionsResponse{}, err
+			}
+			return client.listGremlinRoleDefinitionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listGremlinRoleDefinitionsCreateRequest creates the ListGremlinRoleDefinitions request.
-func (client *GremlinResourcesClient) listGremlinRoleDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *GremlinResourcesClientListGremlinRoleDefinitionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleDefinitions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *GremlinResourcesClient) listGremlinRoleDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *GremlinResourcesClientListGremlinRoleDefinitionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleDefinitions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listGremlinRoleDefinitionsHandleResponse handles the ListGremlinRoleDefinitions response.
-func (client *GremlinResourcesClient) listGremlinRoleDefinitionsHandleResponse(resp *http.Response) (GremlinResourcesClientListGremlinRoleDefinitionsResponse, error) {
+func (client *GremlinResourcesClient) listGremlinRoleDefinitionsHandleResponse(resp *http.Response, successCodes ...int) (GremlinResourcesClientListGremlinRoleDefinitionsResponse, error) {
 	result := GremlinResourcesClientListGremlinRoleDefinitionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GremlinRoleDefinitionListResult); err != nil {
 		return GremlinResourcesClientListGremlinRoleDefinitionsResponse{}, err
 	}
@@ -1403,8 +1442,7 @@ func (client *GremlinResourcesClient) migrateGremlinDatabaseToAutoscale(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1413,7 +1451,7 @@ func (client *GremlinResourcesClient) migrateGremlinDatabaseToAutoscale(ctx cont
 func (client *GremlinResourcesClient) migrateGremlinDatabaseToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *GremlinResourcesClientBeginMigrateGremlinDatabaseToAutoscaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/throughputSettings/default/migrateToAutoscale"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1480,8 +1518,7 @@ func (client *GremlinResourcesClient) migrateGremlinDatabaseToManualThroughput(c
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1490,7 +1527,7 @@ func (client *GremlinResourcesClient) migrateGremlinDatabaseToManualThroughput(c
 func (client *GremlinResourcesClient) migrateGremlinDatabaseToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *GremlinResourcesClientBeginMigrateGremlinDatabaseToManualThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/throughputSettings/default/migrateToManualThroughput"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1558,8 +1595,7 @@ func (client *GremlinResourcesClient) migrateGremlinGraphToAutoscale(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1568,7 +1604,7 @@ func (client *GremlinResourcesClient) migrateGremlinGraphToAutoscale(ctx context
 func (client *GremlinResourcesClient) migrateGremlinGraphToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, _ *GremlinResourcesClientBeginMigrateGremlinGraphToAutoscaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}/throughputSettings/default/migrateToAutoscale"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1640,8 +1676,7 @@ func (client *GremlinResourcesClient) migrateGremlinGraphToManualThroughput(ctx 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1650,7 +1685,7 @@ func (client *GremlinResourcesClient) migrateGremlinGraphToManualThroughput(ctx 
 func (client *GremlinResourcesClient) migrateGremlinGraphToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, _ *GremlinResourcesClientBeginMigrateGremlinGraphToManualThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}/throughputSettings/default/migrateToManualThroughput"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1723,8 +1758,7 @@ func (client *GremlinResourcesClient) retrieveContinuousBackupInformation(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1733,7 +1767,7 @@ func (client *GremlinResourcesClient) retrieveContinuousBackupInformation(ctx co
 func (client *GremlinResourcesClient) retrieveContinuousBackupInformationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, location ContinuousBackupRestoreLocation, _ *GremlinResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}/retrieveContinuousBackupInformation"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1809,8 +1843,7 @@ func (client *GremlinResourcesClient) updateGremlinDatabaseThroughput(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1819,7 +1852,7 @@ func (client *GremlinResourcesClient) updateGremlinDatabaseThroughput(ctx contex
 func (client *GremlinResourcesClient) updateGremlinDatabaseThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, _ *GremlinResourcesClientBeginUpdateGremlinDatabaseThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/throughputSettings/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1892,8 +1925,7 @@ func (client *GremlinResourcesClient) updateGremlinGraphThroughput(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1902,7 +1934,7 @@ func (client *GremlinResourcesClient) updateGremlinGraphThroughput(ctx context.C
 func (client *GremlinResourcesClient) updateGremlinGraphThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters ThroughputSettingsUpdateParameters, _ *GremlinResourcesClientBeginUpdateGremlinGraphThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}/throughputSettings/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

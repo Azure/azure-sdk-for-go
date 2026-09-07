@@ -7,11 +7,11 @@ package armnetwork_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/AzureWebCategoryGet.json
+// Generated from example definition: 2025-09-01/AzureWebCategoryGet.json
 func ExampleWebCategoriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleWebCategoriesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/AzureWebCategoriesListBySubscription.json
+// Generated from example definition: 2025-09-01/AzureWebCategoriesListBySubscription.json
 func ExampleWebCategoriesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

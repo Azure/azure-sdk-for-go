@@ -118,7 +118,7 @@ func (r *RetentionPoliciesServerTransport) dispatchBeginCreateOrReplace(req *htt
 	}
 	beginCreateOrReplace := r.beginCreateOrReplace.get(req)
 	if beginCreateOrReplace == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retentionPolicies/default`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retentionPolicies/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -166,7 +166,7 @@ func (r *RetentionPoliciesServerTransport) dispatchBeginDelete(req *http.Request
 	}
 	beginDelete := r.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retentionPolicies/default`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retentionPolicies/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -208,7 +208,7 @@ func (r *RetentionPoliciesServerTransport) dispatchGet(req *http.Request) (*http
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retentionPolicies/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retentionPolicies/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -243,7 +243,7 @@ func (r *RetentionPoliciesServerTransport) dispatchNewListBySchedulerPager(req *
 	}
 	newListBySchedulerPager := r.newListBySchedulerPager.get(req)
 	if newListBySchedulerPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retentionPolicies`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retentionPolicies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -284,7 +284,7 @@ func (r *RetentionPoliciesServerTransport) dispatchBeginUpdate(req *http.Request
 	}
 	beginUpdate := r.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retentionPolicies/default`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retentionPolicies/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

@@ -96,13 +96,13 @@ func ExampleOrderItemsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armedgeorder.OrderItemsClientCreateResponse{
-	// 	OrderItemResource: &armedgeorder.OrderItemResource{
+	// 	OrderItemResource: armedgeorder.OrderItemResource{
 	// 		Name: to.Ptr("TestOrderItemName2"),
 	// 		Type: to.Ptr("Microsoft.EdgeOrder/orderItems"),
 	// 		ID: to.Ptr("/subscriptions/eb5dc900-6186-49d8-b7d7-febd866fdc1d/resourceGroups/YourResourceGroupName/providers/Microsoft.EdgeOrder/orderItems/TestOrderItemName2"),
@@ -137,7 +137,7 @@ func ExampleOrderItemsClient_BeginCreate() {
 	// 				CurrentStage: &armedgeorder.StageDetails{
 	// 					StageName: to.Ptr(armedgeorder.StageNamePlaced),
 	// 					StageStatus: to.Ptr(armedgeorder.StageStatusInProgress),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T10:58:27.5824859+05:30"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 28, 27, 582485900, time.UTC)),
 	// 				},
 	// 				DeletionStatus: to.Ptr(armedgeorder.ActionStatusEnumNotAllowed),
 	// 				ManagementRpDetailsList: []*armedgeorder.ResourceProviderDetails{
@@ -194,11 +194,11 @@ func ExampleOrderItemsClient_BeginCreate() {
 	// 				},
 	// 				ReturnStatus: to.Ptr(armedgeorder.OrderItemReturnEnumNotReturnable),
 	// 			},
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T10:58:27.5824859+05:30"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 28, 27, 582485900, time.UTC)),
 	// 		},
 	// 		SystemData: &armedgeorder.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
@@ -223,7 +223,7 @@ func ExampleOrderItemsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -246,7 +246,7 @@ func ExampleOrderItemsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armedgeorder.OrderItemsClientGetResponse{
-	// 	OrderItemResource: &armedgeorder.OrderItemResource{
+	// 	OrderItemResource: armedgeorder.OrderItemResource{
 	// 		Name: to.Ptr("TestOrderItemName1"),
 	// 		Type: to.Ptr("Microsoft.EdgeOrder/orderItems"),
 	// 		ID: to.Ptr("/subscriptions/eb5dc900-6186-49d8-b7d7-febd866fdc1d/resourceGroups/YourResourceGroupName/providers/Microsoft.EdgeOrder/orderItems/TestOrderItemName1"),
@@ -281,7 +281,7 @@ func ExampleOrderItemsClient_Get() {
 	// 				CurrentStage: &armedgeorder.StageDetails{
 	// 					StageName: to.Ptr(armedgeorder.StageNameConfirmed),
 	// 					StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T11:05:00.3575338+05:30"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 35, 0, 357533800, time.UTC)),
 	// 				},
 	// 				DeletionStatus: to.Ptr(armedgeorder.ActionStatusEnumNotAllowed),
 	// 				ManagementRpDetailsList: []*armedgeorder.ResourceProviderDetails{
@@ -295,12 +295,12 @@ func ExampleOrderItemsClient_Get() {
 	// 					{
 	// 						StageName: to.Ptr(armedgeorder.StageNamePlaced),
 	// 						StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T10:55:54.3427968+05:30"); return t}()),
+	// 						StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 25, 54, 342796800, time.UTC)),
 	// 					},
 	// 					{
 	// 						StageName: to.Ptr(armedgeorder.StageNameConfirmed),
 	// 						StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T11:05:00.3575338+05:30"); return t}()),
+	// 						StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 35, 0, 357533800, time.UTC)),
 	// 					},
 	// 					{
 	// 						StageName: to.Ptr(armedgeorder.StageNameReadyToShip),
@@ -340,11 +340,11 @@ func ExampleOrderItemsClient_Get() {
 	// 				},
 	// 				ReturnStatus: to.Ptr(armedgeorder.OrderItemReturnEnumNotReturnable),
 	// 			},
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T10:55:10.2820482+05:30"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 25, 10, 282048200, time.UTC)),
 	// 		},
 	// 		SystemData: &armedgeorder.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
@@ -412,7 +412,7 @@ func ExampleOrderItemsClient_NewListByResourceGroupPager() {
 		// 						CurrentStage: &armedgeorder.StageDetails{
 		// 							StageName: to.Ptr(armedgeorder.StageNameConfirmed),
 		// 							StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T11:05:00.3575338+05:30"); return t}()),
+		// 							StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 35, 0, 357533800, time.UTC)),
 		// 						},
 		// 						DeletionStatus: to.Ptr(armedgeorder.ActionStatusEnumNotAllowed),
 		// 						ManagementRpDetailsList: []*armedgeorder.ResourceProviderDetails{
@@ -426,12 +426,12 @@ func ExampleOrderItemsClient_NewListByResourceGroupPager() {
 		// 							{
 		// 								StageName: to.Ptr(armedgeorder.StageNamePlaced),
 		// 								StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T10:55:54.3427968+05:30"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 25, 54, 342796800, time.UTC)),
 		// 							},
 		// 							{
 		// 								StageName: to.Ptr(armedgeorder.StageNameConfirmed),
 		// 								StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T11:05:00.3575338+05:30"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 35, 0, 357533800, time.UTC)),
 		// 							},
 		// 							{
 		// 								StageName: to.Ptr(armedgeorder.StageNameReadyToShip),
@@ -471,11 +471,11 @@ func ExampleOrderItemsClient_NewListByResourceGroupPager() {
 		// 						},
 		// 						ReturnStatus: to.Ptr(armedgeorder.OrderItemReturnEnumNotReturnable),
 		// 					},
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T10:55:10.2820482+05:30"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 25, 10, 282048200, time.UTC)),
 		// 				},
 		// 				SystemData: &armedgeorder.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -515,7 +515,7 @@ func ExampleOrderItemsClient_NewListByResourceGroupPager() {
 		// 						CurrentStage: &armedgeorder.StageDetails{
 		// 							StageName: to.Ptr(armedgeorder.StageNameConfirmed),
 		// 							StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T11:07:29.9896685+05:30"); return t}()),
+		// 							StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 37, 29, 989668500, time.UTC)),
 		// 						},
 		// 						DeletionStatus: to.Ptr(armedgeorder.ActionStatusEnumNotAllowed),
 		// 						ManagementRpDetailsList: []*armedgeorder.ResourceProviderDetails{
@@ -529,12 +529,12 @@ func ExampleOrderItemsClient_NewListByResourceGroupPager() {
 		// 							{
 		// 								StageName: to.Ptr(armedgeorder.StageNamePlaced),
 		// 								StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T10:59:04.9701334+05:30"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 29, 4, 970133400, time.UTC)),
 		// 							},
 		// 							{
 		// 								StageName: to.Ptr(armedgeorder.StageNameConfirmed),
 		// 								StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T11:07:29.9896685+05:30"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 37, 29, 989668500, time.UTC)),
 		// 							},
 		// 							{
 		// 								StageName: to.Ptr(armedgeorder.StageNameReadyToShip),
@@ -574,11 +574,11 @@ func ExampleOrderItemsClient_NewListByResourceGroupPager() {
 		// 						},
 		// 						ReturnStatus: to.Ptr(armedgeorder.OrderItemReturnEnumNotReturnable),
 		// 					},
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T10:58:27.5824859+05:30"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 28, 27, 582485900, time.UTC)),
 		// 				},
 		// 				SystemData: &armedgeorder.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -649,7 +649,7 @@ func ExampleOrderItemsClient_NewListBySubscriptionPager() {
 		// 						CurrentStage: &armedgeorder.StageDetails{
 		// 							StageName: to.Ptr(armedgeorder.StageNameConfirmed),
 		// 							StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T11:05:00.3575338+05:30"); return t}()),
+		// 							StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 35, 0, 357533800, time.UTC)),
 		// 						},
 		// 						DeletionStatus: to.Ptr(armedgeorder.ActionStatusEnumNotAllowed),
 		// 						ManagementRpDetailsList: []*armedgeorder.ResourceProviderDetails{
@@ -663,12 +663,12 @@ func ExampleOrderItemsClient_NewListBySubscriptionPager() {
 		// 							{
 		// 								StageName: to.Ptr(armedgeorder.StageNamePlaced),
 		// 								StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T10:55:54.3427968+05:30"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 25, 54, 342796800, time.UTC)),
 		// 							},
 		// 							{
 		// 								StageName: to.Ptr(armedgeorder.StageNameConfirmed),
 		// 								StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T11:05:00.3575338+05:30"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 35, 0, 357533800, time.UTC)),
 		// 							},
 		// 							{
 		// 								StageName: to.Ptr(armedgeorder.StageNameReadyToShip),
@@ -708,11 +708,11 @@ func ExampleOrderItemsClient_NewListBySubscriptionPager() {
 		// 						},
 		// 						ReturnStatus: to.Ptr(armedgeorder.OrderItemReturnEnumNotReturnable),
 		// 					},
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T10:55:10.2820482+05:30"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 25, 10, 282048200, time.UTC)),
 		// 				},
 		// 				SystemData: &armedgeorder.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -752,7 +752,7 @@ func ExampleOrderItemsClient_NewListBySubscriptionPager() {
 		// 						CurrentStage: &armedgeorder.StageDetails{
 		// 							StageName: to.Ptr(armedgeorder.StageNameConfirmed),
 		// 							StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T11:07:29.9896685+05:30"); return t}()),
+		// 							StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 37, 29, 989668500, time.UTC)),
 		// 						},
 		// 						DeletionStatus: to.Ptr(armedgeorder.ActionStatusEnumNotAllowed),
 		// 						ManagementRpDetailsList: []*armedgeorder.ResourceProviderDetails{
@@ -766,12 +766,12 @@ func ExampleOrderItemsClient_NewListBySubscriptionPager() {
 		// 							{
 		// 								StageName: to.Ptr(armedgeorder.StageNamePlaced),
 		// 								StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T10:59:04.9701334+05:30"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 29, 4, 970133400, time.UTC)),
 		// 							},
 		// 							{
 		// 								StageName: to.Ptr(armedgeorder.StageNameConfirmed),
 		// 								StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T11:07:29.9896685+05:30"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 37, 29, 989668500, time.UTC)),
 		// 							},
 		// 							{
 		// 								StageName: to.Ptr(armedgeorder.StageNameReadyToShip),
@@ -811,11 +811,11 @@ func ExampleOrderItemsClient_NewListBySubscriptionPager() {
 		// 						},
 		// 						ReturnStatus: to.Ptr(armedgeorder.OrderItemReturnEnumNotReturnable),
 		// 					},
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T10:58:27.5824859+05:30"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 28, 27, 582485900, time.UTC)),
 		// 				},
 		// 				SystemData: &armedgeorder.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -845,7 +845,7 @@ func ExampleOrderItemsClient_BeginReturn() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -879,13 +879,13 @@ func ExampleOrderItemsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armedgeorder.OrderItemsClientUpdateResponse{
-	// 	OrderItemResource: &armedgeorder.OrderItemResource{
+	// 	OrderItemResource: armedgeorder.OrderItemResource{
 	// 		Name: to.Ptr("TestOrderItemName3"),
 	// 		Type: to.Ptr("Microsoft.EdgeOrder/orderItems"),
 	// 		ID: to.Ptr("/subscriptions/eb5dc900-6186-49d8-b7d7-febd866fdc1d/resourceGroups/YourResourceGroupName/providers/Microsoft.EdgeOrder/orderItems/TestOrderItemName3"),
@@ -920,7 +920,7 @@ func ExampleOrderItemsClient_BeginUpdate() {
 	// 				CurrentStage: &armedgeorder.StageDetails{
 	// 					StageName: to.Ptr(armedgeorder.StageNamePlaced),
 	// 					StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T11:30:31.5838042+05:30"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2022, time.March, 4, 6, 0, 31, 583804200, time.UTC)),
 	// 				},
 	// 				DeletionStatus: to.Ptr(armedgeorder.ActionStatusEnumNotAllowed),
 	// 				ManagementRpDetailsList: []*armedgeorder.ResourceProviderDetails{
@@ -934,7 +934,7 @@ func ExampleOrderItemsClient_BeginUpdate() {
 	// 					{
 	// 						StageName: to.Ptr(armedgeorder.StageNamePlaced),
 	// 						StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T11:30:31.5838042+05:30"); return t}()),
+	// 						StartTime: to.Ptr(time.Date(2022, time.March, 4, 6, 0, 31, 583804200, time.UTC)),
 	// 					},
 	// 					{
 	// 						StageName: to.Ptr(armedgeorder.StageNameConfirmed),
@@ -978,11 +978,11 @@ func ExampleOrderItemsClient_BeginUpdate() {
 	// 				},
 	// 				ReturnStatus: to.Ptr(armedgeorder.OrderItemReturnEnumNotReturnable),
 	// 			},
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T11:29:47.3483197+05:30"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 59, 47, 348319700, time.UTC)),
 	// 		},
 	// 		SystemData: &armedgeorder.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},

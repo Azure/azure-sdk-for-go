@@ -1,5 +1,39 @@
 # Release History
 
+## 3.1.0-beta.1 (2026-08-04)
+### Features Added
+
+- New value `CloudHsmClusterSKUNameStandardB10V2`, `CloudHsmClusterSKUNameStandardB15V2`, `CloudHsmClusterSKUNameStandardB1V2`, `CloudHsmClusterSKUNameStandardB20V2`, `CloudHsmClusterSKUNameStandardB5V2` added to enum type `CloudHsmClusterSKUName`
+- New enum type `HsmState` with values `HsmStateConfiguringSlb`, `HsmStateDegraded`, `HsmStateDelayedDeletion`, `HsmStateDeleting`, `HsmStateDeletingSlbEntry`, `HsmStateDeploying`, `HsmStateFailed`, `HsmStateInitialProvisioning`, `HsmStateRelocating`, `HsmStateStarted`, `HsmStateStarting`, `HsmStateUnknown`, `HsmStateUpdating`
+- New enum type `PaymentHsmClusterSKUFamily` with values `PaymentHsmClusterSKUFamilyB`
+- New enum type `PaymentHsmClusterSKUName` with values `PaymentHsmClusterSKUNamePaymentsV2`
+- New function `*ClientFactory.NewPaymentHsmClusterPrivateEndpointConnectionsClient() *PaymentHsmClusterPrivateEndpointConnectionsClient`
+- New function `*ClientFactory.NewPaymentHsmClusterPrivateLinkResourcesClient() *PaymentHsmClusterPrivateLinkResourcesClient`
+- New function `*ClientFactory.NewPaymentHsmClustersClient() *PaymentHsmClustersClient`
+- New function `NewPaymentHsmClusterPrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PaymentHsmClusterPrivateEndpointConnectionsClient, error)`
+- New function `*PaymentHsmClusterPrivateEndpointConnectionsClient.Create(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, peConnectionName string, properties PaymentHsmClusterPrivateEndpointConnection, options *PaymentHsmClusterPrivateEndpointConnectionsClientCreateOptions) (PaymentHsmClusterPrivateEndpointConnectionsClientCreateResponse, error)`
+- New function `*PaymentHsmClusterPrivateEndpointConnectionsClient.BeginDelete(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, peConnectionName string, options *PaymentHsmClusterPrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[PaymentHsmClusterPrivateEndpointConnectionsClientDeleteResponse], error)`
+- New function `*PaymentHsmClusterPrivateEndpointConnectionsClient.Get(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, peConnectionName string, options *PaymentHsmClusterPrivateEndpointConnectionsClientGetOptions) (PaymentHsmClusterPrivateEndpointConnectionsClientGetResponse, error)`
+- New function `*PaymentHsmClusterPrivateEndpointConnectionsClient.NewListByPaymentHsmClusterPager(resourceGroupName string, paymentHsmClusterName string, options *PaymentHsmClusterPrivateEndpointConnectionsClientListByPaymentHsmClusterOptions) *runtime.Pager[PaymentHsmClusterPrivateEndpointConnectionsClientListByPaymentHsmClusterResponse]`
+- New function `NewPaymentHsmClusterPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PaymentHsmClusterPrivateLinkResourcesClient, error)`
+- New function `*PaymentHsmClusterPrivateLinkResourcesClient.NewListByPaymentHsmClusterPager(resourceGroupName string, paymentHsmClusterName string, options *PaymentHsmClusterPrivateLinkResourcesClientListByPaymentHsmClusterOptions) *runtime.Pager[PaymentHsmClusterPrivateLinkResourcesClientListByPaymentHsmClusterResponse]`
+- New function `NewPaymentHsmClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PaymentHsmClustersClient, error)`
+- New function `*PaymentHsmClustersClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, body PaymentHsmCluster, options *PaymentHsmClustersClientBeginCreateOrUpdateOptions) (*runtime.Poller[PaymentHsmClustersClientCreateOrUpdateResponse], error)`
+- New function `*PaymentHsmClustersClient.BeginDelete(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, options *PaymentHsmClustersClientBeginDeleteOptions) (*runtime.Poller[PaymentHsmClustersClientDeleteResponse], error)`
+- New function `*PaymentHsmClustersClient.Get(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, options *PaymentHsmClustersClientGetOptions) (PaymentHsmClustersClientGetResponse, error)`
+- New function `*PaymentHsmClustersClient.NewListByResourceGroupPager(resourceGroupName string, options *PaymentHsmClustersClientListByResourceGroupOptions) *runtime.Pager[PaymentHsmClustersClientListByResourceGroupResponse]`
+- New function `*PaymentHsmClustersClient.NewListBySubscriptionPager(options *PaymentHsmClustersClientListBySubscriptionOptions) *runtime.Pager[PaymentHsmClustersClientListBySubscriptionResponse]`
+- New function `*PaymentHsmClustersClient.BeginUpdate(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, body PaymentHsmClusterPatchParameters, options *PaymentHsmClustersClientBeginUpdateOptions) (*runtime.Poller[PaymentHsmClustersClientUpdateResponse], error)`
+- New struct `PaymentHsmCluster`
+- New struct `PaymentHsmClusterListResult`
+- New struct `PaymentHsmClusterPatchParameters`
+- New struct `PaymentHsmClusterPrivateEndpointConnection`
+- New struct `PaymentHsmClusterPrivateEndpointConnectionListResult`
+- New struct `PaymentHsmClusterProperties`
+- New struct `PaymentHsmClusterSKU`
+- New struct `PaymentHsmProperties`
+
+
 ## 3.0.0 (2026-06-24)
 ### Breaking Changes
 

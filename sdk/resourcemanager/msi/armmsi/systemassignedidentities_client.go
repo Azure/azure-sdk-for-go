@@ -56,12 +56,7 @@ func (client *SystemAssignedIdentitiesClient) GetByScope(ctx context.Context, sc
 	if err != nil {
 		return SystemAssignedIdentitiesClientGetByScopeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SystemAssignedIdentitiesClientGetByScopeResponse{}, err
-	}
-	resp, err := client.getByScopeHandleResponse(httpResp)
-	return resp, err
+	return client.getByScopeHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByScopeCreateRequest creates the GetByScope request.
@@ -83,8 +78,11 @@ func (client *SystemAssignedIdentitiesClient) getByScopeCreateRequest(ctx contex
 }
 
 // getByScopeHandleResponse handles the GetByScope response.
-func (client *SystemAssignedIdentitiesClient) getByScopeHandleResponse(resp *http.Response) (SystemAssignedIdentitiesClientGetByScopeResponse, error) {
+func (client *SystemAssignedIdentitiesClient) getByScopeHandleResponse(resp *http.Response, successCodes ...int) (SystemAssignedIdentitiesClientGetByScopeResponse, error) {
 	result := SystemAssignedIdentitiesClientGetByScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SystemAssignedIdentity); err != nil {
 		return SystemAssignedIdentitiesClientGetByScopeResponse{}, err
 	}

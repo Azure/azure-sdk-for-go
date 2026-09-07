@@ -319,7 +319,7 @@ func ExampleMigrationServicesClient_NewListMigrationsPager() {
 		// 				Type: to.Ptr("Microsoft.DataMigration/databaseMigrations"),
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.DocumentDB/mongoClusters/targetCosmosDbClusterName/providers/Microsoft.DataMigration/databaseMigrations/migrationRequest2"),
 		// 				Properties: &armdatamigration.DatabaseMigrationPropertiesCosmosDbMongo{
-		// 					EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T08:00:00Z"); return t}()),
+		// 					EndedOn: to.Ptr(time.Date(1, time.January, 1, 8, 0, 0, 0, time.UTC)),
 		// 					Kind: to.Ptr(armdatamigration.ResourceTypeMongoToCosmosDbMongo),
 		// 					MigrationFailureError: &armdatamigration.ErrorInfo{
 		// 						Code: to.Ptr("400"),
@@ -334,7 +334,7 @@ func ExampleMigrationServicesClient_NewListMigrationsPager() {
 		// 						Host: to.Ptr("abc.mongodb.com"),
 		// 						Port: to.Ptr[int32](88),
 		// 					},
-		// 					StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T08:00:00Z"); return t}()),
+		// 					StartedOn: to.Ptr(time.Date(1, time.January, 1, 8, 0, 0, 0, time.UTC)),
 		// 					TargetMongoConnection: &armdatamigration.MongoConnectionInformation{
 		// 						Host: to.Ptr("xyz.mongocluster.cosmos.azure.com"),
 		// 						Port: to.Ptr[int32](10255),

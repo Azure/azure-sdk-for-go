@@ -30,6 +30,9 @@ type LocationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -60,19 +63,14 @@ func (client *LocationsClient) CheckQuotaAvailability(ctx context.Context, locat
 	if err != nil {
 		return LocationsClientCheckQuotaAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LocationsClientCheckQuotaAvailabilityResponse{}, err
-	}
-	resp, err := client.checkQuotaAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkQuotaAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkQuotaAvailabilityCreateRequest creates the CheckQuotaAvailability request.
 func (client *LocationsClient) checkQuotaAvailabilityCreateRequest(ctx context.Context, location string, _ *LocationsClientCheckQuotaAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AVS/locations/{location}/checkQuotaAvailability"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -91,8 +89,11 @@ func (client *LocationsClient) checkQuotaAvailabilityCreateRequest(ctx context.C
 }
 
 // checkQuotaAvailabilityHandleResponse handles the CheckQuotaAvailability response.
-func (client *LocationsClient) checkQuotaAvailabilityHandleResponse(resp *http.Response) (LocationsClientCheckQuotaAvailabilityResponse, error) {
+func (client *LocationsClient) checkQuotaAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (LocationsClientCheckQuotaAvailabilityResponse, error) {
 	result := LocationsClientCheckQuotaAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Quota); err != nil {
 		return LocationsClientCheckQuotaAvailabilityResponse{}, err
 	}
@@ -118,19 +119,14 @@ func (client *LocationsClient) CheckTrialAvailability(ctx context.Context, locat
 	if err != nil {
 		return LocationsClientCheckTrialAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LocationsClientCheckTrialAvailabilityResponse{}, err
-	}
-	resp, err := client.checkTrialAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkTrialAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkTrialAvailabilityCreateRequest creates the CheckTrialAvailability request.
 func (client *LocationsClient) checkTrialAvailabilityCreateRequest(ctx context.Context, location string, options *LocationsClientCheckTrialAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AVS/locations/{location}/checkTrialAvailability"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -156,8 +152,11 @@ func (client *LocationsClient) checkTrialAvailabilityCreateRequest(ctx context.C
 }
 
 // checkTrialAvailabilityHandleResponse handles the CheckTrialAvailability response.
-func (client *LocationsClient) checkTrialAvailabilityHandleResponse(resp *http.Response) (LocationsClientCheckTrialAvailabilityResponse, error) {
+func (client *LocationsClient) checkTrialAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (LocationsClientCheckTrialAvailabilityResponse, error) {
 	result := LocationsClientCheckTrialAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Trial); err != nil {
 		return LocationsClientCheckTrialAvailabilityResponse{}, err
 	}

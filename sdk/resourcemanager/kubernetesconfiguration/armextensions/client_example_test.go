@@ -61,10 +61,10 @@ func ExampleClient_BeginCreate_createExtension() {
 	// 		SystemData: &armextensions.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T05:10:57.027Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.September, 8, 5, 10, 57, 27000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T05:10:57.027Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.September, 8, 5, 10, 57, 27000000, time.UTC)),
 	// 		},
 	// 		Properties: &armextensions.ExtensionProperties{
 	// 			ExtensionType: to.Ptr("azuremonitor-containers"),
@@ -133,10 +133,10 @@ func ExampleClient_BeginCreate_createExtensionWithPlan() {
 	// 		SystemData: &armextensions.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T05:10:57.027Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.September, 8, 5, 10, 57, 27000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T05:10:57.027Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.September, 8, 5, 10, 57, 27000000, time.UTC)),
 	// 		},
 	// 		Plan: &armextensions.Plan{
 	// 			Name: to.Ptr("azure-vote-standard"),
@@ -216,10 +216,10 @@ func ExampleClient_Get_getExtension() {
 	// 		SystemData: &armextensions.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T05:10:57.027Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.September, 8, 5, 10, 57, 27000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T05:10:57.027Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.September, 8, 5, 10, 57, 27000000, time.UTC)),
 	// 		},
 	// 		Properties: &armextensions.ExtensionProperties{
 	// 			ExtensionType: to.Ptr("azuremonitor-containers"),
@@ -272,10 +272,10 @@ func ExampleClient_Get_getExtensionWithAdditionalDetails() {
 	// 		SystemData: &armextensions.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T05:10:57.027Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.September, 8, 5, 10, 57, 27000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T05:10:57.027Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.September, 8, 5, 10, 57, 27000000, time.UTC)),
 	// 		},
 	// 		Properties: &armextensions.ExtensionProperties{
 	// 			ExtensionType: to.Ptr("azuremonitor-containers"),
@@ -333,10 +333,10 @@ func ExampleClient_Get_getExtensionWithExtensionState() {
 	// 		SystemData: &armextensions.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T05:10:57.027Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.September, 8, 5, 10, 57, 27000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T05:10:57.027Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.September, 8, 5, 10, 57, 27000000, time.UTC)),
 	// 		},
 	// 		Properties: &armextensions.ExtensionProperties{
 	// 			ExtensionType: to.Ptr("azuremonitor-containers"),
@@ -391,10 +391,10 @@ func ExampleClient_Get_getExtensionWithManagedBy() {
 	// 		SystemData: &armextensions.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T05:10:57.027Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.September, 8, 5, 10, 57, 27000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T05:10:57.027Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.September, 8, 5, 10, 57, 27000000, time.UTC)),
 	// 		},
 	// 		Plan: &armextensions.Plan{
 	// 			Name: to.Ptr("azure-vote-standard"),
@@ -472,10 +472,10 @@ func ExampleClient_Get_getExtensionWithManagementDetails() {
 	// 		SystemData: &armextensions.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T05:10:57.027Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.September, 8, 5, 10, 57, 27000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T05:10:57.027Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.September, 8, 5, 10, 57, 27000000, time.UTC)),
 	// 		},
 	// 		Plan: &armextensions.Plan{
 	// 			Name: to.Ptr("azure-vote-standard"),
@@ -553,10 +553,10 @@ func ExampleClient_Get_getExtensionWithPlan() {
 	// 		SystemData: &armextensions.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T05:10:57.027Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.September, 8, 5, 10, 57, 27000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T05:10:57.027Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.September, 8, 5, 10, 57, 27000000, time.UTC)),
 	// 		},
 	// 		Plan: &armextensions.Plan{
 	// 			Name: to.Ptr("azure-vote-standard"),
@@ -620,10 +620,10 @@ func ExampleClient_NewListPager() {
 		// 				SystemData: &armextensions.SystemData{
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T05:10:57.027Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.September, 8, 5, 10, 57, 27000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T05:10:57.027Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.September, 8, 5, 10, 57, 27000000, time.UTC)),
 		// 				},
 		// 				Properties: &armextensions.ExtensionProperties{
 		// 					ExtensionType: to.Ptr("azuremonitor-containers"),
@@ -654,10 +654,10 @@ func ExampleClient_NewListPager() {
 		// 				SystemData: &armextensions.SystemData{
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T04:09:23.011Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.September, 8, 4, 9, 23, 11000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T04:09:23.011Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.September, 8, 4, 9, 23, 11000000, time.UTC)),
 		// 				},
 		// 				Properties: &armextensions.ExtensionProperties{
 		// 					ExtensionType: to.Ptr("Microsoft.RecoveryServices/recoveryVault"),
@@ -686,10 +686,10 @@ func ExampleClient_NewListPager() {
 		// 				SystemData: &armextensions.SystemData{
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T05:10:57.027Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.September, 8, 5, 10, 57, 27000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armextensions.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-08T05:10:57.027Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.September, 8, 5, 10, 57, 27000000, time.UTC)),
 		// 				},
 		// 				Plan: &armextensions.Plan{
 		// 					Name: to.Ptr("azure-vote-standard"),

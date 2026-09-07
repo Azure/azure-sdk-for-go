@@ -364,7 +364,7 @@ func ExampleSyncMembersClient_NewListMemberSchemasPager() {
 		// 	SyncFullSchemaPropertiesListResult: armsql.SyncFullSchemaPropertiesListResult{
 		// 		Value: []*armsql.SyncFullSchemaProperties{
 		// 			{
-		// 				LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-30T07:16:08.21Z"); return t}()),
+		// 				LastUpdateTime: to.Ptr(time.Date(2017, time.May, 30, 7, 16, 8, 210000000, time.UTC)),
 		// 				Tables: []*armsql.SyncFullSchemaTable{
 		// 					{
 		// 						Name: to.Ptr("dbo.myTable"),

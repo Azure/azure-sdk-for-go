@@ -30,6 +30,9 @@ type ExternalUserClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewExternalUserClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExternalUserClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *ExternalUserClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return ExternalUserClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExternalUserClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ExternalUserClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *ExternalUserClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/createOrUpdateExternalUser"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -104,8 +102,11 @@ func (client *ExternalUserClient) createOrUpdateCreateRequest(ctx context.Contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ExternalUserClient) createOrUpdateHandleResponse(resp *http.Response) (ExternalUserClientCreateOrUpdateResponse, error) {
+func (client *ExternalUserClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ExternalUserClientCreateOrUpdateResponse, error) {
 	result := ExternalUserClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExternalUserCreationResponse); err != nil {
 		return ExternalUserClientCreateOrUpdateResponse{}, err
 	}

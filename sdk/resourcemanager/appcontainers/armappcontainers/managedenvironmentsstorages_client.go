@@ -30,6 +30,9 @@ type ManagedEnvironmentsStoragesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedEnvironmentsStoragesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedEnvironmentsStoragesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,19 +68,14 @@ func (client *ManagedEnvironmentsStoragesClient) CreateOrUpdate(ctx context.Cont
 	if err != nil {
 		return ManagedEnvironmentsStoragesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedEnvironmentsStoragesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ManagedEnvironmentsStoragesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, storageName string, storageEnvelope ManagedEnvironmentStorage, _ *ManagedEnvironmentsStoragesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/storages/{storageName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -108,8 +106,11 @@ func (client *ManagedEnvironmentsStoragesClient) createOrUpdateCreateRequest(ctx
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ManagedEnvironmentsStoragesClient) createOrUpdateHandleResponse(resp *http.Response) (ManagedEnvironmentsStoragesClientCreateOrUpdateResponse, error) {
+func (client *ManagedEnvironmentsStoragesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ManagedEnvironmentsStoragesClientCreateOrUpdateResponse, error) {
 	result := ManagedEnvironmentsStoragesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedEnvironmentStorage); err != nil {
 		return ManagedEnvironmentsStoragesClientCreateOrUpdateResponse{}, err
 	}
@@ -140,8 +141,7 @@ func (client *ManagedEnvironmentsStoragesClient) Delete(ctx context.Context, res
 		return ManagedEnvironmentsStoragesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedEnvironmentsStoragesClientDeleteResponse{}, err
+		return ManagedEnvironmentsStoragesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ManagedEnvironmentsStoragesClientDeleteResponse{}, nil
 }
@@ -150,7 +150,7 @@ func (client *ManagedEnvironmentsStoragesClient) Delete(ctx context.Context, res
 func (client *ManagedEnvironmentsStoragesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, storageName string, _ *ManagedEnvironmentsStoragesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/storages/{storageName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -198,19 +198,14 @@ func (client *ManagedEnvironmentsStoragesClient) Get(ctx context.Context, resour
 	if err != nil {
 		return ManagedEnvironmentsStoragesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedEnvironmentsStoragesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ManagedEnvironmentsStoragesClient) getCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, storageName string, _ *ManagedEnvironmentsStoragesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/storages/{storageName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -237,8 +232,11 @@ func (client *ManagedEnvironmentsStoragesClient) getCreateRequest(ctx context.Co
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedEnvironmentsStoragesClient) getHandleResponse(resp *http.Response) (ManagedEnvironmentsStoragesClientGetResponse, error) {
+func (client *ManagedEnvironmentsStoragesClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedEnvironmentsStoragesClientGetResponse, error) {
 	result := ManagedEnvironmentsStoragesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedEnvironmentStorage); err != nil {
 		return ManagedEnvironmentsStoragesClientGetResponse{}, err
 	}
@@ -267,19 +265,14 @@ func (client *ManagedEnvironmentsStoragesClient) List(ctx context.Context, resou
 	if err != nil {
 		return ManagedEnvironmentsStoragesClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedEnvironmentsStoragesClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
 func (client *ManagedEnvironmentsStoragesClient) listCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, _ *ManagedEnvironmentsStoragesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/storages"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -302,8 +295,11 @@ func (client *ManagedEnvironmentsStoragesClient) listCreateRequest(ctx context.C
 }
 
 // listHandleResponse handles the List response.
-func (client *ManagedEnvironmentsStoragesClient) listHandleResponse(resp *http.Response) (ManagedEnvironmentsStoragesClientListResponse, error) {
+func (client *ManagedEnvironmentsStoragesClient) listHandleResponse(resp *http.Response, successCodes ...int) (ManagedEnvironmentsStoragesClientListResponse, error) {
 	result := ManagedEnvironmentsStoragesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedEnvironmentStoragesCollection); err != nil {
 		return ManagedEnvironmentsStoragesClientListResponse{}, err
 	}

@@ -15,6 +15,9 @@ import (
 
 // ServerFactory is a fake server for instances of the armhorizondb.ClientFactory type.
 type ServerFactory struct {
+	// AdministratorsServer contains the fakes for client AdministratorsClient
+	AdministratorsServer AdministratorsServer
+
 	// ClustersServer contains the fakes for client ClustersClient
 	ClustersServer ClustersServer
 
@@ -54,6 +57,7 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                *ServerFactory
 	trMu                               sync.Mutex
+	trAdministratorsServer             *AdministratorsServerTransport
 	trClustersServer                   *ClustersServerTransport
 	trFirewallRulesServer              *FirewallRulesServerTransport
 	trOperationsServer                 *OperationsServerTransport
@@ -77,6 +81,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "AdministratorsClient":
+		initServer(&s.trMu, &s.trAdministratorsServer, func() *AdministratorsServerTransport {
+			return NewAdministratorsServerTransport(&s.srv.AdministratorsServer)
+		})
+		resp, err = s.trAdministratorsServer.Do(req)
 	case "ClustersClient":
 		initServer(&s.trMu, &s.trClustersServer, func() *ClustersServerTransport { return NewClustersServerTransport(&s.srv.ClustersServer) })
 		resp, err = s.trClustersServer.Do(req)

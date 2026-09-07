@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2022-09-01/RegisteredServers_Create.json
+// Generated from example definition: 2025-12-01/RegisteredServers_Create.json
 func ExampleRegisteredServersClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleRegisteredServersClient_BeginCreate() {
 	// 		Properties: &armstoragesync.RegisteredServerProperties{
 	// 			ActiveAuthType: to.Ptr(armstoragesync.ServerAuthTypeCertificate),
 	// 			AgentVersion: to.Ptr("3.1.5.0"),
-	// 			AgentVersionExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T21:50:40.5840543Z"); return t}()),
+	// 			AgentVersionExpirationDate: to.Ptr(time.Date(2018, time.June, 11, 21, 50, 40, 584054300, time.UTC)),
 	// 			AgentVersionStatus: to.Ptr(armstoragesync.RegisteredServerAgentVersionStatusOk),
 	// 			ApplicationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 			ClusterID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -81,7 +81,7 @@ func ExampleRegisteredServersClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/RegisteredServers_Delete.json
+// Generated from example definition: 2025-12-01/RegisteredServers_Delete.json
 func ExampleRegisteredServersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleRegisteredServersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/RegisteredServers_Get.json
+// Generated from example definition: 2025-12-01/RegisteredServers_Get.json
 func ExampleRegisteredServersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExampleRegisteredServersClient_Get() {
 	// 		Properties: &armstoragesync.RegisteredServerProperties{
 	// 			ActiveAuthType: to.Ptr(armstoragesync.ServerAuthTypeCertificate),
 	// 			AgentVersion: to.Ptr("3.1.5.0"),
-	// 			AgentVersionExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T21:50:40.5840543Z"); return t}()),
+	// 			AgentVersionExpirationDate: to.Ptr(time.Date(2018, time.June, 11, 21, 50, 40, 584054300, time.UTC)),
 	// 			AgentVersionStatus: to.Ptr(armstoragesync.RegisteredServerAgentVersionStatusOk),
 	// 			ApplicationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 			ClusterID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -163,7 +163,7 @@ func ExampleRegisteredServersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/RegisteredServers_ListByStorageSyncService.json
+// Generated from example definition: 2025-12-01/RegisteredServers_ListByStorageSyncService.json
 func ExampleRegisteredServersClient_NewListByStorageSyncServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,7 +197,7 @@ func ExampleRegisteredServersClient_NewListByStorageSyncServicePager() {
 		// 				Properties: &armstoragesync.RegisteredServerProperties{
 		// 					ActiveAuthType: to.Ptr(armstoragesync.ServerAuthTypeCertificate),
 		// 					AgentVersion: to.Ptr("3.1.5.0"),
-		// 					AgentVersionExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T21:50:40.5840543Z"); return t}()),
+		// 					AgentVersionExpirationDate: to.Ptr(time.Date(2018, time.June, 11, 21, 50, 40, 584054300, time.UTC)),
 		// 					AgentVersionStatus: to.Ptr(armstoragesync.RegisteredServerAgentVersionStatusOk),
 		// 					ApplicationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 		// 					ClusterID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -228,7 +228,7 @@ func ExampleRegisteredServersClient_NewListByStorageSyncServicePager() {
 	}
 }
 
-// Generated from example definition: 2022-09-01/RegisteredServers_TriggerRollover.json
+// Generated from example definition: 2025-12-01/RegisteredServers_TriggerRollover.json
 func ExampleRegisteredServersClient_BeginTriggerRollover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -256,7 +256,7 @@ func ExampleRegisteredServersClient_BeginTriggerRollover() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/RegisteredServers_Update.json
+// Generated from example definition: 2025-12-01/RegisteredServers_Update.json
 func ExampleRegisteredServersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +291,7 @@ func ExampleRegisteredServersClient_BeginUpdate() {
 	// 		Properties: &armstoragesync.RegisteredServerProperties{
 	// 			ActiveAuthType: to.Ptr(armstoragesync.ServerAuthTypeCertificate),
 	// 			AgentVersion: to.Ptr("3.1.5.0"),
-	// 			AgentVersionExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T21:50:40.5840543Z"); return t}()),
+	// 			AgentVersionExpirationDate: to.Ptr(time.Date(2018, time.June, 11, 21, 50, 40, 584054300, time.UTC)),
 	// 			AgentVersionStatus: to.Ptr(armstoragesync.RegisteredServerAgentVersionStatusOk),
 	// 			ApplicationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 			ClusterID: to.Ptr("00000000-0000-0000-0000-000000000000"),

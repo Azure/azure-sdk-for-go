@@ -30,6 +30,9 @@ type WorkloadNetworksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkloadNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkloadNetworksClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -84,8 +87,7 @@ func (client *WorkloadNetworksClient) createDNSService(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -94,7 +96,7 @@ func (client *WorkloadNetworksClient) createDNSService(ctx context.Context, reso
 func (client *WorkloadNetworksClient) createDNSServiceCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService WorkloadNetworkDNSService, _ *WorkloadNetworksClientBeginCreateDNSServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -167,8 +169,7 @@ func (client *WorkloadNetworksClient) createDNSZone(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -177,7 +178,7 @@ func (client *WorkloadNetworksClient) createDNSZone(ctx context.Context, resourc
 func (client *WorkloadNetworksClient) createDNSZoneCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZone, _ *WorkloadNetworksClientBeginCreateDNSZoneOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -250,8 +251,7 @@ func (client *WorkloadNetworksClient) createDhcp(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -260,7 +260,7 @@ func (client *WorkloadNetworksClient) createDhcp(ctx context.Context, resourceGr
 func (client *WorkloadNetworksClient) createDhcpCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp WorkloadNetworkDhcp, _ *WorkloadNetworksClientBeginCreateDhcpOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -333,8 +333,7 @@ func (client *WorkloadNetworksClient) createPortMirroring(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -343,7 +342,7 @@ func (client *WorkloadNetworksClient) createPortMirroring(ctx context.Context, r
 func (client *WorkloadNetworksClient) createPortMirroringCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring WorkloadNetworkPortMirroring, _ *WorkloadNetworksClientBeginCreatePortMirroringOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles/{portMirroringId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -416,8 +415,7 @@ func (client *WorkloadNetworksClient) createPublicIP(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -426,7 +424,7 @@ func (client *WorkloadNetworksClient) createPublicIP(ctx context.Context, resour
 func (client *WorkloadNetworksClient) createPublicIPCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, publicIPID string, workloadNetworkPublicIP WorkloadNetworkPublicIP, _ *WorkloadNetworksClientBeginCreatePublicIPOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs/{publicIPId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -499,8 +497,7 @@ func (client *WorkloadNetworksClient) createSegments(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -509,7 +506,7 @@ func (client *WorkloadNetworksClient) createSegments(ctx context.Context, resour
 func (client *WorkloadNetworksClient) createSegmentsCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment WorkloadNetworkSegment, _ *WorkloadNetworksClientBeginCreateSegmentsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments/{segmentId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -582,8 +579,7 @@ func (client *WorkloadNetworksClient) createVMGroup(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -592,7 +588,7 @@ func (client *WorkloadNetworksClient) createVMGroup(ctx context.Context, resourc
 func (client *WorkloadNetworksClient) createVMGroupCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup WorkloadNetworkVMGroup, _ *WorkloadNetworksClientBeginCreateVMGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/vmGroups/{vmGroupId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -663,8 +659,7 @@ func (client *WorkloadNetworksClient) deleteDNSService(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -673,7 +668,7 @@ func (client *WorkloadNetworksClient) deleteDNSService(ctx context.Context, reso
 func (client *WorkloadNetworksClient) deleteDNSServiceCreateRequest(ctx context.Context, resourceGroupName string, dnsServiceID string, privateCloudName string, _ *WorkloadNetworksClientBeginDeleteDNSServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -739,8 +734,7 @@ func (client *WorkloadNetworksClient) deleteDNSZone(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -749,7 +743,7 @@ func (client *WorkloadNetworksClient) deleteDNSZone(ctx context.Context, resourc
 func (client *WorkloadNetworksClient) deleteDNSZoneCreateRequest(ctx context.Context, resourceGroupName string, dnsZoneID string, privateCloudName string, _ *WorkloadNetworksClientBeginDeleteDNSZoneOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -815,8 +809,7 @@ func (client *WorkloadNetworksClient) deleteDhcp(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -825,7 +818,7 @@ func (client *WorkloadNetworksClient) deleteDhcp(ctx context.Context, resourceGr
 func (client *WorkloadNetworksClient) deleteDhcpCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, _ *WorkloadNetworksClientBeginDeleteDhcpOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -891,8 +884,7 @@ func (client *WorkloadNetworksClient) deletePortMirroring(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -901,7 +893,7 @@ func (client *WorkloadNetworksClient) deletePortMirroring(ctx context.Context, r
 func (client *WorkloadNetworksClient) deletePortMirroringCreateRequest(ctx context.Context, resourceGroupName string, portMirroringID string, privateCloudName string, _ *WorkloadNetworksClientBeginDeletePortMirroringOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles/{portMirroringId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -967,8 +959,7 @@ func (client *WorkloadNetworksClient) deletePublicIP(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -977,7 +968,7 @@ func (client *WorkloadNetworksClient) deletePublicIP(ctx context.Context, resour
 func (client *WorkloadNetworksClient) deletePublicIPCreateRequest(ctx context.Context, resourceGroupName string, publicIPID string, privateCloudName string, _ *WorkloadNetworksClientBeginDeletePublicIPOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs/{publicIPId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1043,8 +1034,7 @@ func (client *WorkloadNetworksClient) deleteSegment(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1053,7 +1043,7 @@ func (client *WorkloadNetworksClient) deleteSegment(ctx context.Context, resourc
 func (client *WorkloadNetworksClient) deleteSegmentCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, _ *WorkloadNetworksClientBeginDeleteSegmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments/{segmentId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1119,8 +1109,7 @@ func (client *WorkloadNetworksClient) deleteVMGroup(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1129,7 +1118,7 @@ func (client *WorkloadNetworksClient) deleteVMGroup(ctx context.Context, resourc
 func (client *WorkloadNetworksClient) deleteVMGroupCreateRequest(ctx context.Context, resourceGroupName string, vmGroupID string, privateCloudName string, _ *WorkloadNetworksClientBeginDeleteVMGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/vmGroups/{vmGroupId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1173,19 +1162,14 @@ func (client *WorkloadNetworksClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return WorkloadNetworksClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkloadNetworksClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *WorkloadNetworksClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, _ *WorkloadNetworksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1208,8 +1192,11 @@ func (client *WorkloadNetworksClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkloadNetworksClient) getHandleResponse(resp *http.Response) (WorkloadNetworksClientGetResponse, error) {
+func (client *WorkloadNetworksClient) getHandleResponse(resp *http.Response, successCodes ...int) (WorkloadNetworksClientGetResponse, error) {
 	result := WorkloadNetworksClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetwork); err != nil {
 		return WorkloadNetworksClientGetResponse{}, err
 	}
@@ -1237,19 +1224,14 @@ func (client *WorkloadNetworksClient) GetDNSService(ctx context.Context, resourc
 	if err != nil {
 		return WorkloadNetworksClientGetDNSServiceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkloadNetworksClientGetDNSServiceResponse{}, err
-	}
-	resp, err := client.getDNSServiceHandleResponse(httpResp)
-	return resp, err
+	return client.getDNSServiceHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDNSServiceCreateRequest creates the GetDNSService request.
 func (client *WorkloadNetworksClient) getDNSServiceCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, _ *WorkloadNetworksClientGetDNSServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1276,8 +1258,11 @@ func (client *WorkloadNetworksClient) getDNSServiceCreateRequest(ctx context.Con
 }
 
 // getDNSServiceHandleResponse handles the GetDNSService response.
-func (client *WorkloadNetworksClient) getDNSServiceHandleResponse(resp *http.Response) (WorkloadNetworksClientGetDNSServiceResponse, error) {
+func (client *WorkloadNetworksClient) getDNSServiceHandleResponse(resp *http.Response, successCodes ...int) (WorkloadNetworksClientGetDNSServiceResponse, error) {
 	result := WorkloadNetworksClientGetDNSServiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkDNSService); err != nil {
 		return WorkloadNetworksClientGetDNSServiceResponse{}, err
 	}
@@ -1305,19 +1290,14 @@ func (client *WorkloadNetworksClient) GetDNSZone(ctx context.Context, resourceGr
 	if err != nil {
 		return WorkloadNetworksClientGetDNSZoneResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkloadNetworksClientGetDNSZoneResponse{}, err
-	}
-	resp, err := client.getDNSZoneHandleResponse(httpResp)
-	return resp, err
+	return client.getDNSZoneHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDNSZoneCreateRequest creates the GetDNSZone request.
 func (client *WorkloadNetworksClient) getDNSZoneCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, _ *WorkloadNetworksClientGetDNSZoneOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1344,8 +1324,11 @@ func (client *WorkloadNetworksClient) getDNSZoneCreateRequest(ctx context.Contex
 }
 
 // getDNSZoneHandleResponse handles the GetDNSZone response.
-func (client *WorkloadNetworksClient) getDNSZoneHandleResponse(resp *http.Response) (WorkloadNetworksClientGetDNSZoneResponse, error) {
+func (client *WorkloadNetworksClient) getDNSZoneHandleResponse(resp *http.Response, successCodes ...int) (WorkloadNetworksClientGetDNSZoneResponse, error) {
 	result := WorkloadNetworksClientGetDNSZoneResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkDNSZone); err != nil {
 		return WorkloadNetworksClientGetDNSZoneResponse{}, err
 	}
@@ -1373,19 +1356,14 @@ func (client *WorkloadNetworksClient) GetDhcp(ctx context.Context, resourceGroup
 	if err != nil {
 		return WorkloadNetworksClientGetDhcpResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkloadNetworksClientGetDhcpResponse{}, err
-	}
-	resp, err := client.getDhcpHandleResponse(httpResp)
-	return resp, err
+	return client.getDhcpHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDhcpCreateRequest creates the GetDhcp request.
 func (client *WorkloadNetworksClient) getDhcpCreateRequest(ctx context.Context, resourceGroupName string, dhcpID string, privateCloudName string, _ *WorkloadNetworksClientGetDhcpOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1412,8 +1390,11 @@ func (client *WorkloadNetworksClient) getDhcpCreateRequest(ctx context.Context, 
 }
 
 // getDhcpHandleResponse handles the GetDhcp response.
-func (client *WorkloadNetworksClient) getDhcpHandleResponse(resp *http.Response) (WorkloadNetworksClientGetDhcpResponse, error) {
+func (client *WorkloadNetworksClient) getDhcpHandleResponse(resp *http.Response, successCodes ...int) (WorkloadNetworksClientGetDhcpResponse, error) {
 	result := WorkloadNetworksClientGetDhcpResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkDhcp); err != nil {
 		return WorkloadNetworksClientGetDhcpResponse{}, err
 	}
@@ -1441,19 +1422,14 @@ func (client *WorkloadNetworksClient) GetGateway(ctx context.Context, resourceGr
 	if err != nil {
 		return WorkloadNetworksClientGetGatewayResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkloadNetworksClientGetGatewayResponse{}, err
-	}
-	resp, err := client.getGatewayHandleResponse(httpResp)
-	return resp, err
+	return client.getGatewayHandleResponse(httpResp, http.StatusOK)
 }
 
 // getGatewayCreateRequest creates the GetGateway request.
 func (client *WorkloadNetworksClient) getGatewayCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, gatewayID string, _ *WorkloadNetworksClientGetGatewayOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/gateways/{gatewayId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1480,8 +1456,11 @@ func (client *WorkloadNetworksClient) getGatewayCreateRequest(ctx context.Contex
 }
 
 // getGatewayHandleResponse handles the GetGateway response.
-func (client *WorkloadNetworksClient) getGatewayHandleResponse(resp *http.Response) (WorkloadNetworksClientGetGatewayResponse, error) {
+func (client *WorkloadNetworksClient) getGatewayHandleResponse(resp *http.Response, successCodes ...int) (WorkloadNetworksClientGetGatewayResponse, error) {
 	result := WorkloadNetworksClientGetGatewayResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkGateway); err != nil {
 		return WorkloadNetworksClientGetGatewayResponse{}, err
 	}
@@ -1509,19 +1488,14 @@ func (client *WorkloadNetworksClient) GetPortMirroring(ctx context.Context, reso
 	if err != nil {
 		return WorkloadNetworksClientGetPortMirroringResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkloadNetworksClientGetPortMirroringResponse{}, err
-	}
-	resp, err := client.getPortMirroringHandleResponse(httpResp)
-	return resp, err
+	return client.getPortMirroringHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPortMirroringCreateRequest creates the GetPortMirroring request.
 func (client *WorkloadNetworksClient) getPortMirroringCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, _ *WorkloadNetworksClientGetPortMirroringOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles/{portMirroringId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1548,8 +1522,11 @@ func (client *WorkloadNetworksClient) getPortMirroringCreateRequest(ctx context.
 }
 
 // getPortMirroringHandleResponse handles the GetPortMirroring response.
-func (client *WorkloadNetworksClient) getPortMirroringHandleResponse(resp *http.Response) (WorkloadNetworksClientGetPortMirroringResponse, error) {
+func (client *WorkloadNetworksClient) getPortMirroringHandleResponse(resp *http.Response, successCodes ...int) (WorkloadNetworksClientGetPortMirroringResponse, error) {
 	result := WorkloadNetworksClientGetPortMirroringResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkPortMirroring); err != nil {
 		return WorkloadNetworksClientGetPortMirroringResponse{}, err
 	}
@@ -1577,19 +1554,14 @@ func (client *WorkloadNetworksClient) GetPublicIP(ctx context.Context, resourceG
 	if err != nil {
 		return WorkloadNetworksClientGetPublicIPResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkloadNetworksClientGetPublicIPResponse{}, err
-	}
-	resp, err := client.getPublicIPHandleResponse(httpResp)
-	return resp, err
+	return client.getPublicIPHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPublicIPCreateRequest creates the GetPublicIP request.
 func (client *WorkloadNetworksClient) getPublicIPCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, publicIPID string, _ *WorkloadNetworksClientGetPublicIPOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs/{publicIPId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1616,8 +1588,11 @@ func (client *WorkloadNetworksClient) getPublicIPCreateRequest(ctx context.Conte
 }
 
 // getPublicIPHandleResponse handles the GetPublicIP response.
-func (client *WorkloadNetworksClient) getPublicIPHandleResponse(resp *http.Response) (WorkloadNetworksClientGetPublicIPResponse, error) {
+func (client *WorkloadNetworksClient) getPublicIPHandleResponse(resp *http.Response, successCodes ...int) (WorkloadNetworksClientGetPublicIPResponse, error) {
 	result := WorkloadNetworksClientGetPublicIPResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkPublicIP); err != nil {
 		return WorkloadNetworksClientGetPublicIPResponse{}, err
 	}
@@ -1645,19 +1620,14 @@ func (client *WorkloadNetworksClient) GetSegment(ctx context.Context, resourceGr
 	if err != nil {
 		return WorkloadNetworksClientGetSegmentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkloadNetworksClientGetSegmentResponse{}, err
-	}
-	resp, err := client.getSegmentHandleResponse(httpResp)
-	return resp, err
+	return client.getSegmentHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSegmentCreateRequest creates the GetSegment request.
 func (client *WorkloadNetworksClient) getSegmentCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, _ *WorkloadNetworksClientGetSegmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments/{segmentId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1684,8 +1654,11 @@ func (client *WorkloadNetworksClient) getSegmentCreateRequest(ctx context.Contex
 }
 
 // getSegmentHandleResponse handles the GetSegment response.
-func (client *WorkloadNetworksClient) getSegmentHandleResponse(resp *http.Response) (WorkloadNetworksClientGetSegmentResponse, error) {
+func (client *WorkloadNetworksClient) getSegmentHandleResponse(resp *http.Response, successCodes ...int) (WorkloadNetworksClientGetSegmentResponse, error) {
 	result := WorkloadNetworksClientGetSegmentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkSegment); err != nil {
 		return WorkloadNetworksClientGetSegmentResponse{}, err
 	}
@@ -1713,19 +1686,14 @@ func (client *WorkloadNetworksClient) GetVMGroup(ctx context.Context, resourceGr
 	if err != nil {
 		return WorkloadNetworksClientGetVMGroupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkloadNetworksClientGetVMGroupResponse{}, err
-	}
-	resp, err := client.getVMGroupHandleResponse(httpResp)
-	return resp, err
+	return client.getVMGroupHandleResponse(httpResp, http.StatusOK)
 }
 
 // getVMGroupCreateRequest creates the GetVMGroup request.
 func (client *WorkloadNetworksClient) getVMGroupCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, _ *WorkloadNetworksClientGetVMGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/vmGroups/{vmGroupId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1752,8 +1720,11 @@ func (client *WorkloadNetworksClient) getVMGroupCreateRequest(ctx context.Contex
 }
 
 // getVMGroupHandleResponse handles the GetVMGroup response.
-func (client *WorkloadNetworksClient) getVMGroupHandleResponse(resp *http.Response) (WorkloadNetworksClientGetVMGroupResponse, error) {
+func (client *WorkloadNetworksClient) getVMGroupHandleResponse(resp *http.Response, successCodes ...int) (WorkloadNetworksClientGetVMGroupResponse, error) {
 	result := WorkloadNetworksClientGetVMGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkVMGroup); err != nil {
 		return WorkloadNetworksClientGetVMGroupResponse{}, err
 	}
@@ -1781,19 +1752,14 @@ func (client *WorkloadNetworksClient) GetVirtualMachine(ctx context.Context, res
 	if err != nil {
 		return WorkloadNetworksClientGetVirtualMachineResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkloadNetworksClientGetVirtualMachineResponse{}, err
-	}
-	resp, err := client.getVirtualMachineHandleResponse(httpResp)
-	return resp, err
+	return client.getVirtualMachineHandleResponse(httpResp, http.StatusOK)
 }
 
 // getVirtualMachineCreateRequest creates the GetVirtualMachine request.
 func (client *WorkloadNetworksClient) getVirtualMachineCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, virtualMachineID string, _ *WorkloadNetworksClientGetVirtualMachineOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/virtualMachines/{virtualMachineId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1820,8 +1786,11 @@ func (client *WorkloadNetworksClient) getVirtualMachineCreateRequest(ctx context
 }
 
 // getVirtualMachineHandleResponse handles the GetVirtualMachine response.
-func (client *WorkloadNetworksClient) getVirtualMachineHandleResponse(resp *http.Response) (WorkloadNetworksClientGetVirtualMachineResponse, error) {
+func (client *WorkloadNetworksClient) getVirtualMachineHandleResponse(resp *http.Response, successCodes ...int) (WorkloadNetworksClientGetVirtualMachineResponse, error) {
 	result := WorkloadNetworksClientGetVirtualMachineResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkVirtualMachine); err != nil {
 		return WorkloadNetworksClientGetVirtualMachineResponse{}, err
 	}
@@ -1844,47 +1813,61 @@ func (client *WorkloadNetworksClient) NewListPager(resourceGroupName string, pri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, privateCloudName, nextLink, options)
 			if err != nil {
 				return WorkloadNetworksClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkloadNetworksClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkloadNetworksClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, _ *WorkloadNetworksClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WorkloadNetworksClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, nextLink string, _ *WorkloadNetworksClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if privateCloudName == "" {
+			return nil, errors.New("parameter privateCloudName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if privateCloudName == "" {
-		return nil, errors.New("parameter privateCloudName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *WorkloadNetworksClient) listHandleResponse(resp *http.Response) (WorkloadNetworksClientListResponse, error) {
+func (client *WorkloadNetworksClient) listHandleResponse(resp *http.Response, successCodes ...int) (WorkloadNetworksClientListResponse, error) {
 	result := WorkloadNetworksClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkList); err != nil {
 		return WorkloadNetworksClientListResponse{}, err
 	}
@@ -1907,47 +1890,61 @@ func (client *WorkloadNetworksClient) NewListDNSServicesPager(resourceGroupName 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listDNSServicesCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			}, nil)
+			req, err := client.listDNSServicesCreateRequest(ctx, resourceGroupName, privateCloudName, nextLink, options)
 			if err != nil {
 				return WorkloadNetworksClientListDNSServicesResponse{}, err
 			}
-			return client.listDNSServicesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkloadNetworksClientListDNSServicesResponse{}, err
+			}
+			return client.listDNSServicesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listDNSServicesCreateRequest creates the ListDNSServices request.
-func (client *WorkloadNetworksClient) listDNSServicesCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, _ *WorkloadNetworksClientListDNSServicesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WorkloadNetworksClient) listDNSServicesCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, nextLink string, _ *WorkloadNetworksClientListDNSServicesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if privateCloudName == "" {
+			return nil, errors.New("parameter privateCloudName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if privateCloudName == "" {
-		return nil, errors.New("parameter privateCloudName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listDNSServicesHandleResponse handles the ListDNSServices response.
-func (client *WorkloadNetworksClient) listDNSServicesHandleResponse(resp *http.Response) (WorkloadNetworksClientListDNSServicesResponse, error) {
+func (client *WorkloadNetworksClient) listDNSServicesHandleResponse(resp *http.Response, successCodes ...int) (WorkloadNetworksClientListDNSServicesResponse, error) {
 	result := WorkloadNetworksClientListDNSServicesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkDNSServicesList); err != nil {
 		return WorkloadNetworksClientListDNSServicesResponse{}, err
 	}
@@ -1970,47 +1967,61 @@ func (client *WorkloadNetworksClient) NewListDNSZonesPager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listDNSZonesCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			}, nil)
+			req, err := client.listDNSZonesCreateRequest(ctx, resourceGroupName, privateCloudName, nextLink, options)
 			if err != nil {
 				return WorkloadNetworksClientListDNSZonesResponse{}, err
 			}
-			return client.listDNSZonesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkloadNetworksClientListDNSZonesResponse{}, err
+			}
+			return client.listDNSZonesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listDNSZonesCreateRequest creates the ListDNSZones request.
-func (client *WorkloadNetworksClient) listDNSZonesCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, _ *WorkloadNetworksClientListDNSZonesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WorkloadNetworksClient) listDNSZonesCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, nextLink string, _ *WorkloadNetworksClientListDNSZonesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if privateCloudName == "" {
+			return nil, errors.New("parameter privateCloudName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if privateCloudName == "" {
-		return nil, errors.New("parameter privateCloudName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listDNSZonesHandleResponse handles the ListDNSZones response.
-func (client *WorkloadNetworksClient) listDNSZonesHandleResponse(resp *http.Response) (WorkloadNetworksClientListDNSZonesResponse, error) {
+func (client *WorkloadNetworksClient) listDNSZonesHandleResponse(resp *http.Response, successCodes ...int) (WorkloadNetworksClientListDNSZonesResponse, error) {
 	result := WorkloadNetworksClientListDNSZonesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkDNSZonesList); err != nil {
 		return WorkloadNetworksClientListDNSZonesResponse{}, err
 	}
@@ -2033,47 +2044,61 @@ func (client *WorkloadNetworksClient) NewListDhcpPager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listDhcpCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			}, nil)
+			req, err := client.listDhcpCreateRequest(ctx, resourceGroupName, privateCloudName, nextLink, options)
 			if err != nil {
 				return WorkloadNetworksClientListDhcpResponse{}, err
 			}
-			return client.listDhcpHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkloadNetworksClientListDhcpResponse{}, err
+			}
+			return client.listDhcpHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listDhcpCreateRequest creates the ListDhcp request.
-func (client *WorkloadNetworksClient) listDhcpCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, _ *WorkloadNetworksClientListDhcpOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WorkloadNetworksClient) listDhcpCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, nextLink string, _ *WorkloadNetworksClientListDhcpOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if privateCloudName == "" {
+			return nil, errors.New("parameter privateCloudName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if privateCloudName == "" {
-		return nil, errors.New("parameter privateCloudName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listDhcpHandleResponse handles the ListDhcp response.
-func (client *WorkloadNetworksClient) listDhcpHandleResponse(resp *http.Response) (WorkloadNetworksClientListDhcpResponse, error) {
+func (client *WorkloadNetworksClient) listDhcpHandleResponse(resp *http.Response, successCodes ...int) (WorkloadNetworksClientListDhcpResponse, error) {
 	result := WorkloadNetworksClientListDhcpResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkDhcpList); err != nil {
 		return WorkloadNetworksClientListDhcpResponse{}, err
 	}
@@ -2096,47 +2121,61 @@ func (client *WorkloadNetworksClient) NewListGatewaysPager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listGatewaysCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			}, nil)
+			req, err := client.listGatewaysCreateRequest(ctx, resourceGroupName, privateCloudName, nextLink, options)
 			if err != nil {
 				return WorkloadNetworksClientListGatewaysResponse{}, err
 			}
-			return client.listGatewaysHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkloadNetworksClientListGatewaysResponse{}, err
+			}
+			return client.listGatewaysHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listGatewaysCreateRequest creates the ListGateways request.
-func (client *WorkloadNetworksClient) listGatewaysCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, _ *WorkloadNetworksClientListGatewaysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/gateways"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WorkloadNetworksClient) listGatewaysCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, nextLink string, _ *WorkloadNetworksClientListGatewaysOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/gateways"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if privateCloudName == "" {
+			return nil, errors.New("parameter privateCloudName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if privateCloudName == "" {
-		return nil, errors.New("parameter privateCloudName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listGatewaysHandleResponse handles the ListGateways response.
-func (client *WorkloadNetworksClient) listGatewaysHandleResponse(resp *http.Response) (WorkloadNetworksClientListGatewaysResponse, error) {
+func (client *WorkloadNetworksClient) listGatewaysHandleResponse(resp *http.Response, successCodes ...int) (WorkloadNetworksClientListGatewaysResponse, error) {
 	result := WorkloadNetworksClientListGatewaysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkGatewayList); err != nil {
 		return WorkloadNetworksClientListGatewaysResponse{}, err
 	}
@@ -2159,47 +2198,61 @@ func (client *WorkloadNetworksClient) NewListPortMirroringPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listPortMirroringCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			}, nil)
+			req, err := client.listPortMirroringCreateRequest(ctx, resourceGroupName, privateCloudName, nextLink, options)
 			if err != nil {
 				return WorkloadNetworksClientListPortMirroringResponse{}, err
 			}
-			return client.listPortMirroringHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkloadNetworksClientListPortMirroringResponse{}, err
+			}
+			return client.listPortMirroringHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listPortMirroringCreateRequest creates the ListPortMirroring request.
-func (client *WorkloadNetworksClient) listPortMirroringCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, _ *WorkloadNetworksClientListPortMirroringOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WorkloadNetworksClient) listPortMirroringCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, nextLink string, _ *WorkloadNetworksClientListPortMirroringOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if privateCloudName == "" {
+			return nil, errors.New("parameter privateCloudName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if privateCloudName == "" {
-		return nil, errors.New("parameter privateCloudName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listPortMirroringHandleResponse handles the ListPortMirroring response.
-func (client *WorkloadNetworksClient) listPortMirroringHandleResponse(resp *http.Response) (WorkloadNetworksClientListPortMirroringResponse, error) {
+func (client *WorkloadNetworksClient) listPortMirroringHandleResponse(resp *http.Response, successCodes ...int) (WorkloadNetworksClientListPortMirroringResponse, error) {
 	result := WorkloadNetworksClientListPortMirroringResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkPortMirroringList); err != nil {
 		return WorkloadNetworksClientListPortMirroringResponse{}, err
 	}
@@ -2222,47 +2275,61 @@ func (client *WorkloadNetworksClient) NewListPublicIPsPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listPublicIPsCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			}, nil)
+			req, err := client.listPublicIPsCreateRequest(ctx, resourceGroupName, privateCloudName, nextLink, options)
 			if err != nil {
 				return WorkloadNetworksClientListPublicIPsResponse{}, err
 			}
-			return client.listPublicIPsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkloadNetworksClientListPublicIPsResponse{}, err
+			}
+			return client.listPublicIPsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listPublicIPsCreateRequest creates the ListPublicIPs request.
-func (client *WorkloadNetworksClient) listPublicIPsCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, _ *WorkloadNetworksClientListPublicIPsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WorkloadNetworksClient) listPublicIPsCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, nextLink string, _ *WorkloadNetworksClientListPublicIPsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if privateCloudName == "" {
+			return nil, errors.New("parameter privateCloudName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if privateCloudName == "" {
-		return nil, errors.New("parameter privateCloudName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listPublicIPsHandleResponse handles the ListPublicIPs response.
-func (client *WorkloadNetworksClient) listPublicIPsHandleResponse(resp *http.Response) (WorkloadNetworksClientListPublicIPsResponse, error) {
+func (client *WorkloadNetworksClient) listPublicIPsHandleResponse(resp *http.Response, successCodes ...int) (WorkloadNetworksClientListPublicIPsResponse, error) {
 	result := WorkloadNetworksClientListPublicIPsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkPublicIPsList); err != nil {
 		return WorkloadNetworksClientListPublicIPsResponse{}, err
 	}
@@ -2285,47 +2352,61 @@ func (client *WorkloadNetworksClient) NewListSegmentsPager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSegmentsCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			}, nil)
+			req, err := client.listSegmentsCreateRequest(ctx, resourceGroupName, privateCloudName, nextLink, options)
 			if err != nil {
 				return WorkloadNetworksClientListSegmentsResponse{}, err
 			}
-			return client.listSegmentsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkloadNetworksClientListSegmentsResponse{}, err
+			}
+			return client.listSegmentsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSegmentsCreateRequest creates the ListSegments request.
-func (client *WorkloadNetworksClient) listSegmentsCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, _ *WorkloadNetworksClientListSegmentsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WorkloadNetworksClient) listSegmentsCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, nextLink string, _ *WorkloadNetworksClientListSegmentsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if privateCloudName == "" {
+			return nil, errors.New("parameter privateCloudName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if privateCloudName == "" {
-		return nil, errors.New("parameter privateCloudName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSegmentsHandleResponse handles the ListSegments response.
-func (client *WorkloadNetworksClient) listSegmentsHandleResponse(resp *http.Response) (WorkloadNetworksClientListSegmentsResponse, error) {
+func (client *WorkloadNetworksClient) listSegmentsHandleResponse(resp *http.Response, successCodes ...int) (WorkloadNetworksClientListSegmentsResponse, error) {
 	result := WorkloadNetworksClientListSegmentsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkSegmentsList); err != nil {
 		return WorkloadNetworksClientListSegmentsResponse{}, err
 	}
@@ -2348,47 +2429,61 @@ func (client *WorkloadNetworksClient) NewListVMGroupsPager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listVMGroupsCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			}, nil)
+			req, err := client.listVMGroupsCreateRequest(ctx, resourceGroupName, privateCloudName, nextLink, options)
 			if err != nil {
 				return WorkloadNetworksClientListVMGroupsResponse{}, err
 			}
-			return client.listVMGroupsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkloadNetworksClientListVMGroupsResponse{}, err
+			}
+			return client.listVMGroupsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listVMGroupsCreateRequest creates the ListVMGroups request.
-func (client *WorkloadNetworksClient) listVMGroupsCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, _ *WorkloadNetworksClientListVMGroupsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/vmGroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WorkloadNetworksClient) listVMGroupsCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, nextLink string, _ *WorkloadNetworksClientListVMGroupsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/vmGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if privateCloudName == "" {
+			return nil, errors.New("parameter privateCloudName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if privateCloudName == "" {
-		return nil, errors.New("parameter privateCloudName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listVMGroupsHandleResponse handles the ListVMGroups response.
-func (client *WorkloadNetworksClient) listVMGroupsHandleResponse(resp *http.Response) (WorkloadNetworksClientListVMGroupsResponse, error) {
+func (client *WorkloadNetworksClient) listVMGroupsHandleResponse(resp *http.Response, successCodes ...int) (WorkloadNetworksClientListVMGroupsResponse, error) {
 	result := WorkloadNetworksClientListVMGroupsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkVMGroupsList); err != nil {
 		return WorkloadNetworksClientListVMGroupsResponse{}, err
 	}
@@ -2411,47 +2506,61 @@ func (client *WorkloadNetworksClient) NewListVirtualMachinesPager(resourceGroupN
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listVirtualMachinesCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			}, nil)
+			req, err := client.listVirtualMachinesCreateRequest(ctx, resourceGroupName, privateCloudName, nextLink, options)
 			if err != nil {
 				return WorkloadNetworksClientListVirtualMachinesResponse{}, err
 			}
-			return client.listVirtualMachinesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkloadNetworksClientListVirtualMachinesResponse{}, err
+			}
+			return client.listVirtualMachinesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listVirtualMachinesCreateRequest creates the ListVirtualMachines request.
-func (client *WorkloadNetworksClient) listVirtualMachinesCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, _ *WorkloadNetworksClientListVirtualMachinesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/virtualMachines"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WorkloadNetworksClient) listVirtualMachinesCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, nextLink string, _ *WorkloadNetworksClientListVirtualMachinesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/virtualMachines"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if privateCloudName == "" {
+			return nil, errors.New("parameter privateCloudName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if privateCloudName == "" {
-		return nil, errors.New("parameter privateCloudName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listVirtualMachinesHandleResponse handles the ListVirtualMachines response.
-func (client *WorkloadNetworksClient) listVirtualMachinesHandleResponse(resp *http.Response) (WorkloadNetworksClientListVirtualMachinesResponse, error) {
+func (client *WorkloadNetworksClient) listVirtualMachinesHandleResponse(resp *http.Response, successCodes ...int) (WorkloadNetworksClientListVirtualMachinesResponse, error) {
 	result := WorkloadNetworksClientListVirtualMachinesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkVirtualMachinesList); err != nil {
 		return WorkloadNetworksClientListVirtualMachinesResponse{}, err
 	}
@@ -2500,8 +2609,7 @@ func (client *WorkloadNetworksClient) updateDNSService(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -2510,7 +2618,7 @@ func (client *WorkloadNetworksClient) updateDNSService(ctx context.Context, reso
 func (client *WorkloadNetworksClient) updateDNSServiceCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService WorkloadNetworkDNSService, _ *WorkloadNetworksClientBeginUpdateDNSServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2582,8 +2690,7 @@ func (client *WorkloadNetworksClient) updateDNSZone(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -2592,7 +2699,7 @@ func (client *WorkloadNetworksClient) updateDNSZone(ctx context.Context, resourc
 func (client *WorkloadNetworksClient) updateDNSZoneCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZone, _ *WorkloadNetworksClientBeginUpdateDNSZoneOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2664,8 +2771,7 @@ func (client *WorkloadNetworksClient) updateDhcp(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -2674,7 +2780,7 @@ func (client *WorkloadNetworksClient) updateDhcp(ctx context.Context, resourceGr
 func (client *WorkloadNetworksClient) updateDhcpCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp WorkloadNetworkDhcp, _ *WorkloadNetworksClientBeginUpdateDhcpOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2746,8 +2852,7 @@ func (client *WorkloadNetworksClient) updatePortMirroring(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -2756,7 +2861,7 @@ func (client *WorkloadNetworksClient) updatePortMirroring(ctx context.Context, r
 func (client *WorkloadNetworksClient) updatePortMirroringCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring WorkloadNetworkPortMirroring, _ *WorkloadNetworksClientBeginUpdatePortMirroringOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles/{portMirroringId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2828,8 +2933,7 @@ func (client *WorkloadNetworksClient) updateSegments(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -2838,7 +2942,7 @@ func (client *WorkloadNetworksClient) updateSegments(ctx context.Context, resour
 func (client *WorkloadNetworksClient) updateSegmentsCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment WorkloadNetworkSegment, _ *WorkloadNetworksClientBeginUpdateSegmentsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments/{segmentId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2910,8 +3014,7 @@ func (client *WorkloadNetworksClient) updateVMGroup(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -2920,7 +3023,7 @@ func (client *WorkloadNetworksClient) updateVMGroup(ctx context.Context, resourc
 func (client *WorkloadNetworksClient) updateVMGroupCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup WorkloadNetworkVMGroup, _ *WorkloadNetworksClientBeginUpdateVMGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/vmGroups/{vmGroupId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

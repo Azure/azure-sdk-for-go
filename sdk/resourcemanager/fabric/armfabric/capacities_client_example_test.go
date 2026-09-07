@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2023-11-01/FabricCapacities_CheckNameAvailability.json
+// Generated from example definition: 2026-08-01-preview/FabricCapacities_CheckNameAvailability.json
 func ExampleCapacitiesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleCapacitiesClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2023-11-01/FabricCapacities_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01-preview/FabricCapacities_CreateOrUpdate.json
 func ExampleCapacitiesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,6 +53,10 @@ func ExampleCapacitiesClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewCapacitiesClient().BeginCreateOrUpdate(ctx, "TestRG", "azsdktest", armfabric.Capacity{
 		Properties: &armfabric.CapacityProperties{
+			Overage: &armfabric.CapacityOverageProperties{
+				State:                      to.Ptr(armfabric.CapacityOverageStateEnabled),
+				ThresholdCapacityUnitHours: to.Ptr[int32](4),
+			},
 			Administration: &armfabric.CapacityAdministration{
 				Members: []*string{
 					to.Ptr("azsdktest@microsoft.com"),
@@ -81,6 +85,10 @@ func ExampleCapacitiesClient_BeginCreateOrUpdate() {
 	// 		Properties: &armfabric.CapacityProperties{
 	// 			ProvisioningState: to.Ptr(armfabric.ProvisioningStateUpdating),
 	// 			State: to.Ptr(armfabric.ResourceStatePreparing),
+	// 			Overage: &armfabric.CapacityOverageProperties{
+	// 				State: to.Ptr(armfabric.CapacityOverageStateEnabled),
+	// 				ThresholdCapacityUnitHours: to.Ptr[int32](4),
+	// 			},
 	// 			Administration: &armfabric.CapacityAdministration{
 	// 				Members: []*string{
 	// 					to.Ptr("azsdktest@microsoft.com"),
@@ -103,7 +111,7 @@ func ExampleCapacitiesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2023-11-01/FabricCapacities_Delete.json
+// Generated from example definition: 2026-08-01-preview/FabricCapacities_Delete.json
 func ExampleCapacitiesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +132,7 @@ func ExampleCapacitiesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2023-11-01/FabricCapacities_Get.json
+// Generated from example definition: 2026-08-01-preview/FabricCapacities_Get.json
 func ExampleCapacitiesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,6 +155,10 @@ func ExampleCapacitiesClient_Get() {
 	// 		Properties: &armfabric.CapacityProperties{
 	// 			ProvisioningState: to.Ptr(armfabric.ProvisioningStateSucceeded),
 	// 			State: to.Ptr(armfabric.ResourceStateActive),
+	// 			Overage: &armfabric.CapacityOverageProperties{
+	// 				State: to.Ptr(armfabric.CapacityOverageStateEnabled),
+	// 				ThresholdCapacityUnitHours: to.Ptr[int32](4),
+	// 			},
 	// 			Administration: &armfabric.CapacityAdministration{
 	// 				Members: []*string{
 	// 					to.Ptr("azsdktest@microsoft.com"),
@@ -168,7 +180,7 @@ func ExampleCapacitiesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2023-11-01/FabricCapacities_ListByResourceGroup.json
+// Generated from example definition: 2026-08-01-preview/FabricCapacities_ListByResourceGroup.json
 func ExampleCapacitiesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,6 +209,10 @@ func ExampleCapacitiesClient_NewListByResourceGroupPager() {
 		// 				Properties: &armfabric.CapacityProperties{
 		// 					ProvisioningState: to.Ptr(armfabric.ProvisioningStateSucceeded),
 		// 					State: to.Ptr(armfabric.ResourceStateActive),
+		// 					Overage: &armfabric.CapacityOverageProperties{
+		// 						State: to.Ptr(armfabric.CapacityOverageStateEnabled),
+		// 						ThresholdCapacityUnitHours: to.Ptr[int32](4),
+		// 					},
 		// 					Administration: &armfabric.CapacityAdministration{
 		// 						Members: []*string{
 		// 							to.Ptr("azsdktest@microsoft.com"),
@@ -218,6 +234,10 @@ func ExampleCapacitiesClient_NewListByResourceGroupPager() {
 		// 				Properties: &armfabric.CapacityProperties{
 		// 					ProvisioningState: to.Ptr(armfabric.ProvisioningStateProvisioning),
 		// 					State: to.Ptr(armfabric.ResourceStateProvisioning),
+		// 					Overage: &armfabric.CapacityOverageProperties{
+		// 						State: to.Ptr(armfabric.CapacityOverageStateDisabled),
+		// 						ThresholdCapacityUnitHours: to.Ptr[int32](0),
+		// 					},
 		// 					Administration: &armfabric.CapacityAdministration{
 		// 						Members: []*string{
 		// 							to.Ptr("azsdktest@microsoft.com"),
@@ -242,7 +262,7 @@ func ExampleCapacitiesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2023-11-01/FabricCapacities_ListBySubscription.json
+// Generated from example definition: 2026-08-01-preview/FabricCapacities_ListBySubscription.json
 func ExampleCapacitiesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -271,6 +291,10 @@ func ExampleCapacitiesClient_NewListBySubscriptionPager() {
 		// 				Properties: &armfabric.CapacityProperties{
 		// 					ProvisioningState: to.Ptr(armfabric.ProvisioningStateSucceeded),
 		// 					State: to.Ptr(armfabric.ResourceStateActive),
+		// 					Overage: &armfabric.CapacityOverageProperties{
+		// 						State: to.Ptr(armfabric.CapacityOverageStateEnabled),
+		// 						ThresholdCapacityUnitHours: to.Ptr[int32](4),
+		// 					},
 		// 					Administration: &armfabric.CapacityAdministration{
 		// 						Members: []*string{
 		// 							to.Ptr("azsdktest@microsoft.com"),
@@ -292,6 +316,10 @@ func ExampleCapacitiesClient_NewListBySubscriptionPager() {
 		// 				Properties: &armfabric.CapacityProperties{
 		// 					ProvisioningState: to.Ptr(armfabric.ProvisioningStateProvisioning),
 		// 					State: to.Ptr(armfabric.ResourceStateProvisioning),
+		// 					Overage: &armfabric.CapacityOverageProperties{
+		// 						State: to.Ptr(armfabric.CapacityOverageStateDisabled),
+		// 						ThresholdCapacityUnitHours: to.Ptr[int32](0),
+		// 					},
 		// 					Administration: &armfabric.CapacityAdministration{
 		// 						Members: []*string{
 		// 							to.Ptr("azsdktest@microsoft.com"),
@@ -316,7 +344,7 @@ func ExampleCapacitiesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2023-11-01/FabricCapacities_ListSkus.json
+// Generated from example definition: 2026-08-01-preview/FabricCapacities_ListSkus.json
 func ExampleCapacitiesClient_NewListSKUsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -375,7 +403,7 @@ func ExampleCapacitiesClient_NewListSKUsPager() {
 	}
 }
 
-// Generated from example definition: 2023-11-01/FabricCapacities_ListSkusForCapacity.json
+// Generated from example definition: 2026-08-01-preview/FabricCapacities_ListSkusForCapacity.json
 func ExampleCapacitiesClient_NewListSKUsForCapacityPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -483,7 +511,47 @@ func ExampleCapacitiesClient_NewListSKUsForCapacityPager() {
 	}
 }
 
-// Generated from example definition: 2023-11-01/FabricCapacities_Resume.json
+// Generated from example definition: 2026-08-01-preview/FabricCapacities_ListUsagesBySubscription.json
+func ExampleCapacitiesClient_NewListUsagesPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armfabric.NewClientFactory("548B7FB7-3B2A-4F46-BB02-66473F1FC22C", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewCapacitiesClient().NewListUsagesPager("centraluseuap", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armfabric.CapacitiesClientListUsagesResponse{
+		// 	PagedQuota: armfabric.PagedQuota{
+		// 		Value: []*armfabric.Quota{
+		// 			{
+		// 				Name: &armfabric.QuotaName{
+		// 					Value: to.Ptr("CapacityQuota"),
+		// 					LocalizedValue: to.Ptr("CapacityQuota"),
+		// 				},
+		// 				Unit: to.Ptr("CU"),
+		// 				CurrentValue: to.Ptr[int64](378),
+		// 				Limit: to.Ptr[int64](512),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-08-01-preview/FabricCapacities_Resume.json
 func ExampleCapacitiesClient_BeginResume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -509,7 +577,7 @@ func ExampleCapacitiesClient_BeginResume() {
 	// }
 }
 
-// Generated from example definition: 2023-11-01/FabricCapacities_Suspend.json
+// Generated from example definition: 2026-08-01-preview/FabricCapacities_Suspend.json
 func ExampleCapacitiesClient_BeginSuspend() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -535,7 +603,7 @@ func ExampleCapacitiesClient_BeginSuspend() {
 	// }
 }
 
-// Generated from example definition: 2023-11-01/FabricCapacities_Update.json
+// Generated from example definition: 2026-08-01-preview/FabricCapacities_Update.json
 func ExampleCapacitiesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -555,6 +623,10 @@ func ExampleCapacitiesClient_BeginUpdate() {
 			"testKey": to.Ptr("testValue"),
 		},
 		Properties: &armfabric.CapacityUpdateProperties{
+			Overage: &armfabric.CapacityOverageProperties{
+				State:                      to.Ptr(armfabric.CapacityOverageStateEnabled),
+				ThresholdCapacityUnitHours: to.Ptr[int32](4),
+			},
 			Administration: &armfabric.CapacityAdministration{
 				Members: []*string{
 					to.Ptr("azsdktest2@microsoft.com"),
@@ -577,6 +649,10 @@ func ExampleCapacitiesClient_BeginUpdate() {
 	// 		Properties: &armfabric.CapacityProperties{
 	// 			ProvisioningState: to.Ptr(armfabric.ProvisioningStateUpdating),
 	// 			State: to.Ptr(armfabric.ResourceStatePreparing),
+	// 			Overage: &armfabric.CapacityOverageProperties{
+	// 				State: to.Ptr(armfabric.CapacityOverageStateEnabled),
+	// 				ThresholdCapacityUnitHours: to.Ptr[int32](4),
+	// 			},
 	// 			Administration: &armfabric.CapacityAdministration{
 	// 				Members: []*string{
 	// 					to.Ptr("azsdktest2@microsoft.com"),

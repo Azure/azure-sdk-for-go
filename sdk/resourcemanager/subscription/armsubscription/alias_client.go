@@ -18,6 +18,8 @@ import (
 
 // AliasClient contains the methods for the Alias group.
 // Don't use this type directly, use NewAliasClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type AliasClient struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewAliasClient(credential azcore.TokenCredential, options *arm.ClientOption
 
 // BeginCreate - Create Alias Subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - aliasName - AliasName is the name for the subscription creation request. Note that this is not the same as subscription
 //     name and this doesn’t have any other lifecycle need beyond the request for subscription creation.
 //   - options - AliasClientBeginCreateOptions contains the optional parameters for the AliasClient.BeginCreate method.
@@ -62,8 +62,6 @@ func (client *AliasClient) BeginCreate(ctx context.Context, aliasName string, bo
 
 // Create - Create Alias Subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *AliasClient) create(ctx context.Context, aliasName string, body PutAliasRequest, options *AliasClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AliasClient.BeginCreate"
@@ -79,8 +77,7 @@ func (client *AliasClient) create(ctx context.Context, aliasName string, body Pu
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -97,8 +94,8 @@ func (client *AliasClient) createCreateRequest(ctx context.Context, aliasName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -109,8 +106,6 @@ func (client *AliasClient) createCreateRequest(ctx context.Context, aliasName st
 
 // Delete - Delete Alias.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - aliasName - AliasName is the name for the subscription creation request. Note that this is not the same as subscription
 //     name and this doesn’t have any other lifecycle need beyond the request for subscription creation.
 //   - options - AliasClientDeleteOptions contains the optional parameters for the AliasClient.Delete method.
@@ -129,8 +124,7 @@ func (client *AliasClient) Delete(ctx context.Context, aliasName string, options
 		return AliasClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return AliasClientDeleteResponse{}, err
+		return AliasClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return AliasClientDeleteResponse{}, nil
 }
@@ -147,15 +141,13 @@ func (client *AliasClient) deleteCreateRequest(ctx context.Context, aliasName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get Alias Subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - aliasName - AliasName is the name for the subscription creation request. Note that this is not the same as subscription
 //     name and this doesn’t have any other lifecycle need beyond the request for subscription creation.
 //   - options - AliasClientGetOptions contains the optional parameters for the AliasClient.Get method.
@@ -173,12 +165,7 @@ func (client *AliasClient) Get(ctx context.Context, aliasName string, options *A
 	if err != nil {
 		return AliasClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AliasClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -193,15 +180,18 @@ func (client *AliasClient) getCreateRequest(ctx context.Context, aliasName strin
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AliasClient) getHandleResponse(resp *http.Response) (AliasClientGetResponse, error) {
+func (client *AliasClient) getHandleResponse(resp *http.Response, successCodes ...int) (AliasClientGetResponse, error) {
 	result := AliasClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AliasResponse); err != nil {
 		return AliasClientGetResponse{}, err
 	}
@@ -209,8 +199,6 @@ func (client *AliasClient) getHandleResponse(resp *http.Response) (AliasClientGe
 }
 
 // NewListPager - List Alias Subscription.
-//
-// Generated from API version 2025-11-01-preview
 //   - options - AliasClientListOptions contains the optional parameters for the AliasClient.NewListPager method.
 func (client *AliasClient) NewListPager(options *AliasClientListOptions) *runtime.Pager[AliasClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AliasClientListResponse]{
@@ -223,35 +211,49 @@ func (client *AliasClient) NewListPager(options *AliasClientListOptions) *runtim
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return AliasClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AliasClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AliasClient) listCreateRequest(ctx context.Context, _ *AliasClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Subscription/aliases"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *AliasClient) listCreateRequest(ctx context.Context, nextLink string, _ *AliasClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Subscription/aliases"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AliasClient) listHandleResponse(resp *http.Response) (AliasClientListResponse, error) {
+func (client *AliasClient) listHandleResponse(resp *http.Response, successCodes ...int) (AliasClientListResponse, error) {
 	result := AliasClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AliasListResult); err != nil {
 		return AliasClientListResponse{}, err
 	}

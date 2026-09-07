@@ -137,10 +137,10 @@ func ExampleAgriServiceClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armagricultureplatform.SystemData{
 	// 			CreatedBy: to.Ptr("gthxegufst"),
 	// 			CreatedByType: to.Ptr(armagricultureplatform.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-16T11:47:57.784Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.December, 16, 11, 47, 57, 784000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("ovgqctuakdgemocstvwqmhyufe"),
 	// 			LastModifiedByType: to.Ptr(armagricultureplatform.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-16T11:47:57.784Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.December, 16, 11, 47, 57, 784000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -250,10 +250,10 @@ func ExampleAgriServiceClient_Get() {
 	// 		SystemData: &armagricultureplatform.SystemData{
 	// 			CreatedBy: to.Ptr("gthxegufst"),
 	// 			CreatedByType: to.Ptr(armagricultureplatform.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-16T11:47:57.784Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.December, 16, 11, 47, 57, 784000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("ovgqctuakdgemocstvwqmhyufe"),
 	// 			LastModifiedByType: to.Ptr(armagricultureplatform.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-16T11:47:57.784Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.December, 16, 11, 47, 57, 784000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -390,10 +390,10 @@ func ExampleAgriServiceClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armagricultureplatform.SystemData{
 		// 					CreatedBy: to.Ptr("gthxegufst"),
 		// 					CreatedByType: to.Ptr(armagricultureplatform.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-16T11:47:57.784Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.December, 16, 11, 47, 57, 784000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("ovgqctuakdgemocstvwqmhyufe"),
 		// 					LastModifiedByType: to.Ptr(armagricultureplatform.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-16T11:47:57.784Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.December, 16, 11, 47, 57, 784000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -492,10 +492,10 @@ func ExampleAgriServiceClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armagricultureplatform.SystemData{
 		// 					CreatedBy: to.Ptr("gthxegufst"),
 		// 					CreatedByType: to.Ptr(armagricultureplatform.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-16T11:47:57.784Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.December, 16, 11, 47, 57, 784000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("ovgqctuakdgemocstvwqmhyufe"),
 		// 					LastModifiedByType: to.Ptr(armagricultureplatform.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-16T11:47:57.784Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.December, 16, 11, 47, 57, 784000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -628,10 +628,10 @@ func ExampleAgriServiceClient_BeginUpdate() {
 	// 		SystemData: &armagricultureplatform.SystemData{
 	// 			CreatedBy: to.Ptr("gthxegufst"),
 	// 			CreatedByType: to.Ptr(armagricultureplatform.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-16T11:47:57.784Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.December, 16, 11, 47, 57, 784000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("ovgqctuakdgemocstvwqmhyufe"),
 	// 			LastModifiedByType: to.Ptr(armagricultureplatform.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-16T11:47:57.784Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.December, 16, 11, 47, 57, 784000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

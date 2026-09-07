@@ -53,7 +53,7 @@ func ExampleReplicationsClient_BeginCreate_replicationCreate() {
 	// 			Status: &armcontainerregistry.Status{
 	// 				DisplayStatus: to.Ptr("Ready"),
 	// 				Message: to.Ptr("The replication is ready."),
-	// 				Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-01T23:15:37.0707808Z"); return t}()),
+	// 				Timestamp: to.Ptr(time.Date(2017, time.March, 1, 23, 15, 37, 70780800, time.UTC)),
 	// 			},
 	// 			RegionEndpointEnabled: to.Ptr(true),
 	// 			ZoneRedundancy: to.Ptr(armcontainerregistry.ZoneRedundancyDisabled),
@@ -107,7 +107,7 @@ func ExampleReplicationsClient_BeginCreate_replicationCreateZoneRedundant() {
 	// 			Status: &armcontainerregistry.Status{
 	// 				DisplayStatus: to.Ptr("Ready"),
 	// 				Message: to.Ptr("The replication is ready."),
-	// 				Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-01T23:15:37.0707808Z"); return t}()),
+	// 				Timestamp: to.Ptr(time.Date(2017, time.March, 1, 23, 15, 37, 70780800, time.UTC)),
 	// 			},
 	// 			RegionEndpointEnabled: to.Ptr(true),
 	// 			ZoneRedundancy: to.Ptr(armcontainerregistry.ZoneRedundancyEnabled),
@@ -174,7 +174,7 @@ func ExampleReplicationsClient_Get() {
 	// 			Status: &armcontainerregistry.Status{
 	// 				DisplayStatus: to.Ptr("Ready"),
 	// 				Message: to.Ptr("The replication is ready."),
-	// 				Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-01T23:15:37.0707808Z"); return t}()),
+	// 				Timestamp: to.Ptr(time.Date(2017, time.March, 1, 23, 15, 37, 70780800, time.UTC)),
 	// 			},
 	// 			RegionEndpointEnabled: to.Ptr(true),
 	// 			ZoneRedundancy: to.Ptr(armcontainerregistry.ZoneRedundancyDisabled),
@@ -221,7 +221,7 @@ func ExampleReplicationsClient_NewListPager() {
 		// 					Status: &armcontainerregistry.Status{
 		// 						DisplayStatus: to.Ptr("Ready"),
 		// 						Message: to.Ptr("The replication is ready."),
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-01T23:15:37.0707808Z"); return t}()),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.March, 1, 23, 15, 37, 70780800, time.UTC)),
 		// 					},
 		// 					RegionEndpointEnabled: to.Ptr(true),
 		// 					ZoneRedundancy: to.Ptr(armcontainerregistry.ZoneRedundancyDisabled),
@@ -273,7 +273,7 @@ func ExampleReplicationsClient_BeginUpdate() {
 	// 			Status: &armcontainerregistry.Status{
 	// 				DisplayStatus: to.Ptr("Ready"),
 	// 				Message: to.Ptr("The replication is ready."),
-	// 				Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-01T23:15:37.0707808Z"); return t}()),
+	// 				Timestamp: to.Ptr(time.Date(2017, time.March, 1, 23, 15, 37, 70780800, time.UTC)),
 	// 			},
 	// 			RegionEndpointEnabled: to.Ptr(true),
 	// 			ZoneRedundancy: to.Ptr(armcontainerregistry.ZoneRedundancyDisabled),

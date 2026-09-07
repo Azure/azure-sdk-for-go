@@ -208,11 +208,11 @@ func ExampleManagedHsmsClient_GetDeleted() {
 	// 		Type: to.Ptr("Microsoft.KeyVault/deletedManagedHSMs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/westus/deletedManagedHSMs/hsm1"),
 	// 		Properties: &armkeyvault.DeletedManagedHsmProperties{
-	// 			DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T00:00:59Z"); return t}()),
+	// 			DeletionDate: to.Ptr(time.Date(2021, time.April, 1, 0, 0, 59, 0, time.UTC)),
 	// 			Location: to.Ptr("westus"),
 	// 			MhsmID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs/hsm1"),
 	// 			PurgeProtectionEnabled: to.Ptr(true),
-	// 			ScheduledPurgeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T00:00:59Z"); return t}()),
+	// 			ScheduledPurgeDate: to.Ptr(time.Date(2021, time.April, 1, 0, 0, 59, 0, time.UTC)),
 	// 			Tags: map[string]*string{
 	// 				"Dept": to.Ptr("hsm"),
 	// 				"Environment": to.Ptr("production"),
@@ -421,11 +421,11 @@ func ExampleManagedHsmsClient_NewListDeletedPager() {
 		// 				Type: to.Ptr("Microsoft.KeyVault/deletedManagedHSMs"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/westus/deletedManagedHSMs/hsm1"),
 		// 				Properties: &armkeyvault.DeletedManagedHsmProperties{
-		// 					DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T00:00:59Z"); return t}()),
+		// 					DeletionDate: to.Ptr(time.Date(2021, time.April, 1, 0, 0, 59, 0, time.UTC)),
 		// 					Location: to.Ptr("westus"),
 		// 					MhsmID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs/hsm1"),
 		// 					PurgeProtectionEnabled: to.Ptr(true),
-		// 					ScheduledPurgeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T00:00:59Z"); return t}()),
+		// 					ScheduledPurgeDate: to.Ptr(time.Date(2021, time.April, 1, 0, 0, 59, 0, time.UTC)),
 		// 					Tags: map[string]*string{
 		// 						"Dept": to.Ptr("hsm"),
 		// 						"Environment": to.Ptr("production"),
@@ -437,11 +437,11 @@ func ExampleManagedHsmsClient_NewListDeletedPager() {
 		// 				Type: to.Ptr("Microsoft.KeyVault/deletedManagedHSMs"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/westus/deletedManagedHSMs/hsm2"),
 		// 				Properties: &armkeyvault.DeletedManagedHsmProperties{
-		// 					DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T00:00:59Z"); return t}()),
+		// 					DeletionDate: to.Ptr(time.Date(2021, time.April, 1, 0, 0, 59, 0, time.UTC)),
 		// 					Location: to.Ptr("westus"),
 		// 					MhsmID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs/hsm2"),
 		// 					PurgeProtectionEnabled: to.Ptr(true),
-		// 					ScheduledPurgeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T00:00:59Z"); return t}()),
+		// 					ScheduledPurgeDate: to.Ptr(time.Date(2021, time.April, 1, 0, 0, 59, 0, time.UTC)),
 		// 					Tags: map[string]*string{
 		// 						"Dept": to.Ptr("hsm"),
 		// 						"Environment": to.Ptr("production"),

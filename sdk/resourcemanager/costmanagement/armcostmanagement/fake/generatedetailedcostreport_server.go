@@ -87,7 +87,7 @@ func (g *GenerateDetailedCostReportServerTransport) dispatchBeginCreateOperation
 	}
 	beginCreateOperation := g.beginCreateOperation.get(req)
 	if beginCreateOperation == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/generateDetailedCostReport`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.CostManagement/generateDetailedCostReport`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

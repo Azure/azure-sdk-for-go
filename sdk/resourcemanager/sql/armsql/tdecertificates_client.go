@@ -18,6 +18,8 @@ import (
 
 // TdeCertificatesClient contains the methods for the TdeCertificates group.
 // Don't use this type directly, use NewTdeCertificatesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type TdeCertificatesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type TdeCertificatesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTdeCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TdeCertificatesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,8 +46,6 @@ func NewTdeCertificatesClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreate - Creates a TDE certificate for a given server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - parameters - The requested TDE certificate to be created or updated.
@@ -67,8 +70,6 @@ func (client *TdeCertificatesClient) BeginCreate(ctx context.Context, resourceGr
 
 // Create - Creates a TDE certificate for a given server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *TdeCertificatesClient) create(ctx context.Context, resourceGroupName string, serverName string, parameters TdeCertificate, options *TdeCertificatesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TdeCertificatesClient.BeginCreate"
@@ -84,8 +85,7 @@ func (client *TdeCertificatesClient) create(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -94,7 +94,7 @@ func (client *TdeCertificatesClient) create(ctx context.Context, resourceGroupNa
 func (client *TdeCertificatesClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, parameters TdeCertificate, _ *TdeCertificatesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/tdeCertificates"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -110,8 +110,8 @@ func (client *TdeCertificatesClient) createCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err

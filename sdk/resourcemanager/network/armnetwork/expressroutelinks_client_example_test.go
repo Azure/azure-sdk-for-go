@@ -7,11 +7,11 @@ package armnetwork_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/ExpressRouteLinkGet.json
+// Generated from example definition: 2025-09-01/ExpressRouteLinkGet.json
 func ExampleExpressRouteLinksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleExpressRouteLinksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteLinkList.json
+// Generated from example definition: 2025-09-01/ExpressRouteLinkList.json
 func ExampleExpressRouteLinksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

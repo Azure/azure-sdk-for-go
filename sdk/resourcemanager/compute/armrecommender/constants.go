@@ -5,7 +5,7 @@
 package armrecommender
 
 const (
-	version20250605 string = "2025-06-05"
+	version20260905Preview string = "2026-09-05-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -66,5 +66,150 @@ func PossibleOriginValues() []Origin {
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
+	}
+}
+
+// SKUMixPlacementAllocationStrategy - Allocation strategy for determining the optimal SKU split.
+type SKUMixPlacementAllocationStrategy string
+
+const (
+	// SKUMixPlacementAllocationStrategyEvictionOptimized - VMs allocated to optimize for lowest eviction rate (Spot only).
+	SKUMixPlacementAllocationStrategyEvictionOptimized SKUMixPlacementAllocationStrategy = "EvictionOptimized"
+	// SKUMixPlacementAllocationStrategyLowestPrice - VMs allocated to optimize for lowest price.
+	SKUMixPlacementAllocationStrategyLowestPrice SKUMixPlacementAllocationStrategy = "LowestPrice"
+	// SKUMixPlacementAllocationStrategyPrioritized - VMs allocated based on customer-specified rank for each VM size.
+	SKUMixPlacementAllocationStrategyPrioritized SKUMixPlacementAllocationStrategy = "Prioritized"
+)
+
+// PossibleSKUMixPlacementAllocationStrategyValues returns the possible values for the SKUMixPlacementAllocationStrategy const type.
+func PossibleSKUMixPlacementAllocationStrategyValues() []SKUMixPlacementAllocationStrategy {
+	return []SKUMixPlacementAllocationStrategy{
+		SKUMixPlacementAllocationStrategyEvictionOptimized,
+		SKUMixPlacementAllocationStrategyLowestPrice,
+		SKUMixPlacementAllocationStrategyPrioritized,
+	}
+}
+
+// SKUMixPlacementCapacityLimitReason - Reason the capacity limit for a (VM size, zone) is below the requested capacity.
+type SKUMixPlacementCapacityLimitReason string
+
+const (
+	// SKUMixPlacementCapacityLimitReasonInsufficientCapacity - Allocable capacity bounded the limit below the requested capacity.
+	SKUMixPlacementCapacityLimitReasonInsufficientCapacity SKUMixPlacementCapacityLimitReason = "InsufficientCapacity"
+	// SKUMixPlacementCapacityLimitReasonInsufficientQuota - Quota bounded the limit below the requested capacity. Takes precedence
+	// when both capacity and quota are insufficient.
+	SKUMixPlacementCapacityLimitReasonInsufficientQuota SKUMixPlacementCapacityLimitReason = "InsufficientQuota"
+	// SKUMixPlacementCapacityLimitReasonNone - The full requested capacity is available for this (VM size, zone).
+	SKUMixPlacementCapacityLimitReasonNone SKUMixPlacementCapacityLimitReason = "None"
+	// SKUMixPlacementCapacityLimitReasonSKUNotAvailable - This VM size is not available in this zone for the subscription.
+	SKUMixPlacementCapacityLimitReasonSKUNotAvailable SKUMixPlacementCapacityLimitReason = "SkuNotAvailable"
+)
+
+// PossibleSKUMixPlacementCapacityLimitReasonValues returns the possible values for the SKUMixPlacementCapacityLimitReason const type.
+func PossibleSKUMixPlacementCapacityLimitReasonValues() []SKUMixPlacementCapacityLimitReason {
+	return []SKUMixPlacementCapacityLimitReason{
+		SKUMixPlacementCapacityLimitReasonInsufficientCapacity,
+		SKUMixPlacementCapacityLimitReasonInsufficientQuota,
+		SKUMixPlacementCapacityLimitReasonNone,
+		SKUMixPlacementCapacityLimitReasonSKUNotAvailable,
+	}
+}
+
+// SKUMixPlacementCapacityType - The unit type for the capacity value.
+type SKUMixPlacementCapacityType string
+
+const (
+	// SKUMixPlacementCapacityTypeVCPU - Capacity measured in number of vCPUs.
+	SKUMixPlacementCapacityTypeVCPU SKUMixPlacementCapacityType = "VCpu"
+	// SKUMixPlacementCapacityTypeVM - Capacity measured in number of VMs.
+	SKUMixPlacementCapacityTypeVM SKUMixPlacementCapacityType = "VM"
+)
+
+// PossibleSKUMixPlacementCapacityTypeValues returns the possible values for the SKUMixPlacementCapacityType const type.
+func PossibleSKUMixPlacementCapacityTypeValues() []SKUMixPlacementCapacityType {
+	return []SKUMixPlacementCapacityType{
+		SKUMixPlacementCapacityTypeVCPU,
+		SKUMixPlacementCapacityTypeVM,
+	}
+}
+
+// SKUMixPlacementOSType - The OS type of the VMs.
+type SKUMixPlacementOSType string
+
+const (
+	// SKUMixPlacementOSTypeLinux - Linux OS.
+	SKUMixPlacementOSTypeLinux SKUMixPlacementOSType = "Linux"
+	// SKUMixPlacementOSTypeWindows - Windows OS.
+	SKUMixPlacementOSTypeWindows SKUMixPlacementOSType = "Windows"
+)
+
+// PossibleSKUMixPlacementOSTypeValues returns the possible values for the SKUMixPlacementOSType const type.
+func PossibleSKUMixPlacementOSTypeValues() []SKUMixPlacementOSType {
+	return []SKUMixPlacementOSType{
+		SKUMixPlacementOSTypeLinux,
+		SKUMixPlacementOSTypeWindows,
+	}
+}
+
+// SKUMixPlacementPartialFulfillmentReason - Reason for partial fulfillment of the requested capacity.
+type SKUMixPlacementPartialFulfillmentReason string
+
+const (
+	// SKUMixPlacementPartialFulfillmentReasonInsufficientCapacity - Not enough allocable capacity was available.
+	SKUMixPlacementPartialFulfillmentReasonInsufficientCapacity SKUMixPlacementPartialFulfillmentReason = "InsufficientCapacity"
+	// SKUMixPlacementPartialFulfillmentReasonInsufficientQuota - Not enough quota was available.
+	SKUMixPlacementPartialFulfillmentReasonInsufficientQuota SKUMixPlacementPartialFulfillmentReason = "InsufficientQuota"
+	// SKUMixPlacementPartialFulfillmentReasonNone - Full capacity was fulfilled.
+	SKUMixPlacementPartialFulfillmentReasonNone SKUMixPlacementPartialFulfillmentReason = "None"
+)
+
+// PossibleSKUMixPlacementPartialFulfillmentReasonValues returns the possible values for the SKUMixPlacementPartialFulfillmentReason const type.
+func PossibleSKUMixPlacementPartialFulfillmentReasonValues() []SKUMixPlacementPartialFulfillmentReason {
+	return []SKUMixPlacementPartialFulfillmentReason{
+		SKUMixPlacementPartialFulfillmentReasonInsufficientCapacity,
+		SKUMixPlacementPartialFulfillmentReasonInsufficientQuota,
+		SKUMixPlacementPartialFulfillmentReasonNone,
+	}
+}
+
+// SKUMixPlacementPriority - Priority levels for VM allocation.
+type SKUMixPlacementPriority string
+
+const (
+	// SKUMixPlacementPriorityRegular - Regular priority VMs with guaranteed capacity.
+	SKUMixPlacementPriorityRegular SKUMixPlacementPriority = "Regular"
+	// SKUMixPlacementPrioritySpot - Spot priority VMs with lower cost but potential eviction.
+	SKUMixPlacementPrioritySpot SKUMixPlacementPriority = "Spot"
+)
+
+// PossibleSKUMixPlacementPriorityValues returns the possible values for the SKUMixPlacementPriority const type.
+func PossibleSKUMixPlacementPriorityValues() []SKUMixPlacementPriority {
+	return []SKUMixPlacementPriority{
+		SKUMixPlacementPriorityRegular,
+		SKUMixPlacementPrioritySpot,
+	}
+}
+
+// SKUMixPlacementZonalDistributionStrategy - Strategy for distributing capacity across availability zones.
+type SKUMixPlacementZonalDistributionStrategy string
+
+const (
+	// SKUMixPlacementZonalDistributionStrategyBestEffortBalanced - Capacity distributed across zones on a best-effort balanced
+	// basis.
+	SKUMixPlacementZonalDistributionStrategyBestEffortBalanced SKUMixPlacementZonalDistributionStrategy = "BestEffortBalanced"
+	// SKUMixPlacementZonalDistributionStrategyBestEffortSingleZone - Capacity allocated within a single zone on a best-effort
+	// basis; may spill across zones if single-zone capacity is insufficient.
+	SKUMixPlacementZonalDistributionStrategyBestEffortSingleZone SKUMixPlacementZonalDistributionStrategy = "BestEffortSingleZone"
+	// SKUMixPlacementZonalDistributionStrategyPrioritized - Zones filled based on zone preferences/rank. Higher priority zones
+	// filled first.
+	SKUMixPlacementZonalDistributionStrategyPrioritized SKUMixPlacementZonalDistributionStrategy = "Prioritized"
+)
+
+// PossibleSKUMixPlacementZonalDistributionStrategyValues returns the possible values for the SKUMixPlacementZonalDistributionStrategy const type.
+func PossibleSKUMixPlacementZonalDistributionStrategyValues() []SKUMixPlacementZonalDistributionStrategy {
+	return []SKUMixPlacementZonalDistributionStrategy{
+		SKUMixPlacementZonalDistributionStrategyBestEffortBalanced,
+		SKUMixPlacementZonalDistributionStrategyBestEffortSingleZone,
+		SKUMixPlacementZonalDistributionStrategyPrioritized,
 	}
 }

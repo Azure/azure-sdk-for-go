@@ -21,9 +21,6 @@ type ServerFactory struct {
 	// AutoUpgradeProfilesServer contains the fakes for client AutoUpgradeProfilesClient
 	AutoUpgradeProfilesServer AutoUpgradeProfilesServer
 
-	// ClusterMeshProfilesServer contains the fakes for client ClusterMeshProfilesClient
-	ClusterMeshProfilesServer ClusterMeshProfilesServer
-
 	// FleetManagedNamespacesServer contains the fakes for client FleetManagedNamespacesClient
 	FleetManagedNamespacesServer FleetManagedNamespacesServer
 
@@ -62,7 +59,6 @@ type ServerFactoryTransport struct {
 	trMu                                 sync.Mutex
 	trAutoUpgradeProfileOperationsServer *AutoUpgradeProfileOperationsServerTransport
 	trAutoUpgradeProfilesServer          *AutoUpgradeProfilesServerTransport
-	trClusterMeshProfilesServer          *ClusterMeshProfilesServerTransport
 	trFleetManagedNamespacesServer       *FleetManagedNamespacesServerTransport
 	trFleetMembersServer                 *FleetMembersServerTransport
 	trFleetUpdateStrategiesServer        *FleetUpdateStrategiesServerTransport
@@ -95,11 +91,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAutoUpgradeProfilesServerTransport(&s.srv.AutoUpgradeProfilesServer)
 		})
 		resp, err = s.trAutoUpgradeProfilesServer.Do(req)
-	case "ClusterMeshProfilesClient":
-		initServer(&s.trMu, &s.trClusterMeshProfilesServer, func() *ClusterMeshProfilesServerTransport {
-			return NewClusterMeshProfilesServerTransport(&s.srv.ClusterMeshProfilesServer)
-		})
-		resp, err = s.trClusterMeshProfilesServer.Do(req)
 	case "FleetManagedNamespacesClient":
 		initServer(&s.trMu, &s.trFleetManagedNamespacesServer, func() *FleetManagedNamespacesServerTransport {
 			return NewFleetManagedNamespacesServerTransport(&s.srv.FleetManagedNamespacesServer)

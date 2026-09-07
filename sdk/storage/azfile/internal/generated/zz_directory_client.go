@@ -20,7 +20,7 @@ import (
 // DirectoryClient contains the methods for the Directory group.
 // Don't use this type directly, use a constructor function instead.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-10-06
 type DirectoryClient struct {
 	internal *azcore.Client
 	url      string
@@ -108,7 +108,7 @@ func (client *DirectoryClient) createCreateRequest(ctx context.Context, options 
 	if options != nil && options.Owner != nil {
 		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -238,7 +238,7 @@ func (client *DirectoryClient) deleteCreateRequest(ctx context.Context, options 
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -319,7 +319,7 @@ func (client *DirectoryClient) forceCloseHandlesCreateRequest(ctx context.Contex
 	if options != nil && options.Recursive != nil {
 		req.Raw().Header["x-ms-recursive"] = []string{strconv.FormatBool(*options.Recursive)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -410,7 +410,7 @@ func (client *DirectoryClient) getPropertiesCreateRequest(ctx context.Context, o
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -569,7 +569,7 @@ func (client *DirectoryClient) listFilesAndDirectoriesSegmentCreateRequest(ctx c
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -656,7 +656,7 @@ func (client *DirectoryClient) listHandlesCreateRequest(ctx context.Context, opt
 	if options != nil && options.Recursive != nil {
 		req.Raw().Header["x-ms-recursive"] = []string{strconv.FormatBool(*options.Recursive)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -776,7 +776,7 @@ func (client *DirectoryClient) renameCreateRequest(ctx context.Context, renameSo
 	if options != nil && options.SourceLeaseID != nil {
 		req.Raw().Header["x-ms-source-lease-id"] = []string{*options.SourceLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -901,7 +901,7 @@ func (client *DirectoryClient) setMetadataCreateRequest(ctx context.Context, opt
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -1016,7 +1016,7 @@ func (client *DirectoryClient) setPropertiesCreateRequest(ctx context.Context, o
 	if options != nil && options.Owner != nil {
 		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 

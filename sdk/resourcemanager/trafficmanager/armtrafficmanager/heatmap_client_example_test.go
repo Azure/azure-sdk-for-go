@@ -35,7 +35,7 @@ func ExampleHeatMapClient_Get_heatMapGetWithNullValues() {
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/heatMaps/default"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1323/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager3880/heatMaps/default"),
 	// 		Properties: &armtrafficmanager.HeatMapProperties{
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-22T12:50:00Z"); return t}()),
+	// 			EndTime: to.Ptr(time.Date(2017, time.August, 22, 12, 50, 0, 0, time.UTC)),
 	// 			Endpoints: []*armtrafficmanager.HeatMapEndpoint{
 	// 				{
 	// 					EndpointID: to.Ptr[int32](0),
@@ -46,7 +46,7 @@ func ExampleHeatMapClient_Get_heatMapGetWithNullValues() {
 	// 					ResourceID: to.Ptr("/subscriptions/562d4115-c01e-4m67-9bbd-c11c2d58ad73/resourceGroups/azuresdkfornetautoresttrafficmanager1300/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager3885/externalEndpoints/azuresdkfornetautoresttrafficmanager3881"),
 	// 				},
 	// 			},
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T12:00:00Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2017, time.August, 15, 12, 0, 0, 0, time.UTC)),
 	// 			TrafficFlows: []*armtrafficmanager.TrafficFlow{
 	// 				{
 	// 					Latitude: to.Ptr[float64](99.99),
@@ -119,7 +119,7 @@ func ExampleHeatMapClient_Get_heatMapGetWithTopLeftBotRight() {
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/heatMaps/latencyVolumeByLocation"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1323/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager3880/heatMaps/latencyVolumeByLocation"),
 	// 		Properties: &armtrafficmanager.HeatMapProperties{
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-22T12:50:00Z"); return t}()),
+	// 			EndTime: to.Ptr(time.Date(2017, time.August, 22, 12, 50, 0, 0, time.UTC)),
 	// 			Endpoints: []*armtrafficmanager.HeatMapEndpoint{
 	// 				{
 	// 					EndpointID: to.Ptr[int32](1),
@@ -130,7 +130,7 @@ func ExampleHeatMapClient_Get_heatMapGetWithTopLeftBotRight() {
 	// 					ResourceID: to.Ptr("/subscriptions/562d4115-c01e-4m67-9bbd-c11c2d58ad73/resourceGroups/azuresdkfornetautoresttrafficmanager1300/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager3885/externalEndpoints/azuresdkfornetautoresttrafficmanager3881"),
 	// 				},
 	// 			},
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T12:00:00Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2017, time.August, 15, 12, 0, 0, 0, time.UTC)),
 	// 			TrafficFlows: []*armtrafficmanager.TrafficFlow{
 	// 				{
 	// 					Latitude: to.Ptr[float64](9.99),
@@ -196,7 +196,7 @@ func ExampleHeatMapClient_Get_heatMapGet() {
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/heatMaps/latencyVolumeByLocation"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1323/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager3880/heatMaps/latencyVolumeByLocation"),
 	// 		Properties: &armtrafficmanager.HeatMapProperties{
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-22T12:50:00Z"); return t}()),
+	// 			EndTime: to.Ptr(time.Date(2017, time.August, 22, 12, 50, 0, 0, time.UTC)),
 	// 			Endpoints: []*armtrafficmanager.HeatMapEndpoint{
 	// 				{
 	// 					EndpointID: to.Ptr[int32](1),
@@ -207,7 +207,7 @@ func ExampleHeatMapClient_Get_heatMapGet() {
 	// 					ResourceID: to.Ptr("/subscriptions/562d4115-c01e-4m67-9bbd-c11c2d58ad73/resourceGroups/azuresdkfornetautoresttrafficmanager1300/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager3885/externalEndpoints/azuresdkfornetautoresttrafficmanager3881"),
 	// 				},
 	// 			},
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T12:00:00Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2017, time.August, 15, 12, 0, 0, 0, time.UTC)),
 	// 			TrafficFlows: []*armtrafficmanager.TrafficFlow{
 	// 				{
 	// 					Latitude: to.Ptr[float64](99.99),

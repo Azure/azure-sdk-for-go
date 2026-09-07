@@ -65,12 +65,7 @@ func (client *ReservationRecommendationDetailsClient) Get(ctx context.Context, r
 	if err != nil {
 		return ReservationRecommendationDetailsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ReservationRecommendationDetailsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
 }
 
 // getCreateRequest creates the Get request.
@@ -100,8 +95,11 @@ func (client *ReservationRecommendationDetailsClient) getCreateRequest(ctx conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReservationRecommendationDetailsClient) getHandleResponse(resp *http.Response) (ReservationRecommendationDetailsClientGetResponse, error) {
+func (client *ReservationRecommendationDetailsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ReservationRecommendationDetailsClientGetResponse, error) {
 	result := ReservationRecommendationDetailsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationRecommendationDetailsModel); err != nil {
 		return ReservationRecommendationDetailsClientGetResponse{}, err
 	}

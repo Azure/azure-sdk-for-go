@@ -18,6 +18,8 @@ import (
 
 // MonitorResourcesClient contains the methods for the MonitorResources group.
 // Don't use this type directly, use NewMonitorResourcesClient() instead.
+//
+// Generated from API version 2025-12-26-preview
 type MonitorResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type MonitorResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMonitorResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MonitorResourcesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -43,8 +48,6 @@ func NewMonitorResourcesClient(subscriptionID string, credential azcore.TokenCre
 //
 // Returns the latest SaaS linked to the Datadog organization of the underlying monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorResourcesClientLatestLinkedSaaSOptions contains the optional parameters for the MonitorResourcesClient.LatestLinkedSaaS
@@ -63,19 +66,14 @@ func (client *MonitorResourcesClient) LatestLinkedSaaS(ctx context.Context, reso
 	if err != nil {
 		return MonitorResourcesClientLatestLinkedSaaSResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MonitorResourcesClientLatestLinkedSaaSResponse{}, err
-	}
-	resp, err := client.latestLinkedSaaSHandleResponse(httpResp)
-	return resp, err
+	return client.latestLinkedSaaSHandleResponse(httpResp, http.StatusOK)
 }
 
 // latestLinkedSaaSCreateRequest creates the LatestLinkedSaaS request.
 func (client *MonitorResourcesClient) latestLinkedSaaSCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorResourcesClientLatestLinkedSaaSOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/latestLinkedSaaS"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -91,15 +89,18 @@ func (client *MonitorResourcesClient) latestLinkedSaaSCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // latestLinkedSaaSHandleResponse handles the LatestLinkedSaaS response.
-func (client *MonitorResourcesClient) latestLinkedSaaSHandleResponse(resp *http.Response) (MonitorResourcesClientLatestLinkedSaaSResponse, error) {
+func (client *MonitorResourcesClient) latestLinkedSaaSHandleResponse(resp *http.Response, successCodes ...int) (MonitorResourcesClientLatestLinkedSaaSResponse, error) {
 	result := MonitorResourcesClientLatestLinkedSaaSResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LatestLinkedSaaSResponse); err != nil {
 		return MonitorResourcesClientLatestLinkedSaaSResponse{}, err
 	}
@@ -110,8 +111,6 @@ func (client *MonitorResourcesClient) latestLinkedSaaSHandleResponse(resp *http.
 //
 // Links a new SaaS to the Datadog organization of the underlying monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - body - Link SaaS body parameter
@@ -139,8 +138,6 @@ func (client *MonitorResourcesClient) BeginLinkSaaS(ctx context.Context, resourc
 //
 // Links a new SaaS to the Datadog organization of the underlying monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 func (client *MonitorResourcesClient) linkSaaS(ctx context.Context, resourceGroupName string, monitorName string, body SaaSData, options *MonitorResourcesClientBeginLinkSaaSOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MonitorResourcesClient.BeginLinkSaaS"
@@ -156,8 +153,7 @@ func (client *MonitorResourcesClient) linkSaaS(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -166,7 +162,7 @@ func (client *MonitorResourcesClient) linkSaaS(ctx context.Context, resourceGrou
 func (client *MonitorResourcesClient) linkSaaSCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, body SaaSData, _ *MonitorResourcesClientBeginLinkSaaSOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/linkSaaS"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -182,8 +178,8 @@ func (client *MonitorResourcesClient) linkSaaSCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

@@ -161,7 +161,7 @@ func ExampleSecurityMLAnalyticsSettingsClient_CreateOrUpdate() {
 	// 			Enabled: to.Ptr(true),
 	// 			Frequency: to.Ptr("PT1H"),
 	// 			IsDefaultSettings: to.Ptr(true),
-	// 			LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-20T13:17:11.5340061Z"); return t}()),
+	// 			LastModifiedUTC: to.Ptr(time.Date(2021, time.October, 20, 13, 17, 11, 534006100, time.UTC)),
 	// 			RequiredDataConnectors: []*armsecurityinsights.SecurityMLAnalyticsSettingsDataSource{
 	// 				{
 	// 					ConnectorID: to.Ptr("AWS"),
@@ -283,7 +283,7 @@ func ExampleSecurityMLAnalyticsSettingsClient_Get() {
 	// 			Enabled: to.Ptr(true),
 	// 			Frequency: to.Ptr("PT1H"),
 	// 			IsDefaultSettings: to.Ptr(true),
-	// 			LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-20T13:13:11.5340061Z"); return t}()),
+	// 			LastModifiedUTC: to.Ptr(time.Date(2021, time.October, 20, 13, 13, 11, 534006100, time.UTC)),
 	// 			RequiredDataConnectors: []*armsecurityinsights.SecurityMLAnalyticsSettingsDataSource{
 	// 				{
 	// 					ConnectorID: to.Ptr("AWS"),
@@ -389,7 +389,7 @@ func ExampleSecurityMLAnalyticsSettingsClient_NewListPager() {
 		// 					Enabled: to.Ptr(true),
 		// 					Frequency: to.Ptr("PT1H"),
 		// 					IsDefaultSettings: to.Ptr(true),
-		// 					LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-20T13:13:11.5340061Z"); return t}()),
+		// 					LastModifiedUTC: to.Ptr(time.Date(2021, time.October, 20, 13, 13, 11, 534006100, time.UTC)),
 		// 					RequiredDataConnectors: []*armsecurityinsights.SecurityMLAnalyticsSettingsDataSource{
 		// 						{
 		// 							ConnectorID: to.Ptr("AWS"),

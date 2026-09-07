@@ -47,7 +47,7 @@ func ExampleServiceClient_BeginCreate_dataTransferServiceCreate() {
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
 	// 		Properties: &armcosmos.DataTransferServiceResourceProperties{
 	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-25T12:56:05.4622517Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2021, time.January, 25, 12, 56, 5, 462251700, time.UTC)),
 	// 			InstanceSize: to.Ptr(armcosmos.ServiceSizeCosmosD4S),
 	// 			InstanceCount: to.Ptr[int32](1),
 	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeDataTransfer),
@@ -98,7 +98,7 @@ func ExampleServiceClient_BeginCreate_graphApiComputeServiceCreate() {
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
 	// 		Properties: &armcosmos.GraphAPIComputeServiceResourceProperties{
 	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-25T12:56:05.4622517Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2021, time.January, 25, 12, 56, 5, 462251700, time.UTC)),
 	// 			InstanceSize: to.Ptr(armcosmos.ServiceSizeCosmosD4S),
 	// 			InstanceCount: to.Ptr[int32](1),
 	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeGraphAPICompute),
@@ -151,7 +151,7 @@ func ExampleServiceClient_BeginCreate_materializedViewsBuilderServiceCreate() {
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
 	// 		Properties: &armcosmos.MaterializedViewsBuilderServiceResourceProperties{
 	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-25T12:56:05.4622517Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2021, time.January, 25, 12, 56, 5, 462251700, time.UTC)),
 	// 			InstanceSize: to.Ptr(armcosmos.ServiceSizeCosmosD4S),
 	// 			InstanceCount: to.Ptr[int32](1),
 	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeMaterializedViewsBuilder),
@@ -203,7 +203,7 @@ func ExampleServiceClient_BeginCreate_sqlDedicatedGatewayServiceCreate() {
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
 	// 		Properties: &armcosmos.SQLDedicatedGatewayServiceResourceProperties{
 	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-25T12:56:05.4622517Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2021, time.January, 25, 12, 56, 5, 462251700, time.UTC)),
 	// 			InstanceSize: to.Ptr(armcosmos.ServiceSizeCosmosD4S),
 	// 			InstanceCount: to.Ptr[int32](1),
 	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeSQLDedicatedGateway),
@@ -351,7 +351,7 @@ func ExampleServiceClient_Get_dataTransferServiceGet() {
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
 	// 		Properties: &armcosmos.DataTransferServiceResourceProperties{
 	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-25T12:56:05.4622517Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2021, time.January, 25, 12, 56, 5, 462251700, time.UTC)),
 	// 			InstanceSize: to.Ptr(armcosmos.ServiceSizeCosmosD4S),
 	// 			InstanceCount: to.Ptr[int32](1),
 	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeDataTransfer),
@@ -392,7 +392,7 @@ func ExampleServiceClient_Get_graphApiComputeServiceGet() {
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
 	// 		Properties: &armcosmos.GraphAPIComputeServiceResourceProperties{
 	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-25T12:56:05.4622517Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2021, time.January, 25, 12, 56, 5, 462251700, time.UTC)),
 	// 			InstanceSize: to.Ptr(armcosmos.ServiceSizeCosmosD4S),
 	// 			InstanceCount: to.Ptr[int32](1),
 	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeGraphAPICompute),
@@ -435,7 +435,7 @@ func ExampleServiceClient_Get_materializedViewsBuilderServiceGet() {
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
 	// 		Properties: &armcosmos.MaterializedViewsBuilderServiceResourceProperties{
 	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-25T12:56:05.4622517Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2021, time.January, 25, 12, 56, 5, 462251700, time.UTC)),
 	// 			InstanceSize: to.Ptr(armcosmos.ServiceSizeCosmosD4S),
 	// 			InstanceCount: to.Ptr[int32](1),
 	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeMaterializedViewsBuilder),
@@ -476,7 +476,7 @@ func ExampleServiceClient_Get_sqlDedicatedGatewayServiceGet() {
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
 	// 		Properties: &armcosmos.SQLDedicatedGatewayServiceResourceProperties{
 	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-25T12:56:05.4622517Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2021, time.January, 25, 12, 56, 5, 462251700, time.UTC)),
 	// 			InstanceSize: to.Ptr(armcosmos.ServiceSizeCosmosD4S),
 	// 			InstanceCount: to.Ptr[int32](1),
 	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeSQLDedicatedGateway),
@@ -526,7 +526,7 @@ func ExampleServiceClient_NewListPager() {
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
 		// 				Properties: &armcosmos.SQLDedicatedGatewayServiceResourceProperties{
 		// 					Status: to.Ptr(armcosmos.ServiceStatusRunning),
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-25T12:56:05.4622517Z"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2021, time.January, 25, 12, 56, 5, 462251700, time.UTC)),
 		// 					InstanceSize: to.Ptr(armcosmos.ServiceSizeCosmosD4S),
 		// 					InstanceCount: to.Ptr[int32](1),
 		// 					ServiceType: to.Ptr(armcosmos.ServiceTypeSQLDedicatedGateway),

@@ -110,7 +110,7 @@ func (c *Client) AddSetting(ctx context.Context, key string, value *string, opti
 		options = &AddSettingOptions{}
 	}
 
-	setting := Setting{Key: &key, Value: value, Label: options.Label, ContentType: options.ContentType, Tags: options.Tags}
+	setting := Setting{Key: &key, Value: value, Label: options.Label, ContentType: options.ContentType, Description: options.Description, Tags: options.Tags}
 
 	etagAny := azcore.ETagAny
 	kv, opts := setting.toGeneratedPutOptions(nil, &etagAny)
@@ -221,7 +221,7 @@ func (c *Client) SetSetting(ctx context.Context, key string, value *string, opti
 		options = &SetSettingOptions{}
 	}
 
-	setting := Setting{Key: &key, Value: value, Label: options.Label, ContentType: options.ContentType, Tags: options.Tags}
+	setting := Setting{Key: &key, Value: value, Label: options.Label, ContentType: options.ContentType, Description: options.Description, Tags: options.Tags}
 
 	kv, opts := setting.toGeneratedPutOptions(options.OnlyIfUnchanged, nil)
 	resp, err := c.appConfigClient.PutKeyValue(ctx, generated.PutKeyValueRequestContentTypeApplicationJSON, *setting.Key, kv, &opts)
@@ -365,6 +365,7 @@ func (c *Client) NewListSnapshotsPager(options *ListSnapshotsOptions) *runtime.P
 				snapshots[i] = Snapshot{
 					Filters:         convertedFilters,
 					CompositionType: snapshot.CompositionType,
+					Description:     snapshot.Description,
 					RetentionPeriod: snapshot.RetentionPeriod,
 					Tags:            snapshot.Tags,
 					Created:         snapshot.Created,
@@ -457,6 +458,7 @@ func (c *Client) BeginCreateSnapshot(ctx context.Context, snapshotName string, s
 
 	entity := generated.Snapshot{
 		CompositionType: options.CompositionType,
+		Description:     options.Description,
 		Filters:         filter,
 		Name:            &snapshotName,
 		RetentionPeriod: options.RetentionPeriod,
@@ -518,6 +520,7 @@ func (c *Client) GetSnapshot(ctx context.Context, snapshotName string, options *
 		Snapshot: Snapshot{
 			Filters:         convertedFilters,
 			CompositionType: getResp.CompositionType,
+			Description:     getResp.Description,
 			RetentionPeriod: getResp.RetentionPeriod,
 			Tags:            getResp.Tags,
 			Created:         getResp.Created,
@@ -613,6 +616,7 @@ func (c *Client) updateSnapshotStatus(ctx context.Context, snapshotName string, 
 		Snapshot: Snapshot{
 			Filters:         convertedFilters,
 			CompositionType: updateResp.CompositionType,
+			Description:     updateResp.Description,
 			RetentionPeriod: updateResp.RetentionPeriod,
 			Tags:            updateResp.Tags,
 			Created:         updateResp.Created,

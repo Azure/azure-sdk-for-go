@@ -340,6 +340,18 @@ type ShareFileRangeList struct {
 	Ranges []*FileRange `xml:"Range"`
 }
 
+// ShareFileRangeListSegment - The paginated list of file ranges
+type ShareFileRangeListSegment struct {
+	// The clear ranges.
+	ClearRanges []*ClearRange `xml:"ClearRange"`
+
+	// The next marker.
+	NextMarker *string `xml:"NextMarker"`
+
+	// The file ranges.
+	Ranges []*FileRange `xml:"Range"`
+}
+
 // ShareNFSSettings - Settings for SMB protocol.
 type ShareNFSSettings struct {
 	// Enable or disable encryption in transit.

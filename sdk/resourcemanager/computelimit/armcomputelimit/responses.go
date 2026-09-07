@@ -142,6 +142,35 @@ type SharedLimitsClientListBySubscriptionLocationResourceResponse struct {
 	SharedLimitListResult
 }
 
+// TrustedHostSubscriptionsClientCreateResponse contains the response from method TrustedHostSubscriptionsClient.Create.
+type TrustedHostSubscriptionsClientCreateResponse struct {
+	// A host subscription that a guest subscription trusts for sharing compute limits.
+	// A guest subscription can trust multiple host subscriptions; establishing trust does
+	// not by itself associate the guest with a host. Guest-to-host association happens at
+	// check-in time, where a subscription can be a guest of at most one host per region.
+	TrustedHostSubscription
+}
+
+// TrustedHostSubscriptionsClientDeleteResponse contains the response from method TrustedHostSubscriptionsClient.Delete.
+type TrustedHostSubscriptionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// TrustedHostSubscriptionsClientGetResponse contains the response from method TrustedHostSubscriptionsClient.Get.
+type TrustedHostSubscriptionsClientGetResponse struct {
+	// A host subscription that a guest subscription trusts for sharing compute limits.
+	// A guest subscription can trust multiple host subscriptions; establishing trust does
+	// not by itself associate the guest with a host. Guest-to-host association happens at
+	// check-in time, where a subscription can be a guest of at most one host per region.
+	TrustedHostSubscription
+}
+
+// TrustedHostSubscriptionsClientListBySubscriptionLocationResourceResponse contains the response from method TrustedHostSubscriptionsClient.NewListBySubscriptionLocationResourcePager.
+type TrustedHostSubscriptionsClientListBySubscriptionLocationResourceResponse struct {
+	// The response of a TrustedHostSubscription list operation.
+	TrustedHostSubscriptionListResult
+}
+
 // VMFamiliesClientGetResponse contains the response from method VMFamiliesClient.Get.
 type VMFamiliesClientGetResponse struct {
 	// VM family resource representing a virtual machine family and its category.

@@ -158,7 +158,7 @@ func (i *IssueServerTransport) dispatchAddInvestigationResult(req *http.Request)
 	if i.srv.AddInvestigationResult == nil {
 		return nil, &nonRetriableError{errors.New("fake for method AddInvestigationResult not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/issues/(?P<issueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/addInvestigationResult`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/issues/(?P<issueName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/addInvestigationResult`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -199,7 +199,7 @@ func (i *IssueServerTransport) dispatchAddOrUpdateAlerts(req *http.Request) (*ht
 	if i.srv.AddOrUpdateAlerts == nil {
 		return nil, &nonRetriableError{errors.New("fake for method AddOrUpdateAlerts not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/issues/(?P<issueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/addOrUpdateAlerts`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/issues/(?P<issueName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/addOrUpdateAlerts`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -240,7 +240,7 @@ func (i *IssueServerTransport) dispatchAddOrUpdateResources(req *http.Request) (
 	if i.srv.AddOrUpdateResources == nil {
 		return nil, &nonRetriableError{errors.New("fake for method AddOrUpdateResources not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/issues/(?P<issueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/addOrUpdateResources`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/issues/(?P<issueName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/addOrUpdateResources`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -281,7 +281,7 @@ func (i *IssueServerTransport) dispatchCreate(req *http.Request) (*http.Response
 	if i.srv.Create == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/issues/(?P<issueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/issues/(?P<issueName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -330,7 +330,7 @@ func (i *IssueServerTransport) dispatchDelete(req *http.Request) (*http.Response
 	if i.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/issues/(?P<issueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/issues/(?P<issueName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -367,7 +367,7 @@ func (i *IssueServerTransport) dispatchFetchBackgroundVisualization(req *http.Re
 	if i.srv.FetchBackgroundVisualization == nil {
 		return nil, &nonRetriableError{errors.New("fake for method FetchBackgroundVisualization not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/issues/(?P<issueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fetchBackgroundVisualization`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/issues/(?P<issueName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fetchBackgroundVisualization`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -404,7 +404,7 @@ func (i *IssueServerTransport) dispatchFetchInvestigationResult(req *http.Reques
 	if i.srv.FetchInvestigationResult == nil {
 		return nil, &nonRetriableError{errors.New("fake for method FetchInvestigationResult not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/issues/(?P<issueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fetchInvestigationResult`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/issues/(?P<issueName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fetchInvestigationResult`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -445,7 +445,7 @@ func (i *IssueServerTransport) dispatchGet(req *http.Request) (*http.Response, e
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/issues/(?P<issueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/issues/(?P<issueName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -484,7 +484,7 @@ func (i *IssueServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 	}
 	newListPager := i.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/issues`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/issues`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -523,7 +523,7 @@ func (i *IssueServerTransport) dispatchListAlerts(req *http.Request) (*http.Resp
 	if i.srv.ListAlerts == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListAlerts not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/issues/(?P<issueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listAlerts`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/issues/(?P<issueName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listAlerts`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -564,7 +564,7 @@ func (i *IssueServerTransport) dispatchListResources(req *http.Request) (*http.R
 	if i.srv.ListResources == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListResources not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/issues/(?P<issueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listResources`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/issues/(?P<issueName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listResources`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -605,7 +605,7 @@ func (i *IssueServerTransport) dispatchSetBackgroundVisualization(req *http.Requ
 	if i.srv.SetBackgroundVisualization == nil {
 		return nil, &nonRetriableError{errors.New("fake for method SetBackgroundVisualization not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/issues/(?P<issueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/setBackgroundVisualization`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/issues/(?P<issueName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/setBackgroundVisualization`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -646,7 +646,7 @@ func (i *IssueServerTransport) dispatchUpdate(req *http.Request) (*http.Response
 	if i.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/issues/(?P<issueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Monitor/accounts/(?P<azureMonitorWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/issues/(?P<issueName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

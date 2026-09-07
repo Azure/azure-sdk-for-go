@@ -79,8 +79,7 @@ func (client *DependencyOfRelationshipsClient) createOrUpdate(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -151,8 +150,7 @@ func (client *DependencyOfRelationshipsClient) deleteOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -198,12 +196,7 @@ func (client *DependencyOfRelationshipsClient) Get(ctx context.Context, resource
 	if err != nil {
 		return DependencyOfRelationshipsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DependencyOfRelationshipsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -229,8 +222,11 @@ func (client *DependencyOfRelationshipsClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *DependencyOfRelationshipsClient) getHandleResponse(resp *http.Response) (DependencyOfRelationshipsClientGetResponse, error) {
+func (client *DependencyOfRelationshipsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DependencyOfRelationshipsClientGetResponse, error) {
 	result := DependencyOfRelationshipsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DependencyOfRelationship); err != nil {
 		return DependencyOfRelationshipsClientGetResponse{}, err
 	}

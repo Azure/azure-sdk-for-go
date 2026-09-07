@@ -1,5 +1,12 @@
 # Release History
 
+## 3.2.0 (2026-08-13)
+### Features Added
+
+- New struct `RegionOfChoiceSettings`
+- New field `RegionOfChoiceSettings` in struct `VaultProperties`
+
+
 ## 3.1.0 (2026-07-07)
 ### Features Added
 

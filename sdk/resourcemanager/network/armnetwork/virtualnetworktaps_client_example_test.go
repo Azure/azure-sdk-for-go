@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/VirtualNetworkTapCreate.json
+// Generated from example definition: 2025-09-01/VirtualNetworkTapCreate.json
 func ExampleVirtualNetworkTapsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleVirtualNetworkTapsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkTapDelete.json
+// Generated from example definition: 2025-09-01/VirtualNetworkTapDelete.json
 func ExampleVirtualNetworkTapsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleVirtualNetworkTapsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkTapGet.json
+// Generated from example definition: 2025-09-01/VirtualNetworkTapGet.json
 func ExampleVirtualNetworkTapsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func ExampleVirtualNetworkTapsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkTapListAll.json
+// Generated from example definition: 2025-09-01/VirtualNetworkTapListAll.json
 func ExampleVirtualNetworkTapsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -204,7 +204,7 @@ func ExampleVirtualNetworkTapsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkTapList.json
+// Generated from example definition: 2025-09-01/VirtualNetworkTapList.json
 func ExampleVirtualNetworkTapsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,7 +275,7 @@ func ExampleVirtualNetworkTapsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkTapUpdateTags.json
+// Generated from example definition: 2025-09-01/VirtualNetworkTapUpdateTags.json
 func ExampleVirtualNetworkTapsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -14,6 +14,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/stretchr/testify/require"
 )
 
@@ -340,7 +341,7 @@ func TestRetryReaderReadNegativeNonRetriableError(t *testing.T) {
 	body.doInjectError = true
 	body.doInjectErrorByteIndex = 0
 	body.doInjectTimes = 1
-	body.injectedError = fmt.Errorf("not retriable error")
+	body.injectedError = errorinfo.NonRetriableError(fmt.Errorf("not retriable error"))
 
 	startResponseBody := body
 
@@ -427,4 +428,147 @@ func TestRetryReaderReadWithForcedRetry(t *testing.T) {
 			require.Error(t, err)
 		}
 	}
+}
+
+// TestRetryReaderNonRetriableErrorNotRetried verifies that an error wrapped with
+// errorinfo.NonRetriableError is never retried, regardless of retry budget.
+func TestRetryReaderNonRetriableErrorNotRetried(t *testing.T) {
+	byteCount := 1
+	body := newPerByteReader(byteCount)
+	body.doInjectError = true
+	body.doInjectErrorByteIndex = 0
+	body.doInjectTimes = 1
+	body.injectedError = errorinfo.NonRetriableError(fmt.Errorf("permanent failure"))
+
+	getter := func(ctx context.Context, info httpGetterInfo) (io.ReadCloser, error) {
+		r := http.Response{}
+		body.currentByteIndex = int(info.Range.Offset)
+		r.Body = body
+		return r.Body, nil
+	}
+
+	httpGetterInfo := httpGetterInfo{
+		Range: HTTPRange{
+			Count: int64(byteCount),
+		},
+	}
+	initResponse, err := getter(context.Background(), httpGetterInfo)
+	require.NoError(t, err)
+
+	retryReader := newRetryReader(context.Background(), initResponse, httpGetterInfo, getter, RetryReaderOptions{MaxRetries: 3})
+
+	dest := make([]byte, 1)
+	_, err = retryReader.Read(dest)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "permanent failure")
+}
+
+// TestRetryReaderGenericErrorIsRetried verifies that a plain error (not net.Error, not
+// io.ErrUnexpectedEOF, not NonRetriable) is retried under the new model.
+func TestRetryReaderGenericErrorIsRetried(t *testing.T) {
+	byteCount := 1
+	body := newPerByteReader(byteCount)
+	body.doInjectError = true
+	body.doInjectErrorByteIndex = 0
+	body.doInjectTimes = 1
+	body.injectedError = fmt.Errorf("transient hiccup")
+
+	getter := func(ctx context.Context, info httpGetterInfo) (io.ReadCloser, error) {
+		r := http.Response{}
+		body.currentByteIndex = int(info.Range.Offset)
+		r.Body = body
+		return r.Body, nil
+	}
+
+	httpGetterInfo := httpGetterInfo{
+		Range: HTTPRange{
+			Count: int64(byteCount),
+		},
+	}
+	initResponse, err := getter(context.Background(), httpGetterInfo)
+	require.NoError(t, err)
+
+	retryReader := newRetryReader(context.Background(), initResponse, httpGetterInfo, getter, RetryReaderOptions{MaxRetries: 1})
+
+	can := make([]byte, 1)
+	n, err := retryReader.Read(can)
+	require.Equal(t, 1, n)
+	require.NoError(t, err)
+}
+
+// TestRetryReaderContextCanceledNotRetried verifies that errors are not retried when the
+// parent context has been canceled, matching azcore's retry policy behavior.
+func TestRetryReaderContextCanceledNotRetried(t *testing.T) {
+	byteCount := 1
+	body := newPerByteReader(byteCount)
+	body.doInjectError = true
+	body.doInjectErrorByteIndex = 0
+	body.doInjectTimes = 1
+	body.injectedError = context.Canceled
+
+	getter := func(ctx context.Context, info httpGetterInfo) (io.ReadCloser, error) {
+		r := http.Response{}
+		body.currentByteIndex = int(info.Range.Offset)
+		r.Body = body
+		return r.Body, nil
+	}
+
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	httpGetterInfo := httpGetterInfo{
+		Range: HTTPRange{
+			Count: int64(byteCount),
+		},
+	}
+	initResponse, err := getter(ctx, httpGetterInfo)
+	require.NoError(t, err)
+
+	retryReader := newRetryReader(ctx, initResponse, httpGetterInfo, getter, RetryReaderOptions{MaxRetries: 3})
+
+	dest := make([]byte, 1)
+	_, err = retryReader.Read(dest)
+	require.Error(t, err)
+}
+
+// TestRetryReaderWithRetryWrappedNetError verifies that a net.Error wrapped in an error chain via
+// fmt.Errorf("...: %w", err) — as the structured message decoder does for segment-read failures —
+// is still classified as retryable. The previous direct type assertion err.(net.Error) did not
+// unwrap the chain and so would not retry these transient failures.
+func TestRetryReaderWithRetryWrappedNetError(t *testing.T) {
+	byteCount := 1
+	body := newPerByteReader(byteCount)
+	body.doInjectError = true
+	body.doInjectErrorByteIndex = 0
+	body.doInjectTimes = 1
+	// A net.Error wrapped in an error chain, mirroring SMDecoder's fmt.Errorf("segment %d: %w", ...).
+	body.injectedError = fmt.Errorf("segment 1: %w", &net.DNSError{IsTemporary: true})
+
+	getter := func(ctx context.Context, info httpGetterInfo) (io.ReadCloser, error) {
+		r := http.Response{}
+		body.currentByteIndex = int(info.Range.Offset)
+		r.Body = body
+		return r.Body, nil
+	}
+
+	httpGetterInfo := httpGetterInfo{
+		Range: HTTPRange{
+			Count: int64(byteCount),
+		},
+	}
+	initResponse, err := getter(context.Background(), httpGetterInfo)
+	require.NoError(t, err)
+
+	retryReader := newRetryReader(context.Background(), initResponse, httpGetterInfo, getter, RetryReaderOptions{MaxRetries: 1})
+
+	// The wrapped net.Error should be recognized as retryable, and the retry should succeed.
+	can := make([]byte, 1)
+	n, err := retryReader.Read(can)
+	require.Equal(t, 1, n)
+	require.NoError(t, err)
+
+	// Subsequent read returns EOF.
+	n, err = retryReader.Read(can)
+	require.Equal(t, 0, n)
+	require.Equal(t, io.EOF, err)
 }

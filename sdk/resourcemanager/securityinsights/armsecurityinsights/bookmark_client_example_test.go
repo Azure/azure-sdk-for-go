@@ -25,9 +25,9 @@ func ExampleBookmarkClient_Expand() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewBookmarkClient().Expand(ctx, "myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", armsecurityinsights.BookmarkExpandParameters{
-		EndTime:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-24T17:21:00.000Z"); return t }()),
+		EndTime:     to.Ptr(time.Date(2020, time.January, 24, 17, 21, 0, 0, time.UTC)),
 		ExpansionID: to.Ptr("27f76e63-c41b-480f-bb18-12ad2e011d49"),
-		StartTime:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-25T17:21:00.000Z"); return t }()),
+		StartTime:   to.Ptr(time.Date(2019, time.December, 25, 17, 21, 0, 0, time.UTC)),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -54,7 +54,7 @@ func ExampleReplicationLinksClient_BeginCreateOrUpdate() {
 	// 			ReplicationMode: to.Ptr("ASYNC"),
 	// 			ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
 	// 			Role: to.Ptr(armsql.ReplicationRolePrimary),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-21T08:12:43.783Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 12, 43, 783000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -124,7 +124,7 @@ func ExampleReplicationLinksClient_BeginFailover() {
 	// 			ReplicationMode: to.Ptr("ASYNC"),
 	// 			ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
 	// 			Role: to.Ptr(armsql.ReplicationRolePrimary),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-21T08:12:43.783Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 12, 43, 783000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -168,7 +168,7 @@ func ExampleReplicationLinksClient_BeginFailoverAllowDataLoss() {
 	// 			ReplicationMode: to.Ptr("ASYNC"),
 	// 			ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
 	// 			Role: to.Ptr(armsql.ReplicationRolePrimary),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-21T08:12:43.783Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 12, 43, 783000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -208,7 +208,7 @@ func ExampleReplicationLinksClient_Get() {
 	// 			ReplicationMode: to.Ptr("ASYNC"),
 	// 			ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
 	// 			Role: to.Ptr(armsql.ReplicationRolePrimary),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-21T08:12:43.783Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 12, 43, 783000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -254,7 +254,7 @@ func ExampleReplicationLinksClient_NewListByDatabasePager() {
 		// 					ReplicationMode: to.Ptr("ASYNC"),
 		// 					ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
 		// 					Role: to.Ptr(armsql.ReplicationRolePrimary),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-21T08:11:46.907Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 11, 46, 907000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -272,7 +272,7 @@ func ExampleReplicationLinksClient_NewListByDatabasePager() {
 		// 					ReplicationMode: to.Ptr("ASYNC"),
 		// 					ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
 		// 					Role: to.Ptr(armsql.ReplicationRolePrimary),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-21T08:11:34.423Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 11, 34, 423000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -321,7 +321,7 @@ func ExampleReplicationLinksClient_NewListByServerPager() {
 		// 					ReplicationMode: to.Ptr("ASYNC"),
 		// 					ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
 		// 					Role: to.Ptr(armsql.ReplicationRolePrimary),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-21T08:11:46.907Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 11, 46, 907000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -339,7 +339,7 @@ func ExampleReplicationLinksClient_NewListByServerPager() {
 		// 					ReplicationMode: to.Ptr("ASYNC"),
 		// 					ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
 		// 					Role: to.Ptr(armsql.ReplicationRolePrimary),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-21T08:11:34.423Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 11, 34, 423000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -357,7 +357,7 @@ func ExampleReplicationLinksClient_NewListByServerPager() {
 		// 					ReplicationMode: to.Ptr("ASYNC"),
 		// 					ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
 		// 					Role: to.Ptr(armsql.ReplicationRolePrimary),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-21T08:12:43.783Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 12, 43, 783000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -408,7 +408,7 @@ func ExampleReplicationLinksClient_BeginUpdate() {
 	// 			ReplicationMode: to.Ptr("ASYNC"),
 	// 			ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
 	// 			Role: to.Ptr(armsql.ReplicationRolePrimary),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-21T08:12:43.783Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 12, 43, 783000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

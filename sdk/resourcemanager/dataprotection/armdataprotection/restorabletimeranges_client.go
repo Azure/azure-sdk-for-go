@@ -30,6 +30,9 @@ type RestorableTimeRangesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRestorableTimeRangesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableTimeRangesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *RestorableTimeRangesClient) Find(ctx context.Context, resourceGrou
 	if err != nil {
 		return RestorableTimeRangesClientFindResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RestorableTimeRangesClientFindResponse{}, err
-	}
-	resp, err := client.findHandleResponse(httpResp)
-	return resp, err
+	return client.findHandleResponse(httpResp, http.StatusOK)
 }
 
 // findCreateRequest creates the Find request.
 func (client *RestorableTimeRangesClient) findCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters AzureBackupFindRestorableTimeRangesRequest, _ *RestorableTimeRangesClientFindOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/findRestorableTimeRanges"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -106,8 +104,11 @@ func (client *RestorableTimeRangesClient) findCreateRequest(ctx context.Context,
 }
 
 // findHandleResponse handles the Find response.
-func (client *RestorableTimeRangesClient) findHandleResponse(resp *http.Response) (RestorableTimeRangesClientFindResponse, error) {
+func (client *RestorableTimeRangesClient) findHandleResponse(resp *http.Response, successCodes ...int) (RestorableTimeRangesClientFindResponse, error) {
 	result := RestorableTimeRangesClientFindResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureBackupFindRestorableTimeRangesResponseResource); err != nil {
 		return RestorableTimeRangesClientFindResponse{}, err
 	}

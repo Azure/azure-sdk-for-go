@@ -37,7 +37,7 @@ func ExamplePriceSheetClient_BeginDownloadByBillingAccount() {
 	// 	OperationStatus: armcostmanagement.OperationStatus{
 	// 		Properties: &armcostmanagement.ReportURL{
 	// 			ReportURL: to.Ptr(armcostmanagement.ReservationReportSchema("https://myaccount.blob.core.windows.net/reportfile.csv?sv=2015-04-05&ss=bf&srt=s&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&spr=https&sig=G%2TEST%4B")),
-	// 			ValidUntil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-30T17:32:28Z"); return t}()),
+	// 			ValidUntil: to.Ptr(time.Date(2023, time.September, 30, 17, 32, 28, 0, time.UTC)),
 	// 		},
 	// 		Status: to.Ptr(armcostmanagement.OperationStatusTypeCompleted),
 	// 	},
@@ -69,7 +69,7 @@ func ExamplePriceSheetClient_BeginDownloadByBillingProfile() {
 	// res = armcostmanagement.PriceSheetClientDownloadByBillingProfileResponse{
 	// 	PricesheetDownloadProperties: armcostmanagement.PricesheetDownloadProperties{
 	// 		DownloadURL: to.Ptr("https://myaccount.blob.core.windows.net/?restype=service&comp=properties&sv=2015-04-05&ss=bf&srt=s&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&spr=https&sig=G%2TEST%4B"),
-	// 		ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-07-21T17:32:28Z"); return t}()),
+	// 		ExpiryTime: to.Ptr(time.Date(2018, time.July, 21, 17, 32, 28, 0, time.UTC)),
 	// 	},
 	// }
 }
@@ -99,7 +99,7 @@ func ExamplePriceSheetClient_BeginDownloadByInvoice() {
 	// res = armcostmanagement.PriceSheetClientDownloadByInvoiceResponse{
 	// 	DownloadURL: armcostmanagement.DownloadURL{
 	// 		DownloadURL: to.Ptr("https://myaccount.blob.core.windows.net/?restype=service&comp=properties&sv=2015-04-05&ss=bf&srt=s&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&spr=https&sig=G%2TEST%4B"),
-	// 		ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-30T17:32:28Z"); return t}()),
+	// 		ExpiryTime: to.Ptr(time.Date(2022, time.September, 30, 17, 32, 28, 0, time.UTC)),
 	// 	},
 	// }
 }

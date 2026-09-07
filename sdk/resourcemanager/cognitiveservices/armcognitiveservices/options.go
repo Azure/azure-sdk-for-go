@@ -232,6 +232,35 @@ type AgentDeploymentsClientStopOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ArcDeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the ArcDeploymentsClient.BeginCreateOrUpdate
+// method.
+type ArcDeploymentsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ArcDeploymentsClientBeginDeleteOptions contains the optional parameters for the ArcDeploymentsClient.BeginDelete method.
+type ArcDeploymentsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ArcDeploymentsClientBeginUpdateOptions contains the optional parameters for the ArcDeploymentsClient.BeginUpdate method.
+type ArcDeploymentsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ArcDeploymentsClientGetOptions contains the optional parameters for the ArcDeploymentsClient.Get method.
+type ArcDeploymentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ArcDeploymentsClientListOptions contains the optional parameters for the ArcDeploymentsClient.NewListPager method.
+type ArcDeploymentsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CommitmentPlansClientBeginCreateOrUpdateAssociationOptions contains the optional parameters for the CommitmentPlansClient.BeginCreateOrUpdateAssociation
 // method.
 type CommitmentPlansClientBeginCreateOrUpdateAssociationOptions struct {
@@ -354,12 +383,6 @@ type ComputesClientBeginStartOptions struct {
 
 // ComputesClientBeginStopOptions contains the optional parameters for the ComputesClient.BeginStop method.
 type ComputesClientBeginStopOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ComputesClientBeginUpdateOptions contains the optional parameters for the ComputesClient.BeginUpdate method.
-type ComputesClientBeginUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

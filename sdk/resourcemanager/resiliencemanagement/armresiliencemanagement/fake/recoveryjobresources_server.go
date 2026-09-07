@@ -92,7 +92,7 @@ func (r *RecoveryJobResourcesServerTransport) dispatchGet(req *http.Request) (*h
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryJobs/(?P<recoveryJobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryJobResources/(?P<recoveryJobResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recoveryJobs/(?P<recoveryJobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recoveryJobResources/(?P<recoveryJobResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -135,7 +135,7 @@ func (r *RecoveryJobResourcesServerTransport) dispatchNewListPager(req *http.Req
 	}
 	newListPager := r.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryJobs/(?P<recoveryJobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryJobResources`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recoveryJobs/(?P<recoveryJobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recoveryJobResources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

@@ -50,6 +50,15 @@ type AgentPoolsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// AgentPoolsClientBeginUpdateOptions contains the optional parameters for the AgentPoolsClient.BeginUpdate method.
+type AgentPoolsClientBeginUpdateOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // AgentPoolsClientBeginUpgradeNodeImageVersionOptions contains the optional parameters for the AgentPoolsClient.BeginUpgradeNodeImageVersion
 // method.
 type AgentPoolsClientBeginUpgradeNodeImageVersionOptions struct {
@@ -585,6 +594,13 @@ type OperationStatusResultClientGetByAgentPoolOptions struct {
 // OperationStatusResultClientGetOptions contains the optional parameters for the OperationStatusResultClient.Get method.
 type OperationStatusResultClientGetOptions struct {
 	// placeholder for future optional parameters
+}
+
+// OperationStatusResultClientListByAgentPoolOptions contains the optional parameters for the OperationStatusResultClient.NewListByAgentPoolPager
+// method.
+type OperationStatusResultClientListByAgentPoolOptions struct {
+	// If true, only return operations that are currently active (not terminal).
+	ActiveOnly *bool
 }
 
 // OperationStatusResultClientListOptions contains the optional parameters for the OperationStatusResultClient.NewListPager

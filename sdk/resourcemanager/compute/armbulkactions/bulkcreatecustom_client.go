@@ -20,7 +20,7 @@ import (
 // BulkCreateCustomClient contains the methods for the BulkCreateCustom group.
 // Don't use this type directly, use NewBulkCreateCustomClient() instead.
 //
-// Generated from API version 2026-07-06-preview
+// Generated from API version 2026-08-06-preview
 type BulkCreateCustomClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -31,6 +31,9 @@ type BulkCreateCustomClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBulkCreateCustomClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BulkCreateCustomClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -92,7 +95,7 @@ func (client *BulkCreateCustomClient) cancel(ctx context.Context, resourceGroupN
 func (client *BulkCreateCustomClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, _ *BulkCreateCustomClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}/cancel"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -112,7 +115,7 @@ func (client *BulkCreateCustomClient) cancelCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -168,7 +171,7 @@ func (client *BulkCreateCustomClient) createOrUpdate(ctx context.Context, resour
 func (client *BulkCreateCustomClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedBulkCreateCustom, _ *BulkCreateCustomClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -188,7 +191,7 @@ func (client *BulkCreateCustomClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -248,7 +251,7 @@ func (client *BulkCreateCustomClient) deleteOperation(ctx context.Context, resou
 func (client *BulkCreateCustomClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateCustomClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -268,7 +271,7 @@ func (client *BulkCreateCustomClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	if options != nil && options.DeleteInstances != nil {
 		reqQP.Set("deleteInstances", strconv.FormatBool(*options.DeleteInstances))
 	}
@@ -303,7 +306,7 @@ func (client *BulkCreateCustomClient) Get(ctx context.Context, resourceGroupName
 func (client *BulkCreateCustomClient) getCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, _ *BulkCreateCustomClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -323,7 +326,7 @@ func (client *BulkCreateCustomClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -368,7 +371,7 @@ func (client *BulkCreateCustomClient) GetAsyncOperationStatus(ctx context.Contex
 func (client *BulkCreateCustomClient) getAsyncOperationStatusCreateRequest(ctx context.Context, location string, asyncOperationID string, _ *BulkCreateCustomClientGetAsyncOperationStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/asyncOperations/{asyncOperationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -384,7 +387,7 @@ func (client *BulkCreateCustomClient) getAsyncOperationStatusCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -440,7 +443,7 @@ func (client *BulkCreateCustomClient) listByResourceGroupCreateRequest(ctx conte
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -460,7 +463,7 @@ func (client *BulkCreateCustomClient) listByResourceGroupCreateRequest(ctx conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260706Preview)
+		reqQP.Set("api-version", version20260806Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -516,7 +519,7 @@ func (client *BulkCreateCustomClient) listBySubscriptionCreateRequest(ctx contex
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if location == "" {
@@ -532,7 +535,7 @@ func (client *BulkCreateCustomClient) listBySubscriptionCreateRequest(ctx contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260706Preview)
+		reqQP.Set("api-version", version20260806Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -547,6 +550,88 @@ func (client *BulkCreateCustomClient) listBySubscriptionHandleResponse(resp *htt
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BulkCreateCustomListResult); err != nil {
 		return BulkCreateCustomClientListBySubscriptionResponse{}, err
+	}
+	return result, nil
+}
+
+// NewVirtualMachinesGetOperationStatusPager - Gets the operation status for virtual machines in a BulkCreateCustom operation.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - location - The location name.
+//   - name - The name of the BulkCreateCustom. The value must be an UUID.
+//   - options - BulkCreateCustomClientVirtualMachinesGetOperationStatusOptions contains the optional parameters for the BulkCreateCustomClient.NewVirtualMachinesGetOperationStatusPager
+//     method.
+func (client *BulkCreateCustomClient) NewVirtualMachinesGetOperationStatusPager(resourceGroupName string, location string, name string, options *BulkCreateCustomClientVirtualMachinesGetOperationStatusOptions) *runtime.Pager[BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse] {
+	return runtime.NewPager(runtime.PagingHandler[BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse]{
+		More: func(page BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse) (BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BulkCreateCustomClient.NewVirtualMachinesGetOperationStatusPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.virtualMachinesGetOperationStatusCreateRequest(ctx, resourceGroupName, location, name, nextLink, options)
+			if err != nil {
+				return BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse{}, err
+			}
+			return client.virtualMachinesGetOperationStatusHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// virtualMachinesGetOperationStatusCreateRequest creates the VirtualMachinesGetOperationStatus request.
+func (client *BulkCreateCustomClient) virtualMachinesGetOperationStatusCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, nextLink string, _ *BulkCreateCustomClientVirtualMachinesGetOperationStatusOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}/virtualMachinesGetOperationStatus"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260806Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// virtualMachinesGetOperationStatusHandleResponse handles the VirtualMachinesGetOperationStatus response.
+func (client *BulkCreateCustomClient) virtualMachinesGetOperationStatusHandleResponse(resp *http.Response, successCodes ...int) (BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse, error) {
+	result := BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.BulkCreateCustomOperationStatusListResult); err != nil {
+		return BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse{}, err
 	}
 	return result, nil
 }

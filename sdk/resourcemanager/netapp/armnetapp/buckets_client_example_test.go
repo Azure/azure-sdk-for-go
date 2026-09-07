@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/Buckets_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/Buckets_CreateOrUpdate.json
 func ExampleBucketsClient_BeginCreateOrUpdate_bucketsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleBucketsClient_BeginCreateOrUpdate_bucketsCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/Buckets_CreateOrUpdateWithAkv.json
+// Generated from example definition: 2026-06-15-preview/Buckets_CreateOrUpdateWithAkv.json
 func ExampleBucketsClient_BeginCreateOrUpdate_bucketsCreateOrUpdateWithAkv() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleBucketsClient_BeginCreateOrUpdate_bucketsCreateOrUpdateWithAkv() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/Buckets_Delete.json
+// Generated from example definition: 2026-06-15-preview/Buckets_Delete.json
 func ExampleBucketsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleBucketsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/Buckets_GenerateAkvCredentials.json
+// Generated from example definition: 2026-06-15-preview/Buckets_GenerateAkvCredentials.json
 func ExampleBucketsClient_BeginGenerateAkvCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +210,7 @@ func ExampleBucketsClient_BeginGenerateAkvCredentials() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/Buckets_GenerateCredentials.json
+// Generated from example definition: 2026-06-15-preview/Buckets_GenerateCredentials.json
 func ExampleBucketsClient_GenerateCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +239,7 @@ func ExampleBucketsClient_GenerateCredentials() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/Buckets_Get.json
+// Generated from example definition: 2026-06-15-preview/Buckets_Get.json
 func ExampleBucketsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -294,7 +294,7 @@ func ExampleBucketsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/Buckets_List.json
+// Generated from example definition: 2026-06-15-preview/Buckets_List.json
 func ExampleBucketsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -358,7 +358,7 @@ func ExampleBucketsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/Buckets_RefreshCertificate.json
+// Generated from example definition: 2026-06-15-preview/Buckets_RefreshCertificate.json
 func ExampleBucketsClient_BeginRefreshCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -379,7 +379,7 @@ func ExampleBucketsClient_BeginRefreshCertificate() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/Buckets_Update.json
+// Generated from example definition: 2026-06-15-preview/Buckets_Update.json
 func ExampleBucketsClient_BeginUpdate_bucketsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -437,7 +437,7 @@ func ExampleBucketsClient_BeginUpdate_bucketsUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/Buckets_UpdateWithAkv.json
+// Generated from example definition: 2026-06-15-preview/Buckets_UpdateWithAkv.json
 func ExampleBucketsClient_BeginUpdate_bucketsUpdateWithAkv() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

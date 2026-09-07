@@ -1,13 +1,21 @@
 # Release History
 
-## 1.11.0-beta.1 (Unreleased)
+## 1.11.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.11.0-beta.1 (2026-08-21)
 
 ### Features Added
 
 - Added `Client.NewListSessionsForQueuePager()` and `Client.NewListSessionsForSubscriptionPager()` to list the IDs of sessions in session-enabled queues and subscriptions. By default they list sessions that have active messages, as well as sessions that have session state set but no active messages; set `SessionStateUpdatedAfter` to instead list sessions whose session state was updated after a given time. (PR#26688)
 - Added `SQLFilterCount` and `CorrelationFilterCount` to `TopicRuntimeProperties`, exposing the total number of SQL filters and correlation filters across all of a topic's subscriptions, including the default rule each subscription is created with. The service reports these at api-version 2024-05 or later. (PR#27323)
-
-### Breaking Changes
 
 ### Bugs Fixed
 
@@ -17,6 +25,8 @@
 
 ### Other Changes
 
+- Added unit-testing guidance and a compile-checked example for code that uses
+  `Receiver` through a consumer-defined interface.
 - Every administration operation now runs against service api-version `2024-05`, where it previously ran against `2021-05`. Responses follow the 2024-05 contract, which adds fields to some entity descriptions, and the topic filter counts above require this version. Set `APIVersion` on the `azcore.ClientOptions` embedded in the client's `ClientOptions` to pin a different version. (PR#27323)
 - Cleaned up accumulated `golangci-lint` findings in `azservicebus` (deprecated
   `runtime.WithHTTPHeader` calls switched to `policy.WithHTTPHeader`, duplicate

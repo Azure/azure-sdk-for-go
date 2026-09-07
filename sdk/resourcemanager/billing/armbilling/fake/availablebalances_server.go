@@ -87,7 +87,7 @@ func (a *AvailableBalancesServerTransport) dispatchGetByBillingAccount(req *http
 	if a.srv.GetByBillingAccount == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByBillingAccount not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/availableBalance/default`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/availableBalance/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -116,7 +116,7 @@ func (a *AvailableBalancesServerTransport) dispatchGetByBillingProfile(req *http
 	if a.srv.GetByBillingProfile == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByBillingProfile not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/availableBalance/default`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/availableBalance/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

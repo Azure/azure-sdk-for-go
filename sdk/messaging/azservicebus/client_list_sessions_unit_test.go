@@ -223,10 +223,10 @@ func TestClient_ListSessionsForQueue_StopsOnEmptyFirstPage(t *testing.T) {
 	require.Len(t, link.calls, 1)
 }
 
-func TestClient_ListSessionsForQueue_ActiveModeSendsSentinel(t *testing.T) {
-	// Active-messages mode (SessionStateUpdatedAfter nil) must send the 10000-01-01 sentinel
+func TestClient_ListSessionsForQueue_DefaultListingModeSendsSentinel(t *testing.T) {
+	// Default listing mode (SessionStateUpdatedAfter nil) must send the 10000-01-01 sentinel
 	// (253402300800000 ms on the AMQP wire) so the service's .NET AMQP decoder
-	// clamps it to DateTime.MaxValue, triggering active-messages mode.
+	// clamps it to DateTime.MaxValue, listing sessions with active messages or stored session state.
 	link := &scriptedRPCLink{
 		t: t,
 		responses: []*amqpwrap.RPCResponse{

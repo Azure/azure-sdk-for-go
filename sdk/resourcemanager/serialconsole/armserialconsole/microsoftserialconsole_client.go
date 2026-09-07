@@ -31,6 +31,9 @@ type MicrosoftSerialConsoleClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMicrosoftSerialConsoleClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MicrosoftSerialConsoleClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -70,7 +73,7 @@ func (client *MicrosoftSerialConsoleClient) DisableConsole(ctx context.Context, 
 func (client *MicrosoftSerialConsoleClient) disableConsoleCreateRequest(ctx context.Context, defaultParam string, _ *MicrosoftSerialConsoleClientDisableConsoleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.SerialConsole/consoleServices/{default}/disableConsole"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if defaultParam == "" {
@@ -128,7 +131,7 @@ func (client *MicrosoftSerialConsoleClient) EnableConsole(ctx context.Context, d
 func (client *MicrosoftSerialConsoleClient) enableConsoleCreateRequest(ctx context.Context, defaultParam string, _ *MicrosoftSerialConsoleClientEnableConsoleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.SerialConsole/consoleServices/{default}/enableConsole"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if defaultParam == "" {
@@ -186,7 +189,7 @@ func (client *MicrosoftSerialConsoleClient) GetConsoleStatus(ctx context.Context
 func (client *MicrosoftSerialConsoleClient) getConsoleStatusCreateRequest(ctx context.Context, defaultParam string, _ *MicrosoftSerialConsoleClientGetConsoleStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.SerialConsole/consoleServices/{default}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if defaultParam == "" {

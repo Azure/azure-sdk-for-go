@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/HealthModels_Create.json
+// Generated from example definition: 2026-09-01-preview/HealthModels_Create.json
 func ExampleHealthModelsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleHealthModelsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/HealthModels_Delete.json
+// Generated from example definition: 2026-09-01-preview/HealthModels_Delete.json
 func ExampleHealthModelsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleHealthModelsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/HealthModels_Get.json
+// Generated from example definition: 2026-09-01-preview/HealthModels_Get.json
 func ExampleHealthModelsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +143,7 @@ func ExampleHealthModelsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/HealthModels_ListByResourceGroup.json
+// Generated from example definition: 2026-09-01-preview/HealthModels_ListByResourceGroup.json
 func ExampleHealthModelsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExampleHealthModelsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/HealthModels_ListBySubscription.json
+// Generated from example definition: 2026-09-01-preview/HealthModels_ListBySubscription.json
 func ExampleHealthModelsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -317,7 +317,7 @@ func ExampleHealthModelsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/HealthModels_Update.json
+// Generated from example definition: 2026-09-01-preview/HealthModels_Update.json
 func ExampleHealthModelsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

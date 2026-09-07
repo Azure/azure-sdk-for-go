@@ -87,7 +87,7 @@ func (e *ExtensionTypeServerTransport) dispatchNewListPager(req *http.Request) (
 	}
 	newListPager := e.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/providers/Microsoft\.HybridCompute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisher>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensionTypes`
+		const regexStr = `/providers/Microsoft\.HybridCompute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/publishers/(?P<publisher>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/extensionTypes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

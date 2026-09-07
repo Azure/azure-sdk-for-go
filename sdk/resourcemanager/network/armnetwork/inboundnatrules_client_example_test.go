@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/InboundNatRuleCreate.json
+// Generated from example definition: 2025-09-01/InboundNatRuleCreate.json
 func ExampleInboundNatRulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleInboundNatRulesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/InboundNatRuleDelete.json
+// Generated from example definition: 2025-09-01/InboundNatRuleDelete.json
 func ExampleInboundNatRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleInboundNatRulesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/InboundNatRuleGet.json
+// Generated from example definition: 2025-09-01/InboundNatRuleGet.json
 func ExampleInboundNatRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleInboundNatRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/InboundNatRuleList.json
+// Generated from example definition: 2025-09-01/InboundNatRuleList.json
 func ExampleInboundNatRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

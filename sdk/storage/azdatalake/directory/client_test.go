@@ -3818,6 +3818,42 @@ func (s *UnrecordedTestSuite) TestDirGetSetTagsDirIdentitySas() {
 	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
 }
 
+type captureTransport struct {
+	req *http.Request
+}
+
+func (c *captureTransport) Do(req *http.Request) (*http.Response, error) {
+	c.req = req
+	return &http.Response{
+		Request:    req,
+		Status:     "Created",
+		StatusCode: http.StatusCreated,
+		Header:     http.Header{},
+		Body:       http.NoBody,
+	}, nil
+}
+
+func TestDirectoryRenameEncodesSourcePath(t *testing.T) {
+	_require := require.New(t)
+	ct := &captureTransport{}
+
+	srcURL := "https://fake.dfs.core.windows.net/myfs/my%20dir"
+	dClient, err := directory.NewClientWithNoCredential(srcURL, &directory.ClientOptions{
+		ClientOptions: policy.ClientOptions{Transport: ct},
+	})
+	_require.NoError(err)
+
+	_, err = dClient.Rename(context.Background(), "renameddir", nil)
+	_require.NoError(err)
+	_require.NotNil(ct.req)
+
+	renameSourceVals := ct.req.Header["x-ms-rename-source"] //nolint:staticcheck // SA1008: the generated client stores this header under a non-canonical key, so it must be read with the same raw key.
+	_require.NotEmpty(renameSourceVals)
+	renameSource := renameSourceVals[0]
+	_require.Contains(renameSource, "my%20dir")
+	_require.NotContains(renameSource, "my dir")
+}
+
 func (s *UnrecordedTestSuite) TestDirGetSetTagsFileSystemIdentitySas() {
 	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
 	s.T().Skip("Datalake tags is in public preview and not GA yet")

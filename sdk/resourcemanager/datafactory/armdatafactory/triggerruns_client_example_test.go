@@ -56,8 +56,8 @@ func ExampleTriggerRunsClient_QueryByFactory() {
 				},
 			},
 		},
-		LastUpdatedAfter:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:36:44.3345758Z"); return t }()),
-		LastUpdatedBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:49:48.3686473Z"); return t }()),
+		LastUpdatedAfter:  to.Ptr(time.Date(2018, time.June, 16, 0, 36, 44, 334575800, time.UTC)),
+		LastUpdatedBefore: to.Ptr(time.Date(2018, time.June, 16, 0, 49, 48, 368647300, time.UTC)),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -77,7 +77,7 @@ func ExampleTriggerRunsClient_QueryByFactory() {
 	// 				Status: to.Ptr(armdatafactory.TriggerRunStatusSucceeded),
 	// 				TriggerName: to.Ptr("exampleTrigger"),
 	// 				TriggerRunID: to.Ptr("08586724970898148904457116912CU27"),
-	// 				TriggerRunTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:43:15.660141Z"); return t}()),
+	// 				TriggerRunTimestamp: to.Ptr(time.Date(2018, time.June, 16, 0, 43, 15, 660141000, time.UTC)),
 	// 				TriggerType: to.Ptr("ScheduleTrigger"),
 	// 				TriggeredPipelines: map[string]*string{
 	// 					"examplePipeline": to.Ptr("9f3ce8b3-37d7-43eb-96ac-a656c0476283"),

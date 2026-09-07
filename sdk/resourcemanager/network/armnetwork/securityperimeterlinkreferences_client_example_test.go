@@ -7,11 +7,11 @@ package armnetwork_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/NspLinkReferenceDelete.json
+// Generated from example definition: 2025-09-01/NspLinkReferenceDelete.json
 func ExampleSecurityPerimeterLinkReferencesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleSecurityPerimeterLinkReferencesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NspLinkReferenceGet.json
+// Generated from example definition: 2025-09-01/NspLinkReferenceGet.json
 func ExampleSecurityPerimeterLinkReferencesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,10 +81,10 @@ func ExampleSecurityPerimeterLinkReferencesClient_Get() {
 	// 			Status: to.Ptr(armnetwork.NspLinkStatusApproved),
 	// 		},
 	// 		SystemData: &armnetwork.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-07T18:07:36.3446713Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
 	// 			CreatedBy: to.Ptr("user"),
 	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-07T18:07:36.3446713Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user"),
 	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 	// 		},
@@ -92,7 +92,7 @@ func ExampleSecurityPerimeterLinkReferencesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NspLinkReferenceList.json
+// Generated from example definition: 2025-09-01/NspLinkReferenceList.json
 func ExampleSecurityPerimeterLinkReferencesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,10 +143,10 @@ func ExampleSecurityPerimeterLinkReferencesClient_NewListPager() {
 		// 					Status: to.Ptr(armnetwork.NspLinkStatusApproved),
 		// 				},
 		// 				SystemData: &armnetwork.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-07T18:07:36.3446713Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
 		// 					CreatedBy: to.Ptr("user"),
 		// 					CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-07T18:07:36.3446713Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user"),
 		// 					LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 		// 				},

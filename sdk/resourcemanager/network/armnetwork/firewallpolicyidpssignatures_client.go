@@ -19,7 +19,7 @@ import (
 // FirewallPolicyIdpsSignaturesClient contains the methods for the FirewallPolicyIdpsSignatures group.
 // Don't use this type directly, use NewFirewallPolicyIdpsSignaturesClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type FirewallPolicyIdpsSignaturesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type FirewallPolicyIdpsSignaturesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFirewallPolicyIdpsSignaturesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FirewallPolicyIdpsSignaturesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *FirewallPolicyIdpsSignaturesClient) List(ctx context.Context, reso
 	if err != nil {
 		return FirewallPolicyIdpsSignaturesClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FirewallPolicyIdpsSignaturesClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
 func (client *FirewallPolicyIdpsSignaturesClient) listCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters IDPSQueryObject, _ *FirewallPolicyIdpsSignaturesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/listIdpsSignatures"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -90,7 +88,7 @@ func (client *FirewallPolicyIdpsSignaturesClient) listCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -101,8 +99,11 @@ func (client *FirewallPolicyIdpsSignaturesClient) listCreateRequest(ctx context.
 }
 
 // listHandleResponse handles the List response.
-func (client *FirewallPolicyIdpsSignaturesClient) listHandleResponse(resp *http.Response) (FirewallPolicyIdpsSignaturesClientListResponse, error) {
+func (client *FirewallPolicyIdpsSignaturesClient) listHandleResponse(resp *http.Response, successCodes ...int) (FirewallPolicyIdpsSignaturesClientListResponse, error) {
 	result := FirewallPolicyIdpsSignaturesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryResults); err != nil {
 		return FirewallPolicyIdpsSignaturesClientListResponse{}, err
 	}

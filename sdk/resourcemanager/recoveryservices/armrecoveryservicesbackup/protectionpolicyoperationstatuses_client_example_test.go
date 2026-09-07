@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-31-preview/AzureIaasVm/ProtectionPolicyOperationStatuses_Get.json
+// Generated from example definition: 2026-07-01/AzureIaasVm/ProtectionPolicyOperationStatuses_Get.json
 func ExampleProtectionPolicyOperationStatusesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExampleProtectionPolicyOperationStatusesClient_Get() {
 	// res = armrecoveryservicesbackup.ProtectionPolicyOperationStatusesClientGetResponse{
 	// 	OperationStatus: armrecoveryservicesbackup.OperationStatus{
 	// 		Name: to.Ptr("GetProtectionPolicyOperationStatus"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-24T12:57:32.1142968Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2018, time.January, 24, 12, 57, 32, 114296800, time.UTC)),
 	// 		ID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		Properties: &armrecoveryservicesbackup.OperationStatusJobsExtendedInfo{
 	// 			FailedJobsError: map[string]*string{
@@ -42,7 +42,7 @@ func ExampleProtectionPolicyOperationStatusesClient_Get() {
 	// 			},
 	// 			ObjectType: to.Ptr("OperationStatusJobsExtendedInfo"),
 	// 		},
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-24T12:57:32.1142968Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2018, time.January, 24, 12, 57, 32, 114296800, time.UTC)),
 	// 		Status: to.Ptr(armrecoveryservicesbackup.OperationStatusValuesSucceeded),
 	// 	},
 	// }

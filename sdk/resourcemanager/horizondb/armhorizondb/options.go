@@ -4,6 +4,29 @@
 
 package armhorizondb
 
+// AdministratorsClientBeginCreateOrUpdateOptions contains the optional parameters for the AdministratorsClient.BeginCreateOrUpdate
+// method.
+type AdministratorsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AdministratorsClientBeginDeleteOptions contains the optional parameters for the AdministratorsClient.BeginDelete method.
+type AdministratorsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AdministratorsClientGetOptions contains the optional parameters for the AdministratorsClient.Get method.
+type AdministratorsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AdministratorsClientListOptions contains the optional parameters for the AdministratorsClient.NewListPager method.
+type AdministratorsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate method.
 type ClustersClientBeginCreateOrUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -12,6 +35,24 @@ type ClustersClientBeginCreateOrUpdateOptions struct {
 
 // ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
 type ClustersClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ClustersClientBeginRestartOptions contains the optional parameters for the ClustersClient.BeginRestart method.
+type ClustersClientBeginRestartOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ClustersClientBeginStartOptions contains the optional parameters for the ClustersClient.BeginStart method.
+type ClustersClientBeginStartOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ClustersClientBeginStopOptions contains the optional parameters for the ClustersClient.BeginStop method.
+type ClustersClientBeginStopOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -133,13 +174,6 @@ type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
-// PrivateEndpointConnectionsClientBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginUpdate
-// method.
-type PrivateEndpointConnectionsClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
 // method.
 type PrivateEndpointConnectionsClientGetOptions struct {
@@ -149,6 +183,12 @@ type PrivateEndpointConnectionsClientGetOptions struct {
 // PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
 // method.
 type PrivateEndpointConnectionsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientUpdateStatusOptions contains the optional parameters for the PrivateEndpointConnectionsClient.UpdateStatus
+// method.
+type PrivateEndpointConnectionsClientUpdateStatusOptions struct {
 	// placeholder for future optional parameters
 }
 

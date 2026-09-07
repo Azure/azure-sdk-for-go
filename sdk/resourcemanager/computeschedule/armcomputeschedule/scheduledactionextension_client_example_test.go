@@ -40,10 +40,10 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager_scheduledActionExte
 		// 				Properties: &armcomputeschedule.ScheduledActionsExtensionProperties{
 		// 					ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
 		// 					ActionType: to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.921Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.921Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 921000000, time.UTC)),
+		// 					EndTime: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 921000000, time.UTC)),
 		// 					Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "12:00:00"); return t}()),
+		// 						ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 12, 0, 0, 0, time.UTC)),
 		// 						TimeZone: to.Ptr("America/Los_Angeles"),
 		// 						RequestedWeekDays: []*armcomputeschedule.WeekDay{
 		// 							to.Ptr(armcomputeschedule.WeekDayMonday),
@@ -89,10 +89,10 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager_scheduledActionExte
 		// 				SystemData: &armcomputeschedule.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 641000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 641000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

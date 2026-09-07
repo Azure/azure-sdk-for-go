@@ -57,12 +57,7 @@ func (client *CheckNameAvailabilityClient) CheckAvailability(ctx context.Context
 	if err != nil {
 		return CheckNameAvailabilityClientCheckAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CheckNameAvailabilityClientCheckAvailabilityResponse{}, err
-	}
-	resp, err := client.checkAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkAvailabilityCreateRequest creates the CheckAvailability request.
@@ -91,8 +86,11 @@ func (client *CheckNameAvailabilityClient) checkAvailabilityCreateRequest(ctx co
 }
 
 // checkAvailabilityHandleResponse handles the CheckAvailability response.
-func (client *CheckNameAvailabilityClient) checkAvailabilityHandleResponse(resp *http.Response) (CheckNameAvailabilityClientCheckAvailabilityResponse, error) {
+func (client *CheckNameAvailabilityClient) checkAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (CheckNameAvailabilityClientCheckAvailabilityResponse, error) {
 	result := CheckNameAvailabilityClientCheckAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResponse); err != nil {
 		return CheckNameAvailabilityClientCheckAvailabilityResponse{}, err
 	}

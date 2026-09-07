@@ -48,15 +48,52 @@ type AgentPoolsClientGetUpgradeProfileResponse struct {
 	AgentPoolUpgradeProfile
 }
 
+// AgentPoolsClientListBootstrapDataResponse contains the response from method AgentPoolsClient.ListBootstrapData.
+type AgentPoolsClientListBootstrapDataResponse struct {
+	// Bootstrap configuration for a FlexNode pool.
+	PoolBootstrapData
+}
+
 // AgentPoolsClientListResponse contains the response from method AgentPoolsClient.NewListPager.
 type AgentPoolsClientListResponse struct {
 	// The response of a AgentPool list operation.
 	AgentPoolListResult
 }
 
+// AgentPoolsClientUpdateResponse contains the response from method AgentPoolsClient.BeginUpdate.
+type AgentPoolsClientUpdateResponse struct {
+	// Agent Pool.
+	AgentPool
+}
+
 // AgentPoolsClientUpgradeNodeImageVersionResponse contains the response from method AgentPoolsClient.BeginUpgradeNodeImageVersion.
 type AgentPoolsClientUpgradeNodeImageVersionResponse struct {
 	// placeholder for future response values
+}
+
+// AlertConfigurationsClientCreateOrUpdateResponse contains the response from method AlertConfigurationsClient.BeginCreateOrUpdate.
+type AlertConfigurationsClientCreateOrUpdateResponse struct {
+	// Alert configuration for a managed cluster. Allows configuring AKS-managed alerts
+	// that notify users of important cluster events and conditions.
+	AlertConfiguration
+}
+
+// AlertConfigurationsClientDeleteResponse contains the response from method AlertConfigurationsClient.BeginDelete.
+type AlertConfigurationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AlertConfigurationsClientGetResponse contains the response from method AlertConfigurationsClient.Get.
+type AlertConfigurationsClientGetResponse struct {
+	// Alert configuration for a managed cluster. Allows configuring AKS-managed alerts
+	// that notify users of important cluster events and conditions.
+	AlertConfiguration
+}
+
+// AlertConfigurationsClientListByManagedClusterResponse contains the response from method AlertConfigurationsClient.NewListByManagedClusterPager.
+type AlertConfigurationsClientListByManagedClusterResponse struct {
+	// The response of a AlertConfiguration list operation.
+	AlertConfigurationListResult
 }
 
 // ClientListNodeImageVersionsResponse contains the response from method Client.NewListNodeImageVersionsPager.
@@ -189,10 +226,8 @@ type MaintenanceConfigurationsClientListByManagedClusterResponse struct {
 
 // MaintenanceWindowsClientCreateOrUpdateResponse contains the response from method MaintenanceWindowsClient.BeginCreateOrUpdate.
 type MaintenanceWindowsClientCreateOrUpdateResponse struct {
-	// A maintenance window is a resource-group-scoped resource that defines a reusable
-	// maintenance schedule which can be linked to maintenance configurations on one
-	// or more managed clusters.
-	// For more information, see https://aka.ms/aks/maintenance-windows.
+	// A maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule which can be linked
+	// to maintenance configurations on one or more managed clusters. For more information, see https://aka.ms/aks/maintenance-windows.
 	MaintenanceWindowResource
 }
 
@@ -203,10 +238,8 @@ type MaintenanceWindowsClientDeleteResponse struct {
 
 // MaintenanceWindowsClientGetResponse contains the response from method MaintenanceWindowsClient.Get.
 type MaintenanceWindowsClientGetResponse struct {
-	// A maintenance window is a resource-group-scoped resource that defines a reusable
-	// maintenance schedule which can be linked to maintenance configurations on one
-	// or more managed clusters.
-	// For more information, see https://aka.ms/aks/maintenance-windows.
+	// A maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule which can be linked
+	// to maintenance configurations on one or more managed clusters. For more information, see https://aka.ms/aks/maintenance-windows.
 	MaintenanceWindowResource
 }
 
@@ -224,10 +257,8 @@ type MaintenanceWindowsClientListResponse struct {
 
 // MaintenanceWindowsClientUpdateTagsResponse contains the response from method MaintenanceWindowsClient.UpdateTags.
 type MaintenanceWindowsClientUpdateTagsResponse struct {
-	// A maintenance window is a resource-group-scoped resource that defines a reusable
-	// maintenance schedule which can be linked to maintenance configurations on one
-	// or more managed clusters.
-	// For more information, see https://aka.ms/aks/maintenance-windows.
+	// A maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule which can be linked
+	// to maintenance configurations on one or more managed clusters. For more information, see https://aka.ms/aks/maintenance-windows.
 	MaintenanceWindowResource
 }
 
@@ -514,6 +545,12 @@ type OperationStatusResultClientGetByAgentPoolResponse struct {
 type OperationStatusResultClientGetResponse struct {
 	// The current status of an async operation.
 	OperationStatusResult
+}
+
+// OperationStatusResultClientListByAgentPoolResponse contains the response from method OperationStatusResultClient.NewListByAgentPoolPager.
+type OperationStatusResultClientListByAgentPoolResponse struct {
+	// The operations list. It contains an URL link to get the next set of results.
+	OperationStatusResultList
 }
 
 // OperationStatusResultClientListResponse contains the response from method OperationStatusResultClient.NewListPager.

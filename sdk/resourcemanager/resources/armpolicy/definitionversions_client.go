@@ -31,6 +31,9 @@ type DefinitionVersionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDefinitionVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DefinitionVersionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,19 +67,14 @@ func (client *DefinitionVersionsClient) CreateOrUpdate(ctx context.Context, poli
 	if err != nil {
 		return DefinitionVersionsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return DefinitionVersionsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *DefinitionVersionsClient) createOrUpdateCreateRequest(ctx context.Context, policyDefinitionName string, policyDefinitionVersion string, parameters DefinitionVersion, _ *DefinitionVersionsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}/versions/{policyDefinitionVersion}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if policyDefinitionName == "" {
@@ -103,8 +101,11 @@ func (client *DefinitionVersionsClient) createOrUpdateCreateRequest(ctx context.
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DefinitionVersionsClient) createOrUpdateHandleResponse(resp *http.Response) (DefinitionVersionsClientCreateOrUpdateResponse, error) {
+func (client *DefinitionVersionsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (DefinitionVersionsClientCreateOrUpdateResponse, error) {
 	result := DefinitionVersionsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefinitionVersion); err != nil {
 		return DefinitionVersionsClientCreateOrUpdateResponse{}, err
 	}
@@ -135,12 +136,7 @@ func (client *DefinitionVersionsClient) CreateOrUpdateAtManagementGroup(ctx cont
 	if err != nil {
 		return DefinitionVersionsClientCreateOrUpdateAtManagementGroupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return DefinitionVersionsClientCreateOrUpdateAtManagementGroupResponse{}, err
-	}
-	resp, err := client.createOrUpdateAtManagementGroupHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateAtManagementGroupHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateAtManagementGroupCreateRequest creates the CreateOrUpdateAtManagementGroup request.
@@ -174,8 +170,11 @@ func (client *DefinitionVersionsClient) createOrUpdateAtManagementGroupCreateReq
 }
 
 // createOrUpdateAtManagementGroupHandleResponse handles the CreateOrUpdateAtManagementGroup response.
-func (client *DefinitionVersionsClient) createOrUpdateAtManagementGroupHandleResponse(resp *http.Response) (DefinitionVersionsClientCreateOrUpdateAtManagementGroupResponse, error) {
+func (client *DefinitionVersionsClient) createOrUpdateAtManagementGroupHandleResponse(resp *http.Response, successCodes ...int) (DefinitionVersionsClientCreateOrUpdateAtManagementGroupResponse, error) {
 	result := DefinitionVersionsClientCreateOrUpdateAtManagementGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefinitionVersion); err != nil {
 		return DefinitionVersionsClientCreateOrUpdateAtManagementGroupResponse{}, err
 	}
@@ -204,8 +203,7 @@ func (client *DefinitionVersionsClient) Delete(ctx context.Context, policyDefini
 		return DefinitionVersionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return DefinitionVersionsClientDeleteResponse{}, err
+		return DefinitionVersionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DefinitionVersionsClientDeleteResponse{}, nil
 }
@@ -214,7 +212,7 @@ func (client *DefinitionVersionsClient) Delete(ctx context.Context, policyDefini
 func (client *DefinitionVersionsClient) deleteCreateRequest(ctx context.Context, policyDefinitionName string, policyDefinitionVersion string, _ *DefinitionVersionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}/versions/{policyDefinitionVersion}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if policyDefinitionName == "" {
@@ -258,8 +256,7 @@ func (client *DefinitionVersionsClient) DeleteAtManagementGroup(ctx context.Cont
 		return DefinitionVersionsClientDeleteAtManagementGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return DefinitionVersionsClientDeleteAtManagementGroupResponse{}, err
+		return DefinitionVersionsClientDeleteAtManagementGroupResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DefinitionVersionsClientDeleteAtManagementGroupResponse{}, nil
 }
@@ -309,19 +306,14 @@ func (client *DefinitionVersionsClient) Get(ctx context.Context, policyDefinitio
 	if err != nil {
 		return DefinitionVersionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DefinitionVersionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *DefinitionVersionsClient) getCreateRequest(ctx context.Context, policyDefinitionName string, policyDefinitionVersion string, _ *DefinitionVersionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}/versions/{policyDefinitionVersion}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if policyDefinitionName == "" {
@@ -344,8 +336,11 @@ func (client *DefinitionVersionsClient) getCreateRequest(ctx context.Context, po
 }
 
 // getHandleResponse handles the Get response.
-func (client *DefinitionVersionsClient) getHandleResponse(resp *http.Response) (DefinitionVersionsClientGetResponse, error) {
+func (client *DefinitionVersionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DefinitionVersionsClientGetResponse, error) {
 	result := DefinitionVersionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefinitionVersion); err != nil {
 		return DefinitionVersionsClientGetResponse{}, err
 	}
@@ -375,12 +370,7 @@ func (client *DefinitionVersionsClient) GetAtManagementGroup(ctx context.Context
 	if err != nil {
 		return DefinitionVersionsClientGetAtManagementGroupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DefinitionVersionsClientGetAtManagementGroupResponse{}, err
-	}
-	resp, err := client.getAtManagementGroupHandleResponse(httpResp)
-	return resp, err
+	return client.getAtManagementGroupHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAtManagementGroupCreateRequest creates the GetAtManagementGroup request.
@@ -410,8 +400,11 @@ func (client *DefinitionVersionsClient) getAtManagementGroupCreateRequest(ctx co
 }
 
 // getAtManagementGroupHandleResponse handles the GetAtManagementGroup response.
-func (client *DefinitionVersionsClient) getAtManagementGroupHandleResponse(resp *http.Response) (DefinitionVersionsClientGetAtManagementGroupResponse, error) {
+func (client *DefinitionVersionsClient) getAtManagementGroupHandleResponse(resp *http.Response, successCodes ...int) (DefinitionVersionsClientGetAtManagementGroupResponse, error) {
 	result := DefinitionVersionsClientGetAtManagementGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefinitionVersion); err != nil {
 		return DefinitionVersionsClientGetAtManagementGroupResponse{}, err
 	}
@@ -439,12 +432,7 @@ func (client *DefinitionVersionsClient) GetBuiltIn(ctx context.Context, policyDe
 	if err != nil {
 		return DefinitionVersionsClientGetBuiltInResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DefinitionVersionsClientGetBuiltInResponse{}, err
-	}
-	resp, err := client.getBuiltInHandleResponse(httpResp)
-	return resp, err
+	return client.getBuiltInHandleResponse(httpResp, http.StatusOK)
 }
 
 // getBuiltInCreateRequest creates the GetBuiltIn request.
@@ -470,8 +458,11 @@ func (client *DefinitionVersionsClient) getBuiltInCreateRequest(ctx context.Cont
 }
 
 // getBuiltInHandleResponse handles the GetBuiltIn response.
-func (client *DefinitionVersionsClient) getBuiltInHandleResponse(resp *http.Response) (DefinitionVersionsClientGetBuiltInResponse, error) {
+func (client *DefinitionVersionsClient) getBuiltInHandleResponse(resp *http.Response, successCodes ...int) (DefinitionVersionsClientGetBuiltInResponse, error) {
 	result := DefinitionVersionsClientGetBuiltInResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefinitionVersion); err != nil {
 		return DefinitionVersionsClientGetBuiltInResponse{}, err
 	}
@@ -493,46 +484,60 @@ func (client *DefinitionVersionsClient) NewListPager(policyDefinitionName string
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, policyDefinitionName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, policyDefinitionName, nextLink, options)
 			if err != nil {
 				return DefinitionVersionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DefinitionVersionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *DefinitionVersionsClient) listCreateRequest(ctx context.Context, policyDefinitionName string, options *DefinitionVersionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}/versions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DefinitionVersionsClient) listCreateRequest(ctx context.Context, policyDefinitionName string, nextLink string, options *DefinitionVersionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}/versions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if policyDefinitionName == "" {
+			return nil, errors.New("parameter policyDefinitionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{policyDefinitionName}", url.PathEscape(policyDefinitionName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if policyDefinitionName == "" {
-		return nil, errors.New("parameter policyDefinitionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{policyDefinitionName}", url.PathEscape(policyDefinitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DefinitionVersionsClient) listHandleResponse(resp *http.Response) (DefinitionVersionsClientListResponse, error) {
+func (client *DefinitionVersionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (DefinitionVersionsClientListResponse, error) {
 	result := DefinitionVersionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefinitionVersionListResult); err != nil {
 		return DefinitionVersionsClientListResponse{}, err
 	}
@@ -559,19 +564,14 @@ func (client *DefinitionVersionsClient) ListAll(ctx context.Context, options *De
 	if err != nil {
 		return DefinitionVersionsClientListAllResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DefinitionVersionsClientListAllResponse{}, err
-	}
-	resp, err := client.listAllHandleResponse(httpResp)
-	return resp, err
+	return client.listAllHandleResponse(httpResp, http.StatusOK)
 }
 
 // listAllCreateRequest creates the ListAll request.
 func (client *DefinitionVersionsClient) listAllCreateRequest(ctx context.Context, _ *DefinitionVersionsClientListAllOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/listPolicyDefinitionVersions"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -586,8 +586,11 @@ func (client *DefinitionVersionsClient) listAllCreateRequest(ctx context.Context
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *DefinitionVersionsClient) listAllHandleResponse(resp *http.Response) (DefinitionVersionsClientListAllResponse, error) {
+func (client *DefinitionVersionsClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (DefinitionVersionsClientListAllResponse, error) {
 	result := DefinitionVersionsClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefinitionVersionListResult); err != nil {
 		return DefinitionVersionsClientListAllResponse{}, err
 	}
@@ -615,12 +618,7 @@ func (client *DefinitionVersionsClient) ListAllAtManagementGroup(ctx context.Con
 	if err != nil {
 		return DefinitionVersionsClientListAllAtManagementGroupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DefinitionVersionsClientListAllAtManagementGroupResponse{}, err
-	}
-	resp, err := client.listAllAtManagementGroupHandleResponse(httpResp)
-	return resp, err
+	return client.listAllAtManagementGroupHandleResponse(httpResp, http.StatusOK)
 }
 
 // listAllAtManagementGroupCreateRequest creates the ListAllAtManagementGroup request.
@@ -642,8 +640,11 @@ func (client *DefinitionVersionsClient) listAllAtManagementGroupCreateRequest(ct
 }
 
 // listAllAtManagementGroupHandleResponse handles the ListAllAtManagementGroup response.
-func (client *DefinitionVersionsClient) listAllAtManagementGroupHandleResponse(resp *http.Response) (DefinitionVersionsClientListAllAtManagementGroupResponse, error) {
+func (client *DefinitionVersionsClient) listAllAtManagementGroupHandleResponse(resp *http.Response, successCodes ...int) (DefinitionVersionsClientListAllAtManagementGroupResponse, error) {
 	result := DefinitionVersionsClientListAllAtManagementGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefinitionVersionListResult); err != nil {
 		return DefinitionVersionsClientListAllAtManagementGroupResponse{}, err
 	}
@@ -670,12 +671,7 @@ func (client *DefinitionVersionsClient) ListAllBuiltins(ctx context.Context, opt
 	if err != nil {
 		return DefinitionVersionsClientListAllBuiltinsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DefinitionVersionsClientListAllBuiltinsResponse{}, err
-	}
-	resp, err := client.listAllBuiltinsHandleResponse(httpResp)
-	return resp, err
+	return client.listAllBuiltinsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listAllBuiltinsCreateRequest creates the ListAllBuiltins request.
@@ -693,8 +689,11 @@ func (client *DefinitionVersionsClient) listAllBuiltinsCreateRequest(ctx context
 }
 
 // listAllBuiltinsHandleResponse handles the ListAllBuiltins response.
-func (client *DefinitionVersionsClient) listAllBuiltinsHandleResponse(resp *http.Response) (DefinitionVersionsClientListAllBuiltinsResponse, error) {
+func (client *DefinitionVersionsClient) listAllBuiltinsHandleResponse(resp *http.Response, successCodes ...int) (DefinitionVersionsClientListAllBuiltinsResponse, error) {
 	result := DefinitionVersionsClientListAllBuiltinsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefinitionVersionListResult); err != nil {
 		return DefinitionVersionsClientListAllBuiltinsResponse{}, err
 	}
@@ -717,42 +716,56 @@ func (client *DefinitionVersionsClient) NewListBuiltInPager(policyDefinitionName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBuiltInCreateRequest(ctx, policyDefinitionName, options)
-			}, nil)
+			req, err := client.listBuiltInCreateRequest(ctx, policyDefinitionName, nextLink, options)
 			if err != nil {
 				return DefinitionVersionsClientListBuiltInResponse{}, err
 			}
-			return client.listBuiltInHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DefinitionVersionsClientListBuiltInResponse{}, err
+			}
+			return client.listBuiltInHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBuiltInCreateRequest creates the ListBuiltIn request.
-func (client *DefinitionVersionsClient) listBuiltInCreateRequest(ctx context.Context, policyDefinitionName string, options *DefinitionVersionsClientListBuiltInOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}/versions"
-	if policyDefinitionName == "" {
-		return nil, errors.New("parameter policyDefinitionName cannot be empty")
+func (client *DefinitionVersionsClient) listBuiltInCreateRequest(ctx context.Context, policyDefinitionName string, nextLink string, options *DefinitionVersionsClientListBuiltInOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}/versions"
+		if policyDefinitionName == "" {
+			return nil, errors.New("parameter policyDefinitionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{policyDefinitionName}", url.PathEscape(policyDefinitionName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{policyDefinitionName}", url.PathEscape(policyDefinitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBuiltInHandleResponse handles the ListBuiltIn response.
-func (client *DefinitionVersionsClient) listBuiltInHandleResponse(resp *http.Response) (DefinitionVersionsClientListBuiltInResponse, error) {
+func (client *DefinitionVersionsClient) listBuiltInHandleResponse(resp *http.Response, successCodes ...int) (DefinitionVersionsClientListBuiltInResponse, error) {
 	result := DefinitionVersionsClientListBuiltInResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefinitionVersionListResult); err != nil {
 		return DefinitionVersionsClientListBuiltInResponse{}, err
 	}
@@ -776,46 +789,60 @@ func (client *DefinitionVersionsClient) NewListByManagementGroupPager(management
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByManagementGroupCreateRequest(ctx, managementGroupName, policyDefinitionName, options)
-			}, nil)
+			req, err := client.listByManagementGroupCreateRequest(ctx, managementGroupName, policyDefinitionName, nextLink, options)
 			if err != nil {
 				return DefinitionVersionsClientListByManagementGroupResponse{}, err
 			}
-			return client.listByManagementGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DefinitionVersionsClientListByManagementGroupResponse{}, err
+			}
+			return client.listByManagementGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByManagementGroupCreateRequest creates the ListByManagementGroup request.
-func (client *DefinitionVersionsClient) listByManagementGroupCreateRequest(ctx context.Context, managementGroupName string, policyDefinitionName string, options *DefinitionVersionsClientListByManagementGroupOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupName}/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}/versions"
-	if managementGroupName == "" {
-		return nil, errors.New("parameter managementGroupName cannot be empty")
+func (client *DefinitionVersionsClient) listByManagementGroupCreateRequest(ctx context.Context, managementGroupName string, policyDefinitionName string, nextLink string, options *DefinitionVersionsClientListByManagementGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupName}/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}/versions"
+		if managementGroupName == "" {
+			return nil, errors.New("parameter managementGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managementGroupName}", url.PathEscape(managementGroupName))
+		if policyDefinitionName == "" {
+			return nil, errors.New("parameter policyDefinitionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{policyDefinitionName}", url.PathEscape(policyDefinitionName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupName}", url.PathEscape(managementGroupName))
-	if policyDefinitionName == "" {
-		return nil, errors.New("parameter policyDefinitionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{policyDefinitionName}", url.PathEscape(policyDefinitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByManagementGroupHandleResponse handles the ListByManagementGroup response.
-func (client *DefinitionVersionsClient) listByManagementGroupHandleResponse(resp *http.Response) (DefinitionVersionsClientListByManagementGroupResponse, error) {
+func (client *DefinitionVersionsClient) listByManagementGroupHandleResponse(resp *http.Response, successCodes ...int) (DefinitionVersionsClientListByManagementGroupResponse, error) {
 	result := DefinitionVersionsClientListByManagementGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefinitionVersionListResult); err != nil {
 		return DefinitionVersionsClientListByManagementGroupResponse{}, err
 	}

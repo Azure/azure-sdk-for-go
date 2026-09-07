@@ -5,7 +5,7 @@
 package armhybridcompute
 
 const (
-	version20260616Preview string = "2026-06-16-preview"
+	version20260715 string = "2026-07-15"
 )
 
 // AccessMode - Property that impacts a resource's logging behavior and its connectivity with other resources and public networks.

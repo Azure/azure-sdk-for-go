@@ -109,7 +109,7 @@ func (p *ProjectCatalogImageDefinitionsServerTransport) dispatchBeginBuildImage(
 	}
 	beginBuildImage := p.beginBuildImage.get(req)
 	if beginBuildImage == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/catalogs/(?P<catalogName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/imageDefinitions/(?P<imageDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/buildImage`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/catalogs/(?P<catalogName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/imageDefinitions/(?P<imageDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/buildImage`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -159,7 +159,7 @@ func (p *ProjectCatalogImageDefinitionsServerTransport) dispatchGetByProjectCata
 	if p.srv.GetByProjectCatalog == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByProjectCatalog not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/catalogs/(?P<catalogName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/imageDefinitions/(?P<imageDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/catalogs/(?P<catalogName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/imageDefinitions/(?P<imageDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -200,7 +200,7 @@ func (p *ProjectCatalogImageDefinitionsServerTransport) dispatchGetErrorDetails(
 	if p.srv.GetErrorDetails == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetErrorDetails not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/catalogs/(?P<catalogName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/imageDefinitions/(?P<imageDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getErrorDetails`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/catalogs/(?P<catalogName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/imageDefinitions/(?P<imageDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getErrorDetails`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -243,7 +243,7 @@ func (p *ProjectCatalogImageDefinitionsServerTransport) dispatchNewListByProject
 	}
 	newListByProjectCatalogPager := p.newListByProjectCatalogPager.get(req)
 	if newListByProjectCatalogPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/catalogs/(?P<catalogName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/imageDefinitions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/catalogs/(?P<catalogName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/imageDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

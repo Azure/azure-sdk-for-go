@@ -48,10 +48,22 @@ type CapacityListResult struct {
 	NextLink *string
 }
 
+// CapacityOverageProperties - The capacity overage properties of the Fabric capacity resource
+type CapacityOverageProperties struct {
+	// The capacity overage state for the Fabric capacity resource.
+	State *CapacityOverageState
+
+	// 24-hour rolling threshold for capacity overage. Reaching this threshold results in capacity throttling.
+	ThresholdCapacityUnitHours *int32
+}
+
 // CapacityProperties - The Microsoft Fabric capacity properties.
 type CapacityProperties struct {
 	// REQUIRED; The capacity administration
 	Administration *CapacityAdministration
+
+	// The capacity overage properties of the Fabric capacity resource.
+	Overage *CapacityOverageProperties
 
 	// READ-ONLY; The current deployment state of Microsoft Fabric resource. The provisioningState is to indicate states for resource
 	// provisioning.
@@ -77,6 +89,9 @@ type CapacityUpdate struct {
 type CapacityUpdateProperties struct {
 	// The capacity administration
 	Administration *CapacityAdministration
+
+	// The capacity overage properties of the Fabric capacity resource.
+	Overage *CapacityOverageProperties
 }
 
 // CheckNameAvailabilityRequest - The check availability request body.
@@ -149,6 +164,39 @@ type OperationListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// PagedQuota - Paged collection of Quota items
+type PagedQuota struct {
+	// REQUIRED; The Quota items on this page
+	Value []*Quota
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// Quota - Describes Resource Quota
+type Quota struct {
+	// REQUIRED; The current usage of the resource.
+	CurrentValue *int64
+
+	// REQUIRED; The maximum permitted usage of the resource.
+	Limit *int64
+
+	// REQUIRED; The unit of usage measurement.
+	Unit *string
+
+	// READ-ONLY; The name of the quota.
+	Name *QuotaName
+}
+
+// QuotaName - The Quota Names
+type QuotaName struct {
+	// The localized name of the resource.
+	LocalizedValue *string
+
+	// The name of the resource.
+	Value *string
 }
 
 // RpSKU - Represents the SKU name and Azure pricing tier for Microsoft Fabric capacity resource.

@@ -137,9 +137,10 @@ func PossibleContainerGroupPriorityValues() []ContainerGroupPriority {
 }
 
 // ContainerGroupRestartPolicy - Restart policy for all containers within the container group.
-// - `Always` Always restart
-// - `OnFailure` Restart on failure
-// - `Never` Never restart
+//
+//   - `Always` Always restart
+//   - `OnFailure` Restart on failure
+//   - `Never` Never restart
 type ContainerGroupRestartPolicy string
 
 const (

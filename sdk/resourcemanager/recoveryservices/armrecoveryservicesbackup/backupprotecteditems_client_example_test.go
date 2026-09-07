@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-31-preview/AzureIaasVm/BackupProtectedItems_List.json
+// Generated from example definition: 2026-07-01/AzureIaasVm/BackupProtectedItems_List.json
 func ExampleBackupProtectedItemsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,8 +48,8 @@ func ExampleBackupProtectedItemsClient_NewListPager() {
 		// 					FriendlyName: to.Ptr("iaasvm-1"),
 		// 					HealthStatus: to.Ptr(armrecoveryservicesbackup.HealthStatusPassed),
 		// 					LastBackupStatus: to.Ptr("Completed"),
-		// 					LastBackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-22T12:25:32.048723Z"); return t}()),
-		// 					LastRecoveryPoint: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-22T12:25:32.048723Z"); return t}()),
+		// 					LastBackupTime: to.Ptr(time.Date(2018, time.January, 22, 12, 25, 32, 48723000, time.UTC)),
+		// 					LastRecoveryPoint: to.Ptr(time.Date(2017, time.November, 22, 12, 25, 32, 48723000, time.UTC)),
 		// 					PolicyID: to.Ptr("/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/SwaggerTestRg/providers/Microsoft.RecoveryServices/vaults/NetSDKTestRsVault/backupPolicies/testPolicy1"),
 		// 					PolicyType: to.Ptr("V2"),
 		// 					ProtectedItemDataID: to.Ptr("636482643132986882"),

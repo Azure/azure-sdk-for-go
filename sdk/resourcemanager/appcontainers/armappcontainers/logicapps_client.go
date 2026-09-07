@@ -30,6 +30,9 @@ type LogicAppsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLogicAppsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LogicAppsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *LogicAppsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return LogicAppsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return LogicAppsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *LogicAppsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, resource LogicApp, _ *LogicAppsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -106,8 +104,11 @@ func (client *LogicAppsClient) createOrUpdateCreateRequest(ctx context.Context, 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *LogicAppsClient) createOrUpdateHandleResponse(resp *http.Response) (LogicAppsClientCreateOrUpdateResponse, error) {
+func (client *LogicAppsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (LogicAppsClientCreateOrUpdateResponse, error) {
 	result := LogicAppsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogicApp); err != nil {
 		return LogicAppsClientCreateOrUpdateResponse{}, err
 	}
@@ -135,8 +136,7 @@ func (client *LogicAppsClient) Delete(ctx context.Context, resourceGroupName str
 		return LogicAppsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return LogicAppsClientDeleteResponse{}, err
+		return LogicAppsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return LogicAppsClientDeleteResponse{}, nil
 }
@@ -145,7 +145,7 @@ func (client *LogicAppsClient) Delete(ctx context.Context, resourceGroupName str
 func (client *LogicAppsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, _ *LogicAppsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -192,8 +192,7 @@ func (client *LogicAppsClient) DeployWorkflowArtifacts(ctx context.Context, reso
 		return LogicAppsClientDeployWorkflowArtifactsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LogicAppsClientDeployWorkflowArtifactsResponse{}, err
+		return LogicAppsClientDeployWorkflowArtifactsResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return LogicAppsClientDeployWorkflowArtifactsResponse{}, nil
 }
@@ -202,7 +201,7 @@ func (client *LogicAppsClient) DeployWorkflowArtifacts(ctx context.Context, reso
 func (client *LogicAppsClient) deployWorkflowArtifactsCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, options *LogicAppsClientDeployWorkflowArtifactsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/deployWorkflowArtifacts"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -256,19 +255,14 @@ func (client *LogicAppsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return LogicAppsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LogicAppsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *LogicAppsClient) getCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, _ *LogicAppsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -295,8 +289,11 @@ func (client *LogicAppsClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *LogicAppsClient) getHandleResponse(resp *http.Response) (LogicAppsClientGetResponse, error) {
+func (client *LogicAppsClient) getHandleResponse(resp *http.Response, successCodes ...int) (LogicAppsClientGetResponse, error) {
 	result := LogicAppsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogicApp); err != nil {
 		return LogicAppsClientGetResponse{}, err
 	}
@@ -326,19 +323,14 @@ func (client *LogicAppsClient) GetWorkflow(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return LogicAppsClientGetWorkflowResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LogicAppsClientGetWorkflowResponse{}, err
-	}
-	resp, err := client.getWorkflowHandleResponse(httpResp)
-	return resp, err
+	return client.getWorkflowHandleResponse(httpResp, http.StatusOK)
 }
 
 // getWorkflowCreateRequest creates the GetWorkflow request.
 func (client *LogicAppsClient) getWorkflowCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, workflowName string, _ *LogicAppsClientGetWorkflowOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/workflows/{workflowName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -369,8 +361,11 @@ func (client *LogicAppsClient) getWorkflowCreateRequest(ctx context.Context, res
 }
 
 // getWorkflowHandleResponse handles the GetWorkflow response.
-func (client *LogicAppsClient) getWorkflowHandleResponse(resp *http.Response) (LogicAppsClientGetWorkflowResponse, error) {
+func (client *LogicAppsClient) getWorkflowHandleResponse(resp *http.Response, successCodes ...int) (LogicAppsClientGetWorkflowResponse, error) {
 	result := LogicAppsClientGetWorkflowResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowEnvelope); err != nil {
 		return LogicAppsClientGetWorkflowResponse{}, err
 	}
@@ -401,19 +396,14 @@ func (client *LogicAppsClient) Invoke(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return LogicAppsClientInvokeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LogicAppsClientInvokeResponse{}, err
-	}
-	resp, err := client.invokeHandleResponse(httpResp)
-	return resp, err
+	return client.invokeHandleResponse(httpResp, http.StatusOK)
 }
 
 // invokeCreateRequest creates the Invoke request.
 func (client *LogicAppsClient) invokeCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, xMSLogicAppsProxyPath string, xMSLogicAppsProxyMethod LogicAppsProxyMethod, _ *LogicAppsClientInvokeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/invoke"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -442,8 +432,11 @@ func (client *LogicAppsClient) invokeCreateRequest(ctx context.Context, resource
 }
 
 // invokeHandleResponse handles the Invoke response.
-func (client *LogicAppsClient) invokeHandleResponse(resp *http.Response) (LogicAppsClientInvokeResponse, error) {
+func (client *LogicAppsClient) invokeHandleResponse(resp *http.Response, successCodes ...int) (LogicAppsClientInvokeResponse, error) {
 	result := LogicAppsClientInvokeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Object); err != nil {
 		return LogicAppsClientInvokeResponse{}, err
 	}
@@ -469,51 +462,65 @@ func (client *LogicAppsClient) NewListWorkflowsPager(resourceGroupName string, c
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listWorkflowsCreateRequest(ctx, resourceGroupName, containerAppName, logicAppName, options)
-			}, nil)
+			req, err := client.listWorkflowsCreateRequest(ctx, resourceGroupName, containerAppName, logicAppName, nextLink, options)
 			if err != nil {
 				return LogicAppsClientListWorkflowsResponse{}, err
 			}
-			return client.listWorkflowsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LogicAppsClientListWorkflowsResponse{}, err
+			}
+			return client.listWorkflowsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listWorkflowsCreateRequest creates the ListWorkflows request.
-func (client *LogicAppsClient) listWorkflowsCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, _ *LogicAppsClientListWorkflowsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/workflows"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LogicAppsClient) listWorkflowsCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, nextLink string, _ *LogicAppsClientListWorkflowsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/workflows"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if containerAppName == "" {
+			return nil, errors.New("parameter containerAppName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
+		if logicAppName == "" {
+			return nil, errors.New("parameter logicAppName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{logicAppName}", url.PathEscape(logicAppName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if containerAppName == "" {
-		return nil, errors.New("parameter containerAppName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
-	if logicAppName == "" {
-		return nil, errors.New("parameter logicAppName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{logicAppName}", url.PathEscape(logicAppName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251002Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listWorkflowsHandleResponse handles the ListWorkflows response.
-func (client *LogicAppsClient) listWorkflowsHandleResponse(resp *http.Response) (LogicAppsClientListWorkflowsResponse, error) {
+func (client *LogicAppsClient) listWorkflowsHandleResponse(resp *http.Response, successCodes ...int) (LogicAppsClientListWorkflowsResponse, error) {
 	result := LogicAppsClientListWorkflowsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowEnvelopeCollection); err != nil {
 		return LogicAppsClientListWorkflowsResponse{}, err
 	}
@@ -543,19 +550,14 @@ func (client *LogicAppsClient) ListWorkflowsConnections(ctx context.Context, res
 	if err != nil {
 		return LogicAppsClientListWorkflowsConnectionsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LogicAppsClientListWorkflowsConnectionsResponse{}, err
-	}
-	resp, err := client.listWorkflowsConnectionsHandleResponse(httpResp)
-	return resp, err
+	return client.listWorkflowsConnectionsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listWorkflowsConnectionsCreateRequest creates the ListWorkflowsConnections request.
 func (client *LogicAppsClient) listWorkflowsConnectionsCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, _ *LogicAppsClientListWorkflowsConnectionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/listWorkflowsConnections"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -582,8 +584,11 @@ func (client *LogicAppsClient) listWorkflowsConnectionsCreateRequest(ctx context
 }
 
 // listWorkflowsConnectionsHandleResponse handles the ListWorkflowsConnections response.
-func (client *LogicAppsClient) listWorkflowsConnectionsHandleResponse(resp *http.Response) (LogicAppsClientListWorkflowsConnectionsResponse, error) {
+func (client *LogicAppsClient) listWorkflowsConnectionsHandleResponse(resp *http.Response, successCodes ...int) (LogicAppsClientListWorkflowsConnectionsResponse, error) {
 	result := LogicAppsClientListWorkflowsConnectionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowEnvelope); err != nil {
 		return LogicAppsClientListWorkflowsConnectionsResponse{}, err
 	}

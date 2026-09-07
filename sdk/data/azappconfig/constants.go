@@ -23,6 +23,9 @@ const (
 	// The content type of the configuration setting's value.
 	SettingFieldsContentType SettingFields = generated.SettingFieldsContentType
 
+	// The description of a configuration setting.
+	SettingFieldsDescription SettingFields = generated.SettingFieldsDescription
+
 	// An ETag indicating the version of a configuration setting within a configuration store.
 	SettingFieldsETag SettingFields = generated.SettingFieldsEtag
 
@@ -45,6 +48,9 @@ const (
 
 	// The time when the snapshot was created.
 	SnapshotFieldsCreated SnapshotFields = generated.SnapshotFieldsCreated
+
+	// The description of a snapshot.
+	SnapshotFieldsDescription SnapshotFields = generated.SnapshotFieldsDescription
 
 	// An ETag indicating the version of a snapshot.
 	SnapshotFieldsETag SnapshotFields = generated.SnapshotFieldsETag

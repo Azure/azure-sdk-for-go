@@ -81,7 +81,7 @@ func (s *ScheduledEventServerTransport) dispatchAcknowledge(req *http.Request) (
 	if s.srv.Acknowledge == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Acknowledge not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Maintenance/scheduledevents/(?P<scheduledEventId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/acknowledge`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Maintenance/scheduledevents/(?P<scheduledEventId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/acknowledge`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {

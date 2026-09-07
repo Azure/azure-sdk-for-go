@@ -56,15 +56,15 @@ func ExamplePoolClient_Create_createPoolAcceleratedNetworking() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8DB46CB72A227E2\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8DB46CB72A227E2\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateSteady),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-27T03:00:34.0646502Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-27T02:59:41.8592226Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2023, time.April, 27, 3, 0, 34, 64650200, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2023, time.April, 27, 2, 59, 41, 859222600, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](1),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -79,18 +79,18 @@ func ExamplePoolClient_Create_createPoolAcceleratedNetworking() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-27T02:59:41.8592226Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2023, time.April, 27, 2, 59, 41, 859222600, time.UTC)),
 	// 			NetworkConfiguration: &armbatch.NetworkConfiguration{
 	// 				DynamicVNetAssignmentScope: to.Ptr(armbatch.DynamicVNetAssignmentScopeNone),
 	// 				EnableAcceleratedNetworking: to.Ptr(true),
 	// 				SubnetID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rg1234/providers/Microsoft.Network/virtualNetworks/network1234/subnets/subnet123"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-27T02:59:41.8592226Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2023, time.April, 27, 2, 59, 41, 859222600, time.UTC)),
 	// 			ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 				ResizeTimeout: to.Ptr("PT15M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-27T02:59:41.8592226Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2023, time.April, 27, 2, 59, 41, 859222600, time.UTC)),
 	// 				TargetDedicatedNodes: to.Ptr[int32](1),
 	// 			},
 	// 			ScaleSettings: &armbatch.ScaleSettings{
@@ -187,19 +187,19 @@ func ExamplePoolClient_Create_createPoolConfidentialDiskEncryptionSetForUserSubs
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	Pool: armbatch.Pool{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 		Properties: &armbatch.PoolProperties{
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-30T07:30:49.7522647Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-30T07:30:49.7522634Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2025, time.June, 30, 7, 30, 49, 752264700, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2025, time.June, 30, 7, 30, 49, 752263400, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-30T07:30:49.7522634Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2025, time.June, 30, 7, 30, 49, 752263400, time.UTC)),
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-30T07:30:49.7522647Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2025, time.June, 30, 7, 30, 49, 752264700, time.UTC)),
 	// 			VMSize: to.Ptr("STANDARD_DC2as_v5"),
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
 	// 			TaskSlotsPerNode: to.Ptr[int32](1),
@@ -265,7 +265,7 @@ func ExamplePoolClient_Create_createPoolConfidentialDiskEncryptionSetForUserSubs
 	// 				TargetDedicatedNodes: to.Ptr[int32](1),
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 				ResizeTimeout: to.Ptr("PT15M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-30T07:30:49.7522324Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2025, time.June, 30, 7, 30, 49, 752232400, time.UTC)),
 	// 			},
 	// 			CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
@@ -331,8 +331,8 @@ func ExamplePoolClient_Create_createPoolCustomerManagedKeyForBatchManagedAccount
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	Pool: armbatch.Pool{
 	// 		Identity: &armbatch.PoolIdentity{
 	// 			Type: to.Ptr(armbatch.PoolIdentityTypeUserAssigned),
 	// 			UserAssignedIdentities: map[string]*armbatch.UserAssignedIdentities{
@@ -347,12 +347,12 @@ func ExamplePoolClient_Create_createPoolCustomerManagedKeyForBatchManagedAccount
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 		Properties: &armbatch.PoolProperties{
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-30T07:16:33.4309281Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-30T07:16:33.4309266Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2025, time.June, 30, 7, 16, 33, 430928100, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2025, time.June, 30, 7, 16, 33, 430926600, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-30T07:16:33.4309266Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2025, time.June, 30, 7, 16, 33, 430926600, time.UTC)),
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-30T07:16:33.4309281Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2025, time.June, 30, 7, 16, 33, 430928100, time.UTC)),
 	// 			VMSize: to.Ptr("Standard_D4ds_v5"),
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
 	// 			TaskSlotsPerNode: to.Ptr[int32](1),
@@ -393,7 +393,7 @@ func ExamplePoolClient_Create_createPoolCustomerManagedKeyForBatchManagedAccount
 	// 				TargetDedicatedNodes: to.Ptr[int32](1),
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 				ResizeTimeout: to.Ptr("PT15M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-30T07:16:33.4309126Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2025, time.June, 30, 7, 16, 33, 430912600, time.UTC)),
 	// 			},
 	// 			CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
@@ -456,19 +456,19 @@ func ExamplePoolClient_Create_createPoolDiskEncryptionSetForUserSubscriptionAcco
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	Pool: armbatch.Pool{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 		Properties: &armbatch.PoolProperties{
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-30T07:45:46.1580726Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-30T07:35:44.5579791Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2025, time.June, 30, 7, 45, 46, 158072600, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2025, time.June, 30, 7, 35, 44, 557979100, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-30T07:35:44.5579791Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2025, time.June, 30, 7, 35, 44, 557979100, time.UTC)),
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-30T07:45:46.1580727Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2025, time.June, 30, 7, 45, 46, 158072700, time.UTC)),
 	// 			VMSize: to.Ptr("Standard_D4ds_v5"),
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
 	// 			TaskSlotsPerNode: to.Ptr[int32](1),
@@ -510,7 +510,7 @@ func ExamplePoolClient_Create_createPoolDiskEncryptionSetForUserSubscriptionAcco
 	// 				TargetDedicatedNodes: to.Ptr[int32](1),
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 				ResizeTimeout: to.Ptr("PT15M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-30T07:45:46.1580724Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2025, time.June, 30, 7, 45, 46, 158072400, time.UTC)),
 	// 			},
 	// 			CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
@@ -587,19 +587,19 @@ func ExamplePoolClient_Create_createPoolDualStackNetworking() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	Pool: armbatch.Pool{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/dualstackpool"),
 	// 		Name: to.Ptr("dualstackpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		Etag: to.Ptr("W/\"0x8DDC34D4A01A419\""),
 	// 		Properties: &armbatch.PoolProperties{
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-15T03:11:27.7998105Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-15T03:11:27.7997967Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2025, time.July, 15, 3, 11, 27, 799810500, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2025, time.July, 15, 3, 11, 27, 799796700, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-15T03:11:27.7997967Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2025, time.July, 15, 3, 11, 27, 799796700, time.UTC)),
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-15T03:11:27.7998136Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2025, time.July, 15, 3, 11, 27, 799813600, time.UTC)),
 	// 			VMSize: to.Ptr("Standard_D4ds_v5"),
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
 	// 			TaskSlotsPerNode: to.Ptr[int32](1),
@@ -660,7 +660,7 @@ func ExamplePoolClient_Create_createPoolDualStackNetworking() {
 	// 				TargetDedicatedNodes: to.Ptr[int32](1),
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 				ResizeTimeout: to.Ptr("PT15M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-15T03:11:27.7994621Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2025, time.July, 15, 3, 11, 27, 799462100, time.UTC)),
 	// 			},
 	// 			CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
@@ -709,15 +709,15 @@ func ExamplePoolClient_Create_createPoolMinimalVirtualMachineConfiguration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -732,9 +732,9 @@ func ExamplePoolClient_Create_createPoolMinimalVirtualMachineConfiguration() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ScaleSettings: &armbatch.ScaleSettings{
 	// 				AutoScale: &armbatch.AutoScaleSettings{
 	// 					EvaluationInterval: to.Ptr("PT5M"),
@@ -788,15 +788,15 @@ func ExamplePoolClient_Create_createPoolNoPublicIP() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateSteady),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -808,7 +808,7 @@ func ExamplePoolClient_Create_createPoolNoPublicIP() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			NetworkConfiguration: &armbatch.NetworkConfiguration{
 	// 				PublicIPAddressConfiguration: &armbatch.PublicIPAddressConfiguration{
 	// 					Provision: to.Ptr(armbatch.IPAddressProvisioningTypeNoPublicIPAddresses),
@@ -816,7 +816,7 @@ func ExamplePoolClient_Create_createPoolNoPublicIP() {
 	// 				SubnetID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rg1234/providers/Microsoft.Network/virtualNetworks/network1234/subnets/subnet123"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ScaleSettings: &armbatch.ScaleSettings{
 	// 				FixedScale: &armbatch.FixedScaleSettings{
 	// 					TargetDedicatedNodes: to.Ptr[int32](0),
@@ -873,15 +873,15 @@ func ExamplePoolClient_Create_createPoolPublicIPs() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateSteady),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -893,7 +893,7 @@ func ExamplePoolClient_Create_createPoolPublicIPs() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			NetworkConfiguration: &armbatch.NetworkConfiguration{
 	// 				PublicIPAddressConfiguration: &armbatch.PublicIPAddressConfiguration{
 	// 					IPAddressIDs: []*string{
@@ -904,7 +904,7 @@ func ExamplePoolClient_Create_createPoolPublicIPs() {
 	// 				SubnetID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rg1234/providers/Microsoft.Network/virtualNetworks/network1234/subnets/subnet123"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ScaleSettings: &armbatch.ScaleSettings{
 	// 				FixedScale: &armbatch.FixedScaleSettings{
 	// 					TargetDedicatedNodes: to.Ptr[int32](0),
@@ -968,15 +968,15 @@ func ExamplePoolClient_Create_createPoolSecurityProfile() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8DB554F8E08BCF4\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8DB554F8E08BCF4\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.3231917Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.3231917Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2023, time.June, 14, 7, 3, 58, 323191700, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2023, time.June, 14, 7, 3, 58, 323191700, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -998,13 +998,13 @@ func ExamplePoolClient_Create_createPoolSecurityProfile() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.3231917Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2023, time.June, 14, 7, 3, 58, 323191700, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.3231917Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2023, time.June, 14, 7, 3, 58, 323191700, time.UTC)),
 	// 			ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 				ResizeTimeout: to.Ptr("PT15M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.3231917Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2023, time.June, 14, 7, 3, 58, 323191700, time.UTC)),
 	// 				TargetDedicatedNodes: to.Ptr[int32](1),
 	// 			},
 	// 			ScaleSettings: &armbatch.ScaleSettings{
@@ -1055,15 +1055,15 @@ func ExamplePoolClient_Create_createPoolCustomImage() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateSteady),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -1075,9 +1075,9 @@ func ExamplePoolClient_Create_createPoolCustomImage() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ScaleSettings: &armbatch.ScaleSettings{
 	// 				FixedScale: &armbatch.FixedScaleSettings{
 	// 					TargetDedicatedNodes: to.Ptr[int32](0),
@@ -1134,15 +1134,15 @@ func ExamplePoolClient_Create_createPoolTags() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8DB554F8E08BCF4\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8DB554F8E08BCF4\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.3231917Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.3231917Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2023, time.June, 14, 7, 3, 58, 323191700, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2023, time.June, 14, 7, 3, 58, 323191700, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -1157,13 +1157,13 @@ func ExamplePoolClient_Create_createPoolTags() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.3231917Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2023, time.June, 14, 7, 3, 58, 323191700, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.3231917Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2023, time.June, 14, 7, 3, 58, 323191700, time.UTC)),
 	// 			ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 				ResizeTimeout: to.Ptr("PT15M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-27T07:33:13.0625789Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2023, time.September, 27, 7, 33, 13, 62578900, time.UTC)),
 	// 				TargetDedicatedNodes: to.Ptr[int32](1),
 	// 			},
 	// 			ScaleSettings: &armbatch.ScaleSettings{
@@ -1247,15 +1247,15 @@ func ExamplePoolClient_Create_createPoolUpgradePolicy() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8DB51E64D3C3B69\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8DB51E64D3C3B69\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T06:16:44.2372184Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T06:16:44.2372184Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2023, time.May, 11, 6, 16, 44, 237218400, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2023, time.May, 11, 6, 16, 44, 237218400, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -1276,13 +1276,13 @@ func ExamplePoolClient_Create_createPoolUpgradePolicy() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T06:16:44.2372184Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2023, time.May, 11, 6, 16, 44, 237218400, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T06:16:44.2372184Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2023, time.May, 11, 6, 16, 44, 237218400, time.UTC)),
 	// 			ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 				ResizeTimeout: to.Ptr("PT15M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T06:16:44.2372184Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2023, time.May, 11, 6, 16, 44, 237218400, time.UTC)),
 	// 				TargetDedicatedNodes: to.Ptr[int32](2),
 	// 			},
 	// 			ScaleSettings: &armbatch.ScaleSettings{
@@ -1367,8 +1367,8 @@ func ExamplePoolClient_Create_createPoolUserAssignedIdentities() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
@@ -1387,8 +1387,8 @@ func ExamplePoolClient_Create_createPoolUserAssignedIdentities() {
 	// 		},
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-01T10:22:55.9407275Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-01T10:22:55.9407275Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2020, time.October, 1, 10, 22, 55, 940727500, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2020, time.October, 1, 10, 22, 55, 940727500, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -1403,9 +1403,9 @@ func ExamplePoolClient_Create_createPoolUserAssignedIdentities() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-01T10:22:55.9407275Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2020, time.October, 1, 10, 22, 55, 940727500, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-01T10:22:55.9407275Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2020, time.October, 1, 10, 22, 55, 940727500, time.UTC)),
 	// 			ScaleSettings: &armbatch.ScaleSettings{
 	// 				AutoScale: &armbatch.AutoScaleSettings{
 	// 					EvaluationInterval: to.Ptr("PT5M"),
@@ -1530,15 +1530,15 @@ func ExamplePoolClient_Create_createPoolFullVirtualMachineConfiguration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -1584,7 +1584,7 @@ func ExamplePoolClient_Create_createPoolFullVirtualMachineConfiguration() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			NetworkConfiguration: &armbatch.NetworkConfiguration{
 	// 				EndpointConfiguration: &armbatch.PoolEndpointConfiguration{
 	// 					InboundNatPools: []*armbatch.InboundNatPool{
@@ -1618,7 +1618,7 @@ func ExamplePoolClient_Create_createPoolFullVirtualMachineConfiguration() {
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ScaleSettings: &armbatch.ScaleSettings{
 	// 				AutoScale: &armbatch.AutoScaleSettings{
 	// 					EvaluationInterval: to.Ptr("PT5M"),
@@ -1688,15 +1688,15 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationExtensions() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -1724,9 +1724,9 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationExtensions() 
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ScaleSettings: &armbatch.ScaleSettings{
 	// 				AutoScale: &armbatch.AutoScaleSettings{
 	// 					EvaluationInterval: to.Ptr("PT5M"),
@@ -1790,15 +1790,15 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationOSDisk() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8DB51F14DC1A8AD\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8DB51F14DC1A8AD\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T02:12:27.7527697Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T02:12:27.7527697Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2023, time.August, 24, 2, 12, 27, 752769700, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2023, time.August, 24, 2, 12, 27, 752769700, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -1821,13 +1821,13 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationOSDisk() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T02:12:27.7527697Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2023, time.August, 24, 2, 12, 27, 752769700, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T02:12:27.7527697Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2023, time.August, 24, 2, 12, 27, 752769700, time.UTC)),
 	// 			ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 				ResizeTimeout: to.Ptr("PT15M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T02:12:27.7527697Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2023, time.August, 24, 2, 12, 27, 752769700, time.UTC)),
 	// 				TargetDedicatedNodes: to.Ptr[int32](1),
 	// 			},
 	// 			ScaleSettings: &armbatch.ScaleSettings{
@@ -1899,15 +1899,15 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationServiceArtifa
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8DB51F14DC1A8AD\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8DB51F14DC1A8AD\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("mypool41"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T07:44:44.8580493Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T07:44:44.8580493Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2023, time.May, 11, 7, 44, 44, 858049300, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2023, time.May, 11, 7, 44, 44, 858049300, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -1928,13 +1928,13 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationServiceArtifa
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T07:44:44.8580493Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2023, time.May, 11, 7, 44, 44, 858049300, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T07:44:44.8580493Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2023, time.May, 11, 7, 44, 44, 858049300, time.UTC)),
 	// 			ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 				ResizeTimeout: to.Ptr("PT15M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T07:44:44.8580493Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2023, time.May, 11, 7, 44, 44, 858049300, time.UTC)),
 	// 				TargetDedicatedNodes: to.Ptr[int32](2),
 	// 			},
 	// 			ScaleSettings: &armbatch.ScaleSettings{
@@ -1977,7 +1977,7 @@ func ExamplePoolClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2005,15 +2005,15 @@ func ExamplePoolClient_DisableAutoScale() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientDisableAutoScaleResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -2028,9 +2028,9 @@ func ExamplePoolClient_DisableAutoScale() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ScaleSettings: &armbatch.ScaleSettings{
 	// 				FixedScale: &armbatch.FixedScaleSettings{
 	// 					ResizeTimeout: to.Ptr("PT15M"),
@@ -2067,21 +2067,21 @@ func ExamplePoolClient_Get_getPool() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ApplicationPackages: []*armbatch.ApplicationPackageReference{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/applications/app_1234"),
 	// 					Version: to.Ptr("asdf"),
 	// 				},
 	// 			},
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -2096,7 +2096,7 @@ func ExamplePoolClient_Get_getPool() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateEnabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			Metadata: []*armbatch.MetadataItem{
 	// 				{
 	// 					Name: to.Ptr("metadata-1"),
@@ -2141,11 +2141,11 @@ func ExamplePoolClient_Get_getPool() {
 	// 				SubnetID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rg1234/providers/Microsoft.Network/virtualNetworks/network1234/subnets/subnet123"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionTaskCompletion),
 	// 				ResizeTimeout: to.Ptr("PT8M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 				TargetDedicatedNodes: to.Ptr[int32](6),
 	// 				TargetLowPriorityNodes: to.Ptr[int32](28),
 	// 			},
@@ -2219,15 +2219,15 @@ func ExamplePoolClient_Get_getPoolAcceleratedNetworking() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateSteady),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-28T02:33:40.82831Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-28T02:32:32.8696419Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2023, time.April, 28, 2, 33, 40, 828310000, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2023, time.April, 28, 2, 32, 32, 869641900, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](1),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -2242,17 +2242,17 @@ func ExamplePoolClient_Get_getPoolAcceleratedNetworking() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-28T02:32:32.8696419Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2023, time.April, 28, 2, 32, 32, 869641900, time.UTC)),
 	// 			NetworkConfiguration: &armbatch.NetworkConfiguration{
 	// 				DynamicVNetAssignmentScope: to.Ptr(armbatch.DynamicVNetAssignmentScopeNone),
 	// 				EnableAcceleratedNetworking: to.Ptr(true),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-28T02:32:32.8696419Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2023, time.April, 28, 2, 32, 32, 869641900, time.UTC)),
 	// 			ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 				ResizeTimeout: to.Ptr("PT15M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-28T02:32:32.8696419Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2023, time.April, 28, 2, 32, 32, 869641900, time.UTC)),
 	// 				TargetDedicatedNodes: to.Ptr[int32](1),
 	// 			},
 	// 			ScaleSettings: &armbatch.ScaleSettings{
@@ -2291,15 +2291,15 @@ func ExamplePoolClient_Get_getPoolSecurityProfile() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	ETag: "W/\"0x8DB554F8E08BCF4\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8DB554F8E08BCF4\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateSteady),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:04:57.3413444Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.3231917Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2023, time.June, 14, 7, 4, 57, 341344400, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2023, time.June, 14, 7, 3, 58, 323191700, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](1),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -2321,13 +2321,13 @@ func ExamplePoolClient_Get_getPoolSecurityProfile() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.3231917Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2023, time.June, 14, 7, 3, 58, 323191700, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.3231917Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2023, time.June, 14, 7, 3, 58, 323191700, time.UTC)),
 	// 			ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 				ResizeTimeout: to.Ptr("PT15M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.3231917Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2023, time.June, 14, 7, 3, 58, 323191700, time.UTC)),
 	// 				TargetDedicatedNodes: to.Ptr[int32](1),
 	// 			},
 	// 			ScaleSettings: &armbatch.ScaleSettings{
@@ -2366,15 +2366,15 @@ func ExamplePoolClient_Get_getPoolUpgradePolicy() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	ETag: "W/\"0x8DB51E64D3C3B69\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8DB51E64D3C3B69\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateSteady),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T06:10:31.4670326Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T06:09:38.3178089Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2023, time.May, 11, 6, 10, 31, 467032600, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2023, time.May, 11, 6, 9, 38, 317808900, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](2),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -2395,13 +2395,13 @@ func ExamplePoolClient_Get_getPoolUpgradePolicy() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T06:09:38.3178089Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2023, time.May, 11, 6, 9, 38, 317808900, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T06:09:38.3178089Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2023, time.May, 11, 6, 9, 38, 317808900, time.UTC)),
 	// 			ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 				ResizeTimeout: to.Ptr("PT15M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T06:09:38.3178089Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2023, time.May, 11, 6, 9, 38, 317808900, time.UTC)),
 	// 				TargetDedicatedNodes: to.Ptr[int32](2),
 	// 			},
 	// 			ScaleSettings: &armbatch.ScaleSettings{
@@ -2458,15 +2458,15 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationExtensions() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -2494,13 +2494,13 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationExtensions() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateEnabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionTaskCompletion),
 	// 				ResizeTimeout: to.Ptr("PT8M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 				TargetDedicatedNodes: to.Ptr[int32](6),
 	// 				TargetLowPriorityNodes: to.Ptr[int32](28),
 	// 			},
@@ -2540,15 +2540,15 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationOSDisk() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	ETag: "W/\"0x8DB51E64D3C3B69\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8DB51E64D3C3B69\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateSteady),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T02:13:22.4881351Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T02:12:27.7527697Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2023, time.August, 24, 2, 13, 22, 488135100, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2023, time.August, 24, 2, 12, 27, 752769700, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](1),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -2571,13 +2571,13 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationOSDisk() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T02:12:27.7527697Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2023, time.August, 24, 2, 12, 27, 752769700, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T02:12:27.7527697Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2023, time.August, 24, 2, 12, 27, 752769700, time.UTC)),
 	// 			ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 				ResizeTimeout: to.Ptr("PT15M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T02:12:27.7527697Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2023, time.August, 24, 2, 12, 27, 752769700, time.UTC)),
 	// 				TargetDedicatedNodes: to.Ptr[int32](1),
 	// 			},
 	// 			ScaleSettings: &armbatch.ScaleSettings{
@@ -2616,15 +2616,15 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationServiceArtifactRefe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	ETag: "W/\"0x8DB51E64D3C3B69\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8DB51E64D3C3B69\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateSteady),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T07:45:42.0881659Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T07:44:44.8580493Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2023, time.May, 11, 7, 45, 42, 88165900, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2023, time.May, 11, 7, 44, 44, 858049300, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](2),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -2645,13 +2645,13 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationServiceArtifactRefe
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T07:44:44.8580493Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2023, time.May, 11, 7, 44, 44, 858049300, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T07:44:44.8580493Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2023, time.May, 11, 7, 44, 44, 858049300, time.UTC)),
 	// 			ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 				ResizeTimeout: to.Ptr("PT15M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T07:44:44.8580493Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2023, time.May, 11, 7, 44, 44, 858049300, time.UTC)),
 	// 				TargetDedicatedNodes: to.Ptr[int32](2),
 	// 			},
 	// 			ScaleSettings: &armbatch.ScaleSettings{
@@ -2708,14 +2708,14 @@ func ExamplePoolClient_NewListByBatchAccountPager_listPool() {
 		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 		// 				Properties: &armbatch.PoolProperties{
 		// 					AllocationState: to.Ptr(armbatch.AllocationStateSteady),
-		// 					AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+		// 					AllocationStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 		// 					ApplicationPackages: []*armbatch.ApplicationPackageReference{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/applications/app_1234"),
 		// 							Version: to.Ptr("asdf"),
 		// 						},
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 		// 					CurrentDedicatedNodes: to.Ptr[int32](0),
 		// 					CurrentLowPriorityNodes: to.Ptr[int32](0),
 		// 					DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -2730,7 +2730,7 @@ func ExamplePoolClient_NewListByBatchAccountPager_listPool() {
 		// 						},
 		// 					},
 		// 					InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateEnabled),
-		// 					LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+		// 					LastModified: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 		// 					Metadata: []*armbatch.MetadataItem{
 		// 						{
 		// 							Name: to.Ptr("metadata-1"),
@@ -2774,7 +2774,7 @@ func ExamplePoolClient_NewListByBatchAccountPager_listPool() {
 		// 						SubnetID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rg1234/providers/Microsoft.Network/virtualNetworks/network1234/subnets/subnet123"),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-		// 					ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+		// 					ProvisioningStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 		// 					ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 		// 						Errors: []*armbatch.ResizeError{
 		// 							{
@@ -2784,7 +2784,7 @@ func ExamplePoolClient_NewListByBatchAccountPager_listPool() {
 		// 						},
 		// 						NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionTaskCompletion),
 		// 						ResizeTimeout: to.Ptr("PT8M"),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 		// 						TargetDedicatedNodes: to.Ptr[int32](6),
 		// 						TargetLowPriorityNodes: to.Ptr[int32](28),
 		// 					},
@@ -2877,7 +2877,7 @@ func ExamplePoolClient_NewListByBatchAccountPager_listPoolWithFilter() {
 		// 					AllocationState: to.Ptr(armbatch.AllocationStateSteady),
 		// 					CurrentDedicatedNodes: to.Ptr[int32](0),
 		// 					CurrentLowPriorityNodes: to.Ptr[int32](2),
-		// 					ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+		// 					ProvisioningStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -2888,7 +2888,7 @@ func ExamplePoolClient_NewListByBatchAccountPager_listPoolWithFilter() {
 		// 					AllocationState: to.Ptr(armbatch.AllocationStateResizing),
 		// 					CurrentDedicatedNodes: to.Ptr[int32](4),
 		// 					CurrentLowPriorityNodes: to.Ptr[int32](0),
-		// 					ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-26T10:22:55.9407275Z"); return t}()),
+		// 					ProvisioningStateTransitionTime: to.Ptr(time.Date(2017, time.August, 26, 10, 22, 55, 940727500, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -2916,15 +2916,15 @@ func ExamplePoolClient_StopResize() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientStopResizeResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateSteady),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -2939,13 +2939,13 @@ func ExamplePoolClient_StopResize() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 				ResizeTimeout: to.Ptr("PT10M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 				TargetDedicatedNodes: to.Ptr[int32](1),
 	// 			},
 	// 			ScaleSettings: &armbatch.ScaleSettings{
@@ -2992,19 +2992,19 @@ func ExamplePoolClient_Update_updatePoolEnableAutoscale() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientUpdateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2017, time.August, 29, 10, 22, 55, 940727500, time.UTC)),
 	// 			AutoScaleRun: &armbatch.AutoScaleRun{
-	// 				EvaluationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 				EvaluationTime: to.Ptr(time.Date(2017, time.August, 29, 10, 22, 55, 940727500, time.UTC)),
 	// 				Results: to.Ptr("$TargetDedicatedNodes=34;NodeDeallocationOption=requeue"),
 	// 			},
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](12),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -3019,13 +3019,13 @@ func ExamplePoolClient_Update_updatePoolEnableAutoscale() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2017, time.August, 29, 10, 22, 55, 940727500, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 				ResizeTimeout: to.Ptr("PT15M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2017, time.August, 29, 10, 22, 55, 940727500, time.UTC)),
 	// 				TargetDedicatedNodes: to.Ptr[int32](34),
 	// 			},
 	// 			ScaleSettings: &armbatch.ScaleSettings{
@@ -3081,14 +3081,14 @@ func ExamplePoolClient_Update_updatePoolOtherProperties() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientUpdateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2017, time.August, 29, 10, 22, 55, 940727500, time.UTC)),
 	// 			ApplicationPackages: []*armbatch.ApplicationPackageReference{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/applications/app_1234"),
@@ -3099,10 +3099,10 @@ func ExamplePoolClient_Update_updatePoolOtherProperties() {
 	// 				},
 	// 			},
 	// 			AutoScaleRun: &armbatch.AutoScaleRun{
-	// 				EvaluationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 				EvaluationTime: to.Ptr(time.Date(2017, time.August, 29, 10, 22, 55, 940727500, time.UTC)),
 	// 				Results: to.Ptr("$TargetDedicatedNodes=34;NodeDeallocationOption=requeue"),
 	// 			},
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](12),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -3117,7 +3117,7 @@ func ExamplePoolClient_Update_updatePoolOtherProperties() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2017, time.August, 29, 10, 22, 55, 940727500, time.UTC)),
 	// 			Metadata: []*armbatch.MetadataItem{
 	// 				{
 	// 					Name: to.Ptr("key1"),
@@ -3125,11 +3125,11 @@ func ExamplePoolClient_Update_updatePoolOtherProperties() {
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionTaskCompletion),
 	// 				ResizeTimeout: to.Ptr("PT8M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2017, time.August, 29, 10, 22, 55, 940727500, time.UTC)),
 	// 				TargetDedicatedNodes: to.Ptr[int32](8),
 	// 			},
 	// 			ScaleSettings: &armbatch.ScaleSettings{
@@ -3173,19 +3173,19 @@ func ExamplePoolClient_Update_updatePoolRemoveStartTask() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientUpdateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2017, time.August, 29, 10, 22, 55, 940727500, time.UTC)),
 	// 			AutoScaleRun: &armbatch.AutoScaleRun{
-	// 				EvaluationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 				EvaluationTime: to.Ptr(time.Date(2017, time.August, 29, 10, 22, 55, 940727500, time.UTC)),
 	// 				Results: to.Ptr("$TargetDedicatedNodes=34;NodeDeallocationOption=requeue"),
 	// 			},
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](12),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -3200,13 +3200,13 @@ func ExamplePoolClient_Update_updatePoolRemoveStartTask() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2017, time.August, 29, 10, 22, 55, 940727500, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 				ResizeTimeout: to.Ptr("PT15M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2017, time.August, 29, 10, 22, 55, 940727500, time.UTC)),
 	// 				TargetDedicatedNodes: to.Ptr[int32](34),
 	// 			},
 	// 			ScaleSettings: &armbatch.ScaleSettings{
@@ -3255,19 +3255,19 @@ func ExamplePoolClient_Update_updatePoolResizePool() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientUpdateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
-	// 	Pool: &armbatch.Pool{
+	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
 	// 			AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 			AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 			AllocationStateTransitionTime: to.Ptr(time.Date(2017, time.August, 29, 10, 22, 55, 940727500, time.UTC)),
 	// 			AutoScaleRun: &armbatch.AutoScaleRun{
-	// 				EvaluationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 				EvaluationTime: to.Ptr(time.Date(2017, time.August, 29, 10, 22, 55, 940727500, time.UTC)),
 	// 				Results: to.Ptr("$TargetDedicatedNodes=34;NodeDeallocationOption=requeue"),
 	// 			},
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](12),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -3282,13 +3282,13 @@ func ExamplePoolClient_Update_updatePoolResizePool() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2017, time.August, 29, 10, 22, 55, 940727500, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(time.Date(2017, time.August, 28, 10, 22, 55, 940727500, time.UTC)),
 	// 			ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionTaskCompletion),
 	// 				ResizeTimeout: to.Ptr("PT8M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2017, time.August, 29, 10, 22, 55, 940727500, time.UTC)),
 	// 				TargetDedicatedNodes: to.Ptr[int32](8),
 	// 			},
 	// 			ScaleSettings: &armbatch.ScaleSettings{

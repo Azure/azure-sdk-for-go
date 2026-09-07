@@ -5,7 +5,7 @@
 package armcloudhealth
 
 const (
-	version20260501Preview string = "2026-05-01-preview"
+	version20260901Preview string = "2026-09-01-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -20,6 +20,50 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// AggregationType - Aggregation strategy for combining a set of health states into one.
+type AggregationType string
+
+const (
+	// AggregationTypeBestOf - Best (least severe) health state across the non-Unknown members is propagated. Unknown members
+	// are excluded from the selection; if every member is Unknown the group resolves to Unknown. The 'ignoreUnknown' flag has
+	// no observable effect for this strategy and is documented as such.
+	AggregationTypeBestOf AggregationType = "BestOf"
+	// AggregationTypeMaxNotHealthy - Healthy if the count/percentage of not-healthy members stays below the threshold.
+	AggregationTypeMaxNotHealthy AggregationType = "MaxNotHealthy"
+	// AggregationTypeMinHealthy - Healthy if the count/percentage of healthy members meets the threshold.
+	AggregationTypeMinHealthy AggregationType = "MinHealthy"
+	// AggregationTypeWorstOf - Worst health state across members is propagated. Default behavior.
+	AggregationTypeWorstOf AggregationType = "WorstOf"
+)
+
+// PossibleAggregationTypeValues returns the possible values for the AggregationType const type.
+func PossibleAggregationTypeValues() []AggregationType {
+	return []AggregationType{
+		AggregationTypeBestOf,
+		AggregationTypeMaxNotHealthy,
+		AggregationTypeMinHealthy,
+		AggregationTypeWorstOf,
+	}
+}
+
+// AggregationUnit - Unit type for the thresholds used by threshold-bearing aggregation strategies.
+type AggregationUnit string
+
+const (
+	// AggregationUnitAbsolute - Threshold is an absolute count of members.
+	AggregationUnitAbsolute AggregationUnit = "Absolute"
+	// AggregationUnitPercentage - Threshold is a percentage of members (0-100).
+	AggregationUnitPercentage AggregationUnit = "Percentage"
+)
+
+// PossibleAggregationUnitValues returns the possible values for the AggregationUnit const type.
+func PossibleAggregationUnitValues() []AggregationUnit {
+	return []AggregationUnit{
+		AggregationUnitAbsolute,
+		AggregationUnitPercentage,
 	}
 }
 
@@ -85,45 +129,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
-	}
-}
-
-// DependenciesAggregationType - Aggregation type for child dependencies.
-type DependenciesAggregationType string
-
-const (
-	// DependenciesAggregationTypeMaxNotHealthy - Healthy if the count/percentage of not-healthy children stays below the threshold.
-	DependenciesAggregationTypeMaxNotHealthy DependenciesAggregationType = "MaxNotHealthy"
-	// DependenciesAggregationTypeMinHealthy - Healthy if the count/percentage of healthy children meets the threshold.
-	DependenciesAggregationTypeMinHealthy DependenciesAggregationType = "MinHealthy"
-	// DependenciesAggregationTypeWorstOf - Default behavior: Worst child health state is propagated.
-	DependenciesAggregationTypeWorstOf DependenciesAggregationType = "WorstOf"
-)
-
-// PossibleDependenciesAggregationTypeValues returns the possible values for the DependenciesAggregationType const type.
-func PossibleDependenciesAggregationTypeValues() []DependenciesAggregationType {
-	return []DependenciesAggregationType{
-		DependenciesAggregationTypeMaxNotHealthy,
-		DependenciesAggregationTypeMinHealthy,
-		DependenciesAggregationTypeWorstOf,
-	}
-}
-
-// DependenciesAggregationUnit - Unit type for dependency aggregation thresholds.
-type DependenciesAggregationUnit string
-
-const (
-	// DependenciesAggregationUnitAbsolute - Threshold is an absolute count of entities.
-	DependenciesAggregationUnitAbsolute DependenciesAggregationUnit = "Absolute"
-	// DependenciesAggregationUnitPercentage - Threshold is a percentage of entities (0-100).
-	DependenciesAggregationUnitPercentage DependenciesAggregationUnit = "Percentage"
-)
-
-// PossibleDependenciesAggregationUnitValues returns the possible values for the DependenciesAggregationUnit const type.
-func PossibleDependenciesAggregationUnitValues() []DependenciesAggregationUnit {
-	return []DependenciesAggregationUnit{
-		DependenciesAggregationUnitAbsolute,
-		DependenciesAggregationUnitPercentage,
 	}
 }
 
@@ -254,8 +259,6 @@ type HealthState string
 const (
 	// HealthStateDegraded - Degraded status
 	HealthStateDegraded HealthState = "Degraded"
-	// HealthStateDeleted - Deleted status
-	HealthStateDeleted HealthState = "Deleted"
 	// HealthStateHealthy - Healthy status
 	HealthStateHealthy HealthState = "Healthy"
 	// HealthStateUnhealthy - Unhealthy status
@@ -268,34 +271,9 @@ const (
 func PossibleHealthStateValues() []HealthState {
 	return []HealthState{
 		HealthStateDegraded,
-		HealthStateDeleted,
 		HealthStateHealthy,
 		HealthStateUnhealthy,
 		HealthStateUnknown,
-	}
-}
-
-// LookBackWindow - Allowed look-back window durations for dynamic threshold computation
-type LookBackWindow string
-
-const (
-	// LookBackWindowPT15M - Fifteen minutes
-	LookBackWindowPT15M LookBackWindow = "PT15M"
-	// LookBackWindowPT1H - One hour
-	LookBackWindowPT1H LookBackWindow = "PT1H"
-	// LookBackWindowPT30M - Thirty minutes
-	LookBackWindowPT30M LookBackWindow = "PT30M"
-	// LookBackWindowPT5M - Five minutes
-	LookBackWindowPT5M LookBackWindow = "PT5M"
-)
-
-// PossibleLookBackWindowValues returns the possible values for the LookBackWindow const type.
-func PossibleLookBackWindowValues() []LookBackWindow {
-	return []LookBackWindow{
-		LookBackWindowPT15M,
-		LookBackWindowPT1H,
-		LookBackWindowPT30M,
-		LookBackWindowPT5M,
 	}
 }
 

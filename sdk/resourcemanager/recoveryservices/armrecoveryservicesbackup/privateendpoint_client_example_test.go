@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-31-preview/PrivateEndpointConnection/GetPrivateEndpointConnectionOperationStatus.json
+// Generated from example definition: 2026-07-01/PrivateEndpointConnection/GetPrivateEndpointConnectionOperationStatus.json
 func ExamplePrivateEndpointClient_GetOperationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,9 +32,9 @@ func ExamplePrivateEndpointClient_GetOperationStatus() {
 	// res = armrecoveryservicesbackup.PrivateEndpointClientGetOperationStatusResponse{
 	// 	OperationStatus: armrecoveryservicesbackup.OperationStatus{
 	// 		Name: to.Ptr("0f48183b-0a44-4dca-aec1-bba5daab888a"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-27T11:59:47.5901592Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2020, time.February, 27, 11, 59, 47, 590159200, time.UTC)),
 	// 		ID: to.Ptr("0f48183b-0a44-4dca-aec1-bba5daab888a"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-27T11:59:47.5901592Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2020, time.February, 27, 11, 59, 47, 590159200, time.UTC)),
 	// 		Status: to.Ptr(armrecoveryservicesbackup.OperationStatusValuesSucceeded),
 	// 	},
 	// }

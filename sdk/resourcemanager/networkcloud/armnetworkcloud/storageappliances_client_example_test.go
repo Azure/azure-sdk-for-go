@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/StorageAppliances_Create.json
+// Generated from example definition: 2026-07-01/StorageAppliances_Create.json
 func ExampleStorageAppliancesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,8 +90,8 @@ func ExampleStorageAppliancesClient_BeginCreateOrUpdate() {
 	// 			Manufacturer: to.Ptr("Contoso Storage"),
 	// 			Model: to.Ptr("ArrayStore-Flash70"),
 	// 			MonitoringConfigurationStatus: &armnetworkcloud.StorageApplianceMonitoringConfigurationStatus{
-	// 				LogLevel: to.Ptr(armnetworkcloud.StorageApplianceMetricsConfigurationStatusLogLevelDefault),
-	// 				MetricsLevel: to.Ptr(armnetworkcloud.StorageApplianceMetricsConfigurationStatusMetricsLevelDefault),
+	// 				LogLevel: to.Ptr(armnetworkcloud.StorageApplianceMonitoringConfigurationStatusLogLevelDefault),
+	// 				MetricsLevel: to.Ptr(armnetworkcloud.StorageApplianceMonitoringConfigurationStatusMetricsLevelDefault),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.StorageApplianceProvisioningStateSucceeded),
 	// 			RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
@@ -101,7 +101,7 @@ func ExampleStorageAppliancesClient_BeginCreateOrUpdate() {
 	// 			SecretRotationStatus: []*armnetworkcloud.SecretRotationStatus{
 	// 				{
 	// 					ExpirePeriodDays: to.Ptr[int64](90),
-	// 					LastRotationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-30T13:27:23.103Z"); return t}()),
+	// 					LastRotationTime: to.Ptr(time.Date(2023, time.September, 30, 13, 27, 23, 103000000, time.UTC)),
 	// 					RotationPeriodDays: to.Ptr[int64](60),
 	// 					SecretArchiveReference: &armnetworkcloud.SecretArchiveReference{
 	// 						KeyVaultID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.KeyVault/vaults/keyVaultName"),
@@ -116,10 +116,10 @@ func ExampleStorageAppliancesClient_BeginCreateOrUpdate() {
 	// 			Version: to.Ptr("9.9.9"),
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},
@@ -132,7 +132,7 @@ func ExampleStorageAppliancesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/StorageAppliances_Delete.json
+// Generated from example definition: 2026-07-01/StorageAppliances_Delete.json
 func ExampleStorageAppliancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,7 +153,7 @@ func ExampleStorageAppliancesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/StorageAppliances_DisableRemoteVendorManagement.json
+// Generated from example definition: 2026-07-01/StorageAppliances_DisableRemoteVendorManagement.json
 func ExampleStorageAppliancesClient_BeginDisableRemoteVendorManagement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +174,7 @@ func ExampleStorageAppliancesClient_BeginDisableRemoteVendorManagement() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/StorageAppliances_EnableRemoteVendorManagement.json
+// Generated from example definition: 2026-07-01/StorageAppliances_EnableRemoteVendorManagement.json
 func ExampleStorageAppliancesClient_BeginEnableRemoteVendorManagement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,7 +200,7 @@ func ExampleStorageAppliancesClient_BeginEnableRemoteVendorManagement() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/StorageAppliances_Get.json
+// Generated from example definition: 2026-07-01/StorageAppliances_Get.json
 func ExampleStorageAppliancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,8 +254,8 @@ func ExampleStorageAppliancesClient_Get() {
 	// 			Manufacturer: to.Ptr("Contoso Storage"),
 	// 			Model: to.Ptr("ArrayStore-Flash70"),
 	// 			MonitoringConfigurationStatus: &armnetworkcloud.StorageApplianceMonitoringConfigurationStatus{
-	// 				LogLevel: to.Ptr(armnetworkcloud.StorageApplianceMetricsConfigurationStatusLogLevelDefault),
-	// 				MetricsLevel: to.Ptr(armnetworkcloud.StorageApplianceMetricsConfigurationStatusMetricsLevelDefault),
+	// 				LogLevel: to.Ptr(armnetworkcloud.StorageApplianceMonitoringConfigurationStatusLogLevelDefault),
+	// 				MetricsLevel: to.Ptr(armnetworkcloud.StorageApplianceMonitoringConfigurationStatusMetricsLevelDefault),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.StorageApplianceProvisioningStateSucceeded),
 	// 			RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
@@ -265,7 +265,7 @@ func ExampleStorageAppliancesClient_Get() {
 	// 			SecretRotationStatus: []*armnetworkcloud.SecretRotationStatus{
 	// 				{
 	// 					ExpirePeriodDays: to.Ptr[int64](90),
-	// 					LastRotationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-30T13:27:23.103Z"); return t}()),
+	// 					LastRotationTime: to.Ptr(time.Date(2023, time.September, 30, 13, 27, 23, 103000000, time.UTC)),
 	// 					RotationPeriodDays: to.Ptr[int64](60),
 	// 					SecretArchiveReference: &armnetworkcloud.SecretArchiveReference{
 	// 						KeyVaultID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.KeyVault/vaults/keyVaultName"),
@@ -280,10 +280,10 @@ func ExampleStorageAppliancesClient_Get() {
 	// 			Version: to.Ptr("9.9.9"),
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},
@@ -296,7 +296,7 @@ func ExampleStorageAppliancesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/StorageAppliances_ListByResourceGroup.json
+// Generated from example definition: 2026-07-01/StorageAppliances_ListByResourceGroup.json
 func ExampleStorageAppliancesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -357,8 +357,8 @@ func ExampleStorageAppliancesClient_NewListByResourceGroupPager() {
 		// 					Manufacturer: to.Ptr("Contoso Storage"),
 		// 					Model: to.Ptr("ArrayStore-Flash70"),
 		// 					MonitoringConfigurationStatus: &armnetworkcloud.StorageApplianceMonitoringConfigurationStatus{
-		// 						LogLevel: to.Ptr(armnetworkcloud.StorageApplianceMetricsConfigurationStatusLogLevelDefault),
-		// 						MetricsLevel: to.Ptr(armnetworkcloud.StorageApplianceMetricsConfigurationStatusMetricsLevelDefault),
+		// 						LogLevel: to.Ptr(armnetworkcloud.StorageApplianceMonitoringConfigurationStatusLogLevelDefault),
+		// 						MetricsLevel: to.Ptr(armnetworkcloud.StorageApplianceMonitoringConfigurationStatusMetricsLevelDefault),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.StorageApplianceProvisioningStateSucceeded),
 		// 					RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
@@ -368,7 +368,7 @@ func ExampleStorageAppliancesClient_NewListByResourceGroupPager() {
 		// 					SecretRotationStatus: []*armnetworkcloud.SecretRotationStatus{
 		// 						{
 		// 							ExpirePeriodDays: to.Ptr[int64](90),
-		// 							LastRotationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-30T13:27:23.103Z"); return t}()),
+		// 							LastRotationTime: to.Ptr(time.Date(2023, time.September, 30, 13, 27, 23, 103000000, time.UTC)),
 		// 							RotationPeriodDays: to.Ptr[int64](60),
 		// 							SecretArchiveReference: &armnetworkcloud.SecretArchiveReference{
 		// 								KeyVaultID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.KeyVault/vaults/keyVaultName"),
@@ -383,10 +383,10 @@ func ExampleStorageAppliancesClient_NewListByResourceGroupPager() {
 		// 					Version: to.Ptr("9.9.9"),
 		// 				},
 		// 				SystemData: &armnetworkcloud.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("identityA"),
 		// 					CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("identityB"),
 		// 					LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 		// 				},
@@ -402,7 +402,7 @@ func ExampleStorageAppliancesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/StorageAppliances_ListBySubscription.json
+// Generated from example definition: 2026-07-01/StorageAppliances_ListBySubscription.json
 func ExampleStorageAppliancesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -463,8 +463,8 @@ func ExampleStorageAppliancesClient_NewListBySubscriptionPager() {
 		// 					Manufacturer: to.Ptr("Contoso Storage"),
 		// 					Model: to.Ptr("ArrayStore-Flash70"),
 		// 					MonitoringConfigurationStatus: &armnetworkcloud.StorageApplianceMonitoringConfigurationStatus{
-		// 						LogLevel: to.Ptr(armnetworkcloud.StorageApplianceMetricsConfigurationStatusLogLevelDefault),
-		// 						MetricsLevel: to.Ptr(armnetworkcloud.StorageApplianceMetricsConfigurationStatusMetricsLevelDefault),
+		// 						LogLevel: to.Ptr(armnetworkcloud.StorageApplianceMonitoringConfigurationStatusLogLevelDefault),
+		// 						MetricsLevel: to.Ptr(armnetworkcloud.StorageApplianceMonitoringConfigurationStatusMetricsLevelDefault),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.StorageApplianceProvisioningStateSucceeded),
 		// 					RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
@@ -474,7 +474,7 @@ func ExampleStorageAppliancesClient_NewListBySubscriptionPager() {
 		// 					SecretRotationStatus: []*armnetworkcloud.SecretRotationStatus{
 		// 						{
 		// 							ExpirePeriodDays: to.Ptr[int64](90),
-		// 							LastRotationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-30T13:27:23.103Z"); return t}()),
+		// 							LastRotationTime: to.Ptr(time.Date(2023, time.September, 30, 13, 27, 23, 103000000, time.UTC)),
 		// 							RotationPeriodDays: to.Ptr[int64](60),
 		// 							SecretArchiveReference: &armnetworkcloud.SecretArchiveReference{
 		// 								KeyVaultID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.KeyVault/vaults/keyVaultName"),
@@ -489,10 +489,10 @@ func ExampleStorageAppliancesClient_NewListBySubscriptionPager() {
 		// 					Version: to.Ptr("9.9.9"),
 		// 				},
 		// 				SystemData: &armnetworkcloud.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("identityA"),
 		// 					CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("identityB"),
 		// 					LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 		// 				},
@@ -508,7 +508,7 @@ func ExampleStorageAppliancesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/StorageAppliances_RunReadCommands.json
+// Generated from example definition: 2026-07-01/StorageAppliances_RunReadCommands.json
 func ExampleStorageAppliancesClient_BeginRunReadCommands() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -541,7 +541,7 @@ func ExampleStorageAppliancesClient_BeginRunReadCommands() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/StorageAppliances_Patch.json
+// Generated from example definition: 2026-07-01/StorageAppliances_Patch.json
 func ExampleStorageAppliancesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -607,8 +607,8 @@ func ExampleStorageAppliancesClient_BeginUpdate() {
 	// 			Manufacturer: to.Ptr("Contoso Storage"),
 	// 			Model: to.Ptr("ArrayStore-Flash70"),
 	// 			MonitoringConfigurationStatus: &armnetworkcloud.StorageApplianceMonitoringConfigurationStatus{
-	// 				LogLevel: to.Ptr(armnetworkcloud.StorageApplianceMetricsConfigurationStatusLogLevelDefault),
-	// 				MetricsLevel: to.Ptr(armnetworkcloud.StorageApplianceMetricsConfigurationStatusMetricsLevelDefault),
+	// 				LogLevel: to.Ptr(armnetworkcloud.StorageApplianceMonitoringConfigurationStatusLogLevelDefault),
+	// 				MetricsLevel: to.Ptr(armnetworkcloud.StorageApplianceMonitoringConfigurationStatusMetricsLevelDefault),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.StorageApplianceProvisioningStateSucceeded),
 	// 			RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
@@ -618,7 +618,7 @@ func ExampleStorageAppliancesClient_BeginUpdate() {
 	// 			SecretRotationStatus: []*armnetworkcloud.SecretRotationStatus{
 	// 				{
 	// 					ExpirePeriodDays: to.Ptr[int64](90),
-	// 					LastRotationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-30T13:27:23.103Z"); return t}()),
+	// 					LastRotationTime: to.Ptr(time.Date(2023, time.September, 30, 13, 27, 23, 103000000, time.UTC)),
 	// 					RotationPeriodDays: to.Ptr[int64](60),
 	// 					SecretArchiveReference: &armnetworkcloud.SecretArchiveReference{
 	// 						KeyVaultID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.KeyVault/vaults/keyVaultName"),
@@ -633,10 +633,10 @@ func ExampleStorageAppliancesClient_BeginUpdate() {
 	// 			Version: to.Ptr("9.9.9"),
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},

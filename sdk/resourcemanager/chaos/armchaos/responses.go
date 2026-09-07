@@ -63,6 +63,35 @@ type CapabilityTypesClientListResponse struct {
 	CapabilityTypeListResult
 }
 
+// ConnectionsClientCreateOrUpdateResponse contains the response from method ConnectionsClient.CreateOrUpdate.
+type ConnectionsClientCreateOrUpdateResponse struct {
+	// Model that represents a connection between a workspace and a target resource.
+	// A connection provisions and tracks the trust relationship that authorizes the
+	// actor to reach the Chaos Studio data plane for the workspace and target during
+	// fault injection.
+	Connection
+}
+
+// ConnectionsClientDeleteResponse contains the response from method ConnectionsClient.Delete.
+type ConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ConnectionsClientGetResponse contains the response from method ConnectionsClient.Get.
+type ConnectionsClientGetResponse struct {
+	// Model that represents a connection between a workspace and a target resource.
+	// A connection provisions and tracks the trust relationship that authorizes the
+	// actor to reach the Chaos Studio data plane for the workspace and target during
+	// fault injection.
+	Connection
+}
+
+// ConnectionsClientListAllResponse contains the response from method ConnectionsClient.NewListAllPager.
+type ConnectionsClientListAllResponse struct {
+	// Model that represents a list of connections and a link for pagination.
+	ConnectionListResult
+}
+
 // DiscoveredResourcesClientGetResponse contains the response from method DiscoveredResourcesClient.Get.
 type DiscoveredResourcesClientGetResponse struct {
 	// Model that represents a discovered resource.
@@ -342,6 +371,18 @@ type WorkspacesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// WorkspacesClientDiscoverResponse contains the response from method WorkspacesClient.BeginDiscover.
+type WorkspacesClientDiscoverResponse struct {
+	// Model that represents the latest workspace discovery result.
+	WorkspaceDiscovery
+}
+
+// WorkspacesClientEvaluateResponse contains the response from method WorkspacesClient.BeginEvaluate.
+type WorkspacesClientEvaluateResponse struct {
+	// Model that represents the latest workspace evaluation result.
+	WorkspaceEvaluation
+}
+
 // WorkspacesClientGetResponse contains the response from method WorkspacesClient.Get.
 type WorkspacesClientGetResponse struct {
 	// Model that represents a Workspace resource.
@@ -358,12 +399,6 @@ type WorkspacesClientListAllResponse struct {
 type WorkspacesClientListResponse struct {
 	// Model that represents a list of Workspace resources and a link for pagination.
 	WorkspaceListResult
-}
-
-// WorkspacesClientRefreshRecommendationsResponse contains the response from method WorkspacesClient.BeginRefreshRecommendations.
-type WorkspacesClientRefreshRecommendationsResponse struct {
-	// Model that represents the latest workspace evaluation result.
-	WorkspaceEvaluation
 }
 
 // WorkspacesClientUpdateResponse contains the response from method WorkspacesClient.BeginUpdate.

@@ -5,8 +5,14 @@ package generated
 
 type TransactionalContentSetter interface {
 	SetCRC64([]byte)
+	SetStructuredBody(bodyType string, contentLength int64)
 }
 
 func (a *PathClientAppendDataOptions) SetCRC64(v []byte) {
 	a.TransactionalContentCRC64 = v
+}
+
+func (a *PathClientAppendDataOptions) SetStructuredBody(bodyType string, contentLength int64) {
+	a.StructuredBodyType = &bodyType
+	a.StructuredContentLength = &contentLength
 }

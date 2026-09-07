@@ -6,5 +6,5 @@ package armrecoveryservicesbackup
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
-	moduleVersion = "v5.0.0-beta.1"
+	moduleVersion = "v5.0.0"
 )

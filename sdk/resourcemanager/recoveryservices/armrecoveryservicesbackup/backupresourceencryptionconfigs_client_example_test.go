@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-31-preview/BackupResourceEncryptionConfig_Get.json
+// Generated from example definition: 2026-07-01/BackupResourceEncryptionConfig_Get.json
 func ExampleBackupResourceEncryptionConfigsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleBackupResourceEncryptionConfigsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-31-preview/BackupResourceEncryptionConfig_Put.json
+// Generated from example definition: 2026-07-01/BackupResourceEncryptionConfig_Put.json
 func ExampleBackupResourceEncryptionConfigsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

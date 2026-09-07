@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-31-preview/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
+// Generated from example definition: 2026-07-01/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
 func ExampleResourceGuardProxyClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleResourceGuardProxyClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-31-preview/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
+// Generated from example definition: 2026-07-01/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
 func ExampleResourceGuardProxyClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleResourceGuardProxyClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-31-preview/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
+// Generated from example definition: 2026-07-01/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
 func ExampleResourceGuardProxyClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleResourceGuardProxyClient_Put() {
 	// }
 }
 
-// Generated from example definition: 2026-01-31-preview/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
+// Generated from example definition: 2026-07-01/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
 func ExampleResourceGuardProxyClient_UnlockDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

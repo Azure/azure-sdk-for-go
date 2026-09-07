@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-31-preview/Common/GetJobDetails.json
+// Generated from example definition: 2026-07-01/Common/GetJobDetails.json
 func ExampleJobDetailsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleJobDetailsClient_Get() {
 	// 			},
 	// 			JobType: to.Ptr("AzureIaaSVMJob"),
 	// 			Operation: to.Ptr("Backup"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:31:07.014604Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2017, time.August, 3, 5, 31, 7, 14604000, time.UTC)),
 	// 			Status: to.Ptr("InProgress"),
 	// 			VirtualMachineVersion: to.Ptr("Compute"),
 	// 		},

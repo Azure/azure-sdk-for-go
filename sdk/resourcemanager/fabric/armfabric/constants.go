@@ -5,7 +5,7 @@
 package armfabric
 
 const (
-	version20231101 string = "2023-11-01"
+	version20260801Preview string = "2026-08-01-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -20,6 +20,24 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// CapacityOverageState - The capacity overage state for the Fabric capacity resource.
+type CapacityOverageState string
+
+const (
+	// CapacityOverageStateDisabled - Capacity overage is disabled.
+	CapacityOverageStateDisabled CapacityOverageState = "Disabled"
+	// CapacityOverageStateEnabled - Capacity overage is enabled.
+	CapacityOverageStateEnabled CapacityOverageState = "Enabled"
+)
+
+// PossibleCapacityOverageStateValues returns the possible values for the CapacityOverageState const type.
+func PossibleCapacityOverageStateValues() []CapacityOverageState {
+	return []CapacityOverageState{
+		CapacityOverageStateDisabled,
+		CapacityOverageStateEnabled,
 	}
 }
 

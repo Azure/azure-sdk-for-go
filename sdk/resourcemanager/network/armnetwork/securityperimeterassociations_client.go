@@ -20,7 +20,7 @@ import (
 // SecurityPerimeterAssociationsClient contains the methods for the SecurityPerimeterAssociations group.
 // Don't use this type directly, use NewSecurityPerimeterAssociationsClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type SecurityPerimeterAssociationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -31,6 +31,9 @@ type SecurityPerimeterAssociationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSecurityPerimeterAssociationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecurityPerimeterAssociationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -84,8 +87,7 @@ func (client *SecurityPerimeterAssociationsClient) createOrUpdate(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -94,7 +96,7 @@ func (client *SecurityPerimeterAssociationsClient) createOrUpdate(ctx context.Co
 func (client *SecurityPerimeterAssociationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, associationName string, parameters NspAssociation, _ *SecurityPerimeterAssociationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/resourceAssociations/{associationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -114,7 +116,7 @@ func (client *SecurityPerimeterAssociationsClient) createOrUpdateCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -165,8 +167,7 @@ func (client *SecurityPerimeterAssociationsClient) deleteOperation(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -175,7 +176,7 @@ func (client *SecurityPerimeterAssociationsClient) deleteOperation(ctx context.C
 func (client *SecurityPerimeterAssociationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, associationName string, _ *SecurityPerimeterAssociationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/resourceAssociations/{associationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -195,7 +196,7 @@ func (client *SecurityPerimeterAssociationsClient) deleteCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -221,19 +222,14 @@ func (client *SecurityPerimeterAssociationsClient) Get(ctx context.Context, reso
 	if err != nil {
 		return SecurityPerimeterAssociationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SecurityPerimeterAssociationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *SecurityPerimeterAssociationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, associationName string, _ *SecurityPerimeterAssociationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/resourceAssociations/{associationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -253,15 +249,18 @@ func (client *SecurityPerimeterAssociationsClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SecurityPerimeterAssociationsClient) getHandleResponse(resp *http.Response) (SecurityPerimeterAssociationsClientGetResponse, error) {
+func (client *SecurityPerimeterAssociationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SecurityPerimeterAssociationsClientGetResponse, error) {
 	result := SecurityPerimeterAssociationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NspAssociation); err != nil {
 		return SecurityPerimeterAssociationsClientGetResponse{}, err
 	}
@@ -284,53 +283,67 @@ func (client *SecurityPerimeterAssociationsClient) NewListPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, networkSecurityPerimeterName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, networkSecurityPerimeterName, nextLink, options)
 			if err != nil {
 				return SecurityPerimeterAssociationsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SecurityPerimeterAssociationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *SecurityPerimeterAssociationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, options *SecurityPerimeterAssociationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/resourceAssociations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SecurityPerimeterAssociationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, nextLink string, options *SecurityPerimeterAssociationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/resourceAssociations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if networkSecurityPerimeterName == "" {
+			return nil, errors.New("parameter networkSecurityPerimeterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterName}", url.PathEscape(networkSecurityPerimeterName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkSecurityPerimeterName == "" {
-		return nil, errors.New("parameter networkSecurityPerimeterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterName}", url.PathEscape(networkSecurityPerimeterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SecurityPerimeterAssociationsClient) listHandleResponse(resp *http.Response) (SecurityPerimeterAssociationsClientListResponse, error) {
+func (client *SecurityPerimeterAssociationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (SecurityPerimeterAssociationsClientListResponse, error) {
 	result := SecurityPerimeterAssociationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NspAssociationsListResult); err != nil {
 		return SecurityPerimeterAssociationsClientListResponse{}, err
 	}
@@ -359,19 +372,14 @@ func (client *SecurityPerimeterAssociationsClient) Reconcile(ctx context.Context
 	if err != nil {
 		return SecurityPerimeterAssociationsClientReconcileResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SecurityPerimeterAssociationsClientReconcileResponse{}, err
-	}
-	resp, err := client.reconcileHandleResponse(httpResp)
-	return resp, err
+	return client.reconcileHandleResponse(httpResp, http.StatusOK)
 }
 
 // reconcileCreateRequest creates the Reconcile request.
 func (client *SecurityPerimeterAssociationsClient) reconcileCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, associationName string, parameters any, _ *SecurityPerimeterAssociationsClientReconcileOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/resourceAssociations/{associationName}/reconcile"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -391,7 +399,7 @@ func (client *SecurityPerimeterAssociationsClient) reconcileCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -402,8 +410,11 @@ func (client *SecurityPerimeterAssociationsClient) reconcileCreateRequest(ctx co
 }
 
 // reconcileHandleResponse handles the Reconcile response.
-func (client *SecurityPerimeterAssociationsClient) reconcileHandleResponse(resp *http.Response) (SecurityPerimeterAssociationsClientReconcileResponse, error) {
+func (client *SecurityPerimeterAssociationsClient) reconcileHandleResponse(resp *http.Response, successCodes ...int) (SecurityPerimeterAssociationsClientReconcileResponse, error) {
 	result := SecurityPerimeterAssociationsClientReconcileResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
 		return SecurityPerimeterAssociationsClientReconcileResponse{}, err
 	}

@@ -61,8 +61,7 @@ func (client *JoinRequestsClient) Approve(ctx context.Context, billingAccountNam
 		return JoinRequestsClientApproveResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return JoinRequestsClientApproveResponse{}, err
+		return JoinRequestsClientApproveResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return JoinRequestsClientApproveResponse{}, nil
 }
@@ -118,8 +117,7 @@ func (client *JoinRequestsClient) Deny(ctx context.Context, billingAccountName s
 		return JoinRequestsClientDenyResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return JoinRequestsClientDenyResponse{}, err
+		return JoinRequestsClientDenyResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return JoinRequestsClientDenyResponse{}, nil
 }
@@ -174,12 +172,7 @@ func (client *JoinRequestsClient) Get(ctx context.Context, billingAccountName st
 	if err != nil {
 		return JoinRequestsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return JoinRequestsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -213,8 +206,11 @@ func (client *JoinRequestsClient) getCreateRequest(ctx context.Context, billingA
 }
 
 // getHandleResponse handles the Get response.
-func (client *JoinRequestsClient) getHandleResponse(resp *http.Response) (JoinRequestsClientGetResponse, error) {
+func (client *JoinRequestsClient) getHandleResponse(resp *http.Response, successCodes ...int) (JoinRequestsClientGetResponse, error) {
 	result := JoinRequestsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JoinRequestDetails); err != nil {
 		return JoinRequestsClientGetResponse{}, err
 	}
@@ -237,50 +233,64 @@ func (client *JoinRequestsClient) NewListPager(billingAccountName string, billin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, nextLink, options)
 			if err != nil {
 				return JoinRequestsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return JoinRequestsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *JoinRequestsClient) listCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *JoinRequestsClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/joinRequests"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *JoinRequestsClient) listCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, nextLink string, options *JoinRequestsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/joinRequests"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		if billingProfileName == "" {
+			return nil, errors.New("parameter billingProfileName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+		if invoiceSectionName == "" {
+			return nil, errors.New("parameter invoiceSectionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{invoiceSectionName}", url.PathEscape(invoiceSectionName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if billingProfileName == "" {
-		return nil, errors.New("parameter billingProfileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
-	if invoiceSectionName == "" {
-		return nil, errors.New("parameter invoiceSectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{invoiceSectionName}", url.PathEscape(invoiceSectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20211201Preview)
-	if options != nil && options.IncludeDenied != nil {
-		reqQP.Set("includeDenied", strconv.FormatBool(*options.IncludeDenied))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20211201Preview)
+		if options != nil && options.IncludeDenied != nil {
+			reqQP.Set("includeDenied", strconv.FormatBool(*options.IncludeDenied))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *JoinRequestsClient) listHandleResponse(resp *http.Response) (JoinRequestsClientListResponse, error) {
+func (client *JoinRequestsClient) listHandleResponse(resp *http.Response, successCodes ...int) (JoinRequestsClientListResponse, error) {
 	result := JoinRequestsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JoinRequestList); err != nil {
 		return JoinRequestsClientListResponse{}, err
 	}

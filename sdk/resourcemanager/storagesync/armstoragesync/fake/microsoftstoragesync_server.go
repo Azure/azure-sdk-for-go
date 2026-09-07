@@ -81,7 +81,7 @@ func (m *MicrosoftStorageSyncServerTransport) dispatchLocationOperationStatus(re
 	if m.srv.LocationOperationStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method LocationOperationStatus not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageSync/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/operations/(?P<operationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageSync/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/operations/(?P<operationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -108,10 +108,10 @@ func (m *MicrosoftStorageSyncServerTransport) dispatchLocationOperationStatus(re
 		return nil, err
 	}
 	if val := server.GetResponse(respr).XMSCorrelationRequestID; val != nil {
-		resp.Header.Set("x-ms-correlation-request-id", *val)
+		resp.Header.Set("X-Ms-Correlation-Request-Id", *val)
 	}
 	if val := server.GetResponse(respr).XMSRequestID; val != nil {
-		resp.Header.Set("x-ms-request-id", *val)
+		resp.Header.Set("X-Ms-Request-Id", *val)
 	}
 	return resp, nil
 }

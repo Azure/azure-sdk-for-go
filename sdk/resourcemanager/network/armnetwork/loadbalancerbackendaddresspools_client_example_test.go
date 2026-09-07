@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/LBBackendAddressPoolWithBackendAddressesPut.json
+// Generated from example definition: 2025-09-01/LBBackendAddressPoolWithBackendAddressesPut.json
 func ExampleLoadBalancerBackendAddressPoolsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleLoadBalancerBackendAddressPoolsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/LoadBalancerBackendAddressPoolDelete.json
+// Generated from example definition: 2025-09-01/LoadBalancerBackendAddressPoolDelete.json
 func ExampleLoadBalancerBackendAddressPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleLoadBalancerBackendAddressPoolsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/LBBackendAddressPoolWithBackendAddressesGet.json
+// Generated from example definition: 2025-09-01/LBBackendAddressPoolWithBackendAddressesGet.json
 func ExampleLoadBalancerBackendAddressPoolsClient_Get_loadBalancerWithBackendAddressPoolWithBackendAddresses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +177,7 @@ func ExampleLoadBalancerBackendAddressPoolsClient_Get_loadBalancerWithBackendAdd
 	// }
 }
 
-// Generated from example definition: 2025-07-01/LoadBalancerBackendAddressPoolGet.json
+// Generated from example definition: 2025-09-01/LoadBalancerBackendAddressPoolGet.json
 func ExampleLoadBalancerBackendAddressPoolsClient_Get_loadBalancerBackendAddressPoolGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,7 +218,7 @@ func ExampleLoadBalancerBackendAddressPoolsClient_Get_loadBalancerBackendAddress
 	// }
 }
 
-// Generated from example definition: 2025-07-01/LBBackendAddressPoolListWithBackendAddressesPoolType.json
+// Generated from example definition: 2025-09-01/LBBackendAddressPoolListWithBackendAddressesPoolType.json
 func ExampleLoadBalancerBackendAddressPoolsClient_NewListPager_loadBalancerWithBackendAddressPoolContainingBackendAddresses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,7 +283,7 @@ func ExampleLoadBalancerBackendAddressPoolsClient_NewListPager_loadBalancerWithB
 	}
 }
 
-// Generated from example definition: 2025-07-01/LoadBalancerBackendAddressPoolList.json
+// Generated from example definition: 2025-09-01/LoadBalancerBackendAddressPoolList.json
 func ExampleLoadBalancerBackendAddressPoolsClient_NewListPager_loadBalancerBackendAddressPoolList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

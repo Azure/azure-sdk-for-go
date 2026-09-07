@@ -56,9 +56,9 @@ func ExampleDbNodesClient_BeginAction_vmActionsOnDbNodesOfVMClusterGeneratedByMa
 	// 			MaintenanceType: to.Ptr(armoracledatabase.DbNodeMaintenanceTypeVmdbRebootMigration),
 	// 			MemorySizeInGbs: to.Ptr[int32](100),
 	// 			SoftwareStorageSizeInGb: to.Ptr[int32](1000),
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-21T13:44:04.924Z"); return t}()),
-	// 			TimeMaintenanceWindowEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-21T13:44:04.924Z"); return t}()),
-	// 			TimeMaintenanceWindowStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-21T13:44:04.924Z"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2023, time.October, 21, 13, 44, 4, 924000000, time.UTC)),
+	// 			TimeMaintenanceWindowEnd: to.Ptr(time.Date(2023, time.October, 21, 13, 44, 4, 924000000, time.UTC)),
+	// 			TimeMaintenanceWindowStart: to.Ptr(time.Date(2023, time.October, 21, 13, 44, 4, 924000000, time.UTC)),
 	// 			Vnic2ID: to.Ptr("ocid.vnic.id2"),
 	// 			VnicID: to.Ptr("ocid.vnic.id1"),
 	// 			AdditionalDetails: to.Ptr("ympoempzdwoemuoosvbznsazqxruk"),
@@ -69,10 +69,10 @@ func ExampleDbNodesClient_BeginAction_vmActionsOnDbNodesOfVMClusterGeneratedByMa
 	// 		SystemData: &armoracledatabase.SystemData{
 	// 			CreatedBy: to.Ptr("sqehacivpuim"),
 	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
 	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -152,9 +152,9 @@ func ExampleDbNodesClient_BeginAction_dbNodesAction() {
 	// 			MaintenanceType: to.Ptr(armoracledatabase.DbNodeMaintenanceTypeVmdbRebootMigration),
 	// 			MemorySizeInGbs: to.Ptr[int32](100),
 	// 			SoftwareStorageSizeInGb: to.Ptr[int32](1000),
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-21T13:44:04.924Z"); return t}()),
-	// 			TimeMaintenanceWindowEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-21T13:44:04.924Z"); return t}()),
-	// 			TimeMaintenanceWindowStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-21T13:44:04.924Z"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2023, time.October, 21, 13, 44, 4, 924000000, time.UTC)),
+	// 			TimeMaintenanceWindowEnd: to.Ptr(time.Date(2023, time.October, 21, 13, 44, 4, 924000000, time.UTC)),
+	// 			TimeMaintenanceWindowStart: to.Ptr(time.Date(2023, time.October, 21, 13, 44, 4, 924000000, time.UTC)),
 	// 			Vnic2ID: to.Ptr("ocid.vnic.id2"),
 	// 			VnicID: to.Ptr("ocid.vnic.id1"),
 	// 			AdditionalDetails: to.Ptr("additionalDetails"),
@@ -203,9 +203,9 @@ func ExampleDbNodesClient_Get_getDbNodeGeneratedByMaximumSetRule() {
 	// 			MaintenanceType: to.Ptr(armoracledatabase.DbNodeMaintenanceTypeVmdbRebootMigration),
 	// 			MemorySizeInGbs: to.Ptr[int32](100),
 	// 			SoftwareStorageSizeInGb: to.Ptr[int32](1000),
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-21T13:44:04.924Z"); return t}()),
-	// 			TimeMaintenanceWindowEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-21T13:44:04.924Z"); return t}()),
-	// 			TimeMaintenanceWindowStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-21T13:44:04.924Z"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2023, time.October, 21, 13, 44, 4, 924000000, time.UTC)),
+	// 			TimeMaintenanceWindowEnd: to.Ptr(time.Date(2023, time.October, 21, 13, 44, 4, 924000000, time.UTC)),
+	// 			TimeMaintenanceWindowStart: to.Ptr(time.Date(2023, time.October, 21, 13, 44, 4, 924000000, time.UTC)),
 	// 			Vnic2ID: to.Ptr("ocid.vnic.id2"),
 	// 			VnicID: to.Ptr("ocid.vnic.id1"),
 	// 			AdditionalDetails: to.Ptr("ympoempzdwoemuoosvbznsazqxruk"),
@@ -216,10 +216,10 @@ func ExampleDbNodesClient_Get_getDbNodeGeneratedByMaximumSetRule() {
 	// 		SystemData: &armoracledatabase.SystemData{
 	// 			CreatedBy: to.Ptr("sqehacivpuim"),
 	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
 	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -287,9 +287,9 @@ func ExampleDbNodesClient_Get_dbNodesGet() {
 	// 			MaintenanceType: to.Ptr(armoracledatabase.DbNodeMaintenanceTypeVmdbRebootMigration),
 	// 			MemorySizeInGbs: to.Ptr[int32](100),
 	// 			SoftwareStorageSizeInGb: to.Ptr[int32](1000),
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-21T13:44:04.924Z"); return t}()),
-	// 			TimeMaintenanceWindowEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-21T13:44:04.924Z"); return t}()),
-	// 			TimeMaintenanceWindowStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-21T13:44:04.924Z"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2023, time.October, 21, 13, 44, 4, 924000000, time.UTC)),
+	// 			TimeMaintenanceWindowEnd: to.Ptr(time.Date(2023, time.October, 21, 13, 44, 4, 924000000, time.UTC)),
+	// 			TimeMaintenanceWindowStart: to.Ptr(time.Date(2023, time.October, 21, 13, 44, 4, 924000000, time.UTC)),
 	// 			Vnic2ID: to.Ptr("ocid.vnic.id2"),
 	// 			VnicID: to.Ptr("ocid.vnic.id1"),
 	// 		},
@@ -297,8 +297,8 @@ func ExampleDbNodesClient_Get_dbNodesGet() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/dbNodes_listByParent.json
-func ExampleDbNodesClient_NewListByCloudVMClusterPager() {
+// Generated from example definition: 2025-09-01/DbNodes_ListByParent_MaximumSet_Gen.json
+func ExampleDbNodesClient_NewListByCloudVMClusterPager_listDbNodesByVMClusterGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -308,7 +308,7 @@ func ExampleDbNodesClient_NewListByCloudVMClusterPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDbNodesClient().NewListByCloudVMClusterPager("rg000", "cluster1", nil)
+	pager := clientFactory.NewDbNodesClient().NewListByCloudVMClusterPager("rgopenapi", "Replace this value with a string matching RegExp .*", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -341,12 +341,59 @@ func ExampleDbNodesClient_NewListByCloudVMClusterPager() {
 		// 					MaintenanceType: to.Ptr(armoracledatabase.DbNodeMaintenanceTypeVmdbRebootMigration),
 		// 					MemorySizeInGbs: to.Ptr[int32](100),
 		// 					SoftwareStorageSizeInGb: to.Ptr[int32](1000),
-		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-21T13:44:04.924Z"); return t}()),
-		// 					TimeMaintenanceWindowEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-21T13:44:04.924Z"); return t}()),
-		// 					TimeMaintenanceWindowStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-21T13:44:04.924Z"); return t}()),
+		// 					TimeCreated: to.Ptr(time.Date(2023, time.October, 21, 13, 44, 4, 924000000, time.UTC)),
+		// 					TimeMaintenanceWindowEnd: to.Ptr(time.Date(2023, time.October, 21, 13, 44, 4, 924000000, time.UTC)),
+		// 					TimeMaintenanceWindowStart: to.Ptr(time.Date(2023, time.October, 21, 13, 44, 4, 924000000, time.UTC)),
 		// 					Vnic2ID: to.Ptr("ocid.vnic.id2"),
 		// 					VnicID: to.Ptr("ocid.vnic.id1"),
+		// 					AdditionalDetails: to.Ptr("ympoempzdwoemuoosvbznsazqxruk"),
+		// 					LifecycleDetails: to.Ptr("ztozxox"),
+		// 					ProvisioningState: to.Ptr(armoracledatabase.ResourceProvisioningStateSucceeded),
 		// 				},
+		// 				Name: to.Ptr("fwzoiphvtqxgvyvdkzdjhjtemeifj"),
+		// 				SystemData: &armoracledatabase.SystemData{
+		// 					CreatedBy: to.Ptr("sqehacivpuim"),
+		// 					CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+		// 					LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/akwq"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-09-01/DbNodes_ListByParent_MinimumSet_Gen.json
+func ExampleDbNodesClient_NewListByCloudVMClusterPager_listDbNodesByVMClusterGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDbNodesClient().NewListByCloudVMClusterPager("rgopenapi", "Replace this value with a string matching RegExp .*", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoracledatabase.DbNodesClientListByCloudVMClusterResponse{
+		// 	DbNodeListResult: armoracledatabase.DbNodeListResult{
+		// 		Value: []*armoracledatabase.DbNode{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1/dbNodes/ocid1"),
 		// 			},
 		// 		},
 		// 	},

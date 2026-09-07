@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/NetworkWatcherConnectionMonitorCreate.json
+// Generated from example definition: 2025-09-01/NetworkWatcherConnectionMonitorCreate.json
 func ExampleConnectionMonitorsClient_BeginCreateOrUpdate_createConnectionMonitorV1() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleConnectionMonitorsClient_BeginCreateOrUpdate_createConnectionMonitor
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkWatcherConnectionMonitorCreateWithArcNetwork.json
+// Generated from example definition: 2025-09-01/NetworkWatcherConnectionMonitorCreateWithArcNetwork.json
 func ExampleConnectionMonitorsClient_BeginCreateOrUpdate_createConnectionMonitorWithArcNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,7 +278,7 @@ func ExampleConnectionMonitorsClient_BeginCreateOrUpdate_createConnectionMonitor
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkWatcherConnectionMonitorV2Create.json
+// Generated from example definition: 2025-09-01/NetworkWatcherConnectionMonitorV2Create.json
 func ExampleConnectionMonitorsClient_BeginCreateOrUpdate_createConnectionMonitorV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -429,7 +429,7 @@ func ExampleConnectionMonitorsClient_BeginCreateOrUpdate_createConnectionMonitor
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkWatcherConnectionMonitorDelete.json
+// Generated from example definition: 2025-09-01/NetworkWatcherConnectionMonitorDelete.json
 func ExampleConnectionMonitorsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -450,7 +450,7 @@ func ExampleConnectionMonitorsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/NetworkWatcherConnectionMonitorGet.json
+// Generated from example definition: 2025-09-01/NetworkWatcherConnectionMonitorGet.json
 func ExampleConnectionMonitorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -516,7 +516,7 @@ func ExampleConnectionMonitorsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkWatcherConnectionMonitorList.json
+// Generated from example definition: 2025-09-01/NetworkWatcherConnectionMonitorList.json
 func ExampleConnectionMonitorsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -635,7 +635,7 @@ func ExampleConnectionMonitorsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/NetworkWatcherConnectionMonitorStop.json
+// Generated from example definition: 2025-09-01/NetworkWatcherConnectionMonitorStop.json
 func ExampleConnectionMonitorsClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -661,7 +661,7 @@ func ExampleConnectionMonitorsClient_BeginStop() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkWatcherConnectionMonitorUpdateTags.json
+// Generated from example definition: 2025-09-01/NetworkWatcherConnectionMonitorUpdateTags.json
 func ExampleConnectionMonitorsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -704,7 +704,7 @@ func ExampleConnectionMonitorsClient_UpdateTags() {
 	// 				Port: to.Ptr[int32](0),
 	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/vm1"),
 	// 			},
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-04T02:48:10.6797393Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2019, time.September, 4, 2, 48, 10, 679739300, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"tag1": to.Ptr("value1"),

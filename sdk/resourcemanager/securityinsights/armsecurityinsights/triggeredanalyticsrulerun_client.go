@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultTriggeredAnalyticsRuleRunClientVersion string = "2025-07-01-preview"
-
 // TriggeredAnalyticsRuleRunClient contains the methods for the TriggeredAnalyticsRuleRun group.
 // Don't use this type directly, use NewTriggeredAnalyticsRuleRunClient() instead.
 //
@@ -32,6 +30,9 @@ type TriggeredAnalyticsRuleRunClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTriggeredAnalyticsRuleRunClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TriggeredAnalyticsRuleRunClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,19 +65,14 @@ func (client *TriggeredAnalyticsRuleRunClient) Get(ctx context.Context, resource
 	if err != nil {
 		return TriggeredAnalyticsRuleRunClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TriggeredAnalyticsRuleRunClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *TriggeredAnalyticsRuleRunClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleRunID string, _ *TriggeredAnalyticsRuleRunClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/triggeredAnalyticsRuleRuns/{ruleRunId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -96,15 +92,18 @@ func (client *TriggeredAnalyticsRuleRunClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultTriggeredAnalyticsRuleRunClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *TriggeredAnalyticsRuleRunClient) getHandleResponse(resp *http.Response) (TriggeredAnalyticsRuleRunClientGetResponse, error) {
+func (client *TriggeredAnalyticsRuleRunClient) getHandleResponse(resp *http.Response, successCodes ...int) (TriggeredAnalyticsRuleRunClientGetResponse, error) {
 	result := TriggeredAnalyticsRuleRunClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriggeredAnalyticsRuleRun); err != nil {
 		return TriggeredAnalyticsRuleRunClientGetResponse{}, err
 	}

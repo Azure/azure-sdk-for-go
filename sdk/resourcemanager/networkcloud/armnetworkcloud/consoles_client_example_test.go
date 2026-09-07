@@ -8,12 +8,12 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud/v2"
 	"log"
 	"time"
 )
 
-// Generated from example definition: 2026-05-01-preview/Consoles_Create.json
+// Generated from example definition: 2026-07-01/Consoles_Create.json
 func ExampleConsolesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExampleConsolesClient_BeginCreateOrUpdate() {
 		Location: to.Ptr("location"),
 		Properties: &armnetworkcloud.ConsoleProperties{
 			Enabled:    to.Ptr(armnetworkcloud.ConsoleEnabledTrue),
-			Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T01:27:03.008Z"); return t }()),
+			Expiration: to.Ptr(time.Date(2022, time.June, 1, 1, 27, 3, 8000000, time.UTC)),
 			SSHPublicKey: &armnetworkcloud.SSHPublicKey{
 				KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
 			},
@@ -65,7 +65,7 @@ func ExampleConsolesClient_BeginCreateOrUpdate() {
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.ConsoleDetailedStatusReady),
 	// 			DetailedStatusMessage: to.Ptr("Console is ready for use"),
 	// 			Enabled: to.Ptr(armnetworkcloud.ConsoleEnabledTrue),
-	// 			Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T01:27:03.008Z"); return t}()),
+	// 			Expiration: to.Ptr(time.Date(2022, time.June, 1, 1, 27, 3, 8000000, time.UTC)),
 	// 			PrivateLinkServiceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.Network/privateLinkServices/console-pls"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.ConsoleProvisioningStateSucceeded),
 	// 			SSHPublicKey: &armnetworkcloud.SSHPublicKey{
@@ -74,10 +74,10 @@ func ExampleConsolesClient_BeginCreateOrUpdate() {
 	// 			VirtualMachineAccessID: to.Ptr("VirtualMachineAccessId"),
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},
@@ -90,7 +90,7 @@ func ExampleConsolesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Consoles_Delete.json
+// Generated from example definition: 2026-07-01/Consoles_Delete.json
 func ExampleConsolesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleConsolesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Consoles_Get.json
+// Generated from example definition: 2026-07-01/Consoles_Get.json
 func ExampleConsolesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +142,7 @@ func ExampleConsolesClient_Get() {
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.ConsoleDetailedStatusReady),
 	// 			DetailedStatusMessage: to.Ptr("Console is ready for use"),
 	// 			Enabled: to.Ptr(armnetworkcloud.ConsoleEnabledTrue),
-	// 			Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T01:27:03.008Z"); return t}()),
+	// 			Expiration: to.Ptr(time.Date(2022, time.June, 1, 1, 27, 3, 8000000, time.UTC)),
 	// 			PrivateLinkServiceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.Network/privateLinkServices/console-pls"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.ConsoleProvisioningStateSucceeded),
 	// 			SSHPublicKey: &armnetworkcloud.SSHPublicKey{
@@ -151,10 +151,10 @@ func ExampleConsolesClient_Get() {
 	// 			VirtualMachineAccessID: to.Ptr("VirtualMachineAccessId"),
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},
@@ -167,7 +167,7 @@ func ExampleConsolesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Consoles_ListByVirtualMachine.json
+// Generated from example definition: 2026-07-01/Consoles_ListByVirtualMachine.json
 func ExampleConsolesClient_NewListByVirtualMachinePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExampleConsolesClient_NewListByVirtualMachinePager() {
 		// 					DetailedStatus: to.Ptr(armnetworkcloud.ConsoleDetailedStatusReady),
 		// 					DetailedStatusMessage: to.Ptr("Console is ready for use"),
 		// 					Enabled: to.Ptr(armnetworkcloud.ConsoleEnabledTrue),
-		// 					Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T01:27:03.008Z"); return t}()),
+		// 					Expiration: to.Ptr(time.Date(2022, time.June, 1, 1, 27, 3, 8000000, time.UTC)),
 		// 					PrivateLinkServiceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.Network/privateLinkServices/console-pls"),
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.ConsoleProvisioningStateSucceeded),
 		// 					SSHPublicKey: &armnetworkcloud.SSHPublicKey{
@@ -214,10 +214,10 @@ func ExampleConsolesClient_NewListByVirtualMachinePager() {
 		// 					VirtualMachineAccessID: to.Ptr("VirtualMachineAccessId"),
 		// 				},
 		// 				SystemData: &armnetworkcloud.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("identityA"),
 		// 					CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("identityB"),
 		// 					LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 		// 				},
@@ -233,7 +233,7 @@ func ExampleConsolesClient_NewListByVirtualMachinePager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Consoles_Patch.json
+// Generated from example definition: 2026-07-01/Consoles_Patch.json
 func ExampleConsolesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,8 +247,8 @@ func ExampleConsolesClient_BeginUpdate() {
 	poller, err := clientFactory.NewConsolesClient().BeginUpdate(ctx, "resourceGroupName", "virtualMachineName", "default", armnetworkcloud.ConsolePatchParameters{
 		Properties: &armnetworkcloud.ConsolePatchProperties{
 			Enabled:    to.Ptr(armnetworkcloud.ConsoleEnabledTrue),
-			Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T01:27:03.008Z"); return t }()),
-			SSHPublicKey: &armnetworkcloud.SSHPublicKey{
+			Expiration: to.Ptr(time.Date(2022, time.June, 1, 1, 27, 3, 8000000, time.UTC)),
+			SSHPublicKey: &armnetworkcloud.SSHPublicKeyPatch{
 				KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
 			},
 		},
@@ -280,7 +280,7 @@ func ExampleConsolesClient_BeginUpdate() {
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.ConsoleDetailedStatusReady),
 	// 			DetailedStatusMessage: to.Ptr("Console is ready for use"),
 	// 			Enabled: to.Ptr(armnetworkcloud.ConsoleEnabledTrue),
-	// 			Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T01:27:03.008Z"); return t}()),
+	// 			Expiration: to.Ptr(time.Date(2022, time.June, 1, 1, 27, 3, 8000000, time.UTC)),
 	// 			PrivateLinkServiceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.Network/privateLinkServices/console-pls"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.ConsoleProvisioningStateSucceeded),
 	// 			SSHPublicKey: &armnetworkcloud.SSHPublicKey{
@@ -289,10 +289,10 @@ func ExampleConsolesClient_BeginUpdate() {
 	// 			VirtualMachineAccessID: to.Ptr("VirtualMachineAccessId"),
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},

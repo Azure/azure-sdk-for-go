@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/VirtualNetworkGatewayNatRulePut.json
+// Generated from example definition: 2025-09-01/VirtualNetworkGatewayNatRulePut.json
 func ExampleVirtualNetworkGatewayNatRulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleVirtualNetworkGatewayNatRulesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkGatewayNatRuleDelete.json
+// Generated from example definition: 2025-09-01/VirtualNetworkGatewayNatRuleDelete.json
 func ExampleVirtualNetworkGatewayNatRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleVirtualNetworkGatewayNatRulesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkGatewayNatRuleGet.json
+// Generated from example definition: 2025-09-01/VirtualNetworkGatewayNatRuleGet.json
 func ExampleVirtualNetworkGatewayNatRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExampleVirtualNetworkGatewayNatRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkGatewayNatRuleList.json
+// Generated from example definition: 2025-09-01/VirtualNetworkGatewayNatRuleList.json
 func ExampleVirtualNetworkGatewayNatRulesClient_NewListByVirtualNetworkGatewayPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

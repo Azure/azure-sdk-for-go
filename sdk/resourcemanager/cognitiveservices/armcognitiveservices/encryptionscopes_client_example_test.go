@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/PutEncryptionScope.json
+// Generated from example definition: 2026-07-15-preview/PutEncryptionScope.json
 func ExampleEncryptionScopesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,10 +59,10 @@ func ExampleEncryptionScopesClient_CreateOrUpdate() {
 	// 			State: to.Ptr(armcognitiveservices.EncryptionScopeStateEnabled),
 	// 		},
 	// 		SystemData: &armcognitiveservices.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-08T06:35:08.0662558Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 8, 6, 35, 8, 66255800, time.UTC)),
 	// 			CreatedBy: to.Ptr("xxx@microsoft.com"),
 	// 			CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-08T06:35:08.0662558Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 8, 6, 35, 8, 66255800, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("xxx@microsoft.com"),
 	// 			LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
 	// 		},
@@ -70,7 +70,7 @@ func ExampleEncryptionScopesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/DeleteEncryptionScope.json
+// Generated from example definition: 2026-07-15-preview/DeleteEncryptionScope.json
 func ExampleEncryptionScopesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleEncryptionScopesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/GetEncryptionScope.json
+// Generated from example definition: 2026-07-15-preview/GetEncryptionScope.json
 func ExampleEncryptionScopesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,10 +127,10 @@ func ExampleEncryptionScopesClient_Get() {
 	// 			State: to.Ptr(armcognitiveservices.EncryptionScopeStateEnabled),
 	// 		},
 	// 		SystemData: &armcognitiveservices.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-08T06:35:08.0662558Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 8, 6, 35, 8, 66255800, time.UTC)),
 	// 			CreatedBy: to.Ptr("xxx@microsoft.com"),
 	// 			CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-08T06:35:08.0662558Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 8, 6, 35, 8, 66255800, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("xxx@microsoft.com"),
 	// 			LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
 	// 		},
@@ -138,7 +138,7 @@ func ExampleEncryptionScopesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ListEncryptionScopes.json
+// Generated from example definition: 2026-07-15-preview/ListEncryptionScopes.json
 func ExampleEncryptionScopesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -180,10 +180,10 @@ func ExampleEncryptionScopesClient_NewListPager() {
 		// 					State: to.Ptr(armcognitiveservices.EncryptionScopeStateEnabled),
 		// 				},
 		// 				SystemData: &armcognitiveservices.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-08T06:35:08.0662558Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.June, 8, 6, 35, 8, 66255800, time.UTC)),
 		// 					CreatedBy: to.Ptr("xxx@microsoft.com"),
 		// 					CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-08T06:35:08.0662558Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.June, 8, 6, 35, 8, 66255800, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("xxx@microsoft.com"),
 		// 					LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
 		// 				},

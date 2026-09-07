@@ -275,23 +275,23 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// 			},
 	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
+	// 					GenerationTime: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
 	// 				},
 	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
+	// 					GenerationTime: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
 	// 				},
 	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
+	// 					GenerationTime: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
 	// 				},
 	// 				SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
+	// 					GenerationTime: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
 	// 				},
 	// 			},
 	// 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
 	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTls12),
 	// 		},
 	// 		SystemData: &armcosmos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -407,22 +407,22 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// 			},
 	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
+	// 					GenerationTime: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
 	// 				},
 	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
+	// 					GenerationTime: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
 	// 				},
 	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
+	// 					GenerationTime: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
 	// 				},
 	// 				SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
+	// 					GenerationTime: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
 	// 				},
 	// 			},
 	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 	// 		},
 	// 		SystemData: &armcosmos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -456,7 +456,7 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 			RestoreParameters: &armcosmos.RestoreParameters{
 				RestoreMode:            to.Ptr(armcosmos.RestoreModePointInTime),
 				RestoreSource:          to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/1a97b4bb-f6a0-430e-ade1-638d781830cc"),
-				RestoreTimestampInUTC:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-11T22:05:09Z"); return t }()),
+				RestoreTimestampInUTC:  to.Ptr(time.Date(2021, time.March, 11, 22, 5, 9, 0, time.UTC)),
 				RestoreWithTTLDisabled: to.Ptr(false),
 				DatabasesToRestore: []*armcosmos.DatabaseRestoreResource{
 					{
@@ -575,23 +575,23 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 	// 			EnableAnalyticalStorage: to.Ptr(false),
 	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
 	// 				},
 	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
 	// 				},
 	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
 	// 				},
 	// 				SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
 	// 				},
 	// 			},
 	// 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
 	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 	// 		},
 	// 		SystemData: &armcosmos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -766,7 +766,7 @@ func ExampleDatabaseAccountsClient_Get() {
 	// 				MigrationState: &armcosmos.BackupPolicyMigrationState{
 	// 					Status: to.Ptr(armcosmos.BackupPolicyMigrationStatusInProgress),
 	// 					TargetType: to.Ptr(armcosmos.BackupPolicyTypeContinuous),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T21:07:16Z"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2021, time.June, 9, 21, 7, 16, 0, time.UTC)),
 	// 				},
 	// 			},
 	// 			NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassNone),
@@ -774,16 +774,16 @@ func ExampleDatabaseAccountsClient_Get() {
 	// 			},
 	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
 	// 				},
 	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
 	// 				},
 	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
 	// 				},
 	// 				SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
 	// 				},
 	// 			},
 	// 			EnablePartitionMerge: to.Ptr(true),
@@ -953,16 +953,16 @@ func ExampleDatabaseAccountsClient_NewListPager() {
 		// 					},
 		// 					KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 		// 						PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
-		// 							GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
 		// 						},
 		// 						SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
-		// 							GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
 		// 						},
 		// 						PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-		// 							GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
 		// 						},
 		// 						SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-		// 							GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
 		// 						},
 		// 					},
 		// 					EnablePartitionMerge: to.Ptr(true),
@@ -970,7 +970,7 @@ func ExampleDatabaseAccountsClient_NewListPager() {
 		// 					MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 		// 				},
 		// 				SystemData: &armcosmos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
 		// 				},
 		// 				Identity: &armcosmos.ManagedServiceIdentity{
 		// 					Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
@@ -1078,16 +1078,16 @@ func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 		// 					},
 		// 					KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 		// 						PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
-		// 							GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
 		// 						},
 		// 						SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
-		// 							GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
 		// 						},
 		// 						PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-		// 							GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
 		// 						},
 		// 						SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-		// 							GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
 		// 						},
 		// 					},
 		// 					EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
@@ -1282,30 +1282,30 @@ func ExampleDatabaseAccountsClient_NewListMetricsPager() {
 		// 		Value: []*armcosmos.Metric{
 		// 			{
 		// 				TimeGrain: to.Ptr("PT5M"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T00:13:55.2780000Z"); return t}()),
+		// 				StartTime: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
+		// 				EndTime: to.Ptr(time.Date(2017, time.November, 20, 0, 13, 55, 278000000, time.UTC)),
 		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
 		// 				MetricValues: []*armcosmos.MetricValue{
 		// 					{
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
 		// 						Total: to.Ptr[float64](0),
 		// 						Count: to.Ptr[int32](0),
 		// 						Average: to.Ptr[float64](0),
 		// 					},
 		// 					{
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:58:55.2780000Z"); return t}()),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 58, 55, 278000000, time.UTC)),
 		// 						Total: to.Ptr[float64](0),
 		// 						Count: to.Ptr[int32](0),
 		// 						Average: to.Ptr[float64](0),
 		// 					},
 		// 					{
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T00:03:55.2780000Z"); return t}()),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 20, 0, 3, 55, 278000000, time.UTC)),
 		// 						Total: to.Ptr[float64](0),
 		// 						Count: to.Ptr[int32](0),
 		// 						Average: to.Ptr[float64](0),
 		// 					},
 		// 					{
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T00:08:55.2780000Z"); return t}()),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 20, 0, 8, 55, 278000000, time.UTC)),
 		// 						Total: to.Ptr[float64](0),
 		// 						Count: to.Ptr[int32](0),
 		// 						Average: to.Ptr[float64](0),
@@ -1681,16 +1681,16 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	// 			},
 	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
 	// 				},
 	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
 	// 				},
 	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
 	// 				},
 	// 				SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
 	// 				},
 	// 			},
 	// 			EnablePartitionMerge: to.Ptr(true),

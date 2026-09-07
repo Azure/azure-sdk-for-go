@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-31-preview/AzureIaasVm/ProtectedItemOperationResults.json
+// Generated from example definition: 2026-07-01/AzureIaasVm/ProtectedItemOperationResults.json
 func ExampleProtectedItemOperationResultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleProtectedItemOperationResultsClient_Get() {
 	// 			FriendlyName: to.Ptr("netvmtestv2vm1"),
 	// 			HealthStatus: to.Ptr(armrecoveryservicesbackup.HealthStatusPassed),
 	// 			LastBackupStatus: to.Ptr("Completed"),
-	// 			LastBackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-22T12:25:32.048723Z"); return t}()),
+	// 			LastBackupTime: to.Ptr(time.Date(2018, time.January, 22, 12, 25, 32, 48723000, time.UTC)),
 	// 			PolicyID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/PythonSDKBackupTestRg/providers/Microsoft.RecoveryServices/vaults/PySDKBackupTestRsVault/backupPolicies/testPolicy1"),
 	// 			ProtectedItemDataID: to.Ptr("636482643132986882"),
 	// 			ProtectedItemType: to.Ptr("Microsoft.Compute/virtualMachines"),

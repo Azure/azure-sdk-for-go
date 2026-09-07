@@ -5,7 +5,7 @@
 package armpurestorageblock
 
 const (
-	version20260101Preview string = "2026-01-01-preview"
+	version20260501Preview string = "2026-05-01-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -138,6 +138,43 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
+// PlatformConsoleAuthType - Discriminator values for platform console authentication types. Extensible to support new auth
+// mechanisms without API changes.
+type PlatformConsoleAuthType string
+
+const (
+	// PlatformConsoleAuthTypeSSH - SSH public key authentication
+	PlatformConsoleAuthTypeSSH PlatformConsoleAuthType = "ssh"
+)
+
+// PossiblePlatformConsoleAuthTypeValues returns the possible values for the PlatformConsoleAuthType const type.
+func PossiblePlatformConsoleAuthTypeValues() []PlatformConsoleAuthType {
+	return []PlatformConsoleAuthType{
+		PlatformConsoleAuthTypeSSH,
+	}
+}
+
+// PlatformConsoleRole - Role assigned to a user on the platform console
+type PlatformConsoleRole string
+
+const (
+	// PlatformConsoleRoleArrayAdmin - Full administrative access to the array
+	PlatformConsoleRoleArrayAdmin PlatformConsoleRole = "array_admin"
+	// PlatformConsoleRoleReadOnly - Read-only access to the platform console
+	PlatformConsoleRoleReadOnly PlatformConsoleRole = "read_only"
+	// PlatformConsoleRoleStorageAdmin - Administrative access to storage resources
+	PlatformConsoleRoleStorageAdmin PlatformConsoleRole = "storage_admin"
+)
+
+// PossiblePlatformConsoleRoleValues returns the possible values for the PlatformConsoleRole const type.
+func PossiblePlatformConsoleRoleValues() []PlatformConsoleRole {
+	return []PlatformConsoleRole{
+		PlatformConsoleRoleArrayAdmin,
+		PlatformConsoleRoleReadOnly,
+		PlatformConsoleRoleStorageAdmin,
+	}
+}
+
 // ProvisioningState - The status of the current operation.
 type ProvisioningState string
 
@@ -237,6 +274,57 @@ const (
 func PossibleVolumeContainerTypeValues() []VolumeContainerType {
 	return []VolumeContainerType{
 		VolumeContainerTypeAVS,
+	}
+}
+
+// VolumeGroupSourceType - Source type for volume group creation
+type VolumeGroupSourceType string
+
+const (
+	// VolumeGroupSourceTypeNone - No source; create an empty volume group
+	VolumeGroupSourceTypeNone VolumeGroupSourceType = "none"
+	// VolumeGroupSourceTypeRecoverableVolumeGroup - Recover a soft-deleted volume group
+	VolumeGroupSourceTypeRecoverableVolumeGroup VolumeGroupSourceType = "recoverableVolumeGroup"
+	// VolumeGroupSourceTypeSnapshot - Restore from a volume group snapshot
+	VolumeGroupSourceTypeSnapshot VolumeGroupSourceType = "snapshot"
+	// VolumeGroupSourceTypeVolumeGroup - Clone from an existing volume group
+	VolumeGroupSourceTypeVolumeGroup VolumeGroupSourceType = "volumeGroup"
+)
+
+// PossibleVolumeGroupSourceTypeValues returns the possible values for the VolumeGroupSourceType const type.
+func PossibleVolumeGroupSourceTypeValues() []VolumeGroupSourceType {
+	return []VolumeGroupSourceType{
+		VolumeGroupSourceTypeNone,
+		VolumeGroupSourceTypeRecoverableVolumeGroup,
+		VolumeGroupSourceTypeSnapshot,
+		VolumeGroupSourceTypeVolumeGroup,
+	}
+}
+
+// VolumeSourceType - Source type for volume creation
+type VolumeSourceType string
+
+const (
+	// VolumeSourceTypeNone - No source; create an empty volume with the specified provisioned size
+	VolumeSourceTypeNone VolumeSourceType = "none"
+	// VolumeSourceTypeRecoverableVolume - Recover a soft-deleted volume within the same volume group
+	VolumeSourceTypeRecoverableVolume VolumeSourceType = "recoverableVolume"
+	// VolumeSourceTypeSerialNumber - Import a volume by its serial number
+	VolumeSourceTypeSerialNumber VolumeSourceType = "serialNumber"
+	// VolumeSourceTypeSnapshot - Restore from a volume group snapshot
+	VolumeSourceTypeSnapshot VolumeSourceType = "snapshot"
+	// VolumeSourceTypeVolume - Clone from an existing volume
+	VolumeSourceTypeVolume VolumeSourceType = "volume"
+)
+
+// PossibleVolumeSourceTypeValues returns the possible values for the VolumeSourceType const type.
+func PossibleVolumeSourceTypeValues() []VolumeSourceType {
+	return []VolumeSourceType{
+		VolumeSourceTypeNone,
+		VolumeSourceTypeRecoverableVolume,
+		VolumeSourceTypeSerialNumber,
+		VolumeSourceTypeSnapshot,
+		VolumeSourceTypeVolume,
 	}
 }
 

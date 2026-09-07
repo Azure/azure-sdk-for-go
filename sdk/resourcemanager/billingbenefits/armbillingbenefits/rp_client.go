@@ -54,12 +54,7 @@ func (client *RPClient) Validate(ctx context.Context, body BenefitValidateReques
 	if err != nil {
 		return RPClientValidateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RPClientValidateResponse{}, err
-	}
-	resp, err := client.validateHandleResponse(httpResp)
-	return resp, err
+	return client.validateHandleResponse(httpResp, http.StatusOK)
 }
 
 // validateCreateRequest creates the Validate request.
@@ -81,8 +76,11 @@ func (client *RPClient) validateCreateRequest(ctx context.Context, body BenefitV
 }
 
 // validateHandleResponse handles the Validate response.
-func (client *RPClient) validateHandleResponse(resp *http.Response) (RPClientValidateResponse, error) {
+func (client *RPClient) validateHandleResponse(resp *http.Response, successCodes ...int) (RPClientValidateResponse, error) {
 	result := RPClientValidateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BenefitValidateResponse); err != nil {
 		return RPClientValidateResponse{}, err
 	}

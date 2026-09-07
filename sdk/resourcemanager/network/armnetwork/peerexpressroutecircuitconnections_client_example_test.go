@@ -7,11 +7,11 @@ package armnetwork_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/PeerExpressRouteCircuitConnectionGet.json
+// Generated from example definition: 2025-09-01/PeerExpressRouteCircuitConnectionGet.json
 func ExamplePeerExpressRouteCircuitConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExamplePeerExpressRouteCircuitConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/PeerExpressRouteCircuitConnectionList.json
+// Generated from example definition: 2025-09-01/PeerExpressRouteCircuitConnectionList.json
 func ExamplePeerExpressRouteCircuitConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

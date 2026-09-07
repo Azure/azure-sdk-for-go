@@ -54,10 +54,10 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armmanagedops.SystemData{
 	// 			CreatedBy: to.Ptr("myUser"),
 	// 			CreatedByType: to.Ptr(armmanagedops.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("myUser"),
 	// 			LastModifiedByType: to.Ptr(armmanagedops.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 		},
 	// 		Properties: &armmanagedops.Properties{
 	// 			SKU: &armmanagedops.SKU{
@@ -153,10 +153,10 @@ func ExampleClient_Get() {
 	// 		SystemData: &armmanagedops.SystemData{
 	// 			CreatedBy: to.Ptr("myUser"),
 	// 			CreatedByType: to.Ptr(armmanagedops.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("myUser"),
 	// 			LastModifiedByType: to.Ptr(armmanagedops.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 		},
 	// 		Properties: &armmanagedops.Properties{
 	// 			SKU: &armmanagedops.SKU{
@@ -237,10 +237,10 @@ func ExampleClient_NewListPager() {
 		// 				SystemData: &armmanagedops.SystemData{
 		// 					CreatedBy: to.Ptr("myUser"),
 		// 					CreatedByType: to.Ptr(armmanagedops.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("myUser"),
 		// 					LastModifiedByType: to.Ptr(armmanagedops.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 				},
 		// 				Properties: &armmanagedops.Properties{
 		// 					SKU: &armmanagedops.SKU{
@@ -322,10 +322,10 @@ func ExampleClient_BeginUpdate() {
 	// 		SystemData: &armmanagedops.SystemData{
 	// 			CreatedBy: to.Ptr("myUser"),
 	// 			CreatedByType: to.Ptr(armmanagedops.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("myUser"),
 	// 			LastModifiedByType: to.Ptr(armmanagedops.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 		},
 	// 		Properties: &armmanagedops.Properties{
 	// 			SKU: &armmanagedops.SKU{

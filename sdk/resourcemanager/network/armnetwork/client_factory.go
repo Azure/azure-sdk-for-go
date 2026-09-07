@@ -32,6 +32,14 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAddressPrefixSetsClient creates a new instance of AddressPrefixSetsClient.
+func (c *ClientFactory) NewAddressPrefixSetsClient() *AddressPrefixSetsClient {
+	return &AddressPrefixSetsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewAdminRuleCollectionsClient creates a new instance of AdminRuleCollectionsClient.
 func (c *ClientFactory) NewAdminRuleCollectionsClient() *AdminRuleCollectionsClient {
 	return &AdminRuleCollectionsClient{
@@ -312,6 +320,14 @@ func (c *ClientFactory) NewExpressRouteGatewaysClient() *ExpressRouteGatewaysCli
 	}
 }
 
+// NewExpressRouteLagsClient creates a new instance of ExpressRouteLagsClient.
+func (c *ClientFactory) NewExpressRouteLagsClient() *ExpressRouteLagsClient {
+	return &ExpressRouteLagsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewExpressRouteLinksClient creates a new instance of ExpressRouteLinksClient.
 func (c *ClientFactory) NewExpressRouteLinksClient() *ExpressRouteLinksClient {
 	return &ExpressRouteLinksClient{
@@ -408,6 +424,14 @@ func (c *ClientFactory) NewFirewallPolicyIdpsSignaturesOverridesClient() *Firewa
 	}
 }
 
+// NewFirewallPolicyKubeSelectorGroupsClient creates a new instance of FirewallPolicyKubeSelectorGroupsClient.
+func (c *ClientFactory) NewFirewallPolicyKubeSelectorGroupsClient() *FirewallPolicyKubeSelectorGroupsClient {
+	return &FirewallPolicyKubeSelectorGroupsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewFirewallPolicyRuleCollectionGroupDraftsClient creates a new instance of FirewallPolicyRuleCollectionGroupDraftsClient.
 func (c *ClientFactory) NewFirewallPolicyRuleCollectionGroupDraftsClient() *FirewallPolicyRuleCollectionGroupDraftsClient {
 	return &FirewallPolicyRuleCollectionGroupDraftsClient{
@@ -419,6 +443,14 @@ func (c *ClientFactory) NewFirewallPolicyRuleCollectionGroupDraftsClient() *Fire
 // NewFirewallPolicyRuleCollectionGroupsClient creates a new instance of FirewallPolicyRuleCollectionGroupsClient.
 func (c *ClientFactory) NewFirewallPolicyRuleCollectionGroupsClient() *FirewallPolicyRuleCollectionGroupsClient {
 	return &FirewallPolicyRuleCollectionGroupsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewFirstPartyServiceTagsClient creates a new instance of FirstPartyServiceTagsClient.
+func (c *ClientFactory) NewFirstPartyServiceTagsClient() *FirstPartyServiceTagsClient {
+	return &FirstPartyServiceTagsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

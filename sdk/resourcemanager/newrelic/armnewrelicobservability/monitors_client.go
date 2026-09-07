@@ -20,7 +20,7 @@ import (
 // MonitorsClient contains the methods for the Monitors group.
 // Don't use this type directly, use NewMonitorsClient() instead.
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-06-01
 type MonitorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -115,7 +115,7 @@ func (client *MonitorsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -129,12 +129,12 @@ func (client *MonitorsClient) createOrUpdateCreateRequest(ctx context.Context, r
 // stopping the observability of your Azure resources through New Relic
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - monitorName - Name of the Monitors resource
 //   - userEmail - User Email.
+//   - monitorName - Name of the Monitors resource.
 //   - options - MonitorsClientBeginDeleteOptions contains the optional parameters for the MonitorsClient.BeginDelete method.
-func (client *MonitorsClient) BeginDelete(ctx context.Context, resourceGroupName string, monitorName string, userEmail string, options *MonitorsClientBeginDeleteOptions) (*runtime.Poller[MonitorsClientDeleteResponse], error) {
+func (client *MonitorsClient) BeginDelete(ctx context.Context, resourceGroupName string, userEmail string, monitorName string, options *MonitorsClientBeginDeleteOptions) (*runtime.Poller[MonitorsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, monitorName, userEmail, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, userEmail, monitorName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -152,13 +152,13 @@ func (client *MonitorsClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Deletes an existing New Relic monitor resource from your Azure subscription, removing the integration and stopping
 // the observability of your Azure resources through New Relic
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *MonitorsClient) deleteOperation(ctx context.Context, resourceGroupName string, monitorName string, userEmail string, options *MonitorsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *MonitorsClient) deleteOperation(ctx context.Context, resourceGroupName string, userEmail string, monitorName string, options *MonitorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MonitorsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, monitorName, userEmail, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, userEmail, monitorName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -173,7 +173,7 @@ func (client *MonitorsClient) deleteOperation(ctx context.Context, resourceGroup
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *MonitorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, userEmail string, _ *MonitorsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *MonitorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, userEmail string, monitorName string, _ *MonitorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -192,7 +192,7 @@ func (client *MonitorsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260601)
 	reqQP.Set("userEmail", userEmail)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
@@ -241,7 +241,7 @@ func (client *MonitorsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -302,7 +302,7 @@ func (client *MonitorsClient) getMetricRulesCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -368,7 +368,7 @@ func (client *MonitorsClient) getMetricStatusCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -433,7 +433,7 @@ func (client *MonitorsClient) latestLinkedSaaSCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -521,7 +521,7 @@ func (client *MonitorsClient) linkSaaSCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -591,7 +591,7 @@ func (client *MonitorsClient) listAppServicesCreateRequest(ctx context.Context, 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501Preview)
+		reqQP.Set("api-version", version20260601)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -667,7 +667,7 @@ func (client *MonitorsClient) listByResourceGroupCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501Preview)
+		reqQP.Set("api-version", version20260601)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -734,7 +734,7 @@ func (client *MonitorsClient) listBySubscriptionCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501Preview)
+		reqQP.Set("api-version", version20260601)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -812,7 +812,7 @@ func (client *MonitorsClient) listHostsCreateRequest(ctx context.Context, resour
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501Preview)
+		reqQP.Set("api-version", version20260601)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -897,7 +897,7 @@ func (client *MonitorsClient) listLinkedResourcesCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501Preview)
+		reqQP.Set("api-version", version20260601)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -975,7 +975,7 @@ func (client *MonitorsClient) listMonitoredResourcesCreateRequest(ctx context.Co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501Preview)
+		reqQP.Set("api-version", version20260601)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -1041,12 +1041,14 @@ func (client *MonitorsClient) refreshIngestionKeyCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginResubscribe - Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+//
+// A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Name of the Monitors resource
@@ -1071,6 +1073,8 @@ func (client *MonitorsClient) BeginResubscribe(ctx context.Context, resourceGrou
 }
 
 // Resubscribe - Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+//
+// A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MonitorsClient) resubscribe(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginResubscribeOptions) (*http.Response, error) {
 	var err error
@@ -1112,7 +1116,7 @@ func (client *MonitorsClient) resubscribeCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -1168,7 +1172,7 @@ func (client *MonitorsClient) switchBillingCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1263,7 +1267,7 @@ func (client *MonitorsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1316,7 +1320,7 @@ func (client *MonitorsClient) vmHostPayloadCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

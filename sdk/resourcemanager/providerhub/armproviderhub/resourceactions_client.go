@@ -19,7 +19,7 @@ import (
 // ResourceActionsClient contains the methods for the ResourceActions group.
 // Don't use this type directly, use NewResourceActionsClient() instead.
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-10-01
 type ResourceActionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -110,7 +110,7 @@ func (client *ResourceActionsClient) deleteResourcesCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
+	reqQP.Set("api-version", version20251001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

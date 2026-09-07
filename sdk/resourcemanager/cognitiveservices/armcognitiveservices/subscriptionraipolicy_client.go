@@ -30,6 +30,9 @@ type SubscriptionRaiPolicyClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSubscriptionRaiPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SubscriptionRaiPolicyClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,7 +71,7 @@ func (client *SubscriptionRaiPolicyClient) CreateOrUpdate(ctx context.Context, r
 func (client *SubscriptionRaiPolicyClient) createOrUpdateCreateRequest(ctx context.Context, raiPolicyName string, raiPolicy RaiPolicy, _ *SubscriptionRaiPolicyClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/raiPolicy/{raiPolicyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if raiPolicyName == "" {
@@ -150,7 +153,7 @@ func (client *SubscriptionRaiPolicyClient) deleteOperation(ctx context.Context, 
 func (client *SubscriptionRaiPolicyClient) deleteCreateRequest(ctx context.Context, raiPolicyName string, _ *SubscriptionRaiPolicyClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/raiPolicy/{raiPolicyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if raiPolicyName == "" {
@@ -193,7 +196,7 @@ func (client *SubscriptionRaiPolicyClient) Get(ctx context.Context, raiPolicyNam
 func (client *SubscriptionRaiPolicyClient) getCreateRequest(ctx context.Context, raiPolicyName string, _ *SubscriptionRaiPolicyClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/raiPolicy/{raiPolicyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if raiPolicyName == "" {

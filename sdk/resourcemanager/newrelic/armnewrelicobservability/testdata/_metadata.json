@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "NewRelic.Observability": "2025-05-01-preview"
+    "NewRelic.Observability": "2026-06-01"
   },
   "emitterVersion": "0.17.3"
 }

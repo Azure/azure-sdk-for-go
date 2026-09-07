@@ -19,7 +19,7 @@ import (
 // AuthorizedApplicationsClient contains the methods for the AuthorizedApplications group.
 // Don't use this type directly, use NewAuthorizedApplicationsClient() instead.
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-10-01
 type AuthorizedApplicationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -110,7 +110,7 @@ func (client *AuthorizedApplicationsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
+	reqQP.Set("api-version", version20251001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -166,7 +166,7 @@ func (client *AuthorizedApplicationsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
+	reqQP.Set("api-version", version20251001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -214,7 +214,7 @@ func (client *AuthorizedApplicationsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
+	reqQP.Set("api-version", version20251001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -285,7 +285,7 @@ func (client *AuthorizedApplicationsClient) listCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20240901)
+		reqQP.Set("api-version", version20251001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

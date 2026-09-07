@@ -31,6 +31,9 @@ type ProjectConnectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProjectConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProjectConnectionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -74,7 +77,7 @@ func (client *ProjectConnectionsClient) Create(ctx context.Context, resourceGrou
 func (client *ProjectConnectionsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, connection ConnectionPropertiesV2BasicResource, _ *ProjectConnectionsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/connections/{connectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -154,7 +157,7 @@ func (client *ProjectConnectionsClient) Delete(ctx context.Context, resourceGrou
 func (client *ProjectConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, _ *ProjectConnectionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/connections/{connectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -213,7 +216,7 @@ func (client *ProjectConnectionsClient) Get(ctx context.Context, resourceGroupNa
 func (client *ProjectConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, _ *ProjectConnectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/connections/{connectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -296,7 +299,7 @@ func (client *ProjectConnectionsClient) listCreateRequest(ctx context.Context, r
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/connections"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -380,7 +383,7 @@ func (client *ProjectConnectionsClient) Update(ctx context.Context, resourceGrou
 func (client *ProjectConnectionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, connection ConnectionUpdateContent, _ *ProjectConnectionsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/connections/{connectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

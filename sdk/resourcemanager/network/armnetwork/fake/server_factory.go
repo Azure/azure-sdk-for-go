@@ -15,6 +15,9 @@ import (
 
 // ServerFactory is a fake server for instances of the armnetwork.ClientFactory type.
 type ServerFactory struct {
+	// AddressPrefixSetsServer contains the fakes for client AddressPrefixSetsClient
+	AddressPrefixSetsServer AddressPrefixSetsServer
+
 	// AdminRuleCollectionsServer contains the fakes for client AdminRuleCollectionsClient
 	AdminRuleCollectionsServer AdminRuleCollectionsServer
 
@@ -120,6 +123,9 @@ type ServerFactory struct {
 	// ExpressRouteGatewaysServer contains the fakes for client ExpressRouteGatewaysClient
 	ExpressRouteGatewaysServer ExpressRouteGatewaysServer
 
+	// ExpressRouteLagsServer contains the fakes for client ExpressRouteLagsClient
+	ExpressRouteLagsServer ExpressRouteLagsServer
+
 	// ExpressRouteLinksServer contains the fakes for client ExpressRouteLinksClient
 	ExpressRouteLinksServer ExpressRouteLinksServer
 
@@ -156,11 +162,17 @@ type ServerFactory struct {
 	// FirewallPolicyIdpsSignaturesOverridesServer contains the fakes for client FirewallPolicyIdpsSignaturesOverridesClient
 	FirewallPolicyIdpsSignaturesOverridesServer FirewallPolicyIdpsSignaturesOverridesServer
 
+	// FirewallPolicyKubeSelectorGroupsServer contains the fakes for client FirewallPolicyKubeSelectorGroupsClient
+	FirewallPolicyKubeSelectorGroupsServer FirewallPolicyKubeSelectorGroupsServer
+
 	// FirewallPolicyRuleCollectionGroupDraftsServer contains the fakes for client FirewallPolicyRuleCollectionGroupDraftsClient
 	FirewallPolicyRuleCollectionGroupDraftsServer FirewallPolicyRuleCollectionGroupDraftsServer
 
 	// FirewallPolicyRuleCollectionGroupsServer contains the fakes for client FirewallPolicyRuleCollectionGroupsClient
 	FirewallPolicyRuleCollectionGroupsServer FirewallPolicyRuleCollectionGroupsServer
+
+	// FirstPartyServiceTagsServer contains the fakes for client FirstPartyServiceTagsClient
+	FirstPartyServiceTagsServer FirstPartyServiceTagsServer
 
 	// FlowLogsServer contains the fakes for client FlowLogsClient
 	FlowLogsServer FlowLogsServer
@@ -519,6 +531,7 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                                     *ServerFactory
 	trMu                                                    sync.Mutex
+	trAddressPrefixSetsServer                               *AddressPrefixSetsServerTransport
 	trAdminRuleCollectionsServer                            *AdminRuleCollectionsServerTransport
 	trAdminRulesServer                                      *AdminRulesServerTransport
 	trApplicationGatewayPrivateEndpointConnectionsServer    *ApplicationGatewayPrivateEndpointConnectionsServerTransport
@@ -554,6 +567,7 @@ type ServerFactoryTransport struct {
 	trExpressRouteCrossConnectionPeeringsServer             *ExpressRouteCrossConnectionPeeringsServerTransport
 	trExpressRouteCrossConnectionsServer                    *ExpressRouteCrossConnectionsServerTransport
 	trExpressRouteGatewaysServer                            *ExpressRouteGatewaysServerTransport
+	trExpressRouteLagsServer                                *ExpressRouteLagsServerTransport
 	trExpressRouteLinksServer                               *ExpressRouteLinksServerTransport
 	trExpressRoutePortAuthorizationsServer                  *ExpressRoutePortAuthorizationsServerTransport
 	trExpressRoutePortsServer                               *ExpressRoutePortsServerTransport
@@ -566,8 +580,10 @@ type ServerFactoryTransport struct {
 	trFirewallPolicyIdpsSignaturesServer                    *FirewallPolicyIdpsSignaturesServerTransport
 	trFirewallPolicyIdpsSignaturesFilterValuesServer        *FirewallPolicyIdpsSignaturesFilterValuesServerTransport
 	trFirewallPolicyIdpsSignaturesOverridesServer           *FirewallPolicyIdpsSignaturesOverridesServerTransport
+	trFirewallPolicyKubeSelectorGroupsServer                *FirewallPolicyKubeSelectorGroupsServerTransport
 	trFirewallPolicyRuleCollectionGroupDraftsServer         *FirewallPolicyRuleCollectionGroupDraftsServerTransport
 	trFirewallPolicyRuleCollectionGroupsServer              *FirewallPolicyRuleCollectionGroupsServerTransport
+	trFirstPartyServiceTagsServer                           *FirstPartyServiceTagsServerTransport
 	trFlowLogsServer                                        *FlowLogsServerTransport
 	trGroupsServer                                          *GroupsServerTransport
 	trHubRouteTablesServer                                  *HubRouteTablesServerTransport
@@ -697,6 +713,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "AddressPrefixSetsClient":
+		initServer(&s.trMu, &s.trAddressPrefixSetsServer, func() *AddressPrefixSetsServerTransport {
+			return NewAddressPrefixSetsServerTransport(&s.srv.AddressPrefixSetsServer)
+		})
+		resp, err = s.trAddressPrefixSetsServer.Do(req)
 	case "AdminRuleCollectionsClient":
 		initServer(&s.trMu, &s.trAdminRuleCollectionsServer, func() *AdminRuleCollectionsServerTransport {
 			return NewAdminRuleCollectionsServerTransport(&s.srv.AdminRuleCollectionsServer)
@@ -866,6 +887,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewExpressRouteGatewaysServerTransport(&s.srv.ExpressRouteGatewaysServer)
 		})
 		resp, err = s.trExpressRouteGatewaysServer.Do(req)
+	case "ExpressRouteLagsClient":
+		initServer(&s.trMu, &s.trExpressRouteLagsServer, func() *ExpressRouteLagsServerTransport {
+			return NewExpressRouteLagsServerTransport(&s.srv.ExpressRouteLagsServer)
+		})
+		resp, err = s.trExpressRouteLagsServer.Do(req)
 	case "ExpressRouteLinksClient":
 		initServer(&s.trMu, &s.trExpressRouteLinksServer, func() *ExpressRouteLinksServerTransport {
 			return NewExpressRouteLinksServerTransport(&s.srv.ExpressRouteLinksServer)
@@ -926,6 +952,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewFirewallPolicyIdpsSignaturesOverridesServerTransport(&s.srv.FirewallPolicyIdpsSignaturesOverridesServer)
 		})
 		resp, err = s.trFirewallPolicyIdpsSignaturesOverridesServer.Do(req)
+	case "FirewallPolicyKubeSelectorGroupsClient":
+		initServer(&s.trMu, &s.trFirewallPolicyKubeSelectorGroupsServer, func() *FirewallPolicyKubeSelectorGroupsServerTransport {
+			return NewFirewallPolicyKubeSelectorGroupsServerTransport(&s.srv.FirewallPolicyKubeSelectorGroupsServer)
+		})
+		resp, err = s.trFirewallPolicyKubeSelectorGroupsServer.Do(req)
 	case "FirewallPolicyRuleCollectionGroupDraftsClient":
 		initServer(&s.trMu, &s.trFirewallPolicyRuleCollectionGroupDraftsServer, func() *FirewallPolicyRuleCollectionGroupDraftsServerTransport {
 			return NewFirewallPolicyRuleCollectionGroupDraftsServerTransport(&s.srv.FirewallPolicyRuleCollectionGroupDraftsServer)
@@ -936,6 +967,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewFirewallPolicyRuleCollectionGroupsServerTransport(&s.srv.FirewallPolicyRuleCollectionGroupsServer)
 		})
 		resp, err = s.trFirewallPolicyRuleCollectionGroupsServer.Do(req)
+	case "FirstPartyServiceTagsClient":
+		initServer(&s.trMu, &s.trFirstPartyServiceTagsServer, func() *FirstPartyServiceTagsServerTransport {
+			return NewFirstPartyServiceTagsServerTransport(&s.srv.FirstPartyServiceTagsServer)
+		})
+		resp, err = s.trFirstPartyServiceTagsServer.Do(req)
 	case "FlowLogsClient":
 		initServer(&s.trMu, &s.trFlowLogsServer, func() *FlowLogsServerTransport { return NewFlowLogsServerTransport(&s.srv.FlowLogsServer) })
 		resp, err = s.trFlowLogsServer.Do(req)

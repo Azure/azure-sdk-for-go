@@ -493,6 +493,13 @@ type RawCertificateData struct {
 	Certificate []byte
 }
 
+// RegionOfChoiceSettings - Region of choice settings at vault level.
+// This setting allows customers to configure backups for datasources from different region.
+type RegionOfChoiceSettings struct {
+	// The status of region of choice settings - Enabled or Disabled.
+	Status *State
+}
+
 // ReplicationUsage - Replication usages of a vault.
 type ReplicationUsage struct {
 	// Summary of the replication jobs data for this vault.
@@ -915,6 +922,9 @@ type VaultProperties struct {
 
 	// The redundancy Settings of a Vault
 	RedundancySettings *VaultPropertiesRedundancySettings
+
+	// Region of choice settings for this vault.
+	RegionOfChoiceSettings *RegionOfChoiceSettings
 
 	// ResourceGuardOperationRequests on which LAC check will be performed
 	ResourceGuardOperationRequests []*string

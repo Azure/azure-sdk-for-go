@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-15-preview/ElasticCapacityPools_ChangeZone.json
+// Generated from example definition: 2026-06-15-preview/ElasticCapacityPools_ChangeZone.json
 func ExampleElasticCapacityPoolsClient_BeginChangeZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleElasticCapacityPoolsClient_BeginChangeZone() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/ElasticCapacityPools_CheckVolumeFilePathAvailability.json
+// Generated from example definition: 2026-06-15-preview/ElasticCapacityPools_CheckVolumeFilePathAvailability.json
 func ExampleElasticCapacityPoolsClient_CheckVolumeFilePathAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleElasticCapacityPoolsClient_CheckVolumeFilePathAvailability() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/ElasticCapacityPools_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/ElasticCapacityPools_CreateOrUpdate.json
 func ExampleElasticCapacityPoolsClient_BeginCreateOrUpdate_elasticCapacityPoolsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +142,7 @@ func ExampleElasticCapacityPoolsClient_BeginCreateOrUpdate_elasticCapacityPoolsC
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/ElasticCapacityPools_CreateOrUpdateCMK.json
+// Generated from example definition: 2026-06-15-preview/ElasticCapacityPools_CreateOrUpdateCMK.json
 func ExampleElasticCapacityPoolsClient_BeginCreateOrUpdate_elasticCapacityPoolsCreateOrUpdateCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +210,7 @@ func ExampleElasticCapacityPoolsClient_BeginCreateOrUpdate_elasticCapacityPoolsC
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/ElasticCapacityPools_Delete.json
+// Generated from example definition: 2026-06-15-preview/ElasticCapacityPools_Delete.json
 func ExampleElasticCapacityPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -231,7 +231,7 @@ func ExampleElasticCapacityPoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-15-preview/ElasticCapacityPools_Get.json
+// Generated from example definition: 2026-06-15-preview/ElasticCapacityPools_Get.json
 func ExampleElasticCapacityPoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,7 +278,7 @@ func ExampleElasticCapacityPoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/ElasticCapacityPools_ListByElasticAccount.json
+// Generated from example definition: 2026-06-15-preview/ElasticCapacityPools_ListByElasticAccount.json
 func ExampleElasticCapacityPoolsClient_NewListByElasticAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -334,7 +334,7 @@ func ExampleElasticCapacityPoolsClient_NewListByElasticAccountPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-15-preview/ElasticCapacityPools_Update.json
+// Generated from example definition: 2026-06-15-preview/ElasticCapacityPools_Update.json
 func ExampleElasticCapacityPoolsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

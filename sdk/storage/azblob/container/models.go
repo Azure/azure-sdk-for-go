@@ -192,6 +192,22 @@ func (l ListBlobsInclude) format() []generated.ListBlobsIncludeItem {
 	return include
 }
 
+// StorageResponseFormat specifies the format the service should use to return list results.
+type StorageResponseFormat = exported.StorageResponseFormat
+
+const (
+	// StorageResponseFormatAuto lets the SDK choose the response format.
+	// For the current release this resolves to XML; a future release will resolve to Arrow.
+	StorageResponseFormatAuto = exported.StorageResponseFormatAuto
+
+	// StorageResponseFormatXML forces XML-only responses. Use when you need raw XML responses (e.g. debugging).
+	StorageResponseFormatXML = exported.StorageResponseFormatXML
+
+	// StorageResponseFormatArrow sends both Arrow and XML in the Accept header; the service returns Arrow
+	// when Photon is enabled, otherwise falls back to XML. The SDK handles both transparently.
+	StorageResponseFormatArrow = exported.StorageResponseFormatArrow
+)
+
 // ListBlobsFlatOptions contains the optional parameters for the ContainerClient.ListBlobFlatSegment method.
 type ListBlobsFlatOptions struct {
 	// Include this parameter to specify one or more datasets to include in the response.
@@ -213,6 +229,26 @@ type ListBlobsFlatOptions struct {
 	// Specifies the relative path to list paths from. For non-recursive list, only one entity level is supported; For recursive
 	// list, multiple entity levels are supported. (Inclusive)
 	StartFrom *string
+	// End listing before this blob name (exclusive). Can be combined with StartFrom for range listing.
+	// Only supported when ResponseFormat is StorageResponseFormatArrow.
+	EndBefore *string
+	// ResponseFormat specifies the format the service should use to return list results.
+	// Defaults to StorageResponseFormatAuto, which resolves to XML for the current release.
+	ResponseFormat StorageResponseFormat
+}
+
+func (o *ListBlobsFlatOptions) formatArrow() generated.ContainerClientListBlobFlatSegmentApacheArrowOptions {
+	if o == nil {
+		return generated.ContainerClientListBlobFlatSegmentApacheArrowOptions{}
+	}
+	return generated.ContainerClientListBlobFlatSegmentApacheArrowOptions{
+		Include:    o.Include.format(),
+		Marker:     o.Marker,
+		Maxresults: o.MaxResults,
+		Prefix:     o.Prefix,
+		StartFrom:  o.StartFrom,
+		EndBefore:  o.EndBefore,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -238,9 +274,14 @@ type ListBlobsHierarchyOptions struct {
 	// Specifies the relative path to list paths from. For non-recursive list, only one entity level is supported; For recursive
 	// list, multiple entity levels are supported. (Inclusive)
 	StartFrom *string
+	// End listing before this blob name (exclusive). Can be combined with StartFrom for range listing.
+	// Only supported when ResponseFormat is StorageResponseFormatArrow.
+	EndBefore *string
+	// ResponseFormat specifies the format the service should use to return list results.
+	// Defaults to StorageResponseFormatAuto, which resolves to XML for the current release.
+	ResponseFormat StorageResponseFormat
 }
 
-// ContainerClientListBlobHierarchySegmentOptions contains the optional parameters for the ContainerClient.ListBlobHierarchySegment method.
 func (o *ListBlobsHierarchyOptions) format() generated.ContainerClientListBlobHierarchySegmentOptions {
 	if o == nil {
 		return generated.ContainerClientListBlobHierarchySegmentOptions{}
@@ -251,6 +292,21 @@ func (o *ListBlobsHierarchyOptions) format() generated.ContainerClientListBlobHi
 		Marker:     o.Marker,
 		Maxresults: o.MaxResults,
 		Prefix:     o.Prefix,
+		StartFrom:  o.StartFrom,
+	}
+}
+
+func (o *ListBlobsHierarchyOptions) formatArrow() generated.ContainerClientListBlobHierarchySegmentApacheArrowOptions {
+	if o == nil {
+		return generated.ContainerClientListBlobHierarchySegmentApacheArrowOptions{}
+	}
+	return generated.ContainerClientListBlobHierarchySegmentApacheArrowOptions{
+		Include:    o.Include.format(),
+		Marker:     o.Marker,
+		Maxresults: o.MaxResults,
+		Prefix:     o.Prefix,
+		StartFrom:  o.StartFrom,
+		EndBefore:  o.EndBefore,
 	}
 }
 

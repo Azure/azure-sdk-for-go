@@ -25,10 +25,10 @@ func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateByBilli
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewGenerateBenefitUtilizationSummariesReportClient().BeginGenerateByBillingAccount(ctx, "8099099", armcostmanagement.BenefitUtilizationSummariesRequest{
-		EndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T00:00:00Z"); return t }()),
+		EndDate:   to.Ptr(time.Date(2022, time.August, 31, 0, 0, 0, 0, time.UTC)),
 		Grain:     to.Ptr(armcostmanagement.GrainDaily),
 		Kind:      to.Ptr(armcostmanagement.BenefitKindReservation),
-		StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T00:00:00Z"); return t }()),
+		StartDate: to.Ptr(time.Date(2022, time.June, 1, 0, 0, 0, 0, time.UTC)),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -44,15 +44,15 @@ func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateByBilli
 	// 	BenefitUtilizationSummariesOperationStatus: armcostmanagement.BenefitUtilizationSummariesOperationStatus{
 	// 		Input: &armcostmanagement.BenefitUtilizationSummariesRequest{
 	// 			BillingAccountID: to.Ptr("8099099"),
-	// 			EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T00:00:00Z"); return t}()),
+	// 			EndDate: to.Ptr(time.Date(2022, time.August, 31, 0, 0, 0, 0, time.UTC)),
 	// 			Grain: to.Ptr(armcostmanagement.GrainDaily),
 	// 			Kind: to.Ptr(armcostmanagement.BenefitKindReservation),
-	// 			StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T00:00:00Z"); return t}()),
+	// 			StartDate: to.Ptr(time.Date(2022, time.June, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 		Properties: &armcostmanagement.AsyncOperationStatusProperties{
 	// 			ReportURL: to.Ptr(armcostmanagement.BenefitUtilizationSummaryReportSchema("https://storage.blob.core.windows.net/details/20220611/00000000-0000-0000-0000-000000000000?sv=2016-05-31&sr=b&sig=jep8HT2aphfUkyERRZa5LRfd9RPzjXbzB%2F9TNiQ")),
 	// 			SecondaryReportURL: to.Ptr(armcostmanagement.BenefitUtilizationSummaryReportSchema("https://storage-secondary.blob.core.windows.net/details/20220611/00000000-0000-0000-0000-000000000000?sv=2016-05-31&sr=b&sig=jep8HT2aphfUkyERRZa5LRfd9RPzjXbzB%2F9TNiQ")),
-	// 			ValidUntil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-12T02:56:55.5021869Z"); return t}()),
+	// 			ValidUntil: to.Ptr(time.Date(2022, time.June, 12, 2, 56, 55, 502186900, time.UTC)),
 	// 		},
 	// 		Status: to.Ptr(armcostmanagement.OperationStatusType("Complete")),
 	// 	},
@@ -71,10 +71,10 @@ func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateByBilli
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewGenerateBenefitUtilizationSummariesReportClient().BeginGenerateByBillingProfile(ctx, "00000000-0000-0000-0000-000000000000", "CZSFR-SDFXC-DSDF", armcostmanagement.BenefitUtilizationSummariesRequest{
-		EndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T00:00:00Z"); return t }()),
+		EndDate:   to.Ptr(time.Date(2022, time.August, 31, 0, 0, 0, 0, time.UTC)),
 		Grain:     to.Ptr(armcostmanagement.GrainDaily),
 		Kind:      to.Ptr(armcostmanagement.BenefitKindReservation),
-		StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T00:00:00Z"); return t }()),
+		StartDate: to.Ptr(time.Date(2022, time.June, 1, 0, 0, 0, 0, time.UTC)),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -91,15 +91,15 @@ func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateByBilli
 	// 		Input: &armcostmanagement.BenefitUtilizationSummariesRequest{
 	// 			BillingAccountID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			BillingProfileID: to.Ptr("CZSFR-SDFXC-DSDF"),
-	// 			EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T00:00:00Z"); return t}()),
+	// 			EndDate: to.Ptr(time.Date(2022, time.August, 31, 0, 0, 0, 0, time.UTC)),
 	// 			Grain: to.Ptr(armcostmanagement.GrainDaily),
 	// 			Kind: to.Ptr(armcostmanagement.BenefitKindReservation),
-	// 			StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T00:00:00Z"); return t}()),
+	// 			StartDate: to.Ptr(time.Date(2022, time.June, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 		Properties: &armcostmanagement.AsyncOperationStatusProperties{
 	// 			ReportURL: to.Ptr(armcostmanagement.BenefitUtilizationSummaryReportSchema("https://storage.blob.core.windows.net/details/20220611/00000000-0000-0000-0000-000000000000?sv=2016-05-31&sr=b&sig=jep8HT2aphfUkyERRZa5LRfd9RPzjXbzB%2F9TNiQ")),
 	// 			SecondaryReportURL: to.Ptr(armcostmanagement.BenefitUtilizationSummaryReportSchema("https://storage-secondary.blob.core.windows.net/details/20220611/00000000-0000-0000-0000-000000000000?sv=2016-05-31&sr=b&sig=jep8HT2aphfUkyERRZa5LRfd9RPzjXbzB%2F9TNiQ")),
-	// 			ValidUntil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-12T02:56:55.5021869Z"); return t}()),
+	// 			ValidUntil: to.Ptr(time.Date(2022, time.June, 12, 2, 56, 55, 502186900, time.UTC)),
 	// 		},
 	// 		Status: to.Ptr(armcostmanagement.OperationStatusType("Complete")),
 	// 	},
@@ -118,9 +118,9 @@ func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateByReser
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewGenerateBenefitUtilizationSummariesReportClient().BeginGenerateByReservationID(ctx, "00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000", armcostmanagement.BenefitUtilizationSummariesRequest{
-		EndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T00:00:00Z"); return t }()),
+		EndDate:   to.Ptr(time.Date(2022, time.August, 31, 0, 0, 0, 0, time.UTC)),
 		Grain:     to.Ptr(armcostmanagement.GrainDaily),
-		StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T00:00:00Z"); return t }()),
+		StartDate: to.Ptr(time.Date(2022, time.June, 1, 0, 0, 0, 0, time.UTC)),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -137,15 +137,15 @@ func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateByReser
 	// 		Input: &armcostmanagement.BenefitUtilizationSummariesRequest{
 	// 			BenefitID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			BenefitOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T00:00:00Z"); return t}()),
+	// 			EndDate: to.Ptr(time.Date(2022, time.August, 31, 0, 0, 0, 0, time.UTC)),
 	// 			Grain: to.Ptr(armcostmanagement.GrainDaily),
 	// 			Kind: to.Ptr(armcostmanagement.BenefitKindReservation),
-	// 			StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T00:00:00Z"); return t}()),
+	// 			StartDate: to.Ptr(time.Date(2022, time.June, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 		Properties: &armcostmanagement.AsyncOperationStatusProperties{
 	// 			ReportURL: to.Ptr(armcostmanagement.BenefitUtilizationSummaryReportSchema("https://storage.blob.core.windows.net/details/20220611/00000000-0000-0000-0000-000000000000?sv=2016-05-31&sr=b&sig=jep8HT2aphfUkyERRZa5LRfd9RPzjXbzB%2F9TNiQ")),
 	// 			SecondaryReportURL: to.Ptr(armcostmanagement.BenefitUtilizationSummaryReportSchema("https://storage-secondary.blob.core.windows.net/details/20220611/00000000-0000-0000-0000-000000000000?sv=2016-05-31&sr=b&sig=jep8HT2aphfUkyERRZa5LRfd9RPzjXbzB%2F9TNiQ")),
-	// 			ValidUntil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-12T02:56:55.5021869Z"); return t}()),
+	// 			ValidUntil: to.Ptr(time.Date(2022, time.June, 12, 2, 56, 55, 502186900, time.UTC)),
 	// 		},
 	// 		Status: to.Ptr(armcostmanagement.OperationStatusType("Complete")),
 	// 	},
@@ -164,9 +164,9 @@ func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateByReser
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewGenerateBenefitUtilizationSummariesReportClient().BeginGenerateByReservationOrderID(ctx, "00000000-0000-0000-0000-000000000000", armcostmanagement.BenefitUtilizationSummariesRequest{
-		EndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T00:00:00Z"); return t }()),
+		EndDate:   to.Ptr(time.Date(2022, time.August, 31, 0, 0, 0, 0, time.UTC)),
 		Grain:     to.Ptr(armcostmanagement.GrainDaily),
-		StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T00:00:00Z"); return t }()),
+		StartDate: to.Ptr(time.Date(2022, time.June, 1, 0, 0, 0, 0, time.UTC)),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -182,15 +182,15 @@ func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateByReser
 	// 	BenefitUtilizationSummariesOperationStatus: armcostmanagement.BenefitUtilizationSummariesOperationStatus{
 	// 		Input: &armcostmanagement.BenefitUtilizationSummariesRequest{
 	// 			BenefitOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T00:00:00Z"); return t}()),
+	// 			EndDate: to.Ptr(time.Date(2022, time.August, 31, 0, 0, 0, 0, time.UTC)),
 	// 			Grain: to.Ptr(armcostmanagement.GrainDaily),
 	// 			Kind: to.Ptr(armcostmanagement.BenefitKindReservation),
-	// 			StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T00:00:00Z"); return t}()),
+	// 			StartDate: to.Ptr(time.Date(2022, time.June, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 		Properties: &armcostmanagement.AsyncOperationStatusProperties{
 	// 			ReportURL: to.Ptr(armcostmanagement.BenefitUtilizationSummaryReportSchema("https://storage.blob.core.windows.net/details/20220611/00000000-0000-0000-0000-000000000000?sv=2016-05-31&sr=b&sig=jep8HT2aphfUkyERRZa5LRfd9RPzjXbzB%2F9TNiQ")),
 	// 			SecondaryReportURL: to.Ptr(armcostmanagement.BenefitUtilizationSummaryReportSchema("https://storage-secondary.blob.core.windows.net/details/20220611/00000000-0000-0000-0000-000000000000?sv=2016-05-31&sr=b&sig=jep8HT2aphfUkyERRZa5LRfd9RPzjXbzB%2F9TNiQ")),
-	// 			ValidUntil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-12T02:56:55.5021869Z"); return t}()),
+	// 			ValidUntil: to.Ptr(time.Date(2022, time.June, 12, 2, 56, 55, 502186900, time.UTC)),
 	// 		},
 	// 		Status: to.Ptr(armcostmanagement.OperationStatusType("Complete")),
 	// 	},
@@ -209,9 +209,9 @@ func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateBySavin
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewGenerateBenefitUtilizationSummariesReportClient().BeginGenerateBySavingsPlanID(ctx, "00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000", armcostmanagement.BenefitUtilizationSummariesRequest{
-		EndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T00:00:00Z"); return t }()),
+		EndDate:   to.Ptr(time.Date(2022, time.August, 31, 0, 0, 0, 0, time.UTC)),
 		Grain:     to.Ptr(armcostmanagement.GrainDaily),
-		StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T00:00:00Z"); return t }()),
+		StartDate: to.Ptr(time.Date(2022, time.June, 1, 0, 0, 0, 0, time.UTC)),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -228,15 +228,15 @@ func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateBySavin
 	// 		Input: &armcostmanagement.BenefitUtilizationSummariesRequest{
 	// 			BenefitID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			BenefitOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T00:00:00Z"); return t}()),
+	// 			EndDate: to.Ptr(time.Date(2022, time.August, 31, 0, 0, 0, 0, time.UTC)),
 	// 			Grain: to.Ptr(armcostmanagement.GrainDaily),
 	// 			Kind: to.Ptr(armcostmanagement.BenefitKindSavingsPlan),
-	// 			StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T00:00:00Z"); return t}()),
+	// 			StartDate: to.Ptr(time.Date(2022, time.June, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 		Properties: &armcostmanagement.AsyncOperationStatusProperties{
 	// 			ReportURL: to.Ptr(armcostmanagement.BenefitUtilizationSummaryReportSchema("https://storage.blob.core.windows.net/details/20220611/00000000-0000-0000-0000-000000000000?sv=2016-05-31&sr=b&sig=jep8HT2aphfUkyERRZa5LRfd9RPzjXbzB%2F9TNiQ")),
 	// 			SecondaryReportURL: to.Ptr(armcostmanagement.BenefitUtilizationSummaryReportSchema("https://storage-secondary.blob.core.windows.net/details/20220611/00000000-0000-0000-0000-000000000000?sv=2016-05-31&sr=b&sig=jep8HT2aphfUkyERRZa5LRfd9RPzjXbzB%2F9TNiQ")),
-	// 			ValidUntil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-12T02:56:55.5021869Z"); return t}()),
+	// 			ValidUntil: to.Ptr(time.Date(2022, time.June, 12, 2, 56, 55, 502186900, time.UTC)),
 	// 		},
 	// 		Status: to.Ptr(armcostmanagement.OperationStatusType("Complete")),
 	// 	},
@@ -255,9 +255,9 @@ func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateBySavin
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewGenerateBenefitUtilizationSummariesReportClient().BeginGenerateBySavingsPlanOrderID(ctx, "00000000-0000-0000-0000-000000000000", armcostmanagement.BenefitUtilizationSummariesRequest{
-		EndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T00:00:00Z"); return t }()),
+		EndDate:   to.Ptr(time.Date(2022, time.August, 31, 0, 0, 0, 0, time.UTC)),
 		Grain:     to.Ptr(armcostmanagement.GrainDaily),
-		StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T00:00:00Z"); return t }()),
+		StartDate: to.Ptr(time.Date(2022, time.June, 1, 0, 0, 0, 0, time.UTC)),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -273,15 +273,15 @@ func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateBySavin
 	// 	BenefitUtilizationSummariesOperationStatus: armcostmanagement.BenefitUtilizationSummariesOperationStatus{
 	// 		Input: &armcostmanagement.BenefitUtilizationSummariesRequest{
 	// 			BenefitOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T00:00:00Z"); return t}()),
+	// 			EndDate: to.Ptr(time.Date(2022, time.August, 31, 0, 0, 0, 0, time.UTC)),
 	// 			Grain: to.Ptr(armcostmanagement.GrainDaily),
 	// 			Kind: to.Ptr(armcostmanagement.BenefitKindSavingsPlan),
-	// 			StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T00:00:00Z"); return t}()),
+	// 			StartDate: to.Ptr(time.Date(2022, time.June, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 		Properties: &armcostmanagement.AsyncOperationStatusProperties{
 	// 			ReportURL: to.Ptr(armcostmanagement.BenefitUtilizationSummaryReportSchema("https://storage.blob.core.windows.net/details/20220611/00000000-0000-0000-0000-000000000000?sv=2016-05-31&sr=b&sig=jep8HT2aphfUkyERRZa5LRfd9RPzjXbzB%2F9TNiQ")),
 	// 			SecondaryReportURL: to.Ptr(armcostmanagement.BenefitUtilizationSummaryReportSchema("https://storage-secondary.blob.core.windows.net/details/20220611/00000000-0000-0000-0000-000000000000?sv=2016-05-31&sr=b&sig=jep8HT2aphfUkyERRZa5LRfd9RPzjXbzB%2F9TNiQ")),
-	// 			ValidUntil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-12T02:56:55.5021869Z"); return t}()),
+	// 			ValidUntil: to.Ptr(time.Date(2022, time.June, 12, 2, 56, 55, 502186900, time.UTC)),
 	// 		},
 	// 		Status: to.Ptr(armcostmanagement.OperationStatusType("Complete")),
 	// 	},

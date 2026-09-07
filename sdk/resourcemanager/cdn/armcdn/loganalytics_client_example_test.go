@@ -90,7 +90,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsMetrics() {
 	}
 	res, err := clientFactory.NewLogAnalyticsClient().GetLogAnalyticsMetrics(ctx, "RG", "profile1", []armcdn.LogMetric{
 		armcdn.LogMetricClientRequestCount,
-	}, func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T04:30:00.000Z"); return t }(), func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T05:00:00.000Z"); return t }(), armcdn.LogMetricsGranularityPT5M, []string{
+	}, time.Date(2020, time.November, 4, 4, 30, 0, 0, time.UTC), time.Date(2020, time.November, 4, 5, 0, 0, 0, time.UTC), armcdn.LogMetricsGranularityPT5M, []string{
 		"customdomain1.azurecdn.net",
 		"customdomain2.azurecdn.net",
 	}, []string{
@@ -107,34 +107,34 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsMetrics() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.LogAnalyticsClientGetLogAnalyticsMetricsResponse{
 	// 	MetricsResponse: armcdn.MetricsResponse{
-	// 		DateTimeBegin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T12:30:27.554+08:00"); return t}()),
-	// 		DateTimeEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T13:00:27.554+08:00"); return t}()),
+	// 		DateTimeBegin: to.Ptr(time.Date(2020, time.November, 4, 4, 30, 27, 554000000, time.UTC)),
+	// 		DateTimeEnd: to.Ptr(time.Date(2020, time.November, 4, 5, 0, 27, 554000000, time.UTC)),
 	// 		Granularity: to.Ptr(armcdn.MetricsGranularityPT5M),
 	// 		Series: []*armcdn.MetricsResponseSeriesItem{
 	// 			{
 	// 				Data: []*armcdn.Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems{
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T04:35:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 4, 35, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](4250),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T04:40:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 4, 40, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](3120),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T04:45:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 4, 45, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](2221),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T04:50:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 4, 50, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](2466),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T04:55:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 4, 55, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](2654),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T05:00:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 5, 0, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](3565),
 	// 					},
 	// 				},
@@ -167,7 +167,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsRankings() {
 		armcdn.LogRankingURL,
 	}, []armcdn.LogRankingMetric{
 		armcdn.LogRankingMetricClientRequestCount,
-	}, 5, func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T06:49:27.554Z"); return t }(), func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T09:49:27.554Z"); return t }(), nil)
+	}, 5, time.Date(2020, time.November, 4, 6, 49, 27, 554000000, time.UTC), time.Date(2020, time.November, 4, 9, 49, 27, 554000000, time.UTC), nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -176,8 +176,8 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsRankings() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.LogAnalyticsClientGetLogAnalyticsRankingsResponse{
 	// 	RankingsResponse: armcdn.RankingsResponse{
-	// 		DateTimeBegin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T14:49:27.554+08:00"); return t}()),
-	// 		DateTimeEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T17:49:27.554+08:00"); return t}()),
+	// 		DateTimeBegin: to.Ptr(time.Date(2020, time.November, 4, 6, 49, 27, 554000000, time.UTC)),
+	// 		DateTimeEnd: to.Ptr(time.Date(2020, time.November, 4, 9, 49, 27, 554000000, time.UTC)),
 	// 		Tables: []*armcdn.RankingsResponseTablesItem{
 	// 			{
 	// 				Data: []*armcdn.RankingsResponseTablesPropertiesItemsItem{
@@ -313,7 +313,7 @@ func ExampleLogAnalyticsClient_GetWafLogAnalyticsMetrics() {
 	}
 	res, err := clientFactory.NewLogAnalyticsClient().GetWafLogAnalyticsMetrics(ctx, "RG", "profile1", []armcdn.WafMetric{
 		armcdn.WafMetricClientRequestCount,
-	}, func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T06:49:27.554Z"); return t }(), func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T09:49:27.554Z"); return t }(), armcdn.WafGranularityPT5M, &armcdn.LogAnalyticsClientGetWafLogAnalyticsMetricsOptions{
+	}, time.Date(2020, time.November, 4, 6, 49, 27, 554000000, time.UTC), time.Date(2020, time.November, 4, 9, 49, 27, 554000000, time.UTC), armcdn.WafGranularityPT5M, &armcdn.LogAnalyticsClientGetWafLogAnalyticsMetricsOptions{
 		Actions: []armcdn.WafAction{
 			armcdn.WafActionBlock,
 			armcdn.WafActionLog,
@@ -326,106 +326,106 @@ func ExampleLogAnalyticsClient_GetWafLogAnalyticsMetrics() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.LogAnalyticsClientGetWafLogAnalyticsMetricsResponse{
 	// 	WafMetricsResponse: armcdn.WafMetricsResponse{
-	// 		DateTimeBegin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T14:30:27.554+08:00"); return t}()),
-	// 		DateTimeEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T17:00:27.554+08:00"); return t}()),
+	// 		DateTimeBegin: to.Ptr(time.Date(2020, time.November, 4, 6, 30, 27, 554000000, time.UTC)),
+	// 		DateTimeEnd: to.Ptr(time.Date(2020, time.November, 4, 9, 0, 27, 554000000, time.UTC)),
 	// 		Granularity: to.Ptr(armcdn.WafMetricsGranularityPT5M),
 	// 		Series: []*armcdn.WafMetricsResponseSeriesItem{
 	// 			{
 	// 				Data: []*armcdn.Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems{
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:05:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 7, 5, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](2),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:10:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 7, 10, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](32),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:15:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 7, 15, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](31),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:20:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 7, 20, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](63),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:25:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 7, 25, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](50),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:30:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 7, 30, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](12),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:35:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 7, 35, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](8),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:40:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 7, 40, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](21),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:45:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 7, 45, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](30),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:50:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 7, 50, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](18),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:55:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 7, 55, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](28),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:00:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 8, 0, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](3),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:05:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 8, 5, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](58),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:10:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 8, 10, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](42),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:15:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 8, 15, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](17),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:20:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 8, 20, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](21),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:25:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 8, 25, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](41),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:30:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 8, 30, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](8),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:35:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 8, 35, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](15),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:40:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 8, 40, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](25),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:45:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 8, 45, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](13),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:50:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 8, 50, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](17),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:55:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 8, 55, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](29),
 	// 					},
 	// 					{
-	// 						DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T09:00:00+00:00"); return t}()),
+	// 						DateTime: to.Ptr(time.Date(2020, time.November, 4, 9, 0, 0, 0, time.UTC)),
 	// 						Value: to.Ptr[float32](17),
 	// 					},
 	// 				},
@@ -452,7 +452,7 @@ func ExampleLogAnalyticsClient_GetWafLogAnalyticsRankings() {
 	}
 	res, err := clientFactory.NewLogAnalyticsClient().GetWafLogAnalyticsRankings(ctx, "RG", "profile1", []armcdn.WafMetric{
 		armcdn.WafMetricClientRequestCount,
-	}, func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T06:49:27.554Z"); return t }(), func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T09:49:27.554Z"); return t }(), 5, []armcdn.WafRankingType{
+	}, time.Date(2020, time.November, 4, 6, 49, 27, 554000000, time.UTC), time.Date(2020, time.November, 4, 9, 49, 27, 554000000, time.UTC), 5, []armcdn.WafRankingType{
 		armcdn.WafRankingTypeRuleID,
 	}, nil)
 	if err != nil {
@@ -477,8 +477,8 @@ func ExampleLogAnalyticsClient_GetWafLogAnalyticsRankings() {
 	// 				},
 	// 			},
 	// 		},
-	// 		DateTimeBegin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T14:49:27.554+08:00"); return t}()),
-	// 		DateTimeEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T17:49:27.554+08:00"); return t}()),
+	// 		DateTimeBegin: to.Ptr(time.Date(2020, time.November, 4, 6, 49, 27, 554000000, time.UTC)),
+	// 		DateTimeEnd: to.Ptr(time.Date(2020, time.November, 4, 9, 49, 27, 554000000, time.UTC)),
 	// 		Groups: []*string{
 	// 			to.Ptr("ruleId"),
 	// 		},

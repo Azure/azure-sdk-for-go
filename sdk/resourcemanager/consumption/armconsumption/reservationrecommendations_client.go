@@ -52,42 +52,56 @@ func (client *ReservationRecommendationsClient) NewListPager(resourceScope strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceScope, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceScope, nextLink, options)
 			if err != nil {
 				return ReservationRecommendationsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ReservationRecommendationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK, http.StatusNoContent)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ReservationRecommendationsClient) listCreateRequest(ctx context.Context, resourceScope string, options *ReservationRecommendationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/{resourceScope}/providers/Microsoft.Consumption/reservationRecommendations"
-	if resourceScope == "" {
-		return nil, errors.New("parameter resourceScope cannot be empty")
+func (client *ReservationRecommendationsClient) listCreateRequest(ctx context.Context, resourceScope string, nextLink string, options *ReservationRecommendationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceScope}/providers/Microsoft.Consumption/reservationRecommendations"
+		if resourceScope == "" {
+			return nil, errors.New("parameter resourceScope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20240801)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20240801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ReservationRecommendationsClient) listHandleResponse(resp *http.Response) (ReservationRecommendationsClientListResponse, error) {
+func (client *ReservationRecommendationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ReservationRecommendationsClientListResponse, error) {
 	result := ReservationRecommendationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationRecommendationsListResult); err != nil {
 		return ReservationRecommendationsClientListResponse{}, err
 	}

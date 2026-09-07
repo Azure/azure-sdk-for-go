@@ -18,6 +18,8 @@ import (
 
 // ItemLevelRecoveryConnectionsClient contains the methods for the ItemLevelRecoveryConnections group.
 // Don't use this type directly, use NewItemLevelRecoveryConnectionsClient() instead.
+//
+// Generated from API version 2026-07-01
 type ItemLevelRecoveryConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type ItemLevelRecoveryConnectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewItemLevelRecoveryConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ItemLevelRecoveryConnectionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -43,8 +48,6 @@ func NewItemLevelRecoveryConnectionsClient(subscriptionID string, credential azc
 // explorer displaying all the recoverable files and folders. This is an asynchronous operation. To know the status of
 // provisioning, call GetProtectedItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ItemLevelRecoveryConnectionsClientProvisionOptions contains the optional parameters for the ItemLevelRecoveryConnectionsClient.Provision
 //     method.
@@ -63,8 +66,7 @@ func (client *ItemLevelRecoveryConnectionsClient) Provision(ctx context.Context,
 		return ItemLevelRecoveryConnectionsClientProvisionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return ItemLevelRecoveryConnectionsClientProvisionResponse{}, err
+		return ItemLevelRecoveryConnectionsClientProvisionResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ItemLevelRecoveryConnectionsClientProvisionResponse{}, nil
 }
@@ -73,7 +75,7 @@ func (client *ItemLevelRecoveryConnectionsClient) Provision(ctx context.Context,
 func (client *ItemLevelRecoveryConnectionsClient) provisionCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters ILRRequestResource, _ *ItemLevelRecoveryConnectionsClientProvisionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/provisionInstantItemRecovery"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if vaultName == "" {
@@ -105,8 +107,8 @@ func (client *ItemLevelRecoveryConnectionsClient) provisionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -117,8 +119,6 @@ func (client *ItemLevelRecoveryConnectionsClient) provisionCreateRequest(ctx con
 // Revoke - Revokes an iSCSI connection which can be used to download a script. Executing this script opens a file explorer
 // displaying all recoverable files and folders. This is an asynchronous operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ItemLevelRecoveryConnectionsClientRevokeOptions contains the optional parameters for the ItemLevelRecoveryConnectionsClient.Revoke
 //     method.
@@ -137,8 +137,7 @@ func (client *ItemLevelRecoveryConnectionsClient) Revoke(ctx context.Context, va
 		return ItemLevelRecoveryConnectionsClientRevokeResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return ItemLevelRecoveryConnectionsClientRevokeResponse{}, err
+		return ItemLevelRecoveryConnectionsClientRevokeResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ItemLevelRecoveryConnectionsClientRevokeResponse{}, nil
 }
@@ -147,7 +146,7 @@ func (client *ItemLevelRecoveryConnectionsClient) Revoke(ctx context.Context, va
 func (client *ItemLevelRecoveryConnectionsClient) revokeCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, _ *ItemLevelRecoveryConnectionsClientRevokeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/revokeInstantItemRecovery"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if vaultName == "" {
@@ -179,7 +178,7 @@ func (client *ItemLevelRecoveryConnectionsClient) revokeCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

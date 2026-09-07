@@ -35,7 +35,7 @@ func ExampleMarketplaceAgreementsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatadog.MarketplaceAgreementsClientCreateOrUpdateResponse{
-	// 	AgreementResource: &armdatadog.AgreementResource{
+	// 	AgreementResource: armdatadog.AgreementResource{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Datadog/agreements"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Datadog/agreements/default"),
@@ -46,7 +46,7 @@ func ExampleMarketplaceAgreementsClient_CreateOrUpdate() {
 	// 			PrivacyPolicyLink: to.Ptr("test.privacyPolicyLink1"),
 	// 			Product: to.Ptr("offid1"),
 	// 			Publisher: to.Ptr("pubid1"),
-	// 			RetrieveDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T11:33:07.12132Z"); return t}()),
+	// 			RetrieveDatetime: to.Ptr(time.Date(2017, time.August, 15, 11, 33, 7, 121320000, time.UTC)),
 	// 			Signature: to.Ptr("ASDFSDAFWEFASDGWERLWER"),
 	// 		},
 	// 	},
@@ -89,7 +89,7 @@ func ExampleMarketplaceAgreementsClient_NewListPager() {
 		// 					PrivacyPolicyLink: to.Ptr("test.privacyPolicyLink1"),
 		// 					Product: to.Ptr("offid1"),
 		// 					Publisher: to.Ptr("pubid1"),
-		// 					RetrieveDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T11:33:07.12132Z"); return t}()),
+		// 					RetrieveDatetime: to.Ptr(time.Date(2017, time.August, 15, 11, 33, 7, 121320000, time.UTC)),
 		// 					Signature: to.Ptr("ASDFSDAFWEFASDGWERLWER"),
 		// 				},
 		// 			},
@@ -104,7 +104,7 @@ func ExampleMarketplaceAgreementsClient_NewListPager() {
 		// 					PrivacyPolicyLink: to.Ptr("test.privacyPolicyLink2"),
 		// 					Product: to.Ptr("offid2"),
 		// 					Publisher: to.Ptr("pubid2"),
-		// 					RetrieveDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-14T11:33:07.12132Z"); return t}()),
+		// 					RetrieveDatetime: to.Ptr(time.Date(2017, time.August, 14, 11, 33, 7, 121320000, time.UTC)),
 		// 					Signature: to.Ptr("ASDFSDAFWEFASDGWERLWER"),
 		// 				},
 		// 			},

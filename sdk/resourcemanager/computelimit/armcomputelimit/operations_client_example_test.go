@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/Operations_List.json
+// Generated from example definition: 2026-07-31/Operations_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,6 +142,33 @@ func ExampleOperationsClient_NewListPager() {
 		// 					Resource: to.Ptr("Features"),
 		// 					Operation: to.Ptr("Enable Feature"),
 		// 					Description: to.Ptr("Enables a compute limit feature for the subscription at the specified location"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.ComputeLimit/locations/trustedHostSubscriptions/read"),
+		// 				Display: &armcomputelimit.OperationDisplay{
+		// 					Provider: to.Ptr("Microsoft ComputeLimit"),
+		// 					Resource: to.Ptr("Trusted Host Subscriptions"),
+		// 					Operation: to.Ptr("List Trusted Host Subscriptions"),
+		// 					Description: to.Ptr("Lists all host subscriptions trusted by the guest subscription in a location"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.ComputeLimit/locations/trustedHostSubscriptions/write"),
+		// 				Display: &armcomputelimit.OperationDisplay{
+		// 					Provider: to.Ptr("Microsoft ComputeLimit"),
+		// 					Resource: to.Ptr("Trusted Host Subscriptions"),
+		// 					Operation: to.Ptr("Create Trusted Host Subscription"),
+		// 					Description: to.Ptr("Adds a host subscription to the guest subscription's trusted hosts"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.ComputeLimit/locations/trustedHostSubscriptions/delete"),
+		// 				Display: &armcomputelimit.OperationDisplay{
+		// 					Provider: to.Ptr("Microsoft ComputeLimit"),
+		// 					Resource: to.Ptr("Trusted Host Subscriptions"),
+		// 					Operation: to.Ptr("Delete Trusted Host Subscription"),
+		// 					Description: to.Ptr("Removes a host subscription from the guest subscription's trusted hosts"),
 		// 				},
 		// 			},
 		// 		},

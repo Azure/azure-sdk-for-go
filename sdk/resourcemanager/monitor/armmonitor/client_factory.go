@@ -79,6 +79,13 @@ func (c *ClientFactory) NewBaselinesClient() *BaselinesClient {
 	}
 }
 
+// NewCombineClient creates a new instance of CombineClient.
+func (c *ClientFactory) NewCombineClient() *CombineClient {
+	return &CombineClient{
+		internal: c.internal,
+	}
+}
+
 // NewDataCollectionEndpointsClient creates a new instance of DataCollectionEndpointsClient.
 func (c *ClientFactory) NewDataCollectionEndpointsClient() *DataCollectionEndpointsClient {
 	return &DataCollectionEndpointsClient{
@@ -100,6 +107,20 @@ func (c *ClientFactory) NewDataCollectionRulesClient() *DataCollectionRulesClien
 	return &DataCollectionRulesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
+	}
+}
+
+// NewDiagnosticSettingsCategoryClient creates a new instance of DiagnosticSettingsCategoryClient.
+func (c *ClientFactory) NewDiagnosticSettingsCategoryClient() *DiagnosticSettingsCategoryClient {
+	return &DiagnosticSettingsCategoryClient{
+		internal: c.internal,
+	}
+}
+
+// NewDiagnosticSettingsClient creates a new instance of DiagnosticSettingsClient.
+func (c *ClientFactory) NewDiagnosticSettingsClient() *DiagnosticSettingsClient {
+	return &DiagnosticSettingsClient{
+		internal: c.internal,
 	}
 }
 
@@ -228,9 +249,23 @@ func (c *ClientFactory) NewServiceDiagnosticSettingsClient() *ServiceDiagnosticS
 	}
 }
 
+// NewTenantActionGroupsClient creates a new instance of TenantActionGroupsClient.
+func (c *ClientFactory) NewTenantActionGroupsClient() *TenantActionGroupsClient {
+	return &TenantActionGroupsClient{
+		internal: c.internal,
+	}
+}
+
 // NewTenantActivityLogsClient creates a new instance of TenantActivityLogsClient.
 func (c *ClientFactory) NewTenantActivityLogsClient() *TenantActivityLogsClient {
 	return &TenantActivityLogsClient{
+		internal: c.internal,
+	}
+}
+
+// NewVMInsightsClient creates a new instance of VMInsightsClient.
+func (c *ClientFactory) NewVMInsightsClient() *VMInsightsClient {
+	return &VMInsightsClient{
 		internal: c.internal,
 	}
 }

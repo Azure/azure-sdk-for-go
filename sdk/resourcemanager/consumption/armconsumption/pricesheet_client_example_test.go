@@ -38,7 +38,7 @@ func ExamplePriceSheetClient_BeginDownloadByBillingAccountPeriod() {
 	// 	OperationStatus: armconsumption.OperationStatus{
 	// 		Properties: &armconsumption.PricesheetDownloadProperties{
 	// 			DownloadURL: to.Ptr("https://xxxxxx.blob.core.windows.net/armpricesheetreportdownloadcontainer/20230510/00000000-0000-0000-0000-000000000000"),
-	// 			ValidTill: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T05:12:50.4266333Z"); return t}()),
+	// 			ValidTill: to.Ptr(time.Date(2023, time.May, 11, 5, 12, 50, 426633300, time.UTC)),
 	// 		},
 	// 		Status: to.Ptr(armconsumption.OperationStatusTypeCompleted),
 	// 	},

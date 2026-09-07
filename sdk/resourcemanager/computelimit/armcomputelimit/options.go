@@ -127,6 +127,29 @@ type SharedLimitsClientListBySubscriptionLocationResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
+// TrustedHostSubscriptionsClientCreateOptions contains the optional parameters for the TrustedHostSubscriptionsClient.Create
+// method.
+type TrustedHostSubscriptionsClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TrustedHostSubscriptionsClientDeleteOptions contains the optional parameters for the TrustedHostSubscriptionsClient.Delete
+// method.
+type TrustedHostSubscriptionsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TrustedHostSubscriptionsClientGetOptions contains the optional parameters for the TrustedHostSubscriptionsClient.Get method.
+type TrustedHostSubscriptionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TrustedHostSubscriptionsClientListBySubscriptionLocationResourceOptions contains the optional parameters for the TrustedHostSubscriptionsClient.NewListBySubscriptionLocationResourcePager
+// method.
+type TrustedHostSubscriptionsClientListBySubscriptionLocationResourceOptions struct {
+	// placeholder for future optional parameters
+}
+
 // VMFamiliesClientGetOptions contains the optional parameters for the VMFamiliesClient.Get method.
 type VMFamiliesClientGetOptions struct {
 	// placeholder for future optional parameters

@@ -19,8 +19,6 @@ import (
 	"time"
 )
 
-const defaultLogAnalyticsClientVersion string = "2025-06-01"
-
 // LogAnalyticsClient contains the methods for the LogAnalytics group.
 // Don't use this type directly, use NewLogAnalyticsClient() instead.
 //
@@ -35,6 +33,9 @@ type LogAnalyticsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLogAnalyticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LogAnalyticsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,19 +68,14 @@ func (client *LogAnalyticsClient) GetLogAnalyticsLocations(ctx context.Context, 
 	if err != nil {
 		return LogAnalyticsClientGetLogAnalyticsLocationsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LogAnalyticsClientGetLogAnalyticsLocationsResponse{}, err
-	}
-	resp, err := client.getLogAnalyticsLocationsHandleResponse(httpResp)
-	return resp, err
+	return client.getLogAnalyticsLocationsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getLogAnalyticsLocationsCreateRequest creates the GetLogAnalyticsLocations request.
 func (client *LogAnalyticsClient) getLogAnalyticsLocationsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *LogAnalyticsClientGetLogAnalyticsLocationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsLocations"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -95,15 +91,18 @@ func (client *LogAnalyticsClient) getLogAnalyticsLocationsCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultLogAnalyticsClientVersion)
+	reqQP.Set("api-version", version20250601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getLogAnalyticsLocationsHandleResponse handles the GetLogAnalyticsLocations response.
-func (client *LogAnalyticsClient) getLogAnalyticsLocationsHandleResponse(resp *http.Response) (LogAnalyticsClientGetLogAnalyticsLocationsResponse, error) {
+func (client *LogAnalyticsClient) getLogAnalyticsLocationsHandleResponse(resp *http.Response, successCodes ...int) (LogAnalyticsClientGetLogAnalyticsLocationsResponse, error) {
 	result := LogAnalyticsClientGetLogAnalyticsLocationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContinentsResponse); err != nil {
 		return LogAnalyticsClientGetLogAnalyticsLocationsResponse{}, err
 	}
@@ -131,19 +130,14 @@ func (client *LogAnalyticsClient) GetLogAnalyticsMetrics(ctx context.Context, re
 	if err != nil {
 		return LogAnalyticsClientGetLogAnalyticsMetricsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LogAnalyticsClientGetLogAnalyticsMetricsResponse{}, err
-	}
-	resp, err := client.getLogAnalyticsMetricsHandleResponse(httpResp)
-	return resp, err
+	return client.getLogAnalyticsMetricsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getLogAnalyticsMetricsCreateRequest creates the GetLogAnalyticsMetrics request.
 func (client *LogAnalyticsClient) getLogAnalyticsMetricsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, metrics []LogMetric, dateTimeBegin time.Time, dateTimeEnd time.Time, granularity LogMetricsGranularity, customDomains []string, protocols []string, options *LogAnalyticsClientGetLogAnalyticsMetricsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsMetrics"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -159,7 +153,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsMetricsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultLogAnalyticsClientVersion)
+	reqQP.Set("api-version", version20250601)
 	if options != nil && options.Continents != nil {
 		for _, qv := range options.Continents {
 			reqQP.Add("continents", qv)
@@ -173,8 +167,8 @@ func (client *LogAnalyticsClient) getLogAnalyticsMetricsCreateRequest(ctx contex
 	for _, qv := range customDomains {
 		reqQP.Add("customDomains", qv)
 	}
-	reqQP.Set("dateTimeBegin", datetime.RFC3339(dateTimeBegin).String())
-	reqQP.Set("dateTimeEnd", datetime.RFC3339(dateTimeEnd).String())
+	reqQP.Set("dateTimeBegin", datetime.RFC3339((dateTimeBegin).UTC()).String())
+	reqQP.Set("dateTimeEnd", datetime.RFC3339((dateTimeEnd).UTC()).String())
 	reqQP.Set("granularity", string(granularity))
 	if options != nil && options.GroupBy != nil {
 		for _, qv := range options.GroupBy {
@@ -193,8 +187,11 @@ func (client *LogAnalyticsClient) getLogAnalyticsMetricsCreateRequest(ctx contex
 }
 
 // getLogAnalyticsMetricsHandleResponse handles the GetLogAnalyticsMetrics response.
-func (client *LogAnalyticsClient) getLogAnalyticsMetricsHandleResponse(resp *http.Response) (LogAnalyticsClientGetLogAnalyticsMetricsResponse, error) {
+func (client *LogAnalyticsClient) getLogAnalyticsMetricsHandleResponse(resp *http.Response, successCodes ...int) (LogAnalyticsClientGetLogAnalyticsMetricsResponse, error) {
 	result := LogAnalyticsClientGetLogAnalyticsMetricsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricsResponse); err != nil {
 		return LogAnalyticsClientGetLogAnalyticsMetricsResponse{}, err
 	}
@@ -222,19 +219,14 @@ func (client *LogAnalyticsClient) GetLogAnalyticsRankings(ctx context.Context, r
 	if err != nil {
 		return LogAnalyticsClientGetLogAnalyticsRankingsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LogAnalyticsClientGetLogAnalyticsRankingsResponse{}, err
-	}
-	resp, err := client.getLogAnalyticsRankingsHandleResponse(httpResp)
-	return resp, err
+	return client.getLogAnalyticsRankingsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getLogAnalyticsRankingsCreateRequest creates the GetLogAnalyticsRankings request.
 func (client *LogAnalyticsClient) getLogAnalyticsRankingsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, rankings []LogRanking, metrics []LogRankingMetric, maxRanking int32, dateTimeBegin time.Time, dateTimeEnd time.Time, options *LogAnalyticsClientGetLogAnalyticsRankingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsRankings"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -250,14 +242,14 @@ func (client *LogAnalyticsClient) getLogAnalyticsRankingsCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultLogAnalyticsClientVersion)
+	reqQP.Set("api-version", version20250601)
 	if options != nil && options.CustomDomains != nil {
 		for _, qv := range options.CustomDomains {
 			reqQP.Add("customDomains", qv)
 		}
 	}
-	reqQP.Set("dateTimeBegin", datetime.RFC3339(dateTimeBegin).String())
-	reqQP.Set("dateTimeEnd", datetime.RFC3339(dateTimeEnd).String())
+	reqQP.Set("dateTimeBegin", datetime.RFC3339((dateTimeBegin).UTC()).String())
+	reqQP.Set("dateTimeEnd", datetime.RFC3339((dateTimeEnd).UTC()).String())
 	reqQP.Set("maxRanking", strconv.FormatInt(int64(maxRanking), 10))
 	for _, qv := range metrics {
 		reqQP.Add("metrics", string(qv))
@@ -271,8 +263,11 @@ func (client *LogAnalyticsClient) getLogAnalyticsRankingsCreateRequest(ctx conte
 }
 
 // getLogAnalyticsRankingsHandleResponse handles the GetLogAnalyticsRankings response.
-func (client *LogAnalyticsClient) getLogAnalyticsRankingsHandleResponse(resp *http.Response) (LogAnalyticsClientGetLogAnalyticsRankingsResponse, error) {
+func (client *LogAnalyticsClient) getLogAnalyticsRankingsHandleResponse(resp *http.Response, successCodes ...int) (LogAnalyticsClientGetLogAnalyticsRankingsResponse, error) {
 	result := LogAnalyticsClientGetLogAnalyticsRankingsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RankingsResponse); err != nil {
 		return LogAnalyticsClientGetLogAnalyticsRankingsResponse{}, err
 	}
@@ -300,19 +295,14 @@ func (client *LogAnalyticsClient) GetLogAnalyticsResources(ctx context.Context, 
 	if err != nil {
 		return LogAnalyticsClientGetLogAnalyticsResourcesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LogAnalyticsClientGetLogAnalyticsResourcesResponse{}, err
-	}
-	resp, err := client.getLogAnalyticsResourcesHandleResponse(httpResp)
-	return resp, err
+	return client.getLogAnalyticsResourcesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getLogAnalyticsResourcesCreateRequest creates the GetLogAnalyticsResources request.
 func (client *LogAnalyticsClient) getLogAnalyticsResourcesCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *LogAnalyticsClientGetLogAnalyticsResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsResources"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -328,15 +318,18 @@ func (client *LogAnalyticsClient) getLogAnalyticsResourcesCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultLogAnalyticsClientVersion)
+	reqQP.Set("api-version", version20250601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getLogAnalyticsResourcesHandleResponse handles the GetLogAnalyticsResources response.
-func (client *LogAnalyticsClient) getLogAnalyticsResourcesHandleResponse(resp *http.Response) (LogAnalyticsClientGetLogAnalyticsResourcesResponse, error) {
+func (client *LogAnalyticsClient) getLogAnalyticsResourcesHandleResponse(resp *http.Response, successCodes ...int) (LogAnalyticsClientGetLogAnalyticsResourcesResponse, error) {
 	result := LogAnalyticsClientGetLogAnalyticsResourcesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourcesResponse); err != nil {
 		return LogAnalyticsClientGetLogAnalyticsResourcesResponse{}, err
 	}
@@ -364,19 +357,14 @@ func (client *LogAnalyticsClient) GetWafLogAnalyticsMetrics(ctx context.Context,
 	if err != nil {
 		return LogAnalyticsClientGetWafLogAnalyticsMetricsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LogAnalyticsClientGetWafLogAnalyticsMetricsResponse{}, err
-	}
-	resp, err := client.getWafLogAnalyticsMetricsHandleResponse(httpResp)
-	return resp, err
+	return client.getWafLogAnalyticsMetricsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getWafLogAnalyticsMetricsCreateRequest creates the GetWafLogAnalyticsMetrics request.
 func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, metrics []WafMetric, dateTimeBegin time.Time, dateTimeEnd time.Time, granularity WafGranularity, options *LogAnalyticsClientGetWafLogAnalyticsMetricsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getWafLogAnalyticsMetrics"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -397,9 +385,9 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsCreateRequest(ctx con
 			reqQP.Add("actions", string(qv))
 		}
 	}
-	reqQP.Set("api-version", defaultLogAnalyticsClientVersion)
-	reqQP.Set("dateTimeBegin", datetime.RFC3339(dateTimeBegin).String())
-	reqQP.Set("dateTimeEnd", datetime.RFC3339(dateTimeEnd).String())
+	reqQP.Set("api-version", version20250601)
+	reqQP.Set("dateTimeBegin", datetime.RFC3339((dateTimeBegin).UTC()).String())
+	reqQP.Set("dateTimeEnd", datetime.RFC3339((dateTimeEnd).UTC()).String())
 	reqQP.Set("granularity", string(granularity))
 	if options != nil && options.GroupBy != nil {
 		for _, qv := range options.GroupBy {
@@ -420,8 +408,11 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsCreateRequest(ctx con
 }
 
 // getWafLogAnalyticsMetricsHandleResponse handles the GetWafLogAnalyticsMetrics response.
-func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsHandleResponse(resp *http.Response) (LogAnalyticsClientGetWafLogAnalyticsMetricsResponse, error) {
+func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsHandleResponse(resp *http.Response, successCodes ...int) (LogAnalyticsClientGetWafLogAnalyticsMetricsResponse, error) {
 	result := LogAnalyticsClientGetWafLogAnalyticsMetricsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WafMetricsResponse); err != nil {
 		return LogAnalyticsClientGetWafLogAnalyticsMetricsResponse{}, err
 	}
@@ -449,19 +440,14 @@ func (client *LogAnalyticsClient) GetWafLogAnalyticsRankings(ctx context.Context
 	if err != nil {
 		return LogAnalyticsClientGetWafLogAnalyticsRankingsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LogAnalyticsClientGetWafLogAnalyticsRankingsResponse{}, err
-	}
-	resp, err := client.getWafLogAnalyticsRankingsHandleResponse(httpResp)
-	return resp, err
+	return client.getWafLogAnalyticsRankingsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getWafLogAnalyticsRankingsCreateRequest creates the GetWafLogAnalyticsRankings request.
 func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, metrics []WafMetric, dateTimeBegin time.Time, dateTimeEnd time.Time, maxRanking int32, rankings []WafRankingType, options *LogAnalyticsClientGetWafLogAnalyticsRankingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getWafLogAnalyticsRankings"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -482,9 +468,9 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsCreateRequest(ctx co
 			reqQP.Add("actions", string(qv))
 		}
 	}
-	reqQP.Set("api-version", defaultLogAnalyticsClientVersion)
-	reqQP.Set("dateTimeBegin", datetime.RFC3339(dateTimeBegin).String())
-	reqQP.Set("dateTimeEnd", datetime.RFC3339(dateTimeEnd).String())
+	reqQP.Set("api-version", version20250601)
+	reqQP.Set("dateTimeBegin", datetime.RFC3339((dateTimeBegin).UTC()).String())
+	reqQP.Set("dateTimeEnd", datetime.RFC3339((dateTimeEnd).UTC()).String())
 	reqQP.Set("maxRanking", strconv.FormatInt(int64(maxRanking), 10))
 	for _, qv := range metrics {
 		reqQP.Add("metrics", string(qv))
@@ -503,8 +489,11 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsCreateRequest(ctx co
 }
 
 // getWafLogAnalyticsRankingsHandleResponse handles the GetWafLogAnalyticsRankings response.
-func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsHandleResponse(resp *http.Response) (LogAnalyticsClientGetWafLogAnalyticsRankingsResponse, error) {
+func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsHandleResponse(resp *http.Response, successCodes ...int) (LogAnalyticsClientGetWafLogAnalyticsRankingsResponse, error) {
 	result := LogAnalyticsClientGetWafLogAnalyticsRankingsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WafRankingsResponse); err != nil {
 		return LogAnalyticsClientGetWafLogAnalyticsRankingsResponse{}, err
 	}

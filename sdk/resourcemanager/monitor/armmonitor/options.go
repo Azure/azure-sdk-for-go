@@ -193,6 +193,19 @@ type BaselinesClientListOptions struct {
 	Timespan *string
 }
 
+// CombineClientBeginCreateNotificationsAtTenantActionGroupResourceLevelOptions contains the optional parameters for the CombineClient.BeginCreateNotificationsAtTenantActionGroupResourceLevel
+// method.
+type CombineClientBeginCreateNotificationsAtTenantActionGroupResourceLevelOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// CombineClientGetTestNotificationsAtTenantActionGroupResourceLevelOptions contains the optional parameters for the CombineClient.GetTestNotificationsAtTenantActionGroupResourceLevel
+// method.
+type CombineClientGetTestNotificationsAtTenantActionGroupResourceLevelOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DataCollectionEndpointsClientBeginReconcileNSPOptions contains the optional parameters for the DataCollectionEndpointsClient.BeginReconcileNSP
 // method.
 type DataCollectionEndpointsClientBeginReconcileNSPOptions struct {
@@ -317,6 +330,39 @@ type DataCollectionRulesClientListBySubscriptionOptions struct {
 
 // DataCollectionRulesClientUpdateOptions contains the optional parameters for the DataCollectionRulesClient.Update method.
 type DataCollectionRulesClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiagnosticSettingsCategoryClientGetOptions contains the optional parameters for the DiagnosticSettingsCategoryClient.Get
+// method.
+type DiagnosticSettingsCategoryClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiagnosticSettingsCategoryClientListOptions contains the optional parameters for the DiagnosticSettingsCategoryClient.NewListPager
+// method.
+type DiagnosticSettingsCategoryClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiagnosticSettingsClientCreateOrUpdateOptions contains the optional parameters for the DiagnosticSettingsClient.CreateOrUpdate
+// method.
+type DiagnosticSettingsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiagnosticSettingsClientDeleteOptions contains the optional parameters for the DiagnosticSettingsClient.Delete method.
+type DiagnosticSettingsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiagnosticSettingsClientGetOptions contains the optional parameters for the DiagnosticSettingsClient.Get method.
+type DiagnosticSettingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiagnosticSettingsClientListOptions contains the optional parameters for the DiagnosticSettingsClient.NewListPager method.
+type DiagnosticSettingsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -760,6 +806,33 @@ type ServiceDiagnosticSettingsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// TenantActionGroupsClientCreateOrUpdateOptions contains the optional parameters for the TenantActionGroupsClient.CreateOrUpdate
+// method.
+type TenantActionGroupsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TenantActionGroupsClientDeleteOptions contains the optional parameters for the TenantActionGroupsClient.Delete method.
+type TenantActionGroupsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TenantActionGroupsClientGetOptions contains the optional parameters for the TenantActionGroupsClient.Get method.
+type TenantActionGroupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TenantActionGroupsClientListByManagementGroupIDOptions contains the optional parameters for the TenantActionGroupsClient.NewListByManagementGroupIDPager
+// method.
+type TenantActionGroupsClientListByManagementGroupIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TenantActionGroupsClientUpdateOptions contains the optional parameters for the TenantActionGroupsClient.Update method.
+type TenantActionGroupsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // TenantActivityLogsClientListOptions contains the optional parameters for the TenantActivityLogsClient.NewListPager method.
 type TenantActivityLogsClientListOptions struct {
 	// Reduces the set of data collected. <br>The **$filter** is very restricted and allows only the following patterns.<br>-
@@ -779,4 +852,10 @@ type TenantActivityLogsClientListOptions struct {
 	// *eventTimestamp*, *httpRequest*, *level*, *operationId*, *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*,
 	// *resourceId*, *status*, *submissionTimestamp*, *subStatus*, *subscriptionId*
 	Select *string
+}
+
+// VMInsightsClientGetOnboardingStatusOptions contains the optional parameters for the VMInsightsClient.GetOnboardingStatus
+// method.
+type VMInsightsClientGetOnboardingStatusOptions struct {
+	// placeholder for future optional parameters
 }

@@ -18,6 +18,8 @@ import (
 
 // HybridConnectionsClient contains the methods for the HybridConnections group.
 // Don't use this type directly, use NewHybridConnectionsClient() instead.
+//
+// Generated from API version 2024-01-01
 type HybridConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type HybridConnectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewHybridConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HybridConnectionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,8 +46,6 @@ func NewHybridConnectionsClient(subscriptionID string, credential azcore.TokenCr
 
 // CreateOrUpdate - Creates or updates a service hybrid connection. This operation is idempotent.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - hybridConnectionName - The hybrid connection name.
@@ -63,19 +66,14 @@ func (client *HybridConnectionsClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return HybridConnectionsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return HybridConnectionsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *HybridConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, parameters HybridConnection, _ *HybridConnectionsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections/{hybridConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -95,8 +93,8 @@ func (client *HybridConnectionsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -106,8 +104,11 @@ func (client *HybridConnectionsClient) createOrUpdateCreateRequest(ctx context.C
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *HybridConnectionsClient) createOrUpdateHandleResponse(resp *http.Response) (HybridConnectionsClientCreateOrUpdateResponse, error) {
+func (client *HybridConnectionsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (HybridConnectionsClientCreateOrUpdateResponse, error) {
 	result := HybridConnectionsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnection); err != nil {
 		return HybridConnectionsClientCreateOrUpdateResponse{}, err
 	}
@@ -116,8 +117,6 @@ func (client *HybridConnectionsClient) createOrUpdateHandleResponse(resp *http.R
 
 // CreateOrUpdateAuthorizationRule - Creates or updates an authorization rule for a hybrid connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - hybridConnectionName - The hybrid connection name.
@@ -139,19 +138,14 @@ func (client *HybridConnectionsClient) CreateOrUpdateAuthorizationRule(ctx conte
 	if err != nil {
 		return HybridConnectionsClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return HybridConnectionsClientCreateOrUpdateAuthorizationRuleResponse{}, err
-	}
-	resp, err := client.createOrUpdateAuthorizationRuleHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateAuthorizationRuleHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateAuthorizationRuleCreateRequest creates the CreateOrUpdateAuthorizationRule request.
 func (client *HybridConnectionsClient) createOrUpdateAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string, parameters AuthorizationRule, _ *HybridConnectionsClientCreateOrUpdateAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections/{hybridConnectionName}/authorizationRules/{authorizationRuleName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -175,8 +169,8 @@ func (client *HybridConnectionsClient) createOrUpdateAuthorizationRuleCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -186,8 +180,11 @@ func (client *HybridConnectionsClient) createOrUpdateAuthorizationRuleCreateRequ
 }
 
 // createOrUpdateAuthorizationRuleHandleResponse handles the CreateOrUpdateAuthorizationRule response.
-func (client *HybridConnectionsClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (HybridConnectionsClientCreateOrUpdateAuthorizationRuleResponse, error) {
+func (client *HybridConnectionsClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response, successCodes ...int) (HybridConnectionsClientCreateOrUpdateAuthorizationRuleResponse, error) {
 	result := HybridConnectionsClientCreateOrUpdateAuthorizationRuleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
 		return HybridConnectionsClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
@@ -196,8 +193,6 @@ func (client *HybridConnectionsClient) createOrUpdateAuthorizationRuleHandleResp
 
 // Delete - Deletes a hybrid connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - hybridConnectionName - The hybrid connection name.
@@ -218,8 +213,7 @@ func (client *HybridConnectionsClient) Delete(ctx context.Context, resourceGroup
 		return HybridConnectionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return HybridConnectionsClientDeleteResponse{}, err
+		return HybridConnectionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return HybridConnectionsClientDeleteResponse{}, nil
 }
@@ -228,7 +222,7 @@ func (client *HybridConnectionsClient) Delete(ctx context.Context, resourceGroup
 func (client *HybridConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, _ *HybridConnectionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections/{hybridConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -248,15 +242,13 @@ func (client *HybridConnectionsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // DeleteAuthorizationRule - Deletes a hybrid connection authorization rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - hybridConnectionName - The hybrid connection name.
@@ -278,8 +270,7 @@ func (client *HybridConnectionsClient) DeleteAuthorizationRule(ctx context.Conte
 		return HybridConnectionsClientDeleteAuthorizationRuleResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return HybridConnectionsClientDeleteAuthorizationRuleResponse{}, err
+		return HybridConnectionsClientDeleteAuthorizationRuleResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return HybridConnectionsClientDeleteAuthorizationRuleResponse{}, nil
 }
@@ -288,7 +279,7 @@ func (client *HybridConnectionsClient) DeleteAuthorizationRule(ctx context.Conte
 func (client *HybridConnectionsClient) deleteAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string, _ *HybridConnectionsClientDeleteAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections/{hybridConnectionName}/authorizationRules/{authorizationRuleName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -312,15 +303,13 @@ func (client *HybridConnectionsClient) deleteAuthorizationRuleCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Returns the description for the specified hybrid connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - hybridConnectionName - The hybrid connection name.
@@ -339,19 +328,14 @@ func (client *HybridConnectionsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return HybridConnectionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return HybridConnectionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *HybridConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, _ *HybridConnectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections/{hybridConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -371,15 +355,18 @@ func (client *HybridConnectionsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *HybridConnectionsClient) getHandleResponse(resp *http.Response) (HybridConnectionsClientGetResponse, error) {
+func (client *HybridConnectionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (HybridConnectionsClientGetResponse, error) {
 	result := HybridConnectionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnection); err != nil {
 		return HybridConnectionsClientGetResponse{}, err
 	}
@@ -388,8 +375,6 @@ func (client *HybridConnectionsClient) getHandleResponse(resp *http.Response) (H
 
 // GetAuthorizationRule - Hybrid connection authorization rule for a hybrid connection by name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - hybridConnectionName - The hybrid connection name.
@@ -410,19 +395,14 @@ func (client *HybridConnectionsClient) GetAuthorizationRule(ctx context.Context,
 	if err != nil {
 		return HybridConnectionsClientGetAuthorizationRuleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return HybridConnectionsClientGetAuthorizationRuleResponse{}, err
-	}
-	resp, err := client.getAuthorizationRuleHandleResponse(httpResp)
-	return resp, err
+	return client.getAuthorizationRuleHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAuthorizationRuleCreateRequest creates the GetAuthorizationRule request.
 func (client *HybridConnectionsClient) getAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string, _ *HybridConnectionsClientGetAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections/{hybridConnectionName}/authorizationRules/{authorizationRuleName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -446,15 +426,18 @@ func (client *HybridConnectionsClient) getAuthorizationRuleCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getAuthorizationRuleHandleResponse handles the GetAuthorizationRule response.
-func (client *HybridConnectionsClient) getAuthorizationRuleHandleResponse(resp *http.Response) (HybridConnectionsClientGetAuthorizationRuleResponse, error) {
+func (client *HybridConnectionsClient) getAuthorizationRuleHandleResponse(resp *http.Response, successCodes ...int) (HybridConnectionsClientGetAuthorizationRuleResponse, error) {
 	result := HybridConnectionsClientGetAuthorizationRuleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
 		return HybridConnectionsClientGetAuthorizationRuleResponse{}, err
 	}
@@ -462,8 +445,6 @@ func (client *HybridConnectionsClient) getAuthorizationRuleHandleResponse(resp *
 }
 
 // NewListAuthorizationRulesPager - Authorization rules for a hybrid connection.
-//
-// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - hybridConnectionName - The hybrid connection name.
@@ -480,51 +461,65 @@ func (client *HybridConnectionsClient) NewListAuthorizationRulesPager(resourceGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, hybridConnectionName, options)
-			}, nil)
+			req, err := client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, hybridConnectionName, nextLink, options)
 			if err != nil {
 				return HybridConnectionsClientListAuthorizationRulesResponse{}, err
 			}
-			return client.listAuthorizationRulesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return HybridConnectionsClientListAuthorizationRulesResponse{}, err
+			}
+			return client.listAuthorizationRulesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
-func (client *HybridConnectionsClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, _ *HybridConnectionsClientListAuthorizationRulesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections/{hybridConnectionName}/authorizationRules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *HybridConnectionsClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, nextLink string, _ *HybridConnectionsClientListAuthorizationRulesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections/{hybridConnectionName}/authorizationRules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if namespaceName == "" {
+			return nil, errors.New("parameter namespaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+		if hybridConnectionName == "" {
+			return nil, errors.New("parameter hybridConnectionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{hybridConnectionName}", url.PathEscape(hybridConnectionName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if hybridConnectionName == "" {
-		return nil, errors.New("parameter hybridConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{hybridConnectionName}", url.PathEscape(hybridConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAuthorizationRulesHandleResponse handles the ListAuthorizationRules response.
-func (client *HybridConnectionsClient) listAuthorizationRulesHandleResponse(resp *http.Response) (HybridConnectionsClientListAuthorizationRulesResponse, error) {
+func (client *HybridConnectionsClient) listAuthorizationRulesHandleResponse(resp *http.Response, successCodes ...int) (HybridConnectionsClientListAuthorizationRulesResponse, error) {
 	result := HybridConnectionsClientListAuthorizationRulesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRuleListResult); err != nil {
 		return HybridConnectionsClientListAuthorizationRulesResponse{}, err
 	}
@@ -532,8 +527,6 @@ func (client *HybridConnectionsClient) listAuthorizationRulesHandleResponse(resp
 }
 
 // NewListByNamespacePager - Lists the hybrid connection within the namespace.
-//
-// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - options - HybridConnectionsClientListByNamespaceOptions contains the optional parameters for the HybridConnectionsClient.NewListByNamespacePager
@@ -549,47 +542,61 @@ func (client *HybridConnectionsClient) NewListByNamespacePager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, options)
-			}, nil)
+			req, err := client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, nextLink, options)
 			if err != nil {
 				return HybridConnectionsClientListByNamespaceResponse{}, err
 			}
-			return client.listByNamespaceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return HybridConnectionsClientListByNamespaceResponse{}, err
+			}
+			return client.listByNamespaceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByNamespaceCreateRequest creates the ListByNamespace request.
-func (client *HybridConnectionsClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *HybridConnectionsClientListByNamespaceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *HybridConnectionsClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, _ *HybridConnectionsClientListByNamespaceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if namespaceName == "" {
+			return nil, errors.New("parameter namespaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByNamespaceHandleResponse handles the ListByNamespace response.
-func (client *HybridConnectionsClient) listByNamespaceHandleResponse(resp *http.Response) (HybridConnectionsClientListByNamespaceResponse, error) {
+func (client *HybridConnectionsClient) listByNamespaceHandleResponse(resp *http.Response, successCodes ...int) (HybridConnectionsClientListByNamespaceResponse, error) {
 	result := HybridConnectionsClientListByNamespaceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnectionListResult); err != nil {
 		return HybridConnectionsClientListByNamespaceResponse{}, err
 	}
@@ -598,8 +605,6 @@ func (client *HybridConnectionsClient) listByNamespaceHandleResponse(resp *http.
 
 // ListKeys - Primary and secondary connection strings to the hybrid connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - hybridConnectionName - The hybrid connection name.
@@ -620,19 +625,14 @@ func (client *HybridConnectionsClient) ListKeys(ctx context.Context, resourceGro
 	if err != nil {
 		return HybridConnectionsClientListKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return HybridConnectionsClientListKeysResponse{}, err
-	}
-	resp, err := client.listKeysHandleResponse(httpResp)
-	return resp, err
+	return client.listKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // listKeysCreateRequest creates the ListKeys request.
 func (client *HybridConnectionsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string, _ *HybridConnectionsClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections/{hybridConnectionName}/authorizationRules/{authorizationRuleName}/listKeys"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -656,15 +656,18 @@ func (client *HybridConnectionsClient) listKeysCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *HybridConnectionsClient) listKeysHandleResponse(resp *http.Response) (HybridConnectionsClientListKeysResponse, error) {
+func (client *HybridConnectionsClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (HybridConnectionsClientListKeysResponse, error) {
 	result := HybridConnectionsClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return HybridConnectionsClientListKeysResponse{}, err
 	}
@@ -673,8 +676,6 @@ func (client *HybridConnectionsClient) listKeysHandleResponse(resp *http.Respons
 
 // RegenerateKeys - Regenerates the primary or secondary connection strings to the hybrid connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - hybridConnectionName - The hybrid connection name.
@@ -696,19 +697,14 @@ func (client *HybridConnectionsClient) RegenerateKeys(ctx context.Context, resou
 	if err != nil {
 		return HybridConnectionsClientRegenerateKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return HybridConnectionsClientRegenerateKeysResponse{}, err
-	}
-	resp, err := client.regenerateKeysHandleResponse(httpResp)
-	return resp, err
+	return client.regenerateKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // regenerateKeysCreateRequest creates the RegenerateKeys request.
 func (client *HybridConnectionsClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, _ *HybridConnectionsClientRegenerateKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections/{hybridConnectionName}/authorizationRules/{authorizationRuleName}/regenerateKeys"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -732,8 +728,8 @@ func (client *HybridConnectionsClient) regenerateKeysCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -743,8 +739,11 @@ func (client *HybridConnectionsClient) regenerateKeysCreateRequest(ctx context.C
 }
 
 // regenerateKeysHandleResponse handles the RegenerateKeys response.
-func (client *HybridConnectionsClient) regenerateKeysHandleResponse(resp *http.Response) (HybridConnectionsClientRegenerateKeysResponse, error) {
+func (client *HybridConnectionsClient) regenerateKeysHandleResponse(resp *http.Response, successCodes ...int) (HybridConnectionsClientRegenerateKeysResponse, error) {
 	result := HybridConnectionsClientRegenerateKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return HybridConnectionsClientRegenerateKeysResponse{}, err
 	}

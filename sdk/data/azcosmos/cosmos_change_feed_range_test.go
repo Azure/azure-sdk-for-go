@@ -18,8 +18,8 @@ func TestNewChangeFeedRangeBasic(t *testing.T) {
 
 	options := &ChangeFeedRangeOptions{
 		ContinuationToken: &token,
-		EpkMinHeader:      &minHeader,
-		EpkMaxHeader:      &maxHeader,
+		EPKMinHeader:      &minHeader,
+		EPKMaxHeader:      &maxHeader,
 	}
 
 	cfr := newChangeFeedRange(min, max, options)

@@ -19,6 +19,9 @@ type Snapshot struct {
 	// type ensures there are no two key-values containing the same key and label.
 	CompositionType *CompositionType `json:"composition_type,omitempty"`
 
+	// A description of the snapshot.
+	Description *string `json:"description,omitempty"`
+
 	// The amount of time, in seconds, that a snapshot will remain in the archived state before expiring. This property is only
 	// writable during the creation of a snapshot. If not specified, the default
 	// lifetime of key-value revisions will be used.

@@ -69,12 +69,7 @@ func (client *RulesClient) CreateOrUpdate(ctx context.Context, resourceURI strin
 	if err != nil {
 		return RulesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return RulesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -104,8 +99,11 @@ func (client *RulesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *RulesClient) createOrUpdateHandleResponse(resp *http.Response) (RulesClientCreateOrUpdateResponse, error) {
+func (client *RulesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (RulesClientCreateOrUpdateResponse, error) {
 	result := RulesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Rule); err != nil {
 		return RulesClientCreateOrUpdateResponse{}, err
 	}
@@ -133,12 +131,7 @@ func (client *RulesClient) Get(ctx context.Context, resourceURI string, ruleName
 	if err != nil {
 		return RulesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RulesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -164,8 +157,11 @@ func (client *RulesClient) getCreateRequest(ctx context.Context, resourceURI str
 }
 
 // getHandleResponse handles the Get response.
-func (client *RulesClient) getHandleResponse(resp *http.Response) (RulesClientGetResponse, error) {
+func (client *RulesClient) getHandleResponse(resp *http.Response, successCodes ...int) (RulesClientGetResponse, error) {
 	result := RulesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Rule); err != nil {
 		return RulesClientGetResponse{}, err
 	}
@@ -186,39 +182,53 @@ func (client *RulesClient) NewListPager(resourceURI string, options *RulesClient
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceURI, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceURI, nextLink, options)
 			if err != nil {
 				return RulesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RulesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *RulesClient) listCreateRequest(ctx context.Context, resourceURI string, _ *RulesClientListOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.BillingTrust/assessments/default/rules"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
+func (client *RulesClient) listCreateRequest(ctx context.Context, resourceURI string, nextLink string, _ *RulesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceUri}/providers/Microsoft.BillingTrust/assessments/default/rules"
+		if resourceURI == "" {
+			return nil, errors.New("parameter resourceURI cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260317Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260317Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RulesClient) listHandleResponse(resp *http.Response) (RulesClientListResponse, error) {
+func (client *RulesClient) listHandleResponse(resp *http.Response, successCodes ...int) (RulesClientListResponse, error) {
 	result := RulesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RuleListResult); err != nil {
 		return RulesClientListResponse{}, err
 	}
@@ -250,12 +260,7 @@ func (client *RulesClient) Update(ctx context.Context, resourceURI string, ruleN
 	if err != nil {
 		return RulesClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RulesClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -285,8 +290,11 @@ func (client *RulesClient) updateCreateRequest(ctx context.Context, resourceURI 
 }
 
 // updateHandleResponse handles the Update response.
-func (client *RulesClient) updateHandleResponse(resp *http.Response) (RulesClientUpdateResponse, error) {
+func (client *RulesClient) updateHandleResponse(resp *http.Response, successCodes ...int) (RulesClientUpdateResponse, error) {
 	result := RulesClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Rule); err != nil {
 		return RulesClientUpdateResponse{}, err
 	}

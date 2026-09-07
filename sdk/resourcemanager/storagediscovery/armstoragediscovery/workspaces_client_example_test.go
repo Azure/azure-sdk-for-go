@@ -119,10 +119,10 @@ func ExampleWorkspacesClient_CreateOrUpdate() {
 	// 		SystemData: &armstoragediscovery.SystemData{
 	// 			CreatedBy: to.Ptr("iewyxsnriqktsvp"),
 	// 			CreatedByType: to.Ptr(armstoragediscovery.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("xrchbnnuzierzpxw"),
 	// 			LastModifiedByType: to.Ptr(armstoragediscovery.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -217,10 +217,10 @@ func ExampleWorkspacesClient_Get() {
 	// 		SystemData: &armstoragediscovery.SystemData{
 	// 			CreatedBy: to.Ptr("iewyxsnriqktsvp"),
 	// 			CreatedByType: to.Ptr(armstoragediscovery.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("xrchbnnuzierzpxw"),
 	// 			LastModifiedByType: to.Ptr(armstoragediscovery.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -360,10 +360,10 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armstoragediscovery.SystemData{
 		// 					CreatedBy: to.Ptr("iewyxsnriqktsvp"),
 		// 					CreatedByType: to.Ptr(armstoragediscovery.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("xrchbnnuzierzpxw"),
 		// 					LastModifiedByType: to.Ptr(armstoragediscovery.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 				},
 		// 				Properties: &armstoragediscovery.WorkspaceProperties{
 		// 					ProvisioningState: to.Ptr(armstoragediscovery.ResourceProvisioningStateSucceeded),
@@ -402,10 +402,10 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armstoragediscovery.SystemData{
 		// 					CreatedBy: to.Ptr("iewyxsnriqktsvp"),
 		// 					CreatedByType: to.Ptr(armstoragediscovery.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("xrchbnnuzierzpxw"),
 		// 					LastModifiedByType: to.Ptr(armstoragediscovery.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 				},
 		// 				Properties: &armstoragediscovery.WorkspaceProperties{
 		// 					ProvisioningState: to.Ptr(armstoragediscovery.ResourceProvisioningStateSucceeded),

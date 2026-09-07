@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-03/galleryExamples/GallerySoftDeletedResource_ListByArtifactName.json
+// Generated from example definition: 2025-12-03/galleryExamples/GallerySoftDeletedResource_ListByArtifactName.json
 func ExampleSoftDeletedResourceClient_NewListByArtifactNamePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -20,7 +20,7 @@ import (
 // SecurityPerimeterProfilesClient contains the methods for the SecurityPerimeterProfiles group.
 // Don't use this type directly, use NewSecurityPerimeterProfilesClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type SecurityPerimeterProfilesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -31,6 +31,9 @@ type SecurityPerimeterProfilesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSecurityPerimeterProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecurityPerimeterProfilesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,19 +67,14 @@ func (client *SecurityPerimeterProfilesClient) CreateOrUpdate(ctx context.Contex
 	if err != nil {
 		return SecurityPerimeterProfilesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return SecurityPerimeterProfilesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *SecurityPerimeterProfilesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, profileName string, parameters NspProfile, _ *SecurityPerimeterProfilesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/profiles/{profileName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -96,7 +94,7 @@ func (client *SecurityPerimeterProfilesClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -107,8 +105,11 @@ func (client *SecurityPerimeterProfilesClient) createOrUpdateCreateRequest(ctx c
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SecurityPerimeterProfilesClient) createOrUpdateHandleResponse(resp *http.Response) (SecurityPerimeterProfilesClientCreateOrUpdateResponse, error) {
+func (client *SecurityPerimeterProfilesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (SecurityPerimeterProfilesClientCreateOrUpdateResponse, error) {
 	result := SecurityPerimeterProfilesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NspProfile); err != nil {
 		return SecurityPerimeterProfilesClientCreateOrUpdateResponse{}, err
 	}
@@ -137,8 +138,7 @@ func (client *SecurityPerimeterProfilesClient) Delete(ctx context.Context, resou
 		return SecurityPerimeterProfilesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SecurityPerimeterProfilesClientDeleteResponse{}, err
+		return SecurityPerimeterProfilesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SecurityPerimeterProfilesClientDeleteResponse{}, nil
 }
@@ -147,7 +147,7 @@ func (client *SecurityPerimeterProfilesClient) Delete(ctx context.Context, resou
 func (client *SecurityPerimeterProfilesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, profileName string, _ *SecurityPerimeterProfilesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/profiles/{profileName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -167,7 +167,7 @@ func (client *SecurityPerimeterProfilesClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -193,19 +193,14 @@ func (client *SecurityPerimeterProfilesClient) Get(ctx context.Context, resource
 	if err != nil {
 		return SecurityPerimeterProfilesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SecurityPerimeterProfilesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *SecurityPerimeterProfilesClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, profileName string, _ *SecurityPerimeterProfilesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/profiles/{profileName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -225,15 +220,18 @@ func (client *SecurityPerimeterProfilesClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SecurityPerimeterProfilesClient) getHandleResponse(resp *http.Response) (SecurityPerimeterProfilesClientGetResponse, error) {
+func (client *SecurityPerimeterProfilesClient) getHandleResponse(resp *http.Response, successCodes ...int) (SecurityPerimeterProfilesClientGetResponse, error) {
 	result := SecurityPerimeterProfilesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NspProfile); err != nil {
 		return SecurityPerimeterProfilesClientGetResponse{}, err
 	}
@@ -256,53 +254,67 @@ func (client *SecurityPerimeterProfilesClient) NewListPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, networkSecurityPerimeterName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, networkSecurityPerimeterName, nextLink, options)
 			if err != nil {
 				return SecurityPerimeterProfilesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SecurityPerimeterProfilesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *SecurityPerimeterProfilesClient) listCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, options *SecurityPerimeterProfilesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/profiles"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SecurityPerimeterProfilesClient) listCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, nextLink string, options *SecurityPerimeterProfilesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/profiles"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if networkSecurityPerimeterName == "" {
+			return nil, errors.New("parameter networkSecurityPerimeterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterName}", url.PathEscape(networkSecurityPerimeterName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkSecurityPerimeterName == "" {
-		return nil, errors.New("parameter networkSecurityPerimeterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterName}", url.PathEscape(networkSecurityPerimeterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SecurityPerimeterProfilesClient) listHandleResponse(resp *http.Response) (SecurityPerimeterProfilesClientListResponse, error) {
+func (client *SecurityPerimeterProfilesClient) listHandleResponse(resp *http.Response, successCodes ...int) (SecurityPerimeterProfilesClientListResponse, error) {
 	result := SecurityPerimeterProfilesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NspProfileListResult); err != nil {
 		return SecurityPerimeterProfilesClientListResponse{}, err
 	}

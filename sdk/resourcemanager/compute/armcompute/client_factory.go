@@ -303,6 +303,14 @@ func (c *ClientFactory) NewSharedGalleryImagesClient() *SharedGalleryImagesClien
 	}
 }
 
+// NewSharedGalleryInvitesClient creates a new instance of SharedGalleryInvitesClient.
+func (c *ClientFactory) NewSharedGalleryInvitesClient() *SharedGalleryInvitesClient {
+	return &SharedGalleryInvitesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewSnapshotsClient creates a new instance of SnapshotsClient.
 func (c *ClientFactory) NewSnapshotsClient() *SnapshotsClient {
 	return &SnapshotsClient{
@@ -319,9 +327,24 @@ func (c *ClientFactory) NewSoftDeletedResourceClient() *SoftDeletedResourceClien
 	}
 }
 
+// NewTenantLevelSharedGalleryInvitesClient creates a new instance of TenantLevelSharedGalleryInvitesClient.
+func (c *ClientFactory) NewTenantLevelSharedGalleryInvitesClient() *TenantLevelSharedGalleryInvitesClient {
+	return &TenantLevelSharedGalleryInvitesClient{
+		internal: c.internal,
+	}
+}
+
 // NewUsageClient creates a new instance of UsageClient.
 func (c *ClientFactory) NewUsageClient() *UsageClient {
 	return &UsageClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewVirtualMachineDiagnosticRunCommandsClient creates a new instance of VirtualMachineDiagnosticRunCommandsClient.
+func (c *ClientFactory) NewVirtualMachineDiagnosticRunCommandsClient() *VirtualMachineDiagnosticRunCommandsClient {
+	return &VirtualMachineDiagnosticRunCommandsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -386,6 +409,14 @@ func (c *ClientFactory) NewVirtualMachineScaleSetLifeCycleHookEventsClient() *Vi
 // NewVirtualMachineScaleSetRollingUpgradesClient creates a new instance of VirtualMachineScaleSetRollingUpgradesClient.
 func (c *ClientFactory) NewVirtualMachineScaleSetRollingUpgradesClient() *VirtualMachineScaleSetRollingUpgradesClient {
 	return &VirtualMachineScaleSetRollingUpgradesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewVirtualMachineScaleSetVMDiagnosticRunCommandsClient creates a new instance of VirtualMachineScaleSetVMDiagnosticRunCommandsClient.
+func (c *ClientFactory) NewVirtualMachineScaleSetVMDiagnosticRunCommandsClient() *VirtualMachineScaleSetVMDiagnosticRunCommandsClient {
+	return &VirtualMachineScaleSetVMDiagnosticRunCommandsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

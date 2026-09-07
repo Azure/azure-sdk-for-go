@@ -1,5 +1,18 @@
 # Release History
 
+## 1.3.0 (2026-07-17)
+### Features Added
+
+- New function `*ClientFactory.NewTrustedHostSubscriptionsClient() *TrustedHostSubscriptionsClient`
+- New function `NewTrustedHostSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TrustedHostSubscriptionsClient, error)`
+- New function `*TrustedHostSubscriptionsClient.Create(ctx context.Context, location string, hostSubscriptionID string, resource TrustedHostSubscription, options *TrustedHostSubscriptionsClientCreateOptions) (TrustedHostSubscriptionsClientCreateResponse, error)`
+- New function `*TrustedHostSubscriptionsClient.Delete(ctx context.Context, location string, hostSubscriptionID string, options *TrustedHostSubscriptionsClientDeleteOptions) (TrustedHostSubscriptionsClientDeleteResponse, error)`
+- New function `*TrustedHostSubscriptionsClient.Get(ctx context.Context, location string, hostSubscriptionID string, options *TrustedHostSubscriptionsClientGetOptions) (TrustedHostSubscriptionsClientGetResponse, error)`
+- New function `*TrustedHostSubscriptionsClient.NewListBySubscriptionLocationResourcePager(location string, options *TrustedHostSubscriptionsClientListBySubscriptionLocationResourceOptions) *runtime.Pager[TrustedHostSubscriptionsClientListBySubscriptionLocationResourceResponse]`
+- New struct `TrustedHostSubscription`
+- New struct `TrustedHostSubscriptionListResult`
+
+
 ## 1.2.1 (2026-07-07)
 ### Other Changes
 

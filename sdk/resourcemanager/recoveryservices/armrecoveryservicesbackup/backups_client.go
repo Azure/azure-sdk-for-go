@@ -18,6 +18,8 @@ import (
 
 // BackupsClient contains the methods for the Backups group.
 // Don't use this type directly, use NewBackupsClient() instead.
+//
+// Generated from API version 2026-07-01
 type BackupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type BackupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -42,8 +47,6 @@ func NewBackupsClient(subscriptionID string, credential azcore.TokenCredential, 
 // Trigger - Triggers backup for specified backed up item. This is an asynchronous operation. To know the status of the
 // operation, call GetProtectedItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupsClientTriggerOptions contains the optional parameters for the BackupsClient.Trigger method.
 func (client *BackupsClient) Trigger(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters BackupRequestResource, options *BackupsClientTriggerOptions) (BackupsClientTriggerResponse, error) {
@@ -61,8 +64,7 @@ func (client *BackupsClient) Trigger(ctx context.Context, vaultName string, reso
 		return BackupsClientTriggerResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return BackupsClientTriggerResponse{}, err
+		return BackupsClientTriggerResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return BackupsClientTriggerResponse{}, nil
 }
@@ -71,7 +73,7 @@ func (client *BackupsClient) Trigger(ctx context.Context, vaultName string, reso
 func (client *BackupsClient) triggerCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters BackupRequestResource, _ *BackupsClientTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/backup"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if vaultName == "" {
@@ -99,8 +101,8 @@ func (client *BackupsClient) triggerCreateRequest(ctx context.Context, vaultName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err

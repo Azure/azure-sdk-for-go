@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/InterconnectGroupCreate.json
+// Generated from example definition: 2025-09-01/InterconnectGroupCreate.json
 func ExampleInterconnectGroupsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleInterconnectGroupsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/InterconnectGroupDelete.json
+// Generated from example definition: 2025-09-01/InterconnectGroupDelete.json
 func ExampleInterconnectGroupsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleInterconnectGroupsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/InterconnectGroupGet.json
+// Generated from example definition: 2025-09-01/InterconnectGroupGet.json
 func ExampleInterconnectGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleInterconnectGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/InterconnectGroupGetNodeAvailability.json
+// Generated from example definition: 2025-09-01/InterconnectGroupGetNodeAvailability.json
 func ExampleInterconnectGroupsClient_BeginGetNodeAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +181,7 @@ func ExampleInterconnectGroupsClient_BeginGetNodeAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/InterconnectGroupList.json
+// Generated from example definition: 2025-09-01/InterconnectGroupList.json
 func ExampleInterconnectGroupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExampleInterconnectGroupsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/InterconnectGroupListAll.json
+// Generated from example definition: 2025-09-01/InterconnectGroupListAll.json
 func ExampleInterconnectGroupsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +273,7 @@ func ExampleInterconnectGroupsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/InterconnectGroupUpdateTags.json
+// Generated from example definition: 2025-09-01/InterconnectGroupUpdateTags.json
 func ExampleInterconnectGroupsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

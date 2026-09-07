@@ -139,13 +139,13 @@ func ExampleNetworkTapRulesClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkTapRulesClientCreateResponse{
-	// 	NetworkTapRule: &armmanagednetworkfabric.NetworkTapRule{
+	// 	NetworkTapRule: armmanagednetworkfabric.NetworkTapRule{
 	// 		Properties: &armmanagednetworkfabric.NetworkTapRuleProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			ConfigurationType: to.Ptr(armmanagednetworkfabric.ConfigurationTypeFile),
@@ -242,7 +242,7 @@ func ExampleNetworkTapRulesClient_BeginCreate() {
 	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTaps/example-tap"),
 	// 			},
 	// 			PollingIntervalInSeconds: to.Ptr[int32](30),
-	// 			LastSyncedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-12T07:11:22.485Z"); return t}()),
+	// 			LastSyncedTime: to.Ptr(time.Date(2023, time.June, 12, 7, 11, 22, 485000000, time.UTC)),
 	// 			NetworkFabricIDs: []*string{
 	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
 	// 			},
@@ -264,10 +264,10 @@ func ExampleNetworkTapRulesClient_BeginCreate() {
 	// 		SystemData: &armmanagednetworkfabric.SystemData{
 	// 			CreatedBy: to.Ptr("email@address.com"),
 	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("UserId"),
 	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -290,7 +290,7 @@ func ExampleNetworkTapRulesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -313,7 +313,7 @@ func ExampleNetworkTapRulesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkTapRulesClientGetResponse{
-	// 	NetworkTapRule: &armmanagednetworkfabric.NetworkTapRule{
+	// 	NetworkTapRule: armmanagednetworkfabric.NetworkTapRule{
 	// 		Properties: &armmanagednetworkfabric.NetworkTapRuleProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			ConfigurationType: to.Ptr(armmanagednetworkfabric.ConfigurationTypeFile),
@@ -410,7 +410,7 @@ func ExampleNetworkTapRulesClient_Get() {
 	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTaps/example-tap"),
 	// 			},
 	// 			PollingIntervalInSeconds: to.Ptr[int32](30),
-	// 			LastSyncedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-12T07:11:22.485Z"); return t}()),
+	// 			LastSyncedTime: to.Ptr(time.Date(2023, time.June, 12, 7, 11, 22, 485000000, time.UTC)),
 	// 			NetworkFabricIDs: []*string{
 	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
 	// 			},
@@ -446,10 +446,10 @@ func ExampleNetworkTapRulesClient_Get() {
 	// 		SystemData: &armmanagednetworkfabric.SystemData{
 	// 			CreatedBy: to.Ptr("email@address.com"),
 	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("UserId"),
 	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -577,7 +577,7 @@ func ExampleNetworkTapRulesClient_NewListByResourceGroupPager() {
 		// 						to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTaps/example-tap"),
 		// 					},
 		// 					PollingIntervalInSeconds: to.Ptr[int32](30),
-		// 					LastSyncedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-12T07:11:22.485Z"); return t}()),
+		// 					LastSyncedTime: to.Ptr(time.Date(2023, time.June, 12, 7, 11, 22, 485000000, time.UTC)),
 		// 					NetworkFabricIDs: []*string{
 		// 						to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
 		// 					},
@@ -613,10 +613,10 @@ func ExampleNetworkTapRulesClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armmanagednetworkfabric.SystemData{
 		// 					CreatedBy: to.Ptr("email@address.com"),
 		// 					CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("UserId"),
 		// 					LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -748,7 +748,7 @@ func ExampleNetworkTapRulesClient_NewListBySubscriptionPager() {
 		// 						to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTaps/example-tap"),
 		// 					},
 		// 					PollingIntervalInSeconds: to.Ptr[int32](30),
-		// 					LastSyncedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-12T07:11:22.485Z"); return t}()),
+		// 					LastSyncedTime: to.Ptr(time.Date(2023, time.June, 12, 7, 11, 22, 485000000, time.UTC)),
 		// 					NetworkFabricIDs: []*string{
 		// 						to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
 		// 					},
@@ -784,10 +784,10 @@ func ExampleNetworkTapRulesClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armmanagednetworkfabric.SystemData{
 		// 					CreatedBy: to.Ptr("email@address.com"),
 		// 					CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("UserId"),
 		// 					LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -814,13 +814,13 @@ func ExampleNetworkTapRulesClient_BeginResync() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkTapRulesClientResyncResponse{
-	// 	NetworkTapRuleResyncResponse: &armmanagednetworkfabric.NetworkTapRuleResyncResponse{
+	// 	NetworkTapRuleResyncResponse: armmanagednetworkfabric.NetworkTapRuleResyncResponse{
 	// 		Status: to.Ptr("Failed"),
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr(""),
@@ -964,13 +964,13 @@ func ExampleNetworkTapRulesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkTapRulesClientUpdateResponse{
-	// 	NetworkTapRule: &armmanagednetworkfabric.NetworkTapRule{
+	// 	NetworkTapRule: armmanagednetworkfabric.NetworkTapRule{
 	// 		Properties: &armmanagednetworkfabric.NetworkTapRuleProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			ConfigurationType: to.Ptr(armmanagednetworkfabric.ConfigurationTypeFile),
@@ -1067,7 +1067,7 @@ func ExampleNetworkTapRulesClient_BeginUpdate() {
 	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
 	// 			},
 	// 			PollingIntervalInSeconds: to.Ptr[int32](30),
-	// 			LastSyncedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-12T07:11:22.485Z"); return t}()),
+	// 			LastSyncedTime: to.Ptr(time.Date(2023, time.June, 12, 7, 11, 22, 485000000, time.UTC)),
 	// 			GlobalNetworkTapRuleActions: &armmanagednetworkfabric.GlobalNetworkTapRuleActionProperties{
 	// 				EnableCount: to.Ptr(armmanagednetworkfabric.BooleanEnumPropertyTrue),
 	// 				Truncate: to.Ptr("truncate-name"),
@@ -1100,10 +1100,10 @@ func ExampleNetworkTapRulesClient_BeginUpdate() {
 	// 		SystemData: &armmanagednetworkfabric.SystemData{
 	// 			CreatedBy: to.Ptr("email@address.com"),
 	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("UserId"),
 	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -1131,13 +1131,13 @@ func ExampleNetworkTapRulesClient_BeginUpdateAdministrativeState() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkTapRulesClientUpdateAdministrativeStateResponse{
-	// 	CommonPostActionResponseForStateUpdate: &armmanagednetworkfabric.CommonPostActionResponseForStateUpdate{
+	// 	CommonPostActionResponseForStateUpdate: armmanagednetworkfabric.CommonPostActionResponseForStateUpdate{
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr("ConfigurationStateError"),
 	// 			Message: to.Ptr("The operation resulted in a degraded state"),
@@ -1180,13 +1180,13 @@ func ExampleNetworkTapRulesClient_BeginValidateConfiguration() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkTapRulesClientValidateConfigurationResponse{
-	// 	ValidateConfigurationResponse: &armmanagednetworkfabric.ValidateConfigurationResponse{
+	// 	ValidateConfigurationResponse: armmanagednetworkfabric.ValidateConfigurationResponse{
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr("ValidationError"),
 	// 			Message: to.Ptr("Configuration validation found issues requiring administrative update"),

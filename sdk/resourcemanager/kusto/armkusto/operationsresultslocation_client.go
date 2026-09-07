@@ -30,6 +30,9 @@ type OperationsResultsLocationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOperationsResultsLocationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsResultsLocationClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *OperationsResultsLocationClient) Get(ctx context.Context, location
 	if err != nil {
 		return OperationsResultsLocationClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return OperationsResultsLocationClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // getCreateRequest creates the Get request.
 func (client *OperationsResultsLocationClient) getCreateRequest(ctx context.Context, location string, operationID string, _ *OperationsResultsLocationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/locations/{location}/operationResults/{operationId}?operationResultResponseType=Location"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -96,9 +94,12 @@ func (client *OperationsResultsLocationClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *OperationsResultsLocationClient) getHandleResponse(resp *http.Response) (OperationsResultsLocationClientGetResponse, error) {
+func (client *OperationsResultsLocationClient) getHandleResponse(resp *http.Response, successCodes ...int) (OperationsResultsLocationClientGetResponse, error) {
 	result := OperationsResultsLocationClientGetResponse{}
-	if val := resp.Header.Get("Azure-AsyncOperation"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Azure-Asyncoperation"); val != "" {
 		result.AzureAsyncOperation = &val
 	}
 	return result, nil

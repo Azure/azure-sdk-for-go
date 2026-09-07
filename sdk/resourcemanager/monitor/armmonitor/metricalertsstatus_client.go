@@ -19,7 +19,7 @@ import (
 // MetricAlertsStatusClient contains the methods for the MetricAlertsStatus group.
 // Don't use this type directly, use NewMetricAlertsStatusClient() instead.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2026-01-01
 type MetricAlertsStatusClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -88,7 +88,7 @@ func (client *MetricAlertsStatusClient) listCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240301Preview)
+	reqQP.Set("api-version", version20260101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -156,7 +156,7 @@ func (client *MetricAlertsStatusClient) listByNameCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240301Preview)
+	reqQP.Set("api-version", version20260101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

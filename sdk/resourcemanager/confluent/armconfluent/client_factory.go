@@ -40,6 +40,14 @@ func (c *ClientFactory) NewAccessClient() *AccessClient {
 	}
 }
 
+// NewAccessPointResourcesClient creates a new instance of AccessPointResourcesClient.
+func (c *ClientFactory) NewAccessPointResourcesClient() *AccessPointResourcesClient {
+	return &AccessPointResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewClusterClient creates a new instance of ClusterClient.
 func (c *ClientFactory) NewClusterClient() *ClusterClient {
 	return &ClusterClient{
@@ -67,6 +75,14 @@ func (c *ClientFactory) NewEnvironmentClient() *EnvironmentClient {
 // NewMarketplaceAgreementsClient creates a new instance of MarketplaceAgreementsClient.
 func (c *ClientFactory) NewMarketplaceAgreementsClient() *MarketplaceAgreementsClient {
 	return &MarketplaceAgreementsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewNetworkGatewayResourcesClient creates a new instance of NetworkGatewayResourcesClient.
+func (c *ClientFactory) NewNetworkGatewayResourcesClient() *NetworkGatewayResourcesClient {
+	return &NetworkGatewayResourcesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

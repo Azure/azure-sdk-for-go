@@ -42,9 +42,9 @@ func ExampleSecretsClient_CreateOrUpdate() {
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armkeyvault.SecretProperties{
 	// 			Attributes: &armkeyvault.SecretAttributes{
-	// 				Created: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(1514938738, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 				Created: to.Ptr(time.Unix(1514938738, 0)),
 	// 				Enabled: to.Ptr(true),
-	// 				Updated: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(1514938738, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 				Updated: to.Ptr(time.Unix(1514938738, 0)),
 	// 			},
 	// 			SecretURI: to.Ptr("https://sample-vault.vault.azure.net/secrets/secret-name"),
 	// 			SecretURIWithVersion: to.Ptr("https:/sample-vault.vault.azure.net/secrets/secret-name/baf6de32c4774c7c81345f6476cf90a4"),
@@ -79,9 +79,9 @@ func ExampleSecretsClient_Get() {
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armkeyvault.SecretProperties{
 	// 			Attributes: &armkeyvault.SecretAttributes{
-	// 				Created: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(1514940950, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 				Created: to.Ptr(time.Unix(1514940950, 0)),
 	// 				Enabled: to.Ptr(true),
-	// 				Updated: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(1514940950, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 				Updated: to.Ptr(time.Unix(1514940950, 0)),
 	// 			},
 	// 			SecretURI: to.Ptr("https://sample-vault.vault.azure.net/secrets/secret-name"),
 	// 			SecretURIWithVersion: to.Ptr("https://sample-vault.vault.azure.net/secrets/secret-name/77445834f7de41bab81d0723bf996860"),
@@ -122,9 +122,9 @@ func ExampleSecretsClient_NewListPager() {
 		// 				Location: to.Ptr("westus"),
 		// 				Properties: &armkeyvault.SecretProperties{
 		// 					Attributes: &armkeyvault.SecretAttributes{
-		// 						Created: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(1514941476, 10, 64); return time.Unix(t, 0).UTC()}()),
+		// 						Created: to.Ptr(time.Unix(1514941476, 0)),
 		// 						Enabled: to.Ptr(true),
-		// 						Updated: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(1514941476, 10, 64); return time.Unix(t, 0).UTC()}()),
+		// 						Updated: to.Ptr(time.Unix(1514941476, 0)),
 		// 					},
 		// 					SecretURI: to.Ptr("https://sample-vault.vault.azure.net/secrets/secret-name"),
 		// 					SecretURIWithVersion: to.Ptr("https://sample-vault.vault.azure.net/secrets/secret-name/40af42fbc10047f8a756a73211492f56"),
@@ -137,9 +137,9 @@ func ExampleSecretsClient_NewListPager() {
 		// 				Location: to.Ptr("westus"),
 		// 				Properties: &armkeyvault.SecretProperties{
 		// 					Attributes: &armkeyvault.SecretAttributes{
-		// 						Created: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(1514941476, 10, 64); return time.Unix(t, 0).UTC()}()),
+		// 						Created: to.Ptr(time.Unix(1514941476, 0)),
 		// 						Enabled: to.Ptr(true),
-		// 						Updated: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(1514941476, 10, 64); return time.Unix(t, 0).UTC()}()),
+		// 						Updated: to.Ptr(time.Unix(1514941476, 0)),
 		// 					},
 		// 					SecretURI: to.Ptr("https://sample-vault.vault.azure.net/secrets/secret-name2"),
 		// 					SecretURIWithVersion: to.Ptr("https://sample-vault.vault.azure.net/secrets/secret-name2/cd7264a6f56c44d1b594423c80609aae"),
@@ -181,9 +181,9 @@ func ExampleSecretsClient_Update() {
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armkeyvault.SecretProperties{
 	// 			Attributes: &armkeyvault.SecretAttributes{
-	// 				Created: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(1514940684, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 				Created: to.Ptr(time.Unix(1514940684, 0)),
 	// 				Enabled: to.Ptr(true),
-	// 				Updated: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(1514940698, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 				Updated: to.Ptr(time.Unix(1514940698, 0)),
 	// 			},
 	// 			SecretURI: to.Ptr("https://sample-vault.vault.azure.net/secrets/secret-name"),
 	// 			SecretURIWithVersion: to.Ptr("https://sample-vault.vault.azure.net/secrets/secret-name/b8c802f549764f2d97885d152f92ee9d"),

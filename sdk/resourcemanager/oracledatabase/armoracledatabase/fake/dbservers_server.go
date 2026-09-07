@@ -92,7 +92,7 @@ func (d *DbServersServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Oracle\.Database/cloudExadataInfrastructures/(?P<cloudexadatainfrastructurename>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dbServers/(?P<dbserverocid>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/cloudExadataInfrastructures/(?P<cloudexadatainfrastructurename>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dbServers/(?P<dbserverocid>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -131,7 +131,7 @@ func (d *DbServersServerTransport) dispatchNewListByCloudExadataInfrastructurePa
 	}
 	newListByCloudExadataInfrastructurePager := d.newListByCloudExadataInfrastructurePager.get(req)
 	if newListByCloudExadataInfrastructurePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Oracle\.Database/cloudExadataInfrastructures/(?P<cloudexadatainfrastructurename>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dbServers`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/cloudExadataInfrastructures/(?P<cloudexadatainfrastructurename>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dbServers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

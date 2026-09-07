@@ -106,7 +106,7 @@ func (d *DeletedVaultsServerTransport) dispatchGet(req *http.Request) (*http.Res
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deletedVaults/(?P<deletedVaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedVaults/(?P<deletedVaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -139,7 +139,7 @@ func (d *DeletedVaultsServerTransport) dispatchGetOperationStatus(req *http.Requ
 	if d.srv.GetOperationStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetOperationStatus not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deletedVaults/(?P<deletedVaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/operations/(?P<operationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedVaults/(?P<deletedVaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/operations/(?P<operationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -178,7 +178,7 @@ func (d *DeletedVaultsServerTransport) dispatchNewListBySubscriptionIDPager(req 
 	}
 	newListBySubscriptionIDPager := d.newListBySubscriptionIDPager.get(req)
 	if newListBySubscriptionIDPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deletedVaults`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedVaults`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -215,7 +215,7 @@ func (d *DeletedVaultsServerTransport) dispatchBeginUndelete(req *http.Request) 
 	}
 	beginUndelete := d.beginUndelete.get(req)
 	if beginUndelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deletedVaults/(?P<deletedVaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/undelete`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedVaults/(?P<deletedVaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/undelete`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

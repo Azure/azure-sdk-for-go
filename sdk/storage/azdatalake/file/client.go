@@ -256,7 +256,10 @@ func (f *Client) Rename(ctx context.Context, destinationPath string, options *Re
 		return RenameResponse{}, err
 	}
 	srcParts := strings.Split(f.DFSURL(), "?")
-	newSrcPath := oldPath.Path
+	// Use the percent-encoded path for the x-ms-rename-source header. oldPath.Path is
+	// decoded, so source names containing spaces or non-ASCII characters would be sent
+	// unencoded and rejected by the service with 400 InvalidSourceUri. See #23831/#24369.
+	newSrcPath := oldPath.EscapedPath()
 	newSrcQuery := ""
 	if len(srcParts) == 2 {
 		newSrcQuery = srcParts[1]
@@ -428,7 +431,7 @@ func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 
 // AppendData appends data to existing file with a given offset.
 func (f *Client) AppendData(ctx context.Context, offset int64, body io.ReadSeekCloser, options *AppendDataOptions) (AppendDataResponse, error) {
-	appendDataOptions, leaseAccessConditions, cpkInfo, err := options.format(offset, body)
+	body, appendDataOptions, leaseAccessConditions, cpkInfo, err := options.format(offset, body)
 	if err != nil {
 		return AppendDataResponse{}, err
 	}
@@ -449,10 +452,24 @@ func (f *Client) FlushData(ctx context.Context, offset int64, options *FlushData
 
 // Concurrent Upload Functions -----------------------------------------------------------------------------------------
 
+// rejectPrecomputedValidation returns datalakeerror.UnsupportedChecksum when tv is a user-supplied
+// precomputed checksum (e.g. TransferValidationTypeCRC64). Multipart uploads split the payload across
+// multiple AppendData calls, so a single precomputed checksum for the whole payload cannot validate
+// every chunk. Computed CRC64 (a func type, hashed per chunk) and structured message CRC64 are allowed.
+func rejectPrecomputedValidation(tv TransferValidationType) error {
+	if tv != nil && !exported.SupportsMultiBlock(tv) {
+		return datalakeerror.UnsupportedChecksum
+	}
+	return nil
+}
+
 // uploadFromReader uploads a buffer in chunks to an Azure file.
 func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actualSize int64, o *uploadFromReaderOptions) error {
 	if actualSize > MaxFileSize {
 		return errors.New("buffer is too large to upload to a file")
+	}
+	if err := rejectPrecomputedValidation(o.TransactionalValidation); err != nil {
+		return err
 	}
 	if o.ChunkSize == 0 {
 		o.ChunkSize = MaxAppendBytes
@@ -555,6 +572,9 @@ func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *Uplo
 		options = &UploadStreamOptions{}
 	}
 
+	if err := rejectPrecomputedValidation(options.TransactionalValidation); err != nil {
+		return err
+	}
 	if options.EncryptionContext != nil {
 		_, err := f.Create(ctx, &CreateOptions{EncryptionContext: options.EncryptionContext})
 		if err != nil {
@@ -587,11 +607,12 @@ func (f *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 	}
 	newResp := FormatDownloadStreamResponse(&resp, respFromCtx)
 	fullResp := DownloadStreamResponse{
-		client:           f,
-		DownloadResponse: newResp,
-		getInfo:          httpGetterInfo{Range: o.Range, ETag: newResp.ETag},
-		cpkInfo:          o.CPKInfo,
-		cpkScope:         o.CPKScopeInfo,
+		client:                  f,
+		DownloadResponse:        newResp,
+		getInfo:                 httpGetterInfo{Range: o.Range, ETag: newResp.ETag},
+		cpkInfo:                 o.CPKInfo,
+		cpkScope:                o.CPKScopeInfo,
+		transactionalValidation: o.TransactionalValidation,
 	}
 
 	return fullResp, nil

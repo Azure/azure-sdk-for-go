@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/Clusters_ContinueUpdateVersion.json
+// Generated from example definition: 2026-07-01/Clusters_ContinueUpdateVersion.json
 func ExampleClustersClient_BeginContinueUpdateVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,7 +36,7 @@ func ExampleClustersClient_BeginContinueUpdateVersion() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Clusters_Create.json
+// Generated from example definition: 2026-07-01/Clusters_Create.json
 func ExampleClustersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -441,10 +441,10 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// 			},
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},
@@ -457,7 +457,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Clusters_Delete.json
+// Generated from example definition: 2026-07-01/Clusters_Delete.json
 func ExampleClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -478,7 +478,7 @@ func ExampleClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Clusters_Deploy.json
+// Generated from example definition: 2026-07-01/Clusters_Deploy.json
 func ExampleClustersClient_BeginDeploy_deployCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -500,7 +500,7 @@ func ExampleClustersClient_BeginDeploy_deployCluster() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Clusters_Deploy_SkipValidation.json
+// Generated from example definition: 2026-07-01/Clusters_Deploy_SkipValidation.json
 func ExampleClustersClient_BeginDeploy_deployClusterSkippingValidation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -526,7 +526,7 @@ func ExampleClustersClient_BeginDeploy_deployClusterSkippingValidation() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Clusters_Get.json
+// Generated from example definition: 2026-07-01/Clusters_Get.json
 func ExampleClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -735,7 +735,7 @@ func ExampleClustersClient_Get() {
 	// 				to.Ptr("local-path-provisioner volume passphrase"),
 	// 				to.Ptr("Storage Appliance User"),
 	// 			},
-	// 			LastSuccessfulVersionUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-22T12:00:00Z"); return t}()),
+	// 			LastSuccessfulVersionUpdateTime: to.Ptr(time.Date(2026, time.February, 22, 12, 0, 0, 0, time.UTC)),
 	// 			ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
 	// 				Location: to.Ptr("East US"),
 	// 				Name: to.Ptr("my-managed-rg"),
@@ -770,10 +770,10 @@ func ExampleClustersClient_Get() {
 	// 			},
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},
@@ -786,7 +786,7 @@ func ExampleClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Clusters_Inspect.json
+// Generated from example definition: 2026-07-01/Clusters_Inspect.json
 func ExampleClustersClient_BeginInspect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -821,7 +821,7 @@ func ExampleClustersClient_BeginInspect() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Clusters_ListByResourceGroup.json
+// Generated from example definition: 2026-07-01/Clusters_ListByResourceGroup.json
 func ExampleClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1030,7 +1030,7 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 					},
 		// 					DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 		// 					DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
-		// 					LastSuccessfulVersionUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-22T12:00:00Z"); return t}()),
+		// 					LastSuccessfulVersionUpdateTime: to.Ptr(time.Date(2026, time.February, 22, 12, 0, 0, 0, time.UTC)),
 		// 					ManagedCredentials: []*string{
 		// 						to.Ptr("Bare Metal Machine Identity - console"),
 		// 						to.Ptr("Bare Metal Machine Identity - root"),
@@ -1072,10 +1072,10 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armnetworkcloud.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("identityA"),
 		// 					CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("identityB"),
 		// 					LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 		// 				},
@@ -1091,7 +1091,7 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Clusters_ListBySubscription.json
+// Generated from example definition: 2026-07-01/Clusters_ListBySubscription.json
 func ExampleClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1300,7 +1300,7 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 		// 					},
 		// 					DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 		// 					DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
-		// 					LastSuccessfulVersionUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-22T12:00:00Z"); return t}()),
+		// 					LastSuccessfulVersionUpdateTime: to.Ptr(time.Date(2026, time.February, 22, 12, 0, 0, 0, time.UTC)),
 		// 					ManagedCredentials: []*string{
 		// 						to.Ptr("Bare Metal Machine Identity - console"),
 		// 						to.Ptr("Bare Metal Machine Identity - root"),
@@ -1342,10 +1342,10 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armnetworkcloud.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("identityA"),
 		// 					CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("identityB"),
 		// 					LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 		// 				},
@@ -1361,7 +1361,7 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Clusters_RotateCredential.json
+// Generated from example definition: 2026-07-01/Clusters_RotateCredential.json
 func ExampleClustersClient_BeginRotateCredential() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1386,7 +1386,7 @@ func ExampleClustersClient_BeginRotateCredential() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Clusters_ScanRuntime.json
+// Generated from example definition: 2026-07-01/Clusters_ScanRuntime.json
 func ExampleClustersClient_BeginScanRuntime() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1410,7 +1410,7 @@ func ExampleClustersClient_BeginScanRuntime() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Clusters_Patch_AggregatorOrSingleRackDefinition.json
+// Generated from example definition: 2026-07-01/Clusters_Patch_AggregatorOrSingleRackDefinition.json
 func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1423,10 +1423,10 @@ func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinit
 	}
 	poller, err := clientFactory.NewClustersClient().BeginUpdate(ctx, "resourceGroupName", "clusterName", armnetworkcloud.ClusterPatchParameters{
 		Properties: &armnetworkcloud.ClusterPatchProperties{
-			AggregatorOrSingleRackDefinition: &armnetworkcloud.RackDefinition{
-				BareMetalMachineConfigurationData: []*armnetworkcloud.BareMetalMachineConfigurationData{
+			AggregatorOrSingleRackDefinition: &armnetworkcloud.RackDefinitionPatch{
+				BareMetalMachineConfigurationData: []*armnetworkcloud.BareMetalMachineConfigurationDataPatch{
 					{
-						BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
+						BmcCredentials: &armnetworkcloud.AdministrativeCredentialsPatch{
 							Password: to.Ptr("{password}"),
 							Username: to.Ptr("username"),
 						},
@@ -1438,7 +1438,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinit
 						SerialNumber:   to.Ptr("BM1219XXX"),
 					},
 					{
-						BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
+						BmcCredentials: &armnetworkcloud.AdministrativeCredentialsPatch{
 							Password: to.Ptr("{password}"),
 							Username: to.Ptr("username"),
 						},
@@ -1454,9 +1454,9 @@ func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinit
 				RackLocation:     to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
 				RackSerialNumber: to.Ptr("newSerialNumber"),
 				RackSKUID:        to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
-				StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
+				StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationDataPatch{
 					{
-						AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
+						AdminCredentials: &armnetworkcloud.AdministrativeCredentialsPatch{
 							Password: to.Ptr("{password}"),
 							Username: to.Ptr("username"),
 						},
@@ -1466,7 +1466,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinit
 					},
 				},
 			},
-			ComputeDeploymentThreshold: &armnetworkcloud.ValidationThreshold{
+			ComputeDeploymentThreshold: &armnetworkcloud.ValidationThresholdPatch{
 				Grouping: to.Ptr(armnetworkcloud.ValidationThresholdGroupingPerCluster),
 				Type:     to.Ptr(armnetworkcloud.ValidationThresholdTypePercentSuccess),
 				Value:    to.Ptr[int64](90),
@@ -1712,10 +1712,10 @@ func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinit
 	// 			},
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},
@@ -1728,7 +1728,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinit
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Clusters_Patch_AnalyticsOutput.json
+// Generated from example definition: 2026-07-01/Clusters_Patch_AnalyticsOutput.json
 func ExampleClustersClient_BeginUpdate_patchClusterAnalyticsOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1957,7 +1957,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterAnalyticsOutput() {
 	// 			},
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 	// 			DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
-	// 			LastSuccessfulVersionUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-22T12:00:00Z"); return t}()),
+	// 			LastSuccessfulVersionUpdateTime: to.Ptr(time.Date(2026, time.February, 22, 12, 0, 0, 0, time.UTC)),
 	// 			ManagedCredentials: []*string{
 	// 				to.Ptr("Bare Metal Machine Identity - console"),
 	// 				to.Ptr("Bare Metal Machine Identity - root"),
@@ -1999,10 +1999,10 @@ func ExampleClustersClient_BeginUpdate_patchClusterAnalyticsOutput() {
 	// 			},
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},
@@ -2015,7 +2015,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterAnalyticsOutput() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Clusters_Patch_CommandOutput.json
+// Generated from example definition: 2026-07-01/Clusters_Patch_CommandOutput.json
 func ExampleClustersClient_BeginUpdate_patchClusterCommandOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2254,7 +2254,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterCommandOutput() {
 	// 			},
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 	// 			DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
-	// 			LastSuccessfulVersionUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-22T12:00:00Z"); return t}()),
+	// 			LastSuccessfulVersionUpdateTime: to.Ptr(time.Date(2026, time.February, 22, 12, 0, 0, 0, time.UTC)),
 	// 			ManagedCredentials: []*string{
 	// 				to.Ptr("Bare Metal Machine Identity - console"),
 	// 				to.Ptr("Bare Metal Machine Identity - root"),
@@ -2296,10 +2296,10 @@ func ExampleClustersClient_BeginUpdate_patchClusterCommandOutput() {
 	// 			},
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},
@@ -2312,7 +2312,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterCommandOutput() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Clusters_Patch_Location.json
+// Generated from example definition: 2026-07-01/Clusters_Patch_Location.json
 func ExampleClustersClient_BeginUpdate_patchClusterLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2526,7 +2526,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterLocation() {
 	// 			},
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 	// 			DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
-	// 			LastSuccessfulVersionUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-22T12:00:00Z"); return t}()),
+	// 			LastSuccessfulVersionUpdateTime: to.Ptr(time.Date(2026, time.February, 22, 12, 0, 0, 0, time.UTC)),
 	// 			ManagedCredentials: []*string{
 	// 				to.Ptr("Bare Metal Machine Identity - console"),
 	// 				to.Ptr("Bare Metal Machine Identity - root"),
@@ -2568,10 +2568,10 @@ func ExampleClustersClient_BeginUpdate_patchClusterLocation() {
 	// 			},
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},
@@ -2584,7 +2584,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterLocation() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Clusters_Patch_RuntimeProtectionConfiguration.json
+// Generated from example definition: 2026-07-01/Clusters_Patch_RuntimeProtectionConfiguration.json
 func ExampleClustersClient_BeginUpdate_patchRuntimeProtectionConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2597,7 +2597,7 @@ func ExampleClustersClient_BeginUpdate_patchRuntimeProtectionConfiguration() {
 	}
 	poller, err := clientFactory.NewClustersClient().BeginUpdate(ctx, "resourceGroupName", "clusterName", armnetworkcloud.ClusterPatchParameters{
 		Properties: &armnetworkcloud.ClusterPatchProperties{
-			RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
+			RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfigurationPatch{
 				DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeAutomatic),
 				EnforcementLevel:     to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
 			},
@@ -2801,7 +2801,7 @@ func ExampleClustersClient_BeginUpdate_patchRuntimeProtectionConfiguration() {
 	// 			},
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 	// 			DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
-	// 			LastSuccessfulVersionUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-22T12:00:00Z"); return t}()),
+	// 			LastSuccessfulVersionUpdateTime: to.Ptr(time.Date(2026, time.February, 22, 12, 0, 0, 0, time.UTC)),
 	// 			ManagedCredentials: []*string{
 	// 				to.Ptr("Bare Metal Machine Identity - console"),
 	// 				to.Ptr("Bare Metal Machine Identity - root"),
@@ -2843,10 +2843,10 @@ func ExampleClustersClient_BeginUpdate_patchRuntimeProtectionConfiguration() {
 	// 			},
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},
@@ -2859,7 +2859,7 @@ func ExampleClustersClient_BeginUpdate_patchRuntimeProtectionConfiguration() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Clusters_Patch_SecretArchive.json
+// Generated from example definition: 2026-07-01/Clusters_Patch_SecretArchive.json
 func ExampleClustersClient_BeginUpdate_patchSecretArchive() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3079,7 +3079,7 @@ func ExampleClustersClient_BeginUpdate_patchSecretArchive() {
 	// 			},
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 	// 			DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
-	// 			LastSuccessfulVersionUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-22T12:00:00Z"); return t}()),
+	// 			LastSuccessfulVersionUpdateTime: to.Ptr(time.Date(2026, time.February, 22, 12, 0, 0, 0, time.UTC)),
 	// 			ManagedCredentials: []*string{
 	// 				to.Ptr("Bare Metal Machine Identity - console"),
 	// 				to.Ptr("Bare Metal Machine Identity - root"),
@@ -3121,10 +3121,10 @@ func ExampleClustersClient_BeginUpdate_patchSecretArchive() {
 	// 			},
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},
@@ -3137,7 +3137,7 @@ func ExampleClustersClient_BeginUpdate_patchSecretArchive() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Clusters_Patch_UpdateStrategy.json
+// Generated from example definition: 2026-07-01/Clusters_Patch_UpdateStrategy.json
 func ExampleClustersClient_BeginUpdate_patchUpdateStrategy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3150,7 +3150,7 @@ func ExampleClustersClient_BeginUpdate_patchUpdateStrategy() {
 	}
 	poller, err := clientFactory.NewClustersClient().BeginUpdate(ctx, "resourceGroupName", "clusterName", armnetworkcloud.ClusterPatchParameters{
 		Properties: &armnetworkcloud.ClusterPatchProperties{
-			UpdateStrategy: &armnetworkcloud.ClusterUpdateStrategy{
+			UpdateStrategy: &armnetworkcloud.ClusterUpdateStrategyPatch{
 				MaxUnavailable:  to.Ptr[int64](4),
 				StrategyType:    to.Ptr(armnetworkcloud.ClusterUpdateStrategyTypeRack),
 				ThresholdType:   to.Ptr(armnetworkcloud.ValidationThresholdTypeCountSuccess),
@@ -3357,7 +3357,7 @@ func ExampleClustersClient_BeginUpdate_patchUpdateStrategy() {
 	// 			},
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 	// 			DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
-	// 			LastSuccessfulVersionUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-22T12:00:00Z"); return t}()),
+	// 			LastSuccessfulVersionUpdateTime: to.Ptr(time.Date(2026, time.February, 22, 12, 0, 0, 0, time.UTC)),
 	// 			ManagedCredentials: []*string{
 	// 				to.Ptr("Bare Metal Machine Identity - console"),
 	// 				to.Ptr("Bare Metal Machine Identity - root"),
@@ -3399,10 +3399,10 @@ func ExampleClustersClient_BeginUpdate_patchUpdateStrategy() {
 	// 			},
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},
@@ -3415,7 +3415,7 @@ func ExampleClustersClient_BeginUpdate_patchUpdateStrategy() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Clusters_Patch_VulnerabilityScanning.json
+// Generated from example definition: 2026-07-01/Clusters_Patch_VulnerabilityScanning.json
 func ExampleClustersClient_BeginUpdate_patchVulnerabilityScanning() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3631,7 +3631,7 @@ func ExampleClustersClient_BeginUpdate_patchVulnerabilityScanning() {
 	// 			},
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 	// 			DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
-	// 			LastSuccessfulVersionUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-22T12:00:00Z"); return t}()),
+	// 			LastSuccessfulVersionUpdateTime: to.Ptr(time.Date(2026, time.February, 22, 12, 0, 0, 0, time.UTC)),
 	// 			ManagedCredentials: []*string{
 	// 				to.Ptr("Bare Metal Machine Identity - console"),
 	// 				to.Ptr("Bare Metal Machine Identity - root"),
@@ -3673,10 +3673,10 @@ func ExampleClustersClient_BeginUpdate_patchVulnerabilityScanning() {
 	// 			},
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},
@@ -3689,7 +3689,7 @@ func ExampleClustersClient_BeginUpdate_patchVulnerabilityScanning() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Clusters_UpdateVersion.json
+// Generated from example definition: 2026-07-01/Clusters_UpdateVersion.json
 func ExampleClustersClient_BeginUpdateVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

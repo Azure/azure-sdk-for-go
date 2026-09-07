@@ -62,12 +62,7 @@ func (client *TransactionsClient) GetTransactionSummaryByInvoice(ctx context.Con
 	if err != nil {
 		return TransactionsClientGetTransactionSummaryByInvoiceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TransactionsClientGetTransactionSummaryByInvoiceResponse{}, err
-	}
-	resp, err := client.getTransactionSummaryByInvoiceHandleResponse(httpResp)
-	return resp, err
+	return client.getTransactionSummaryByInvoiceHandleResponse(httpResp, http.StatusOK)
 }
 
 // getTransactionSummaryByInvoiceCreateRequest creates the GetTransactionSummaryByInvoice request.
@@ -99,8 +94,11 @@ func (client *TransactionsClient) getTransactionSummaryByInvoiceCreateRequest(ct
 }
 
 // getTransactionSummaryByInvoiceHandleResponse handles the GetTransactionSummaryByInvoice response.
-func (client *TransactionsClient) getTransactionSummaryByInvoiceHandleResponse(resp *http.Response) (TransactionsClientGetTransactionSummaryByInvoiceResponse, error) {
+func (client *TransactionsClient) getTransactionSummaryByInvoiceHandleResponse(resp *http.Response, successCodes ...int) (TransactionsClientGetTransactionSummaryByInvoiceResponse, error) {
 	result := TransactionsClientGetTransactionSummaryByInvoiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TransactionSummary); err != nil {
 		return TransactionsClientGetTransactionSummaryByInvoiceResponse{}, err
 	}
@@ -128,64 +126,78 @@ func (client *TransactionsClient) NewListByBillingProfilePager(billingAccountNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, periodStartDate, periodEndDate, typeParam, options)
-			}, nil)
+			req, err := client.listByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, periodStartDate, periodEndDate, typeParam, nextLink, options)
 			if err != nil {
 				return TransactionsClientListByBillingProfileResponse{}, err
 			}
-			return client.listByBillingProfileHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TransactionsClientListByBillingProfileResponse{}, err
+			}
+			return client.listByBillingProfileHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByBillingProfileCreateRequest creates the ListByBillingProfile request.
-func (client *TransactionsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, periodStartDate time.Time, periodEndDate time.Time, typeParam TransactionType, options *TransactionsClientListByBillingProfileOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/transactions"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *TransactionsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, periodStartDate time.Time, periodEndDate time.Time, typeParam TransactionType, nextLink string, options *TransactionsClientListByBillingProfileOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/transactions"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		if billingProfileName == "" {
+			return nil, errors.New("parameter billingProfileName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if billingProfileName == "" {
-		return nil, errors.New("parameter billingProfileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	if options != nil && options.Count != nil {
-		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		if options != nil && options.Count != nil {
+			reqQP.Set("count", strconv.FormatBool(*options.Count))
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("filter", *options.Filter)
+		}
+		if options != nil && options.OrderBy != nil {
+			reqQP.Set("orderBy", *options.OrderBy)
+		}
+		reqQP.Set("periodEndDate", datetime.PlainDate(periodEndDate).String())
+		reqQP.Set("periodStartDate", datetime.PlainDate(periodStartDate).String())
+		if options != nil && options.Search != nil {
+			reqQP.Set("search", *options.Search)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+		}
+		reqQP.Set("type", string(typeParam))
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("filter", *options.Filter)
-	}
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("orderBy", *options.OrderBy)
-	}
-	reqQP.Set("periodEndDate", datetime.PlainDate(periodEndDate).String())
-	reqQP.Set("periodStartDate", datetime.PlainDate(periodStartDate).String())
-	if options != nil && options.Search != nil {
-		reqQP.Set("search", *options.Search)
-	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
-	}
-	reqQP.Set("type", string(typeParam))
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByBillingProfileHandleResponse handles the ListByBillingProfile response.
-func (client *TransactionsClient) listByBillingProfileHandleResponse(resp *http.Response) (TransactionsClientListByBillingProfileResponse, error) {
+func (client *TransactionsClient) listByBillingProfileHandleResponse(resp *http.Response, successCodes ...int) (TransactionsClientListByBillingProfileResponse, error) {
 	result := TransactionsClientListByBillingProfileResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TransactionListResult); err != nil {
 		return TransactionsClientListByBillingProfileResponse{}, err
 	}
@@ -214,68 +226,82 @@ func (client *TransactionsClient) NewListByCustomerPager(billingAccountName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByCustomerCreateRequest(ctx, billingAccountName, billingProfileName, customerName, periodStartDate, periodEndDate, typeParam, options)
-			}, nil)
+			req, err := client.listByCustomerCreateRequest(ctx, billingAccountName, billingProfileName, customerName, periodStartDate, periodEndDate, typeParam, nextLink, options)
 			if err != nil {
 				return TransactionsClientListByCustomerResponse{}, err
 			}
-			return client.listByCustomerHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TransactionsClientListByCustomerResponse{}, err
+			}
+			return client.listByCustomerHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByCustomerCreateRequest creates the ListByCustomer request.
-func (client *TransactionsClient) listByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, periodStartDate time.Time, periodEndDate time.Time, typeParam TransactionType, options *TransactionsClientListByCustomerOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/transactions"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *TransactionsClient) listByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, periodStartDate time.Time, periodEndDate time.Time, typeParam TransactionType, nextLink string, options *TransactionsClientListByCustomerOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/transactions"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		if billingProfileName == "" {
+			return nil, errors.New("parameter billingProfileName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+		if customerName == "" {
+			return nil, errors.New("parameter customerName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{customerName}", url.PathEscape(customerName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if billingProfileName == "" {
-		return nil, errors.New("parameter billingProfileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
-	if customerName == "" {
-		return nil, errors.New("parameter customerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{customerName}", url.PathEscape(customerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	if options != nil && options.Count != nil {
-		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		if options != nil && options.Count != nil {
+			reqQP.Set("count", strconv.FormatBool(*options.Count))
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("filter", *options.Filter)
+		}
+		if options != nil && options.OrderBy != nil {
+			reqQP.Set("orderBy", *options.OrderBy)
+		}
+		reqQP.Set("periodEndDate", datetime.PlainDate(periodEndDate).String())
+		reqQP.Set("periodStartDate", datetime.PlainDate(periodStartDate).String())
+		if options != nil && options.Search != nil {
+			reqQP.Set("search", *options.Search)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+		}
+		reqQP.Set("type", string(typeParam))
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("filter", *options.Filter)
-	}
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("orderBy", *options.OrderBy)
-	}
-	reqQP.Set("periodEndDate", datetime.PlainDate(periodEndDate).String())
-	reqQP.Set("periodStartDate", datetime.PlainDate(periodStartDate).String())
-	if options != nil && options.Search != nil {
-		reqQP.Set("search", *options.Search)
-	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
-	}
-	reqQP.Set("type", string(typeParam))
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByCustomerHandleResponse handles the ListByCustomer response.
-func (client *TransactionsClient) listByCustomerHandleResponse(resp *http.Response) (TransactionsClientListByCustomerResponse, error) {
+func (client *TransactionsClient) listByCustomerHandleResponse(resp *http.Response, successCodes ...int) (TransactionsClientListByCustomerResponse, error) {
 	result := TransactionsClientListByCustomerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TransactionListResult); err != nil {
 		return TransactionsClientListByCustomerResponse{}, err
 	}
@@ -299,61 +325,75 @@ func (client *TransactionsClient) NewListByInvoicePager(billingAccountName strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByInvoiceCreateRequest(ctx, billingAccountName, invoiceName, options)
-			}, nil)
+			req, err := client.listByInvoiceCreateRequest(ctx, billingAccountName, invoiceName, nextLink, options)
 			if err != nil {
 				return TransactionsClientListByInvoiceResponse{}, err
 			}
-			return client.listByInvoiceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TransactionsClientListByInvoiceResponse{}, err
+			}
+			return client.listByInvoiceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByInvoiceCreateRequest creates the ListByInvoice request.
-func (client *TransactionsClient) listByInvoiceCreateRequest(ctx context.Context, billingAccountName string, invoiceName string, options *TransactionsClientListByInvoiceOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/transactions"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *TransactionsClient) listByInvoiceCreateRequest(ctx context.Context, billingAccountName string, invoiceName string, nextLink string, options *TransactionsClientListByInvoiceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/transactions"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		if invoiceName == "" {
+			return nil, errors.New("parameter invoiceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{invoiceName}", url.PathEscape(invoiceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if invoiceName == "" {
-		return nil, errors.New("parameter invoiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{invoiceName}", url.PathEscape(invoiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	if options != nil && options.Count != nil {
-		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		if options != nil && options.Count != nil {
+			reqQP.Set("count", strconv.FormatBool(*options.Count))
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("filter", *options.Filter)
+		}
+		if options != nil && options.OrderBy != nil {
+			reqQP.Set("orderBy", *options.OrderBy)
+		}
+		if options != nil && options.Search != nil {
+			reqQP.Set("search", *options.Search)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("filter", *options.Filter)
-	}
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("orderBy", *options.OrderBy)
-	}
-	if options != nil && options.Search != nil {
-		reqQP.Set("search", *options.Search)
-	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByInvoiceHandleResponse handles the ListByInvoice response.
-func (client *TransactionsClient) listByInvoiceHandleResponse(resp *http.Response) (TransactionsClientListByInvoiceResponse, error) {
+func (client *TransactionsClient) listByInvoiceHandleResponse(resp *http.Response, successCodes ...int) (TransactionsClientListByInvoiceResponse, error) {
 	result := TransactionsClientListByInvoiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TransactionListResult); err != nil {
 		return TransactionsClientListByInvoiceResponse{}, err
 	}
@@ -382,68 +422,82 @@ func (client *TransactionsClient) NewListByInvoiceSectionPager(billingAccountNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByInvoiceSectionCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, periodStartDate, periodEndDate, typeParam, options)
-			}, nil)
+			req, err := client.listByInvoiceSectionCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, periodStartDate, periodEndDate, typeParam, nextLink, options)
 			if err != nil {
 				return TransactionsClientListByInvoiceSectionResponse{}, err
 			}
-			return client.listByInvoiceSectionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TransactionsClientListByInvoiceSectionResponse{}, err
+			}
+			return client.listByInvoiceSectionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByInvoiceSectionCreateRequest creates the ListByInvoiceSection request.
-func (client *TransactionsClient) listByInvoiceSectionCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, periodStartDate time.Time, periodEndDate time.Time, typeParam TransactionType, options *TransactionsClientListByInvoiceSectionOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/transactions"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *TransactionsClient) listByInvoiceSectionCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, periodStartDate time.Time, periodEndDate time.Time, typeParam TransactionType, nextLink string, options *TransactionsClientListByInvoiceSectionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/transactions"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		if billingProfileName == "" {
+			return nil, errors.New("parameter billingProfileName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+		if invoiceSectionName == "" {
+			return nil, errors.New("parameter invoiceSectionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{invoiceSectionName}", url.PathEscape(invoiceSectionName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if billingProfileName == "" {
-		return nil, errors.New("parameter billingProfileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
-	if invoiceSectionName == "" {
-		return nil, errors.New("parameter invoiceSectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{invoiceSectionName}", url.PathEscape(invoiceSectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	if options != nil && options.Count != nil {
-		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		if options != nil && options.Count != nil {
+			reqQP.Set("count", strconv.FormatBool(*options.Count))
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("filter", *options.Filter)
+		}
+		if options != nil && options.OrderBy != nil {
+			reqQP.Set("orderBy", *options.OrderBy)
+		}
+		reqQP.Set("periodEndDate", datetime.PlainDate(periodEndDate).String())
+		reqQP.Set("periodStartDate", datetime.PlainDate(periodStartDate).String())
+		if options != nil && options.Search != nil {
+			reqQP.Set("search", *options.Search)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+		}
+		reqQP.Set("type", string(typeParam))
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("filter", *options.Filter)
-	}
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("orderBy", *options.OrderBy)
-	}
-	reqQP.Set("periodEndDate", datetime.PlainDate(periodEndDate).String())
-	reqQP.Set("periodStartDate", datetime.PlainDate(periodStartDate).String())
-	if options != nil && options.Search != nil {
-		reqQP.Set("search", *options.Search)
-	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
-	}
-	reqQP.Set("type", string(typeParam))
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByInvoiceSectionHandleResponse handles the ListByInvoiceSection response.
-func (client *TransactionsClient) listByInvoiceSectionHandleResponse(resp *http.Response) (TransactionsClientListByInvoiceSectionResponse, error) {
+func (client *TransactionsClient) listByInvoiceSectionHandleResponse(resp *http.Response, successCodes ...int) (TransactionsClientListByInvoiceSectionResponse, error) {
 	result := TransactionsClientListByInvoiceSectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TransactionListResult); err != nil {
 		return TransactionsClientListByInvoiceSectionResponse{}, err
 	}
@@ -492,8 +546,7 @@ func (client *TransactionsClient) transactionsDownloadByInvoice(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

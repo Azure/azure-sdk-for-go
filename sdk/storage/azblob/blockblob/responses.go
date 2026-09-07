@@ -81,6 +81,7 @@ func toUploadReaderAtResponseFromUploadResponse(resp UploadResponse) uploadFromR
 		RequestID:           resp.RequestID,
 		Version:             resp.Version,
 		VersionID:           resp.VersionID,
+		ContentCRC64:        resp.ContentCRC64,
 	}
 }
 

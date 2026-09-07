@@ -50,6 +50,15 @@ type AgentPoolsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// AgentPoolsClientBeginUpdateOptions contains the optional parameters for the AgentPoolsClient.BeginUpdate method.
+type AgentPoolsClientBeginUpdateOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // AgentPoolsClientBeginUpgradeNodeImageVersionOptions contains the optional parameters for the AgentPoolsClient.BeginUpgradeNodeImageVersion
 // method.
 type AgentPoolsClientBeginUpgradeNodeImageVersionOptions struct {
@@ -73,8 +82,38 @@ type AgentPoolsClientGetUpgradeProfileOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AgentPoolsClientListBootstrapDataOptions contains the optional parameters for the AgentPoolsClient.ListBootstrapData method.
+type AgentPoolsClientListBootstrapDataOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AgentPoolsClientListOptions contains the optional parameters for the AgentPoolsClient.NewListPager method.
 type AgentPoolsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the AlertConfigurationsClient.BeginCreateOrUpdate
+// method.
+type AlertConfigurationsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AlertConfigurationsClientBeginDeleteOptions contains the optional parameters for the AlertConfigurationsClient.BeginDelete
+// method.
+type AlertConfigurationsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AlertConfigurationsClientGetOptions contains the optional parameters for the AlertConfigurationsClient.Get method.
+type AlertConfigurationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertConfigurationsClientListByManagedClusterOptions contains the optional parameters for the AlertConfigurationsClient.NewListByManagedClusterPager
+// method.
+type AlertConfigurationsClientListByManagedClusterOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -555,6 +594,13 @@ type OperationStatusResultClientGetByAgentPoolOptions struct {
 // OperationStatusResultClientGetOptions contains the optional parameters for the OperationStatusResultClient.Get method.
 type OperationStatusResultClientGetOptions struct {
 	// placeholder for future optional parameters
+}
+
+// OperationStatusResultClientListByAgentPoolOptions contains the optional parameters for the OperationStatusResultClient.NewListByAgentPoolPager
+// method.
+type OperationStatusResultClientListByAgentPoolOptions struct {
+	// If true, only return operations that are currently active (not terminal).
+	ActiveOnly *bool
 }
 
 // OperationStatusResultClientListOptions contains the optional parameters for the OperationStatusResultClient.NewListPager

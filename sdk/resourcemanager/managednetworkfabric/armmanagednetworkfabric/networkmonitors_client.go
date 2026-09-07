@@ -18,6 +18,8 @@ import (
 
 // NetworkMonitorsClient contains the methods for the NetworkMonitors group.
 // Don't use this type directly, use NewNetworkMonitorsClient() instead.
+//
+// Generated from API version 2025-07-15
 type NetworkMonitorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type NetworkMonitorsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNetworkMonitorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkMonitorsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,8 +46,6 @@ func NewNetworkMonitorsClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreate - Creates NetworkMonitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkMonitorName - Name of the Network Monitor.
 //   - body - Resource create parameters.
@@ -67,8 +70,6 @@ func (client *NetworkMonitorsClient) BeginCreate(ctx context.Context, resourceGr
 
 // Create - Creates NetworkMonitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkMonitorsClient) create(ctx context.Context, resourceGroupName string, networkMonitorName string, body NetworkMonitor, options *NetworkMonitorsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkMonitorsClient.BeginCreate"
@@ -84,8 +85,7 @@ func (client *NetworkMonitorsClient) create(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -94,7 +94,7 @@ func (client *NetworkMonitorsClient) create(ctx context.Context, resourceGroupNa
 func (client *NetworkMonitorsClient) createCreateRequest(ctx context.Context, resourceGroupName string, networkMonitorName string, body NetworkMonitor, _ *NetworkMonitorsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors/{networkMonitorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -110,8 +110,8 @@ func (client *NetworkMonitorsClient) createCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -122,8 +122,6 @@ func (client *NetworkMonitorsClient) createCreateRequest(ctx context.Context, re
 
 // BeginDelete - Deletes layer 2 connectivity between compute nodes by managed by named NetworkMonitor name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkMonitorName - Name of the Network Monitor.
 //   - options - NetworkMonitorsClientBeginDeleteOptions contains the optional parameters for the NetworkMonitorsClient.BeginDelete
@@ -147,8 +145,6 @@ func (client *NetworkMonitorsClient) BeginDelete(ctx context.Context, resourceGr
 
 // Delete - Deletes layer 2 connectivity between compute nodes by managed by named NetworkMonitor name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkMonitorsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkMonitorName string, options *NetworkMonitorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkMonitorsClient.BeginDelete"
@@ -164,8 +160,7 @@ func (client *NetworkMonitorsClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -174,7 +169,7 @@ func (client *NetworkMonitorsClient) deleteOperation(ctx context.Context, resour
 func (client *NetworkMonitorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkMonitorName string, _ *NetworkMonitorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors/{networkMonitorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -190,15 +185,13 @@ func (client *NetworkMonitorsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Implements NetworkMonitor GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkMonitorName - Name of the Network Monitor.
 //   - options - NetworkMonitorsClientGetOptions contains the optional parameters for the NetworkMonitorsClient.Get method.
@@ -216,19 +209,14 @@ func (client *NetworkMonitorsClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return NetworkMonitorsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NetworkMonitorsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *NetworkMonitorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkMonitorName string, _ *NetworkMonitorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors/{networkMonitorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -244,15 +232,18 @@ func (client *NetworkMonitorsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *NetworkMonitorsClient) getHandleResponse(resp *http.Response) (NetworkMonitorsClientGetResponse, error) {
+func (client *NetworkMonitorsClient) getHandleResponse(resp *http.Response, successCodes ...int) (NetworkMonitorsClientGetResponse, error) {
 	result := NetworkMonitorsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkMonitor); err != nil {
 		return NetworkMonitorsClientGetResponse{}, err
 	}
@@ -260,8 +251,6 @@ func (client *NetworkMonitorsClient) getHandleResponse(resp *http.Response) (Net
 }
 
 // NewListByResourceGroupPager - Displays NetworkMonitors list by resource group GET method.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NetworkMonitorsClientListByResourceGroupOptions contains the optional parameters for the NetworkMonitorsClient.NewListByResourceGroupPager
 //     method.
@@ -276,43 +265,57 @@ func (client *NetworkMonitorsClient) NewListByResourceGroupPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return NetworkMonitorsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NetworkMonitorsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *NetworkMonitorsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *NetworkMonitorsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NetworkMonitorsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *NetworkMonitorsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *NetworkMonitorsClient) listByResourceGroupHandleResponse(resp *http.Response) (NetworkMonitorsClientListByResourceGroupResponse, error) {
+func (client *NetworkMonitorsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (NetworkMonitorsClientListByResourceGroupResponse, error) {
 	result := NetworkMonitorsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkMonitorListResult); err != nil {
 		return NetworkMonitorsClientListByResourceGroupResponse{}, err
 	}
@@ -320,8 +323,6 @@ func (client *NetworkMonitorsClient) listByResourceGroupHandleResponse(resp *htt
 }
 
 // NewListBySubscriptionPager - Displays NetworkMonitors list by subscription GET method.
-//
-// Generated from API version 2025-07-15
 //   - options - NetworkMonitorsClientListBySubscriptionOptions contains the optional parameters for the NetworkMonitorsClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkMonitorsClient) NewListBySubscriptionPager(options *NetworkMonitorsClientListBySubscriptionOptions) *runtime.Pager[NetworkMonitorsClientListBySubscriptionResponse] {
@@ -335,39 +336,53 @@ func (client *NetworkMonitorsClient) NewListBySubscriptionPager(options *Network
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return NetworkMonitorsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NetworkMonitorsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *NetworkMonitorsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *NetworkMonitorsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkMonitors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NetworkMonitorsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *NetworkMonitorsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkMonitors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *NetworkMonitorsClient) listBySubscriptionHandleResponse(resp *http.Response) (NetworkMonitorsClientListBySubscriptionResponse, error) {
+func (client *NetworkMonitorsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (NetworkMonitorsClientListBySubscriptionResponse, error) {
 	result := NetworkMonitorsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkMonitorListResult); err != nil {
 		return NetworkMonitorsClientListBySubscriptionResponse{}, err
 	}
@@ -376,8 +391,6 @@ func (client *NetworkMonitorsClient) listBySubscriptionHandleResponse(resp *http
 
 // BeginUpdate - API to update certain properties of the NetworkMonitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkMonitorName - Name of the Network Monitor.
 //   - body - The resource properties to be updated.
@@ -402,8 +415,6 @@ func (client *NetworkMonitorsClient) BeginUpdate(ctx context.Context, resourceGr
 
 // Update - API to update certain properties of the NetworkMonitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkMonitorsClient) update(ctx context.Context, resourceGroupName string, networkMonitorName string, body NetworkMonitorPatch, options *NetworkMonitorsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkMonitorsClient.BeginUpdate"
@@ -419,8 +430,7 @@ func (client *NetworkMonitorsClient) update(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -429,7 +439,7 @@ func (client *NetworkMonitorsClient) update(ctx context.Context, resourceGroupNa
 func (client *NetworkMonitorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkMonitorName string, body NetworkMonitorPatch, _ *NetworkMonitorsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors/{networkMonitorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -445,8 +455,8 @@ func (client *NetworkMonitorsClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -457,8 +467,6 @@ func (client *NetworkMonitorsClient) updateCreateRequest(ctx context.Context, re
 
 // BeginUpdateAdministrativeState - Enables isolation domain across the fabric or on specified racks.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkMonitorName - Name of the Network Monitor.
 //   - body - Request payload.
@@ -483,8 +491,6 @@ func (client *NetworkMonitorsClient) BeginUpdateAdministrativeState(ctx context.
 
 // UpdateAdministrativeState - Enables isolation domain across the fabric or on specified racks.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkMonitorsClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, networkMonitorName string, body UpdateAdministrativeState, options *NetworkMonitorsClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkMonitorsClient.BeginUpdateAdministrativeState"
@@ -500,8 +506,7 @@ func (client *NetworkMonitorsClient) updateAdministrativeState(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -510,7 +515,7 @@ func (client *NetworkMonitorsClient) updateAdministrativeState(ctx context.Conte
 func (client *NetworkMonitorsClient) updateAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, networkMonitorName string, body UpdateAdministrativeState, _ *NetworkMonitorsClientBeginUpdateAdministrativeStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkMonitors/{networkMonitorName}/updateAdministrativeState"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -526,8 +531,8 @@ func (client *NetworkMonitorsClient) updateAdministrativeStateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

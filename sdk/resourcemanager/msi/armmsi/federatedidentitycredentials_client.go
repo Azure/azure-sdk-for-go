@@ -31,6 +31,9 @@ type FederatedIdentityCredentialsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFederatedIdentityCredentialsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FederatedIdentityCredentialsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,19 +67,14 @@ func (client *FederatedIdentityCredentialsClient) CreateOrUpdate(ctx context.Con
 	if err != nil {
 		return FederatedIdentityCredentialsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return FederatedIdentityCredentialsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *FederatedIdentityCredentialsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, federatedIdentityCredentialResourceName string, parameters FederatedIdentityCredential, _ *FederatedIdentityCredentialsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials/{federatedIdentityCredentialResourceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -107,8 +105,11 @@ func (client *FederatedIdentityCredentialsClient) createOrUpdateCreateRequest(ct
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *FederatedIdentityCredentialsClient) createOrUpdateHandleResponse(resp *http.Response) (FederatedIdentityCredentialsClientCreateOrUpdateResponse, error) {
+func (client *FederatedIdentityCredentialsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (FederatedIdentityCredentialsClientCreateOrUpdateResponse, error) {
 	result := FederatedIdentityCredentialsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FederatedIdentityCredential); err != nil {
 		return FederatedIdentityCredentialsClientCreateOrUpdateResponse{}, err
 	}
@@ -137,8 +138,7 @@ func (client *FederatedIdentityCredentialsClient) Delete(ctx context.Context, re
 		return FederatedIdentityCredentialsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return FederatedIdentityCredentialsClientDeleteResponse{}, err
+		return FederatedIdentityCredentialsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return FederatedIdentityCredentialsClientDeleteResponse{}, nil
 }
@@ -147,7 +147,7 @@ func (client *FederatedIdentityCredentialsClient) Delete(ctx context.Context, re
 func (client *FederatedIdentityCredentialsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, federatedIdentityCredentialResourceName string, _ *FederatedIdentityCredentialsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials/{federatedIdentityCredentialResourceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -193,19 +193,14 @@ func (client *FederatedIdentityCredentialsClient) Get(ctx context.Context, resou
 	if err != nil {
 		return FederatedIdentityCredentialsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FederatedIdentityCredentialsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *FederatedIdentityCredentialsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, federatedIdentityCredentialResourceName string, _ *FederatedIdentityCredentialsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials/{federatedIdentityCredentialResourceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -232,8 +227,11 @@ func (client *FederatedIdentityCredentialsClient) getCreateRequest(ctx context.C
 }
 
 // getHandleResponse handles the Get response.
-func (client *FederatedIdentityCredentialsClient) getHandleResponse(resp *http.Response) (FederatedIdentityCredentialsClientGetResponse, error) {
+func (client *FederatedIdentityCredentialsClient) getHandleResponse(resp *http.Response, successCodes ...int) (FederatedIdentityCredentialsClientGetResponse, error) {
 	result := FederatedIdentityCredentialsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FederatedIdentityCredential); err != nil {
 		return FederatedIdentityCredentialsClientGetResponse{}, err
 	}
@@ -256,53 +254,67 @@ func (client *FederatedIdentityCredentialsClient) NewListPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, nextLink, options)
 			if err != nil {
 				return FederatedIdentityCredentialsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FederatedIdentityCredentialsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *FederatedIdentityCredentialsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *FederatedIdentityCredentialsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *FederatedIdentityCredentialsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, nextLink string, options *FederatedIdentityCredentialsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if resourceName == "" {
+			return nil, errors.New("parameter resourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skiptoken != nil {
-		reqQP.Set("$skiptoken", *options.Skiptoken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skiptoken != nil {
+			reqQP.Set("$skiptoken", *options.Skiptoken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250531Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250531Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *FederatedIdentityCredentialsClient) listHandleResponse(resp *http.Response) (FederatedIdentityCredentialsClientListResponse, error) {
+func (client *FederatedIdentityCredentialsClient) listHandleResponse(resp *http.Response, successCodes ...int) (FederatedIdentityCredentialsClientListResponse, error) {
 	result := FederatedIdentityCredentialsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FederatedIdentityCredentialsListResult); err != nil {
 		return FederatedIdentityCredentialsClientListResponse{}, err
 	}

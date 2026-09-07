@@ -104,7 +104,7 @@ func (p *ProtectedItemsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionGroups/(?P<protectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectedItems/(?P<protectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionGroups/(?P<protectionGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectedItems/(?P<protectedItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -145,7 +145,7 @@ func (p *ProtectedItemsServerTransport) dispatchGetRestorePoints(req *http.Reque
 	if p.srv.GetRestorePoints == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetRestorePoints not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionGroups/(?P<protectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectedItems/(?P<protectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getRestorePoints`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionGroups/(?P<protectionGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectedItems/(?P<protectedItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getRestorePoints`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -188,7 +188,7 @@ func (p *ProtectedItemsServerTransport) dispatchNewListByProtectionGroupPager(re
 	}
 	newListByProtectionGroupPager := p.newListByProtectionGroupPager.get(req)
 	if newListByProtectionGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionGroups/(?P<protectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectedItems`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionGroups/(?P<protectionGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectedItems`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -231,7 +231,7 @@ func (p *ProtectedItemsServerTransport) dispatchRestore(req *http.Request) (*htt
 	if p.srv.Restore == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Restore not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionGroups/(?P<protectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectedItems/(?P<protectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restore`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionGroups/(?P<protectionGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectedItems/(?P<protectedItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restore`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {

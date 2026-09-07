@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-31-preview/Common/ProtectedItem_Delete_OperationStatus.json
+// Generated from example definition: 2026-07-01/Common/ProtectedItem_Delete_OperationStatus.json
 func ExampleBackupOperationStatusesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,9 +32,9 @@ func ExampleBackupOperationStatusesClient_Get() {
 	// res = armrecoveryservicesbackup.BackupOperationStatusesClientGetResponse{
 	// 	OperationStatus: armrecoveryservicesbackup.OperationStatus{
 	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00.00000Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 		ID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T06:52:53.886027Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2017, time.August, 3, 6, 52, 53, 886027000, time.UTC)),
 	// 		Status: to.Ptr(armrecoveryservicesbackup.OperationStatusValuesInProgress),
 	// 	},
 	// }

@@ -494,7 +494,7 @@ func (links *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 
 	links.Sender, links.Receiver = tmpSender, tmpReceiver
 
-	tmpRPCLink, err := links.ns.NewRPCLink(ctx, links.ManagementPath())
+	tmpRPCLink, _, err := links.ns.NewRPCLink(ctx, links.ManagementPath())
 
 	if err != nil {
 		if err := links.closeWithoutLocking(ctx, false); err != nil {

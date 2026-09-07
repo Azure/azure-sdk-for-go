@@ -30,6 +30,9 @@ type TokensClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTokensClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TokensClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *TokensClient) Acquire(ctx context.Context, parameters TokenRequest
 	if err != nil {
 		return TokensClientAcquireResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TokensClientAcquireResponse{}, err
-	}
-	resp, err := client.acquireHandleResponse(httpResp)
-	return resp, err
+	return client.acquireHandleResponse(httpResp, http.StatusOK)
 }
 
 // acquireCreateRequest creates the Acquire request.
 func (client *TokensClient) acquireCreateRequest(ctx context.Context, parameters TokenRequest, _ *TokensClientAcquireOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/acquirePolicyToken"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -92,8 +90,11 @@ func (client *TokensClient) acquireCreateRequest(ctx context.Context, parameters
 }
 
 // acquireHandleResponse handles the Acquire response.
-func (client *TokensClient) acquireHandleResponse(resp *http.Response) (TokensClientAcquireResponse, error) {
+func (client *TokensClient) acquireHandleResponse(resp *http.Response, successCodes ...int) (TokensClientAcquireResponse, error) {
 	result := TokensClientAcquireResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TokenResponse); err != nil {
 		return TokensClientAcquireResponse{}, err
 	}
@@ -122,12 +123,7 @@ func (client *TokensClient) AcquireAtManagementGroup(ctx context.Context, manage
 	if err != nil {
 		return TokensClientAcquireAtManagementGroupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TokensClientAcquireAtManagementGroupResponse{}, err
-	}
-	resp, err := client.acquireAtManagementGroupHandleResponse(httpResp)
-	return resp, err
+	return client.acquireAtManagementGroupHandleResponse(httpResp, http.StatusOK)
 }
 
 // acquireAtManagementGroupCreateRequest creates the AcquireAtManagementGroup request.
@@ -153,8 +149,11 @@ func (client *TokensClient) acquireAtManagementGroupCreateRequest(ctx context.Co
 }
 
 // acquireAtManagementGroupHandleResponse handles the AcquireAtManagementGroup response.
-func (client *TokensClient) acquireAtManagementGroupHandleResponse(resp *http.Response) (TokensClientAcquireAtManagementGroupResponse, error) {
+func (client *TokensClient) acquireAtManagementGroupHandleResponse(resp *http.Response, successCodes ...int) (TokensClientAcquireAtManagementGroupResponse, error) {
 	result := TokensClientAcquireAtManagementGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TokenResponse); err != nil {
 		return TokensClientAcquireAtManagementGroupResponse{}, err
 	}

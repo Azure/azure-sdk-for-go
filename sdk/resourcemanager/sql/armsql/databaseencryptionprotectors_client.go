@@ -18,6 +18,8 @@ import (
 
 // DatabaseEncryptionProtectorsClient contains the methods for the DatabaseEncryptionProtectors group.
 // Don't use this type directly, use NewDatabaseEncryptionProtectorsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type DatabaseEncryptionProtectorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type DatabaseEncryptionProtectorsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDatabaseEncryptionProtectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseEncryptionProtectorsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,8 +46,6 @@ func NewDatabaseEncryptionProtectorsClient(subscriptionID string, credential azc
 
 // BeginRevalidate - Revalidates an existing encryption protector for a particular database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -68,8 +71,6 @@ func (client *DatabaseEncryptionProtectorsClient) BeginRevalidate(ctx context.Co
 
 // Revalidate - Revalidates an existing encryption protector for a particular database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *DatabaseEncryptionProtectorsClient) revalidate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, encryptionProtectorName EncryptionProtectorName, options *DatabaseEncryptionProtectorsClientBeginRevalidateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabaseEncryptionProtectorsClient.BeginRevalidate"
@@ -85,8 +86,7 @@ func (client *DatabaseEncryptionProtectorsClient) revalidate(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -95,7 +95,7 @@ func (client *DatabaseEncryptionProtectorsClient) revalidate(ctx context.Context
 func (client *DatabaseEncryptionProtectorsClient) revalidateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, encryptionProtectorName EncryptionProtectorName, _ *DatabaseEncryptionProtectorsClientBeginRevalidateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/encryptionProtector/{encryptionProtectorName}/revalidate"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -119,15 +119,13 @@ func (client *DatabaseEncryptionProtectorsClient) revalidateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginRevert - Reverts an existing encryption protector for a particular database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -153,8 +151,6 @@ func (client *DatabaseEncryptionProtectorsClient) BeginRevert(ctx context.Contex
 
 // Revert - Reverts an existing encryption protector for a particular database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *DatabaseEncryptionProtectorsClient) revert(ctx context.Context, resourceGroupName string, serverName string, databaseName string, encryptionProtectorName EncryptionProtectorName, options *DatabaseEncryptionProtectorsClientBeginRevertOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabaseEncryptionProtectorsClient.BeginRevert"
@@ -170,8 +166,7 @@ func (client *DatabaseEncryptionProtectorsClient) revert(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -180,7 +175,7 @@ func (client *DatabaseEncryptionProtectorsClient) revert(ctx context.Context, re
 func (client *DatabaseEncryptionProtectorsClient) revertCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, encryptionProtectorName EncryptionProtectorName, _ *DatabaseEncryptionProtectorsClientBeginRevertOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/encryptionProtector/{encryptionProtectorName}/revert"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -204,7 +199,7 @@ func (client *DatabaseEncryptionProtectorsClient) revertCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

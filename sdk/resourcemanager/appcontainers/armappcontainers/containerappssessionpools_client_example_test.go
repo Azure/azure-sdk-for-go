@@ -513,7 +513,7 @@ func ExampleContainerAppsSessionPoolsClient_Get_getSessionPool() {
 	// 							},
 	// 						},
 	// 					},
-	// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-02T00:00:00.000000Z"); return t}()),
+	// 					CreatedTime: to.Ptr(time.Date(2025, time.October, 2, 0, 0, 0, 0, time.UTC)),
 	// 					Ingress: &armappcontainers.SessionIngress{
 	// 						TargetPort: to.Ptr[int32](80),
 	// 					},
@@ -633,7 +633,7 @@ func ExampleContainerAppsSessionPoolsClient_Get_getSessionPoolDuringUpdate() {
 	// 							},
 	// 						},
 	// 					},
-	// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-02T00:00:00.000000Z"); return t}()),
+	// 					CreatedTime: to.Ptr(time.Date(2025, time.October, 2, 0, 0, 0, 0, time.UTC)),
 	// 					Ingress: &armappcontainers.SessionIngress{
 	// 						TargetPort: to.Ptr[int32](80),
 	// 					},
@@ -665,7 +665,7 @@ func ExampleContainerAppsSessionPoolsClient_Get_getSessionPoolDuringUpdate() {
 	// 							},
 	// 						},
 	// 					},
-	// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-02T05:00:00.000000Z"); return t}()),
+	// 					CreatedTime: to.Ptr(time.Date(2025, time.October, 2, 5, 0, 0, 0, time.UTC)),
 	// 					Ingress: &armappcontainers.SessionIngress{
 	// 						TargetPort: to.Ptr[int32](80),
 	// 					},
@@ -776,7 +776,7 @@ func ExampleContainerAppsSessionPoolsClient_NewListByResourceGroupPager() {
 		// 									},
 		// 								},
 		// 							},
-		// 							CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-02T00:00:00.000000Z"); return t}()),
+		// 							CreatedTime: to.Ptr(time.Date(2025, time.October, 2, 0, 0, 0, 0, time.UTC)),
 		// 							Ingress: &armappcontainers.SessionIngress{
 		// 								TargetPort: to.Ptr[int32](80),
 		// 							},
@@ -890,7 +890,7 @@ func ExampleContainerAppsSessionPoolsClient_NewListBySubscriptionPager() {
 		// 									},
 		// 								},
 		// 							},
-		// 							CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-02T00:00:00.000000Z"); return t}()),
+		// 							CreatedTime: to.Ptr(time.Date(2025, time.October, 2, 0, 0, 0, 0, time.UTC)),
 		// 							Ingress: &armappcontainers.SessionIngress{
 		// 								TargetPort: to.Ptr[int32](80),
 		// 							},

@@ -83,8 +83,7 @@ func (client *InvoiceSectionsClient) createOrUpdate(ctx context.Context, billing
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -162,8 +161,7 @@ func (client *InvoiceSectionsClient) deleteOperation(ctx context.Context, billin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -214,12 +212,7 @@ func (client *InvoiceSectionsClient) Get(ctx context.Context, billingAccountName
 	if err != nil {
 		return InvoiceSectionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return InvoiceSectionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -249,8 +242,11 @@ func (client *InvoiceSectionsClient) getCreateRequest(ctx context.Context, billi
 }
 
 // getHandleResponse handles the Get response.
-func (client *InvoiceSectionsClient) getHandleResponse(resp *http.Response) (InvoiceSectionsClientGetResponse, error) {
+func (client *InvoiceSectionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (InvoiceSectionsClientGetResponse, error) {
 	result := InvoiceSectionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InvoiceSection); err != nil {
 		return InvoiceSectionsClientGetResponse{}, err
 	}
@@ -274,64 +270,78 @@ func (client *InvoiceSectionsClient) NewListByBillingProfilePager(billingAccount
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, options)
-			}, nil)
+			req, err := client.listByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, nextLink, options)
 			if err != nil {
 				return InvoiceSectionsClientListByBillingProfileResponse{}, err
 			}
-			return client.listByBillingProfileHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return InvoiceSectionsClientListByBillingProfileResponse{}, err
+			}
+			return client.listByBillingProfileHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByBillingProfileCreateRequest creates the ListByBillingProfile request.
-func (client *InvoiceSectionsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *InvoiceSectionsClientListByBillingProfileOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *InvoiceSectionsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, nextLink string, options *InvoiceSectionsClientListByBillingProfileOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		if billingProfileName == "" {
+			return nil, errors.New("parameter billingProfileName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if billingProfileName == "" {
-		return nil, errors.New("parameter billingProfileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	if options != nil && options.Count != nil {
-		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		if options != nil && options.Count != nil {
+			reqQP.Set("count", strconv.FormatBool(*options.Count))
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("filter", *options.Filter)
+		}
+		if options != nil && options.IncludeDeleted != nil {
+			reqQP.Set("includeDeleted", strconv.FormatBool(*options.IncludeDeleted))
+		}
+		if options != nil && options.OrderBy != nil {
+			reqQP.Set("orderBy", *options.OrderBy)
+		}
+		if options != nil && options.Search != nil {
+			reqQP.Set("search", *options.Search)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("filter", *options.Filter)
-	}
-	if options != nil && options.IncludeDeleted != nil {
-		reqQP.Set("includeDeleted", strconv.FormatBool(*options.IncludeDeleted))
-	}
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("orderBy", *options.OrderBy)
-	}
-	if options != nil && options.Search != nil {
-		reqQP.Set("search", *options.Search)
-	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByBillingProfileHandleResponse handles the ListByBillingProfile response.
-func (client *InvoiceSectionsClient) listByBillingProfileHandleResponse(resp *http.Response) (InvoiceSectionsClientListByBillingProfileResponse, error) {
+func (client *InvoiceSectionsClient) listByBillingProfileHandleResponse(resp *http.Response, successCodes ...int) (InvoiceSectionsClientListByBillingProfileResponse, error) {
 	result := InvoiceSectionsClientListByBillingProfileResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InvoiceSectionListResult); err != nil {
 		return InvoiceSectionsClientListByBillingProfileResponse{}, err
 	}
@@ -360,12 +370,7 @@ func (client *InvoiceSectionsClient) ValidateDeleteEligibility(ctx context.Conte
 	if err != nil {
 		return InvoiceSectionsClientValidateDeleteEligibilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return InvoiceSectionsClientValidateDeleteEligibilityResponse{}, err
-	}
-	resp, err := client.validateDeleteEligibilityHandleResponse(httpResp)
-	return resp, err
+	return client.validateDeleteEligibilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // validateDeleteEligibilityCreateRequest creates the ValidateDeleteEligibility request.
@@ -395,8 +400,11 @@ func (client *InvoiceSectionsClient) validateDeleteEligibilityCreateRequest(ctx 
 }
 
 // validateDeleteEligibilityHandleResponse handles the ValidateDeleteEligibility response.
-func (client *InvoiceSectionsClient) validateDeleteEligibilityHandleResponse(resp *http.Response) (InvoiceSectionsClientValidateDeleteEligibilityResponse, error) {
+func (client *InvoiceSectionsClient) validateDeleteEligibilityHandleResponse(resp *http.Response, successCodes ...int) (InvoiceSectionsClientValidateDeleteEligibilityResponse, error) {
 	result := InvoiceSectionsClientValidateDeleteEligibilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeleteInvoiceSectionEligibilityResult); err != nil {
 		return InvoiceSectionsClientValidateDeleteEligibilityResponse{}, err
 	}

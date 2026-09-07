@@ -126,10 +126,10 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armarizeaiobservabilityeval.SystemData{
 	// 			CreatedBy: to.Ptr("ihyykvakpoaltuuwuwgx"),
 	// 			CreatedByType: to.Ptr(armarizeaiobservabilityeval.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-29T03:21:12.627Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.October, 29, 3, 21, 12, 627000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("mdkcrvmimq"),
 	// 			LastModifiedByType: to.Ptr(armarizeaiobservabilityeval.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-29T03:21:12.627Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.October, 29, 3, 21, 12, 627000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -226,10 +226,10 @@ func ExampleOrganizationsClient_Get() {
 	// 		SystemData: &armarizeaiobservabilityeval.SystemData{
 	// 			CreatedBy: to.Ptr("ihyykvakpoaltuuwuwgx"),
 	// 			CreatedByType: to.Ptr(armarizeaiobservabilityeval.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-29T03:21:12.627Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.October, 29, 3, 21, 12, 627000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("mdkcrvmimq"),
 	// 			LastModifiedByType: to.Ptr(armarizeaiobservabilityeval.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-29T03:21:12.627Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.October, 29, 3, 21, 12, 627000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -311,10 +311,10 @@ func ExampleOrganizationsClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armarizeaiobservabilityeval.SystemData{
 		// 					CreatedBy: to.Ptr("ihyykvakpoaltuuwuwgx"),
 		// 					CreatedByType: to.Ptr(armarizeaiobservabilityeval.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-29T03:21:12.627Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.October, 29, 3, 21, 12, 627000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("mdkcrvmimq"),
 		// 					LastModifiedByType: to.Ptr(armarizeaiobservabilityeval.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-29T03:21:12.627Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.October, 29, 3, 21, 12, 627000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -400,10 +400,10 @@ func ExampleOrganizationsClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armarizeaiobservabilityeval.SystemData{
 		// 					CreatedBy: to.Ptr("ihyykvakpoaltuuwuwgx"),
 		// 					CreatedByType: to.Ptr(armarizeaiobservabilityeval.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-29T03:21:12.627Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.October, 29, 3, 21, 12, 627000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("mdkcrvmimq"),
 		// 					LastModifiedByType: to.Ptr(armarizeaiobservabilityeval.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-29T03:21:12.627Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.October, 29, 3, 21, 12, 627000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -489,10 +489,10 @@ func ExampleOrganizationsClient_Update() {
 	// 		SystemData: &armarizeaiobservabilityeval.SystemData{
 	// 			CreatedBy: to.Ptr("ihyykvakpoaltuuwuwgx"),
 	// 			CreatedByType: to.Ptr(armarizeaiobservabilityeval.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-29T03:21:12.627Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.October, 29, 3, 21, 12, 627000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("mdkcrvmimq"),
 	// 			LastModifiedByType: to.Ptr(armarizeaiobservabilityeval.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-29T03:21:12.627Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.October, 29, 3, 21, 12, 627000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

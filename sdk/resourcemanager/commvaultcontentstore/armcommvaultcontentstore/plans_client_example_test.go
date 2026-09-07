@@ -376,10 +376,10 @@ func ExamplePlansClient_BeginCreateOrupdate() {
 	// 		SystemData: &armcommvaultcontentstore.SystemData{
 	// 			CreatedBy: to.Ptr("wg"),
 	// 			CreatedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T06:14:57.355Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 1, 6, 14, 57, 355000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("hbpzxzzwhqfy"),
 	// 			LastModifiedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T06:14:57.355Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 1, 6, 14, 57, 355000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -599,10 +599,10 @@ func ExamplePlansClient_Get() {
 	// 		SystemData: &armcommvaultcontentstore.SystemData{
 	// 			CreatedBy: to.Ptr("wg"),
 	// 			CreatedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T06:14:57.355Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 1, 6, 14, 57, 355000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("hbpzxzzwhqfy"),
 	// 			LastModifiedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T06:14:57.355Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 1, 6, 14, 57, 355000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -807,10 +807,10 @@ func ExamplePlansClient_NewListByCloudAccountPager() {
 		// 				SystemData: &armcommvaultcontentstore.SystemData{
 		// 					CreatedBy: to.Ptr("wg"),
 		// 					CreatedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T06:14:57.355Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 1, 6, 14, 57, 355000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("hbpzxzzwhqfy"),
 		// 					LastModifiedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T06:14:57.355Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 1, 6, 14, 57, 355000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

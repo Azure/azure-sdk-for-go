@@ -54,12 +54,7 @@ func (client *GeographicHierarchiesClient) GetDefault(ctx context.Context, optio
 	if err != nil {
 		return GeographicHierarchiesClientGetDefaultResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GeographicHierarchiesClientGetDefaultResponse{}, err
-	}
-	resp, err := client.getDefaultHandleResponse(httpResp)
-	return resp, err
+	return client.getDefaultHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDefaultCreateRequest creates the GetDefault request.
@@ -77,8 +72,11 @@ func (client *GeographicHierarchiesClient) getDefaultCreateRequest(ctx context.C
 }
 
 // getDefaultHandleResponse handles the GetDefault response.
-func (client *GeographicHierarchiesClient) getDefaultHandleResponse(resp *http.Response) (GeographicHierarchiesClientGetDefaultResponse, error) {
+func (client *GeographicHierarchiesClient) getDefaultHandleResponse(resp *http.Response, successCodes ...int) (GeographicHierarchiesClientGetDefaultResponse, error) {
 	result := GeographicHierarchiesClientGetDefaultResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GeographicHierarchy); err != nil {
 		return GeographicHierarchiesClientGetDefaultResponse{}, err
 	}

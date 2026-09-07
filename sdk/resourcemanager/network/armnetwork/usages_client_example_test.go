@@ -7,11 +7,11 @@ package armnetwork_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/UsageList.json
+// Generated from example definition: 2025-09-01/UsageList.json
 func ExampleUsagesClient_NewListPager_listUsages() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,7 +292,7 @@ func ExampleUsagesClient_NewListPager_listUsages() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/UsageListSpacedLocation.json
+// Generated from example definition: 2025-09-01/UsageListSpacedLocation.json
 func ExampleUsagesClient_NewListPager_listUsagesSpacedLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -18,6 +18,8 @@ import (
 
 // CapabilitiesClient contains the methods for the Capabilities group.
 // Don't use this type directly, use NewCapabilitiesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type CapabilitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type CapabilitiesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCapabilitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CapabilitiesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,8 +46,6 @@ func NewCapabilitiesClient(subscriptionID string, credential azcore.TokenCredent
 
 // ListByLocation - Gets the subscription capabilities available for the specified location.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - locationName - The location name whose capabilities are retrieved.
 //   - options - CapabilitiesClientListByLocationOptions contains the optional parameters for the CapabilitiesClient.ListByLocation
 //     method.
@@ -60,19 +63,14 @@ func (client *CapabilitiesClient) ListByLocation(ctx context.Context, locationNa
 	if err != nil {
 		return CapabilitiesClientListByLocationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CapabilitiesClientListByLocationResponse{}, err
-	}
-	resp, err := client.listByLocationHandleResponse(httpResp)
-	return resp, err
+	return client.listByLocationHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
 func (client *CapabilitiesClient) listByLocationCreateRequest(ctx context.Context, locationName string, options *CapabilitiesClientListByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/capabilities"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if locationName == "" {
@@ -84,18 +82,21 @@ func (client *CapabilitiesClient) listByLocationCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
+	reqQP.Set("api-version", version20250201Preview)
 	if options != nil && options.Include != nil {
 		reqQP.Set("include", string(*options.Include))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *CapabilitiesClient) listByLocationHandleResponse(resp *http.Response) (CapabilitiesClientListByLocationResponse, error) {
+func (client *CapabilitiesClient) listByLocationHandleResponse(resp *http.Response, successCodes ...int) (CapabilitiesClientListByLocationResponse, error) {
 	result := CapabilitiesClientListByLocationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocationCapabilities); err != nil {
 		return CapabilitiesClientListByLocationResponse{}, err
 	}

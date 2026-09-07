@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2024-03-01-preview/createOrUpdateDynamicMetricAlertMultipleResource.json
+// Generated from example definition: 2026-01-01/createOrUpdateDynamicMetricAlertMultipleResource.json
 func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateADynamicAlertRuleForMultipleResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateADynamicAlertRuleFor
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/createOrUpdateDynamicMetricAlertSingleResource.json
+// Generated from example definition: 2026-01-01/createOrUpdateDynamicMetricAlertSingleResource.json
 func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateADynamicAlertRuleForSingleResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +247,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateADynamicAlertRuleFor
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/createOrUpdateMetricAlertMultipleResource.json
+// Generated from example definition: 2026-01-01/createOrUpdateMetricAlertMultipleResource.json
 func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleForMultipleResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -357,7 +357,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleForMultip
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/createOrUpdateMetricAlertQuery.json
+// Generated from example definition: 2026-01-01/createOrUpdateMetricAlertQuery.json
 func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAQueryBasedAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -482,7 +482,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAQueryBasedAlertRule
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/createOrUpdateMetricAlertQueryDT.json
+// Generated from example definition: 2026-01-01/createOrUpdateMetricAlertQueryDT.json
 func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAQueryBasedAlertRuleWithDynamicThreshold() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -613,7 +613,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAQueryBasedAlertRule
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/createOrUpdateMetricAlertQueryMultiResource.json
+// Generated from example definition: 2026-01-01/createOrUpdateMetricAlertQueryMultiResource.json
 func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAResourceCentricQueryBasedAlertRuleForMultipleResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -738,7 +738,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAResourceCentricQuer
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/createOrUpdateMetricAlertQueryResourceCentric.json
+// Generated from example definition: 2026-01-01/createOrUpdateMetricAlertQueryResourceCentric.json
 func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAResourceCentricQueryBasedAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -863,7 +863,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAResourceCentricQuer
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/createOrUpdateMetricAlertResourceGroup.json
+// Generated from example definition: 2026-01-01/createOrUpdateMetricAlertResourceGroup.json
 func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleOnResourceGroupS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -973,7 +973,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleOnResourc
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/createOrUpdateMetricAlertSingleResource.json
+// Generated from example definition: 2026-01-01/createOrUpdateMetricAlertSingleResource.json
 func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleForSingleResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1075,7 +1075,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleForSingle
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/createOrUpdateMetricAlertSubscription.json
+// Generated from example definition: 2026-01-01/createOrUpdateMetricAlertSubscription.json
 func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleOnSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1183,7 +1183,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleOnSubscri
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/createOrUpdateMetricAlertWithDimensions.json
+// Generated from example definition: 2026-01-01/createOrUpdateMetricAlertWithDimensions.json
 func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRulesWithDimensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1318,7 +1318,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRulesWithDime
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/createOrUpdateWebTestMetricAlert.json
+// Generated from example definition: 2026-01-01/createOrUpdateWebTestMetricAlert.json
 func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAWebTestAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1393,7 +1393,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAWebTestAlertRule() 
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/deleteMetricAlert.json
+// Generated from example definition: 2026-01-01/deleteMetricAlert.json
 func ExampleMetricAlertsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1415,7 +1415,7 @@ func ExampleMetricAlertsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/getDynamicMetricAlertMultipleResource.json
+// Generated from example definition: 2026-01-01/getDynamicMetricAlertMultipleResource.json
 func ExampleMetricAlertsClient_Get_getADynamicAlertRuleForMultipleResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1488,7 +1488,7 @@ func ExampleMetricAlertsClient_Get_getADynamicAlertRuleForMultipleResources() {
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/getDynamicMetricAlertSingleResource.json
+// Generated from example definition: 2026-01-01/getDynamicMetricAlertSingleResource.json
 func ExampleMetricAlertsClient_Get_getADynamicAlertRuleForSingleResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1558,7 +1558,7 @@ func ExampleMetricAlertsClient_Get_getADynamicAlertRuleForSingleResource() {
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/getMetricAlertMultipleResource.json
+// Generated from example definition: 2026-01-01/getMetricAlertMultipleResource.json
 func ExampleMetricAlertsClient_Get_getAnAlertRuleForMultipleResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1627,7 +1627,7 @@ func ExampleMetricAlertsClient_Get_getAnAlertRuleForMultipleResources() {
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/getMetricAlertQuery.json
+// Generated from example definition: 2026-01-01/getMetricAlertQuery.json
 func ExampleMetricAlertsClient_Get_getAQueryBasedAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1699,7 +1699,7 @@ func ExampleMetricAlertsClient_Get_getAQueryBasedAlertRule() {
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/getMetricAlertResourceGroup.json
+// Generated from example definition: 2026-01-01/getMetricAlertResourceGroup.json
 func ExampleMetricAlertsClient_Get_getAnAlertRuleOnResourceGroupS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1768,7 +1768,7 @@ func ExampleMetricAlertsClient_Get_getAnAlertRuleOnResourceGroupS() {
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/getMetricAlertSingleResource.json
+// Generated from example definition: 2026-01-01/getMetricAlertSingleResource.json
 func ExampleMetricAlertsClient_Get_getAnAlertRuleForSingleResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1833,7 +1833,7 @@ func ExampleMetricAlertsClient_Get_getAnAlertRuleForSingleResource() {
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/getMetricAlertSubscription.json
+// Generated from example definition: 2026-01-01/getMetricAlertSubscription.json
 func ExampleMetricAlertsClient_Get_getAnAlertRuleOnSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1901,7 +1901,7 @@ func ExampleMetricAlertsClient_Get_getAnAlertRuleOnSubscription() {
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/getWebTestMetricAlert.json
+// Generated from example definition: 2026-01-01/getWebTestMetricAlert.json
 func ExampleMetricAlertsClient_Get_getAWebTestAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1952,7 +1952,7 @@ func ExampleMetricAlertsClient_Get_getAWebTestAlertRule() {
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/listByResourceGroupMetricAlert.json
+// Generated from example definition: 2026-01-01/listByResourceGroupMetricAlert.json
 func ExampleMetricAlertsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2067,7 +2067,7 @@ func ExampleMetricAlertsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-03-01-preview/listMetricAlert.json
+// Generated from example definition: 2026-01-01/listMetricAlert.json
 func ExampleMetricAlertsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2182,7 +2182,7 @@ func ExampleMetricAlertsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2024-03-01-preview/UpdateMetricAlert.json
+// Generated from example definition: 2026-01-01/UpdateMetricAlert.json
 func ExampleMetricAlertsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

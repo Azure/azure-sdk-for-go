@@ -152,6 +152,9 @@ type uploadFromReaderOptions struct {
 	CPKInfo *CPKInfo
 	// EncryptionContext contains the information returned from the x-ms-encryption-context header response.
 	EncryptionContext *string
+	// TransactionalValidation specifies the transfer validation type to use.
+	// The default is nil (no transfer validation).
+	TransactionalValidation TransferValidationType
 }
 
 // UploadStreamOptions provides set of configurations for Client.UploadStream operation.
@@ -169,6 +172,9 @@ type UploadStreamOptions struct {
 	CPKInfo *CPKInfo
 	// EncryptionContext contains the information returned from the x-ms-encryption-context header response.
 	EncryptionContext *string
+	// TransactionalValidation specifies the transfer validation type to use.
+	// The default is nil (no transfer validation).
+	TransactionalValidation TransferValidationType
 }
 
 // UploadBufferOptions provides set of configurations for Client.UploadBuffer operation.
@@ -270,20 +276,20 @@ type AppendDataOptions struct {
 	Flush *bool
 }
 
-func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (*generated.PathClientAppendDataOptions,
+func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (io.ReadSeekCloser, *generated.PathClientAppendDataOptions,
 	*generated.LeaseAccessConditions, *generated.CPKInfo, error) {
 
 	if offset < 0 || body == nil {
-		return nil, nil, nil, errors.New("invalid argument: offset must be >= 0 and body must not be nil")
+		return nil, nil, nil, nil, errors.New("invalid argument: offset must be >= 0 and body must not be nil")
 	}
 
 	count, err := shared.ValidateSeekableStreamAt0AndGetCount(body)
 	if err != nil {
-		return nil, nil, nil, err
+		return nil, nil, nil, nil, err
 	}
 
 	if count == 0 {
-		return nil, nil, nil, errors.New("invalid argument: body must contain readable data whose size is > 0")
+		return nil, nil, nil, nil, errors.New("invalid argument: body must contain readable data whose size is > 0")
 	}
 
 	appendDataOptions := &generated.PathClientAppendDataOptions{}
@@ -314,14 +320,19 @@ func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (*gener
 		appendDataOptions.Flush = o.Flush
 
 		if o.TransactionalValidation != nil {
-			_, err = o.TransactionalValidation.Apply(body, appendDataOptions)
+			body, err = o.TransactionalValidation.Apply(body, appendDataOptions)
 			if err != nil {
-				return nil, nil, nil, err
+				return nil, nil, nil, nil, err
 			}
+			count, err = shared.ValidateSeekableStreamAt0AndGetCount(body)
+			if err != nil {
+				return nil, nil, nil, nil, err
+			}
+			appendDataOptions.ContentLength = &count
 		}
 	}
 
-	return appendDataOptions, leaseAccessConditions, cpkInfoOpts, nil
+	return body, appendDataOptions, leaseAccessConditions, cpkInfoOpts, nil
 }
 
 func (u *UploadStreamOptions) setDefaults() {
@@ -340,8 +351,9 @@ func (u *uploadFromReaderOptions) getAppendDataOptions() *AppendDataOptions {
 	}
 	leaseAccessConditions, _ := exported.FormatPathAccessConditions(u.AccessConditions)
 	return &AppendDataOptions{
-		LeaseAccessConditions: leaseAccessConditions,
-		CPKInfo:               u.CPKInfo,
+		TransactionalValidation: u.TransactionalValidation,
+		LeaseAccessConditions:   leaseAccessConditions,
+		CPKInfo:                 u.CPKInfo,
 	}
 }
 
@@ -362,8 +374,9 @@ func (u *UploadStreamOptions) getAppendDataOptions() *AppendDataOptions {
 	}
 	leaseAccessConditions, _ := exported.FormatPathAccessConditions(u.AccessConditions)
 	return &AppendDataOptions{
-		LeaseAccessConditions: leaseAccessConditions,
-		CPKInfo:               u.CPKInfo,
+		TransactionalValidation: u.TransactionalValidation,
+		LeaseAccessConditions:   leaseAccessConditions,
+		CPKInfo:                 u.CPKInfo,
 	}
 }
 
@@ -391,6 +404,11 @@ type DownloadStreamOptions struct {
 	CPKInfo *CPKInfo
 	// CPKScopeInfo contains a group of parameters for client provided encryption scope.
 	CPKScopeInfo *CPKScopeInfo
+	// TransactionalValidation specifies the transfer validation type to use on download.
+	// When set to TransferValidationTypeComputeStructuredMessageCRC64, the service returns the
+	// data wrapped in a structured message with per-segment CRC64 checksums. The SDK
+	// automatically decodes the structured message and validates checksums before returning data.
+	TransactionalValidation TransferValidationType
 }
 
 func (o *DownloadStreamOptions) format() *blob.DownloadStreamOptions {
@@ -413,6 +431,11 @@ func (o *DownloadStreamOptions) format() *blob.DownloadStreamOptions {
 	downloadStreamOptions.RangeGetContentMD5 = o.RangeGetContentMD5
 	downloadStreamOptions.AccessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
 	downloadStreamOptions.CPKScopeInfo = o.CPKScopeInfo
+	if o.TransactionalValidation != nil {
+		if h := exported.GetStructuredBodyType(o.TransactionalValidation); h != "" {
+			downloadStreamOptions.TransactionalValidation = blob.TransferValidationTypeComputeStructuredMessageCRC64(0)
+		}
+	}
 	return downloadStreamOptions
 }
 
@@ -435,6 +458,8 @@ type DownloadBufferOptions struct {
 	Concurrency uint16
 	// RetryReaderOptionsPerChunk is used when downloading each chunk.
 	RetryReaderOptionsPerChunk *RetryReaderOptions
+	// TransactionalValidation specifies the transfer validation type to use on download.
+	TransactionalValidation TransferValidationType
 }
 
 func (o *DownloadBufferOptions) format() *blob.DownloadBufferOptions {
@@ -467,6 +492,11 @@ func (o *DownloadBufferOptions) format() *blob.DownloadBufferOptions {
 		downloadBufferOptions.RetryReaderOptionsPerBlock.EarlyCloseAsError = o.RetryReaderOptionsPerChunk.EarlyCloseAsError
 		downloadBufferOptions.RetryReaderOptionsPerBlock.MaxRetries = o.RetryReaderOptionsPerChunk.MaxRetries
 	}
+	if o.TransactionalValidation != nil {
+		if h := exported.GetStructuredBodyType(o.TransactionalValidation); h != "" {
+			downloadBufferOptions.TransactionalValidation = blob.TransferValidationTypeComputeStructuredMessageCRC64(0)
+		}
+	}
 
 	return downloadBufferOptions
 }
@@ -490,6 +520,8 @@ type DownloadFileOptions struct {
 	Concurrency uint16
 	// RetryReaderOptionsPerChunk is used when downloading each chunk.
 	RetryReaderOptionsPerChunk *RetryReaderOptions
+	// TransactionalValidation specifies the transfer validation type to use on download.
+	TransactionalValidation TransferValidationType
 }
 
 func (o *DownloadFileOptions) format() *blob.DownloadFileOptions {
@@ -521,6 +553,11 @@ func (o *DownloadFileOptions) format() *blob.DownloadFileOptions {
 		downloadFileOptions.RetryReaderOptionsPerBlock.OnFailedRead = o.RetryReaderOptionsPerChunk.OnFailedRead
 		downloadFileOptions.RetryReaderOptionsPerBlock.EarlyCloseAsError = o.RetryReaderOptionsPerChunk.EarlyCloseAsError
 		downloadFileOptions.RetryReaderOptionsPerBlock.MaxRetries = o.RetryReaderOptionsPerChunk.MaxRetries
+	}
+	if o.TransactionalValidation != nil {
+		if h := exported.GetStructuredBodyType(o.TransactionalValidation); h != "" {
+			downloadFileOptions.TransactionalValidation = blob.TransferValidationTypeComputeStructuredMessageCRC64(0)
+		}
 	}
 
 	return downloadFileOptions

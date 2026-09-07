@@ -59,12 +59,7 @@ func (client *SolutionConfigurationsClient) CreateOrUpdate(ctx context.Context, 
 	if err != nil {
 		return SolutionConfigurationsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return SolutionConfigurationsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -94,8 +89,11 @@ func (client *SolutionConfigurationsClient) createOrUpdateCreateRequest(ctx cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SolutionConfigurationsClient) createOrUpdateHandleResponse(resp *http.Response) (SolutionConfigurationsClientCreateOrUpdateResponse, error) {
+func (client *SolutionConfigurationsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (SolutionConfigurationsClientCreateOrUpdateResponse, error) {
 	result := SolutionConfigurationsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SolutionConfiguration); err != nil {
 		return SolutionConfigurationsClientCreateOrUpdateResponse{}, err
 	}
@@ -123,8 +121,7 @@ func (client *SolutionConfigurationsClient) Delete(ctx context.Context, resource
 		return SolutionConfigurationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SolutionConfigurationsClientDeleteResponse{}, err
+		return SolutionConfigurationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SolutionConfigurationsClientDeleteResponse{}, nil
 }
@@ -170,12 +167,7 @@ func (client *SolutionConfigurationsClient) Get(ctx context.Context, resourceURI
 	if err != nil {
 		return SolutionConfigurationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SolutionConfigurationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -201,8 +193,11 @@ func (client *SolutionConfigurationsClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *SolutionConfigurationsClient) getHandleResponse(resp *http.Response) (SolutionConfigurationsClientGetResponse, error) {
+func (client *SolutionConfigurationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SolutionConfigurationsClientGetResponse, error) {
 	result := SolutionConfigurationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SolutionConfiguration); err != nil {
 		return SolutionConfigurationsClientGetResponse{}, err
 	}
@@ -224,39 +219,53 @@ func (client *SolutionConfigurationsClient) NewListPager(resourceURI string, opt
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceURI, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceURI, nextLink, options)
 			if err != nil {
 				return SolutionConfigurationsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SolutionConfigurationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *SolutionConfigurationsClient) listCreateRequest(ctx context.Context, resourceURI string, _ *SolutionConfigurationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
+func (client *SolutionConfigurationsClient) listCreateRequest(ctx context.Context, resourceURI string, nextLink string, _ *SolutionConfigurationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations"
+		if resourceURI == "" {
+			return nil, errors.New("parameter resourceURI cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241201)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SolutionConfigurationsClient) listHandleResponse(resp *http.Response) (SolutionConfigurationsClientListResponse, error) {
+func (client *SolutionConfigurationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (SolutionConfigurationsClientListResponse, error) {
 	result := SolutionConfigurationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SolutionConfigurationListResult); err != nil {
 		return SolutionConfigurationsClientListResponse{}, err
 	}
@@ -303,8 +312,7 @@ func (client *SolutionConfigurationsClient) syncNow(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -352,12 +360,7 @@ func (client *SolutionConfigurationsClient) Update(ctx context.Context, resource
 	if err != nil {
 		return SolutionConfigurationsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SolutionConfigurationsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -387,8 +390,11 @@ func (client *SolutionConfigurationsClient) updateCreateRequest(ctx context.Cont
 }
 
 // updateHandleResponse handles the Update response.
-func (client *SolutionConfigurationsClient) updateHandleResponse(resp *http.Response) (SolutionConfigurationsClientUpdateResponse, error) {
+func (client *SolutionConfigurationsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (SolutionConfigurationsClientUpdateResponse, error) {
 	result := SolutionConfigurationsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SolutionConfiguration); err != nil {
 		return SolutionConfigurationsClientUpdateResponse{}, err
 	}

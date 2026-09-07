@@ -65,7 +65,7 @@ func ExampleBackupPoliciesClient_CreateOrUpdate() {
 										},
 										ObjectType: to.Ptr("ScheduleBasedBackupCriteria"),
 										ScheduleTimes: []*time.Time{
-											to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00Z"); return t }()),
+											to.Ptr(time.Date(2019, time.March, 1, 13, 0, 0, 0, time.UTC)),
 										},
 									},
 								},
@@ -167,7 +167,7 @@ func ExampleBackupPoliciesClient_CreateOrUpdate() {
 	// 										},
 	// 										ObjectType: to.Ptr("ScheduleBasedBackupCriteria"),
 	// 										ScheduleTimes: []*time.Time{
-	// 											to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00Z"); return t}()),
+	// 											to.Ptr(time.Date(2019, time.March, 1, 13, 0, 0, 0, time.UTC)),
 	// 										},
 	// 									},
 	// 								},
@@ -307,7 +307,7 @@ func ExampleBackupPoliciesClient_Get() {
 	// 										},
 	// 										ObjectType: to.Ptr("ScheduleBasedBackupCriteria"),
 	// 										ScheduleTimes: []*time.Time{
-	// 											to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00Z"); return t}()),
+	// 											to.Ptr(time.Date(2019, time.March, 1, 13, 0, 0, 0, time.UTC)),
 	// 										},
 	// 									},
 	// 								},
@@ -431,7 +431,7 @@ func ExampleBackupPoliciesClient_NewListPager() {
 		// 												},
 		// 												ObjectType: to.Ptr("ScheduleBasedBackupCriteria"),
 		// 												ScheduleTimes: []*time.Time{
-		// 													to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00Z"); return t}()),
+		// 													to.Ptr(time.Date(2019, time.March, 1, 13, 0, 0, 0, time.UTC)),
 		// 												},
 		// 											},
 		// 										},

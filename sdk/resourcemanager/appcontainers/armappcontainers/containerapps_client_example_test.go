@@ -2086,7 +2086,7 @@ func ExampleContainerAppsClient_GetAuthToken() {
 	// 		ID: to.Ptr("/subscriptions/651f8027-33e8-4ec4-97b4-f6e9f3dc8744/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0"),
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armappcontainers.ContainerAppAuthTokenProperties{
-	// 			Expires: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-14T19:22:50.3080223Z"); return t}()),
+	// 			Expires: to.Ptr(time.Date(2022, time.July, 14, 19, 22, 50, 308022300, time.UTC)),
 	// 			Token: to.Ptr("testToken"),
 	// 		},
 	// 	},

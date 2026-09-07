@@ -30,6 +30,9 @@ type KeysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*KeysClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *KeysClient) ListByAutomationAccount(ctx context.Context, resourceG
 	if err != nil {
 		return KeysClientListByAutomationAccountResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return KeysClientListByAutomationAccountResponse{}, err
-	}
-	resp, err := client.listByAutomationAccountHandleResponse(httpResp)
-	return resp, err
+	return client.listByAutomationAccountHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
 func (client *KeysClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, _ *KeysClientListByAutomationAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/listKeys"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -96,8 +94,11 @@ func (client *KeysClient) listByAutomationAccountCreateRequest(ctx context.Conte
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *KeysClient) listByAutomationAccountHandleResponse(resp *http.Response) (KeysClientListByAutomationAccountResponse, error) {
+func (client *KeysClient) listByAutomationAccountHandleResponse(resp *http.Response, successCodes ...int) (KeysClientListByAutomationAccountResponse, error) {
 	result := KeysClientListByAutomationAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyListResult); err != nil {
 		return KeysClientListByAutomationAccountResponse{}, err
 	}

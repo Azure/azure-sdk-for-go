@@ -54,12 +54,7 @@ func (client *GetPrivateDNSZoneSuffixClient) Execute(ctx context.Context, option
 	if err != nil {
 		return GetPrivateDNSZoneSuffixClientExecuteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetPrivateDNSZoneSuffixClientExecuteResponse{}, err
-	}
-	resp, err := client.executeHandleResponse(httpResp)
-	return resp, err
+	return client.executeHandleResponse(httpResp, http.StatusOK)
 }
 
 // executeCreateRequest creates the Execute request.
@@ -77,8 +72,11 @@ func (client *GetPrivateDNSZoneSuffixClient) executeCreateRequest(ctx context.Co
 }
 
 // executeHandleResponse handles the Execute response.
-func (client *GetPrivateDNSZoneSuffixClient) executeHandleResponse(resp *http.Response) (GetPrivateDNSZoneSuffixClientExecuteResponse, error) {
+func (client *GetPrivateDNSZoneSuffixClient) executeHandleResponse(resp *http.Response, successCodes ...int) (GetPrivateDNSZoneSuffixClientExecuteResponse, error) {
 	result := GetPrivateDNSZoneSuffixClientExecuteResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetPrivateDNSZoneSuffixResponse); err != nil {
 		return GetPrivateDNSZoneSuffixClientExecuteResponse{}, err
 	}

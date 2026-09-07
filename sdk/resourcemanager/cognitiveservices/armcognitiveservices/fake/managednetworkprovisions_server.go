@@ -88,7 +88,7 @@ func (m *ManagedNetworkProvisionsServerTransport) dispatchBeginProvisionManagedN
 	}
 	beginProvisionManagedNetwork := m.beginProvisionManagedNetwork.get(req)
 	if beginProvisionManagedNetwork == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managedNetworks/(?P<managedNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/provision`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedNetworks/(?P<managedNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/provision`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

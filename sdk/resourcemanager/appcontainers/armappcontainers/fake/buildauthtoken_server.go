@@ -81,7 +81,7 @@ func (b *BuildAuthTokenServerTransport) dispatchList(req *http.Request) (*http.R
 	if b.srv.List == nil {
 		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/builders/(?P<builderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<buildName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listAuthToken`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/builders/(?P<builderName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<buildName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listAuthToken`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

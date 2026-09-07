@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/ExpressRoutePortCreate.json
+// Generated from example definition: 2025-09-01/ExpressRoutePortCreate.json
 func ExampleExpressRoutePortsClient_BeginCreateOrUpdate_expressRoutePortCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleExpressRoutePortsClient_BeginCreateOrUpdate_expressRoutePortCreate()
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRoutePortUpdateLink.json
+// Generated from example definition: 2025-09-01/ExpressRoutePortUpdateLink.json
 func ExampleExpressRoutePortsClient_BeginCreateOrUpdate_expressRoutePortUpdateLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,7 +182,7 @@ func ExampleExpressRoutePortsClient_BeginCreateOrUpdate_expressRoutePortUpdateLi
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRoutePortDelete.json
+// Generated from example definition: 2025-09-01/ExpressRoutePortDelete.json
 func ExampleExpressRoutePortsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleExpressRoutePortsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/GenerateExpressRoutePortsLOA.json
+// Generated from example definition: 2025-09-01/GenerateExpressRoutePortsLOA.json
 func ExampleExpressRoutePortsClient_GenerateLOA() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,7 +235,7 @@ func ExampleExpressRoutePortsClient_GenerateLOA() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRoutePortGet.json
+// Generated from example definition: 2025-09-01/ExpressRoutePortGet.json
 func ExampleExpressRoutePortsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -306,7 +306,7 @@ func ExampleExpressRoutePortsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRoutePortList.json
+// Generated from example definition: 2025-09-01/ExpressRoutePortList.json
 func ExampleExpressRoutePortsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -386,7 +386,7 @@ func ExampleExpressRoutePortsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/ExpressRoutePortListByResourceGroup.json
+// Generated from example definition: 2025-09-01/ExpressRoutePortListByResourceGroup.json
 func ExampleExpressRoutePortsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -466,7 +466,7 @@ func ExampleExpressRoutePortsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/ExpressRoutePortUpdateTags.json
+// Generated from example definition: 2025-09-01/ExpressRoutePortUpdateTags.json
 func ExampleExpressRoutePortsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

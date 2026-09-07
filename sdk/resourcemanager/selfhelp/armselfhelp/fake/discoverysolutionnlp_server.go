@@ -117,7 +117,7 @@ func (d *DiscoverySolutionNLPServerTransport) dispatchDiscoverSolutionsBySubscri
 	if d.srv.DiscoverSolutionsBySubscription == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DiscoverSolutionsBySubscription not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Help/discoverSolutions`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Help/discoverSolutions`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

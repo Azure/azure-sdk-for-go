@@ -12,10 +12,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v4"
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // SKUsServer is a fake server for instances of the armproviderhub.SKUsClient type.
@@ -120,9 +121,7 @@ func (s *SKUsServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (s *SKUsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -168,10 +167,7 @@ func (s *SKUsServerTransport) dispatchToMethodFake(req *http.Request, method str
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -186,7 +182,7 @@ func (s *SKUsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.R
 	if s.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus/(?P<sku>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus/(?P<sku>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -213,7 +209,7 @@ func (s *SKUsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SKUResource, req)
@@ -227,7 +223,7 @@ func (s *SKUsServerTransport) dispatchCreateOrUpdateNestedResourceTypeFirst(req 
 	if s.srv.CreateOrUpdateNestedResourceTypeFirst == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateNestedResourceTypeFirst not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus/(?P<sku>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus/(?P<sku>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -258,7 +254,7 @@ func (s *SKUsServerTransport) dispatchCreateOrUpdateNestedResourceTypeFirst(req 
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SKUResource, req)
@@ -272,7 +268,7 @@ func (s *SKUsServerTransport) dispatchCreateOrUpdateNestedResourceTypeSecond(req
 	if s.srv.CreateOrUpdateNestedResourceTypeSecond == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateNestedResourceTypeSecond not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeSecond>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus/(?P<sku>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeSecond>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus/(?P<sku>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -307,7 +303,7 @@ func (s *SKUsServerTransport) dispatchCreateOrUpdateNestedResourceTypeSecond(req
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SKUResource, req)
@@ -321,7 +317,7 @@ func (s *SKUsServerTransport) dispatchCreateOrUpdateNestedResourceTypeThird(req 
 	if s.srv.CreateOrUpdateNestedResourceTypeThird == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateNestedResourceTypeThird not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeSecond>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeThird>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus/(?P<sku>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeSecond>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeThird>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus/(?P<sku>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 8 {
@@ -360,7 +356,7 @@ func (s *SKUsServerTransport) dispatchCreateOrUpdateNestedResourceTypeThird(req 
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SKUResource, req)
@@ -374,7 +370,7 @@ func (s *SKUsServerTransport) dispatchDelete(req *http.Request) (*http.Response,
 	if s.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus/(?P<sku>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus/(?P<sku>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -397,7 +393,7 @@ func (s *SKUsServerTransport) dispatchDelete(req *http.Request) (*http.Response,
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -411,7 +407,7 @@ func (s *SKUsServerTransport) dispatchDeleteNestedResourceTypeFirst(req *http.Re
 	if s.srv.DeleteNestedResourceTypeFirst == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteNestedResourceTypeFirst not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus/(?P<sku>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus/(?P<sku>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -438,7 +434,7 @@ func (s *SKUsServerTransport) dispatchDeleteNestedResourceTypeFirst(req *http.Re
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -452,7 +448,7 @@ func (s *SKUsServerTransport) dispatchDeleteNestedResourceTypeSecond(req *http.R
 	if s.srv.DeleteNestedResourceTypeSecond == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteNestedResourceTypeSecond not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeSecond>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus/(?P<sku>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeSecond>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus/(?P<sku>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -483,7 +479,7 @@ func (s *SKUsServerTransport) dispatchDeleteNestedResourceTypeSecond(req *http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -497,7 +493,7 @@ func (s *SKUsServerTransport) dispatchDeleteNestedResourceTypeThird(req *http.Re
 	if s.srv.DeleteNestedResourceTypeThird == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteNestedResourceTypeThird not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeSecond>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeThird>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus/(?P<sku>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeSecond>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeThird>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus/(?P<sku>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 8 {
@@ -532,7 +528,7 @@ func (s *SKUsServerTransport) dispatchDeleteNestedResourceTypeThird(req *http.Re
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -546,7 +542,7 @@ func (s *SKUsServerTransport) dispatchGet(req *http.Request) (*http.Response, er
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus/(?P<sku>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus/(?P<sku>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -569,7 +565,7 @@ func (s *SKUsServerTransport) dispatchGet(req *http.Request) (*http.Response, er
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SKUResource, req)
@@ -583,7 +579,7 @@ func (s *SKUsServerTransport) dispatchGetNestedResourceTypeFirst(req *http.Reque
 	if s.srv.GetNestedResourceTypeFirst == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetNestedResourceTypeFirst not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus/(?P<sku>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus/(?P<sku>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -610,7 +606,7 @@ func (s *SKUsServerTransport) dispatchGetNestedResourceTypeFirst(req *http.Reque
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SKUResource, req)
@@ -624,7 +620,7 @@ func (s *SKUsServerTransport) dispatchGetNestedResourceTypeSecond(req *http.Requ
 	if s.srv.GetNestedResourceTypeSecond == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetNestedResourceTypeSecond not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeSecond>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus/(?P<sku>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeSecond>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus/(?P<sku>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -655,7 +651,7 @@ func (s *SKUsServerTransport) dispatchGetNestedResourceTypeSecond(req *http.Requ
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SKUResource, req)
@@ -669,7 +665,7 @@ func (s *SKUsServerTransport) dispatchGetNestedResourceTypeThird(req *http.Reque
 	if s.srv.GetNestedResourceTypeThird == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetNestedResourceTypeThird not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeSecond>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeThird>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus/(?P<sku>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeSecond>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeThird>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus/(?P<sku>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 8 {
@@ -704,7 +700,7 @@ func (s *SKUsServerTransport) dispatchGetNestedResourceTypeThird(req *http.Reque
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SKUResource, req)
@@ -720,7 +716,7 @@ func (s *SKUsServerTransport) dispatchNewListByResourceTypeRegistrationsPager(re
 	}
 	newListByResourceTypeRegistrationsPager := s.newListByResourceTypeRegistrationsPager.get(req)
 	if newListByResourceTypeRegistrationsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -745,7 +741,7 @@ func (s *SKUsServerTransport) dispatchNewListByResourceTypeRegistrationsPager(re
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListByResourceTypeRegistrationsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -761,7 +757,7 @@ func (s *SKUsServerTransport) dispatchNewListByResourceTypeRegistrationsNestedRe
 	}
 	newListByResourceTypeRegistrationsNestedResourceTypeFirstPager := s.newListByResourceTypeRegistrationsNestedResourceTypeFirstPager.get(req)
 	if newListByResourceTypeRegistrationsNestedResourceTypeFirstPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -790,7 +786,7 @@ func (s *SKUsServerTransport) dispatchNewListByResourceTypeRegistrationsNestedRe
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListByResourceTypeRegistrationsNestedResourceTypeFirstPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -806,7 +802,7 @@ func (s *SKUsServerTransport) dispatchNewListByResourceTypeRegistrationsNestedRe
 	}
 	newListByResourceTypeRegistrationsNestedResourceTypeSecondPager := s.newListByResourceTypeRegistrationsNestedResourceTypeSecondPager.get(req)
 	if newListByResourceTypeRegistrationsNestedResourceTypeSecondPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeSecond>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeSecond>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -839,7 +835,7 @@ func (s *SKUsServerTransport) dispatchNewListByResourceTypeRegistrationsNestedRe
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListByResourceTypeRegistrationsNestedResourceTypeSecondPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -855,7 +851,7 @@ func (s *SKUsServerTransport) dispatchNewListByResourceTypeRegistrationsNestedRe
 	}
 	newListByResourceTypeRegistrationsNestedResourceTypeThirdPager := s.newListByResourceTypeRegistrationsNestedResourceTypeThirdPager.get(req)
 	if newListByResourceTypeRegistrationsNestedResourceTypeThirdPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeSecond>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcetypeRegistrations/(?P<nestedResourceTypeThird>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeSecond>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeThird>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -892,7 +888,7 @@ func (s *SKUsServerTransport) dispatchNewListByResourceTypeRegistrationsNestedRe
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListByResourceTypeRegistrationsNestedResourceTypeThirdPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

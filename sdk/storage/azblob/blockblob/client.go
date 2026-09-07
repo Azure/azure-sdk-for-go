@@ -11,7 +11,6 @@ import (
 	"io"
 	"math"
 	"os"
-	"reflect"
 	"sync"
 	"time"
 
@@ -549,8 +548,7 @@ func (bb *Client) UploadBuffer(ctx context.Context, buffer []byte, o *UploadBuff
 	// If user attempts to pass in their own pre-computed checksum, errors out.
 	// Structured message CRC64 is allowed because it computes per-block checksums on-the-fly.
 	if uploadOptions.TransactionalValidation != nil &&
-		reflect.TypeOf(uploadOptions.TransactionalValidation).Kind() != reflect.Func &&
-		exported.GetStructuredBodyType(uploadOptions.TransactionalValidation) == "" {
+		!exported.SupportsMultiBlock(uploadOptions.TransactionalValidation) {
 		return UploadBufferResponse{}, bloberror.UnsupportedChecksum
 	}
 
@@ -571,8 +569,7 @@ func (bb *Client) UploadFile(ctx context.Context, file *os.File, o *UploadFileOp
 	// If user attempts to pass in their own pre-computed checksum, errors out.
 	// Structured message CRC64 is allowed because it computes per-block checksums on-the-fly.
 	if uploadOptions.TransactionalValidation != nil &&
-		reflect.TypeOf(uploadOptions.TransactionalValidation).Kind() != reflect.Func &&
-		exported.GetStructuredBodyType(uploadOptions.TransactionalValidation) == "" {
+		!exported.SupportsMultiBlock(uploadOptions.TransactionalValidation) {
 		return UploadFileResponse{}, bloberror.UnsupportedChecksum
 	}
 
@@ -589,8 +586,7 @@ func (bb *Client) UploadStream(ctx context.Context, body io.Reader, o *UploadStr
 	// If user attempts to pass in their own pre-computed checksum, errors out.
 	// Structured message CRC64 is allowed because it computes per-block checksums on-the-fly.
 	if o.TransactionalValidation != nil &&
-		reflect.TypeOf(o.TransactionalValidation).Kind() != reflect.Func &&
-		exported.GetStructuredBodyType(o.TransactionalValidation) == "" {
+		!exported.SupportsMultiBlock(o.TransactionalValidation) {
 		return UploadStreamResponse{}, bloberror.UnsupportedChecksum
 	}
 

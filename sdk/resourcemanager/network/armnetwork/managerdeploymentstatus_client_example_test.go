@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/NetworkManagerDeploymentStatusList.json
+// Generated from example definition: 2025-09-01/NetworkManagerDeploymentStatusList.json
 func ExampleManagerDeploymentStatusClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleManagerDeploymentStatusClient_List() {
 	// 		SkipToken: to.Ptr("NextFakeSkipTokenCode"),
 	// 		Value: []*armnetwork.ManagerDeploymentStatus{
 	// 			{
-	// 				CommitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-26T06:58:50.883Z"); return t}()),
+	// 				CommitTime: to.Ptr(time.Date(2021, time.January, 26, 6, 58, 50, 883000000, time.UTC)),
 	// 				ConfigurationIDs: []*string{
 	// 					to.Ptr("SecConfig1"),
 	// 					to.Ptr("SecConfig2"),
@@ -56,7 +56,7 @@ func ExampleManagerDeploymentStatusClient_List() {
 	// 				Region: to.Ptr("eastus"),
 	// 			},
 	// 			{
-	// 				CommitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-26T06:58:50.883Z"); return t}()),
+	// 				CommitTime: to.Ptr(time.Date(2021, time.January, 26, 6, 58, 50, 883000000, time.UTC)),
 	// 				ConfigurationIDs: []*string{
 	// 					to.Ptr("ConnConfig1"),
 	// 					to.Ptr("ConnConfig2"),

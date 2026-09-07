@@ -72,6 +72,14 @@ func (c *ClientFactory) NewAgentDeploymentsClient() *AgentDeploymentsClient {
 	}
 }
 
+// NewArcDeploymentsClient creates a new instance of ArcDeploymentsClient.
+func (c *ClientFactory) NewArcDeploymentsClient() *ArcDeploymentsClient {
+	return &ArcDeploymentsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewCommitmentPlansClient creates a new instance of CommitmentPlansClient.
 func (c *ClientFactory) NewCommitmentPlansClient() *CommitmentPlansClient {
 	return &CommitmentPlansClient{

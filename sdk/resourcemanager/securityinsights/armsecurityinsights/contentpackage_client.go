@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultContentPackageClientVersion string = "2025-07-01-preview"
-
 // ContentPackageClient contains the methods for the ContentPackage group.
 // Don't use this type directly, use NewContentPackageClient() instead.
 //
@@ -32,6 +30,9 @@ type ContentPackageClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewContentPackageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContentPackageClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,19 +65,14 @@ func (client *ContentPackageClient) Install(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ContentPackageClientInstallResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ContentPackageClientInstallResponse{}, err
-	}
-	resp, err := client.installHandleResponse(httpResp)
-	return resp, err
+	return client.installHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // installCreateRequest creates the Install request.
 func (client *ContentPackageClient) installCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, packageID string, packageInstallationProperties PackageModel, _ *ContentPackageClientInstallOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/contentPackages/{packageId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -96,7 +92,7 @@ func (client *ContentPackageClient) installCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultContentPackageClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -107,8 +103,11 @@ func (client *ContentPackageClient) installCreateRequest(ctx context.Context, re
 }
 
 // installHandleResponse handles the Install response.
-func (client *ContentPackageClient) installHandleResponse(resp *http.Response) (ContentPackageClientInstallResponse, error) {
+func (client *ContentPackageClient) installHandleResponse(resp *http.Response, successCodes ...int) (ContentPackageClientInstallResponse, error) {
 	result := ContentPackageClientInstallResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PackageModel); err != nil {
 		return ContentPackageClientInstallResponse{}, err
 	}
@@ -137,8 +136,7 @@ func (client *ContentPackageClient) Uninstall(ctx context.Context, resourceGroup
 		return ContentPackageClientUninstallResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ContentPackageClientUninstallResponse{}, err
+		return ContentPackageClientUninstallResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ContentPackageClientUninstallResponse{}, nil
 }
@@ -147,7 +145,7 @@ func (client *ContentPackageClient) Uninstall(ctx context.Context, resourceGroup
 func (client *ContentPackageClient) uninstallCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, packageID string, _ *ContentPackageClientUninstallOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/contentPackages/{packageId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -167,7 +165,7 @@ func (client *ContentPackageClient) uninstallCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultContentPackageClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

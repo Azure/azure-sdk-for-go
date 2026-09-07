@@ -118,10 +118,10 @@ func ExampleRoleMappingsClient_CreateOrUpdate_roleMappingsCreateOrUpdateMaximumS
 	// 		SystemData: &armcommvaultcontentstore.SystemData{
 	// 			CreatedBy: to.Ptr("user@example.com"),
 	// 			CreatedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-22T10:17:03.241Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 22, 10, 17, 3, 241000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@example.com"),
 	// 			LastModifiedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-22T10:17:03.241Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 22, 10, 17, 3, 241000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -183,10 +183,10 @@ func ExampleRoleMappingsClient_CreateOrUpdate_roleMappingsCreateOrUpdateMinimumS
 	// 		SystemData: &armcommvaultcontentstore.SystemData{
 	// 			CreatedBy: to.Ptr("user@example.com"),
 	// 			CreatedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-22T10:17:03.241Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 22, 10, 17, 3, 241000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@example.com"),
 	// 			LastModifiedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-22T10:17:03.241Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 22, 10, 17, 3, 241000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -265,10 +265,10 @@ func ExampleRoleMappingsClient_Get_roleMappingsGetMaximumSetGeneratedByMaximumSe
 	// 		SystemData: &armcommvaultcontentstore.SystemData{
 	// 			CreatedBy: to.Ptr("user@example.com"),
 	// 			CreatedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-22T10:17:03.241Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 22, 10, 17, 3, 241000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@example.com"),
 	// 			LastModifiedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-22T10:17:03.241Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 22, 10, 17, 3, 241000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -315,10 +315,10 @@ func ExampleRoleMappingsClient_Get_roleMappingsGetMinimumSetGetRoleMappingsWithS
 	// 		SystemData: &armcommvaultcontentstore.SystemData{
 	// 			CreatedBy: to.Ptr("user@example.com"),
 	// 			CreatedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-22T10:17:03.241Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 22, 10, 17, 3, 241000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@example.com"),
 	// 			LastModifiedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-22T10:17:03.241Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 22, 10, 17, 3, 241000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -381,10 +381,10 @@ func ExampleRoleMappingsClient_NewListPager_roleMappingsList() {
 		// 				SystemData: &armcommvaultcontentstore.SystemData{
 		// 					CreatedBy: to.Ptr("user@example.com"),
 		// 					CreatedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-22T10:17:03.241Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.May, 22, 10, 17, 3, 241000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@example.com"),
 		// 					LastModifiedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-22T10:17:03.241Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.May, 22, 10, 17, 3, 241000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -440,10 +440,10 @@ func ExampleRoleMappingsClient_NewListPager_roleMappingsListMinimumSetListRoleMa
 		// 				SystemData: &armcommvaultcontentstore.SystemData{
 		// 					CreatedBy: to.Ptr("user@example.com"),
 		// 					CreatedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-22T10:17:03.241Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.May, 22, 10, 17, 3, 241000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@example.com"),
 		// 					LastModifiedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-22T10:17:03.241Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.May, 22, 10, 17, 3, 241000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

@@ -7,11 +7,11 @@ package armnetwork_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/LoadBalancerNetworkInterfaceListSimple.json
+// Generated from example definition: 2025-09-01/LoadBalancerNetworkInterfaceListSimple.json
 func ExampleLoadBalancerNetworkInterfacesClient_NewListPager_loadBalancerNetworkInterfaceListSimple() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleLoadBalancerNetworkInterfacesClient_NewListPager_loadBalancerNetwork
 	}
 }
 
-// Generated from example definition: 2025-07-01/LoadBalancerNetworkInterfaceListVmss.json
+// Generated from example definition: 2025-09-01/LoadBalancerNetworkInterfaceListVmss.json
 func ExampleLoadBalancerNetworkInterfacesClient_NewListPager_loadBalancerNetworkInterfaceListVmss() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

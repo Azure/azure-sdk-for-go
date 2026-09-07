@@ -46,7 +46,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 					AvailabilityZone: to.Ptr("1"),
 		// 					Backup: &armmysqlflexibleservers.Backup{
 		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-24T08:19:18.00+00:00"); return t}()),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 24, 8, 19, 18, 0, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 		// 					},
 		// 					FullVersion: to.Ptr("5.7.44"),
@@ -98,7 +98,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 					AvailabilityZone: to.Ptr("1"),
 		// 					Backup: &armmysqlflexibleservers.Backup{
 		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-23T08:19:18.00+00:00"); return t}()),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 23, 8, 19, 18, 0, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 		// 					},
 		// 					FullVersion: to.Ptr("5.7.44"),

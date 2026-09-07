@@ -5,7 +5,7 @@
 package armnetworkcloud
 
 const (
-	version20260501Preview string = "2026-05-01-preview"
+	version20260701 string = "2026-07-01"
 )
 
 // AccessBridgeAllowedName - The allowed names for the access bridge.
@@ -401,41 +401,41 @@ func PossibleBareMetalMachineKeySetUserSetupStatusValues() []BareMetalMachineKey
 	}
 }
 
-// BareMetalMachineMetricsConfigurationStatusLogLevel - The log level for the monitoring configuration status of the bare
+// BareMetalMachineMonitoringConfigurationStatusLogLevel - The log level for the monitoring configuration status of the bare
 // metal machine.
-type BareMetalMachineMetricsConfigurationStatusLogLevel string
+type BareMetalMachineMonitoringConfigurationStatusLogLevel string
 
 const (
-	// BareMetalMachineMetricsConfigurationStatusLogLevelDefault - Logs are emitted at the default log level.
-	BareMetalMachineMetricsConfigurationStatusLogLevelDefault BareMetalMachineMetricsConfigurationStatusLogLevel = "Default"
-	// BareMetalMachineMetricsConfigurationStatusLogLevelNexus - Logs are emitted at the Nexus log level.
-	BareMetalMachineMetricsConfigurationStatusLogLevelNexus BareMetalMachineMetricsConfigurationStatusLogLevel = "Nexus"
+	// BareMetalMachineMonitoringConfigurationStatusLogLevelDefault - Logs are emitted at the default log level.
+	BareMetalMachineMonitoringConfigurationStatusLogLevelDefault BareMetalMachineMonitoringConfigurationStatusLogLevel = "Default"
+	// BareMetalMachineMonitoringConfigurationStatusLogLevelNexus - Logs are emitted at the Nexus log level.
+	BareMetalMachineMonitoringConfigurationStatusLogLevelNexus BareMetalMachineMonitoringConfigurationStatusLogLevel = "Nexus"
 )
 
-// PossibleBareMetalMachineMetricsConfigurationStatusLogLevelValues returns the possible values for the BareMetalMachineMetricsConfigurationStatusLogLevel const type.
-func PossibleBareMetalMachineMetricsConfigurationStatusLogLevelValues() []BareMetalMachineMetricsConfigurationStatusLogLevel {
-	return []BareMetalMachineMetricsConfigurationStatusLogLevel{
-		BareMetalMachineMetricsConfigurationStatusLogLevelDefault,
-		BareMetalMachineMetricsConfigurationStatusLogLevelNexus,
+// PossibleBareMetalMachineMonitoringConfigurationStatusLogLevelValues returns the possible values for the BareMetalMachineMonitoringConfigurationStatusLogLevel const type.
+func PossibleBareMetalMachineMonitoringConfigurationStatusLogLevelValues() []BareMetalMachineMonitoringConfigurationStatusLogLevel {
+	return []BareMetalMachineMonitoringConfigurationStatusLogLevel{
+		BareMetalMachineMonitoringConfigurationStatusLogLevelDefault,
+		BareMetalMachineMonitoringConfigurationStatusLogLevelNexus,
 	}
 }
 
-// BareMetalMachineMetricsConfigurationStatusMetricsLevel - The metrics level for the monitoring configuration status of the
-// bare metal machine.
-type BareMetalMachineMetricsConfigurationStatusMetricsLevel string
+// BareMetalMachineMonitoringConfigurationStatusMetricsLevel - The metrics level for the monitoring configuration status of
+// the bare metal machine.
+type BareMetalMachineMonitoringConfigurationStatusMetricsLevel string
 
 const (
-	// BareMetalMachineMetricsConfigurationStatusMetricsLevelDefault - Metrics are emitted at the default metrics level.
-	BareMetalMachineMetricsConfigurationStatusMetricsLevelDefault BareMetalMachineMetricsConfigurationStatusMetricsLevel = "Default"
-	// BareMetalMachineMetricsConfigurationStatusMetricsLevelNexus - Metrics are emitted at the Nexus metrics level.
-	BareMetalMachineMetricsConfigurationStatusMetricsLevelNexus BareMetalMachineMetricsConfigurationStatusMetricsLevel = "Nexus"
+	// BareMetalMachineMonitoringConfigurationStatusMetricsLevelDefault - Metrics are emitted at the default metrics level.
+	BareMetalMachineMonitoringConfigurationStatusMetricsLevelDefault BareMetalMachineMonitoringConfigurationStatusMetricsLevel = "Default"
+	// BareMetalMachineMonitoringConfigurationStatusMetricsLevelNexus - Metrics are emitted at the Nexus metrics level.
+	BareMetalMachineMonitoringConfigurationStatusMetricsLevelNexus BareMetalMachineMonitoringConfigurationStatusMetricsLevel = "Nexus"
 )
 
-// PossibleBareMetalMachineMetricsConfigurationStatusMetricsLevelValues returns the possible values for the BareMetalMachineMetricsConfigurationStatusMetricsLevel const type.
-func PossibleBareMetalMachineMetricsConfigurationStatusMetricsLevelValues() []BareMetalMachineMetricsConfigurationStatusMetricsLevel {
-	return []BareMetalMachineMetricsConfigurationStatusMetricsLevel{
-		BareMetalMachineMetricsConfigurationStatusMetricsLevelDefault,
-		BareMetalMachineMetricsConfigurationStatusMetricsLevelNexus,
+// PossibleBareMetalMachineMonitoringConfigurationStatusMetricsLevelValues returns the possible values for the BareMetalMachineMonitoringConfigurationStatusMetricsLevel const type.
+func PossibleBareMetalMachineMonitoringConfigurationStatusMetricsLevelValues() []BareMetalMachineMonitoringConfigurationStatusMetricsLevel {
+	return []BareMetalMachineMonitoringConfigurationStatusMetricsLevel{
+		BareMetalMachineMonitoringConfigurationStatusMetricsLevelDefault,
+		BareMetalMachineMonitoringConfigurationStatusMetricsLevelNexus,
 	}
 }
 
@@ -2351,41 +2351,41 @@ func PossibleStorageApplianceDetailedStatusValues() []StorageApplianceDetailedSt
 	}
 }
 
-// StorageApplianceMetricsConfigurationStatusLogLevel - The log level for the monitoring configuration status of the storage
+// StorageApplianceMonitoringConfigurationStatusLogLevel - The log level for the monitoring configuration status of the storage
 // appliance.
-type StorageApplianceMetricsConfigurationStatusLogLevel string
+type StorageApplianceMonitoringConfigurationStatusLogLevel string
 
 const (
-	// StorageApplianceMetricsConfigurationStatusLogLevelDefault - Logs are emitted at the default log level.
-	StorageApplianceMetricsConfigurationStatusLogLevelDefault StorageApplianceMetricsConfigurationStatusLogLevel = "Default"
-	// StorageApplianceMetricsConfigurationStatusLogLevelNexus - Logs are emitted at the Nexus log level.
-	StorageApplianceMetricsConfigurationStatusLogLevelNexus StorageApplianceMetricsConfigurationStatusLogLevel = "Nexus"
+	// StorageApplianceMonitoringConfigurationStatusLogLevelDefault - Logs are emitted at the default log level.
+	StorageApplianceMonitoringConfigurationStatusLogLevelDefault StorageApplianceMonitoringConfigurationStatusLogLevel = "Default"
+	// StorageApplianceMonitoringConfigurationStatusLogLevelNexus - Logs are emitted at the Nexus log level.
+	StorageApplianceMonitoringConfigurationStatusLogLevelNexus StorageApplianceMonitoringConfigurationStatusLogLevel = "Nexus"
 )
 
-// PossibleStorageApplianceMetricsConfigurationStatusLogLevelValues returns the possible values for the StorageApplianceMetricsConfigurationStatusLogLevel const type.
-func PossibleStorageApplianceMetricsConfigurationStatusLogLevelValues() []StorageApplianceMetricsConfigurationStatusLogLevel {
-	return []StorageApplianceMetricsConfigurationStatusLogLevel{
-		StorageApplianceMetricsConfigurationStatusLogLevelDefault,
-		StorageApplianceMetricsConfigurationStatusLogLevelNexus,
+// PossibleStorageApplianceMonitoringConfigurationStatusLogLevelValues returns the possible values for the StorageApplianceMonitoringConfigurationStatusLogLevel const type.
+func PossibleStorageApplianceMonitoringConfigurationStatusLogLevelValues() []StorageApplianceMonitoringConfigurationStatusLogLevel {
+	return []StorageApplianceMonitoringConfigurationStatusLogLevel{
+		StorageApplianceMonitoringConfigurationStatusLogLevelDefault,
+		StorageApplianceMonitoringConfigurationStatusLogLevelNexus,
 	}
 }
 
-// StorageApplianceMetricsConfigurationStatusMetricsLevel - The metrics level for the monitoring configuration status of the
-// storage appliance.
-type StorageApplianceMetricsConfigurationStatusMetricsLevel string
+// StorageApplianceMonitoringConfigurationStatusMetricsLevel - The metrics level for the monitoring configuration status of
+// the storage appliance.
+type StorageApplianceMonitoringConfigurationStatusMetricsLevel string
 
 const (
-	// StorageApplianceMetricsConfigurationStatusMetricsLevelDefault - Metrics are emitted at the default metrics level.
-	StorageApplianceMetricsConfigurationStatusMetricsLevelDefault StorageApplianceMetricsConfigurationStatusMetricsLevel = "Default"
-	// StorageApplianceMetricsConfigurationStatusMetricsLevelNexus - Metrics are emitted at the Nexus metrics level.
-	StorageApplianceMetricsConfigurationStatusMetricsLevelNexus StorageApplianceMetricsConfigurationStatusMetricsLevel = "Nexus"
+	// StorageApplianceMonitoringConfigurationStatusMetricsLevelDefault - Metrics are emitted at the default metrics level.
+	StorageApplianceMonitoringConfigurationStatusMetricsLevelDefault StorageApplianceMonitoringConfigurationStatusMetricsLevel = "Default"
+	// StorageApplianceMonitoringConfigurationStatusMetricsLevelNexus - Metrics are emitted at the Nexus metrics level.
+	StorageApplianceMonitoringConfigurationStatusMetricsLevelNexus StorageApplianceMonitoringConfigurationStatusMetricsLevel = "Nexus"
 )
 
-// PossibleStorageApplianceMetricsConfigurationStatusMetricsLevelValues returns the possible values for the StorageApplianceMetricsConfigurationStatusMetricsLevel const type.
-func PossibleStorageApplianceMetricsConfigurationStatusMetricsLevelValues() []StorageApplianceMetricsConfigurationStatusMetricsLevel {
-	return []StorageApplianceMetricsConfigurationStatusMetricsLevel{
-		StorageApplianceMetricsConfigurationStatusMetricsLevelDefault,
-		StorageApplianceMetricsConfigurationStatusMetricsLevelNexus,
+// PossibleStorageApplianceMonitoringConfigurationStatusMetricsLevelValues returns the possible values for the StorageApplianceMonitoringConfigurationStatusMetricsLevel const type.
+func PossibleStorageApplianceMonitoringConfigurationStatusMetricsLevelValues() []StorageApplianceMonitoringConfigurationStatusMetricsLevel {
+	return []StorageApplianceMonitoringConfigurationStatusMetricsLevel{
+		StorageApplianceMonitoringConfigurationStatusMetricsLevelDefault,
+		StorageApplianceMonitoringConfigurationStatusMetricsLevelNexus,
 	}
 }
 

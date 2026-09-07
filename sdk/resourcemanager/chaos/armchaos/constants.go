@@ -5,7 +5,7 @@
 package armchaos
 
 const (
-	version20260501Preview string = "2026-05-01-preview"
+	version20260801Preview string = "2026-08-01-preview"
 )
 
 // ActionDependencyType - Enum for action dependency type.
@@ -86,6 +86,53 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// ConnectionKind - The kind of connection, indicating the actor type authorized to reach the Chaos Studio data plane for
+// the workspace and target.
+type ConnectionKind string
+
+const (
+	// ConnectionKindAksExtension - A connection backed by the Chaos AKS cluster extension.
+	ConnectionKindAksExtension ConnectionKind = "AksExtension"
+	// ConnectionKindChaosAgent - A connection backed by the Chaos agent installed on the target resource.
+	ConnectionKindChaosAgent ConnectionKind = "ChaosAgent"
+	// ConnectionKindCsfi - A connection backed by Cloud Service Fault Injection (CSFI).
+	ConnectionKindCsfi ConnectionKind = "Csfi"
+)
+
+// PossibleConnectionKindValues returns the possible values for the ConnectionKind const type.
+func PossibleConnectionKindValues() []ConnectionKind {
+	return []ConnectionKind{
+		ConnectionKindAksExtension,
+		ConnectionKindChaosAgent,
+		ConnectionKindCsfi,
+	}
+}
+
+// ConnectionStatus - The status of a connection.
+type ConnectionStatus string
+
+const (
+	// ConnectionStatusConnected - The connection is established and actively heartbeating.
+	ConnectionStatusConnected ConnectionStatus = "Connected"
+	// ConnectionStatusDisconnected - The connection's heartbeat has gone stale; heartbeats are no longer being received.
+	ConnectionStatusDisconnected ConnectionStatus = "Disconnected"
+	// ConnectionStatusPending - The connection has been created but is not yet sending heartbeats; the trust relationship is
+	// not yet established.
+	ConnectionStatusPending ConnectionStatus = "Pending"
+	// ConnectionStatusRevoked - The connection's credentials have been revoked.
+	ConnectionStatusRevoked ConnectionStatus = "Revoked"
+)
+
+// PossibleConnectionStatusValues returns the possible values for the ConnectionStatus const type.
+func PossibleConnectionStatusValues() []ConnectionStatus {
+	return []ConnectionStatus{
+		ConnectionStatusConnected,
+		ConnectionStatusDisconnected,
+		ConnectionStatusPending,
+		ConnectionStatusRevoked,
 	}
 }
 
@@ -558,6 +605,36 @@ const (
 func PossibleTargetReferenceTypeValues() []TargetReferenceType {
 	return []TargetReferenceType{
 		TargetReferenceTypeChaosTarget,
+	}
+}
+
+// WorkspaceDiscoveryStatus - Enum of the workspace discovery status.
+type WorkspaceDiscoveryStatus string
+
+const (
+	// WorkspaceDiscoveryStatusCanceled - The discovery was canceled.
+	WorkspaceDiscoveryStatusCanceled WorkspaceDiscoveryStatus = "Canceled"
+	// WorkspaceDiscoveryStatusFailed - The discovery failed.
+	WorkspaceDiscoveryStatusFailed WorkspaceDiscoveryStatus = "Failed"
+	// WorkspaceDiscoveryStatusInProgress - The discovery is in progress.
+	WorkspaceDiscoveryStatusInProgress WorkspaceDiscoveryStatus = "InProgress"
+	// WorkspaceDiscoveryStatusPending - The discovery is pending and has not started.
+	WorkspaceDiscoveryStatusPending WorkspaceDiscoveryStatus = "Pending"
+	// WorkspaceDiscoveryStatusQueued - The discovery has been accepted and is queued for execution.
+	WorkspaceDiscoveryStatusQueued WorkspaceDiscoveryStatus = "Queued"
+	// WorkspaceDiscoveryStatusSucceeded - The discovery completed successfully.
+	WorkspaceDiscoveryStatusSucceeded WorkspaceDiscoveryStatus = "Succeeded"
+)
+
+// PossibleWorkspaceDiscoveryStatusValues returns the possible values for the WorkspaceDiscoveryStatus const type.
+func PossibleWorkspaceDiscoveryStatusValues() []WorkspaceDiscoveryStatus {
+	return []WorkspaceDiscoveryStatus{
+		WorkspaceDiscoveryStatusCanceled,
+		WorkspaceDiscoveryStatusFailed,
+		WorkspaceDiscoveryStatusInProgress,
+		WorkspaceDiscoveryStatusPending,
+		WorkspaceDiscoveryStatusQueued,
+		WorkspaceDiscoveryStatusSucceeded,
 	}
 }
 

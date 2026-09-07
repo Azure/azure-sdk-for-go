@@ -44,11 +44,19 @@ type AccessPolicyAssignmentList struct {
 
 // AccessPolicyAssignmentProperties - Properties of Redis Enterprise database access policy assignment.
 type AccessPolicyAssignmentProperties struct {
-	// REQUIRED; Name of access policy under specific access policy assignment. Only "default" policy is supported for now.
-	AccessPolicyName *string
-
 	// REQUIRED; The user associated with the access policy.
 	User *AccessPolicyAssignmentPropertiesUser
+
+	// **Deprecated.** This property always returns "default". Use `accessString` to configure custom Redis ACL permissions instead.
+	AccessPolicyName *string
+
+	// The Redis ACL permissions string applied to this assignment, for example `+@read ~cache:*`. Defaults to `+@all ~*` if not
+	// specified.
+	AccessString *string
+
+	// READ-ONLY; Provisioning error details when the access string failed to apply (e.g., invalid ACL syntax). Null when provisioning
+	// succeeded.
+	ProvisioningError *AccessPolicyAssignmentProvisioningError
 
 	// READ-ONLY; Current provisioning status of the access policy assignment.
 	ProvisioningState *ProvisioningState
@@ -58,6 +66,18 @@ type AccessPolicyAssignmentProperties struct {
 type AccessPolicyAssignmentPropertiesUser struct {
 	// The object ID of the user.
 	ObjectID *string
+}
+
+// AccessPolicyAssignmentProvisioningError - Error details for access policy assignment provisioning failures.
+type AccessPolicyAssignmentProvisioningError struct {
+	// REQUIRED; Machine-readable error code (e.g., "InvalidAccessString").
+	Code *string
+
+	// REQUIRED; Human-readable error message describing the failure.
+	Message *string
+
+	// The property that caused the error (e.g., "properties.accessString").
+	Target *string
 }
 
 // AzureCacheForRedisMigrationProperties - Properties for Redis Enterprise migration operation for Azure Cache for Redis.
@@ -328,6 +348,11 @@ type DatabaseCreateProperties struct {
 	// Optional set of redis modules to enable in this database - modules can only be added at creation time.
 	Modules []*Module
 
+	// Specifies which keyspace events should trigger notifications. Default is an empty string, meaning this feature is disabled.
+	// When enabled, at least 'K' (keyspace events) or 'E' (keyevent events) must be present. For example, 'AKE' enables all standard
+	// events. See https://redis.io/docs/latest/develop/use/keyspace-notifications/ for the complete list of event types.
+	NotifyKeyspaceEvents *string
+
 	// Persistence settings
 	Persistence *Persistence
 
@@ -392,6 +417,11 @@ type DatabaseUpdateProperties struct {
 
 	// Optional set of redis modules to enable in this database - modules can only be added at creation time.
 	Modules []*Module
+
+	// Specifies which keyspace events should trigger notifications. Default is an empty string, meaning this feature is disabled.
+	// When enabled, at least 'K' (keyspace events) or 'E' (keyevent events) must be present. For example, 'AKE' enables all standard
+	// events. See https://redis.io/docs/latest/develop/use/keyspace-notifications/ for the complete list of event types.
+	NotifyKeyspaceEvents *string
 
 	// Persistence settings
 	Persistence *Persistence

@@ -146,6 +146,8 @@ type (
 		EnableExpress                       *bool               `xml:"EnableExpress,omitempty"`
 		CountDetails                        *CountDetails       `xml:"CountDetails,omitempty"`
 		SubscriptionCount                   *int32              `xml:"SubscriptionCount,omitempty"`
+		SQLFilterCount                      *int32              `xml:"SqlFilterCount,omitempty"`
+		CorrelationFilterCount              *int32              `xml:"CorrelationFilterCount,omitempty"`
 		MaxMessageSizeInKilobytes           *int64              `xml:"MaxMessageSizeInKilobytes,omitempty"`
 	}
 )

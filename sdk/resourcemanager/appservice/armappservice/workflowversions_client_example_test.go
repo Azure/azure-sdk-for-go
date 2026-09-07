@@ -36,8 +36,8 @@ func ExampleWorkflowVersionsClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-resource-group/providers/Microsoft.Web/sites/test-name/workflows/test-workflow/versions/08586676824806722526"),
 	// 		Location: to.Ptr("West US"),
 	// 		Properties: &armappservice.WorkflowVersionProperties{
-	// 			ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T22:54:54.3533634Z"); return t}()),
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-25T01:39:21.4365247Z"); return t}()),
+	// 			ChangedTime: to.Ptr(time.Date(2018, time.August, 9, 22, 54, 54, 353363400, time.UTC)),
+	// 			CreatedTime: to.Ptr(time.Date(2018, time.April, 25, 1, 39, 21, 436524700, time.UTC)),
 	// 			Definition: map[string]any{
 	// 				"$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
 	// 				"actions": map[string]any{
@@ -101,8 +101,8 @@ func ExampleWorkflowVersionsClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-resource-group/providers/Microsoft.Web/sites/test-name/workflows/test-workflow/versions/08586677515911718341"),
 		// 				Location: to.Ptr("West US"),
 		// 				Properties: &armappservice.WorkflowVersionProperties{
-		// 					ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T22:54:54.3533634Z"); return t}()),
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-25T01:39:21.4365247Z"); return t}()),
+		// 					ChangedTime: to.Ptr(time.Date(2018, time.August, 9, 22, 54, 54, 353363400, time.UTC)),
+		// 					CreatedTime: to.Ptr(time.Date(2018, time.April, 25, 1, 39, 21, 436524700, time.UTC)),
 		// 					Definition: map[string]any{
 		// 						"$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
 		// 						"actions": map[string]any{

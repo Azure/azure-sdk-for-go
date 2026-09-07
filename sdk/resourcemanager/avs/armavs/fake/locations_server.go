@@ -88,7 +88,7 @@ func (l *LocationsServerTransport) dispatchCheckQuotaAvailability(req *http.Requ
 	if l.srv.CheckQuotaAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckQuotaAvailability not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AVS/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkQuotaAvailability`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkQuotaAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -117,7 +117,7 @@ func (l *LocationsServerTransport) dispatchCheckTrialAvailability(req *http.Requ
 	if l.srv.CheckTrialAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckTrialAvailability not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AVS/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkTrialAvailability`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AVS/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkTrialAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

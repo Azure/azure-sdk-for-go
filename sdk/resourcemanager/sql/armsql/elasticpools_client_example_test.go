@@ -55,7 +55,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateAnElasticPoolWi
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
 	// 			AvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			MaxSizeBytes: to.Ptr[int64](102400),
 	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
 	// 				MaxCapacity: to.Ptr[float64](2),
@@ -115,7 +115,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
 	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
 	// 				MaxCapacity: to.Ptr[float64](2),
@@ -163,7 +163,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			MaxSizeBytes: to.Ptr[int64](102400),
 	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
 	// 				MaxCapacity: to.Ptr[float64](100),
@@ -226,7 +226,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateAnElasticPoolWi
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
 	// 			AutoPauseDelay: to.Ptr[int32](60),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			MaxSizeBytes: to.Ptr[int64](102400),
 	// 			MinCapacity: to.Ptr[float64](0.5),
 	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
@@ -279,7 +279,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_1"),
 	// 			MaxSizeBytes: to.Ptr[int64](102400),
 	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
@@ -335,7 +335,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// 		Kind: to.Ptr("vcore,pool"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-26T03:46:20.57Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.August, 26, 3, 46, 20, 570000000, time.UTC)),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
 	// 			MaxSizeBytes: to.Ptr[int64](0),
@@ -395,7 +395,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// 		Kind: to.Ptr("vcore,pool"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-26T03:46:20.57Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.August, 26, 3, 46, 20, 570000000, time.UTC)),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
 	// 			MaxSizeBytes: to.Ptr[int64](0),
@@ -455,7 +455,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateHyperscaleElast
 	// 		Kind: to.Ptr("vcore,pool"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-26T03:46:20.57Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2021, time.August, 26, 3, 46, 20, 570000000, time.UTC)),
 	// 			HighAvailabilityReplicaCount: to.Ptr[int32](2),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
@@ -554,7 +554,7 @@ func ExampleElasticPoolsClient_Get_getAnElasticPool() {
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.October, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_1"),
 	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
@@ -600,7 +600,7 @@ func ExampleElasticPoolsClient_Get_getAnElasticPoolWithPreferredEnclaveTypeParam
 	// 		Kind: to.Ptr("vcore,pool"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-26T03:46:20.57Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.August, 26, 3, 46, 20, 570000000, time.UTC)),
 	// 			HighAvailabilityReplicaCount: to.Ptr[int32](2),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
@@ -649,7 +649,7 @@ func ExampleElasticPoolsClient_Get_getAnElasticPoolWithAvailabilityZone() {
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
 	// 			AvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.October, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_1"),
 	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
@@ -695,7 +695,7 @@ func ExampleElasticPoolsClient_Get_getAnElasticPoolWithServerlessProperties() {
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
 	// 			AutoPauseDelay: to.Ptr[int32](60),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.October, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_1"),
 	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
@@ -743,7 +743,7 @@ func ExampleElasticPoolsClient_Get_getAHyperscaleElasticPool() {
 	// 		Kind: to.Ptr("vcore,pool"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-26T03:46:20.57Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2021, time.August, 26, 3, 46, 20, 570000000, time.UTC)),
 	// 			HighAvailabilityReplicaCount: to.Ptr[int32](2),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
@@ -796,7 +796,7 @@ func ExampleElasticPoolsClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-2729"),
 		// 				Location: to.Ptr("Japan East"),
 		// 				Properties: &armsql.ElasticPoolProperties{
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:27:21.32Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 27, 21, 320000000, time.UTC)),
 		// 					LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 		// 					MaxSizeBytes: to.Ptr[int64](5242880000),
 		// 					PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
@@ -818,7 +818,7 @@ func ExampleElasticPoolsClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-3191"),
 		// 				Location: to.Ptr("Japan East"),
 		// 				Properties: &armsql.ElasticPoolProperties{
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:26:26.45Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 26, 26, 450000000, time.UTC)),
 		// 					MaxSizeBytes: to.Ptr[int64](5242880000),
 		// 					PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
 		// 						MaxCapacity: to.Ptr[float64](5),
@@ -838,7 +838,7 @@ func ExampleElasticPoolsClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
 		// 				Location: to.Ptr("Japan East"),
 		// 				Properties: &armsql.ElasticPoolProperties{
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
 		// 					MaxSizeBytes: to.Ptr[int64](5242880000),
 		// 					PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
 		// 						MaxCapacity: to.Ptr[float64](5),
@@ -891,7 +891,7 @@ func ExampleElasticPoolsClient_BeginUpdate_assignsMaintenanceConfigurationToAnEl
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_1"),
 	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
 	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
@@ -952,7 +952,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithAllParameter()
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:27:21.32Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 27, 21, 320000000, time.UTC)),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
 	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
@@ -1000,7 +1000,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithMinimumParamet
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
 	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
 	// 				MaxCapacity: to.Ptr[float64](5),
@@ -1050,7 +1050,7 @@ func ExampleElasticPoolsClient_BeginUpdate_resetsMaintenanceConfigurationOfAnEla
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
 	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
 	// 				MaxCapacity: to.Ptr[float64](5),
@@ -1112,7 +1112,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithServerlessProp
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
 	// 			AutoPauseDelay: to.Ptr[int32](60),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			MaxSizeBytes: to.Ptr[int64](102400),
 	// 			MinCapacity: to.Ptr[float64](0.5),
 	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
@@ -1168,7 +1168,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithPreferredEncla
 	// 		Kind: to.Ptr("vcore,pool"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-26T03:46:20.57Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.August, 26, 3, 46, 20, 570000000, time.UTC)),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
 	// 			MaxSizeBytes: to.Ptr[int64](0),
@@ -1227,7 +1227,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithPreferredEncla
 	// 		Kind: to.Ptr("vcore,pool"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-26T03:46:20.57Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.August, 26, 3, 46, 20, 570000000, time.UTC)),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
 	// 			MaxSizeBytes: to.Ptr[int64](0),
@@ -1283,7 +1283,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateHighAvailabilityReplicaCountOfA
 	// 		Kind: to.Ptr("vcore,pool"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-26T03:46:20.57Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2021, time.August, 26, 3, 46, 20, 570000000, time.UTC)),
 	// 			HighAvailabilityReplicaCount: to.Ptr[int32](2),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),

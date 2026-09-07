@@ -70,7 +70,7 @@ func ExampleOccurrencesClient_BeginDelay() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewOccurrencesClient().BeginDelay(ctx, "rgcomputeschedule", "scheduled-action-01", "11111111-1111-1111-1111-111111111111", armcomputeschedule.DelayRequest{
-		Delay: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:48.148Z"); return t }()),
+		Delay: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 48, 148000000, time.UTC)),
 		ResourceIDs: []*string{
 			to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1"),
 		},
@@ -129,7 +129,7 @@ func ExampleOccurrencesClient_Get() {
 	// res = armcomputeschedule.OccurrencesClientGetResponse{
 	// 	Occurrence: armcomputeschedule.Occurrence{
 	// 		Properties: &armcomputeschedule.OccurrenceProperties{
-	// 			ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:47.285Z"); return t}()),
+	// 			ScheduledTime: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 47, 285000000, time.UTC)),
 	// 			ResultSummary: &armcomputeschedule.OccurrenceResultSummary{
 	// 				Total: to.Ptr[int32](3),
 	// 				Statuses: []*armcomputeschedule.ResourceResultSummary{
@@ -157,10 +157,10 @@ func ExampleOccurrencesClient_Get() {
 	// 		SystemData: &armcomputeschedule.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 641000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 641000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -193,7 +193,7 @@ func ExampleOccurrencesClient_NewListByScheduledActionPager() {
 		// 		Value: []*armcomputeschedule.Occurrence{
 		// 			{
 		// 				Properties: &armcomputeschedule.OccurrenceProperties{
-		// 					ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:47.285Z"); return t}()),
+		// 					ScheduledTime: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 47, 285000000, time.UTC)),
 		// 					ResultSummary: &armcomputeschedule.OccurrenceResultSummary{
 		// 						Total: to.Ptr[int32](3),
 		// 						Statuses: []*armcomputeschedule.ResourceResultSummary{
@@ -221,10 +221,10 @@ func ExampleOccurrencesClient_NewListByScheduledActionPager() {
 		// 				SystemData: &armcomputeschedule.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 641000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 641000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -272,7 +272,7 @@ func ExampleOccurrencesClient_NewListResourcesPager() {
 		// 						Disabled: to.Ptr(true),
 		// 					},
 		// 				},
-		// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:48.436Z"); return t}()),
+		// 				ScheduledTime: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 48, 436000000, time.UTC)),
 		// 				ProvisioningState: to.Ptr(armcomputeschedule.ResourceProvisioningStateSucceeded),
 		// 				ErrorDetails: &armcomputeschedule.Error{
 		// 					Code: to.Ptr("ResourceNotFound"),

@@ -177,7 +177,7 @@ func (m *ManagementServerTransport) dispatchCheckDNSNameAvailability(req *http.R
 	if m.srv.CheckDNSNameAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckDNSNameAvailability not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkDnsNameAvailability`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkDnsNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -209,7 +209,7 @@ func (m *ManagementServerTransport) dispatchBeginDeleteBastionShareableLink(req 
 	}
 	beginDeleteBastionShareableLink := m.beginDeleteBastionShareableLink.get(req)
 	if beginDeleteBastionShareableLink == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deleteShareableLinks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deleteShareableLinks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -257,7 +257,7 @@ func (m *ManagementServerTransport) dispatchBeginDeleteBastionShareableLinkByTok
 	}
 	beginDeleteBastionShareableLinkByToken := m.beginDeleteBastionShareableLinkByToken.get(req)
 	if beginDeleteBastionShareableLinkByToken == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deleteShareableLinksByToken`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deleteShareableLinksByToken`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -305,7 +305,7 @@ func (m *ManagementServerTransport) dispatchNewDisconnectActiveSessionsPager(req
 	}
 	newDisconnectActiveSessionsPager := m.newDisconnectActiveSessionsPager.get(req)
 	if newDisconnectActiveSessionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disconnectActiveSessions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/disconnectActiveSessions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -348,7 +348,7 @@ func (m *ManagementServerTransport) dispatchExpressRouteProviderPort(req *http.R
 	if m.srv.ExpressRouteProviderPort == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExpressRouteProviderPort not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteProviderPorts/(?P<providerport>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteProviderPorts/(?P<providerport>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -379,7 +379,7 @@ func (m *ManagementServerTransport) dispatchBeginGeneratevirtualwanvpnserverconf
 	}
 	beginGeneratevirtualwanvpnserverconfigurationvpnprofile := m.beginGeneratevirtualwanvpnserverconfigurationvpnprofile.get(req)
 	if beginGeneratevirtualwanvpnserverconfigurationvpnprofile == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualWans/(?P<virtualWANName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generateVpnProfile`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualWans/(?P<virtualWANName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/generateVpnProfile`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -427,7 +427,7 @@ func (m *ManagementServerTransport) dispatchBeginGetActiveSessions(req *http.Req
 	}
 	beginGetActiveSessions := m.beginGetActiveSessions.get(req)
 	if beginGetActiveSessions == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getActiveSessions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getActiveSessions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -471,7 +471,7 @@ func (m *ManagementServerTransport) dispatchNewGetBastionShareableLinkPager(req 
 	}
 	newGetBastionShareableLinkPager := m.newGetBastionShareableLinkPager.get(req)
 	if newGetBastionShareableLinkPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getShareableLinks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getShareableLinks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -514,7 +514,7 @@ func (m *ManagementServerTransport) dispatchListActiveConnectivityConfigurations
 	if m.srv.ListActiveConnectivityConfigurations == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListActiveConnectivityConfigurations not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listActiveConnectivityConfigurations`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listActiveConnectivityConfigurations`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -568,7 +568,7 @@ func (m *ManagementServerTransport) dispatchListActiveSecurityAdminRules(req *ht
 	if m.srv.ListActiveSecurityAdminRules == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListActiveSecurityAdminRules not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listActiveSecurityAdminRules`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listActiveSecurityAdminRules`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -622,7 +622,7 @@ func (m *ManagementServerTransport) dispatchListNetworkManagerEffectiveConnectiv
 	if m.srv.ListNetworkManagerEffectiveConnectivityConfigurations == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListNetworkManagerEffectiveConnectivityConfigurations not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworks/(?P<virtualNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listNetworkManagerEffectiveConnectivityConfigurations`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworks/(?P<virtualNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listNetworkManagerEffectiveConnectivityConfigurations`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -676,7 +676,7 @@ func (m *ManagementServerTransport) dispatchListNetworkManagerEffectiveSecurityA
 	if m.srv.ListNetworkManagerEffectiveSecurityAdminRules == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListNetworkManagerEffectiveSecurityAdminRules not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworks/(?P<virtualNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listNetworkManagerEffectiveSecurityAdminRules`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworks/(?P<virtualNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listNetworkManagerEffectiveSecurityAdminRules`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -732,7 +732,7 @@ func (m *ManagementServerTransport) dispatchBeginPutBastionShareableLink(req *ht
 	}
 	beginPutBastionShareableLink := m.beginPutBastionShareableLink.get(req)
 	if beginPutBastionShareableLink == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/createShareableLinks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/createShareableLinks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -778,7 +778,7 @@ func (m *ManagementServerTransport) dispatchSupportedSecurityProviders(req *http
 	if m.srv.SupportedSecurityProviders == nil {
 		return nil, &nonRetriableError{errors.New("fake for method SupportedSecurityProviders not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualWans/(?P<virtualWANName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/supportedSecurityProviders`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualWans/(?P<virtualWANName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/supportedSecurityProviders`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

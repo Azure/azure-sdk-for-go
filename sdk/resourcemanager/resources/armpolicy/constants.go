@@ -209,6 +209,26 @@ func PossibleExemptionCategoryValues() []ExemptionCategory {
 	}
 }
 
+// ExemptionManagementMode - The mode indicating how the policy exemption is managed. Possible values are Admin and UserSelfServe.
+type ExemptionManagementMode string
+
+const (
+	// ExemptionManagementModeAdmin - This mode means the exemption is managed by an administrator and requires permission for
+	// the policy exemption action.
+	ExemptionManagementModeAdmin ExemptionManagementMode = "Admin"
+	// ExemptionManagementModeUserSelfServe - This mode means the exemption is managed by the user it applies to, through the
+	// self-serve exemption settings on the policy assignment.
+	ExemptionManagementModeUserSelfServe ExemptionManagementMode = "UserSelfServe"
+)
+
+// PossibleExemptionManagementModeValues returns the possible values for the ExemptionManagementMode const type.
+func PossibleExemptionManagementModeValues() []ExemptionManagementMode {
+	return []ExemptionManagementMode{
+		ExemptionManagementModeAdmin,
+		ExemptionManagementModeUserSelfServe,
+	}
+}
+
 // ExternalEndpointResult - The result of the external endpoint. Possible values are Succeeded and Failed.
 type ExternalEndpointResult string
 
@@ -358,7 +378,7 @@ const (
 	ResourceIdentityTypeNone ResourceIdentityType = "None"
 	// ResourceIdentityTypeSystemAssigned - Indicates that a system assigned identity is associated with the resource.
 	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
-	// ResourceIdentityTypeUserAssigned - Indicates that a system assigned identity is associated with the resource.
+	// ResourceIdentityTypeUserAssigned - Indicates that a user assigned identity is associated with the resource.
 	ResourceIdentityTypeUserAssigned ResourceIdentityType = "UserAssigned"
 )
 

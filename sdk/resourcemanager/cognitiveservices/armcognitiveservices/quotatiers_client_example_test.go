@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/CreateOrUpdateQuotaTier.json
+// Generated from example definition: 2026-07-15-preview/CreateOrUpdateQuotaTier.json
 func ExampleQuotaTiersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleQuotaTiersClient_CreateOrUpdate() {
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/quotaTiers"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CognitiveServices/quotaTiers/default"),
 	// 		Properties: &armcognitiveservices.QuotaTierProperties{
-	// 			AssignmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-09T18:13:29.389Z"); return t}()),
+	// 			AssignmentDate: to.Ptr(time.Date(2025, time.June, 9, 18, 13, 29, 389000000, time.UTC)),
 	// 			CurrentTierName: to.Ptr("Free-Tier"),
 	// 			TierUpgradePolicy: to.Ptr(armcognitiveservices.TierUpgradePolicyNoAutoUpgrade),
 	// 		},
@@ -48,7 +48,7 @@ func ExampleQuotaTiersClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/GetQuotaTier.json
+// Generated from example definition: 2026-07-15-preview/GetQuotaTier.json
 func ExampleQuotaTiersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,11 +72,11 @@ func ExampleQuotaTiersClient_Get() {
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/quotaTiers"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CognitiveServices/quotaTiers/default"),
 	// 		Properties: &armcognitiveservices.QuotaTierProperties{
-	// 			AssignmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-09T18:13:29.389Z"); return t}()),
+	// 			AssignmentDate: to.Ptr(time.Date(2025, time.June, 9, 18, 13, 29, 389000000, time.UTC)),
 	// 			CurrentTierName: to.Ptr("Free-Tier"),
 	// 			TierUpgradeEligibilityInfo: &armcognitiveservices.QuotaTierUpgradeEligibilityInfo{
 	// 				NextTierName: to.Ptr("Tier-1"),
-	// 				UpgradeApplicableDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-15T18:13:29.389Z"); return t}()),
+	// 				UpgradeApplicableDate: to.Ptr(time.Date(2025, time.June, 15, 18, 13, 29, 389000000, time.UTC)),
 	// 				UpgradeAvailabilityStatus: to.Ptr(armcognitiveservices.UpgradeAvailabilityStatusAvailable),
 	// 			},
 	// 			TierUpgradePolicy: to.Ptr(armcognitiveservices.TierUpgradePolicyOnceUpgradeIsAvailable),
@@ -85,7 +85,7 @@ func ExampleQuotaTiersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ListQuotaTiers.json
+// Generated from example definition: 2026-07-15-preview/ListQuotaTiers.json
 func ExampleQuotaTiersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,11 +115,11 @@ func ExampleQuotaTiersClient_NewListBySubscriptionPager() {
 		// 				Type: to.Ptr("Microsoft.CognitiveServices/quotaTiers"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CognitiveServices/quotaTiers/default"),
 		// 				Properties: &armcognitiveservices.QuotaTierProperties{
-		// 					AssignmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-09T18:13:29.389Z"); return t}()),
+		// 					AssignmentDate: to.Ptr(time.Date(2025, time.June, 9, 18, 13, 29, 389000000, time.UTC)),
 		// 					CurrentTierName: to.Ptr("Free-Tier"),
 		// 					TierUpgradeEligibilityInfo: &armcognitiveservices.QuotaTierUpgradeEligibilityInfo{
 		// 						NextTierName: to.Ptr("Tier-1"),
-		// 						UpgradeApplicableDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-15T18:13:29.389Z"); return t}()),
+		// 						UpgradeApplicableDate: to.Ptr(time.Date(2025, time.June, 15, 18, 13, 29, 389000000, time.UTC)),
 		// 						UpgradeAvailabilityStatus: to.Ptr(armcognitiveservices.UpgradeAvailabilityStatusAvailable),
 		// 					},
 		// 					TierUpgradePolicy: to.Ptr(armcognitiveservices.TierUpgradePolicyOnceUpgradeIsAvailable),
@@ -131,7 +131,7 @@ func ExampleQuotaTiersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/UpdateQuotaTier.json
+// Generated from example definition: 2026-07-15-preview/UpdateQuotaTier.json
 func ExampleQuotaTiersClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleQuotaTiersClient_Update() {
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/quotaTiers"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CognitiveServices/quotaTiers/default"),
 	// 		Properties: &armcognitiveservices.QuotaTierProperties{
-	// 			AssignmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-09T18:13:29.389Z"); return t}()),
+	// 			AssignmentDate: to.Ptr(time.Date(2025, time.June, 9, 18, 13, 29, 389000000, time.UTC)),
 	// 			CurrentTierName: to.Ptr("Free-Tier"),
 	// 			TierUpgradePolicy: to.Ptr(armcognitiveservices.TierUpgradePolicyNoAutoUpgrade),
 	// 		},

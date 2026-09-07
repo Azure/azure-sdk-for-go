@@ -7,11 +7,11 @@ package armnetworkcloud_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/RackSkus_Get.json
+// Generated from example definition: 2026-07-01/RackSkus_Get.json
 func ExampleRackSKUsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleRackSKUsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/RackSkus_ListBySubscription.json
+// Generated from example definition: 2026-07-01/RackSkus_ListBySubscription.json
 func ExampleRackSKUsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

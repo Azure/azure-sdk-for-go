@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-05-preview/GetSkuMixPlacementScores.json
+// Generated from example definition: 2026-09-05-preview/GetSkuMixPlacementScores.json
 func ExampleSKUMixPlacementScoresClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleSKUMixPlacementScoresClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-05-preview/GenerateSkuMixPlacementScores.json
+// Generated from example definition: 2026-09-05-preview/GenerateSkuMixPlacementScores.json
 func ExampleSKUMixPlacementScoresClient_Post() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,36 +93,32 @@ func ExampleSKUMixPlacementScoresClient_Post() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecommender.SKUMixPlacementScoresClientPostResponse{
 	// 	SKUMixPlacementResponse: armrecommender.SKUMixPlacementResponse{
+	// 		ID: to.Ptr("8b0e5f2c-6d41-4a7e-9c3b-1f5a2d8e4b60"),
 	// 		PlacementChoices: []*armrecommender.SKUMixPlacementDeploymentChoice{
 	// 			{
-	// 				ID: to.Ptr("3fc69ef8-209e-4ecb-9cc4-392354af9201"),
 	// 				Score: to.Ptr[int32](8),
 	// 				SKUSplit: []*armrecommender.SKUMixPlacementItem{
 	// 					{
 	// 						Name: to.Ptr("Standard_D2s_v3"),
 	// 						Priority: to.Ptr(armrecommender.SKUMixPlacementPriorityRegular),
 	// 						Capacity: to.Ptr[int32](4),
-	// 						CapacityMax: to.Ptr[int32](6),
 	// 						Zone: to.Ptr("1"),
 	// 					},
 	// 					{
 	// 						Name: to.Ptr("Standard_D4s_v3"),
 	// 						Priority: to.Ptr(armrecommender.SKUMixPlacementPriorityRegular),
 	// 						Capacity: to.Ptr[int32](3),
-	// 						CapacityMax: to.Ptr[int32](5),
 	// 						Zone: to.Ptr("2"),
 	// 					},
 	// 					{
 	// 						Name: to.Ptr("Standard_D2s_v3"),
 	// 						Priority: to.Ptr(armrecommender.SKUMixPlacementPriorityRegular),
 	// 						Capacity: to.Ptr[int32](3),
-	// 						CapacityMax: to.Ptr[int32](5),
 	// 						Zone: to.Ptr("3"),
 	// 					},
 	// 				},
 	// 			},
 	// 			{
-	// 				ID: to.Ptr("a7c12b3d-4e5f-6789-abcd-ef0123456789"),
 	// 				Score: to.Ptr[int32](4),
 	// 				SKUSplit: []*armrecommender.SKUMixPlacementItem{
 	// 					{
@@ -141,7 +137,72 @@ func ExampleSKUMixPlacementScoresClient_Post() {
 	// 			},
 	// 		},
 	// 		PartialFulfillmentReason: to.Ptr(armrecommender.SKUMixPlacementPartialFulfillmentReasonNone),
-	// 		ValidUntil: to.Ptr(time.Date(2026, time.May, 5, 18, 0, 0, 0, time.UTC)),
+	// 		CapacityLimits: []*armrecommender.SKUMixPlacementCapacityLimit{
+	// 			{
+	// 				Name: to.Ptr("Standard_D2s_v3"),
+	// 				Priority: to.Ptr(armrecommender.SKUMixPlacementPriorityRegular),
+	// 				Zone: to.Ptr("1"),
+	// 				Limit: to.Ptr[int32](10),
+	// 				Reason: to.Ptr(armrecommender.SKUMixPlacementCapacityLimitReasonNone),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("Standard_D2s_v3"),
+	// 				Priority: to.Ptr(armrecommender.SKUMixPlacementPriorityRegular),
+	// 				Zone: to.Ptr("2"),
+	// 				Limit: to.Ptr[int32](10),
+	// 				Reason: to.Ptr(armrecommender.SKUMixPlacementCapacityLimitReasonNone),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("Standard_D2s_v3"),
+	// 				Priority: to.Ptr(armrecommender.SKUMixPlacementPriorityRegular),
+	// 				Zone: to.Ptr("3"),
+	// 				Limit: to.Ptr[int32](10),
+	// 				Reason: to.Ptr(armrecommender.SKUMixPlacementCapacityLimitReasonNone),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("Standard_D4s_v3"),
+	// 				Priority: to.Ptr(armrecommender.SKUMixPlacementPriorityRegular),
+	// 				Zone: to.Ptr("1"),
+	// 				Limit: to.Ptr[int32](6),
+	// 				Reason: to.Ptr(armrecommender.SKUMixPlacementCapacityLimitReasonInsufficientCapacity),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("Standard_D4s_v3"),
+	// 				Priority: to.Ptr(armrecommender.SKUMixPlacementPriorityRegular),
+	// 				Zone: to.Ptr("2"),
+	// 				Limit: to.Ptr[int32](10),
+	// 				Reason: to.Ptr(armrecommender.SKUMixPlacementCapacityLimitReasonNone),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("Standard_D4s_v3"),
+	// 				Priority: to.Ptr(armrecommender.SKUMixPlacementPriorityRegular),
+	// 				Zone: to.Ptr("3"),
+	// 				Limit: to.Ptr[int32](4),
+	// 				Reason: to.Ptr(armrecommender.SKUMixPlacementCapacityLimitReasonInsufficientQuota),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("Standard_D8s_v3"),
+	// 				Priority: to.Ptr(armrecommender.SKUMixPlacementPriorityRegular),
+	// 				Zone: to.Ptr("1"),
+	// 				Limit: to.Ptr[int32](5),
+	// 				Reason: to.Ptr(armrecommender.SKUMixPlacementCapacityLimitReasonInsufficientCapacity),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("Standard_D8s_v3"),
+	// 				Priority: to.Ptr(armrecommender.SKUMixPlacementPriorityRegular),
+	// 				Zone: to.Ptr("2"),
+	// 				Limit: to.Ptr[int32](5),
+	// 				Reason: to.Ptr(armrecommender.SKUMixPlacementCapacityLimitReasonInsufficientCapacity),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("Standard_D8s_v3"),
+	// 				Priority: to.Ptr(armrecommender.SKUMixPlacementPriorityRegular),
+	// 				Zone: to.Ptr("3"),
+	// 				Limit: to.Ptr[int32](0),
+	// 				Reason: to.Ptr(armrecommender.SKUMixPlacementCapacityLimitReasonSKUNotAvailable),
+	// 			},
+	// 		},
+	// 		ValidUntil: to.Ptr(time.Date(2026, time.September, 5, 18, 0, 0, 0, time.UTC)),
 	// 	},
 	// }
 }

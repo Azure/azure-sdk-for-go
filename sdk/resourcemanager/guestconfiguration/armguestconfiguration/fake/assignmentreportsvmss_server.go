@@ -92,7 +92,7 @@ func (a *AssignmentReportsVMSSServerTransport) dispatchGet(req *http.Request) (*
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmssName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.GuestConfiguration/guestConfigurationAssignments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reports/(?P<id>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmssName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.GuestConfiguration/guestConfigurationAssignments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reports/(?P<id>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -135,7 +135,7 @@ func (a *AssignmentReportsVMSSServerTransport) dispatchNewListPager(req *http.Re
 	}
 	newListPager := a.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmssName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.GuestConfiguration/guestConfigurationAssignments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reports`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmssName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.GuestConfiguration/guestConfigurationAssignments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reports`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

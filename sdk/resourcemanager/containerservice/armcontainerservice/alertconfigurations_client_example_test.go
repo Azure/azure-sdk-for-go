@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-02-preview/AlertConfigurations_CreateOrUpdate.json
+// Generated from example definition: 2026-06-02-preview/AlertConfigurations_CreateOrUpdate.json
 func ExampleAlertConfigurationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleAlertConfigurationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/AlertConfigurations_Delete.json
+// Generated from example definition: 2026-06-02-preview/AlertConfigurations_Delete.json
 func ExampleAlertConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleAlertConfigurationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-02-preview/AlertConfigurations_Get.json
+// Generated from example definition: 2026-06-02-preview/AlertConfigurations_Get.json
 func ExampleAlertConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleAlertConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/AlertConfigurations_ListByManagedCluster.json
+// Generated from example definition: 2026-06-02-preview/AlertConfigurations_ListByManagedCluster.json
 func ExampleAlertConfigurationsClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

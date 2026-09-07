@@ -102,7 +102,7 @@ func (e *ExascaleDbNodesServerTransport) dispatchBeginAction(req *http.Request) 
 	}
 	beginAction := e.beginAction.get(req)
 	if beginAction == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Oracle\.Database/exadbVmClusters/(?P<exadbVmClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dbNodes/(?P<exascaleDbNodeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/action`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/exadbVmClusters/(?P<exadbVmClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dbNodes/(?P<exascaleDbNodeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/action`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -152,7 +152,7 @@ func (e *ExascaleDbNodesServerTransport) dispatchGet(req *http.Request) (*http.R
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Oracle\.Database/exadbVmClusters/(?P<exadbVmClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dbNodes/(?P<exascaleDbNodeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/exadbVmClusters/(?P<exadbVmClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dbNodes/(?P<exascaleDbNodeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -191,7 +191,7 @@ func (e *ExascaleDbNodesServerTransport) dispatchNewListByParentPager(req *http.
 	}
 	newListByParentPager := e.newListByParentPager.get(req)
 	if newListByParentPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Oracle\.Database/exadbVmClusters/(?P<exadbVmClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dbNodes`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/exadbVmClusters/(?P<exadbVmClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dbNodes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

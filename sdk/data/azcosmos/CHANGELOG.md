@@ -2,7 +2,7 @@
 
 <!-- cSpell:ignore documentdb unmarshalling -->
 
-## 1.6.0-beta.3 (Unreleased)
+## 1.6.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -11,6 +11,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.6.0-beta.3 (2026-09-01)
+
+### Bugs Fixed
+
+* Fixed `ReadManyItems` requests that target a single logical partition key to include that key in service telemetry, allowing `CDBPartitionKeyRUConsumption` to attribute the request charge to the partition. See [PR 27491](https://github.com/Azure/azure-sdk-for-go/pull/27491).
 
 ## 1.6.0-beta.2 (2026-08-03)
 

@@ -80,7 +80,7 @@ func (d *DeletedAutomationAccountsServerTransport) dispatchListBySubscription(re
 	if d.srv.ListBySubscription == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListBySubscription not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/deletedAutomationAccounts`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/deletedAutomationAccounts`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

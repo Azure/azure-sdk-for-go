@@ -30,6 +30,9 @@ type WorkloadImpactsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkloadImpactsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkloadImpactsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -90,7 +93,7 @@ func (client *WorkloadImpactsClient) create(ctx context.Context, workloadImpactN
 func (client *WorkloadImpactsClient) createCreateRequest(ctx context.Context, workloadImpactName string, resource WorkloadImpact, _ *WorkloadImpactsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if workloadImpactName == "" {
@@ -140,7 +143,7 @@ func (client *WorkloadImpactsClient) Delete(ctx context.Context, workloadImpactN
 func (client *WorkloadImpactsClient) deleteCreateRequest(ctx context.Context, workloadImpactName string, _ *WorkloadImpactsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if workloadImpactName == "" {
@@ -182,7 +185,7 @@ func (client *WorkloadImpactsClient) Get(ctx context.Context, workloadImpactName
 func (client *WorkloadImpactsClient) getCreateRequest(ctx context.Context, workloadImpactName string, _ *WorkloadImpactsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if workloadImpactName == "" {
@@ -248,7 +251,7 @@ func (client *WorkloadImpactsClient) listBySubscriptionCreateRequest(ctx context
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))

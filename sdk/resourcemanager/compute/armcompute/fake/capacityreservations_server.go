@@ -118,7 +118,7 @@ func (c *CapacityReservationsServerTransport) dispatchBeginCreateOrUpdate(req *h
 	}
 	beginCreateOrUpdate := c.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityReservations/(?P<capacityReservationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityReservations/(?P<capacityReservationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -170,7 +170,7 @@ func (c *CapacityReservationsServerTransport) dispatchBeginDelete(req *http.Requ
 	}
 	beginDelete := c.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityReservations/(?P<capacityReservationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityReservations/(?P<capacityReservationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -216,7 +216,7 @@ func (c *CapacityReservationsServerTransport) dispatchGet(req *http.Request) (*h
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityReservations/(?P<capacityReservationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityReservations/(?P<capacityReservationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -263,7 +263,7 @@ func (c *CapacityReservationsServerTransport) dispatchNewListByCapacityReservati
 	}
 	newListByCapacityReservationGroupPager := c.newListByCapacityReservationGroupPager.get(req)
 	if newListByCapacityReservationGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityReservations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityReservations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -312,7 +312,7 @@ func (c *CapacityReservationsServerTransport) dispatchBeginUpdate(req *http.Requ
 	}
 	beginUpdate := c.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityReservations/(?P<capacityReservationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityReservations/(?P<capacityReservationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

@@ -104,7 +104,7 @@ func (s *SuppressionListsServerTransport) dispatchCreateOrUpdate(req *http.Reque
 	if s.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/suppressionLists/(?P<suppressionListName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/domains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/suppressionLists/(?P<suppressionListName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -149,7 +149,7 @@ func (s *SuppressionListsServerTransport) dispatchDelete(req *http.Request) (*ht
 	if s.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/suppressionLists/(?P<suppressionListName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/domains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/suppressionLists/(?P<suppressionListName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -190,7 +190,7 @@ func (s *SuppressionListsServerTransport) dispatchGet(req *http.Request) (*http.
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/suppressionLists/(?P<suppressionListName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/domains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/suppressionLists/(?P<suppressionListName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -233,7 +233,7 @@ func (s *SuppressionListsServerTransport) dispatchNewListByDomainPager(req *http
 	}
 	newListByDomainPager := s.newListByDomainPager.get(req)
 	if newListByDomainPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/suppressionLists`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/domains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/suppressionLists`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

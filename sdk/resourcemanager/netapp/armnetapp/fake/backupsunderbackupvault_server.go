@@ -87,7 +87,7 @@ func (b *BackupsUnderBackupVaultServerTransport) dispatchBeginRestoreFiles(req *
 	}
 	beginRestoreFiles := b.beginRestoreFiles.get(req)
 	if beginRestoreFiles == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupVaults/(?P<backupVaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restoreFiles`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupVaults/(?P<backupVaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restoreFiles`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {

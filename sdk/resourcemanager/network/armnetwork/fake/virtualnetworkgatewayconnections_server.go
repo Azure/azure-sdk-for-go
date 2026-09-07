@@ -173,7 +173,7 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginCreateOrU
 	}
 	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -221,7 +221,7 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginDelete(re
 	}
 	beginDelete := v.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -263,7 +263,7 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchGet(req *http.
 	if v.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -298,7 +298,7 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginGetIkeSas
 	}
 	beginGetIkeSas := v.beginGetIkeSas.get(req)
 	if beginGetIkeSas == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getikesas`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getikesas`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -340,7 +340,7 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchGetSharedKey(r
 	if v.srv.GetSharedKey == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSharedKey not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedkey`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedkey`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -375,7 +375,7 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchNewListPager(r
 	}
 	newListPager := v.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/connections`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/connections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -412,7 +412,7 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginResetConn
 	}
 	beginResetConnection := v.beginResetConnection.get(req)
 	if beginResetConnection == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resetconnection`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resetconnection`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -456,7 +456,7 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginResetShar
 	}
 	beginResetSharedKey := v.beginResetSharedKey.get(req)
 	if beginResetSharedKey == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedkey/reset`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedkey/reset`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -504,7 +504,7 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginSetShared
 	}
 	beginSetSharedKey := v.beginSetSharedKey.get(req)
 	if beginSetSharedKey == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedkey`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedkey`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -552,7 +552,7 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginStartPack
 	}
 	beginStartPacketCapture := v.beginStartPacketCapture.get(req)
 	if beginStartPacketCapture == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/startPacketCapture`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/startPacketCapture`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -606,7 +606,7 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginStopPacke
 	}
 	beginStopPacketCapture := v.beginStopPacketCapture.get(req)
 	if beginStopPacketCapture == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stopPacketCapture`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stopPacketCapture`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -654,7 +654,7 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginUpdateTag
 	}
 	beginUpdateTags := v.beginUpdateTags.get(req)
 	if beginUpdateTags == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/connections/(?P<virtualNetworkGatewayConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

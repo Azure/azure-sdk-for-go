@@ -116,7 +116,7 @@ func (s *SubscriptionsServerTransport) dispatchAcceptTargetDirectory(req *http.R
 	if s.srv.AcceptTargetDirectory == nil {
 		return nil, &nonRetriableError{errors.New("fake for method AcceptTargetDirectory not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Subscription/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/acceptChangeTenant`
+	const regexStr = `/providers/Microsoft\.Subscription/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/acceptChangeTenant`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -145,7 +145,7 @@ func (s *SubscriptionsServerTransport) dispatchDeleteTargetDirectory(req *http.R
 	if s.srv.DeleteTargetDirectory == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteTargetDirectory not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Subscription/changeTenantRequest/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Subscription/changeTenantRequest/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -174,7 +174,7 @@ func (s *SubscriptionsServerTransport) dispatchGetTargetDirectory(req *http.Requ
 	if s.srv.GetTargetDirectory == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetTargetDirectory not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Subscription/changeTenantRequest/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Subscription/changeTenantRequest/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -205,7 +205,7 @@ func (s *SubscriptionsServerTransport) dispatchNewListTargetDirectoryPager(req *
 	}
 	newListTargetDirectoryPager := s.newListTargetDirectoryPager.get(req)
 	if newListTargetDirectoryPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Subscription/changeTenantRequest`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Subscription/changeTenantRequest`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -240,7 +240,7 @@ func (s *SubscriptionsServerTransport) dispatchPutTargetDirectory(req *http.Requ
 	if s.srv.PutTargetDirectory == nil {
 		return nil, &nonRetriableError{errors.New("fake for method PutTargetDirectory not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Subscription/changeTenantRequest/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Subscription/changeTenantRequest/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -273,7 +273,7 @@ func (s *SubscriptionsServerTransport) dispatchTargetDirectoryStatus(req *http.R
 	if s.srv.TargetDirectoryStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method TargetDirectoryStatus not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Subscription/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/changeTenantStatus`
+	const regexStr = `/providers/Microsoft\.Subscription/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/changeTenantStatus`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

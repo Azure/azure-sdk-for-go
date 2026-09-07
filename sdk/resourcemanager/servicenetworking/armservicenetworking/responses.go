@@ -68,6 +68,41 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
+// PrivateEndpointConnectionsInterfaceClientDeleteResponse contains the response from method PrivateEndpointConnectionsInterfaceClient.BeginDelete.
+type PrivateEndpointConnectionsInterfaceClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PrivateEndpointConnectionsInterfaceClientGetResponse contains the response from method PrivateEndpointConnectionsInterfaceClient.Get.
+type PrivateEndpointConnectionsInterfaceClientGetResponse struct {
+	// Private Endpoint Connection resource of Traffic Controller.
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsInterfaceClientListByTrafficControllerResponse contains the response from method PrivateEndpointConnectionsInterfaceClient.NewListByTrafficControllerPager.
+type PrivateEndpointConnectionsInterfaceClientListByTrafficControllerResponse struct {
+	// The response of a PrivateEndpointConnection list operation.
+	PrivateEndpointConnectionListResult
+}
+
+// PrivateEndpointConnectionsInterfaceClientUpdateResponse contains the response from method PrivateEndpointConnectionsInterfaceClient.BeginUpdate.
+type PrivateEndpointConnectionsInterfaceClientUpdateResponse struct {
+	// Private Endpoint Connection resource of Traffic Controller.
+	PrivateEndpointConnection
+}
+
+// PrivateLinkResourcesInterfaceClientGetResponse contains the response from method PrivateLinkResourcesInterfaceClient.Get.
+type PrivateLinkResourcesInterfaceClientGetResponse struct {
+	// A private link resource.
+	PrivateLinkResource
+}
+
+// PrivateLinkResourcesInterfaceClientListByTrafficControllerResponse contains the response from method PrivateLinkResourcesInterfaceClient.NewListByTrafficControllerPager.
+type PrivateLinkResourcesInterfaceClientListByTrafficControllerResponse struct {
+	// The response of a PrivateLinkResource list operation.
+	PrivateLinkResourceListResult
+}
+
 // SecurityPoliciesInterfaceClientCreateOrUpdateResponse contains the response from method SecurityPoliciesInterfaceClient.BeginCreateOrUpdate.
 type SecurityPoliciesInterfaceClientCreateOrUpdateResponse struct {
 	// SecurityPolicy Subresource of Traffic Controller.

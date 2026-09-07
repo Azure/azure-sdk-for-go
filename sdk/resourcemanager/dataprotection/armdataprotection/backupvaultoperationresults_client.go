@@ -31,6 +31,9 @@ type BackupVaultOperationResultsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBackupVaultOperationResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupVaultOperationResultsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -70,7 +73,7 @@ func (client *BackupVaultOperationResultsClient) Get(ctx context.Context, resour
 func (client *BackupVaultOperationResultsClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, operationID string, _ *BackupVaultOperationResultsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/operationResults/{operationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

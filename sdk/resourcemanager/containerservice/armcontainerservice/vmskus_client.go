@@ -20,7 +20,7 @@ import (
 // VMSKUsClient contains the methods for the VMSKUs group.
 // Don't use this type directly, use NewVMSKUsClient() instead.
 //
-// Generated from API version 2026-05-02-preview
+// Generated from API version 2026-06-02-preview
 type VMSKUsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -31,6 +31,9 @@ type VMSKUsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewVMSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VMSKUsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -81,7 +84,7 @@ func (client *VMSKUsClient) listCreateRequest(ctx context.Context, location stri
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/vmSkus"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if location == "" {
@@ -97,7 +100,7 @@ func (client *VMSKUsClient) listCreateRequest(ctx context.Context, location stri
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260502Preview)
+		reqQP.Set("api-version", version20260602Preview)
 		if options != nil && options.IncludeExtendedLocations != nil {
 			reqQP.Set("includeExtendedLocations", strconv.FormatBool(*options.IncludeExtendedLocations))
 		}

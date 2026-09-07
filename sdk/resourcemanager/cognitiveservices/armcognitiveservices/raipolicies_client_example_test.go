@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/PutRaiPolicy.json
+// Generated from example definition: 2026-07-15-preview/PutRaiPolicy.json
 func ExampleRaiPoliciesClient_CreateOrUpdate_putRaiPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +211,7 @@ func ExampleRaiPoliciesClient_CreateOrUpdate_putRaiPolicy() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/PutRaiPolicyWithEgress.json
+// Generated from example definition: 2026-07-15-preview/PutRaiPolicyWithEgress.json
 func ExampleRaiPoliciesClient_CreateOrUpdate_putRaiPolicyWithEgress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,6 +225,7 @@ func ExampleRaiPoliciesClient_CreateOrUpdate_putRaiPolicyWithEgress() {
 	res, err := clientFactory.NewRaiPoliciesClient().CreateOrUpdate(ctx, "resourceGroupName", "accountName", "egress-baseline", armcognitiveservices.RaiPolicy{
 		Properties: &armcognitiveservices.RaiPolicyProperties{
 			BasePolicyName: to.Ptr("Microsoft.Default"),
+			ContentFilters: []*armcognitiveservices.RaiPolicyContentFilter{},
 			EgressPolicy: &armcognitiveservices.RaiEgressPolicyConfig{
 				Mode:          to.Ptr(armcognitiveservices.RaiEgressModeEnforced),
 				DefaultAction: to.Ptr(armcognitiveservices.RaiEgressDefaultActionDeny),
@@ -375,7 +376,7 @@ func ExampleRaiPoliciesClient_CreateOrUpdate_putRaiPolicyWithEgress() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/DeleteRaiPolicy.json
+// Generated from example definition: 2026-07-15-preview/DeleteRaiPolicy.json
 func ExampleRaiPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -396,7 +397,7 @@ func ExampleRaiPoliciesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/GetRaiPolicy.json
+// Generated from example definition: 2026-07-15-preview/GetRaiPolicy.json
 func ExampleRaiPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -508,7 +509,7 @@ func ExampleRaiPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ListRaiPolicies.json
+// Generated from example definition: 2026-07-15-preview/ListRaiPolicies.json
 func ExampleRaiPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

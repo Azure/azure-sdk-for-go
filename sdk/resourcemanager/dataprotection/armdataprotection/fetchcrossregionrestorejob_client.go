@@ -30,6 +30,9 @@ type FetchCrossRegionRestoreJobClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFetchCrossRegionRestoreJobClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FetchCrossRegionRestoreJobClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -69,7 +72,7 @@ func (client *FetchCrossRegionRestoreJobClient) Get(ctx context.Context, resourc
 func (client *FetchCrossRegionRestoreJobClient) getCreateRequest(ctx context.Context, resourceGroupName string, location string, parameters CrossRegionRestoreJobRequest, _ *FetchCrossRegionRestoreJobClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/locations/{location}/fetchCrossRegionRestoreJob"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

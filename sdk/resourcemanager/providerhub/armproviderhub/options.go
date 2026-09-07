@@ -94,27 +94,13 @@ type DefaultRolloutsClientStopOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NewRegionFrontloadReleaseClientCreateOrUpdateOptions contains the optional parameters for the NewRegionFrontloadReleaseClient.CreateOrUpdate
-// method.
-type NewRegionFrontloadReleaseClientCreateOrUpdateOptions struct {
+// ManifestsClientCreateOrUpdateOptions contains the optional parameters for the ManifestsClient.CreateOrUpdate method.
+type ManifestsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NewRegionFrontloadReleaseClientGenerateManifestOptions contains the optional parameters for the NewRegionFrontloadReleaseClient.GenerateManifest
-// method.
-type NewRegionFrontloadReleaseClientGenerateManifestOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NewRegionFrontloadReleaseClientGetOptions contains the optional parameters for the NewRegionFrontloadReleaseClient.Get
-// method.
-type NewRegionFrontloadReleaseClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NewRegionFrontloadReleaseClientStopOptions contains the optional parameters for the NewRegionFrontloadReleaseClient.Stop
-// method.
-type NewRegionFrontloadReleaseClientStopOptions struct {
+// ManifestsClientGetOptions contains the optional parameters for the ManifestsClient.Get method.
+type ManifestsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 

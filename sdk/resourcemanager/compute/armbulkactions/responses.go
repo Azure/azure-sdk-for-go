@@ -44,6 +44,12 @@ type BulkCreateCustomClientListBySubscriptionResponse struct {
 	BulkCreateCustomListResult
 }
 
+// BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse contains the response from method BulkCreateCustomClient.NewVirtualMachinesGetOperationStatusPager.
+type BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse struct {
+	// The paged response for virtual machine operation statuses in a BulkCreateCustom operation.
+	BulkCreateCustomOperationStatusListResult
+}
+
 // LaunchBulkInstancesOperationClientCancelResponse contains the response from method LaunchBulkInstancesOperationClient.BeginCancel.
 type LaunchBulkInstancesOperationClientCancelResponse struct {
 	// placeholder for future response values

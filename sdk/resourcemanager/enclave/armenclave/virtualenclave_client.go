@@ -19,7 +19,7 @@ import (
 // VirtualEnclaveClient - Virtual Enclave Interface
 // Don't use this type directly, use NewVirtualEnclaveClient() instead.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01
 type VirtualEnclaveClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type VirtualEnclaveClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewVirtualEnclaveClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualEnclaveClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -92,7 +95,7 @@ func (client *VirtualEnclaveClient) createOrUpdate(ctx context.Context, resource
 func (client *VirtualEnclaveClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualEnclaveName string, resource Resource, _ *VirtualEnclaveClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -108,7 +111,7 @@ func (client *VirtualEnclaveClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -167,7 +170,7 @@ func (client *VirtualEnclaveClient) deleteOperation(ctx context.Context, resourc
 func (client *VirtualEnclaveClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualEnclaveName string, _ *VirtualEnclaveClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -183,7 +186,7 @@ func (client *VirtualEnclaveClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -214,7 +217,7 @@ func (client *VirtualEnclaveClient) Get(ctx context.Context, resourceGroupName s
 func (client *VirtualEnclaveClient) getCreateRequest(ctx context.Context, resourceGroupName string, virtualEnclaveName string, _ *VirtualEnclaveClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -230,7 +233,7 @@ func (client *VirtualEnclaveClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -298,7 +301,7 @@ func (client *VirtualEnclaveClient) handleApprovalCreation(ctx context.Context, 
 func (client *VirtualEnclaveClient) handleApprovalCreationCreateRequest(ctx context.Context, resourceGroupName string, virtualEnclaveName string, body ApprovalCallbackRequest, _ *VirtualEnclaveClientBeginHandleApprovalCreationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/handleApprovalCreation"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -314,7 +317,7 @@ func (client *VirtualEnclaveClient) handleApprovalCreationCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -374,7 +377,7 @@ func (client *VirtualEnclaveClient) handleApprovalDeletion(ctx context.Context, 
 func (client *VirtualEnclaveClient) handleApprovalDeletionCreateRequest(ctx context.Context, resourceGroupName string, virtualEnclaveName string, body ApprovalDeletionCallbackRequest, _ *VirtualEnclaveClientBeginHandleApprovalDeletionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/handleApprovalDeletion"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -390,7 +393,7 @@ func (client *VirtualEnclaveClient) handleApprovalDeletionCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -437,7 +440,7 @@ func (client *VirtualEnclaveClient) listByResourceGroupCreateRequest(ctx context
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -453,7 +456,7 @@ func (client *VirtualEnclaveClient) listByResourceGroupCreateRequest(ctx context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301Preview)
+		reqQP.Set("api-version", version20260401)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -508,7 +511,7 @@ func (client *VirtualEnclaveClient) listBySubscriptionCreateRequest(ctx context.
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Mission/virtualEnclaves"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -520,7 +523,7 @@ func (client *VirtualEnclaveClient) listBySubscriptionCreateRequest(ctx context.
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301Preview)
+		reqQP.Set("api-version", version20260401)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -589,7 +592,7 @@ func (client *VirtualEnclaveClient) update(ctx context.Context, resourceGroupNam
 func (client *VirtualEnclaveClient) updateCreateRequest(ctx context.Context, resourceGroupName string, virtualEnclaveName string, properties VirtualEnclavePatchModel, _ *VirtualEnclaveClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -605,7 +608,7 @@ func (client *VirtualEnclaveClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

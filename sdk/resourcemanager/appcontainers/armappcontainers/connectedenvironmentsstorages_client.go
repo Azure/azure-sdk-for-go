@@ -30,6 +30,9 @@ type ConnectedEnvironmentsStoragesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConnectedEnvironmentsStoragesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectedEnvironmentsStoragesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -96,7 +99,7 @@ func (client *ConnectedEnvironmentsStoragesClient) createOrUpdate(ctx context.Co
 func (client *ConnectedEnvironmentsStoragesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, storageName string, storageEnvelope ConnectedEnvironmentStorage, _ *ConnectedEnvironmentsStoragesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/storages/{storageName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -180,7 +183,7 @@ func (client *ConnectedEnvironmentsStoragesClient) deleteOperation(ctx context.C
 func (client *ConnectedEnvironmentsStoragesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, storageName string, _ *ConnectedEnvironmentsStoragesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/storages/{storageName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -235,7 +238,7 @@ func (client *ConnectedEnvironmentsStoragesClient) Get(ctx context.Context, reso
 func (client *ConnectedEnvironmentsStoragesClient) getCreateRequest(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, storageName string, _ *ConnectedEnvironmentsStoragesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/storages/{storageName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -302,7 +305,7 @@ func (client *ConnectedEnvironmentsStoragesClient) List(ctx context.Context, res
 func (client *ConnectedEnvironmentsStoragesClient) listCreateRequest(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, _ *ConnectedEnvironmentsStoragesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/storages"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

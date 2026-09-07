@@ -108,7 +108,7 @@ func (d *DeletedServersServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deletedServers/(?P<deletedServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedServers/(?P<deletedServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -143,7 +143,7 @@ func (d *DeletedServersServerTransport) dispatchNewListPager(req *http.Request) 
 	}
 	newListPager := d.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/deletedServers`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/deletedServers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -176,7 +176,7 @@ func (d *DeletedServersServerTransport) dispatchNewListByLocationPager(req *http
 	}
 	newListByLocationPager := d.newListByLocationPager.get(req)
 	if newListByLocationPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deletedServers`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedServers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -213,7 +213,7 @@ func (d *DeletedServersServerTransport) dispatchBeginRecover(req *http.Request) 
 	}
 	beginRecover := d.beginRecover.get(req)
 	if beginRecover == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deletedServers/(?P<deletedServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recover`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedServers/(?P<deletedServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recover`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

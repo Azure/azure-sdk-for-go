@@ -19,7 +19,7 @@ import (
 // CommunityEndpointsClient - Community Endpoint Interface
 // Don't use this type directly, use NewCommunityEndpointsClient() instead.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01
 type CommunityEndpointsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type CommunityEndpointsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCommunityEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CommunityEndpointsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -93,7 +96,7 @@ func (client *CommunityEndpointsClient) createOrUpdate(ctx context.Context, reso
 func (client *CommunityEndpointsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, resource CommunityEndpointResource, _ *CommunityEndpointsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -113,7 +116,7 @@ func (client *CommunityEndpointsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -173,7 +176,7 @@ func (client *CommunityEndpointsClient) deleteOperation(ctx context.Context, res
 func (client *CommunityEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, _ *CommunityEndpointsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -193,7 +196,7 @@ func (client *CommunityEndpointsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -225,7 +228,7 @@ func (client *CommunityEndpointsClient) Get(ctx context.Context, resourceGroupNa
 func (client *CommunityEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, _ *CommunityEndpointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -245,7 +248,7 @@ func (client *CommunityEndpointsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -314,7 +317,7 @@ func (client *CommunityEndpointsClient) handleApprovalCreation(ctx context.Conte
 func (client *CommunityEndpointsClient) handleApprovalCreationCreateRequest(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, body ApprovalCallbackRequest, _ *CommunityEndpointsClientBeginHandleApprovalCreationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}/handleApprovalCreation"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -334,7 +337,7 @@ func (client *CommunityEndpointsClient) handleApprovalCreationCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -395,7 +398,7 @@ func (client *CommunityEndpointsClient) handleApprovalDeletion(ctx context.Conte
 func (client *CommunityEndpointsClient) handleApprovalDeletionCreateRequest(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, body ApprovalDeletionCallbackRequest, _ *CommunityEndpointsClientBeginHandleApprovalDeletionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}/handleApprovalDeletion"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -415,7 +418,7 @@ func (client *CommunityEndpointsClient) handleApprovalDeletionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -463,7 +466,7 @@ func (client *CommunityEndpointsClient) listByCommunityResourceCreateRequest(ctx
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -483,7 +486,7 @@ func (client *CommunityEndpointsClient) listByCommunityResourceCreateRequest(ctx
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301Preview)
+		reqQP.Set("api-version", version20260401)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -539,7 +542,7 @@ func (client *CommunityEndpointsClient) listBySubscriptionCreateRequest(ctx cont
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if communityName == "" {
@@ -555,7 +558,7 @@ func (client *CommunityEndpointsClient) listBySubscriptionCreateRequest(ctx cont
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301Preview)
+		reqQP.Set("api-version", version20260401)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -625,7 +628,7 @@ func (client *CommunityEndpointsClient) update(ctx context.Context, resourceGrou
 func (client *CommunityEndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, properties CommunityEndpointPatchModel, _ *CommunityEndpointsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -645,7 +648,7 @@ func (client *CommunityEndpointsClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

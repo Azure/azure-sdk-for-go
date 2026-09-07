@@ -162,7 +162,7 @@ func (r *RoleDefinitionServerTransport) dispatchGetByBillingAccount(req *http.Re
 	if r.srv.GetByBillingAccount == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByBillingAccount not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleDefinitions/(?P<roleDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingRoleDefinitions/(?P<roleDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -195,7 +195,7 @@ func (r *RoleDefinitionServerTransport) dispatchGetByBillingProfile(req *http.Re
 	if r.srv.GetByBillingProfile == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByBillingProfile not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleDefinitions/(?P<roleDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingRoleDefinitions/(?P<roleDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -232,7 +232,7 @@ func (r *RoleDefinitionServerTransport) dispatchGetByCustomer(req *http.Request)
 	if r.srv.GetByCustomer == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByCustomer not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleDefinitions/(?P<roleDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customers/(?P<customerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingRoleDefinitions/(?P<roleDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -273,7 +273,7 @@ func (r *RoleDefinitionServerTransport) dispatchGetByDepartment(req *http.Reques
 	if r.srv.GetByDepartment == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByDepartment not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/departments/(?P<departmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleDefinitions/(?P<roleDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/departments/(?P<departmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingRoleDefinitions/(?P<roleDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -310,7 +310,7 @@ func (r *RoleDefinitionServerTransport) dispatchGetByEnrollmentAccount(req *http
 	if r.srv.GetByEnrollmentAccount == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByEnrollmentAccount not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts/(?P<enrollmentAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleDefinitions/(?P<roleDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/enrollmentAccounts/(?P<enrollmentAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingRoleDefinitions/(?P<roleDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -347,7 +347,7 @@ func (r *RoleDefinitionServerTransport) dispatchGetByInvoiceSection(req *http.Re
 	if r.srv.GetByInvoiceSection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByInvoiceSection not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleDefinitions/(?P<roleDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invoiceSections/(?P<invoiceSectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingRoleDefinitions/(?P<roleDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -390,7 +390,7 @@ func (r *RoleDefinitionServerTransport) dispatchNewListByBillingAccountPager(req
 	}
 	newListByBillingAccountPager := r.newListByBillingAccountPager.get(req)
 	if newListByBillingAccountPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleDefinitions`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingRoleDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -427,7 +427,7 @@ func (r *RoleDefinitionServerTransport) dispatchNewListByBillingProfilePager(req
 	}
 	newListByBillingProfilePager := r.newListByBillingProfilePager.get(req)
 	if newListByBillingProfilePager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleDefinitions`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingRoleDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -468,7 +468,7 @@ func (r *RoleDefinitionServerTransport) dispatchNewListByCustomerPager(req *http
 	}
 	newListByCustomerPager := r.newListByCustomerPager.get(req)
 	if newListByCustomerPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleDefinitions`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customers/(?P<customerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingRoleDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -513,7 +513,7 @@ func (r *RoleDefinitionServerTransport) dispatchNewListByDepartmentPager(req *ht
 	}
 	newListByDepartmentPager := r.newListByDepartmentPager.get(req)
 	if newListByDepartmentPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/departments/(?P<departmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleDefinitions`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/departments/(?P<departmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingRoleDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -554,7 +554,7 @@ func (r *RoleDefinitionServerTransport) dispatchNewListByEnrollmentAccountPager(
 	}
 	newListByEnrollmentAccountPager := r.newListByEnrollmentAccountPager.get(req)
 	if newListByEnrollmentAccountPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts/(?P<enrollmentAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleDefinitions`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/enrollmentAccounts/(?P<enrollmentAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingRoleDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -595,7 +595,7 @@ func (r *RoleDefinitionServerTransport) dispatchNewListByInvoiceSectionPager(req
 	}
 	newListByInvoiceSectionPager := r.newListByInvoiceSectionPager.get(req)
 	if newListByInvoiceSectionPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleDefinitions`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invoiceSections/(?P<invoiceSectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingRoleDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

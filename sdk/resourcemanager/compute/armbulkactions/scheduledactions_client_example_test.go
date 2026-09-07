@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_AttachResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/ScheduledActions_AttachResources_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_BeginAttachResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleScheduledActionsClient_BeginAttachResources() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_CancelNextOccurrence_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/ScheduledActions_CancelNextOccurrence_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_BeginCancelNextOccurrence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleScheduledActionsClient_BeginCancelNextOccurrence() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/ScheduledActions_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,14 +150,14 @@ func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 				RequestedDaysOfTheMonth: []*int32{
 					to.Ptr[int32](15),
 				},
-				ExecutionParameters: &armbulkactions.RecurringScheduledActionsExecutionParameters{
+				ExecutionParameters: &armbulkactions.ScheduledActionsExecutionParameters{
 					OptimizationPreference: to.Ptr(armbulkactions.OptimizationPreferenceCost),
-					RetryPolicy: &armbulkactions.RecurringScheduledActionsRetryPolicy{
+					RetryPolicy: &armbulkactions.ScheduledActionsRetryPolicy{
 						RetryCount:           to.Ptr[int32](17),
 						RetryWindowInMinutes: to.Ptr[int32](29),
 					},
 				},
-				DeadlineType: to.Ptr(armbulkactions.RecurringScheduledActionsDeadlineTypeUnknown),
+				DeadlineType: to.Ptr(armbulkactions.ScheduledActionsDeadlineTypeUnknown),
 			},
 			NotificationSettings: []*armbulkactions.NotificationProperties{
 				{
@@ -203,14 +203,14 @@ func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 	// 				RequestedDaysOfTheMonth: []*int32{
 	// 					to.Ptr[int32](15),
 	// 				},
-	// 				ExecutionParameters: &armbulkactions.RecurringScheduledActionsExecutionParameters{
+	// 				ExecutionParameters: &armbulkactions.ScheduledActionsExecutionParameters{
 	// 					OptimizationPreference: to.Ptr(armbulkactions.OptimizationPreferenceCost),
-	// 					RetryPolicy: &armbulkactions.RecurringScheduledActionsRetryPolicy{
+	// 					RetryPolicy: &armbulkactions.ScheduledActionsRetryPolicy{
 	// 						RetryCount: to.Ptr[int32](17),
 	// 						RetryWindowInMinutes: to.Ptr[int32](29),
 	// 					},
 	// 				},
-	// 				DeadlineType: to.Ptr(armbulkactions.RecurringScheduledActionsDeadlineTypeUnknown),
+	// 				DeadlineType: to.Ptr(armbulkactions.ScheduledActionsDeadlineTypeUnknown),
 	// 			},
 	// 			NotificationSettings: []*armbulkactions.NotificationProperties{
 	// 				{
@@ -221,7 +221,7 @@ func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 	// 				},
 	// 			},
 	// 			Disabled: to.Ptr(true),
-	// 			ProvisioningState: to.Ptr(armbulkactions.RecurringScheduledActionsProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armbulkactions.ScheduledActionsProvisioningStateSucceeded),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"key2102": to.Ptr("myTagValue"),
@@ -242,7 +242,7 @@ func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/ScheduledActions_Delete_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -263,7 +263,7 @@ func ExampleScheduledActionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_DetachResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/ScheduledActions_DetachResources_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_BeginDetachResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -312,7 +312,7 @@ func ExampleScheduledActionsClient_BeginDetachResources() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_Disable_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/ScheduledActions_Disable_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_BeginDisable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -333,7 +333,7 @@ func ExampleScheduledActionsClient_BeginDisable() {
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_Enable_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/ScheduledActions_Enable_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_BeginEnable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -354,7 +354,7 @@ func ExampleScheduledActionsClient_BeginEnable() {
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/ScheduledActions_Get_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -391,14 +391,14 @@ func ExampleScheduledActionsClient_Get() {
 	// 				RequestedDaysOfTheMonth: []*int32{
 	// 					to.Ptr[int32](15),
 	// 				},
-	// 				ExecutionParameters: &armbulkactions.RecurringScheduledActionsExecutionParameters{
+	// 				ExecutionParameters: &armbulkactions.ScheduledActionsExecutionParameters{
 	// 					OptimizationPreference: to.Ptr(armbulkactions.OptimizationPreferenceCost),
-	// 					RetryPolicy: &armbulkactions.RecurringScheduledActionsRetryPolicy{
+	// 					RetryPolicy: &armbulkactions.ScheduledActionsRetryPolicy{
 	// 						RetryCount: to.Ptr[int32](17),
 	// 						RetryWindowInMinutes: to.Ptr[int32](29),
 	// 					},
 	// 				},
-	// 				DeadlineType: to.Ptr(armbulkactions.RecurringScheduledActionsDeadlineTypeUnknown),
+	// 				DeadlineType: to.Ptr(armbulkactions.ScheduledActionsDeadlineTypeUnknown),
 	// 			},
 	// 			NotificationSettings: []*armbulkactions.NotificationProperties{
 	// 				{
@@ -409,7 +409,7 @@ func ExampleScheduledActionsClient_Get() {
 	// 				},
 	// 			},
 	// 			Disabled: to.Ptr(true),
-	// 			ProvisioningState: to.Ptr(armbulkactions.RecurringScheduledActionsProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armbulkactions.ScheduledActionsProvisioningStateSucceeded),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"key2102": to.Ptr("myTagValue"),
@@ -430,7 +430,7 @@ func ExampleScheduledActionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/ScheduledActions_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -473,14 +473,14 @@ func ExampleScheduledActionsClient_NewListByResourceGroupPager() {
 		// 						RequestedDaysOfTheMonth: []*int32{
 		// 							to.Ptr[int32](15),
 		// 						},
-		// 						ExecutionParameters: &armbulkactions.RecurringScheduledActionsExecutionParameters{
+		// 						ExecutionParameters: &armbulkactions.ScheduledActionsExecutionParameters{
 		// 							OptimizationPreference: to.Ptr(armbulkactions.OptimizationPreferenceCost),
-		// 							RetryPolicy: &armbulkactions.RecurringScheduledActionsRetryPolicy{
+		// 							RetryPolicy: &armbulkactions.ScheduledActionsRetryPolicy{
 		// 								RetryCount: to.Ptr[int32](17),
 		// 								RetryWindowInMinutes: to.Ptr[int32](29),
 		// 							},
 		// 						},
-		// 						DeadlineType: to.Ptr(armbulkactions.RecurringScheduledActionsDeadlineTypeUnknown),
+		// 						DeadlineType: to.Ptr(armbulkactions.ScheduledActionsDeadlineTypeUnknown),
 		// 					},
 		// 					NotificationSettings: []*armbulkactions.NotificationProperties{
 		// 						{
@@ -491,7 +491,7 @@ func ExampleScheduledActionsClient_NewListByResourceGroupPager() {
 		// 						},
 		// 					},
 		// 					Disabled: to.Ptr(true),
-		// 					ProvisioningState: to.Ptr(armbulkactions.RecurringScheduledActionsProvisioningStateSucceeded),
+		// 					ProvisioningState: to.Ptr(armbulkactions.ScheduledActionsProvisioningStateSucceeded),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"key2102": to.Ptr("myTagValue"),
@@ -516,7 +516,7 @@ func ExampleScheduledActionsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/ScheduledActions_ListBySubscription_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -559,14 +559,14 @@ func ExampleScheduledActionsClient_NewListBySubscriptionPager() {
 		// 						RequestedDaysOfTheMonth: []*int32{
 		// 							to.Ptr[int32](15),
 		// 						},
-		// 						ExecutionParameters: &armbulkactions.RecurringScheduledActionsExecutionParameters{
+		// 						ExecutionParameters: &armbulkactions.ScheduledActionsExecutionParameters{
 		// 							OptimizationPreference: to.Ptr(armbulkactions.OptimizationPreferenceCost),
-		// 							RetryPolicy: &armbulkactions.RecurringScheduledActionsRetryPolicy{
+		// 							RetryPolicy: &armbulkactions.ScheduledActionsRetryPolicy{
 		// 								RetryCount: to.Ptr[int32](17),
 		// 								RetryWindowInMinutes: to.Ptr[int32](29),
 		// 							},
 		// 						},
-		// 						DeadlineType: to.Ptr(armbulkactions.RecurringScheduledActionsDeadlineTypeUnknown),
+		// 						DeadlineType: to.Ptr(armbulkactions.ScheduledActionsDeadlineTypeUnknown),
 		// 					},
 		// 					NotificationSettings: []*armbulkactions.NotificationProperties{
 		// 						{
@@ -577,7 +577,7 @@ func ExampleScheduledActionsClient_NewListBySubscriptionPager() {
 		// 						},
 		// 					},
 		// 					Disabled: to.Ptr(true),
-		// 					ProvisioningState: to.Ptr(armbulkactions.RecurringScheduledActionsProvisioningStateSucceeded),
+		// 					ProvisioningState: to.Ptr(armbulkactions.ScheduledActionsProvisioningStateSucceeded),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"key2102": to.Ptr("myTagValue"),
@@ -602,7 +602,7 @@ func ExampleScheduledActionsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_ListResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/ScheduledActions_ListResources_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_NewListResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -648,7 +648,7 @@ func ExampleScheduledActionsClient_NewListResourcesPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_PatchResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/ScheduledActions_PatchResources_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_PatchResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -703,7 +703,7 @@ func ExampleScheduledActionsClient_PatchResources() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_TriggerManualOccurrence_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/ScheduledActions_TriggerManualOccurrence_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_BeginTriggerManualOccurrence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -765,7 +765,7 @@ func ExampleScheduledActionsClient_BeginTriggerManualOccurrence() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/ScheduledActions_Update_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -794,14 +794,14 @@ func ExampleScheduledActionsClient_BeginUpdate() {
 				RequestedDaysOfTheMonth: []*int32{
 					to.Ptr[int32](15),
 				},
-				ExecutionParameters: &armbulkactions.RecurringScheduledActionsExecutionParameters{
+				ExecutionParameters: &armbulkactions.ScheduledActionsExecutionParameters{
 					OptimizationPreference: to.Ptr(armbulkactions.OptimizationPreferenceCost),
-					RetryPolicy: &armbulkactions.RecurringScheduledActionsRetryPolicy{
+					RetryPolicy: &armbulkactions.ScheduledActionsRetryPolicy{
 						RetryCount:           to.Ptr[int32](17),
 						RetryWindowInMinutes: to.Ptr[int32](29),
 					},
 				},
-				DeadlineType: to.Ptr(armbulkactions.RecurringScheduledActionsDeadlineTypeUnknown),
+				DeadlineType: to.Ptr(armbulkactions.ScheduledActionsDeadlineTypeUnknown),
 			},
 			NotificationSettings: []*armbulkactions.NotificationProperties{
 				{

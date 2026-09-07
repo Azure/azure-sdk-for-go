@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.NetApp": "2026-05-15-preview"
+    "Microsoft.NetApp": "2026-06-15-preview"
   },
-  "emitterVersion": "0.16.0"
+  "emitterVersion": "0.17.3"
 }

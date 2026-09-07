@@ -92,7 +92,7 @@ func (m *MetadataServerTransport) dispatchGetEntity(req *http.Request) (*http.Re
 	if m.srv.GetEntity == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetEntity not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.ResourceHealth/metadata/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.ResourceHealth/metadata/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

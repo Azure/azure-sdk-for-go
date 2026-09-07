@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -179,9 +179,6 @@ func (r *RecordSetsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RecordSet, req)
 	if err != nil {
 		return nil, err
-	}
-	if val := server.GetResponse(respr).RetryAfter; val != nil {
-		resp.Header.Set("Retry-After", strconv.FormatInt(int64(*val), 10))
 	}
 	return resp, nil
 }

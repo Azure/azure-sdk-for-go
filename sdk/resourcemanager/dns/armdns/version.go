@@ -6,5 +6,5 @@ package armdns
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns"
-	moduleVersion = "v1.3.0-beta.2"
+	moduleVersion = "v2.0.0-beta.1"
 )

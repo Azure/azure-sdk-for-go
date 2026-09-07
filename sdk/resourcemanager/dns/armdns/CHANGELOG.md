@@ -1,5 +1,11 @@
 # Release History
 
+## 2.0.0-beta.1 (2026-09-07)
+### Breaking Changes
+
+- Field `RetryAfter` of struct `RecordSetsClientCreateOrUpdateResponse` has been removed
+
+
 ## 1.3.0-beta.2 (2026-03-16)
 ### Breaking Changes
 

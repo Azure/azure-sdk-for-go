@@ -122,14 +122,6 @@ func (client *RecordSetsClient) createOrUpdateHandleResponse(resp *http.Response
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if val := resp.Header.Get("Retry-After"); val != "" {
-		retryAfter32, err := strconv.ParseInt(val, 10, 32)
-		retryAfter := int32(retryAfter32)
-		if err != nil {
-			return RecordSetsClientCreateOrUpdateResponse{}, err
-		}
-		result.RetryAfter = &retryAfter
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSet); err != nil {
 		return RecordSetsClientCreateOrUpdateResponse{}, err
 	}

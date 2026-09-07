@@ -31,9 +31,6 @@ type DnssecConfigsClientListByDNSZoneResponse struct {
 type RecordSetsClientCreateOrUpdateResponse struct {
 	// Describes a DNS record set (a collection of DNS records with the same name and type).
 	RecordSet
-
-	// The Retry-After header can indicate how long the client should wait before polling the operation status.
-	RetryAfter *int32
 }
 
 // RecordSetsClientDeleteResponse contains the response from method RecordSetsClient.Delete.

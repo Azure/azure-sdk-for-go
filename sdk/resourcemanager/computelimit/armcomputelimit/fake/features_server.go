@@ -111,7 +111,7 @@ func (f *FeaturesServerTransport) dispatchBeginDisable(req *http.Request) (*http
 	}
 	beginDisable := f.beginDisable.get(req)
 	if beginDisable == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/features/(?P<featureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disable`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/features/(?P<featureName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/disable`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -155,7 +155,7 @@ func (f *FeaturesServerTransport) dispatchBeginEnable(req *http.Request) (*http.
 	}
 	beginEnable := f.beginEnable.get(req)
 	if beginEnable == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/features/(?P<featureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enable`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/features/(?P<featureName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/enable`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -207,7 +207,7 @@ func (f *FeaturesServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if f.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/features/(?P<featureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/features/(?P<featureName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -242,7 +242,7 @@ func (f *FeaturesServerTransport) dispatchNewListBySubscriptionLocationResourceP
 	}
 	newListBySubscriptionLocationResourcePager := f.newListBySubscriptionLocationResourcePager.get(req)
 	if newListBySubscriptionLocationResourcePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/features`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/features`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBRestorableTableResourceList.json
+// Generated from example definition: 2026-03-15/CosmosDBRestorableTableResourceList.json
 func ExampleRestorableTableResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,14 +40,14 @@ func ExampleRestorableTableResourcesClient_NewListPager() {
 		// 	RestorableTableResourcesListResult: armcosmos.RestorableTableResourcesListResult{
 		// 		Value: []*armcosmos.RestorableTableResourcesGetResult{
 		// 			{
-		// 				Name: to.Ptr("table1"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorablesqlresources"),
 		// 				ID: to.Ptr("/subscriptions/2296c272-5d55-40d9-bc05-4d56dc2d7588/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/d9b26648-2f53-4541-b3d8-3044f4f9810d/restorabletableresources/table1"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorablesqlresources"),
+		// 				Name: to.Ptr("table1"),
 		// 			},
 		// 			{
-		// 				Name: to.Ptr("table2"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorablesqlresources"),
 		// 				ID: to.Ptr("/subscriptions/2296c272-5d55-40d9-bc05-4d56dc2d7588/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/d9b26648-2f53-4541-b3d8-3044f4f9810d/restorabletableresources/table2"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorablesqlresources"),
+		// 				Name: to.Ptr("table2"),
 		// 			},
 		// 		},
 		// 	},

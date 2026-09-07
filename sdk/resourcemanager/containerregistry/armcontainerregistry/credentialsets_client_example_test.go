@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/CredentialSetCreate.json
+// Generated from example definition: 2026-03-01-preview/CredentialSetCreate.json
 func ExampleCredentialSetsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,14 +70,14 @@ func ExampleCredentialSetsClient_BeginCreate() {
 	// 					},
 	// 				},
 	// 			},
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-07T18:20:08.012276+00:00"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.November, 7, 18, 20, 8, 12276000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/CredentialSetDelete.json
+// Generated from example definition: 2026-03-01-preview/CredentialSetDelete.json
 func ExampleCredentialSetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleCredentialSetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/CredentialSetGet.json
+// Generated from example definition: 2026-03-01-preview/CredentialSetGet.json
 func ExampleCredentialSetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,14 +138,14 @@ func ExampleCredentialSetsClient_Get() {
 	// 					},
 	// 				},
 	// 			},
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-07T18:20:08.012276+00:00"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.November, 7, 18, 20, 8, 12276000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/CredentialSetList.json
+// Generated from example definition: 2026-03-01-preview/CredentialSetList.json
 func ExampleCredentialSetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,7 +191,7 @@ func ExampleCredentialSetsClient_NewListPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-07T18:20:08.012276+00:00"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2022, time.November, 7, 18, 20, 8, 12276000, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 		// 				},
 		// 			},
@@ -201,7 +201,7 @@ func ExampleCredentialSetsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/CredentialSetUpdate.json
+// Generated from example definition: 2026-03-01-preview/CredentialSetUpdate.json
 func ExampleCredentialSetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -255,7 +255,7 @@ func ExampleCredentialSetsClient_BeginUpdate() {
 	// 					},
 	// 				},
 	// 			},
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-07T18:20:08.012276+00:00"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.November, 7, 18, 20, 8, 12276000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 		},
 	// 	},

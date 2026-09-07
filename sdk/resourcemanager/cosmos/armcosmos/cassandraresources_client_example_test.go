@@ -12,55 +12,55 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraKeyspaceCreateUpdate.json
+// Generated from example definition: 2026-03-15/CosmosDBCassandraKeyspaceCreateUpdate.json
 func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraKeyspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("d6beadc3-5469-4109-ab3c-22a036c7e175", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewCassandraResourcesClient().BeginCreateUpdateCassandraKeyspace(ctx, "rg1", "ddb1", "keyspaceName", armcosmos.CassandraKeyspaceCreateUpdateParameters{
 		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
 		Properties: &armcosmos.CassandraKeyspaceCreateUpdateProperties{
-			Options: &armcosmos.CreateUpdateOptions{},
 			Resource: &armcosmos.CassandraKeyspaceResource{
 				ID: to.Ptr("keyspaceName"),
 			},
+			Options: &armcosmos.CreateUpdateOptions{},
 		},
-		Tags: map[string]*string{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraResourcesClientCreateUpdateCassandraKeyspaceResponse{
-	// 	CassandraKeyspaceGetResults: &armcosmos.CassandraKeyspaceGetResults{
+	// 	CassandraKeyspaceGetResults: armcosmos.CassandraKeyspaceGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName"),
 	// 		Name: to.Ptr("keyspaceName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces"),
-	// 		ID: to.Ptr("/subscriptions/d6beadc3-5469-4109-ab3c-22a036c7e175/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.CassandraKeyspaceGetProperties{
 	// 			Resource: &armcosmos.CassandraKeyspaceGetPropertiesResource{
 	// 				ID: to.Ptr("keyspaceName"),
 	// 			},
 	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/cassandrarbac/CosmosDBCassandraRoleAssignmentCreateUpdate.json
+// Generated from example definition: 2026-03-15/cassandrarbac/CosmosDBCassandraRoleAssignmentCreateUpdate.json
 func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,13 +83,13 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraRoleAssignment() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraResourcesClientCreateUpdateCassandraRoleAssignmentResponse{
-	// 	CassandraRoleAssignmentResource: &armcosmos.CassandraRoleAssignmentResource{
+	// 	CassandraRoleAssignmentResource: armcosmos.CassandraRoleAssignmentResource{
 	// 		Name: to.Ptr("myRoleAssignmentId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraRoleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/cassandraRoleAssignments/myRoleAssignmentId"),
@@ -102,7 +102,7 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraRoleAssignment() 
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/cassandrarbac/CosmosDBCassandraRoleDefinitionCreateUpdate.json
+// Generated from example definition: 2026-03-15/cassandrarbac/CosmosDBCassandraRoleDefinitionCreateUpdate.json
 func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,13 +137,13 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraRoleDefinition() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraResourcesClientCreateUpdateCassandraRoleDefinitionResponse{
-	// 	CassandraRoleDefinitionResource: &armcosmos.CassandraRoleDefinitionResource{
+	// 	CassandraRoleDefinitionResource: armcosmos.CassandraRoleDefinitionResource{
 	// 		Name: to.Ptr("myRoleDefinitionId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraRoleDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/cassandraRoleDefinitions/myRoleDefinitionId"),
@@ -167,7 +167,7 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraRoleDefinition() 
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraTableCreateUpdate.json
+// Generated from example definition: 2026-03-15/CosmosDBCassandraTableCreateUpdate.json
 func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -180,16 +180,12 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraTable() {
 	}
 	poller, err := clientFactory.NewCassandraResourcesClient().BeginCreateUpdateCassandraTable(ctx, "rg1", "ddb1", "keyspaceName", "tableName", armcosmos.CassandraTableCreateUpdateParameters{
 		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
 		Properties: &armcosmos.CassandraTableCreateUpdateProperties{
-			Options: &armcosmos.CreateUpdateOptions{},
 			Resource: &armcosmos.CassandraTableResource{
+				ID:         to.Ptr("tableName"),
+				DefaultTTL: to.Ptr[int32](100),
 				Schema: &armcosmos.CassandraSchema{
-					ClusterKeys: []*armcosmos.ClusterKey{
-						{
-							Name:    to.Ptr("columnA"),
-							OrderBy: to.Ptr("Asc"),
-						},
-					},
 					Columns: []*armcosmos.Column{
 						{
 							Name: to.Ptr("columnA"),
@@ -201,39 +197,40 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraTable() {
 							Name: to.Ptr("columnA"),
 						},
 					},
+					ClusterKeys: []*armcosmos.ClusterKey{
+						{
+							Name:    to.Ptr("columnA"),
+							OrderBy: to.Ptr("Asc"),
+						},
+					},
 				},
-				AnalyticalStorageTTL: to.Ptr[int32](500),
-				DefaultTTL:           to.Ptr[int32](100),
-				ID:                   to.Ptr("tableName"),
 			},
+			Options: &armcosmos.CreateUpdateOptions{},
 		},
-		Tags: map[string]*string{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraResourcesClientCreateUpdateCassandraTableResponse{
-	// 	CassandraTableGetResults: &armcosmos.CassandraTableGetResults{
+	// 	CassandraTableGetResults: armcosmos.CassandraTableGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName/cassandraTables/tableName"),
 	// 		Name: to.Ptr("tableName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces/cassandraTables"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName/cassandraTables/tableName"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.CassandraTableGetProperties{
 	// 			Resource: &armcosmos.CassandraTableGetPropertiesResource{
+	// 				ID: to.Ptr("tableName"),
+	// 				DefaultTTL: to.Ptr[int32](100),
 	// 				Schema: &armcosmos.CassandraSchema{
-	// 					ClusterKeys: []*armcosmos.ClusterKey{
-	// 						{
-	// 							Name: to.Ptr("columnA"),
-	// 							OrderBy: to.Ptr("Asc"),
-	// 						},
-	// 					},
 	// 					Columns: []*armcosmos.Column{
 	// 						{
 	// 							Name: to.Ptr("columnA"),
@@ -245,67 +242,20 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraTable() {
 	// 							Name: to.Ptr("columnA"),
 	// 						},
 	// 					},
+	// 					ClusterKeys: []*armcosmos.ClusterKey{
+	// 						{
+	// 							Name: to.Ptr("columnA"),
+	// 							OrderBy: to.Ptr("Asc"),
+	// 						},
+	// 					},
 	// 				},
-	// 				AnalyticalStorageTTL: to.Ptr[int32](500),
-	// 				DefaultTTL: to.Ptr[int32](100),
-	// 				ID: to.Ptr("tableName"),
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraViewCreateUpdate.json
-func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraView() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCassandraResourcesClient().BeginCreateUpdateCassandraView(ctx, "rg1", "ddb1", "keyspacename", "viewname", armcosmos.CassandraViewCreateUpdateParameters{
-		Properties: &armcosmos.CassandraViewCreateUpdateProperties{
-			Options: &armcosmos.CreateUpdateOptions{},
-			Resource: &armcosmos.CassandraViewResource{
-				ID:             to.Ptr("viewname"),
-				ViewDefinition: to.Ptr("SELECT columna, columnb, columnc FROM keyspacename.srctablename WHERE columna IS NOT NULL AND columnc IS NOT NULL PRIMARY (columnc, columna)"),
-			},
-		},
-		Tags: map[string]*string{},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.CassandraResourcesClientCreateUpdateCassandraViewResponse{
-	// 	CassandraViewGetResults: &armcosmos.CassandraViewGetResults{
-	// 		Name: to.Ptr("viewname"),
-	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces/views"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspacename/views/viewname"),
-	// 		Properties: &armcosmos.CassandraViewGetProperties{
-	// 			Resource: &armcosmos.CassandraViewGetPropertiesResource{
-	// 				ID: to.Ptr("viewname"),
-	// 				ViewDefinition: to.Ptr("SELECT columna, columnb, columnc FROM keyspacename.srctablename WHERE columna IS NOT NULL AND columnc IS NOT NULL PRIMARY KEY (columnc, columna)"),
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraKeyspaceDelete.json
+// Generated from example definition: 2026-03-15/CosmosDBCassandraKeyspaceDelete.json
 func ExampleCassandraResourcesClient_BeginDeleteCassandraKeyspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -322,11 +272,11 @@ func ExampleCassandraResourcesClient_BeginDeleteCassandraKeyspace() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/cassandrarbac/CosmosDBCassandraRoleAssignmentDelete.json
+// Generated from example definition: 2026-03-15/cassandrarbac/CosmosDBCassandraRoleAssignmentDelete.json
 func ExampleCassandraResourcesClient_BeginDeleteCassandraRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -343,7 +293,7 @@ func ExampleCassandraResourcesClient_BeginDeleteCassandraRoleAssignment() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -352,7 +302,7 @@ func ExampleCassandraResourcesClient_BeginDeleteCassandraRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/cassandrarbac/CosmosDBCassandraRoleDefinitionDelete.json
+// Generated from example definition: 2026-03-15/cassandrarbac/CosmosDBCassandraRoleDefinitionDelete.json
 func ExampleCassandraResourcesClient_BeginDeleteCassandraRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -369,7 +319,7 @@ func ExampleCassandraResourcesClient_BeginDeleteCassandraRoleDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -378,7 +328,7 @@ func ExampleCassandraResourcesClient_BeginDeleteCassandraRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraTableDelete.json
+// Generated from example definition: 2026-03-15/CosmosDBCassandraTableDelete.json
 func ExampleCassandraResourcesClient_BeginDeleteCassandraTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -395,37 +345,11 @@ func ExampleCassandraResourcesClient_BeginDeleteCassandraTable() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraViewDelete.json
-func ExampleCassandraResourcesClient_BeginDeleteCassandraView() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCassandraResourcesClient().BeginDeleteCassandraView(ctx, "rg1", "ddb1", "keyspacename", "viewname", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.CassandraResourcesClientDeleteCassandraViewResponse{
-	// }
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraKeyspaceGet.json
+// Generated from example definition: 2026-03-15/CosmosDBCassandraKeyspaceGet.json
 func ExampleCassandraResourcesClient_GetCassandraKeyspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -444,26 +368,26 @@ func ExampleCassandraResourcesClient_GetCassandraKeyspace() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraResourcesClientGetCassandraKeyspaceResponse{
-	// 	CassandraKeyspaceGetResults: &armcosmos.CassandraKeyspaceGetResults{
+	// 	CassandraKeyspaceGetResults: armcosmos.CassandraKeyspaceGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName"),
 	// 		Name: to.Ptr("keyspaceName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.CassandraKeyspaceGetProperties{
 	// 			Resource: &armcosmos.CassandraKeyspaceGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				ID: to.Ptr("keyspaceName"),
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
-	// 				ID: to.Ptr("keyspaceName"),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraKeyspaceThroughputGet.json
+// Generated from example definition: 2026-03-15/CosmosDBCassandraKeyspaceThroughputGet.json
 func ExampleCassandraResourcesClient_GetCassandraKeyspaceThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -482,30 +406,30 @@ func ExampleCassandraResourcesClient_GetCassandraKeyspaceThroughput() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraResourcesClientGetCassandraKeyspaceThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName/throughputSettings/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces/throughputSettings"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName/throughputSettings/default"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
-	// 				InstantMaximumThroughput: to.Ptr("10000"),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				MinimumThroughput: to.Ptr("400"),
 	// 				OfferReplacePending: to.Ptr("true"),
+	// 				InstantMaximumThroughput: to.Ptr("10000"),
 	// 				SoftAllowedMaximumThroughput: to.Ptr("1000000"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/cassandrarbac/CosmosDBCassandraRoleAssignmentGet.json
+// Generated from example definition: 2026-03-15/cassandrarbac/CosmosDBCassandraRoleAssignmentGet.json
 func ExampleCassandraResourcesClient_GetCassandraRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -524,7 +448,7 @@ func ExampleCassandraResourcesClient_GetCassandraRoleAssignment() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraResourcesClientGetCassandraRoleAssignmentResponse{
-	// 	CassandraRoleAssignmentResource: &armcosmos.CassandraRoleAssignmentResource{
+	// 	CassandraRoleAssignmentResource: armcosmos.CassandraRoleAssignmentResource{
 	// 		Name: to.Ptr("myRoleAssignmentId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraRoleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/cassandraRoleAssignments/myRoleAssignmentId"),
@@ -537,7 +461,7 @@ func ExampleCassandraResourcesClient_GetCassandraRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/cassandrarbac/CosmosDBCassandraRoleDefinitionGet.json
+// Generated from example definition: 2026-03-15/cassandrarbac/CosmosDBCassandraRoleDefinitionGet.json
 func ExampleCassandraResourcesClient_GetCassandraRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -556,7 +480,7 @@ func ExampleCassandraResourcesClient_GetCassandraRoleDefinition() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraResourcesClientGetCassandraRoleDefinitionResponse{
-	// 	CassandraRoleDefinitionResource: &armcosmos.CassandraRoleDefinitionResource{
+	// 	CassandraRoleDefinitionResource: armcosmos.CassandraRoleDefinitionResource{
 	// 		Name: to.Ptr("myRoleDefinitionId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraRoleDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/cassandraRoleDefinitions/myRoleDefinitionId"),
@@ -582,7 +506,7 @@ func ExampleCassandraResourcesClient_GetCassandraRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraTableGet.json
+// Generated from example definition: 2026-03-15/CosmosDBCassandraTableGet.json
 func ExampleCassandraResourcesClient_GetCassandraTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -601,20 +525,18 @@ func ExampleCassandraResourcesClient_GetCassandraTable() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraResourcesClientGetCassandraTableResponse{
-	// 	CassandraTableGetResults: &armcosmos.CassandraTableGetResults{
+	// 	CassandraTableGetResults: armcosmos.CassandraTableGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName/cassandraTables/tableName"),
 	// 		Name: to.Ptr("tableName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces/cassandraTables"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName/cassandraTables/tableName"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.CassandraTableGetProperties{
 	// 			Resource: &armcosmos.CassandraTableGetPropertiesResource{
+	// 				ID: to.Ptr("tableName"),
+	// 				DefaultTTL: to.Ptr[int32](100),
 	// 				Schema: &armcosmos.CassandraSchema{
-	// 					ClusterKeys: []*armcosmos.ClusterKey{
-	// 						{
-	// 							Name: to.Ptr("columnA"),
-	// 							OrderBy: to.Ptr("Asc"),
-	// 						},
-	// 					},
 	// 					Columns: []*armcosmos.Column{
 	// 						{
 	// 							Name: to.Ptr("columnA"),
@@ -626,22 +548,23 @@ func ExampleCassandraResourcesClient_GetCassandraTable() {
 	// 							Name: to.Ptr("columnA"),
 	// 						},
 	// 					},
+	// 					ClusterKeys: []*armcosmos.ClusterKey{
+	// 						{
+	// 							Name: to.Ptr("columnA"),
+	// 							OrderBy: to.Ptr("Asc"),
+	// 						},
+	// 					},
 	// 				},
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
-	// 				AnalyticalStorageTTL: to.Ptr[int32](500),
-	// 				DefaultTTL: to.Ptr[int32](100),
-	// 				ID: to.Ptr("tableName"),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraTableThroughputGet.json
+// Generated from example definition: 2026-03-15/CosmosDBCassandraTableThroughputGet.json
 func ExampleCassandraResourcesClient_GetCassandraTableThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -660,101 +583,30 @@ func ExampleCassandraResourcesClient_GetCassandraTableThroughput() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraResourcesClientGetCassandraTableThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName/cassandraTables/tableName/throughputSettings/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces/cassandraTables/throughputSettings"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName/cassandraTables/tableName/throughputSettings/default"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Throughput: to.Ptr[int32](400),
+	// 				MinimumThroughput: to.Ptr("400"),
+	// 				OfferReplacePending: to.Ptr("true"),
+	// 				InstantMaximumThroughput: to.Ptr("10000"),
+	// 				SoftAllowedMaximumThroughput: to.Ptr("1000000"),
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
-	// 				InstantMaximumThroughput: to.Ptr("10000"),
-	// 				MinimumThroughput: to.Ptr("400"),
-	// 				OfferReplacePending: to.Ptr("true"),
-	// 				SoftAllowedMaximumThroughput: to.Ptr("1000000"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraViewGet.json
-func ExampleCassandraResourcesClient_GetCassandraView() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewCassandraResourcesClient().GetCassandraView(ctx, "rg1", "ddb1", "keyspacename", "viewname", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.CassandraResourcesClientGetCassandraViewResponse{
-	// 	CassandraViewGetResults: &armcosmos.CassandraViewGetResults{
-	// 		Name: to.Ptr("viewname"),
-	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces/views"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspacename/views/viewname"),
-	// 		Properties: &armcosmos.CassandraViewGetProperties{
-	// 			Resource: &armcosmos.CassandraViewGetPropertiesResource{
-	// 				ID: to.Ptr("viewname"),
-	// 				ViewDefinition: to.Ptr("SELECT columna, columnb, columnc FROM keyspacename.srctablename WHERE columna IS NOT NULL AND columnc IS NOT NULL PRIMARY KEY (columnc, columna)"),
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraViewThroughputGet.json
-func ExampleCassandraResourcesClient_GetCassandraViewThroughput() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewCassandraResourcesClient().GetCassandraViewThroughput(ctx, "rg1", "ddb1", "keyspacename", "viewname", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.CassandraResourcesClientGetCassandraViewThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
-	// 		Name: to.Ptr("default"),
-	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces/views/throughputSettings"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName/views/viewName/throughputSettings/default"),
-	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
-	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				MinimumThroughput: to.Ptr("400"),
-	// 				OfferReplacePending: to.Ptr("true"),
-	// 				Throughput: to.Ptr[int32](400),
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraKeyspaceList.json
+// Generated from example definition: 2026-03-15/CosmosDBCassandraKeyspaceList.json
 func ExampleCassandraResourcesClient_NewListCassandraKeyspacesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -780,16 +632,16 @@ func ExampleCassandraResourcesClient_NewListCassandraKeyspacesPager() {
 		// 	CassandraKeyspaceListResult: armcosmos.CassandraKeyspaceListResult{
 		// 		Value: []*armcosmos.CassandraKeyspaceGetResults{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName"),
 		// 				Name: to.Ptr("keyspaceName"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName"),
 		// 				Location: to.Ptr("West US"),
+		// 				Tags: map[string]*string{
+		// 				},
 		// 				Properties: &armcosmos.CassandraKeyspaceGetProperties{
 		// 					Resource: &armcosmos.CassandraKeyspaceGetPropertiesResource{
 		// 						ID: to.Ptr("keyspaceName"),
 		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
 		// 				},
 		// 			},
 		// 		},
@@ -798,7 +650,7 @@ func ExampleCassandraResourcesClient_NewListCassandraKeyspacesPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/cassandrarbac/CosmosDBCassandraRoleAssignmentList.json
+// Generated from example definition: 2026-03-15/cassandrarbac/CosmosDBCassandraRoleAssignmentList.json
 func ExampleCassandraResourcesClient_NewListCassandraRoleAssignmentsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -839,7 +691,7 @@ func ExampleCassandraResourcesClient_NewListCassandraRoleAssignmentsPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/cassandrarbac/CosmosDBCassandraRoleDefinitionList.json
+// Generated from example definition: 2026-03-15/cassandrarbac/CosmosDBCassandraRoleDefinitionList.json
 func ExampleCassandraResourcesClient_NewListCassandraRoleDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -893,7 +745,7 @@ func ExampleCassandraResourcesClient_NewListCassandraRoleDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraTableList.json
+// Generated from example definition: 2026-03-15/CosmosDBCassandraTableList.json
 func ExampleCassandraResourcesClient_NewListCassandraTablesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -919,19 +771,17 @@ func ExampleCassandraResourcesClient_NewListCassandraTablesPager() {
 		// 	CassandraTableListResult: armcosmos.CassandraTableListResult{
 		// 		Value: []*armcosmos.CassandraTableGetResults{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName/cassandraTables/tableName"),
 		// 				Name: to.Ptr("tableName"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces/cassandraTables"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName/cassandraTables/tableName"),
 		// 				Location: to.Ptr("West US"),
+		// 				Tags: map[string]*string{
+		// 				},
 		// 				Properties: &armcosmos.CassandraTableGetProperties{
 		// 					Resource: &armcosmos.CassandraTableGetPropertiesResource{
+		// 						ID: to.Ptr("tableName"),
+		// 						DefaultTTL: to.Ptr[int32](100),
 		// 						Schema: &armcosmos.CassandraSchema{
-		// 							ClusterKeys: []*armcosmos.ClusterKey{
-		// 								{
-		// 									Name: to.Ptr("columnA"),
-		// 									OrderBy: to.Ptr("Asc"),
-		// 								},
-		// 							},
 		// 							Columns: []*armcosmos.Column{
 		// 								{
 		// 									Name: to.Ptr("columnA"),
@@ -943,13 +793,14 @@ func ExampleCassandraResourcesClient_NewListCassandraTablesPager() {
 		// 									Name: to.Ptr("columnA"),
 		// 								},
 		// 							},
+		// 							ClusterKeys: []*armcosmos.ClusterKey{
+		// 								{
+		// 									Name: to.Ptr("columnA"),
+		// 									OrderBy: to.Ptr("Asc"),
+		// 								},
+		// 							},
 		// 						},
-		// 						AnalyticalStorageTTL: to.Ptr[int32](500),
-		// 						DefaultTTL: to.Ptr[int32](100),
-		// 						ID: to.Ptr("tableName"),
 		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
 		// 				},
 		// 			},
 		// 		},
@@ -958,51 +809,7 @@ func ExampleCassandraResourcesClient_NewListCassandraTablesPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraViewList.json
-func ExampleCassandraResourcesClient_NewListCassandraViewsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCassandraResourcesClient().NewListCassandraViewsPager("rgName", "ddb1", "keyspacename", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcosmos.CassandraResourcesClientListCassandraViewsResponse{
-		// 	CassandraViewListResult: armcosmos.CassandraViewListResult{
-		// 		Value: []*armcosmos.CassandraViewGetResults{
-		// 			{
-		// 				Name: to.Ptr("viewname"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces/views"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspacename/views/viewname"),
-		// 				Properties: &armcosmos.CassandraViewGetProperties{
-		// 					Resource: &armcosmos.CassandraViewGetPropertiesResource{
-		// 						ID: to.Ptr("viewname"),
-		// 						ViewDefinition: to.Ptr("SELECT columna, columnb, columnc FROM keyspacename.srctablename WHERE columna IS NOT NULL AND columnc IS NOT NULL PRIMARY KEY (columnc, columna)"),
-		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraKeyspaceMigrateToAutoscale.json
+// Generated from example definition: 2026-03-15/CosmosDBCassandraKeyspaceMigrateToAutoscale.json
 func ExampleCassandraResourcesClient_BeginMigrateCassandraKeyspaceToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1019,31 +826,31 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraKeyspaceToAutoscale() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				AutoscaleSettings: &armcosmos.AutoscaleSettingsResource{
 	// 					MaxThroughput: to.Ptr[int32](4000),
 	// 				},
 	// 				MinimumThroughput: to.Ptr("4000"),
 	// 				OfferReplacePending: to.Ptr("false"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraKeyspaceMigrateToManualThroughput.json
+// Generated from example definition: 2026-03-15/CosmosDBCassandraKeyspaceMigrateToManualThroughput.json
 func ExampleCassandraResourcesClient_BeginMigrateCassandraKeyspaceToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1060,28 +867,28 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraKeyspaceToManualThroug
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				MinimumThroughput: to.Ptr("400"),
 	// 				OfferReplacePending: to.Ptr("false"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraTableMigrateToAutoscale.json
+// Generated from example definition: 2026-03-15/CosmosDBCassandraTableMigrateToAutoscale.json
 func ExampleCassandraResourcesClient_BeginMigrateCassandraTableToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1098,31 +905,31 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraTableToAutoscale() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraResourcesClientMigrateCassandraTableToAutoscaleResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				AutoscaleSettings: &armcosmos.AutoscaleSettingsResource{
 	// 					MaxThroughput: to.Ptr[int32](4000),
 	// 				},
 	// 				MinimumThroughput: to.Ptr("4000"),
 	// 				OfferReplacePending: to.Ptr("false"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraTableMigrateToManualThroughput.json
+// Generated from example definition: 2026-03-15/CosmosDBCassandraTableMigrateToManualThroughput.json
 func ExampleCassandraResourcesClient_BeginMigrateCassandraTableToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1139,101 +946,28 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraTableToManualThroughpu
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Throughput: to.Ptr[int32](400),
+	// 				MinimumThroughput: to.Ptr("400"),
+	// 				OfferReplacePending: to.Ptr("false"),
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
-	// 				MinimumThroughput: to.Ptr("400"),
-	// 				OfferReplacePending: to.Ptr("false"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraViewMigrateToAutoscale.json
-func ExampleCassandraResourcesClient_BeginMigrateCassandraViewToAutoscale() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCassandraResourcesClient().BeginMigrateCassandraViewToAutoscale(ctx, "rg1", "ddb1", "keyspacename", "viewname", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.CassandraResourcesClientMigrateCassandraViewToAutoscaleResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
-	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
-	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				AutoscaleSettings: &armcosmos.AutoscaleSettingsResource{
-	// 					MaxThroughput: to.Ptr[int32](4000),
-	// 				},
-	// 				MinimumThroughput: to.Ptr("4000"),
-	// 				OfferReplacePending: to.Ptr("false"),
-	// 				Throughput: to.Ptr[int32](400),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraViewMigrateToManualThroughput.json
-func ExampleCassandraResourcesClient_BeginMigrateCassandraViewToManualThroughput() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCassandraResourcesClient().BeginMigrateCassandraViewToManualThroughput(ctx, "rg1", "ddb1", "keyspacename", "viewname", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.CassandraResourcesClientMigrateCassandraViewToManualThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
-	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
-	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				MinimumThroughput: to.Ptr("400"),
-	// 				OfferReplacePending: to.Ptr("false"),
-	// 				Throughput: to.Ptr[int32](400),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraKeyspaceThroughputUpdate.json
+// Generated from example definition: 2026-03-15/CosmosDBCassandraKeyspaceThroughputUpdate.json
 func ExampleCassandraResourcesClient_BeginUpdateCassandraKeyspaceThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1246,46 +980,46 @@ func ExampleCassandraResourcesClient_BeginUpdateCassandraKeyspaceThroughput() {
 	}
 	poller, err := clientFactory.NewCassandraResourcesClient().BeginUpdateCassandraKeyspaceThroughput(ctx, "rg1", "ddb1", "keyspaceName", armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
 		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
 			Resource: &armcosmos.ThroughputSettingsResource{
 				Throughput: to.Ptr[int32](400),
 			},
 		},
-		Tags: map[string]*string{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName/throughputSettings/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces/throughputSettings"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName/throughputSettings/default"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				MinimumThroughput: to.Ptr("400"),
 	// 				OfferReplacePending: to.Ptr("true"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraTableThroughputUpdate.json
+// Generated from example definition: 2026-03-15/CosmosDBCassandraTableThroughputUpdate.json
 func ExampleCassandraResourcesClient_BeginUpdateCassandraTableThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1298,81 +1032,36 @@ func ExampleCassandraResourcesClient_BeginUpdateCassandraTableThroughput() {
 	}
 	poller, err := clientFactory.NewCassandraResourcesClient().BeginUpdateCassandraTableThroughput(ctx, "rg1", "ddb1", "keyspaceName", "tableName", armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
 		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
 			Resource: &armcosmos.ThroughputSettingsResource{
 				Throughput: to.Ptr[int32](400),
 			},
 		},
-		Tags: map[string]*string{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraResourcesClientUpdateCassandraTableThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName/cassandraTables/tableName/throughputSettings/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces/cassandraTables/throughputSettings"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName/cassandraTables/tableName/throughputSettings/default"),
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Throughput: to.Ptr[int32](400),
+	// 				MinimumThroughput: to.Ptr("400"),
+	// 				OfferReplacePending: to.Ptr("true"),
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
-	// 				MinimumThroughput: to.Ptr("400"),
-	// 				OfferReplacePending: to.Ptr("true"),
-	// 				Throughput: to.Ptr[int32](400),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBCassandraViewThroughputUpdate.json
-func ExampleCassandraResourcesClient_BeginUpdateCassandraViewThroughput() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCassandraResourcesClient().BeginUpdateCassandraViewThroughput(ctx, "rg1", "ddb1", "keyspacename", "viewname", armcosmos.ThroughputSettingsUpdateParameters{
-		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
-			Resource: &armcosmos.ThroughputSettingsResource{
-				Throughput: to.Ptr[int32](400),
-			},
-		},
-		Tags: map[string]*string{},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.CassandraResourcesClientUpdateCassandraViewThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
-	// 		Name: to.Ptr("default"),
-	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces/views/throughputSettings"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName/views/viewName/throughputSettings/default"),
-	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
-	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				MinimumThroughput: to.Ptr("400"),
-	// 				OfferReplacePending: to.Ptr("true"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
 	// 		},
 	// 	},

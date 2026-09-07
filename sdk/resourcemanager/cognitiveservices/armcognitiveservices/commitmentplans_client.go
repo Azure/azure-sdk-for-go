@@ -19,7 +19,7 @@ import (
 // CommitmentPlansClient contains the methods for the CommitmentPlans group.
 // Don't use this type directly, use NewCommitmentPlansClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-07-15-preview
 type CommitmentPlansClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type CommitmentPlansClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCommitmentPlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CommitmentPlansClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *CommitmentPlansClient) CreateOrUpdate(ctx context.Context, resourc
 	if err != nil {
 		return CommitmentPlansClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return CommitmentPlansClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *CommitmentPlansClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, commitmentPlanName string, commitmentPlan CommitmentPlan, _ *CommitmentPlansClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/commitmentPlans/{commitmentPlanName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -95,7 +93,7 @@ func (client *CommitmentPlansClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -106,8 +104,11 @@ func (client *CommitmentPlansClient) createOrUpdateCreateRequest(ctx context.Con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *CommitmentPlansClient) createOrUpdateHandleResponse(resp *http.Response) (CommitmentPlansClientCreateOrUpdateResponse, error) {
+func (client *CommitmentPlansClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (CommitmentPlansClientCreateOrUpdateResponse, error) {
 	result := CommitmentPlansClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CommitmentPlan); err != nil {
 		return CommitmentPlansClientCreateOrUpdateResponse{}, err
 	}
@@ -156,8 +157,7 @@ func (client *CommitmentPlansClient) createOrUpdateAssociation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -166,7 +166,7 @@ func (client *CommitmentPlansClient) createOrUpdateAssociation(ctx context.Conte
 func (client *CommitmentPlansClient) createOrUpdateAssociationCreateRequest(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlanAssociationName string, association CommitmentPlanAccountAssociation, _ *CommitmentPlansClientBeginCreateOrUpdateAssociationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -186,7 +186,7 @@ func (client *CommitmentPlansClient) createOrUpdateAssociationCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -237,8 +237,7 @@ func (client *CommitmentPlansClient) createOrUpdatePlan(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -247,7 +246,7 @@ func (client *CommitmentPlansClient) createOrUpdatePlan(ctx context.Context, res
 func (client *CommitmentPlansClient) createOrUpdatePlanCreateRequest(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlan CommitmentPlan, _ *CommitmentPlansClientBeginCreateOrUpdatePlanOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -263,7 +262,7 @@ func (client *CommitmentPlansClient) createOrUpdatePlanCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -314,8 +313,7 @@ func (client *CommitmentPlansClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -324,7 +322,7 @@ func (client *CommitmentPlansClient) deleteOperation(ctx context.Context, resour
 func (client *CommitmentPlansClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, commitmentPlanName string, _ *CommitmentPlansClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/commitmentPlans/{commitmentPlanName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -344,7 +342,7 @@ func (client *CommitmentPlansClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -390,8 +388,7 @@ func (client *CommitmentPlansClient) deleteAssociation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -400,7 +397,7 @@ func (client *CommitmentPlansClient) deleteAssociation(ctx context.Context, reso
 func (client *CommitmentPlansClient) deleteAssociationCreateRequest(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlanAssociationName string, _ *CommitmentPlansClientBeginDeleteAssociationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -420,7 +417,7 @@ func (client *CommitmentPlansClient) deleteAssociationCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -465,8 +462,7 @@ func (client *CommitmentPlansClient) deletePlan(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -475,7 +471,7 @@ func (client *CommitmentPlansClient) deletePlan(ctx context.Context, resourceGro
 func (client *CommitmentPlansClient) deletePlanCreateRequest(ctx context.Context, resourceGroupName string, commitmentPlanName string, _ *CommitmentPlansClientBeginDeletePlanOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -491,7 +487,7 @@ func (client *CommitmentPlansClient) deletePlanCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -516,19 +512,14 @@ func (client *CommitmentPlansClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return CommitmentPlansClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CommitmentPlansClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *CommitmentPlansClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, commitmentPlanName string, _ *CommitmentPlansClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/commitmentPlans/{commitmentPlanName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -548,15 +539,18 @@ func (client *CommitmentPlansClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *CommitmentPlansClient) getHandleResponse(resp *http.Response) (CommitmentPlansClientGetResponse, error) {
+func (client *CommitmentPlansClient) getHandleResponse(resp *http.Response, successCodes ...int) (CommitmentPlansClientGetResponse, error) {
 	result := CommitmentPlansClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CommitmentPlan); err != nil {
 		return CommitmentPlansClientGetResponse{}, err
 	}
@@ -584,19 +578,14 @@ func (client *CommitmentPlansClient) GetAssociation(ctx context.Context, resourc
 	if err != nil {
 		return CommitmentPlansClientGetAssociationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CommitmentPlansClientGetAssociationResponse{}, err
-	}
-	resp, err := client.getAssociationHandleResponse(httpResp)
-	return resp, err
+	return client.getAssociationHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAssociationCreateRequest creates the GetAssociation request.
 func (client *CommitmentPlansClient) getAssociationCreateRequest(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlanAssociationName string, _ *CommitmentPlansClientGetAssociationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -616,15 +605,18 @@ func (client *CommitmentPlansClient) getAssociationCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getAssociationHandleResponse handles the GetAssociation response.
-func (client *CommitmentPlansClient) getAssociationHandleResponse(resp *http.Response) (CommitmentPlansClientGetAssociationResponse, error) {
+func (client *CommitmentPlansClient) getAssociationHandleResponse(resp *http.Response, successCodes ...int) (CommitmentPlansClientGetAssociationResponse, error) {
 	result := CommitmentPlansClientGetAssociationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CommitmentPlanAccountAssociation); err != nil {
 		return CommitmentPlansClientGetAssociationResponse{}, err
 	}
@@ -650,19 +642,14 @@ func (client *CommitmentPlansClient) GetPlan(ctx context.Context, resourceGroupN
 	if err != nil {
 		return CommitmentPlansClientGetPlanResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CommitmentPlansClientGetPlanResponse{}, err
-	}
-	resp, err := client.getPlanHandleResponse(httpResp)
-	return resp, err
+	return client.getPlanHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPlanCreateRequest creates the GetPlan request.
 func (client *CommitmentPlansClient) getPlanCreateRequest(ctx context.Context, resourceGroupName string, commitmentPlanName string, _ *CommitmentPlansClientGetPlanOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -678,15 +665,18 @@ func (client *CommitmentPlansClient) getPlanCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getPlanHandleResponse handles the GetPlan response.
-func (client *CommitmentPlansClient) getPlanHandleResponse(resp *http.Response) (CommitmentPlansClientGetPlanResponse, error) {
+func (client *CommitmentPlansClient) getPlanHandleResponse(resp *http.Response, successCodes ...int) (CommitmentPlansClientGetPlanResponse, error) {
 	result := CommitmentPlansClientGetPlanResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CommitmentPlan); err != nil {
 		return CommitmentPlansClientGetPlanResponse{}, err
 	}
@@ -709,47 +699,61 @@ func (client *CommitmentPlansClient) NewListPager(resourceGroupName string, acco
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return CommitmentPlansClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CommitmentPlansClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *CommitmentPlansClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *CommitmentPlansClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/commitmentPlans"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CommitmentPlansClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *CommitmentPlansClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/commitmentPlans"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *CommitmentPlansClient) listHandleResponse(resp *http.Response) (CommitmentPlansClientListResponse, error) {
+func (client *CommitmentPlansClient) listHandleResponse(resp *http.Response, successCodes ...int) (CommitmentPlansClientListResponse, error) {
 	result := CommitmentPlansClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CommitmentPlanListResult); err != nil {
 		return CommitmentPlansClientListResponse{}, err
 	}
@@ -772,47 +776,61 @@ func (client *CommitmentPlansClient) NewListAssociationsPager(resourceGroupName 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAssociationsCreateRequest(ctx, resourceGroupName, commitmentPlanName, options)
-			}, nil)
+			req, err := client.listAssociationsCreateRequest(ctx, resourceGroupName, commitmentPlanName, nextLink, options)
 			if err != nil {
 				return CommitmentPlansClientListAssociationsResponse{}, err
 			}
-			return client.listAssociationsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CommitmentPlansClientListAssociationsResponse{}, err
+			}
+			return client.listAssociationsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAssociationsCreateRequest creates the ListAssociations request.
-func (client *CommitmentPlansClient) listAssociationsCreateRequest(ctx context.Context, resourceGroupName string, commitmentPlanName string, _ *CommitmentPlansClientListAssociationsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CommitmentPlansClient) listAssociationsCreateRequest(ctx context.Context, resourceGroupName string, commitmentPlanName string, nextLink string, _ *CommitmentPlansClientListAssociationsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if commitmentPlanName == "" {
+			return nil, errors.New("parameter commitmentPlanName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{commitmentPlanName}", url.PathEscape(commitmentPlanName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if commitmentPlanName == "" {
-		return nil, errors.New("parameter commitmentPlanName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{commitmentPlanName}", url.PathEscape(commitmentPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAssociationsHandleResponse handles the ListAssociations response.
-func (client *CommitmentPlansClient) listAssociationsHandleResponse(resp *http.Response) (CommitmentPlansClientListAssociationsResponse, error) {
+func (client *CommitmentPlansClient) listAssociationsHandleResponse(resp *http.Response, successCodes ...int) (CommitmentPlansClientListAssociationsResponse, error) {
 	result := CommitmentPlansClientListAssociationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CommitmentPlanAccountAssociationListResult); err != nil {
 		return CommitmentPlansClientListAssociationsResponse{}, err
 	}
@@ -834,43 +852,57 @@ func (client *CommitmentPlansClient) NewListPlansByResourceGroupPager(resourceGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listPlansByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listPlansByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return CommitmentPlansClientListPlansByResourceGroupResponse{}, err
 			}
-			return client.listPlansByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CommitmentPlansClientListPlansByResourceGroupResponse{}, err
+			}
+			return client.listPlansByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listPlansByResourceGroupCreateRequest creates the ListPlansByResourceGroup request.
-func (client *CommitmentPlansClient) listPlansByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *CommitmentPlansClientListPlansByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CommitmentPlansClient) listPlansByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *CommitmentPlansClientListPlansByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listPlansByResourceGroupHandleResponse handles the ListPlansByResourceGroup response.
-func (client *CommitmentPlansClient) listPlansByResourceGroupHandleResponse(resp *http.Response) (CommitmentPlansClientListPlansByResourceGroupResponse, error) {
+func (client *CommitmentPlansClient) listPlansByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (CommitmentPlansClientListPlansByResourceGroupResponse, error) {
 	result := CommitmentPlansClientListPlansByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CommitmentPlanListResult); err != nil {
 		return CommitmentPlansClientListPlansByResourceGroupResponse{}, err
 	}
@@ -891,39 +923,53 @@ func (client *CommitmentPlansClient) NewListPlansBySubscriptionPager(options *Co
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listPlansBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listPlansBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return CommitmentPlansClientListPlansBySubscriptionResponse{}, err
 			}
-			return client.listPlansBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CommitmentPlansClientListPlansBySubscriptionResponse{}, err
+			}
+			return client.listPlansBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listPlansBySubscriptionCreateRequest creates the ListPlansBySubscription request.
-func (client *CommitmentPlansClient) listPlansBySubscriptionCreateRequest(ctx context.Context, _ *CommitmentPlansClientListPlansBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/commitmentPlans"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CommitmentPlansClient) listPlansBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *CommitmentPlansClientListPlansBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/commitmentPlans"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listPlansBySubscriptionHandleResponse handles the ListPlansBySubscription response.
-func (client *CommitmentPlansClient) listPlansBySubscriptionHandleResponse(resp *http.Response) (CommitmentPlansClientListPlansBySubscriptionResponse, error) {
+func (client *CommitmentPlansClient) listPlansBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (CommitmentPlansClientListPlansBySubscriptionResponse, error) {
 	result := CommitmentPlansClientListPlansBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CommitmentPlanListResult); err != nil {
 		return CommitmentPlansClientListPlansBySubscriptionResponse{}, err
 	}
@@ -971,8 +1017,7 @@ func (client *CommitmentPlansClient) updatePlan(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -981,7 +1026,7 @@ func (client *CommitmentPlansClient) updatePlan(ctx context.Context, resourceGro
 func (client *CommitmentPlansClient) updatePlanCreateRequest(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlan PatchResourceTagsAndSKU, _ *CommitmentPlansClientBeginUpdatePlanOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -997,7 +1042,7 @@ func (client *CommitmentPlansClient) updatePlanCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

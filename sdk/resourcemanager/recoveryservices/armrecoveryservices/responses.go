@@ -16,6 +16,29 @@ type ClientCheckNameAvailabilityResponse struct {
 	CheckNameAvailabilityResult
 }
 
+// DeletedVaultsClientGetOperationStatusResponse contains the response from method DeletedVaultsClient.GetOperationStatus.
+type DeletedVaultsClientGetOperationStatusResponse struct {
+	// Operation Resource
+	OperationResource
+}
+
+// DeletedVaultsClientGetResponse contains the response from method DeletedVaultsClient.Get.
+type DeletedVaultsClientGetResponse struct {
+	// DeletedVault information as returned by the resource provider.
+	DeletedVault
+}
+
+// DeletedVaultsClientListBySubscriptionIDResponse contains the response from method DeletedVaultsClient.NewListBySubscriptionIDPager.
+type DeletedVaultsClientListBySubscriptionIDResponse struct {
+	// The response model for a list of DeletedVaults.
+	DeletedVaultList
+}
+
+// DeletedVaultsClientUndeleteResponse contains the response from method DeletedVaultsClient.BeginUndelete.
+type DeletedVaultsClientUndeleteResponse struct {
+	// placeholder for future response values
+}
+
 // OperationsClientGetOperationResultResponse contains the response from method OperationsClient.GetOperationResult.
 type OperationsClientGetOperationResultResponse struct {
 	// Resource information, as returned by the resource provider.

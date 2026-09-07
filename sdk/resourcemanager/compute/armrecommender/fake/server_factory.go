@@ -18,6 +18,9 @@ type ServerFactory struct {
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
+	// SKUMixPlacementScoresServer contains the fakes for client SKUMixPlacementScoresClient
+	SKUMixPlacementScoresServer SKUMixPlacementScoresServer
+
 	// SpotPlacementScoresServer contains the fakes for client SpotPlacementScoresClient
 	SpotPlacementScoresServer SpotPlacementScoresServer
 }
@@ -34,10 +37,11 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armrecommender.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                         *ServerFactory
-	trMu                        sync.Mutex
-	trOperationsServer          *OperationsServerTransport
-	trSpotPlacementScoresServer *SpotPlacementScoresServerTransport
+	srv                           *ServerFactory
+	trMu                          sync.Mutex
+	trOperationsServer            *OperationsServerTransport
+	trSKUMixPlacementScoresServer *SKUMixPlacementScoresServerTransport
+	trSpotPlacementScoresServer   *SpotPlacementScoresServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -56,6 +60,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "SKUMixPlacementScoresClient":
+		initServer(&s.trMu, &s.trSKUMixPlacementScoresServer, func() *SKUMixPlacementScoresServerTransport {
+			return NewSKUMixPlacementScoresServerTransport(&s.srv.SKUMixPlacementScoresServer)
+		})
+		resp, err = s.trSKUMixPlacementScoresServer.Do(req)
 	case "SpotPlacementScoresClient":
 		initServer(&s.trMu, &s.trSpotPlacementScoresServer, func() *SpotPlacementScoresServerTransport {
 			return NewSpotPlacementScoresServerTransport(&s.srv.SpotPlacementScoresServer)

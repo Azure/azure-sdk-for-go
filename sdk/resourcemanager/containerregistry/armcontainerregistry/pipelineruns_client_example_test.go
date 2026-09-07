@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/PipelineRunCreate_Export.json
+// Generated from example definition: 2026-03-01-preview/PipelineRunCreate_Export.json
 func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateExport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateExport() {
 	// 				Progress: &armcontainerregistry.ProgressProperties{
 	// 					Percentage: to.Ptr("20"),
 	// 				},
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:23:21.9261521+00:00"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2020, time.March, 4, 17, 23, 21, 926152100, time.UTC)),
 	// 				Target: &armcontainerregistry.ExportPipelineTargetProperties{
 	// 					Type: to.Ptr("AzureStorageBlob"),
 	// 					URI: to.Ptr("https://accountname.blob.core.windows.net/containername/myblob.tar.gz"),
@@ -81,7 +81,7 @@ func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateExport() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/PipelineRunCreate_Import.json
+// Generated from example definition: 2026-03-01-preview/PipelineRunCreate_Import.json
 func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateImport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateImport() {
 	// 				Progress: &armcontainerregistry.ProgressProperties{
 	// 					Percentage: to.Ptr("100"),
 	// 				},
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:23:21.9261521+00:00"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2020, time.March, 4, 17, 23, 21, 926152100, time.UTC)),
 	// 				ImportedArtifacts: []*string{
 	// 					to.Ptr("sourceRepository/hello-world"),
 	// 					to.Ptr("sourceRepository2@sha256:00000000000000000000000000000000000"),
@@ -148,7 +148,7 @@ func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateImport() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/PipelineRunDelete.json
+// Generated from example definition: 2026-03-01-preview/PipelineRunDelete.json
 func ExamplePipelineRunsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +174,7 @@ func ExamplePipelineRunsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/PipelineRunGet.json
+// Generated from example definition: 2026-03-01-preview/PipelineRunGet.json
 func ExamplePipelineRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +211,7 @@ func ExamplePipelineRunsClient_Get() {
 	// 				Progress: &armcontainerregistry.ProgressProperties{
 	// 					Percentage: to.Ptr("20"),
 	// 				},
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:23:21.9261521+00:00"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2020, time.March, 4, 17, 23, 21, 926152100, time.UTC)),
 	// 				Target: &armcontainerregistry.ExportPipelineTargetProperties{
 	// 					Type: to.Ptr("AzureStorageBlob"),
 	// 					URI: to.Ptr("https://accountname.blob.core.windows.net/containername/myblob.tar.gz"),
@@ -225,7 +225,7 @@ func ExamplePipelineRunsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/PipelineRunList.json
+// Generated from example definition: 2026-03-01-preview/PipelineRunList.json
 func ExamplePipelineRunsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +268,7 @@ func ExamplePipelineRunsClient_NewListPager() {
 		// 						Progress: &armcontainerregistry.ProgressProperties{
 		// 							Percentage: to.Ptr("20"),
 		// 						},
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:23:21.9261521+00:00"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2020, time.March, 4, 17, 23, 21, 926152100, time.UTC)),
 		// 						Target: &armcontainerregistry.ExportPipelineTargetProperties{
 		// 							Type: to.Ptr("AzureStorageBlob"),
 		// 							URI: to.Ptr("https://accountname.blob.core.windows.net/containername/myblob.tar.gz"),
@@ -292,7 +292,7 @@ func ExamplePipelineRunsClient_NewListPager() {
 		// 						Progress: &armcontainerregistry.ProgressProperties{
 		// 							Percentage: to.Ptr("100"),
 		// 						},
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-03T17:23:21.9261521+00:00"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2020, time.March, 3, 17, 23, 21, 926152100, time.UTC)),
 		// 						ImportedArtifacts: []*string{
 		// 							to.Ptr("sourceRepository/hello-world"),
 		// 							to.Ptr("sourceRepository2@sha256:00000000000000000000000000000000000"),

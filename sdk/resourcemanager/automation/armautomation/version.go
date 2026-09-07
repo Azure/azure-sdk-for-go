@@ -6,5 +6,5 @@ package armautomation
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation"
-	moduleVersion = "v0.10.0"
+	moduleVersion = "v1.0.0"
 )

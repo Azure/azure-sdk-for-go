@@ -27,7 +27,7 @@ func ExampleBookmarksClient_CreateOrUpdate() {
 	res, err := clientFactory.NewBookmarksClient().CreateOrUpdate(ctx, "myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", armsecurityinsights.Bookmark{
 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 		Properties: &armsecurityinsights.BookmarkProperties{
-			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30Z"); return t }()),
+			Created: to.Ptr(time.Date(2021, time.September, 1, 13, 15, 30, 0, time.UTC)),
 			CreatedBy: &armsecurityinsights.UserInfo{
 				ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 			},
@@ -56,7 +56,7 @@ func ExampleBookmarksClient_CreateOrUpdate() {
 			Techniques: []*string{
 				to.Ptr("T1609"),
 			},
-			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30Z"); return t }()),
+			Updated: to.Ptr(time.Date(2021, time.September, 1, 13, 15, 30, 0, time.UTC)),
 			UpdatedBy: &armsecurityinsights.UserInfo{
 				ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 			},
@@ -75,7 +75,7 @@ func ExampleBookmarksClient_CreateOrUpdate() {
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/bookmarks/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Properties: &armsecurityinsights.BookmarkProperties{
-	// 			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30Z"); return t}()),
+	// 			Created: to.Ptr(time.Date(2021, time.September, 1, 13, 15, 30, 0, time.UTC)),
 	// 			CreatedBy: &armsecurityinsights.UserInfo{
 	// 				Name: to.Ptr("john doe"),
 	// 				Email: to.Ptr("john@contoso.com"),
@@ -106,7 +106,7 @@ func ExampleBookmarksClient_CreateOrUpdate() {
 	// 			Techniques: []*string{
 	// 				to.Ptr("T1609"),
 	// 			},
-	// 			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30Z"); return t}()),
+	// 			Updated: to.Ptr(time.Date(2021, time.September, 1, 13, 15, 30, 0, time.UTC)),
 	// 			UpdatedBy: &armsecurityinsights.UserInfo{
 	// 				Name: to.Ptr("john doe"),
 	// 				Email: to.Ptr("john@contoso.com"),
@@ -164,7 +164,7 @@ func ExampleBookmarksClient_Get() {
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/bookmarks/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Properties: &armsecurityinsights.BookmarkProperties{
-	// 			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30Z"); return t}()),
+	// 			Created: to.Ptr(time.Date(2021, time.September, 1, 13, 15, 30, 0, time.UTC)),
 	// 			CreatedBy: &armsecurityinsights.UserInfo{
 	// 				Name: to.Ptr("john doe"),
 	// 				Email: to.Ptr("john@contoso.com"),
@@ -201,7 +201,7 @@ func ExampleBookmarksClient_Get() {
 	// 			Techniques: []*string{
 	// 				to.Ptr("T1609"),
 	// 			},
-	// 			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30Z"); return t}()),
+	// 			Updated: to.Ptr(time.Date(2021, time.September, 1, 13, 15, 30, 0, time.UTC)),
 	// 			UpdatedBy: &armsecurityinsights.UserInfo{
 	// 				Name: to.Ptr("john doe"),
 	// 				Email: to.Ptr("john@contoso.com"),
@@ -243,7 +243,7 @@ func ExampleBookmarksClient_NewListPager() {
 		// 				Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 		// 				ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/bookmarks/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 		// 				Properties: &armsecurityinsights.BookmarkProperties{
-		// 					Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30Z"); return t}()),
+		// 					Created: to.Ptr(time.Date(2021, time.September, 1, 13, 15, 30, 0, time.UTC)),
 		// 					CreatedBy: &armsecurityinsights.UserInfo{
 		// 						Name: to.Ptr("john doe"),
 		// 						Email: to.Ptr("john@contoso.com"),
@@ -280,7 +280,7 @@ func ExampleBookmarksClient_NewListPager() {
 		// 					Techniques: []*string{
 		// 						to.Ptr("T1609"),
 		// 					},
-		// 					Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30Z"); return t}()),
+		// 					Updated: to.Ptr(time.Date(2021, time.September, 1, 13, 15, 30, 0, time.UTC)),
 		// 					UpdatedBy: &armsecurityinsights.UserInfo{
 		// 						Name: to.Ptr("john doe"),
 		// 						Email: to.Ptr("john@contoso.com"),

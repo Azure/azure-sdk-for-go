@@ -7,18 +7,19 @@ package armcosmos
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // DatabaseAccountRegionClient contains the methods for the DatabaseAccountRegion group.
 // Don't use this type directly, use NewDatabaseAccountRegionClient() instead.
+//
+// Generated from API version 2026-03-15
 type DatabaseAccountRegionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -29,6 +30,9 @@ type DatabaseAccountRegionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDatabaseAccountRegionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseAccountRegionClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,12 +45,10 @@ func NewDatabaseAccountRegionClient(subscriptionID string, credential azcore.Tok
 }
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given database account and region.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - region - Cosmos DB region, with spaces between words and each word capitalized.
-//   - Filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
+//   - filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
 //     name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator
 //     is eq.
 //   - options - DatabaseAccountRegionClientListMetricsOptions contains the optional parameters for the DatabaseAccountRegionClient.NewListMetricsPager
@@ -62,52 +64,66 @@ func (client *DatabaseAccountRegionClient) NewListMetricsPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listMetricsCreateRequest(ctx, resourceGroupName, accountName, region, filter, options)
-			}, nil)
+			req, err := client.listMetricsCreateRequest(ctx, resourceGroupName, accountName, region, filter, nextLink, options)
 			if err != nil {
 				return DatabaseAccountRegionClientListMetricsResponse{}, err
 			}
-			return client.listMetricsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DatabaseAccountRegionClientListMetricsResponse{}, err
+			}
+			return client.listMetricsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listMetricsCreateRequest creates the ListMetrics request.
-func (client *DatabaseAccountRegionClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, region string, filter string, _ *DatabaseAccountRegionClientListMetricsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/region/{region}/metrics"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DatabaseAccountRegionClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, region string, filter string, nextLink string, _ *DatabaseAccountRegionClientListMetricsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/region/{region}/metrics"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		if region == "" {
+			return nil, errors.New("parameter region cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{region}", url.PathEscape(region))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if region == "" {
-		return nil, errors.New("parameter region cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{region}", url.PathEscape(region))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("$filter", filter)
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listMetricsHandleResponse handles the ListMetrics response.
-func (client *DatabaseAccountRegionClient) listMetricsHandleResponse(resp *http.Response) (DatabaseAccountRegionClientListMetricsResponse, error) {
+func (client *DatabaseAccountRegionClient) listMetricsHandleResponse(resp *http.Response, successCodes ...int) (DatabaseAccountRegionClientListMetricsResponse, error) {
 	result := DatabaseAccountRegionClientListMetricsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricListResult); err != nil {
 		return DatabaseAccountRegionClientListMetricsResponse{}, err
 	}

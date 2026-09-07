@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // SQLResourcesServer is a fake server for instances of the armcosmos.SQLResourcesClient type.
@@ -124,10 +125,6 @@ type SQLResourcesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListClientEncryptionKeysPager func(resourceGroupName string, accountName string, databaseName string, options *armcosmos.SQLResourcesClientListClientEncryptionKeysOptions) (resp azfake.PagerResponder[armcosmos.SQLResourcesClientListClientEncryptionKeysResponse])
 
-	// BeginListSQLContainerPartitionMerge is the fake for method SQLResourcesClient.BeginListSQLContainerPartitionMerge
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginListSQLContainerPartitionMerge func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, mergeParameters armcosmos.MergeParameters, options *armcosmos.SQLResourcesClientBeginListSQLContainerPartitionMergeOptions) (resp azfake.PollerResponder[armcosmos.SQLResourcesClientListSQLContainerPartitionMergeResponse], errResp azfake.ErrorResponder)
-
 	// NewListSQLContainersPager is the fake for method SQLResourcesClient.NewListSQLContainersPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListSQLContainersPager func(resourceGroupName string, accountName string, databaseName string, options *armcosmos.SQLResourcesClientListSQLContainersOptions) (resp azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLContainersResponse])
@@ -176,26 +173,6 @@ type SQLResourcesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRetrieveContinuousBackupInformation func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, location armcosmos.ContinuousBackupRestoreLocation, options *armcosmos.SQLResourcesClientBeginRetrieveContinuousBackupInformationOptions) (resp azfake.PollerResponder[armcosmos.SQLResourcesClientRetrieveContinuousBackupInformationResponse], errResp azfake.ErrorResponder)
 
-	// BeginSQLContainerRedistributeThroughput is the fake for method SQLResourcesClient.BeginSQLContainerRedistributeThroughput
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginSQLContainerRedistributeThroughput func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, redistributeThroughputParameters armcosmos.RedistributeThroughputParameters, options *armcosmos.SQLResourcesClientBeginSQLContainerRedistributeThroughputOptions) (resp azfake.PollerResponder[armcosmos.SQLResourcesClientSQLContainerRedistributeThroughputResponse], errResp azfake.ErrorResponder)
-
-	// BeginSQLContainerRetrieveThroughputDistribution is the fake for method SQLResourcesClient.BeginSQLContainerRetrieveThroughputDistribution
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginSQLContainerRetrieveThroughputDistribution func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, retrieveThroughputParameters armcosmos.RetrieveThroughputParameters, options *armcosmos.SQLResourcesClientBeginSQLContainerRetrieveThroughputDistributionOptions) (resp azfake.PollerResponder[armcosmos.SQLResourcesClientSQLContainerRetrieveThroughputDistributionResponse], errResp azfake.ErrorResponder)
-
-	// BeginSQLDatabasePartitionMerge is the fake for method SQLResourcesClient.BeginSQLDatabasePartitionMerge
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginSQLDatabasePartitionMerge func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, mergeParameters armcosmos.MergeParameters, options *armcosmos.SQLResourcesClientBeginSQLDatabasePartitionMergeOptions) (resp azfake.PollerResponder[armcosmos.SQLResourcesClientSQLDatabasePartitionMergeResponse], errResp azfake.ErrorResponder)
-
-	// BeginSQLDatabaseRedistributeThroughput is the fake for method SQLResourcesClient.BeginSQLDatabaseRedistributeThroughput
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginSQLDatabaseRedistributeThroughput func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, redistributeThroughputParameters armcosmos.RedistributeThroughputParameters, options *armcosmos.SQLResourcesClientBeginSQLDatabaseRedistributeThroughputOptions) (resp azfake.PollerResponder[armcosmos.SQLResourcesClientSQLDatabaseRedistributeThroughputResponse], errResp azfake.ErrorResponder)
-
-	// BeginSQLDatabaseRetrieveThroughputDistribution is the fake for method SQLResourcesClient.BeginSQLDatabaseRetrieveThroughputDistribution
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginSQLDatabaseRetrieveThroughputDistribution func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, retrieveThroughputParameters armcosmos.RetrieveThroughputParameters, options *armcosmos.SQLResourcesClientBeginSQLDatabaseRetrieveThroughputDistributionOptions) (resp azfake.PollerResponder[armcosmos.SQLResourcesClientSQLDatabaseRetrieveThroughputDistributionResponse], errResp azfake.ErrorResponder)
-
 	// BeginUpdateSQLContainerThroughput is the fake for method SQLResourcesClient.BeginUpdateSQLContainerThroughput
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateSQLContainerThroughput func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, updateThroughputParameters armcosmos.ThroughputSettingsUpdateParameters, options *armcosmos.SQLResourcesClientBeginUpdateSQLContainerThroughputOptions) (resp azfake.PollerResponder[armcosmos.SQLResourcesClientUpdateSQLContainerThroughputResponse], errResp azfake.ErrorResponder)
@@ -210,86 +187,74 @@ type SQLResourcesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSQLResourcesServerTransport(srv *SQLResourcesServer) *SQLResourcesServerTransport {
 	return &SQLResourcesServerTransport{
-		srv:                                             srv,
-		beginCreateUpdateClientEncryptionKey:            newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateClientEncryptionKeyResponse]](),
-		beginCreateUpdateSQLContainer:                   newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLContainerResponse]](),
-		beginCreateUpdateSQLDatabase:                    newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLDatabaseResponse]](),
-		beginCreateUpdateSQLRoleAssignment:              newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLRoleAssignmentResponse]](),
-		beginCreateUpdateSQLRoleDefinition:              newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLRoleDefinitionResponse]](),
-		beginCreateUpdateSQLStoredProcedure:             newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLStoredProcedureResponse]](),
-		beginCreateUpdateSQLTrigger:                     newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLTriggerResponse]](),
-		beginCreateUpdateSQLUserDefinedFunction:         newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponse]](),
-		beginDeleteSQLContainer:                         newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLContainerResponse]](),
-		beginDeleteSQLDatabase:                          newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLDatabaseResponse]](),
-		beginDeleteSQLRoleAssignment:                    newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLRoleAssignmentResponse]](),
-		beginDeleteSQLRoleDefinition:                    newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLRoleDefinitionResponse]](),
-		beginDeleteSQLStoredProcedure:                   newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLStoredProcedureResponse]](),
-		beginDeleteSQLTrigger:                           newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLTriggerResponse]](),
-		beginDeleteSQLUserDefinedFunction:               newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLUserDefinedFunctionResponse]](),
-		newListClientEncryptionKeysPager:                newTracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListClientEncryptionKeysResponse]](),
-		beginListSQLContainerPartitionMerge:             newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientListSQLContainerPartitionMergeResponse]](),
-		newListSQLContainersPager:                       newTracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLContainersResponse]](),
-		newListSQLDatabasesPager:                        newTracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLDatabasesResponse]](),
-		newListSQLRoleAssignmentsPager:                  newTracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLRoleAssignmentsResponse]](),
-		newListSQLRoleDefinitionsPager:                  newTracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLRoleDefinitionsResponse]](),
-		newListSQLStoredProceduresPager:                 newTracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLStoredProceduresResponse]](),
-		newListSQLTriggersPager:                         newTracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLTriggersResponse]](),
-		newListSQLUserDefinedFunctionsPager:             newTracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLUserDefinedFunctionsResponse]](),
-		beginMigrateSQLContainerToAutoscale:             newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientMigrateSQLContainerToAutoscaleResponse]](),
-		beginMigrateSQLContainerToManualThroughput:      newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientMigrateSQLContainerToManualThroughputResponse]](),
-		beginMigrateSQLDatabaseToAutoscale:              newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse]](),
-		beginMigrateSQLDatabaseToManualThroughput:       newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse]](),
-		beginRetrieveContinuousBackupInformation:        newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientRetrieveContinuousBackupInformationResponse]](),
-		beginSQLContainerRedistributeThroughput:         newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientSQLContainerRedistributeThroughputResponse]](),
-		beginSQLContainerRetrieveThroughputDistribution: newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientSQLContainerRetrieveThroughputDistributionResponse]](),
-		beginSQLDatabasePartitionMerge:                  newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientSQLDatabasePartitionMergeResponse]](),
-		beginSQLDatabaseRedistributeThroughput:          newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientSQLDatabaseRedistributeThroughputResponse]](),
-		beginSQLDatabaseRetrieveThroughputDistribution:  newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientSQLDatabaseRetrieveThroughputDistributionResponse]](),
-		beginUpdateSQLContainerThroughput:               newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientUpdateSQLContainerThroughputResponse]](),
-		beginUpdateSQLDatabaseThroughput:                newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientUpdateSQLDatabaseThroughputResponse]](),
+		srv:                                        srv,
+		beginCreateUpdateClientEncryptionKey:       newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateClientEncryptionKeyResponse]](),
+		beginCreateUpdateSQLContainer:              newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLContainerResponse]](),
+		beginCreateUpdateSQLDatabase:               newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLDatabaseResponse]](),
+		beginCreateUpdateSQLRoleAssignment:         newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLRoleAssignmentResponse]](),
+		beginCreateUpdateSQLRoleDefinition:         newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLRoleDefinitionResponse]](),
+		beginCreateUpdateSQLStoredProcedure:        newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLStoredProcedureResponse]](),
+		beginCreateUpdateSQLTrigger:                newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLTriggerResponse]](),
+		beginCreateUpdateSQLUserDefinedFunction:    newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponse]](),
+		beginDeleteSQLContainer:                    newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLContainerResponse]](),
+		beginDeleteSQLDatabase:                     newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLDatabaseResponse]](),
+		beginDeleteSQLRoleAssignment:               newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLRoleAssignmentResponse]](),
+		beginDeleteSQLRoleDefinition:               newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLRoleDefinitionResponse]](),
+		beginDeleteSQLStoredProcedure:              newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLStoredProcedureResponse]](),
+		beginDeleteSQLTrigger:                      newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLTriggerResponse]](),
+		beginDeleteSQLUserDefinedFunction:          newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLUserDefinedFunctionResponse]](),
+		newListClientEncryptionKeysPager:           newTracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListClientEncryptionKeysResponse]](),
+		newListSQLContainersPager:                  newTracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLContainersResponse]](),
+		newListSQLDatabasesPager:                   newTracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLDatabasesResponse]](),
+		newListSQLRoleAssignmentsPager:             newTracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLRoleAssignmentsResponse]](),
+		newListSQLRoleDefinitionsPager:             newTracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLRoleDefinitionsResponse]](),
+		newListSQLStoredProceduresPager:            newTracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLStoredProceduresResponse]](),
+		newListSQLTriggersPager:                    newTracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLTriggersResponse]](),
+		newListSQLUserDefinedFunctionsPager:        newTracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLUserDefinedFunctionsResponse]](),
+		beginMigrateSQLContainerToAutoscale:        newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientMigrateSQLContainerToAutoscaleResponse]](),
+		beginMigrateSQLContainerToManualThroughput: newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientMigrateSQLContainerToManualThroughputResponse]](),
+		beginMigrateSQLDatabaseToAutoscale:         newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse]](),
+		beginMigrateSQLDatabaseToManualThroughput:  newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse]](),
+		beginRetrieveContinuousBackupInformation:   newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientRetrieveContinuousBackupInformationResponse]](),
+		beginUpdateSQLContainerThroughput:          newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientUpdateSQLContainerThroughputResponse]](),
+		beginUpdateSQLDatabaseThroughput:           newTracker[azfake.PollerResponder[armcosmos.SQLResourcesClientUpdateSQLDatabaseThroughputResponse]](),
 	}
 }
 
 // SQLResourcesServerTransport connects instances of armcosmos.SQLResourcesClient to instances of SQLResourcesServer.
 // Don't use this type directly, use NewSQLResourcesServerTransport instead.
 type SQLResourcesServerTransport struct {
-	srv                                             *SQLResourcesServer
-	beginCreateUpdateClientEncryptionKey            *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateClientEncryptionKeyResponse]]
-	beginCreateUpdateSQLContainer                   *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLContainerResponse]]
-	beginCreateUpdateSQLDatabase                    *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLDatabaseResponse]]
-	beginCreateUpdateSQLRoleAssignment              *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLRoleAssignmentResponse]]
-	beginCreateUpdateSQLRoleDefinition              *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLRoleDefinitionResponse]]
-	beginCreateUpdateSQLStoredProcedure             *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLStoredProcedureResponse]]
-	beginCreateUpdateSQLTrigger                     *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLTriggerResponse]]
-	beginCreateUpdateSQLUserDefinedFunction         *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponse]]
-	beginDeleteSQLContainer                         *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLContainerResponse]]
-	beginDeleteSQLDatabase                          *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLDatabaseResponse]]
-	beginDeleteSQLRoleAssignment                    *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLRoleAssignmentResponse]]
-	beginDeleteSQLRoleDefinition                    *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLRoleDefinitionResponse]]
-	beginDeleteSQLStoredProcedure                   *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLStoredProcedureResponse]]
-	beginDeleteSQLTrigger                           *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLTriggerResponse]]
-	beginDeleteSQLUserDefinedFunction               *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLUserDefinedFunctionResponse]]
-	newListClientEncryptionKeysPager                *tracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListClientEncryptionKeysResponse]]
-	beginListSQLContainerPartitionMerge             *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientListSQLContainerPartitionMergeResponse]]
-	newListSQLContainersPager                       *tracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLContainersResponse]]
-	newListSQLDatabasesPager                        *tracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLDatabasesResponse]]
-	newListSQLRoleAssignmentsPager                  *tracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLRoleAssignmentsResponse]]
-	newListSQLRoleDefinitionsPager                  *tracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLRoleDefinitionsResponse]]
-	newListSQLStoredProceduresPager                 *tracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLStoredProceduresResponse]]
-	newListSQLTriggersPager                         *tracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLTriggersResponse]]
-	newListSQLUserDefinedFunctionsPager             *tracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLUserDefinedFunctionsResponse]]
-	beginMigrateSQLContainerToAutoscale             *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientMigrateSQLContainerToAutoscaleResponse]]
-	beginMigrateSQLContainerToManualThroughput      *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientMigrateSQLContainerToManualThroughputResponse]]
-	beginMigrateSQLDatabaseToAutoscale              *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse]]
-	beginMigrateSQLDatabaseToManualThroughput       *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse]]
-	beginRetrieveContinuousBackupInformation        *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientRetrieveContinuousBackupInformationResponse]]
-	beginSQLContainerRedistributeThroughput         *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientSQLContainerRedistributeThroughputResponse]]
-	beginSQLContainerRetrieveThroughputDistribution *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientSQLContainerRetrieveThroughputDistributionResponse]]
-	beginSQLDatabasePartitionMerge                  *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientSQLDatabasePartitionMergeResponse]]
-	beginSQLDatabaseRedistributeThroughput          *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientSQLDatabaseRedistributeThroughputResponse]]
-	beginSQLDatabaseRetrieveThroughputDistribution  *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientSQLDatabaseRetrieveThroughputDistributionResponse]]
-	beginUpdateSQLContainerThroughput               *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientUpdateSQLContainerThroughputResponse]]
-	beginUpdateSQLDatabaseThroughput                *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientUpdateSQLDatabaseThroughputResponse]]
+	srv                                        *SQLResourcesServer
+	beginCreateUpdateClientEncryptionKey       *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateClientEncryptionKeyResponse]]
+	beginCreateUpdateSQLContainer              *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLContainerResponse]]
+	beginCreateUpdateSQLDatabase               *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLDatabaseResponse]]
+	beginCreateUpdateSQLRoleAssignment         *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLRoleAssignmentResponse]]
+	beginCreateUpdateSQLRoleDefinition         *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLRoleDefinitionResponse]]
+	beginCreateUpdateSQLStoredProcedure        *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLStoredProcedureResponse]]
+	beginCreateUpdateSQLTrigger                *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLTriggerResponse]]
+	beginCreateUpdateSQLUserDefinedFunction    *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponse]]
+	beginDeleteSQLContainer                    *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLContainerResponse]]
+	beginDeleteSQLDatabase                     *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLDatabaseResponse]]
+	beginDeleteSQLRoleAssignment               *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLRoleAssignmentResponse]]
+	beginDeleteSQLRoleDefinition               *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLRoleDefinitionResponse]]
+	beginDeleteSQLStoredProcedure              *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLStoredProcedureResponse]]
+	beginDeleteSQLTrigger                      *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLTriggerResponse]]
+	beginDeleteSQLUserDefinedFunction          *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientDeleteSQLUserDefinedFunctionResponse]]
+	newListClientEncryptionKeysPager           *tracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListClientEncryptionKeysResponse]]
+	newListSQLContainersPager                  *tracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLContainersResponse]]
+	newListSQLDatabasesPager                   *tracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLDatabasesResponse]]
+	newListSQLRoleAssignmentsPager             *tracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLRoleAssignmentsResponse]]
+	newListSQLRoleDefinitionsPager             *tracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLRoleDefinitionsResponse]]
+	newListSQLStoredProceduresPager            *tracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLStoredProceduresResponse]]
+	newListSQLTriggersPager                    *tracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLTriggersResponse]]
+	newListSQLUserDefinedFunctionsPager        *tracker[azfake.PagerResponder[armcosmos.SQLResourcesClientListSQLUserDefinedFunctionsResponse]]
+	beginMigrateSQLContainerToAutoscale        *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientMigrateSQLContainerToAutoscaleResponse]]
+	beginMigrateSQLContainerToManualThroughput *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientMigrateSQLContainerToManualThroughputResponse]]
+	beginMigrateSQLDatabaseToAutoscale         *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse]]
+	beginMigrateSQLDatabaseToManualThroughput  *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse]]
+	beginRetrieveContinuousBackupInformation   *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientRetrieveContinuousBackupInformationResponse]]
+	beginUpdateSQLContainerThroughput          *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientUpdateSQLContainerThroughputResponse]]
+	beginUpdateSQLDatabaseThroughput           *tracker[azfake.PollerResponder[armcosmos.SQLResourcesClientUpdateSQLDatabaseThroughputResponse]]
 }
 
 // Do implements the policy.Transporter interface for SQLResourcesServerTransport.
@@ -304,9 +269,7 @@ func (s *SQLResourcesServerTransport) Do(req *http.Request) (*http.Response, err
 }
 
 func (s *SQLResourcesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -367,8 +330,6 @@ func (s *SQLResourcesServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = s.dispatchGetSQLUserDefinedFunction(req)
 			case "SQLResourcesClient.NewListClientEncryptionKeysPager":
 				res.resp, res.err = s.dispatchNewListClientEncryptionKeysPager(req)
-			case "SQLResourcesClient.BeginListSQLContainerPartitionMerge":
-				res.resp, res.err = s.dispatchBeginListSQLContainerPartitionMerge(req)
 			case "SQLResourcesClient.NewListSQLContainersPager":
 				res.resp, res.err = s.dispatchNewListSQLContainersPager(req)
 			case "SQLResourcesClient.NewListSQLDatabasesPager":
@@ -393,16 +354,6 @@ func (s *SQLResourcesServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = s.dispatchBeginMigrateSQLDatabaseToManualThroughput(req)
 			case "SQLResourcesClient.BeginRetrieveContinuousBackupInformation":
 				res.resp, res.err = s.dispatchBeginRetrieveContinuousBackupInformation(req)
-			case "SQLResourcesClient.BeginSQLContainerRedistributeThroughput":
-				res.resp, res.err = s.dispatchBeginSQLContainerRedistributeThroughput(req)
-			case "SQLResourcesClient.BeginSQLContainerRetrieveThroughputDistribution":
-				res.resp, res.err = s.dispatchBeginSQLContainerRetrieveThroughputDistribution(req)
-			case "SQLResourcesClient.BeginSQLDatabasePartitionMerge":
-				res.resp, res.err = s.dispatchBeginSQLDatabasePartitionMerge(req)
-			case "SQLResourcesClient.BeginSQLDatabaseRedistributeThroughput":
-				res.resp, res.err = s.dispatchBeginSQLDatabaseRedistributeThroughput(req)
-			case "SQLResourcesClient.BeginSQLDatabaseRetrieveThroughputDistribution":
-				res.resp, res.err = s.dispatchBeginSQLDatabaseRetrieveThroughputDistribution(req)
 			case "SQLResourcesClient.BeginUpdateSQLContainerThroughput":
 				res.resp, res.err = s.dispatchBeginUpdateSQLContainerThroughput(req)
 			case "SQLResourcesClient.BeginUpdateSQLDatabaseThroughput":
@@ -412,10 +363,7 @@ func (s *SQLResourcesServerTransport) dispatchToMethodFake(req *http.Request, me
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -432,7 +380,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginCreateUpdateClientEncryptionK
 	}
 	beginCreateUpdateClientEncryptionKey := s.beginCreateUpdateClientEncryptionKey.get(req)
 	if beginCreateUpdateClientEncryptionKey == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/clientEncryptionKeys/(?P<clientEncryptionKeyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/clientEncryptionKeys/(?P<clientEncryptionKeyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -471,7 +419,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginCreateUpdateClientEncryptionK
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginCreateUpdateClientEncryptionKey.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -488,7 +436,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginCreateUpdateSQLContainer(req 
 	}
 	beginCreateUpdateSQLContainer := s.beginCreateUpdateSQLContainer.get(req)
 	if beginCreateUpdateSQLContainer == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -527,7 +475,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginCreateUpdateSQLContainer(req 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginCreateUpdateSQLContainer.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -544,7 +492,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginCreateUpdateSQLDatabase(req *
 	}
 	beginCreateUpdateSQLDatabase := s.beginCreateUpdateSQLDatabase.get(req)
 	if beginCreateUpdateSQLDatabase == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -579,7 +527,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginCreateUpdateSQLDatabase(req *
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginCreateUpdateSQLDatabase.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -596,7 +544,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginCreateUpdateSQLRoleAssignment
 	}
 	beginCreateUpdateSQLRoleAssignment := s.beginCreateUpdateSQLRoleAssignment.get(req)
 	if beginCreateUpdateSQLRoleAssignment == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlRoleAssignments/(?P<roleAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlRoleAssignments/(?P<roleAssignmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -631,7 +579,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginCreateUpdateSQLRoleAssignment
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginCreateUpdateSQLRoleAssignment.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -648,7 +596,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginCreateUpdateSQLRoleDefinition
 	}
 	beginCreateUpdateSQLRoleDefinition := s.beginCreateUpdateSQLRoleDefinition.get(req)
 	if beginCreateUpdateSQLRoleDefinition == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlRoleDefinitions/(?P<roleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlRoleDefinitions/(?P<roleDefinitionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -683,7 +631,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginCreateUpdateSQLRoleDefinition
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginCreateUpdateSQLRoleDefinition.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -700,7 +648,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginCreateUpdateSQLStoredProcedur
 	}
 	beginCreateUpdateSQLStoredProcedure := s.beginCreateUpdateSQLStoredProcedure.get(req)
 	if beginCreateUpdateSQLStoredProcedure == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storedProcedures/(?P<storedProcedureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storedProcedures/(?P<storedProcedureName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -743,7 +691,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginCreateUpdateSQLStoredProcedur
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginCreateUpdateSQLStoredProcedure.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -760,7 +708,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginCreateUpdateSQLTrigger(req *h
 	}
 	beginCreateUpdateSQLTrigger := s.beginCreateUpdateSQLTrigger.get(req)
 	if beginCreateUpdateSQLTrigger == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/triggers/(?P<triggerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggers/(?P<triggerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -803,7 +751,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginCreateUpdateSQLTrigger(req *h
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginCreateUpdateSQLTrigger.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -820,7 +768,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginCreateUpdateSQLUserDefinedFun
 	}
 	beginCreateUpdateSQLUserDefinedFunction := s.beginCreateUpdateSQLUserDefinedFunction.get(req)
 	if beginCreateUpdateSQLUserDefinedFunction == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/userDefinedFunctions/(?P<userDefinedFunctionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/userDefinedFunctions/(?P<userDefinedFunctionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -863,7 +811,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginCreateUpdateSQLUserDefinedFun
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginCreateUpdateSQLUserDefinedFunction.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -880,7 +828,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginDeleteSQLContainer(req *http.
 	}
 	beginDeleteSQLContainer := s.beginDeleteSQLContainer.get(req)
 	if beginDeleteSQLContainer == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -915,7 +863,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginDeleteSQLContainer(req *http.
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginDeleteSQLContainer.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -932,7 +880,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginDeleteSQLDatabase(req *http.R
 	}
 	beginDeleteSQLDatabase := s.beginDeleteSQLDatabase.get(req)
 	if beginDeleteSQLDatabase == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -963,7 +911,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginDeleteSQLDatabase(req *http.R
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginDeleteSQLDatabase.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -980,7 +928,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginDeleteSQLRoleAssignment(req *
 	}
 	beginDeleteSQLRoleAssignment := s.beginDeleteSQLRoleAssignment.get(req)
 	if beginDeleteSQLRoleAssignment == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlRoleAssignments/(?P<roleAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlRoleAssignments/(?P<roleAssignmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1011,7 +959,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginDeleteSQLRoleAssignment(req *
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginDeleteSQLRoleAssignment.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -1028,7 +976,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginDeleteSQLRoleDefinition(req *
 	}
 	beginDeleteSQLRoleDefinition := s.beginDeleteSQLRoleDefinition.get(req)
 	if beginDeleteSQLRoleDefinition == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlRoleDefinitions/(?P<roleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlRoleDefinitions/(?P<roleDefinitionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1059,7 +1007,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginDeleteSQLRoleDefinition(req *
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginDeleteSQLRoleDefinition.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -1076,7 +1024,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginDeleteSQLStoredProcedure(req 
 	}
 	beginDeleteSQLStoredProcedure := s.beginDeleteSQLStoredProcedure.get(req)
 	if beginDeleteSQLStoredProcedure == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storedProcedures/(?P<storedProcedureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storedProcedures/(?P<storedProcedureName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -1115,7 +1063,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginDeleteSQLStoredProcedure(req 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginDeleteSQLStoredProcedure.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -1132,7 +1080,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginDeleteSQLTrigger(req *http.Re
 	}
 	beginDeleteSQLTrigger := s.beginDeleteSQLTrigger.get(req)
 	if beginDeleteSQLTrigger == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/triggers/(?P<triggerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggers/(?P<triggerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -1171,7 +1119,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginDeleteSQLTrigger(req *http.Re
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginDeleteSQLTrigger.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -1188,7 +1136,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginDeleteSQLUserDefinedFunction(
 	}
 	beginDeleteSQLUserDefinedFunction := s.beginDeleteSQLUserDefinedFunction.get(req)
 	if beginDeleteSQLUserDefinedFunction == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/userDefinedFunctions/(?P<userDefinedFunctionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/userDefinedFunctions/(?P<userDefinedFunctionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -1227,7 +1175,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginDeleteSQLUserDefinedFunction(
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginDeleteSQLUserDefinedFunction.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -1242,7 +1190,7 @@ func (s *SQLResourcesServerTransport) dispatchGetClientEncryptionKey(req *http.R
 	if s.srv.GetClientEncryptionKey == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetClientEncryptionKey not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/clientEncryptionKeys/(?P<clientEncryptionKeyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/clientEncryptionKeys/(?P<clientEncryptionKeyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -1269,7 +1217,7 @@ func (s *SQLResourcesServerTransport) dispatchGetClientEncryptionKey(req *http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ClientEncryptionKeyGetResults, req)
@@ -1283,7 +1231,7 @@ func (s *SQLResourcesServerTransport) dispatchGetSQLContainer(req *http.Request)
 	if s.srv.GetSQLContainer == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSQLContainer not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -1310,7 +1258,7 @@ func (s *SQLResourcesServerTransport) dispatchGetSQLContainer(req *http.Request)
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SQLContainerGetResults, req)
@@ -1324,7 +1272,7 @@ func (s *SQLResourcesServerTransport) dispatchGetSQLContainerThroughput(req *htt
 	if s.srv.GetSQLContainerThroughput == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSQLContainerThroughput not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -1351,7 +1299,7 @@ func (s *SQLResourcesServerTransport) dispatchGetSQLContainerThroughput(req *htt
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ThroughputSettingsGetResults, req)
@@ -1365,7 +1313,7 @@ func (s *SQLResourcesServerTransport) dispatchGetSQLDatabase(req *http.Request) 
 	if s.srv.GetSQLDatabase == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSQLDatabase not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -1388,7 +1336,7 @@ func (s *SQLResourcesServerTransport) dispatchGetSQLDatabase(req *http.Request) 
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SQLDatabaseGetResults, req)
@@ -1402,7 +1350,7 @@ func (s *SQLResourcesServerTransport) dispatchGetSQLDatabaseThroughput(req *http
 	if s.srv.GetSQLDatabaseThroughput == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSQLDatabaseThroughput not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -1425,7 +1373,7 @@ func (s *SQLResourcesServerTransport) dispatchGetSQLDatabaseThroughput(req *http
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ThroughputSettingsGetResults, req)
@@ -1439,7 +1387,7 @@ func (s *SQLResourcesServerTransport) dispatchGetSQLRoleAssignment(req *http.Req
 	if s.srv.GetSQLRoleAssignment == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSQLRoleAssignment not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlRoleAssignments/(?P<roleAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlRoleAssignments/(?P<roleAssignmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -1462,7 +1410,7 @@ func (s *SQLResourcesServerTransport) dispatchGetSQLRoleAssignment(req *http.Req
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SQLRoleAssignmentGetResults, req)
@@ -1476,7 +1424,7 @@ func (s *SQLResourcesServerTransport) dispatchGetSQLRoleDefinition(req *http.Req
 	if s.srv.GetSQLRoleDefinition == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSQLRoleDefinition not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlRoleDefinitions/(?P<roleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlRoleDefinitions/(?P<roleDefinitionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -1499,7 +1447,7 @@ func (s *SQLResourcesServerTransport) dispatchGetSQLRoleDefinition(req *http.Req
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SQLRoleDefinitionGetResults, req)
@@ -1513,7 +1461,7 @@ func (s *SQLResourcesServerTransport) dispatchGetSQLStoredProcedure(req *http.Re
 	if s.srv.GetSQLStoredProcedure == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSQLStoredProcedure not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storedProcedures/(?P<storedProcedureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storedProcedures/(?P<storedProcedureName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -1544,7 +1492,7 @@ func (s *SQLResourcesServerTransport) dispatchGetSQLStoredProcedure(req *http.Re
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SQLStoredProcedureGetResults, req)
@@ -1558,7 +1506,7 @@ func (s *SQLResourcesServerTransport) dispatchGetSQLTrigger(req *http.Request) (
 	if s.srv.GetSQLTrigger == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSQLTrigger not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/triggers/(?P<triggerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggers/(?P<triggerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -1589,7 +1537,7 @@ func (s *SQLResourcesServerTransport) dispatchGetSQLTrigger(req *http.Request) (
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SQLTriggerGetResults, req)
@@ -1603,7 +1551,7 @@ func (s *SQLResourcesServerTransport) dispatchGetSQLUserDefinedFunction(req *htt
 	if s.srv.GetSQLUserDefinedFunction == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSQLUserDefinedFunction not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/userDefinedFunctions/(?P<userDefinedFunctionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/userDefinedFunctions/(?P<userDefinedFunctionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -1634,7 +1582,7 @@ func (s *SQLResourcesServerTransport) dispatchGetSQLUserDefinedFunction(req *htt
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SQLUserDefinedFunctionGetResults, req)
@@ -1650,7 +1598,7 @@ func (s *SQLResourcesServerTransport) dispatchNewListClientEncryptionKeysPager(r
 	}
 	newListClientEncryptionKeysPager := s.newListClientEncryptionKeysPager.get(req)
 	if newListClientEncryptionKeysPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/clientEncryptionKeys`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/clientEncryptionKeys`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1679,7 +1627,7 @@ func (s *SQLResourcesServerTransport) dispatchNewListClientEncryptionKeysPager(r
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListClientEncryptionKeysPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -1689,69 +1637,13 @@ func (s *SQLResourcesServerTransport) dispatchNewListClientEncryptionKeysPager(r
 	return resp, nil
 }
 
-func (s *SQLResourcesServerTransport) dispatchBeginListSQLContainerPartitionMerge(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginListSQLContainerPartitionMerge == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginListSQLContainerPartitionMerge not implemented")}
-	}
-	beginListSQLContainerPartitionMerge := s.beginListSQLContainerPartitionMerge.get(req)
-	if beginListSQLContainerPartitionMerge == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/partitionMerge`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.MergeParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		containerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginListSQLContainerPartitionMerge(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, containerNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginListSQLContainerPartitionMerge = &respr
-		s.beginListSQLContainerPartitionMerge.add(req, beginListSQLContainerPartitionMerge)
-	}
-
-	resp, err := server.PollerResponderNext(beginListSQLContainerPartitionMerge, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginListSQLContainerPartitionMerge.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginListSQLContainerPartitionMerge) {
-		s.beginListSQLContainerPartitionMerge.remove(req)
-	}
-
-	return resp, nil
-}
-
 func (s *SQLResourcesServerTransport) dispatchNewListSQLContainersPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListSQLContainersPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListSQLContainersPager not implemented")}
 	}
 	newListSQLContainersPager := s.newListSQLContainersPager.get(req)
 	if newListSQLContainersPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1780,7 +1672,7 @@ func (s *SQLResourcesServerTransport) dispatchNewListSQLContainersPager(req *htt
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListSQLContainersPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -1796,7 +1688,7 @@ func (s *SQLResourcesServerTransport) dispatchNewListSQLDatabasesPager(req *http
 	}
 	newListSQLDatabasesPager := s.newListSQLDatabasesPager.get(req)
 	if newListSQLDatabasesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1821,7 +1713,7 @@ func (s *SQLResourcesServerTransport) dispatchNewListSQLDatabasesPager(req *http
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListSQLDatabasesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -1837,7 +1729,7 @@ func (s *SQLResourcesServerTransport) dispatchNewListSQLRoleAssignmentsPager(req
 	}
 	newListSQLRoleAssignmentsPager := s.newListSQLRoleAssignmentsPager.get(req)
 	if newListSQLRoleAssignmentsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlRoleAssignments`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlRoleAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1862,7 +1754,7 @@ func (s *SQLResourcesServerTransport) dispatchNewListSQLRoleAssignmentsPager(req
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListSQLRoleAssignmentsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -1878,7 +1770,7 @@ func (s *SQLResourcesServerTransport) dispatchNewListSQLRoleDefinitionsPager(req
 	}
 	newListSQLRoleDefinitionsPager := s.newListSQLRoleDefinitionsPager.get(req)
 	if newListSQLRoleDefinitionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlRoleDefinitions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlRoleDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1903,7 +1795,7 @@ func (s *SQLResourcesServerTransport) dispatchNewListSQLRoleDefinitionsPager(req
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListSQLRoleDefinitionsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -1919,7 +1811,7 @@ func (s *SQLResourcesServerTransport) dispatchNewListSQLStoredProceduresPager(re
 	}
 	newListSQLStoredProceduresPager := s.newListSQLStoredProceduresPager.get(req)
 	if newListSQLStoredProceduresPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storedProcedures`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storedProcedures`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -1952,7 +1844,7 @@ func (s *SQLResourcesServerTransport) dispatchNewListSQLStoredProceduresPager(re
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListSQLStoredProceduresPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -1968,7 +1860,7 @@ func (s *SQLResourcesServerTransport) dispatchNewListSQLTriggersPager(req *http.
 	}
 	newListSQLTriggersPager := s.newListSQLTriggersPager.get(req)
 	if newListSQLTriggersPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/triggers`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -2001,7 +1893,7 @@ func (s *SQLResourcesServerTransport) dispatchNewListSQLTriggersPager(req *http.
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListSQLTriggersPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -2017,7 +1909,7 @@ func (s *SQLResourcesServerTransport) dispatchNewListSQLUserDefinedFunctionsPage
 	}
 	newListSQLUserDefinedFunctionsPager := s.newListSQLUserDefinedFunctionsPager.get(req)
 	if newListSQLUserDefinedFunctionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/userDefinedFunctions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/userDefinedFunctions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -2050,7 +1942,7 @@ func (s *SQLResourcesServerTransport) dispatchNewListSQLUserDefinedFunctionsPage
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListSQLUserDefinedFunctionsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -2066,7 +1958,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginMigrateSQLContainerToAutoscal
 	}
 	beginMigrateSQLContainerToAutoscale := s.beginMigrateSQLContainerToAutoscale.get(req)
 	if beginMigrateSQLContainerToAutoscale == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/migrateToAutoscale`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToAutoscale`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -2101,7 +1993,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginMigrateSQLContainerToAutoscal
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginMigrateSQLContainerToAutoscale.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -2118,7 +2010,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginMigrateSQLContainerToManualTh
 	}
 	beginMigrateSQLContainerToManualThroughput := s.beginMigrateSQLContainerToManualThroughput.get(req)
 	if beginMigrateSQLContainerToManualThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/migrateToManualThroughput`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToManualThroughput`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -2153,7 +2045,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginMigrateSQLContainerToManualTh
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginMigrateSQLContainerToManualThroughput.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -2170,7 +2062,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginMigrateSQLDatabaseToAutoscale
 	}
 	beginMigrateSQLDatabaseToAutoscale := s.beginMigrateSQLDatabaseToAutoscale.get(req)
 	if beginMigrateSQLDatabaseToAutoscale == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/migrateToAutoscale`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToAutoscale`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -2201,7 +2093,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginMigrateSQLDatabaseToAutoscale
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginMigrateSQLDatabaseToAutoscale.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -2218,7 +2110,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginMigrateSQLDatabaseToManualThr
 	}
 	beginMigrateSQLDatabaseToManualThroughput := s.beginMigrateSQLDatabaseToManualThroughput.get(req)
 	if beginMigrateSQLDatabaseToManualThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/migrateToManualThroughput`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToManualThroughput`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -2249,7 +2141,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginMigrateSQLDatabaseToManualThr
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginMigrateSQLDatabaseToManualThroughput.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -2266,7 +2158,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginRetrieveContinuousBackupInfor
 	}
 	beginRetrieveContinuousBackupInformation := s.beginRetrieveContinuousBackupInformation.get(req)
 	if beginRetrieveContinuousBackupInformation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retrieveContinuousBackupInformation`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retrieveContinuousBackupInformation`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -2305,280 +2197,12 @@ func (s *SQLResourcesServerTransport) dispatchBeginRetrieveContinuousBackupInfor
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginRetrieveContinuousBackupInformation.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginRetrieveContinuousBackupInformation) {
 		s.beginRetrieveContinuousBackupInformation.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (s *SQLResourcesServerTransport) dispatchBeginSQLContainerRedistributeThroughput(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginSQLContainerRedistributeThroughput == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginSQLContainerRedistributeThroughput not implemented")}
-	}
-	beginSQLContainerRedistributeThroughput := s.beginSQLContainerRedistributeThroughput.get(req)
-	if beginSQLContainerRedistributeThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/redistributeThroughput`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.RedistributeThroughputParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		containerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginSQLContainerRedistributeThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, containerNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginSQLContainerRedistributeThroughput = &respr
-		s.beginSQLContainerRedistributeThroughput.add(req, beginSQLContainerRedistributeThroughput)
-	}
-
-	resp, err := server.PollerResponderNext(beginSQLContainerRedistributeThroughput, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginSQLContainerRedistributeThroughput.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginSQLContainerRedistributeThroughput) {
-		s.beginSQLContainerRedistributeThroughput.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (s *SQLResourcesServerTransport) dispatchBeginSQLContainerRetrieveThroughputDistribution(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginSQLContainerRetrieveThroughputDistribution == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginSQLContainerRetrieveThroughputDistribution not implemented")}
-	}
-	beginSQLContainerRetrieveThroughputDistribution := s.beginSQLContainerRetrieveThroughputDistribution.get(req)
-	if beginSQLContainerRetrieveThroughputDistribution == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/retrieveThroughputDistribution`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.RetrieveThroughputParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		containerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginSQLContainerRetrieveThroughputDistribution(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, containerNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginSQLContainerRetrieveThroughputDistribution = &respr
-		s.beginSQLContainerRetrieveThroughputDistribution.add(req, beginSQLContainerRetrieveThroughputDistribution)
-	}
-
-	resp, err := server.PollerResponderNext(beginSQLContainerRetrieveThroughputDistribution, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginSQLContainerRetrieveThroughputDistribution.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginSQLContainerRetrieveThroughputDistribution) {
-		s.beginSQLContainerRetrieveThroughputDistribution.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (s *SQLResourcesServerTransport) dispatchBeginSQLDatabasePartitionMerge(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginSQLDatabasePartitionMerge == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginSQLDatabasePartitionMerge not implemented")}
-	}
-	beginSQLDatabasePartitionMerge := s.beginSQLDatabasePartitionMerge.get(req)
-	if beginSQLDatabasePartitionMerge == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/partitionMerge`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.MergeParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginSQLDatabasePartitionMerge(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginSQLDatabasePartitionMerge = &respr
-		s.beginSQLDatabasePartitionMerge.add(req, beginSQLDatabasePartitionMerge)
-	}
-
-	resp, err := server.PollerResponderNext(beginSQLDatabasePartitionMerge, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginSQLDatabasePartitionMerge.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginSQLDatabasePartitionMerge) {
-		s.beginSQLDatabasePartitionMerge.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (s *SQLResourcesServerTransport) dispatchBeginSQLDatabaseRedistributeThroughput(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginSQLDatabaseRedistributeThroughput == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginSQLDatabaseRedistributeThroughput not implemented")}
-	}
-	beginSQLDatabaseRedistributeThroughput := s.beginSQLDatabaseRedistributeThroughput.get(req)
-	if beginSQLDatabaseRedistributeThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/redistributeThroughput`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.RedistributeThroughputParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginSQLDatabaseRedistributeThroughput(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginSQLDatabaseRedistributeThroughput = &respr
-		s.beginSQLDatabaseRedistributeThroughput.add(req, beginSQLDatabaseRedistributeThroughput)
-	}
-
-	resp, err := server.PollerResponderNext(beginSQLDatabaseRedistributeThroughput, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginSQLDatabaseRedistributeThroughput.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginSQLDatabaseRedistributeThroughput) {
-		s.beginSQLDatabaseRedistributeThroughput.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (s *SQLResourcesServerTransport) dispatchBeginSQLDatabaseRetrieveThroughputDistribution(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginSQLDatabaseRetrieveThroughputDistribution == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginSQLDatabaseRetrieveThroughputDistribution not implemented")}
-	}
-	beginSQLDatabaseRetrieveThroughputDistribution := s.beginSQLDatabaseRetrieveThroughputDistribution.get(req)
-	if beginSQLDatabaseRetrieveThroughputDistribution == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/retrieveThroughputDistribution`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.RetrieveThroughputParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginSQLDatabaseRetrieveThroughputDistribution(req.Context(), resourceGroupNameParam, accountNameParam, databaseNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginSQLDatabaseRetrieveThroughputDistribution = &respr
-		s.beginSQLDatabaseRetrieveThroughputDistribution.add(req, beginSQLDatabaseRetrieveThroughputDistribution)
-	}
-
-	resp, err := server.PollerResponderNext(beginSQLDatabaseRetrieveThroughputDistribution, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginSQLDatabaseRetrieveThroughputDistribution.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginSQLDatabaseRetrieveThroughputDistribution) {
-		s.beginSQLDatabaseRetrieveThroughputDistribution.remove(req)
 	}
 
 	return resp, nil
@@ -2590,7 +2214,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginUpdateSQLContainerThroughput(
 	}
 	beginUpdateSQLContainerThroughput := s.beginUpdateSQLContainerThroughput.get(req)
 	if beginUpdateSQLContainerThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/containers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -2629,7 +2253,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginUpdateSQLContainerThroughput(
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginUpdateSQLContainerThroughput.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -2646,7 +2270,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginUpdateSQLDatabaseThroughput(r
 	}
 	beginUpdateSQLDatabaseThroughput := s.beginUpdateSQLDatabaseThroughput.get(req)
 	if beginUpdateSQLDatabaseThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -2681,7 +2305,7 @@ func (s *SQLResourcesServerTransport) dispatchBeginUpdateSQLDatabaseThroughput(r
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginUpdateSQLDatabaseThroughput.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

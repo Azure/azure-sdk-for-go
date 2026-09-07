@@ -17,8 +17,6 @@ import (
 	"strings"
 )
 
-const defaultWorkspaceManagerAssignmentJobsClientVersion string = "2025-07-01-preview"
-
 // WorkspaceManagerAssignmentJobsClient contains the methods for the WorkspaceManagerAssignmentJobs group.
 // Don't use this type directly, use NewWorkspaceManagerAssignmentJobsClient() instead.
 //
@@ -33,6 +31,9 @@ type WorkspaceManagerAssignmentJobsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkspaceManagerAssignmentJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceManagerAssignmentJobsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,19 +66,14 @@ func (client *WorkspaceManagerAssignmentJobsClient) Create(ctx context.Context, 
 	if err != nil {
 		return WorkspaceManagerAssignmentJobsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceManagerAssignmentJobsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK)
 }
 
 // createCreateRequest creates the Create request.
 func (client *WorkspaceManagerAssignmentJobsClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, workspaceManagerAssignmentName string, _ *WorkspaceManagerAssignmentJobsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/workspaceManagerAssignments/{workspaceManagerAssignmentName}/jobs"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -97,15 +93,18 @@ func (client *WorkspaceManagerAssignmentJobsClient) createCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultWorkspaceManagerAssignmentJobsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // createHandleResponse handles the Create response.
-func (client *WorkspaceManagerAssignmentJobsClient) createHandleResponse(resp *http.Response) (WorkspaceManagerAssignmentJobsClientCreateResponse, error) {
+func (client *WorkspaceManagerAssignmentJobsClient) createHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceManagerAssignmentJobsClientCreateResponse, error) {
 	result := WorkspaceManagerAssignmentJobsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Job); err != nil {
 		return WorkspaceManagerAssignmentJobsClientCreateResponse{}, err
 	}
@@ -135,8 +134,7 @@ func (client *WorkspaceManagerAssignmentJobsClient) Delete(ctx context.Context, 
 		return WorkspaceManagerAssignmentJobsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceManagerAssignmentJobsClientDeleteResponse{}, err
+		return WorkspaceManagerAssignmentJobsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WorkspaceManagerAssignmentJobsClientDeleteResponse{}, nil
 }
@@ -145,7 +143,7 @@ func (client *WorkspaceManagerAssignmentJobsClient) Delete(ctx context.Context, 
 func (client *WorkspaceManagerAssignmentJobsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, workspaceManagerAssignmentName string, jobName string, _ *WorkspaceManagerAssignmentJobsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/workspaceManagerAssignments/{workspaceManagerAssignmentName}/jobs/{jobName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -169,7 +167,7 @@ func (client *WorkspaceManagerAssignmentJobsClient) deleteCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultWorkspaceManagerAssignmentJobsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -196,19 +194,14 @@ func (client *WorkspaceManagerAssignmentJobsClient) Get(ctx context.Context, res
 	if err != nil {
 		return WorkspaceManagerAssignmentJobsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceManagerAssignmentJobsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *WorkspaceManagerAssignmentJobsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, workspaceManagerAssignmentName string, jobName string, _ *WorkspaceManagerAssignmentJobsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/workspaceManagerAssignments/{workspaceManagerAssignmentName}/jobs/{jobName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -232,15 +225,18 @@ func (client *WorkspaceManagerAssignmentJobsClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultWorkspaceManagerAssignmentJobsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkspaceManagerAssignmentJobsClient) getHandleResponse(resp *http.Response) (WorkspaceManagerAssignmentJobsClientGetResponse, error) {
+func (client *WorkspaceManagerAssignmentJobsClient) getHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceManagerAssignmentJobsClientGetResponse, error) {
 	result := WorkspaceManagerAssignmentJobsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Job); err != nil {
 		return WorkspaceManagerAssignmentJobsClientGetResponse{}, err
 	}
@@ -264,60 +260,74 @@ func (client *WorkspaceManagerAssignmentJobsClient) NewListPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, workspaceName, workspaceManagerAssignmentName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, workspaceManagerAssignmentName, nextLink, options)
 			if err != nil {
 				return WorkspaceManagerAssignmentJobsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkspaceManagerAssignmentJobsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkspaceManagerAssignmentJobsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, workspaceManagerAssignmentName string, options *WorkspaceManagerAssignmentJobsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/workspaceManagerAssignments/{workspaceManagerAssignmentName}/jobs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WorkspaceManagerAssignmentJobsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, workspaceManagerAssignmentName string, nextLink string, options *WorkspaceManagerAssignmentJobsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/workspaceManagerAssignments/{workspaceManagerAssignmentName}/jobs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		if workspaceManagerAssignmentName == "" {
+			return nil, errors.New("parameter workspaceManagerAssignmentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceManagerAssignmentName}", url.PathEscape(workspaceManagerAssignmentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if workspaceManagerAssignmentName == "" {
-		return nil, errors.New("parameter workspaceManagerAssignmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceManagerAssignmentName}", url.PathEscape(workspaceManagerAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Orderby != nil {
-		reqQP.Set("$orderby", *options.Orderby)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Orderby != nil {
+			reqQP.Set("$orderby", *options.Orderby)
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", defaultWorkspaceManagerAssignmentJobsClientVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *WorkspaceManagerAssignmentJobsClient) listHandleResponse(resp *http.Response) (WorkspaceManagerAssignmentJobsClientListResponse, error) {
+func (client *WorkspaceManagerAssignmentJobsClient) listHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceManagerAssignmentJobsClientListResponse, error) {
 	result := WorkspaceManagerAssignmentJobsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobList); err != nil {
 		return WorkspaceManagerAssignmentJobsClientListResponse{}, err
 	}

@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // ReceivedRoutesServer is a fake server for instances of the armpeering.ReceivedRoutesClient type.
@@ -53,9 +54,7 @@ func (r *ReceivedRoutesServerTransport) Do(req *http.Request) (*http.Response, e
 }
 
 func (r *ReceivedRoutesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +70,7 @@ func (r *ReceivedRoutesServerTransport) dispatchToMethodFake(req *http.Request, 
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -91,7 +87,7 @@ func (r *ReceivedRoutesServerTransport) dispatchNewListByPeeringPager(req *http.
 	}
 	newListByPeeringPager := r.newListByPeeringPager.get(req)
 	if newListByPeeringPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Peering/peerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/receivedRoutes`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Peering/peerings/(?P<peeringName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/receivedRoutes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -106,31 +102,11 @@ func (r *ReceivedRoutesServerTransport) dispatchNewListByPeeringPager(req *http.
 		if err != nil {
 			return nil, err
 		}
-		prefixUnescaped, err := url.QueryUnescape(qp.Get("prefix"))
-		if err != nil {
-			return nil, err
-		}
-		prefixParam := getOptional(prefixUnescaped)
-		asPathUnescaped, err := url.QueryUnescape(qp.Get("asPath"))
-		if err != nil {
-			return nil, err
-		}
-		asPathParam := getOptional(asPathUnescaped)
-		originAsValidationStateUnescaped, err := url.QueryUnescape(qp.Get("originAsValidationState"))
-		if err != nil {
-			return nil, err
-		}
-		originAsValidationStateParam := getOptional(originAsValidationStateUnescaped)
-		rpkiValidationStateUnescaped, err := url.QueryUnescape(qp.Get("rpkiValidationState"))
-		if err != nil {
-			return nil, err
-		}
-		rpkiValidationStateParam := getOptional(rpkiValidationStateUnescaped)
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
+		prefixParam := getOptional(qp.Get("prefix"))
+		asPathParam := getOptional(qp.Get("asPath"))
+		originAsValidationStateParam := getOptional(qp.Get("originAsValidationState"))
+		rpkiValidationStateParam := getOptional(qp.Get("rpkiValidationState"))
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
 		var options *armpeering.ReceivedRoutesClientListByPeeringOptions
 		if prefixParam != nil || asPathParam != nil || originAsValidationStateParam != nil || rpkiValidationStateParam != nil || skipTokenParam != nil {
 			options = &armpeering.ReceivedRoutesClientListByPeeringOptions{
@@ -152,7 +128,7 @@ func (r *ReceivedRoutesServerTransport) dispatchNewListByPeeringPager(req *http.
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListByPeeringPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

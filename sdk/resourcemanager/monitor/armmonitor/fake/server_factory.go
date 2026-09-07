@@ -33,6 +33,9 @@ type ServerFactory struct {
 	// BaselinesServer contains the fakes for client BaselinesClient
 	BaselinesServer BaselinesServer
 
+	// CombineServer contains the fakes for client CombineClient
+	CombineServer CombineServer
+
 	// DataCollectionEndpointsServer contains the fakes for client DataCollectionEndpointsClient
 	DataCollectionEndpointsServer DataCollectionEndpointsServer
 
@@ -41,6 +44,12 @@ type ServerFactory struct {
 
 	// DataCollectionRulesServer contains the fakes for client DataCollectionRulesClient
 	DataCollectionRulesServer DataCollectionRulesServer
+
+	// DiagnosticSettingsCategoryServer contains the fakes for client DiagnosticSettingsCategoryClient
+	DiagnosticSettingsCategoryServer DiagnosticSettingsCategoryServer
+
+	// DiagnosticSettingsServer contains the fakes for client DiagnosticSettingsClient
+	DiagnosticSettingsServer DiagnosticSettingsServer
 
 	// EventCategoriesServer contains the fakes for client EventCategoriesClient
 	EventCategoriesServer EventCategoriesServer
@@ -90,8 +99,14 @@ type ServerFactory struct {
 	// ServiceDiagnosticSettingsServer contains the fakes for client ServiceDiagnosticSettingsClient
 	ServiceDiagnosticSettingsServer ServiceDiagnosticSettingsServer
 
+	// TenantActionGroupsServer contains the fakes for client TenantActionGroupsClient
+	TenantActionGroupsServer TenantActionGroupsServer
+
 	// TenantActivityLogsServer contains the fakes for client TenantActivityLogsClient
 	TenantActivityLogsServer TenantActivityLogsServer
+
+	// VMInsightsServer contains the fakes for client VMInsightsClient
+	VMInsightsServer VMInsightsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -114,9 +129,12 @@ type ServerFactoryTransport struct {
 	trAlertRuleIncidentsServer              *AlertRuleIncidentsServerTransport
 	trAutoscaleSettingsServer               *AutoscaleSettingsServerTransport
 	trBaselinesServer                       *BaselinesServerTransport
+	trCombineServer                         *CombineServerTransport
 	trDataCollectionEndpointsServer         *DataCollectionEndpointsServerTransport
 	trDataCollectionRuleAssociationsServer  *DataCollectionRuleAssociationsServerTransport
 	trDataCollectionRulesServer             *DataCollectionRulesServerTransport
+	trDiagnosticSettingsCategoryServer      *DiagnosticSettingsCategoryServerTransport
+	trDiagnosticSettingsServer              *DiagnosticSettingsServerTransport
 	trEventCategoriesServer                 *EventCategoriesServerTransport
 	trLogProfilesServer                     *LogProfilesServerTransport
 	trMetricAlertsServer                    *MetricAlertsServerTransport
@@ -133,7 +151,9 @@ type ServerFactoryTransport struct {
 	trScheduledQueryRuleServer              *ScheduledQueryRuleServerTransport
 	trScheduledQueryRulesServer             *ScheduledQueryRulesServerTransport
 	trServiceDiagnosticSettingsServer       *ServiceDiagnosticSettingsServerTransport
+	trTenantActionGroupsServer              *TenantActionGroupsServerTransport
 	trTenantActivityLogsServer              *TenantActivityLogsServerTransport
+	trVMInsightsServer                      *VMInsightsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -173,6 +193,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "BaselinesClient":
 		initServer(&s.trMu, &s.trBaselinesServer, func() *BaselinesServerTransport { return NewBaselinesServerTransport(&s.srv.BaselinesServer) })
 		resp, err = s.trBaselinesServer.Do(req)
+	case "CombineClient":
+		initServer(&s.trMu, &s.trCombineServer, func() *CombineServerTransport { return NewCombineServerTransport(&s.srv.CombineServer) })
+		resp, err = s.trCombineServer.Do(req)
 	case "DataCollectionEndpointsClient":
 		initServer(&s.trMu, &s.trDataCollectionEndpointsServer, func() *DataCollectionEndpointsServerTransport {
 			return NewDataCollectionEndpointsServerTransport(&s.srv.DataCollectionEndpointsServer)
@@ -188,6 +211,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewDataCollectionRulesServerTransport(&s.srv.DataCollectionRulesServer)
 		})
 		resp, err = s.trDataCollectionRulesServer.Do(req)
+	case "DiagnosticSettingsCategoryClient":
+		initServer(&s.trMu, &s.trDiagnosticSettingsCategoryServer, func() *DiagnosticSettingsCategoryServerTransport {
+			return NewDiagnosticSettingsCategoryServerTransport(&s.srv.DiagnosticSettingsCategoryServer)
+		})
+		resp, err = s.trDiagnosticSettingsCategoryServer.Do(req)
+	case "DiagnosticSettingsClient":
+		initServer(&s.trMu, &s.trDiagnosticSettingsServer, func() *DiagnosticSettingsServerTransport {
+			return NewDiagnosticSettingsServerTransport(&s.srv.DiagnosticSettingsServer)
+		})
+		resp, err = s.trDiagnosticSettingsServer.Do(req)
 	case "EventCategoriesClient":
 		initServer(&s.trMu, &s.trEventCategoriesServer, func() *EventCategoriesServerTransport {
 			return NewEventCategoriesServerTransport(&s.srv.EventCategoriesServer)
@@ -262,11 +295,19 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewServiceDiagnosticSettingsServerTransport(&s.srv.ServiceDiagnosticSettingsServer)
 		})
 		resp, err = s.trServiceDiagnosticSettingsServer.Do(req)
+	case "TenantActionGroupsClient":
+		initServer(&s.trMu, &s.trTenantActionGroupsServer, func() *TenantActionGroupsServerTransport {
+			return NewTenantActionGroupsServerTransport(&s.srv.TenantActionGroupsServer)
+		})
+		resp, err = s.trTenantActionGroupsServer.Do(req)
 	case "TenantActivityLogsClient":
 		initServer(&s.trMu, &s.trTenantActivityLogsServer, func() *TenantActivityLogsServerTransport {
 			return NewTenantActivityLogsServerTransport(&s.srv.TenantActivityLogsServer)
 		})
 		resp, err = s.trTenantActivityLogsServer.Do(req)
+	case "VMInsightsClient":
+		initServer(&s.trMu, &s.trVMInsightsServer, func() *VMInsightsServerTransport { return NewVMInsightsServerTransport(&s.srv.VMInsightsServer) })
+		resp, err = s.trVMInsightsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

@@ -6,5 +6,5 @@ package armattestation
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/attestation/armattestation"
-	moduleVersion = "v2.0.0-beta.1"
+	moduleVersion = "v2.0.0"
 )

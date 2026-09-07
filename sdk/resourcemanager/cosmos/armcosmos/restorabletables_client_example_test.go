@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBRestorableTableList.json
+// Generated from example definition: 2026-03-15/CosmosDBRestorableTableList.json
 func ExampleRestorableTablesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,33 +37,33 @@ func ExampleRestorableTablesClient_NewListPager() {
 		// 	RestorableTablesListResult: armcosmos.RestorableTablesListResult{
 		// 		Value: []*armcosmos.RestorableTableGetResult{
 		// 			{
-		// 				Name: to.Ptr("79609a98-3394-41f8-911f-cfab0c075c86"),
+		// 				ID: to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDb/locations/westus/restorableDatabaseAccounts/98a570f2-63db-4117-91f0-366327b7b353/restorableTables/79609a98-3394-41f8-911f-cfab0c075c86"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorableTables"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDb/locations/westus/restorableDatabaseAccounts/98a570f2-63db-4117-91f0-366327b7b353/restorableTables/79609a98-3394-41f8-911f-cfab0c075c86"),
+		// 				Name: to.Ptr("79609a98-3394-41f8-911f-cfab0c075c86"),
 		// 				Properties: &armcosmos.RestorableTableProperties{
 		// 					Resource: &armcosmos.RestorableTablePropertiesResource{
 		// 						Rid: to.Ptr("zAyAPQAAAA=="),
-		// 						CanUndelete: to.Ptr("invalid"),
 		// 						EventTimestamp: to.Ptr("2020-10-13T04:56:42Z"),
-		// 						OperationType: to.Ptr(armcosmos.OperationTypeCreate),
 		// 						OwnerID: to.Ptr("Table1"),
 		// 						OwnerResourceID: to.Ptr("V18LoLrv-qA="),
+		// 						OperationType: to.Ptr(armcosmos.OperationTypeCreate),
+		// 						CanUndelete: to.Ptr("invalid"),
 		// 					},
 		// 				},
 		// 			},
 		// 			{
-		// 				Name: to.Ptr("79609a98-3394-41f8-911f-cfab0c075c86"),
+		// 				ID: to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDb/locations/westus/restorableDatabaseAccounts/98a570f2-63db-4117-91f0-366327b7b353/restorableTables/79609a98-3394-41f8-911f-cfab0c075c86"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorableTables"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDb/locations/westus/restorableDatabaseAccounts/98a570f2-63db-4117-91f0-366327b7b353/restorableTables/79609a98-3394-41f8-911f-cfab0c075c86"),
+		// 				Name: to.Ptr("79609a98-3394-41f8-911f-cfab0c075c86"),
 		// 				Properties: &armcosmos.RestorableTableProperties{
 		// 					Resource: &armcosmos.RestorableTablePropertiesResource{
 		// 						Rid: to.Ptr("zAyAPQAAAA=="),
-		// 						CanUndelete: to.Ptr("notRestorable"),
-		// 						CanUndeleteReason: to.Ptr("Collection with same name already exist as live collection."),
 		// 						EventTimestamp: to.Ptr("2020-10-13T04:56:42Z"),
-		// 						OperationType: to.Ptr(armcosmos.OperationTypeDelete),
 		// 						OwnerID: to.Ptr("Table1"),
 		// 						OwnerResourceID: to.Ptr("V18LoLrv-qA="),
+		// 						OperationType: to.Ptr(armcosmos.OperationTypeDelete),
+		// 						CanUndelete: to.Ptr("notRestorable"),
+		// 						CanUndeleteReason: to.Ptr("Collection with same name already exist as live collection."),
 		// 					},
 		// 				},
 		// 			},

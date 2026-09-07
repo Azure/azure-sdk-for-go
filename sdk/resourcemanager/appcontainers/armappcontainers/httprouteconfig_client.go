@@ -30,6 +30,9 @@ type HTTPRouteConfigClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewHTTPRouteConfigClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HTTPRouteConfigClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,19 +68,14 @@ func (client *HTTPRouteConfigClient) CreateOrUpdate(ctx context.Context, resourc
 	if err != nil {
 		return HTTPRouteConfigClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return HTTPRouteConfigClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *HTTPRouteConfigClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, httpRouteConfigEnvelope HTTPRouteConfig, _ *HTTPRouteConfigClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/httpRouteConfigs/{httpRouteName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -108,8 +106,11 @@ func (client *HTTPRouteConfigClient) createOrUpdateCreateRequest(ctx context.Con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *HTTPRouteConfigClient) createOrUpdateHandleResponse(resp *http.Response) (HTTPRouteConfigClientCreateOrUpdateResponse, error) {
+func (client *HTTPRouteConfigClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (HTTPRouteConfigClientCreateOrUpdateResponse, error) {
 	result := HTTPRouteConfigClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HTTPRouteConfig); err != nil {
 		return HTTPRouteConfigClientCreateOrUpdateResponse{}, err
 	}
@@ -161,8 +162,7 @@ func (client *HTTPRouteConfigClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -171,7 +171,7 @@ func (client *HTTPRouteConfigClient) deleteOperation(ctx context.Context, resour
 func (client *HTTPRouteConfigClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, _ *HTTPRouteConfigClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/httpRouteConfigs/{httpRouteName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -218,19 +218,14 @@ func (client *HTTPRouteConfigClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return HTTPRouteConfigClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return HTTPRouteConfigClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *HTTPRouteConfigClient) getCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, _ *HTTPRouteConfigClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/httpRouteConfigs/{httpRouteName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -257,8 +252,11 @@ func (client *HTTPRouteConfigClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *HTTPRouteConfigClient) getHandleResponse(resp *http.Response) (HTTPRouteConfigClientGetResponse, error) {
+func (client *HTTPRouteConfigClient) getHandleResponse(resp *http.Response, successCodes ...int) (HTTPRouteConfigClientGetResponse, error) {
 	result := HTTPRouteConfigClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HTTPRouteConfig); err != nil {
 		return HTTPRouteConfigClientGetResponse{}, err
 	}
@@ -283,47 +281,61 @@ func (client *HTTPRouteConfigClient) NewListPager(resourceGroupName string, envi
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, environmentName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, environmentName, nextLink, options)
 			if err != nil {
 				return HTTPRouteConfigClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return HTTPRouteConfigClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *HTTPRouteConfigClient) listCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, _ *HTTPRouteConfigClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/httpRouteConfigs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *HTTPRouteConfigClient) listCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, nextLink string, _ *HTTPRouteConfigClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/httpRouteConfigs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if environmentName == "" {
+			return nil, errors.New("parameter environmentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if environmentName == "" {
-		return nil, errors.New("parameter environmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251002Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *HTTPRouteConfigClient) listHandleResponse(resp *http.Response) (HTTPRouteConfigClientListResponse, error) {
+func (client *HTTPRouteConfigClient) listHandleResponse(resp *http.Response, successCodes ...int) (HTTPRouteConfigClientListResponse, error) {
 	result := HTTPRouteConfigClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HTTPRouteConfigCollection); err != nil {
 		return HTTPRouteConfigClientListResponse{}, err
 	}
@@ -353,19 +365,14 @@ func (client *HTTPRouteConfigClient) Update(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return HTTPRouteConfigClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return HTTPRouteConfigClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *HTTPRouteConfigClient) updateCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, httpRouteConfigEnvelope HTTPRouteConfig, _ *HTTPRouteConfigClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/httpRouteConfigs/{httpRouteName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -396,8 +403,11 @@ func (client *HTTPRouteConfigClient) updateCreateRequest(ctx context.Context, re
 }
 
 // updateHandleResponse handles the Update response.
-func (client *HTTPRouteConfigClient) updateHandleResponse(resp *http.Response) (HTTPRouteConfigClientUpdateResponse, error) {
+func (client *HTTPRouteConfigClient) updateHandleResponse(resp *http.Response, successCodes ...int) (HTTPRouteConfigClientUpdateResponse, error) {
 	result := HTTPRouteConfigClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HTTPRouteConfig); err != nil {
 		return HTTPRouteConfigClientUpdateResponse{}, err
 	}

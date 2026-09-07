@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultThreatIntelligenceIndicatorMetricsClientVersion string = "2025-07-01-preview"
-
 // ThreatIntelligenceIndicatorMetricsClient contains the methods for the ThreatIntelligenceIndicatorMetrics group.
 // Don't use this type directly, use NewThreatIntelligenceIndicatorMetricsClient() instead.
 //
@@ -32,6 +30,9 @@ type ThreatIntelligenceIndicatorMetricsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewThreatIntelligenceIndicatorMetricsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ThreatIntelligenceIndicatorMetricsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +64,14 @@ func (client *ThreatIntelligenceIndicatorMetricsClient) List(ctx context.Context
 	if err != nil {
 		return ThreatIntelligenceIndicatorMetricsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ThreatIntelligenceIndicatorMetricsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
 func (client *ThreatIntelligenceIndicatorMetricsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *ThreatIntelligenceIndicatorMetricsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/metrics"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -91,15 +87,18 @@ func (client *ThreatIntelligenceIndicatorMetricsClient) listCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultThreatIntelligenceIndicatorMetricsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ThreatIntelligenceIndicatorMetricsClient) listHandleResponse(resp *http.Response) (ThreatIntelligenceIndicatorMetricsClientListResponse, error) {
+func (client *ThreatIntelligenceIndicatorMetricsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ThreatIntelligenceIndicatorMetricsClientListResponse, error) {
 	result := ThreatIntelligenceIndicatorMetricsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThreatIntelligenceMetricsList); err != nil {
 		return ThreatIntelligenceIndicatorMetricsClientListResponse{}, err
 	}

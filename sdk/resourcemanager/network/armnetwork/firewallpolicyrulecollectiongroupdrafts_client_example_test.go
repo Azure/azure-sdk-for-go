@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/FirewallPolicyRuleCollectionGroupDraftPut.json
+// Generated from example definition: 2025-09-01/FirewallPolicyRuleCollectionGroupDraftPut.json
 func ExampleFirewallPolicyRuleCollectionGroupDraftsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleFirewallPolicyRuleCollectionGroupDraftsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicyRuleCollectionGroupDraftDelete.json
+// Generated from example definition: 2025-09-01/FirewallPolicyRuleCollectionGroupDraftDelete.json
 func ExampleFirewallPolicyRuleCollectionGroupDraftsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleFirewallPolicyRuleCollectionGroupDraftsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicyRuleCollectionGroupDraftGet.json
+// Generated from example definition: 2025-09-01/FirewallPolicyRuleCollectionGroupDraftGet.json
 func ExampleFirewallPolicyRuleCollectionGroupDraftsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

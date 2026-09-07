@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // RestorableSQLContainersServer is a fake server for instances of the armcosmos.RestorableSQLContainersClient type.
@@ -53,9 +54,7 @@ func (r *RestorableSQLContainersServerTransport) Do(req *http.Request) (*http.Re
 }
 
 func (r *RestorableSQLContainersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +70,7 @@ func (r *RestorableSQLContainersServerTransport) dispatchToMethodFake(req *http.
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -91,7 +87,7 @@ func (r *RestorableSQLContainersServerTransport) dispatchNewListPager(req *http.
 	}
 	newListPager := r.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restorableDatabaseAccounts/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restorableSqlContainers`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restorableDatabaseAccounts/(?P<instanceId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restorableSqlContainers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -106,21 +102,9 @@ func (r *RestorableSQLContainersServerTransport) dispatchNewListPager(req *http.
 		if err != nil {
 			return nil, err
 		}
-		restorableSQLDatabaseRidUnescaped, err := url.QueryUnescape(qp.Get("restorableSqlDatabaseRid"))
-		if err != nil {
-			return nil, err
-		}
-		restorableSQLDatabaseRidParam := getOptional(restorableSQLDatabaseRidUnescaped)
-		startTimeUnescaped, err := url.QueryUnescape(qp.Get("startTime"))
-		if err != nil {
-			return nil, err
-		}
-		startTimeParam := getOptional(startTimeUnescaped)
-		endTimeUnescaped, err := url.QueryUnescape(qp.Get("endTime"))
-		if err != nil {
-			return nil, err
-		}
-		endTimeParam := getOptional(endTimeUnescaped)
+		restorableSQLDatabaseRidParam := getOptional(qp.Get("restorableSqlDatabaseRid"))
+		startTimeParam := getOptional(qp.Get("startTime"))
+		endTimeParam := getOptional(qp.Get("endTime"))
 		var options *armcosmos.RestorableSQLContainersClientListOptions
 		if restorableSQLDatabaseRidParam != nil || startTimeParam != nil || endTimeParam != nil {
 			options = &armcosmos.RestorableSQLContainersClientListOptions{
@@ -140,7 +124,7 @@ func (r *RestorableSQLContainersServerTransport) dispatchNewListPager(req *http.
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

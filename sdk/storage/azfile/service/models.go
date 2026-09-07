@@ -121,6 +121,12 @@ type SMBSettings = generated.SMBSettings
 // SMBMultichannel - Settings for SMB multichannel
 type SMBMultichannel = generated.SMBMultichannel
 
+// ShareNFSSettings - Settings for NFS protocol.
+type ShareNFSSettings = generated.ShareNFSSettings
+
+// ShareNFSSettingsEncryptionInTransit - Enable or disable encryption in transit.
+type ShareNFSSettingsEncryptionInTransit = generated.ShareNFSSettingsEncryptionInTransit
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // ListSharesOptions contains the optional parameters for the Client.NewListSharesPager method.

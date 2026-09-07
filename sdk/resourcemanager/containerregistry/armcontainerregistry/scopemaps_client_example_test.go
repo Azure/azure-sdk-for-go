@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/ScopeMapCreate.json
+// Generated from example definition: 2026-03-01-preview/ScopeMapCreate.json
 func ExampleScopeMapsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleScopeMapsClient_BeginCreate() {
 	// 		Name: to.Ptr("myScopeMap"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/scopeMaps"),
 	// 		Properties: &armcontainerregistry.ScopeMapProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-01T23:14:37.0707808Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.March, 1, 23, 14, 37, 70780800, time.UTC)),
 	// 			Type: to.Ptr("IsUserDefined"),
 	// 			Actions: []*string{
 	// 				to.Ptr("repositories/myrepository/contentWrite"),
@@ -60,7 +60,7 @@ func ExampleScopeMapsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ScopeMapDelete.json
+// Generated from example definition: 2026-03-01-preview/ScopeMapDelete.json
 func ExampleScopeMapsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleScopeMapsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ScopeMapGet.json
+// Generated from example definition: 2026-03-01-preview/ScopeMapGet.json
 func ExampleScopeMapsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleScopeMapsClient_Get() {
 	// 		Name: to.Ptr("myScopeMap"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/scopeMaps"),
 	// 		Properties: &armcontainerregistry.ScopeMapProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-01T23:14:37.0707808Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.March, 1, 23, 14, 37, 70780800, time.UTC)),
 	// 			Type: to.Ptr("IsUserDefined"),
 	// 			Actions: []*string{
 	// 				to.Ptr("repositories/myrepository/contentWrite"),
@@ -122,7 +122,7 @@ func ExampleScopeMapsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ScopeMapList.json
+// Generated from example definition: 2026-03-01-preview/ScopeMapList.json
 func ExampleScopeMapsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,7 @@ func ExampleScopeMapsClient_NewListPager() {
 		// 				Name: to.Ptr("myScopeMap"),
 		// 				Type: to.Ptr("Microsoft.ContainerRegistry/registries/scopeMaps"),
 		// 				Properties: &armcontainerregistry.ScopeMapProperties{
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-01T23:14:37.0707808Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.March, 1, 23, 14, 37, 70780800, time.UTC)),
 		// 					Type: to.Ptr("IsUserDefined"),
 		// 					Actions: []*string{
 		// 						to.Ptr("repositories/myrepository/contentWrite"),
@@ -167,7 +167,7 @@ func ExampleScopeMapsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/ScopeMapUpdate.json
+// Generated from example definition: 2026-03-01-preview/ScopeMapUpdate.json
 func ExampleScopeMapsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -203,7 +203,7 @@ func ExampleScopeMapsClient_BeginUpdate() {
 	// 		Name: to.Ptr("myScopeMap"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/scopeMaps"),
 	// 		Properties: &armcontainerregistry.ScopeMapProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-01T23:14:37.0707808Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.March, 1, 23, 14, 37, 70780800, time.UTC)),
 	// 			Type: to.Ptr("IsUserDefined"),
 	// 			Actions: []*string{
 	// 				to.Ptr("repositories/myrepository/contentWrite"),

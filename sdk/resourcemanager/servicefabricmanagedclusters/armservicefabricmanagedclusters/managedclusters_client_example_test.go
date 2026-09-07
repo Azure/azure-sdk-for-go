@@ -569,9 +569,9 @@ func ExampleManagedClustersClient_GetFaultSimulation() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ManagedClustersClientGetFaultSimulationResponse{
 	// 	FaultSimulation: armservicefabricmanagedclusters.FaultSimulation{
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00"); return t}()),
+	// 		EndTime: to.Ptr(time.Time{}),
 	// 		SimulationID: to.Ptr("aec13cc2-1d39-4ba6-a1a8-2fc35b00643c"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-21T18:11:11.3471742Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2024, time.November, 21, 18, 11, 11, 347174200, time.UTC)),
 	// 		Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusActive),
 	// 		Details: &armservicefabricmanagedclusters.FaultSimulationDetails{
 	// 			OperationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -586,7 +586,7 @@ func ExampleManagedClustersClient_GetFaultSimulation() {
 	// 			},
 	// 			Parameters: &armservicefabricmanagedclusters.ZoneFaultSimulationContent{
 	// 				Constraints: &armservicefabricmanagedclusters.FaultSimulationConstraints{
-	// 					ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00"); return t}()),
+	// 					ExpirationTime: to.Ptr(time.Time{}),
 	// 				},
 	// 				FaultKind: to.Ptr(armservicefabricmanagedclusters.FaultKindZone),
 	// 				Force: to.Ptr(false),
@@ -853,9 +853,9 @@ func ExampleManagedClustersClient_NewListFaultSimulationPager() {
 		// 	FaultSimulationListResult: armservicefabricmanagedclusters.FaultSimulationListResult{
 		// 		Value: []*armservicefabricmanagedclusters.FaultSimulation{
 		// 			{
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00"); return t}()),
+		// 				EndTime: to.Ptr(time.Time{}),
 		// 				SimulationID: to.Ptr("1bb61ba9-8a41-4d73-b5f0-7fc93b1edfe3"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-21T21:27:55.4452675Z"); return t}()),
+		// 				StartTime: to.Ptr(time.Date(2024, time.November, 21, 21, 27, 55, 445267500, time.UTC)),
 		// 				Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusActive),
 		// 				Details: &armservicefabricmanagedclusters.FaultSimulationDetails{
 		// 					OperationID: to.Ptr("b7997d2f-1f07-4245-b197-137b196ecaf3"),
@@ -876,7 +876,7 @@ func ExampleManagedClustersClient_NewListFaultSimulationPager() {
 		// 					},
 		// 					Parameters: &armservicefabricmanagedclusters.ZoneFaultSimulationContent{
 		// 						Constraints: &armservicefabricmanagedclusters.FaultSimulationConstraints{
-		// 							ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00"); return t}()),
+		// 							ExpirationTime: to.Ptr(time.Time{}),
 		// 						},
 		// 						FaultKind: to.Ptr(armservicefabricmanagedclusters.FaultKindZone),
 		// 						Force: to.Ptr(false),
@@ -887,9 +887,9 @@ func ExampleManagedClustersClient_NewListFaultSimulationPager() {
 		// 				},
 		// 			},
 		// 			{
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-21T21:24:13.082339Z"); return t}()),
+		// 				EndTime: to.Ptr(time.Date(2024, time.November, 21, 21, 24, 13, 82339000, time.UTC)),
 		// 				SimulationID: to.Ptr("aec13cc2-1d39-4ba6-a1a8-2fc35b00643c"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-21T18:11:11.3471742Z"); return t}()),
+		// 				StartTime: to.Ptr(time.Date(2024, time.November, 21, 18, 11, 11, 347174200, time.UTC)),
 		// 				Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusDone),
 		// 				Details: &armservicefabricmanagedclusters.FaultSimulationDetails{
 		// 					OperationID: to.Ptr("3e22a9a7-13c1-450b-af5e-2c739b963bdf"),
@@ -910,7 +910,7 @@ func ExampleManagedClustersClient_NewListFaultSimulationPager() {
 		// 					},
 		// 					Parameters: &armservicefabricmanagedclusters.ZoneFaultSimulationContent{
 		// 						Constraints: &armservicefabricmanagedclusters.FaultSimulationConstraints{
-		// 							ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00"); return t}()),
+		// 							ExpirationTime: to.Ptr(time.Time{}),
 		// 						},
 		// 						FaultKind: to.Ptr(armservicefabricmanagedclusters.FaultKindZone),
 		// 						Force: to.Ptr(false),

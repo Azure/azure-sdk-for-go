@@ -19,7 +19,7 @@ import (
 // AccessClient contains the methods for the Access group.
 // Don't use this type directly, use NewAccessClient() instead.
 //
-// Generated from API version 2025-08-18-preview
+// Generated from API version 2026-06-02-preview
 type AccessClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type AccessClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *AccessClient) CreateRoleBinding(ctx context.Context, resourceGroup
 	if err != nil {
 		return AccessClientCreateRoleBindingResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AccessClientCreateRoleBindingResponse{}, err
-	}
-	resp, err := client.createRoleBindingHandleResponse(httpResp)
-	return resp, err
+	return client.createRoleBindingHandleResponse(httpResp, http.StatusOK)
 }
 
 // createRoleBindingCreateRequest creates the CreateRoleBinding request.
 func (client *AccessClient) createRoleBindingCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body AccessCreateRoleBindingRequestModel, _ *AccessClientCreateRoleBindingOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/createRoleBinding"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -90,7 +88,7 @@ func (client *AccessClient) createRoleBindingCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250818Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -101,8 +99,11 @@ func (client *AccessClient) createRoleBindingCreateRequest(ctx context.Context, 
 }
 
 // createRoleBindingHandleResponse handles the CreateRoleBinding response.
-func (client *AccessClient) createRoleBindingHandleResponse(resp *http.Response) (AccessClientCreateRoleBindingResponse, error) {
+func (client *AccessClient) createRoleBindingHandleResponse(resp *http.Response, successCodes ...int) (AccessClientCreateRoleBindingResponse, error) {
 	result := AccessClientCreateRoleBindingResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleBindingRecord); err != nil {
 		return AccessClientCreateRoleBindingResponse{}, err
 	}
@@ -131,8 +132,7 @@ func (client *AccessClient) DeleteRoleBinding(ctx context.Context, resourceGroup
 		return AccessClientDeleteRoleBindingResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return AccessClientDeleteRoleBindingResponse{}, err
+		return AccessClientDeleteRoleBindingResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return AccessClientDeleteRoleBindingResponse{}, nil
 }
@@ -141,7 +141,7 @@ func (client *AccessClient) DeleteRoleBinding(ctx context.Context, resourceGroup
 func (client *AccessClient) deleteRoleBindingCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, roleBindingID string, _ *AccessClientDeleteRoleBindingOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/deleteRoleBinding/{roleBindingId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -161,7 +161,7 @@ func (client *AccessClient) deleteRoleBindingCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250818Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -186,19 +186,14 @@ func (client *AccessClient) InviteUser(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return AccessClientInviteUserResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AccessClientInviteUserResponse{}, err
-	}
-	resp, err := client.inviteUserHandleResponse(httpResp)
-	return resp, err
+	return client.inviteUserHandleResponse(httpResp, http.StatusOK)
 }
 
 // inviteUserCreateRequest creates the InviteUser request.
 func (client *AccessClient) inviteUserCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body AccessInviteUserAccountModel, _ *AccessClientInviteUserOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/createInvitation"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -214,7 +209,7 @@ func (client *AccessClient) inviteUserCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250818Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -225,8 +220,11 @@ func (client *AccessClient) inviteUserCreateRequest(ctx context.Context, resourc
 }
 
 // inviteUserHandleResponse handles the InviteUser response.
-func (client *AccessClient) inviteUserHandleResponse(resp *http.Response) (AccessClientInviteUserResponse, error) {
+func (client *AccessClient) inviteUserHandleResponse(resp *http.Response, successCodes ...int) (AccessClientInviteUserResponse, error) {
 	result := AccessClientInviteUserResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InvitationRecord); err != nil {
 		return AccessClientInviteUserResponse{}, err
 	}
@@ -253,19 +251,14 @@ func (client *AccessClient) ListClusters(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return AccessClientListClustersResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AccessClientListClustersResponse{}, err
-	}
-	resp, err := client.listClustersHandleResponse(httpResp)
-	return resp, err
+	return client.listClustersHandleResponse(httpResp, http.StatusOK)
 }
 
 // listClustersCreateRequest creates the ListClusters request.
 func (client *AccessClient) listClustersCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, _ *AccessClientListClustersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/listClusters"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -281,7 +274,7 @@ func (client *AccessClient) listClustersCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250818Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -292,8 +285,11 @@ func (client *AccessClient) listClustersCreateRequest(ctx context.Context, resou
 }
 
 // listClustersHandleResponse handles the ListClusters response.
-func (client *AccessClient) listClustersHandleResponse(resp *http.Response) (AccessClientListClustersResponse, error) {
+func (client *AccessClient) listClustersHandleResponse(resp *http.Response, successCodes ...int) (AccessClientListClustersResponse, error) {
 	result := AccessClientListClustersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessListClusterSuccessResponse); err != nil {
 		return AccessClientListClustersResponse{}, err
 	}
@@ -320,19 +316,14 @@ func (client *AccessClient) ListEnvironments(ctx context.Context, resourceGroupN
 	if err != nil {
 		return AccessClientListEnvironmentsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AccessClientListEnvironmentsResponse{}, err
-	}
-	resp, err := client.listEnvironmentsHandleResponse(httpResp)
-	return resp, err
+	return client.listEnvironmentsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listEnvironmentsCreateRequest creates the ListEnvironments request.
 func (client *AccessClient) listEnvironmentsCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, _ *AccessClientListEnvironmentsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/listEnvironments"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -348,7 +339,7 @@ func (client *AccessClient) listEnvironmentsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250818Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -359,8 +350,11 @@ func (client *AccessClient) listEnvironmentsCreateRequest(ctx context.Context, r
 }
 
 // listEnvironmentsHandleResponse handles the ListEnvironments response.
-func (client *AccessClient) listEnvironmentsHandleResponse(resp *http.Response) (AccessClientListEnvironmentsResponse, error) {
+func (client *AccessClient) listEnvironmentsHandleResponse(resp *http.Response, successCodes ...int) (AccessClientListEnvironmentsResponse, error) {
 	result := AccessClientListEnvironmentsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessListEnvironmentsSuccessResponse); err != nil {
 		return AccessClientListEnvironmentsResponse{}, err
 	}
@@ -387,19 +381,14 @@ func (client *AccessClient) ListInvitations(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AccessClientListInvitationsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AccessClientListInvitationsResponse{}, err
-	}
-	resp, err := client.listInvitationsHandleResponse(httpResp)
-	return resp, err
+	return client.listInvitationsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listInvitationsCreateRequest creates the ListInvitations request.
 func (client *AccessClient) listInvitationsCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, _ *AccessClientListInvitationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/listInvitations"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -415,7 +404,7 @@ func (client *AccessClient) listInvitationsCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250818Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -426,8 +415,11 @@ func (client *AccessClient) listInvitationsCreateRequest(ctx context.Context, re
 }
 
 // listInvitationsHandleResponse handles the ListInvitations response.
-func (client *AccessClient) listInvitationsHandleResponse(resp *http.Response) (AccessClientListInvitationsResponse, error) {
+func (client *AccessClient) listInvitationsHandleResponse(resp *http.Response, successCodes ...int) (AccessClientListInvitationsResponse, error) {
 	result := AccessClientListInvitationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessListInvitationsSuccessResponse); err != nil {
 		return AccessClientListInvitationsResponse{}, err
 	}
@@ -455,19 +447,14 @@ func (client *AccessClient) ListRoleBindingNameList(ctx context.Context, resourc
 	if err != nil {
 		return AccessClientListRoleBindingNameListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AccessClientListRoleBindingNameListResponse{}, err
-	}
-	resp, err := client.listRoleBindingNameListHandleResponse(httpResp)
-	return resp, err
+	return client.listRoleBindingNameListHandleResponse(httpResp, http.StatusOK)
 }
 
 // listRoleBindingNameListCreateRequest creates the ListRoleBindingNameList request.
 func (client *AccessClient) listRoleBindingNameListCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, _ *AccessClientListRoleBindingNameListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/listRoleBindingNameList"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -483,7 +470,7 @@ func (client *AccessClient) listRoleBindingNameListCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250818Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -494,8 +481,11 @@ func (client *AccessClient) listRoleBindingNameListCreateRequest(ctx context.Con
 }
 
 // listRoleBindingNameListHandleResponse handles the ListRoleBindingNameList response.
-func (client *AccessClient) listRoleBindingNameListHandleResponse(resp *http.Response) (AccessClientListRoleBindingNameListResponse, error) {
+func (client *AccessClient) listRoleBindingNameListHandleResponse(resp *http.Response, successCodes ...int) (AccessClientListRoleBindingNameListResponse, error) {
 	result := AccessClientListRoleBindingNameListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessRoleBindingNameListSuccessResponse); err != nil {
 		return AccessClientListRoleBindingNameListResponse{}, err
 	}
@@ -522,19 +512,14 @@ func (client *AccessClient) ListRoleBindings(ctx context.Context, resourceGroupN
 	if err != nil {
 		return AccessClientListRoleBindingsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AccessClientListRoleBindingsResponse{}, err
-	}
-	resp, err := client.listRoleBindingsHandleResponse(httpResp)
-	return resp, err
+	return client.listRoleBindingsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listRoleBindingsCreateRequest creates the ListRoleBindings request.
 func (client *AccessClient) listRoleBindingsCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, _ *AccessClientListRoleBindingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/listRoleBindings"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -550,7 +535,7 @@ func (client *AccessClient) listRoleBindingsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250818Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -561,8 +546,11 @@ func (client *AccessClient) listRoleBindingsCreateRequest(ctx context.Context, r
 }
 
 // listRoleBindingsHandleResponse handles the ListRoleBindings response.
-func (client *AccessClient) listRoleBindingsHandleResponse(resp *http.Response) (AccessClientListRoleBindingsResponse, error) {
+func (client *AccessClient) listRoleBindingsHandleResponse(resp *http.Response, successCodes ...int) (AccessClientListRoleBindingsResponse, error) {
 	result := AccessClientListRoleBindingsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessListRoleBindingsSuccessResponse); err != nil {
 		return AccessClientListRoleBindingsResponse{}, err
 	}
@@ -590,19 +578,14 @@ func (client *AccessClient) ListServiceAccounts(ctx context.Context, resourceGro
 	if err != nil {
 		return AccessClientListServiceAccountsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AccessClientListServiceAccountsResponse{}, err
-	}
-	resp, err := client.listServiceAccountsHandleResponse(httpResp)
-	return resp, err
+	return client.listServiceAccountsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listServiceAccountsCreateRequest creates the ListServiceAccounts request.
 func (client *AccessClient) listServiceAccountsCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, _ *AccessClientListServiceAccountsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/listServiceAccounts"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -618,7 +601,7 @@ func (client *AccessClient) listServiceAccountsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250818Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -629,8 +612,11 @@ func (client *AccessClient) listServiceAccountsCreateRequest(ctx context.Context
 }
 
 // listServiceAccountsHandleResponse handles the ListServiceAccounts response.
-func (client *AccessClient) listServiceAccountsHandleResponse(resp *http.Response) (AccessClientListServiceAccountsResponse, error) {
+func (client *AccessClient) listServiceAccountsHandleResponse(resp *http.Response, successCodes ...int) (AccessClientListServiceAccountsResponse, error) {
 	result := AccessClientListServiceAccountsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessListServiceAccountsSuccessResponse); err != nil {
 		return AccessClientListServiceAccountsResponse{}, err
 	}
@@ -657,19 +643,14 @@ func (client *AccessClient) ListUsers(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return AccessClientListUsersResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AccessClientListUsersResponse{}, err
-	}
-	resp, err := client.listUsersHandleResponse(httpResp)
-	return resp, err
+	return client.listUsersHandleResponse(httpResp, http.StatusOK)
 }
 
 // listUsersCreateRequest creates the ListUsers request.
 func (client *AccessClient) listUsersCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, _ *AccessClientListUsersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/listUsers"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -685,7 +666,7 @@ func (client *AccessClient) listUsersCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250818Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -696,8 +677,11 @@ func (client *AccessClient) listUsersCreateRequest(ctx context.Context, resource
 }
 
 // listUsersHandleResponse handles the ListUsers response.
-func (client *AccessClient) listUsersHandleResponse(resp *http.Response) (AccessClientListUsersResponse, error) {
+func (client *AccessClient) listUsersHandleResponse(resp *http.Response, successCodes ...int) (AccessClientListUsersResponse, error) {
 	result := AccessClientListUsersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessListUsersSuccessResponse); err != nil {
 		return AccessClientListUsersResponse{}, err
 	}

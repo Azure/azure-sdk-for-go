@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-18-preview/Cluster_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Cluster_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleClusterClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,16 +129,16 @@ func ExampleClusterClient_CreateOrUpdate() {
 	// 		SystemData: &armconfluent.SystemData{
 	// 			CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Cluster_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Cluster_Delete_MaximumSet_Gen.json
 func ExampleClusterClient_BeginDelete_clusterDeleteMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleClusterClient_BeginDelete_clusterDeleteMaximumSet() {
 	}
 }
 
-// Generated from example definition: 2025-08-18-preview/Cluster_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Cluster_Delete_MinimumSet_Gen.json
 func ExampleClusterClient_BeginDelete_clusterDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

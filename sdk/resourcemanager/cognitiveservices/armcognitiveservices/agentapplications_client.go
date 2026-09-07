@@ -20,7 +20,7 @@ import (
 // AgentApplicationsClient contains the methods for the AgentApplications group.
 // Don't use this type directly, use NewAgentApplicationsClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-07-15-preview
 type AgentApplicationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -31,6 +31,9 @@ type AgentApplicationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAgentApplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AgentApplicationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -89,8 +92,7 @@ func (client *AgentApplicationsClient) createOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -99,7 +101,7 @@ func (client *AgentApplicationsClient) createOrUpdate(ctx context.Context, resou
 func (client *AgentApplicationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, body AgentApplication, _ *AgentApplicationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -123,7 +125,7 @@ func (client *AgentApplicationsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -179,8 +181,7 @@ func (client *AgentApplicationsClient) deleteOperation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -189,7 +190,7 @@ func (client *AgentApplicationsClient) deleteOperation(ctx context.Context, reso
 func (client *AgentApplicationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, _ *AgentApplicationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -213,7 +214,7 @@ func (client *AgentApplicationsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -243,8 +244,7 @@ func (client *AgentApplicationsClient) Disable(ctx context.Context, resourceGrou
 		return AgentApplicationsClientDisableResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AgentApplicationsClientDisableResponse{}, err
+		return AgentApplicationsClientDisableResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return AgentApplicationsClientDisableResponse{}, nil
 }
@@ -253,7 +253,7 @@ func (client *AgentApplicationsClient) Disable(ctx context.Context, resourceGrou
 func (client *AgentApplicationsClient) disableCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, _ *AgentApplicationsClientDisableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{name}/disable"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -277,7 +277,7 @@ func (client *AgentApplicationsClient) disableCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -307,8 +307,7 @@ func (client *AgentApplicationsClient) Enable(ctx context.Context, resourceGroup
 		return AgentApplicationsClientEnableResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AgentApplicationsClientEnableResponse{}, err
+		return AgentApplicationsClientEnableResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return AgentApplicationsClientEnableResponse{}, nil
 }
@@ -317,7 +316,7 @@ func (client *AgentApplicationsClient) Enable(ctx context.Context, resourceGroup
 func (client *AgentApplicationsClient) enableCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, _ *AgentApplicationsClientEnableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{name}/enable"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -341,7 +340,7 @@ func (client *AgentApplicationsClient) enableCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -369,19 +368,14 @@ func (client *AgentApplicationsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return AgentApplicationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AgentApplicationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *AgentApplicationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, _ *AgentApplicationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -405,15 +399,18 @@ func (client *AgentApplicationsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AgentApplicationsClient) getHandleResponse(resp *http.Response) (AgentApplicationsClientGetResponse, error) {
+func (client *AgentApplicationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AgentApplicationsClientGetResponse, error) {
 	result := AgentApplicationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgentApplication); err != nil {
 		return AgentApplicationsClientGetResponse{}, err
 	}
@@ -439,74 +436,88 @@ func (client *AgentApplicationsClient) NewListPager(resourceGroupName string, ac
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, accountName, projectName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, projectName, nextLink, options)
 			if err != nil {
 				return AgentApplicationsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AgentApplicationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AgentApplicationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, options *AgentApplicationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AgentApplicationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, nextLink string, options *AgentApplicationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		if projectName == "" {
+			return nil, errors.New("parameter projectName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
-	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	reqQP.Set("api-version", version20260315Preview)
-	if options != nil && options.Count != nil {
-		reqQP.Set("count", strconv.FormatInt(int64(*options.Count), 10))
-	}
-	if options != nil && options.Names != nil {
-		for _, qv := range options.Names {
-			reqQP.Add("names", qv)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		reqQP.Set("api-version", version20260715Preview)
+		if options != nil && options.Count != nil {
+			reqQP.Set("count", strconv.FormatInt(int64(*options.Count), 10))
+		}
+		if options != nil && options.Names != nil {
+			for _, qv := range options.Names {
+				reqQP.Add("names", qv)
+			}
+		}
+		if options != nil && options.OrderBy != nil {
+			reqQP.Set("orderBy", *options.OrderBy)
+		}
+		if options != nil && options.OrderByAsc != nil {
+			reqQP.Set("orderByAsc", strconv.FormatBool(*options.OrderByAsc))
+		}
+		if options != nil && options.SearchText != nil {
+			reqQP.Set("searchText", *options.SearchText)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("orderBy", *options.OrderBy)
-	}
-	if options != nil && options.OrderByAsc != nil {
-		reqQP.Set("orderByAsc", strconv.FormatBool(*options.OrderByAsc))
-	}
-	if options != nil && options.SearchText != nil {
-		reqQP.Set("searchText", *options.SearchText)
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AgentApplicationsClient) listHandleResponse(resp *http.Response) (AgentApplicationsClientListResponse, error) {
+func (client *AgentApplicationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AgentApplicationsClientListResponse, error) {
 	result := AgentApplicationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgentApplicationResourceArmPaginatedResult); err != nil {
 		return AgentApplicationsClientListResponse{}, err
 	}
@@ -537,19 +548,14 @@ func (client *AgentApplicationsClient) ListAgents(ctx context.Context, resourceG
 	if err != nil {
 		return AgentApplicationsClientListAgentsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AgentApplicationsClientListAgentsResponse{}, err
-	}
-	resp, err := client.listAgentsHandleResponse(httpResp)
-	return resp, err
+	return client.listAgentsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listAgentsCreateRequest creates the ListAgents request.
 func (client *AgentApplicationsClient) listAgentsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, _ *AgentApplicationsClientListAgentsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{name}/listAgents"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -573,15 +579,18 @@ func (client *AgentApplicationsClient) listAgentsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listAgentsHandleResponse handles the ListAgents response.
-func (client *AgentApplicationsClient) listAgentsHandleResponse(resp *http.Response) (AgentApplicationsClientListAgentsResponse, error) {
+func (client *AgentApplicationsClient) listAgentsHandleResponse(resp *http.Response, successCodes ...int) (AgentApplicationsClientListAgentsResponse, error) {
 	result := AgentApplicationsClientListAgentsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgentReferenceResourceArmPaginatedResult); err != nil {
 		return AgentApplicationsClientListAgentsResponse{}, err
 	}

@@ -18,6 +18,8 @@ import (
 
 // RestorableTableResourcesClient contains the methods for the RestorableTableResources group.
 // Don't use this type directly, use NewRestorableTableResourcesClient() instead.
+//
+// Generated from API version 2026-03-15
 type RestorableTableResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type RestorableTableResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRestorableTableResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableTableResourcesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -42,8 +47,6 @@ func NewRestorableTableResourcesClient(subscriptionID string, credential azcore.
 // NewListPager - Return a list of tables that exist on the account at the given timestamp and location. This helps in scenarios
 // to validate what resources exist at given timestamp and location. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read'
 // permission.
-//
-// Generated from API version 2025-11-01-preview
 //   - location - Cosmos DB region, with spaces between words and each word capitalized.
 //   - instanceID - The instanceId GUID of a restorable database account.
 //   - options - RestorableTableResourcesClientListOptions contains the optional parameters for the RestorableTableResourcesClient.NewListPager
@@ -59,53 +62,67 @@ func (client *RestorableTableResourcesClient) NewListPager(location string, inst
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, location, instanceID, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, location, instanceID, nextLink, options)
 			if err != nil {
 				return RestorableTableResourcesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RestorableTableResourcesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *RestorableTableResourcesClient) listCreateRequest(ctx context.Context, location string, instanceID string, options *RestorableTableResourcesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableTableResources"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RestorableTableResourcesClient) listCreateRequest(ctx context.Context, location string, instanceID string, nextLink string, options *RestorableTableResourcesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableTableResources"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		if instanceID == "" {
+			return nil, errors.New("parameter instanceID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if instanceID == "" {
-		return nil, errors.New("parameter instanceID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	if options != nil && options.RestoreLocation != nil {
-		reqQP.Set("restoreLocation", *options.RestoreLocation)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		if options != nil && options.RestoreLocation != nil {
+			reqQP.Set("restoreLocation", *options.RestoreLocation)
+		}
+		if options != nil && options.RestoreTimestampInUTC != nil {
+			reqQP.Set("restoreTimestampInUtc", *options.RestoreTimestampInUTC)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.RestoreTimestampInUTC != nil {
-		reqQP.Set("restoreTimestampInUtc", *options.RestoreTimestampInUTC)
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RestorableTableResourcesClient) listHandleResponse(resp *http.Response) (RestorableTableResourcesClientListResponse, error) {
+func (client *RestorableTableResourcesClient) listHandleResponse(resp *http.Response, successCodes ...int) (RestorableTableResourcesClientListResponse, error) {
 	result := RestorableTableResourcesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableTableResourcesListResult); err != nil {
 		return RestorableTableResourcesClientListResponse{}, err
 	}

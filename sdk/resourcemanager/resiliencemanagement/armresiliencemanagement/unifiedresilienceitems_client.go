@@ -59,12 +59,7 @@ func (client *UnifiedResilienceItemsClient) Get(ctx context.Context, serviceGrou
 	if err != nil {
 		return UnifiedResilienceItemsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UnifiedResilienceItemsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -90,8 +85,11 @@ func (client *UnifiedResilienceItemsClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *UnifiedResilienceItemsClient) getHandleResponse(resp *http.Response) (UnifiedResilienceItemsClientGetResponse, error) {
+func (client *UnifiedResilienceItemsClient) getHandleResponse(resp *http.Response, successCodes ...int) (UnifiedResilienceItemsClientGetResponse, error) {
 	result := UnifiedResilienceItemsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UnifiedResilienceItem); err != nil {
 		return UnifiedResilienceItemsClientGetResponse{}, err
 	}
@@ -113,45 +111,59 @@ func (client *UnifiedResilienceItemsClient) NewListPager(serviceGroupName string
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, serviceGroupName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, serviceGroupName, nextLink, options)
 			if err != nil {
 				return UnifiedResilienceItemsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return UnifiedResilienceItemsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *UnifiedResilienceItemsClient) listCreateRequest(ctx context.Context, serviceGroupName string, options *UnifiedResilienceItemsClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/unifiedResilienceItems"
-	if serviceGroupName == "" {
-		return nil, errors.New("parameter serviceGroupName cannot be empty")
+func (client *UnifiedResilienceItemsClient) listCreateRequest(ctx context.Context, serviceGroupName string, nextLink string, options *UnifiedResilienceItemsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/unifiedResilienceItems"
+		if serviceGroupName == "" {
+			return nil, errors.New("parameter serviceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260401Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *UnifiedResilienceItemsClient) listHandleResponse(resp *http.Response) (UnifiedResilienceItemsClientListResponse, error) {
+func (client *UnifiedResilienceItemsClient) listHandleResponse(resp *http.Response, successCodes ...int) (UnifiedResilienceItemsClientListResponse, error) {
 	result := UnifiedResilienceItemsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UnifiedResilienceItemListResult); err != nil {
 		return UnifiedResilienceItemsClientListResponse{}, err
 	}

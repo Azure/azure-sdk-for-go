@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/Instance_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/Instance_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleInstanceClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,16 +81,16 @@ func ExampleInstanceClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armiotoperations.SystemData{
 	// 			CreatedBy: to.Ptr("contosouser"),
 	// 			CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.August, 9, 18, 13, 29, 389000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("contosouser"),
 	// 			LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.August, 9, 18, 13, 29, 389000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01/Instance_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/Instance_Delete_MaximumSet_Gen.json
 func ExampleInstanceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleInstanceClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/Instance_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/Instance_Get_MaximumSet_Gen.json
 func ExampleInstanceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,16 +172,16 @@ func ExampleInstanceClient_Get() {
 	// 		SystemData: &armiotoperations.SystemData{
 	// 			CreatedBy: to.Ptr("contosouser"),
 	// 			CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.August, 9, 18, 13, 29, 389000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("contosouser"),
 	// 			LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.August, 9, 18, 13, 29, 389000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01/Instance_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/Instance_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleInstanceClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,10 +235,10 @@ func ExampleInstanceClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armiotoperations.SystemData{
 		// 					CreatedBy: to.Ptr("contosouser"),
 		// 					CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.August, 9, 18, 13, 29, 389000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("contosouser"),
 		// 					LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.August, 9, 18, 13, 29, 389000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -248,7 +248,7 @@ func ExampleInstanceClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/Instance_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/Instance_ListBySubscription_MaximumSet_Gen.json
 func ExampleInstanceClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,10 +302,10 @@ func ExampleInstanceClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armiotoperations.SystemData{
 		// 					CreatedBy: to.Ptr("contosouser"),
 		// 					CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.August, 9, 18, 13, 29, 389000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("contosouser"),
 		// 					LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.August, 9, 18, 13, 29, 389000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -315,7 +315,7 @@ func ExampleInstanceClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/Instance_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/Instance_Update_MaximumSet_Gen.json
 func ExampleInstanceClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -369,10 +369,10 @@ func ExampleInstanceClient_Update() {
 	// 		SystemData: &armiotoperations.SystemData{
 	// 			CreatedBy: to.Ptr("contosouser"),
 	// 			CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.August, 9, 18, 13, 29, 389000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("contosouser"),
 	// 			LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.August, 9, 18, 13, 29, 389000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

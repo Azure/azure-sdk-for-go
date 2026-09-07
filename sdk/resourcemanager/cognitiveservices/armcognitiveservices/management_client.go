@@ -19,7 +19,7 @@ import (
 // ManagementClient contains the methods for the Management group.
 // Don't use this type directly, use NewManagementClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-07-15-preview
 type ManagementClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ManagementClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -60,19 +63,14 @@ func (client *ManagementClient) CalculateModelCapacity(ctx context.Context, para
 	if err != nil {
 		return ManagementClientCalculateModelCapacityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagementClientCalculateModelCapacityResponse{}, err
-	}
-	resp, err := client.calculateModelCapacityHandleResponse(httpResp)
-	return resp, err
+	return client.calculateModelCapacityHandleResponse(httpResp, http.StatusOK)
 }
 
 // calculateModelCapacityCreateRequest creates the CalculateModelCapacity request.
 func (client *ManagementClient) calculateModelCapacityCreateRequest(ctx context.Context, parameters CalculateModelCapacityParameter, _ *ManagementClientCalculateModelCapacityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/calculateModelCapacity"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -80,7 +78,7 @@ func (client *ManagementClient) calculateModelCapacityCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -91,8 +89,11 @@ func (client *ManagementClient) calculateModelCapacityCreateRequest(ctx context.
 }
 
 // calculateModelCapacityHandleResponse handles the CalculateModelCapacity response.
-func (client *ManagementClient) calculateModelCapacityHandleResponse(resp *http.Response) (ManagementClientCalculateModelCapacityResponse, error) {
+func (client *ManagementClient) calculateModelCapacityHandleResponse(resp *http.Response, successCodes ...int) (ManagementClientCalculateModelCapacityResponse, error) {
 	result := ManagementClientCalculateModelCapacityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CalculateModelCapacityResult); err != nil {
 		return ManagementClientCalculateModelCapacityResponse{}, err
 	}
@@ -118,19 +119,14 @@ func (client *ManagementClient) CheckDomainAvailability(ctx context.Context, par
 	if err != nil {
 		return ManagementClientCheckDomainAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagementClientCheckDomainAvailabilityResponse{}, err
-	}
-	resp, err := client.checkDomainAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkDomainAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkDomainAvailabilityCreateRequest creates the CheckDomainAvailability request.
 func (client *ManagementClient) checkDomainAvailabilityCreateRequest(ctx context.Context, parameters CheckDomainAvailabilityParameter, _ *ManagementClientCheckDomainAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/checkDomainAvailability"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -138,7 +134,7 @@ func (client *ManagementClient) checkDomainAvailabilityCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -149,8 +145,11 @@ func (client *ManagementClient) checkDomainAvailabilityCreateRequest(ctx context
 }
 
 // checkDomainAvailabilityHandleResponse handles the CheckDomainAvailability response.
-func (client *ManagementClient) checkDomainAvailabilityHandleResponse(resp *http.Response) (ManagementClientCheckDomainAvailabilityResponse, error) {
+func (client *ManagementClient) checkDomainAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (ManagementClientCheckDomainAvailabilityResponse, error) {
 	result := ManagementClientCheckDomainAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainAvailability); err != nil {
 		return ManagementClientCheckDomainAvailabilityResponse{}, err
 	}
@@ -177,19 +176,14 @@ func (client *ManagementClient) CheckSKUAvailability(ctx context.Context, locati
 	if err != nil {
 		return ManagementClientCheckSKUAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagementClientCheckSKUAvailabilityResponse{}, err
-	}
-	resp, err := client.checkSKUAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkSKUAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkSKUAvailabilityCreateRequest creates the CheckSKUAvailability request.
 func (client *ManagementClient) checkSKUAvailabilityCreateRequest(ctx context.Context, location string, parameters CheckSKUAvailabilityParameter, _ *ManagementClientCheckSKUAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/checkSkuAvailability"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -201,7 +195,7 @@ func (client *ManagementClient) checkSKUAvailabilityCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -212,8 +206,11 @@ func (client *ManagementClient) checkSKUAvailabilityCreateRequest(ctx context.Co
 }
 
 // checkSKUAvailabilityHandleResponse handles the CheckSKUAvailability response.
-func (client *ManagementClient) checkSKUAvailabilityHandleResponse(resp *http.Response) (ManagementClientCheckSKUAvailabilityResponse, error) {
+func (client *ManagementClient) checkSKUAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (ManagementClientCheckSKUAvailabilityResponse, error) {
 	result := ManagementClientCheckSKUAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUAvailabilityListResult); err != nil {
 		return ManagementClientCheckSKUAvailabilityResponse{}, err
 	}

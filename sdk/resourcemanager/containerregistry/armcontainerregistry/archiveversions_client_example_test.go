@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/ArchiveVersionCreate.json
+// Generated from example definition: 2026-03-01-preview/ArchiveVersionCreate.json
 func ExampleArchiveVersionsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleArchiveVersionsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ArchiveVersionDelete.json
+// Generated from example definition: 2026-03-01-preview/ArchiveVersionDelete.json
 func ExampleArchiveVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleArchiveVersionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/ArchiveVersionGet.json
+// Generated from example definition: 2026-03-01-preview/ArchiveVersionGet.json
 func ExampleArchiveVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,10 +92,10 @@ func ExampleArchiveVersionsClient_Get() {
 	// 		SystemData: &armcontainerregistry.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armcontainerregistry.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-24T00:13:46.836Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.February, 24, 0, 13, 46, 836000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armcontainerregistry.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-24T00:13:46.836Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.February, 24, 0, 13, 46, 836000000, time.UTC)),
 	// 		},
 	// 		Properties: &armcontainerregistry.ArchiveVersionProperties{
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateCreating),
@@ -105,7 +105,7 @@ func ExampleArchiveVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ArchiveVersionList.json
+// Generated from example definition: 2026-03-01-preview/ArchiveVersionList.json
 func ExampleArchiveVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,10 +137,10 @@ func ExampleArchiveVersionsClient_NewListPager() {
 		// 				SystemData: &armcontainerregistry.SystemData{
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armcontainerregistry.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-24T00:22:47.311Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.February, 24, 0, 22, 47, 311000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armcontainerregistry.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-24T00:22:47.311Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.February, 24, 0, 22, 47, 311000000, time.UTC)),
 		// 				},
 		// 				Properties: &armcontainerregistry.ArchiveVersionProperties{
 		// 					ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateCreating),

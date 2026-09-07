@@ -18,6 +18,8 @@ import (
 
 // RestorableGremlinGraphsClient contains the methods for the RestorableGremlinGraphs group.
 // Don't use this type directly, use NewRestorableGremlinGraphsClient() instead.
+//
+// Generated from API version 2026-03-15
 type RestorableGremlinGraphsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type RestorableGremlinGraphsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRestorableGremlinGraphsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableGremlinGraphsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -42,8 +47,6 @@ func NewRestorableGremlinGraphsClient(subscriptionID string, credential azcore.T
 // NewListPager - Show the event feed of all mutations done on all the Azure Cosmos DB Gremlin graphs under a specific database.
 // This helps in scenario where container was accidentally deleted. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read'
 // permission
-//
-// Generated from API version 2025-11-01-preview
 //   - location - Cosmos DB region, with spaces between words and each word capitalized.
 //   - instanceID - The instanceId GUID of a restorable database account.
 //   - options - RestorableGremlinGraphsClientListOptions contains the optional parameters for the RestorableGremlinGraphsClient.NewListPager
@@ -59,56 +62,70 @@ func (client *RestorableGremlinGraphsClient) NewListPager(location string, insta
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, location, instanceID, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, location, instanceID, nextLink, options)
 			if err != nil {
 				return RestorableGremlinGraphsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RestorableGremlinGraphsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *RestorableGremlinGraphsClient) listCreateRequest(ctx context.Context, location string, instanceID string, options *RestorableGremlinGraphsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableGraphs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RestorableGremlinGraphsClient) listCreateRequest(ctx context.Context, location string, instanceID string, nextLink string, options *RestorableGremlinGraphsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableGraphs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		if instanceID == "" {
+			return nil, errors.New("parameter instanceID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if instanceID == "" {
-		return nil, errors.New("parameter instanceID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	if options != nil && options.EndTime != nil {
-		reqQP.Set("endTime", *options.EndTime)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		if options != nil && options.EndTime != nil {
+			reqQP.Set("endTime", *options.EndTime)
+		}
+		if options != nil && options.RestorableGremlinDatabaseRid != nil {
+			reqQP.Set("restorableGremlinDatabaseRid", *options.RestorableGremlinDatabaseRid)
+		}
+		if options != nil && options.StartTime != nil {
+			reqQP.Set("startTime", *options.StartTime)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.RestorableGremlinDatabaseRid != nil {
-		reqQP.Set("restorableGremlinDatabaseRid", *options.RestorableGremlinDatabaseRid)
-	}
-	if options != nil && options.StartTime != nil {
-		reqQP.Set("startTime", *options.StartTime)
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RestorableGremlinGraphsClient) listHandleResponse(resp *http.Response) (RestorableGremlinGraphsClientListResponse, error) {
+func (client *RestorableGremlinGraphsClient) listHandleResponse(resp *http.Response, successCodes ...int) (RestorableGremlinGraphsClientListResponse, error) {
 	result := RestorableGremlinGraphsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableGremlinGraphsListResult); err != nil {
 		return RestorableGremlinGraphsClientListResponse{}, err
 	}

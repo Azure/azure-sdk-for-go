@@ -7,11 +7,11 @@ package armnetwork_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/SubgroupGet.json
+// Generated from example definition: 2025-09-01/SubgroupGet.json
 func ExampleSubgroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleSubgroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/SubgroupList.json
+// Generated from example definition: 2025-09-01/SubgroupList.json
 func ExampleSubgroupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

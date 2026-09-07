@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/ServiceGatewayCreate.json
+// Generated from example definition: 2025-09-01/ServiceGatewayCreate.json
 func ExampleServiceGatewaysClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleServiceGatewaysClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ServiceGatewayDelete.json
+// Generated from example definition: 2025-09-01/ServiceGatewayDelete.json
 func ExampleServiceGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleServiceGatewaysClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/ServiceGatewayGet.json
+// Generated from example definition: 2025-09-01/ServiceGatewayGet.json
 func ExampleServiceGatewaysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleServiceGatewaysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ServiceGatewayGetAddressLocationsResponse.json
+// Generated from example definition: 2025-09-01/ServiceGatewayGetAddressLocationsResponse.json
 func ExampleServiceGatewaysClient_NewGetAddressLocationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleServiceGatewaysClient_NewGetAddressLocationsPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/ServiceGatewayGetServicesResponse.json
+// Generated from example definition: 2025-09-01/ServiceGatewayGetServicesResponse.json
 func ExampleServiceGatewaysClient_NewGetServicesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +247,7 @@ func ExampleServiceGatewaysClient_NewGetServicesPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/ServiceGatewayList.json
+// Generated from example definition: 2025-09-01/ServiceGatewayList.json
 func ExampleServiceGatewaysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -320,7 +320,7 @@ func ExampleServiceGatewaysClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/ServiceGatewayListAll.json
+// Generated from example definition: 2025-09-01/ServiceGatewayListAll.json
 func ExampleServiceGatewaysClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -393,8 +393,8 @@ func ExampleServiceGatewaysClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/ServiceGatewayFullUpdateAddressLocationsRequest.json
-func ExampleServiceGatewaysClient_BeginUpdateAddressLocations_fullUpdateCreateUpdateOrDeleteAddressLocationsInTheServiceGateway() {
+// Generated from example definition: 2025-09-01/ServiceGatewayFullUpdateAddressLocationsRequest.json
+func ExampleServiceGatewaysClient_UpdateAddressLocations_fullUpdateCreateUpdateOrDeleteAddressLocationsInTheServiceGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -404,7 +404,7 @@ func ExampleServiceGatewaysClient_BeginUpdateAddressLocations_fullUpdateCreateUp
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewServiceGatewaysClient().BeginUpdateAddressLocations(ctx, "rg1", "sg", armnetwork.ServiceGatewayUpdateAddressLocationsRequest{
+	res, err := clientFactory.NewServiceGatewaysClient().UpdateAddressLocations(ctx, "rg1", "sg", armnetwork.ServiceGatewayUpdateAddressLocationsRequest{
 		Action: to.Ptr(armnetwork.UpdateActionFullUpdate),
 		AddressLocations: []*armnetwork.ServiceGatewayAddressLocation{
 			{
@@ -439,14 +439,17 @@ func ExampleServiceGatewaysClient_BeginUpdateAddressLocations_fullUpdateCreateUp
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ServiceGatewaysClientUpdateAddressLocationsResponse{
+	// 	ServiceGatewayActionOkResponseBody: armnetwork.ServiceGatewayActionOkResponseBody{
+	// 	},
+	// }
 }
 
-// Generated from example definition: 2025-07-01/ServiceGatewayPartialUpdateAddressLocationsRequest.json
-func ExampleServiceGatewaysClient_BeginUpdateAddressLocations_partialUpdateCreateUpdateOrDeleteAddressLocationsInTheServiceGateway() {
+// Generated from example definition: 2025-09-01/ServiceGatewayPartialUpdateAddressLocationsRequest.json
+func ExampleServiceGatewaysClient_UpdateAddressLocations_partialUpdateCreateUpdateOrDeleteAddressLocationsInTheServiceGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -456,7 +459,7 @@ func ExampleServiceGatewaysClient_BeginUpdateAddressLocations_partialUpdateCreat
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewServiceGatewaysClient().BeginUpdateAddressLocations(ctx, "rg1", "sg", armnetwork.ServiceGatewayUpdateAddressLocationsRequest{
+	res, err := clientFactory.NewServiceGatewaysClient().UpdateAddressLocations(ctx, "rg1", "sg", armnetwork.ServiceGatewayUpdateAddressLocationsRequest{
 		Action: to.Ptr(armnetwork.UpdateActionPartialUpdate),
 		AddressLocations: []*armnetwork.ServiceGatewayAddressLocation{
 			{
@@ -494,14 +497,17 @@ func ExampleServiceGatewaysClient_BeginUpdateAddressLocations_partialUpdateCreat
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ServiceGatewaysClientUpdateAddressLocationsResponse{
+	// 	ServiceGatewayActionOkResponseBody: armnetwork.ServiceGatewayActionOkResponseBody{
+	// 	},
+	// }
 }
 
-// Generated from example definition: 2025-07-01/ServiceGatewayUpdateServicesRequest.json
-func ExampleServiceGatewaysClient_BeginUpdateServices() {
+// Generated from example definition: 2025-09-01/ServiceGatewayUpdateServicesRequest.json
+func ExampleServiceGatewaysClient_UpdateServices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -511,7 +517,7 @@ func ExampleServiceGatewaysClient_BeginUpdateServices() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewServiceGatewaysClient().BeginUpdateServices(ctx, "rg1", "sg", armnetwork.ServiceGatewayUpdateServicesRequest{
+	res, err := clientFactory.NewServiceGatewaysClient().UpdateServices(ctx, "rg1", "sg", armnetwork.ServiceGatewayUpdateServicesRequest{
 		Action: to.Ptr(armnetwork.ServiceUpdateActionFullUpdate),
 		ServiceRequests: []*armnetwork.ServiceGatewayServiceRequest{
 			{
@@ -544,13 +550,16 @@ func ExampleServiceGatewaysClient_BeginUpdateServices() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ServiceGatewaysClientUpdateServicesResponse{
+	// 	ServiceGatewayActionOkResponseBody: armnetwork.ServiceGatewayActionOkResponseBody{
+	// 	},
+	// }
 }
 
-// Generated from example definition: 2025-07-01/ServiceGatewayUpdateTags.json
+// Generated from example definition: 2025-09-01/ServiceGatewayUpdateTags.json
 func ExampleServiceGatewaysClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

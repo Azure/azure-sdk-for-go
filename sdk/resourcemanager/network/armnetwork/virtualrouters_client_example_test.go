@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/VirtualRouterPut.json
+// Generated from example definition: 2025-09-01/VirtualRouterPut.json
 func ExampleVirtualRoutersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleVirtualRoutersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualRouterDelete.json
+// Generated from example definition: 2025-09-01/VirtualRouterDelete.json
 func ExampleVirtualRoutersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleVirtualRoutersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualRouterGet.json
+// Generated from example definition: 2025-09-01/VirtualRouterGet.json
 func ExampleVirtualRoutersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func ExampleVirtualRoutersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualRouterListBySubscription.json
+// Generated from example definition: 2025-09-01/VirtualRouterListBySubscription.json
 func ExampleVirtualRoutersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExampleVirtualRoutersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/VirtualRouterListByResourceGroup.json
+// Generated from example definition: 2025-09-01/VirtualRouterListByResourceGroup.json
 func ExampleVirtualRoutersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

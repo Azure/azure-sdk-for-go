@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0-beta.1 (2026-03-16)
+## 3.0.0 (2026-06-24)
 ### Breaking Changes
 
 - Function `*MonitoredSubscriptionsClient.BeginCreateorUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *MonitoredSubscriptionsClientBeginCreateorUpdateOptions)` to `(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, body MonitoredSubscriptionProperties, options *MonitoredSubscriptionsClientBeginCreateorUpdateOptions)`

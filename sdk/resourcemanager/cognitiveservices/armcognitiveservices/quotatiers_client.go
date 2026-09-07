@@ -19,7 +19,7 @@ import (
 // QuotaTiersClient contains the methods for the QuotaTiers group.
 // Don't use this type directly, use NewQuotaTiersClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-07-15-preview
 type QuotaTiersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type QuotaTiersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewQuotaTiersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QuotaTiersClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,19 +67,14 @@ func (client *QuotaTiersClient) CreateOrUpdate(ctx context.Context, defaultParam
 	if err != nil {
 		return QuotaTiersClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return QuotaTiersClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *QuotaTiersClient) createOrUpdateCreateRequest(ctx context.Context, defaultParam string, tier QuotaTier, _ *QuotaTiersClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/quotaTiers/{default}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if defaultParam == "" {
@@ -88,7 +86,7 @@ func (client *QuotaTiersClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -99,8 +97,11 @@ func (client *QuotaTiersClient) createOrUpdateCreateRequest(ctx context.Context,
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *QuotaTiersClient) createOrUpdateHandleResponse(resp *http.Response) (QuotaTiersClientCreateOrUpdateResponse, error) {
+func (client *QuotaTiersClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (QuotaTiersClientCreateOrUpdateResponse, error) {
 	result := QuotaTiersClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaTier); err != nil {
 		return QuotaTiersClientCreateOrUpdateResponse{}, err
 	}
@@ -128,19 +129,14 @@ func (client *QuotaTiersClient) Get(ctx context.Context, defaultParam string, op
 	if err != nil {
 		return QuotaTiersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return QuotaTiersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *QuotaTiersClient) getCreateRequest(ctx context.Context, defaultParam string, _ *QuotaTiersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/quotaTiers/{default}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if defaultParam == "" {
@@ -152,15 +148,18 @@ func (client *QuotaTiersClient) getCreateRequest(ctx context.Context, defaultPar
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *QuotaTiersClient) getHandleResponse(resp *http.Response) (QuotaTiersClientGetResponse, error) {
+func (client *QuotaTiersClient) getHandleResponse(resp *http.Response, successCodes ...int) (QuotaTiersClientGetResponse, error) {
 	result := QuotaTiersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaTier); err != nil {
 		return QuotaTiersClientGetResponse{}, err
 	}
@@ -181,39 +180,53 @@ func (client *QuotaTiersClient) NewListBySubscriptionPager(options *QuotaTiersCl
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return QuotaTiersClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return QuotaTiersClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *QuotaTiersClient) listBySubscriptionCreateRequest(ctx context.Context, _ *QuotaTiersClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/quotaTiers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *QuotaTiersClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *QuotaTiersClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/quotaTiers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *QuotaTiersClient) listBySubscriptionHandleResponse(resp *http.Response) (QuotaTiersClientListBySubscriptionResponse, error) {
+func (client *QuotaTiersClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (QuotaTiersClientListBySubscriptionResponse, error) {
 	result := QuotaTiersClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaTierListResult); err != nil {
 		return QuotaTiersClientListBySubscriptionResponse{}, err
 	}
@@ -242,19 +255,14 @@ func (client *QuotaTiersClient) Update(ctx context.Context, defaultParam string,
 	if err != nil {
 		return QuotaTiersClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return QuotaTiersClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *QuotaTiersClient) updateCreateRequest(ctx context.Context, defaultParam string, tier QuotaTier, _ *QuotaTiersClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/quotaTiers/{default}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if defaultParam == "" {
@@ -266,7 +274,7 @@ func (client *QuotaTiersClient) updateCreateRequest(ctx context.Context, default
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -277,8 +285,11 @@ func (client *QuotaTiersClient) updateCreateRequest(ctx context.Context, default
 }
 
 // updateHandleResponse handles the Update response.
-func (client *QuotaTiersClient) updateHandleResponse(resp *http.Response) (QuotaTiersClientUpdateResponse, error) {
+func (client *QuotaTiersClient) updateHandleResponse(resp *http.Response, successCodes ...int) (QuotaTiersClientUpdateResponse, error) {
 	result := QuotaTiersClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaTier); err != nil {
 		return QuotaTiersClientUpdateResponse{}, err
 	}

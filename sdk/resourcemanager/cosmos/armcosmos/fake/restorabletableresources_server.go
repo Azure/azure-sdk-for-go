@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // RestorableTableResourcesServer is a fake server for instances of the armcosmos.RestorableTableResourcesClient type.
@@ -53,9 +54,7 @@ func (r *RestorableTableResourcesServerTransport) Do(req *http.Request) (*http.R
 }
 
 func (r *RestorableTableResourcesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +70,7 @@ func (r *RestorableTableResourcesServerTransport) dispatchToMethodFake(req *http
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -91,7 +87,7 @@ func (r *RestorableTableResourcesServerTransport) dispatchNewListPager(req *http
 	}
 	newListPager := r.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restorableDatabaseAccounts/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restorableTableResources`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restorableDatabaseAccounts/(?P<instanceId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restorableTableResources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -106,16 +102,8 @@ func (r *RestorableTableResourcesServerTransport) dispatchNewListPager(req *http
 		if err != nil {
 			return nil, err
 		}
-		restoreLocationUnescaped, err := url.QueryUnescape(qp.Get("restoreLocation"))
-		if err != nil {
-			return nil, err
-		}
-		restoreLocationParam := getOptional(restoreLocationUnescaped)
-		restoreTimestampInUTCUnescaped, err := url.QueryUnescape(qp.Get("restoreTimestampInUtc"))
-		if err != nil {
-			return nil, err
-		}
-		restoreTimestampInUTCParam := getOptional(restoreTimestampInUTCUnescaped)
+		restoreLocationParam := getOptional(qp.Get("restoreLocation"))
+		restoreTimestampInUTCParam := getOptional(qp.Get("restoreTimestampInUtc"))
 		var options *armcosmos.RestorableTableResourcesClientListOptions
 		if restoreLocationParam != nil || restoreTimestampInUTCParam != nil {
 			options = &armcosmos.RestorableTableResourcesClientListOptions{
@@ -134,7 +122,7 @@ func (r *RestorableTableResourcesServerTransport) dispatchNewListPager(req *http
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

@@ -18,6 +18,8 @@ import (
 
 // RestorableMongodbCollectionsClient contains the methods for the RestorableMongodbCollections group.
 // Don't use this type directly, use NewRestorableMongodbCollectionsClient() instead.
+//
+// Generated from API version 2026-03-15
 type RestorableMongodbCollectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type RestorableMongodbCollectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRestorableMongodbCollectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableMongodbCollectionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -42,8 +47,6 @@ func NewRestorableMongodbCollectionsClient(subscriptionID string, credential azc
 // NewListPager - Show the event feed of all mutations done on all the Azure Cosmos DB MongoDB collections under a specific
 // database. This helps in scenario where container was accidentally deleted. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read'
 // permission
-//
-// Generated from API version 2025-11-01-preview
 //   - location - Cosmos DB region, with spaces between words and each word capitalized.
 //   - instanceID - The instanceId GUID of a restorable database account.
 //   - options - RestorableMongodbCollectionsClientListOptions contains the optional parameters for the RestorableMongodbCollectionsClient.NewListPager
@@ -59,56 +62,70 @@ func (client *RestorableMongodbCollectionsClient) NewListPager(location string, 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, location, instanceID, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, location, instanceID, nextLink, options)
 			if err != nil {
 				return RestorableMongodbCollectionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RestorableMongodbCollectionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *RestorableMongodbCollectionsClient) listCreateRequest(ctx context.Context, location string, instanceID string, options *RestorableMongodbCollectionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableMongodbCollections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RestorableMongodbCollectionsClient) listCreateRequest(ctx context.Context, location string, instanceID string, nextLink string, options *RestorableMongodbCollectionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableMongodbCollections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		if instanceID == "" {
+			return nil, errors.New("parameter instanceID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if instanceID == "" {
-		return nil, errors.New("parameter instanceID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	if options != nil && options.EndTime != nil {
-		reqQP.Set("endTime", *options.EndTime)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		if options != nil && options.EndTime != nil {
+			reqQP.Set("endTime", *options.EndTime)
+		}
+		if options != nil && options.RestorableMongodbDatabaseRid != nil {
+			reqQP.Set("restorableMongodbDatabaseRid", *options.RestorableMongodbDatabaseRid)
+		}
+		if options != nil && options.StartTime != nil {
+			reqQP.Set("startTime", *options.StartTime)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.RestorableMongodbDatabaseRid != nil {
-		reqQP.Set("restorableMongodbDatabaseRid", *options.RestorableMongodbDatabaseRid)
-	}
-	if options != nil && options.StartTime != nil {
-		reqQP.Set("startTime", *options.StartTime)
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RestorableMongodbCollectionsClient) listHandleResponse(resp *http.Response) (RestorableMongodbCollectionsClientListResponse, error) {
+func (client *RestorableMongodbCollectionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (RestorableMongodbCollectionsClientListResponse, error) {
 	result := RestorableMongodbCollectionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableMongodbCollectionsListResult); err != nil {
 		return RestorableMongodbCollectionsClientListResponse{}, err
 	}

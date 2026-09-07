@@ -18,6 +18,8 @@ import (
 
 // JobsClient contains the methods for the Jobs group.
 // Don't use this type directly, use NewJobsClient() instead.
+//
+// Generated from API version 2026-07-01
 type JobsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type JobsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,8 +46,6 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // Export - Triggers export of jobs specified by filters and returns an OperationID to track.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - JobsClientExportOptions contains the optional parameters for the JobsClient.Export method.
@@ -61,8 +64,7 @@ func (client *JobsClient) Export(ctx context.Context, vaultName string, resource
 		return JobsClientExportResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return JobsClientExportResponse{}, err
+		return JobsClientExportResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return JobsClientExportResponse{}, nil
 }
@@ -71,7 +73,7 @@ func (client *JobsClient) Export(ctx context.Context, vaultName string, resource
 func (client *JobsClient) exportCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, options *JobsClientExportOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupJobsExport"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if vaultName == "" {
@@ -90,7 +92,7 @@ func (client *JobsClient) exportCreateRequest(ctx context.Context, vaultName str
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

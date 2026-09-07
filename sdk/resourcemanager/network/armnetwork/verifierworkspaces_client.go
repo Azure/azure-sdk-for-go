@@ -20,7 +20,7 @@ import (
 // VerifierWorkspacesClient contains the methods for the VerifierWorkspaces group.
 // Don't use this type directly, use NewVerifierWorkspacesClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type VerifierWorkspacesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -31,6 +31,9 @@ type VerifierWorkspacesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewVerifierWorkspacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VerifierWorkspacesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,19 +69,14 @@ func (client *VerifierWorkspacesClient) Create(ctx context.Context, resourceGrou
 	if err != nil {
 		return VerifierWorkspacesClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return VerifierWorkspacesClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
 func (client *VerifierWorkspacesClient) createCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, body VerifierWorkspace, options *VerifierWorkspacesClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/verifierWorkspaces/{workspaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -98,7 +96,7 @@ func (client *VerifierWorkspacesClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -112,8 +110,11 @@ func (client *VerifierWorkspacesClient) createCreateRequest(ctx context.Context,
 }
 
 // createHandleResponse handles the Create response.
-func (client *VerifierWorkspacesClient) createHandleResponse(resp *http.Response) (VerifierWorkspacesClientCreateResponse, error) {
+func (client *VerifierWorkspacesClient) createHandleResponse(resp *http.Response, successCodes ...int) (VerifierWorkspacesClientCreateResponse, error) {
 	result := VerifierWorkspacesClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VerifierWorkspace); err != nil {
 		return VerifierWorkspacesClientCreateResponse{}, err
 	}
@@ -165,8 +166,7 @@ func (client *VerifierWorkspacesClient) deleteOperation(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -175,7 +175,7 @@ func (client *VerifierWorkspacesClient) deleteOperation(ctx context.Context, res
 func (client *VerifierWorkspacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, options *VerifierWorkspacesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/verifierWorkspaces/{workspaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -195,7 +195,7 @@ func (client *VerifierWorkspacesClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -225,19 +225,14 @@ func (client *VerifierWorkspacesClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return VerifierWorkspacesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VerifierWorkspacesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *VerifierWorkspacesClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, _ *VerifierWorkspacesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/verifierWorkspaces/{workspaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -257,15 +252,18 @@ func (client *VerifierWorkspacesClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *VerifierWorkspacesClient) getHandleResponse(resp *http.Response) (VerifierWorkspacesClientGetResponse, error) {
+func (client *VerifierWorkspacesClient) getHandleResponse(resp *http.Response, successCodes ...int) (VerifierWorkspacesClientGetResponse, error) {
 	result := VerifierWorkspacesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VerifierWorkspace); err != nil {
 		return VerifierWorkspacesClientGetResponse{}, err
 	}
@@ -290,62 +288,76 @@ func (client *VerifierWorkspacesClient) NewListPager(resourceGroupName string, n
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, networkManagerName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, networkManagerName, nextLink, options)
 			if err != nil {
 				return VerifierWorkspacesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VerifierWorkspacesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *VerifierWorkspacesClient) listCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, options *VerifierWorkspacesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/verifierWorkspaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *VerifierWorkspacesClient) listCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, nextLink string, options *VerifierWorkspacesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/verifierWorkspaces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if networkManagerName == "" {
+			return nil, errors.New("parameter networkManagerName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{networkManagerName}", url.PathEscape(networkManagerName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkManagerName == "" {
-		return nil, errors.New("parameter networkManagerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkManagerName}", url.PathEscape(networkManagerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", strconv.FormatInt(int64(*options.Skip), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		if options != nil && options.Skip != nil {
+			reqQP.Set("skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("skipToken", *options.SkipToken)
+		}
+		if options != nil && options.SortKey != nil {
+			reqQP.Set("sortKey", *options.SortKey)
+		}
+		if options != nil && options.SortValue != nil {
+			reqQP.Set("sortValue", *options.SortValue)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("skipToken", *options.SkipToken)
-	}
-	if options != nil && options.SortKey != nil {
-		reqQP.Set("sortKey", *options.SortKey)
-	}
-	if options != nil && options.SortValue != nil {
-		reqQP.Set("sortValue", *options.SortValue)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *VerifierWorkspacesClient) listHandleResponse(resp *http.Response) (VerifierWorkspacesClientListResponse, error) {
+func (client *VerifierWorkspacesClient) listHandleResponse(resp *http.Response, successCodes ...int) (VerifierWorkspacesClientListResponse, error) {
 	result := VerifierWorkspacesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VerifierWorkspaceListResult); err != nil {
 		return VerifierWorkspacesClientListResponse{}, err
 	}
@@ -376,19 +388,14 @@ func (client *VerifierWorkspacesClient) Update(ctx context.Context, resourceGrou
 	if err != nil {
 		return VerifierWorkspacesClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VerifierWorkspacesClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *VerifierWorkspacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, body VerifierWorkspaceUpdate, options *VerifierWorkspacesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/verifierWorkspaces/{workspaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -408,7 +415,7 @@ func (client *VerifierWorkspacesClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -422,8 +429,11 @@ func (client *VerifierWorkspacesClient) updateCreateRequest(ctx context.Context,
 }
 
 // updateHandleResponse handles the Update response.
-func (client *VerifierWorkspacesClient) updateHandleResponse(resp *http.Response) (VerifierWorkspacesClientUpdateResponse, error) {
+func (client *VerifierWorkspacesClient) updateHandleResponse(resp *http.Response, successCodes ...int) (VerifierWorkspacesClientUpdateResponse, error) {
 	result := VerifierWorkspacesClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VerifierWorkspace); err != nil {
 		return VerifierWorkspacesClientUpdateResponse{}, err
 	}

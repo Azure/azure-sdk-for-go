@@ -18,6 +18,8 @@ import (
 
 // FleetspaceClient contains the methods for the Fleetspace group.
 // Don't use this type directly, use NewFleetspaceClient() instead.
+//
+// Generated from API version 2026-03-15
 type FleetspaceClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type FleetspaceClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFleetspaceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FleetspaceClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,8 +46,6 @@ func NewFleetspaceClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginCreate - Creates an Azure Cosmos DB fleetspace under a fleet.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
 //   - fleetspaceName - Cosmos DB fleetspace name. Needs to be unique under a fleet.
@@ -67,8 +70,6 @@ func (client *FleetspaceClient) BeginCreate(ctx context.Context, resourceGroupNa
 
 // Create - Creates an Azure Cosmos DB fleetspace under a fleet.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *FleetspaceClient) create(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, body FleetspaceResource, options *FleetspaceClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FleetspaceClient.BeginCreate"
@@ -84,8 +85,7 @@ func (client *FleetspaceClient) create(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -94,7 +94,7 @@ func (client *FleetspaceClient) create(ctx context.Context, resourceGroupName st
 func (client *FleetspaceClient) createCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, body FleetspaceResource, _ *FleetspaceClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/fleets/{fleetName}/fleetspaces/{fleetspaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -114,8 +114,8 @@ func (client *FleetspaceClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -126,8 +126,6 @@ func (client *FleetspaceClient) createCreateRequest(ctx context.Context, resourc
 
 // BeginDelete - Deletes an existing Azure Cosmos DB Fleetspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
 //   - fleetspaceName - Cosmos DB fleetspace name. Needs to be unique under a fleet.
@@ -152,8 +150,6 @@ func (client *FleetspaceClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Deletes an existing Azure Cosmos DB Fleetspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *FleetspaceClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, options *FleetspaceClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FleetspaceClient.BeginDelete"
@@ -169,8 +165,7 @@ func (client *FleetspaceClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -179,7 +174,7 @@ func (client *FleetspaceClient) deleteOperation(ctx context.Context, resourceGro
 func (client *FleetspaceClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, _ *FleetspaceClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/fleets/{fleetName}/fleetspaces/{fleetspaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -199,15 +194,13 @@ func (client *FleetspaceClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Retrieves the properties of an existing Azure Cosmos DB fleetspace under a fleet
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
 //   - fleetspaceName - Cosmos DB fleetspace name. Needs to be unique under a fleet.
@@ -226,19 +219,14 @@ func (client *FleetspaceClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return FleetspaceClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FleetspaceClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *FleetspaceClient) getCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, _ *FleetspaceClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/fleets/{fleetName}/fleetspaces/{fleetspaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -258,15 +246,18 @@ func (client *FleetspaceClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *FleetspaceClient) getHandleResponse(resp *http.Response) (FleetspaceClientGetResponse, error) {
+func (client *FleetspaceClient) getHandleResponse(resp *http.Response, successCodes ...int) (FleetspaceClientGetResponse, error) {
 	result := FleetspaceClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FleetspaceResource); err != nil {
 		return FleetspaceClientGetResponse{}, err
 	}
@@ -274,8 +265,6 @@ func (client *FleetspaceClient) getHandleResponse(resp *http.Response) (Fleetspa
 }
 
 // NewListPager - Lists all the fleetspaces under a fleet.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
 //   - options - FleetspaceClientListOptions contains the optional parameters for the FleetspaceClient.NewListPager method.
@@ -290,47 +279,61 @@ func (client *FleetspaceClient) NewListPager(resourceGroupName string, fleetName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, fleetName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, fleetName, nextLink, options)
 			if err != nil {
 				return FleetspaceClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FleetspaceClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *FleetspaceClient) listCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, _ *FleetspaceClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/fleets/{fleetName}/fleetspaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *FleetspaceClient) listCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, nextLink string, _ *FleetspaceClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/fleets/{fleetName}/fleetspaces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if fleetName == "" {
+			return nil, errors.New("parameter fleetName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{fleetName}", url.PathEscape(fleetName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if fleetName == "" {
-		return nil, errors.New("parameter fleetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fleetName}", url.PathEscape(fleetName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *FleetspaceClient) listHandleResponse(resp *http.Response) (FleetspaceClientListResponse, error) {
+func (client *FleetspaceClient) listHandleResponse(resp *http.Response, successCodes ...int) (FleetspaceClientListResponse, error) {
 	result := FleetspaceClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FleetspaceListResult); err != nil {
 		return FleetspaceClientListResponse{}, err
 	}
@@ -339,8 +342,6 @@ func (client *FleetspaceClient) listHandleResponse(resp *http.Response) (Fleetsp
 
 // BeginUpdate - Update the properties of an existing Azure Cosmos DB fleetspace under a fleet.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
 //   - fleetspaceName - Cosmos DB fleetspace name. Needs to be unique under a fleet.
@@ -366,8 +367,6 @@ func (client *FleetspaceClient) BeginUpdate(ctx context.Context, resourceGroupNa
 
 // Update - Update the properties of an existing Azure Cosmos DB fleetspace under a fleet.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *FleetspaceClient) update(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, body FleetspaceUpdate, options *FleetspaceClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FleetspaceClient.BeginUpdate"
@@ -383,8 +382,7 @@ func (client *FleetspaceClient) update(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -393,7 +391,7 @@ func (client *FleetspaceClient) update(ctx context.Context, resourceGroupName st
 func (client *FleetspaceClient) updateCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, body FleetspaceUpdate, _ *FleetspaceClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/fleets/{fleetName}/fleetspaces/{fleetspaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -413,8 +411,8 @@ func (client *FleetspaceClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

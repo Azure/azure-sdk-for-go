@@ -32,10 +32,11 @@ type RenameResponse = path.RenameResponse
 type DownloadStreamResponse struct {
 	// DownloadResponse contains response fields from DownloadStream.
 	DownloadResponse
-	client   *Client
-	getInfo  httpGetterInfo
-	cpkInfo  *CPKInfo
-	cpkScope *CPKScopeInfo
+	client                  *Client
+	getInfo                 httpGetterInfo
+	cpkInfo                 *CPKInfo
+	cpkScope                *CPKScopeInfo
+	transactionalValidation TransferValidationType
 }
 
 // NewRetryReader constructs new RetryReader stream for reading data. If a connection fails while
@@ -52,10 +53,11 @@ func (r *DownloadStreamResponse) NewRetryReader(ctx context.Context, options *Re
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: getInfo.ETag},
 		}
 		options := DownloadStreamOptions{
-			Range:            getInfo.Range,
-			AccessConditions: accessConditions,
-			CPKInfo:          r.cpkInfo,
-			CPKScopeInfo:     r.cpkScope,
+			Range:                   getInfo.Range,
+			AccessConditions:        accessConditions,
+			CPKInfo:                 r.cpkInfo,
+			CPKScopeInfo:            r.cpkScope,
+			TransactionalValidation: r.transactionalValidation,
 		}
 		resp, err := r.client.DownloadStream(ctx, &options)
 		if err != nil {
@@ -242,11 +244,15 @@ func FormatDownloadStreamResponse(r *blob.DownloadStreamResponse, rawResponse *h
 		newResp.Version = r.Version
 		newResp.VersionID = r.VersionID
 	}
-	if val := rawResponse.Header.Get("x-ms-encryption-context"); val != "" {
-		newResp.EncryptionContext = &val
-	}
-	if val := rawResponse.Header.Get("x-ms-acl"); val != "" {
-		newResp.AccessControlList = &val
+	// rawResponse is only populated when the IncludeBlobResponsePolicy captured it.
+	// Guard against nil so the datalake-specific headers below never panic.
+	if rawResponse != nil {
+		if val := rawResponse.Header.Get("x-ms-encryption-context"); val != "" {
+			newResp.EncryptionContext = &val
+		}
+		if val := rawResponse.Header.Get("x-ms-acl"); val != "" {
+			newResp.AccessControlList = &val
+		}
 	}
 	return newResp
 }

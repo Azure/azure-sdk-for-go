@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/TokenCreate.json
+// Generated from example definition: 2026-03-01-preview/TokenCreate.json
 func ExampleTokensClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleTokensClient_BeginCreate() {
 	// 		Name: to.Ptr("myToken"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/tokens"),
 	// 		Properties: &armcontainerregistry.TokenProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-01T23:14:37.0707808Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.March, 1, 23, 14, 37, 70780800, time.UTC)),
 	// 			ScopeMapID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/scopeMaps/myScopeMap"),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 			Status: to.Ptr(armcontainerregistry.TokenStatusDisabled),
@@ -62,7 +62,7 @@ func ExampleTokensClient_BeginCreate() {
 	// 					{
 	// 						Name: to.Ptr(armcontainerregistry.TokenCertificateNameCertificate1),
 	// 						Thumbprint: to.Ptr("feeb79a888bf1415f8e17c4965a2a5bb5c8a2ff7"),
-	// 						Expiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-04T15:32:48.0707808Z"); return t}()),
+	// 						Expiry: to.Ptr(time.Date(2020, time.December, 4, 15, 32, 48, 70780800, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -71,7 +71,7 @@ func ExampleTokensClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/TokenDelete.json
+// Generated from example definition: 2026-03-01-preview/TokenDelete.json
 func ExampleTokensClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleTokensClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/TokenGet.json
+// Generated from example definition: 2026-03-01-preview/TokenGet.json
 func ExampleTokensClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleTokensClient_Get() {
 	// 		Name: to.Ptr("myToken"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/tokens"),
 	// 		Properties: &armcontainerregistry.TokenProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-01T23:14:37.0707808Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.March, 1, 23, 14, 37, 70780800, time.UTC)),
 	// 			ScopeMapID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/scopeMaps/myScopeMap"),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 			Status: to.Ptr(armcontainerregistry.TokenStatusEnabled),
@@ -130,7 +130,7 @@ func ExampleTokensClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/TokenList.json
+// Generated from example definition: 2026-03-01-preview/TokenList.json
 func ExampleTokensClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +160,7 @@ func ExampleTokensClient_NewListPager() {
 		// 				Name: to.Ptr("myToken"),
 		// 				Type: to.Ptr("Microsoft.ContainerRegistry/registries/tokens"),
 		// 				Properties: &armcontainerregistry.TokenProperties{
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-01T23:14:37.0707808Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.March, 1, 23, 14, 37, 70780800, time.UTC)),
 		// 					ScopeMapID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/scopeMaps/myScopeMap"),
 		// 					ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 		// 					Status: to.Ptr(armcontainerregistry.TokenStatusEnabled),
@@ -172,7 +172,7 @@ func ExampleTokensClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/TokenUpdate.json
+// Generated from example definition: 2026-03-01-preview/TokenUpdate.json
 func ExampleTokensClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +212,7 @@ func ExampleTokensClient_BeginUpdate() {
 	// 		Name: to.Ptr("myToken"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/tokens"),
 	// 		Properties: &armcontainerregistry.TokenProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-01T23:14:37.0707808Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.March, 1, 23, 14, 37, 70780800, time.UTC)),
 	// 			ScopeMapID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/scopeMaps/myNewScopeMap"),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 			Status: to.Ptr(armcontainerregistry.TokenStatusEnabled),

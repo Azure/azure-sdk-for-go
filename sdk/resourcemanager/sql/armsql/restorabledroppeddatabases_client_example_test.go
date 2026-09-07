@@ -38,9 +38,9 @@ func ExampleRestorableDroppedDatabasesClient_Get_getsARestorableDroppedDatabase(
 	// 		Location: to.Ptr("southeastasia"),
 	// 		Properties: &armsql.RestorableDroppedDatabaseProperties{
 	// 			BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.May, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			DatabaseName: to.Ptr("testdb"),
-	// 			DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T02:49:47.69Z"); return t}()),
+	// 			DeletionDate: to.Ptr(time.Date(2017, time.May, 27, 2, 49, 47, 690000000, time.UTC)),
 	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
 	// 		},
 	// 		SKU: &armsql.SKU{
@@ -78,9 +78,9 @@ func ExampleRestorableDroppedDatabasesClient_Get_getsARestorableDroppedDatabaseW
 	// 		Location: to.Ptr("southeastasia"),
 	// 		Properties: &armsql.RestorableDroppedDatabaseProperties{
 	// 			BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.May, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			DatabaseName: to.Ptr("testdb"),
-	// 			DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T02:49:47.69Z"); return t}()),
+	// 			DeletionDate: to.Ptr(time.Date(2017, time.May, 27, 2, 49, 47, 690000000, time.UTC)),
 	// 			Keys: map[string]*armsql.DatabaseKey{
 	// 				"https://your-key-vault-name.vault.azure.net/yourKey/yourKeyVersion": &armsql.DatabaseKey{
 	// 				},
@@ -129,9 +129,9 @@ func ExampleRestorableDroppedDatabasesClient_NewListByServerPager() {
 		// 				Location: to.Ptr("southeastasia"),
 		// 				Properties: &armsql.RestorableDroppedDatabaseProperties{
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 		// 					DatabaseName: to.Ptr("testdb"),
-		// 					DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T02:49:47.69Z"); return t}()),
+		// 					DeletionDate: to.Ptr(time.Date(2017, time.May, 27, 2, 49, 47, 690000000, time.UTC)),
 		// 					MaxSizeBytes: to.Ptr[int64](268435456000),
 		// 				},
 		// 				SKU: &armsql.SKU{
@@ -146,9 +146,9 @@ func ExampleRestorableDroppedDatabasesClient_NewListByServerPager() {
 		// 				Location: to.Ptr("southeastasia"),
 		// 				Properties: &armsql.RestorableDroppedDatabaseProperties{
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 		// 					DatabaseName: to.Ptr("testdb2"),
-		// 					DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T02:49:47.69Z"); return t}()),
+		// 					DeletionDate: to.Ptr(time.Date(2017, time.May, 27, 2, 49, 47, 690000000, time.UTC)),
 		// 					MaxSizeBytes: to.Ptr[int64](268435456000),
 		// 				},
 		// 				SKU: &armsql.SKU{

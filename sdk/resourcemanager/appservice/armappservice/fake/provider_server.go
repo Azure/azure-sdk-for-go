@@ -170,7 +170,7 @@ func (p *ProviderServerTransport) dispatchNewGetAvailableStacksOnPremPager(req *
 	}
 	newGetAvailableStacksOnPremPager := p.newGetAvailableStacksOnPremPager.get(req)
 	if newGetAvailableStacksOnPremPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/availableStacks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/availableStacks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -246,7 +246,7 @@ func (p *ProviderServerTransport) dispatchNewGetFunctionAppStacksForLocationPage
 	}
 	newGetFunctionAppStacksForLocationPager := p.newGetFunctionAppStacksForLocationPager.get(req)
 	if newGetFunctionAppStacksForLocationPager == nil {
-		const regexStr = `/providers/Microsoft\.Web/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/functionAppStacks`
+		const regexStr = `/providers/Microsoft\.Web/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/functionAppStacks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -326,7 +326,7 @@ func (p *ProviderServerTransport) dispatchNewGetWebAppStacksForLocationPager(req
 	}
 	newGetWebAppStacksForLocationPager := p.newGetWebAppStacksForLocationPager.get(req)
 	if newGetWebAppStacksForLocationPager == nil {
-		const regexStr = `/providers/Microsoft\.Web/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/webAppStacks`
+		const regexStr = `/providers/Microsoft\.Web/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/webAppStacks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

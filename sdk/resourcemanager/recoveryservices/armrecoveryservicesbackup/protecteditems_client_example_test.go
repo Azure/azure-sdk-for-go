@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-31-preview/AzureIaasVm/ConfigureProtection.json
+// Generated from example definition: 2026-07-01/AzureIaasVm/ConfigureProtection.json
 func ExampleProtectedItemsClient_BeginCreateOrUpdate_enableProtectionOnAzureIaasVM() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleProtectedItemsClient_BeginCreateOrUpdate_enableProtectionOnAzureIaas
 	// 			FriendlyName: to.Ptr("netvmtestv2vm1"),
 	// 			HealthStatus: to.Ptr(armrecoveryservicesbackup.HealthStatusPassed),
 	// 			LastBackupStatus: to.Ptr("Completed"),
-	// 			LastBackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-22T12:25:32.048723Z"); return t}()),
+	// 			LastBackupTime: to.Ptr(time.Date(2018, time.January, 22, 12, 25, 32, 48723000, time.UTC)),
 	// 			PolicyID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/PythonSDKBackupTestRg/providers/Microsoft.RecoveryServices/vaults/PySDKBackupTestRsVault/backupPolicies/testPolicy1"),
 	// 			ProtectedItemDataID: to.Ptr("636482643132986882"),
 	// 			ProtectedItemType: to.Ptr("Microsoft.Compute/virtualMachines"),
@@ -65,7 +65,7 @@ func ExampleProtectedItemsClient_BeginCreateOrUpdate_enableProtectionOnAzureIaas
 	// }
 }
 
-// Generated from example definition: 2026-01-31-preview/AzureIaasVm/StopProtection.json
+// Generated from example definition: 2026-07-01/AzureIaasVm/StopProtection.json
 func ExampleProtectedItemsClient_BeginCreateOrUpdate_stopProtectionWithRetainDataOnAzureIaasVM() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleProtectedItemsClient_BeginCreateOrUpdate_stopProtectionWithRetainDat
 	// 			FriendlyName: to.Ptr("netvmtestv2vm1"),
 	// 			HealthStatus: to.Ptr(armrecoveryservicesbackup.HealthStatusPassed),
 	// 			LastBackupStatus: to.Ptr("Completed"),
-	// 			LastBackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-22T12:25:32.048723Z"); return t}()),
+	// 			LastBackupTime: to.Ptr(time.Date(2018, time.January, 22, 12, 25, 32, 48723000, time.UTC)),
 	// 			PolicyID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/PythonSDKBackupTestRg/providers/Microsoft.RecoveryServices/vaults/PySDKBackupTestRsVault/backupPolicies/testPolicy1"),
 	// 			ProtectedItemDataID: to.Ptr("636482643132986882"),
 	// 			ProtectedItemType: to.Ptr("Microsoft.Compute/virtualMachines"),
@@ -118,7 +118,7 @@ func ExampleProtectedItemsClient_BeginCreateOrUpdate_stopProtectionWithRetainDat
 	// }
 }
 
-// Generated from example definition: 2026-01-31-preview/Common/ProtectedItem_Delete.json
+// Generated from example definition: 2026-07-01/Common/ProtectedItem_Delete.json
 func ExampleProtectedItemsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleProtectedItemsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-31-preview/AzureIaasVm/ClassicCompute_ProtectedItem_Get.json
+// Generated from example definition: 2026-07-01/AzureIaasVm/ClassicCompute_ProtectedItem_Get.json
 func ExampleProtectedItemsClient_Get_getProtectedClassicVirtualMachineDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -169,8 +169,8 @@ func ExampleProtectedItemsClient_Get_getProtectedClassicVirtualMachineDetails() 
 	// 			FriendlyName: to.Ptr("iaasvm-1"),
 	// 			HealthStatus: to.Ptr(armrecoveryservicesbackup.HealthStatusPassed),
 	// 			LastBackupStatus: to.Ptr("Completed"),
-	// 			LastBackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-22T12:25:32.048723Z"); return t}()),
-	// 			LastRecoveryPoint: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-22T12:25:32.048723Z"); return t}()),
+	// 			LastBackupTime: to.Ptr(time.Date(2018, time.January, 22, 12, 25, 32, 48723000, time.UTC)),
+	// 			LastRecoveryPoint: to.Ptr(time.Date(2017, time.November, 22, 12, 25, 32, 48723000, time.UTC)),
 	// 			PolicyID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/PythonSDKBackupTestRg/providers/Microsoft.RecoveryServices/vaults/PySDKBackupTestRsVault/backupPolicies/testPolicy1"),
 	// 			PolicyType: to.Ptr("V1"),
 	// 			ProtectedItemDataID: to.Ptr("636482643132986882"),
@@ -185,7 +185,7 @@ func ExampleProtectedItemsClient_Get_getProtectedClassicVirtualMachineDetails() 
 	// }
 }
 
-// Generated from example definition: 2026-01-31-preview/AzureIaasVm/Compute_ProtectedItem_Get.json
+// Generated from example definition: 2026-07-01/AzureIaasVm/Compute_ProtectedItem_Get.json
 func ExampleProtectedItemsClient_Get_getProtectedVirtualMachineDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,8 +214,8 @@ func ExampleProtectedItemsClient_Get_getProtectedVirtualMachineDetails() {
 	// 			FriendlyName: to.Ptr("iaasvm-1"),
 	// 			HealthStatus: to.Ptr(armrecoveryservicesbackup.HealthStatusPassed),
 	// 			LastBackupStatus: to.Ptr("Completed"),
-	// 			LastBackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-22T12:25:32.048723Z"); return t}()),
-	// 			LastRecoveryPoint: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-22T12:25:32.048723Z"); return t}()),
+	// 			LastBackupTime: to.Ptr(time.Date(2018, time.January, 22, 12, 25, 32, 48723000, time.UTC)),
+	// 			LastRecoveryPoint: to.Ptr(time.Date(2017, time.November, 22, 12, 25, 32, 48723000, time.UTC)),
 	// 			PolicyID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/PythonSDKBackupTestRg/providers/Microsoft.RecoveryServices/vaults/PySDKBackupTestRsVault/backupPolicies/testPolicy1"),
 	// 			PolicyType: to.Ptr("V2"),
 	// 			ProtectedItemDataID: to.Ptr("636482643132986882"),
@@ -225,6 +225,11 @@ func ExampleProtectedItemsClient_Get_getProtectedVirtualMachineDetails() {
 	// 			SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/providers/Microsoft.Compute/virtualMachines/iaasvm-1"),
 	// 			VirtualMachineID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/providers/Microsoft.Compute/virtualMachines/iaasvm-1"),
 	// 			WorkloadType: to.Ptr(armrecoveryservicesbackup.DataSourceTypeVM),
+	// 			SourceSideScanInfo: &armrecoveryservicesbackup.SourceSideScanInfo{
+	// 				SourceSideScanStatus: to.Ptr(armrecoveryservicesbackup.SourceSideScanStatusConfigured),
+	// 				SourceSideScanSummary: to.Ptr(armrecoveryservicesbackup.SourceSideScanSummaryHealthy),
+	// 			},
+	// 			SourceLocation: to.Ptr("westus"),
 	// 		},
 	// 	},
 	// }

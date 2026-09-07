@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.1 (2026-05-25)
+## 2.0.0 (2026-06-24)
 ### Breaking Changes
 
 - Struct `ErrorResponse` has been removed

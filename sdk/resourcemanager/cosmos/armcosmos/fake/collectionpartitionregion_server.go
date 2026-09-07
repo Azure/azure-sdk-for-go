@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // CollectionPartitionRegionServer is a fake server for instances of the armcosmos.CollectionPartitionRegionClient type.
@@ -53,9 +54,7 @@ func (c *CollectionPartitionRegionServerTransport) Do(req *http.Request) (*http.
 }
 
 func (c *CollectionPartitionRegionServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +70,7 @@ func (c *CollectionPartitionRegionServerTransport) dispatchToMethodFake(req *htt
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -91,7 +87,7 @@ func (c *CollectionPartitionRegionServerTransport) dispatchNewListMetricsPager(r
 	}
 	newListMetricsPager := c.newListMetricsPager.get(req)
 	if newListMetricsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/region/(?P<region>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseRid>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/collections/(?P<collectionRid>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/partitions/metrics`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/region/(?P<region>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseRid>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionRid>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/partitions/metrics`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -118,11 +114,7 @@ func (c *CollectionPartitionRegionServerTransport) dispatchNewListMetricsPager(r
 		if err != nil {
 			return nil, err
 		}
-		filterParam, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListMetricsPager(resourceGroupNameParam, accountNameParam, regionParam, databaseRidParam, collectionRidParam, filterParam, nil)
+		resp := c.srv.NewListMetricsPager(resourceGroupNameParam, accountNameParam, regionParam, databaseRidParam, collectionRidParam, qp.Get("$filter"), nil)
 		newListMetricsPager = &resp
 		c.newListMetricsPager.add(req, newListMetricsPager)
 		server.PagerResponderInjectNextLinks(newListMetricsPager, req, func(page *armcosmos.CollectionPartitionRegionClientListMetricsResponse, createLink func() string) {
@@ -133,7 +125,7 @@ func (c *CollectionPartitionRegionServerTransport) dispatchNewListMetricsPager(r
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListMetricsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

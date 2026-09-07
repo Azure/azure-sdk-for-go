@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/P2SVpnGatewayPut.json
+// Generated from example definition: 2025-09-01/P2SVpnGatewayPut.json
 func ExampleP2SVPNGatewaysClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -189,7 +189,7 @@ func ExampleP2SVPNGatewaysClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/P2SVpnGatewayDelete.json
+// Generated from example definition: 2025-09-01/P2SVpnGatewayDelete.json
 func ExampleP2SVPNGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,7 +215,7 @@ func ExampleP2SVPNGatewaysClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/P2sVpnGatewaysDisconnectP2sVpnConnections.json
+// Generated from example definition: 2025-09-01/P2sVpnGatewaysDisconnectP2sVpnConnections.json
 func ExampleP2SVPNGatewaysClient_BeginDisconnectP2SVPNConnections() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExampleP2SVPNGatewaysClient_BeginDisconnectP2SVPNConnections() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/P2SVpnGatewayGenerateVpnProfile.json
+// Generated from example definition: 2025-09-01/P2SVpnGatewayGenerateVpnProfile.json
 func ExampleP2SVPNGatewaysClient_BeginGenerateVPNProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -277,7 +277,7 @@ func ExampleP2SVPNGatewaysClient_BeginGenerateVPNProfile() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/P2SVpnGatewayGet.json
+// Generated from example definition: 2025-09-01/P2SVpnGatewayGet.json
 func ExampleP2SVPNGatewaysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -394,7 +394,7 @@ func ExampleP2SVPNGatewaysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/P2SVpnGatewayGetConnectionHealth.json
+// Generated from example definition: 2025-09-01/P2SVpnGatewayGetConnectionHealth.json
 func ExampleP2SVPNGatewaysClient_BeginGetP2SVPNConnectionHealth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -489,7 +489,7 @@ func ExampleP2SVPNGatewaysClient_BeginGetP2SVPNConnectionHealth() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/P2SVpnGatewayGetConnectionHealthDetailed.json
+// Generated from example definition: 2025-09-01/P2SVpnGatewayGetConnectionHealthDetailed.json
 func ExampleP2SVPNGatewaysClient_BeginGetP2SVPNConnectionHealthDetailed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -524,7 +524,7 @@ func ExampleP2SVPNGatewaysClient_BeginGetP2SVPNConnectionHealthDetailed() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/P2SVpnGatewayList.json
+// Generated from example definition: 2025-09-01/P2SVpnGatewayList.json
 func ExampleP2SVPNGatewaysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -745,7 +745,7 @@ func ExampleP2SVPNGatewaysClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/P2SVpnGatewayListByResourceGroup.json
+// Generated from example definition: 2025-09-01/P2SVpnGatewayListByResourceGroup.json
 func ExampleP2SVPNGatewaysClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -962,7 +962,7 @@ func ExampleP2SVPNGatewaysClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/P2SVpnGatewayReset.json
+// Generated from example definition: 2025-09-01/P2SVpnGatewayReset.json
 func ExampleP2SVPNGatewaysClient_BeginReset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1057,7 +1057,7 @@ func ExampleP2SVPNGatewaysClient_BeginReset() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/P2SVpnGatewayUpdateTags.json
+// Generated from example definition: 2025-09-01/P2SVpnGatewayUpdateTags.json
 func ExampleP2SVPNGatewaysClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -22,6 +22,10 @@ import (
 
 // EntitiesServer is a fake server for instances of the armcloudhealth.EntitiesClient type.
 type EntitiesServer struct {
+	// AddDataAnnotation is the fake for method EntitiesClient.AddDataAnnotation
+	// HTTP status codes to indicate success: http.StatusOK
+	AddDataAnnotation func(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body armcloudhealth.AddDataAnnotationRequest, options *armcloudhealth.EntitiesClientAddDataAnnotationOptions) (resp azfake.Responder[armcloudhealth.EntitiesClientAddDataAnnotationResponse], errResp azfake.ErrorResponder)
+
 	// BeginCreateOrUpdate is the fake for method EntitiesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, resource armcloudhealth.Entity, options *armcloudhealth.EntitiesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcloudhealth.EntitiesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -34,6 +38,10 @@ type EntitiesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, options *armcloudhealth.EntitiesClientGetOptions) (resp azfake.Responder[armcloudhealth.EntitiesClientGetResponse], errResp azfake.ErrorResponder)
 
+	// GetDataAnnotations is the fake for method EntitiesClient.GetDataAnnotations
+	// HTTP status codes to indicate success: http.StatusOK
+	GetDataAnnotations func(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body armcloudhealth.GetDataAnnotationsRequest, options *armcloudhealth.EntitiesClientGetDataAnnotationsOptions) (resp azfake.Responder[armcloudhealth.EntitiesClientGetDataAnnotationsResponse], errResp azfake.ErrorResponder)
+
 	// GetHistory is the fake for method EntitiesClient.GetHistory
 	// HTTP status codes to indicate success: http.StatusOK
 	GetHistory func(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body armcloudhealth.EntityHistoryRequest, options *armcloudhealth.EntitiesClientGetHistoryOptions) (resp azfake.Responder[armcloudhealth.EntitiesClientGetHistoryResponse], errResp azfake.ErrorResponder)
@@ -41,6 +49,10 @@ type EntitiesServer struct {
 	// GetSignalHistory is the fake for method EntitiesClient.GetSignalHistory
 	// HTTP status codes to indicate success: http.StatusOK
 	GetSignalHistory func(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body armcloudhealth.SignalHistoryRequest, options *armcloudhealth.EntitiesClientGetSignalHistoryOptions) (resp azfake.Responder[armcloudhealth.EntitiesClientGetSignalHistoryResponse], errResp azfake.ErrorResponder)
+
+	// GetSignalRecommendations is the fake for method EntitiesClient.GetSignalRecommendations
+	// HTTP status codes to indicate success: http.StatusOK
+	GetSignalRecommendations func(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, options *armcloudhealth.EntitiesClientGetSignalRecommendationsOptions) (resp azfake.Responder[armcloudhealth.EntitiesClientGetSignalRecommendationsResponse], errResp azfake.ErrorResponder)
 
 	// IngestHealthReport is the fake for method EntitiesClient.IngestHealthReport
 	// HTTP status codes to indicate success: http.StatusNoContent
@@ -93,16 +105,22 @@ func (e *EntitiesServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
+			case "EntitiesClient.AddDataAnnotation":
+				res.resp, res.err = e.dispatchAddDataAnnotation(req)
 			case "EntitiesClient.BeginCreateOrUpdate":
 				res.resp, res.err = e.dispatchBeginCreateOrUpdate(req)
 			case "EntitiesClient.BeginDelete":
 				res.resp, res.err = e.dispatchBeginDelete(req)
 			case "EntitiesClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
+			case "EntitiesClient.GetDataAnnotations":
+				res.resp, res.err = e.dispatchGetDataAnnotations(req)
 			case "EntitiesClient.GetHistory":
 				res.resp, res.err = e.dispatchGetHistory(req)
 			case "EntitiesClient.GetSignalHistory":
 				res.resp, res.err = e.dispatchGetSignalHistory(req)
+			case "EntitiesClient.GetSignalRecommendations":
+				res.resp, res.err = e.dispatchGetSignalRecommendations(req)
 			case "EntitiesClient.IngestHealthReport":
 				res.resp, res.err = e.dispatchIngestHealthReport(req)
 			case "EntitiesClient.NewListByHealthModelPager":
@@ -123,13 +141,54 @@ func (e *EntitiesServerTransport) dispatchToMethodFake(req *http.Request, method
 	}
 }
 
+func (e *EntitiesServerTransport) dispatchAddDataAnnotation(req *http.Request) (*http.Response, error) {
+	if e.srv.AddDataAnnotation == nil {
+		return nil, &nonRetriableError{errors.New("fake for method AddDataAnnotation not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/entities/(?P<entityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/addDataAnnotation`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcloudhealth.AddDataAnnotationRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
+	if err != nil {
+		return nil, err
+	}
+	entityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("entityName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.AddDataAnnotation(req.Context(), resourceGroupNameParam, healthModelNameParam, entityNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DataAnnotation, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (e *EntitiesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
 	beginCreateOrUpdate := e.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/entities/(?P<entityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -181,7 +240,7 @@ func (e *EntitiesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	}
 	beginDelete := e.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/entities/(?P<entityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -227,7 +286,7 @@ func (e *EntitiesServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/entities/(?P<entityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -260,11 +319,52 @@ func (e *EntitiesServerTransport) dispatchGet(req *http.Request) (*http.Response
 	return resp, nil
 }
 
+func (e *EntitiesServerTransport) dispatchGetDataAnnotations(req *http.Request) (*http.Response, error) {
+	if e.srv.GetDataAnnotations == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetDataAnnotations not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/entities/(?P<entityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getDataAnnotations`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcloudhealth.GetDataAnnotationsRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
+	if err != nil {
+		return nil, err
+	}
+	entityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("entityName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.GetDataAnnotations(req.Context(), resourceGroupNameParam, healthModelNameParam, entityNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GetDataAnnotationsResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (e *EntitiesServerTransport) dispatchGetHistory(req *http.Request) (*http.Response, error) {
 	if e.srv.GetHistory == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetHistory not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getHistory`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/entities/(?P<entityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getHistory`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -305,7 +405,7 @@ func (e *EntitiesServerTransport) dispatchGetSignalHistory(req *http.Request) (*
 	if e.srv.GetSignalHistory == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSignalHistory not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getSignalHistory`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/entities/(?P<entityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getSignalHistory`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -342,11 +442,48 @@ func (e *EntitiesServerTransport) dispatchGetSignalHistory(req *http.Request) (*
 	return resp, nil
 }
 
+func (e *EntitiesServerTransport) dispatchGetSignalRecommendations(req *http.Request) (*http.Response, error) {
+	if e.srv.GetSignalRecommendations == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetSignalRecommendations not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/entities/(?P<entityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getSignalRecommendations`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
+	if err != nil {
+		return nil, err
+	}
+	entityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("entityName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.GetSignalRecommendations(req.Context(), resourceGroupNameParam, healthModelNameParam, entityNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GetSignalRecommendationsResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (e *EntitiesServerTransport) dispatchIngestHealthReport(req *http.Request) (*http.Response, error) {
 	if e.srv.IngestHealthReport == nil {
 		return nil, &nonRetriableError{errors.New("fake for method IngestHealthReport not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ingestHealthReport`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/entities/(?P<entityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ingestHealthReport`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -389,7 +526,7 @@ func (e *EntitiesServerTransport) dispatchNewListByHealthModelPager(req *http.Re
 	}
 	newListByHealthModelPager := e.newListByHealthModelPager.get(req)
 	if newListByHealthModelPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/entities`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

@@ -42,8 +42,8 @@ func ExampleCapturedLogsClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/logFiles/postgresql-20250601.log"),
 		// 				Properties: &armpostgresqlflexibleservers.CapturedLogProperties{
 		// 					Type: to.Ptr("slowlog"),
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:00+00:00"); return t}()),
+		// 					CreatedTime: to.Ptr(time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 0, 0, time.UTC)),
 		// 					SizeInKb: to.Ptr[int64](1),
 		// 					URL: to.Ptr("https://exampleaccount.file.core.windows.net/833c99b2f36c47349e5554b903fe0440/serverlogs/postgresql-20250601.log?sv=2025-09-01&sr=f&se=2025-06-01T07%3A12%3A13Z&sp=r"),
 		// 				},

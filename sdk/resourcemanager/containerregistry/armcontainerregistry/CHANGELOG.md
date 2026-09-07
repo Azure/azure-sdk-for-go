@@ -1,5 +1,21 @@
 # Release History
 
+## 3.1.0-beta.2 (2026-07-03)
+### Features Added
+
+- New enum type `AdditionalAuthenticationType` with values `AdditionalAuthenticationTypeGoogleArtifactRegistry`
+- New enum type `WritableCacheRepos` with values `WritableCacheReposDisabled`, `WritableCacheReposEnabled`
+- New function `*AdditionalAuthenticationProperties.GetAdditionalAuthenticationProperties() *AdditionalAuthenticationProperties`
+- New function `*GarAuthenticationProperties.GetAdditionalAuthenticationProperties() *AdditionalAuthenticationProperties`
+- New struct `GarAuthenticationProperties`
+- New struct `VirtualNetworkRule`
+- New field `AdditionalAuthenticationProperties` in struct `CacheRuleProperties`
+- New field `AdditionalAuthenticationProperties` in struct `CacheRuleUpdateProperties`
+- New field `VirtualNetworkRules` in struct `NetworkRuleSet`
+- New field `WritableCacheRepos` in struct `RegistryProperties`
+- New field `WritableCacheRepos` in struct `RegistryPropertiesUpdateParameters`
+
+
 ## 3.1.0-beta.1 (2026-03-20)
 ### Features Added
 

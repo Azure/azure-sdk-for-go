@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-31-preview/AzureWorkload/ProtectionContainers_Get.json
+// Generated from example definition: 2026-07-01/AzureWorkload/ProtectionContainers_Get.json
 func ExampleProtectionContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,12 +71,13 @@ func ExampleProtectionContainersClient_Get() {
 	// 			},
 	// 			FriendlyName: to.Ptr("testSQL"),
 	// 			SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/testSQL"),
+	// 			SourceLocation: to.Ptr("westus"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-31-preview/AzureStorage/ProtectionContainers_Inquire.json
+// Generated from example definition: 2026-07-01/AzureStorage/ProtectionContainers_Inquire.json
 func ExampleProtectionContainersClient_Inquire() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +94,7 @@ func ExampleProtectionContainersClient_Inquire() {
 	}
 }
 
-// Generated from example definition: 2026-01-31-preview/Common/RefreshContainers.json
+// Generated from example definition: 2026-07-01/Common/RefreshContainers.json
 func ExampleProtectionContainersClient_Refresh() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,8 +111,124 @@ func ExampleProtectionContainersClient_Refresh() {
 	}
 }
 
-// Generated from example definition: 2026-01-31-preview/AzureStorage/ProtectionContainers_Register.json
-func ExampleProtectionContainersClient_BeginRegister() {
+// Generated from example definition: 2026-07-01/AzureStorage/ProtectionContainers_ReRegister_SwitchToSAMI.json
+func ExampleProtectionContainersClient_BeginRegister_reRegisterAzureStorageProtectionContainersSwitchingToSystemAssignedManagedIdentity() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewProtectionContainersClient().BeginRegister(ctx, "swaggertestvault", "SwaggerTestRg", "Azure", "StorageContainer;Storage;SwaggerTestRg;swaggertestsa", armrecoveryservicesbackup.ProtectionContainerResource{
+		Properties: &armrecoveryservicesbackup.AzureStorageContainer{
+			AcquireStorageAccountLock: to.Ptr(armrecoveryservicesbackup.AcquireStorageAccountLockAcquire),
+			BackupManagementType:      to.Ptr(armrecoveryservicesbackup.BackupManagementTypeAzureStorage),
+			ContainerType:             to.Ptr(armrecoveryservicesbackup.ProtectableContainerTypeStorageContainer),
+			FriendlyName:              to.Ptr("swaggertestsa"),
+			SourceResourceID:          to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa"),
+			OperationType:             to.Ptr(armrecoveryservicesbackup.OperationTypeReregister),
+			AccessType:                to.Ptr(armrecoveryservicesbackup.AccessTypeIdentityBased),
+			IdentityInfo: &armrecoveryservicesbackup.IdentityInfo{
+				IsSystemAssignedIdentity: to.Ptr(true),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicesbackup.ProtectionContainersClientRegisterResponse{
+	// 	ProtectionContainerResource: armrecoveryservicesbackup.ProtectionContainerResource{
+	// 		Name: to.Ptr("StorageContainer;Storage;SwaggerTestRg;swaggertestsa"),
+	// 		ID: to.Ptr("/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/SwaggerTestRg/providers/Microsoft.RecoveryServices/vaults/swaggertestvault/backupFabrics/Azure/protectionContainers/StorageContainer;Storage;SwaggerTestRg;swaggertestsa"),
+	// 		Properties: &armrecoveryservicesbackup.AzureStorageContainer{
+	// 			AcquireStorageAccountLock: to.Ptr(armrecoveryservicesbackup.AcquireStorageAccountLockAcquire),
+	// 			BackupManagementType: to.Ptr(armrecoveryservicesbackup.BackupManagementTypeAzureStorage),
+	// 			ContainerType: to.Ptr(armrecoveryservicesbackup.ProtectableContainerTypeStorageContainer),
+	// 			FriendlyName: to.Ptr("swaggertestsa"),
+	// 			HealthStatus: to.Ptr("Healthy"),
+	// 			ProtectedItemCount: to.Ptr[int64](1),
+	// 			RegistrationStatus: to.Ptr("Registered"),
+	// 			SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa"),
+	// 			AccessType: to.Ptr(armrecoveryservicesbackup.AccessTypeIdentityBased),
+	// 			IdentityInfo: &armrecoveryservicesbackup.IdentityInfo{
+	// 				IsSystemAssignedIdentity: to.Ptr(true),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/AzureStorage/ProtectionContainers_ReRegister_SwitchToUAMI.json
+func ExampleProtectionContainersClient_BeginRegister_reRegisterAzureStorageProtectionContainersSwitchingToUserAssignedManagedIdentity() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewProtectionContainersClient().BeginRegister(ctx, "swaggertestvault", "SwaggerTestRg", "Azure", "StorageContainer;Storage;SwaggerTestRg;swaggertestsa", armrecoveryservicesbackup.ProtectionContainerResource{
+		Properties: &armrecoveryservicesbackup.AzureStorageContainer{
+			AcquireStorageAccountLock: to.Ptr(armrecoveryservicesbackup.AcquireStorageAccountLockAcquire),
+			BackupManagementType:      to.Ptr(armrecoveryservicesbackup.BackupManagementTypeAzureStorage),
+			ContainerType:             to.Ptr(armrecoveryservicesbackup.ProtectableContainerTypeStorageContainer),
+			FriendlyName:              to.Ptr("swaggertestsa"),
+			SourceResourceID:          to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa"),
+			OperationType:             to.Ptr(armrecoveryservicesbackup.OperationTypeReregister),
+			AccessType:                to.Ptr(armrecoveryservicesbackup.AccessTypeIdentityBased),
+			IdentityInfo: &armrecoveryservicesbackup.IdentityInfo{
+				IsSystemAssignedIdentity:  to.Ptr(false),
+				ManagedIdentityResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/swaggertestuami"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicesbackup.ProtectionContainersClientRegisterResponse{
+	// 	ProtectionContainerResource: armrecoveryservicesbackup.ProtectionContainerResource{
+	// 		Name: to.Ptr("StorageContainer;Storage;SwaggerTestRg;swaggertestsa"),
+	// 		ID: to.Ptr("/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/SwaggerTestRg/providers/Microsoft.RecoveryServices/vaults/swaggertestvault/backupFabrics/Azure/protectionContainers/StorageContainer;Storage;SwaggerTestRg;swaggertestsa"),
+	// 		Properties: &armrecoveryservicesbackup.AzureStorageContainer{
+	// 			AcquireStorageAccountLock: to.Ptr(armrecoveryservicesbackup.AcquireStorageAccountLockAcquire),
+	// 			BackupManagementType: to.Ptr(armrecoveryservicesbackup.BackupManagementTypeAzureStorage),
+	// 			ContainerType: to.Ptr(armrecoveryservicesbackup.ProtectableContainerTypeStorageContainer),
+	// 			FriendlyName: to.Ptr("swaggertestsa"),
+	// 			HealthStatus: to.Ptr("Healthy"),
+	// 			ProtectedItemCount: to.Ptr[int64](1),
+	// 			RegistrationStatus: to.Ptr("Registered"),
+	// 			SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa"),
+	// 			AccessType: to.Ptr(armrecoveryservicesbackup.AccessTypeIdentityBased),
+	// 			IdentityInfo: &armrecoveryservicesbackup.IdentityInfo{
+	// 				IsSystemAssignedIdentity: to.Ptr(false),
+	// 				ManagedIdentityResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/swaggertestuami"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/AzureStorage/ProtectionContainers_Register.json
+func ExampleProtectionContainersClient_BeginRegister_registerAzureStorageProtectionContainers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -158,7 +275,121 @@ func ExampleProtectionContainersClient_BeginRegister() {
 	// }
 }
 
-// Generated from example definition: 2026-01-31-preview/AzureWorkload/ProtectionContainers_Unregister.json
+// Generated from example definition: 2026-07-01/AzureStorage/ProtectionContainers_Register_WithSAMI.json
+func ExampleProtectionContainersClient_BeginRegister_registerAzureStorageProtectionContainersWithSystemAssignedManagedIdentity() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewProtectionContainersClient().BeginRegister(ctx, "swaggertestvault", "SwaggerTestRg", "Azure", "StorageContainer;Storage;SwaggerTestRg;swaggertestsa", armrecoveryservicesbackup.ProtectionContainerResource{
+		Properties: &armrecoveryservicesbackup.AzureStorageContainer{
+			AcquireStorageAccountLock: to.Ptr(armrecoveryservicesbackup.AcquireStorageAccountLockAcquire),
+			BackupManagementType:      to.Ptr(armrecoveryservicesbackup.BackupManagementTypeAzureStorage),
+			ContainerType:             to.Ptr(armrecoveryservicesbackup.ProtectableContainerTypeStorageContainer),
+			FriendlyName:              to.Ptr("swaggertestsa"),
+			SourceResourceID:          to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa"),
+			AccessType:                to.Ptr(armrecoveryservicesbackup.AccessTypeIdentityBased),
+			IdentityInfo: &armrecoveryservicesbackup.IdentityInfo{
+				IsSystemAssignedIdentity: to.Ptr(true),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicesbackup.ProtectionContainersClientRegisterResponse{
+	// 	ProtectionContainerResource: armrecoveryservicesbackup.ProtectionContainerResource{
+	// 		Name: to.Ptr("StorageContainer;Storage;SwaggerTestRg;swaggertestsa"),
+	// 		ID: to.Ptr("/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/SwaggerTestRg/providers/Microsoft.RecoveryServices/vaults/swaggertestvault/backupFabrics/Azure/protectionContainers/StorageContainer;Storage;SwaggerTestRg;swaggertestsa"),
+	// 		Properties: &armrecoveryservicesbackup.AzureStorageContainer{
+	// 			AcquireStorageAccountLock: to.Ptr(armrecoveryservicesbackup.AcquireStorageAccountLockAcquire),
+	// 			BackupManagementType: to.Ptr(armrecoveryservicesbackup.BackupManagementTypeAzureStorage),
+	// 			ContainerType: to.Ptr(armrecoveryservicesbackup.ProtectableContainerTypeStorageContainer),
+	// 			FriendlyName: to.Ptr("swaggertestsa"),
+	// 			HealthStatus: to.Ptr("Healthy"),
+	// 			ProtectedItemCount: to.Ptr[int64](0),
+	// 			RegistrationStatus: to.Ptr("Registered"),
+	// 			SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa"),
+	// 			AccessType: to.Ptr(armrecoveryservicesbackup.AccessTypeIdentityBased),
+	// 			IdentityInfo: &armrecoveryservicesbackup.IdentityInfo{
+	// 				IsSystemAssignedIdentity: to.Ptr(true),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/AzureStorage/ProtectionContainers_Register_WithUAMI.json
+func ExampleProtectionContainersClient_BeginRegister_registerAzureStorageProtectionContainersWithUserAssignedManagedIdentity() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewProtectionContainersClient().BeginRegister(ctx, "swaggertestvault", "SwaggerTestRg", "Azure", "StorageContainer;Storage;SwaggerTestRg;swaggertestsa", armrecoveryservicesbackup.ProtectionContainerResource{
+		Properties: &armrecoveryservicesbackup.AzureStorageContainer{
+			AcquireStorageAccountLock: to.Ptr(armrecoveryservicesbackup.AcquireStorageAccountLockAcquire),
+			BackupManagementType:      to.Ptr(armrecoveryservicesbackup.BackupManagementTypeAzureStorage),
+			ContainerType:             to.Ptr(armrecoveryservicesbackup.ProtectableContainerTypeStorageContainer),
+			FriendlyName:              to.Ptr("swaggertestsa"),
+			SourceResourceID:          to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa"),
+			AccessType:                to.Ptr(armrecoveryservicesbackup.AccessTypeIdentityBased),
+			IdentityInfo: &armrecoveryservicesbackup.IdentityInfo{
+				IsSystemAssignedIdentity:  to.Ptr(false),
+				ManagedIdentityResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/swaggertestuami"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicesbackup.ProtectionContainersClientRegisterResponse{
+	// 	ProtectionContainerResource: armrecoveryservicesbackup.ProtectionContainerResource{
+	// 		Name: to.Ptr("StorageContainer;Storage;SwaggerTestRg;swaggertestsa"),
+	// 		ID: to.Ptr("/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/SwaggerTestRg/providers/Microsoft.RecoveryServices/vaults/swaggertestvault/backupFabrics/Azure/protectionContainers/StorageContainer;Storage;SwaggerTestRg;swaggertestsa"),
+	// 		Properties: &armrecoveryservicesbackup.AzureStorageContainer{
+	// 			AcquireStorageAccountLock: to.Ptr(armrecoveryservicesbackup.AcquireStorageAccountLockAcquire),
+	// 			BackupManagementType: to.Ptr(armrecoveryservicesbackup.BackupManagementTypeAzureStorage),
+	// 			ContainerType: to.Ptr(armrecoveryservicesbackup.ProtectableContainerTypeStorageContainer),
+	// 			FriendlyName: to.Ptr("swaggertestsa"),
+	// 			HealthStatus: to.Ptr("Healthy"),
+	// 			ProtectedItemCount: to.Ptr[int64](0),
+	// 			RegistrationStatus: to.Ptr("Registered"),
+	// 			SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa"),
+	// 			AccessType: to.Ptr(armrecoveryservicesbackup.AccessTypeIdentityBased),
+	// 			IdentityInfo: &armrecoveryservicesbackup.IdentityInfo{
+	// 				IsSystemAssignedIdentity: to.Ptr(false),
+	// 				ManagedIdentityResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/swaggertestuami"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/AzureWorkload/ProtectionContainers_Unregister.json
 func ExampleProtectionContainersClient_Unregister() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

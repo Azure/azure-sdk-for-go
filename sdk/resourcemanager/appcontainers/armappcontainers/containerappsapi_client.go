@@ -30,6 +30,9 @@ type ContainerAppsAPIClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewContainerAppsAPIClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsAPIClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -59,19 +62,14 @@ func (client *ContainerAppsAPIClient) GetCustomDomainVerificationID(ctx context.
 	if err != nil {
 		return ContainerAppsAPIClientGetCustomDomainVerificationIDResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainerAppsAPIClientGetCustomDomainVerificationIDResponse{}, err
-	}
-	resp, err := client.getCustomDomainVerificationIDHandleResponse(httpResp)
-	return resp, err
+	return client.getCustomDomainVerificationIDHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCustomDomainVerificationIDCreateRequest creates the GetCustomDomainVerificationID request.
 func (client *ContainerAppsAPIClient) getCustomDomainVerificationIDCreateRequest(ctx context.Context, _ *ContainerAppsAPIClientGetCustomDomainVerificationIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.App/getCustomDomainVerificationId"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -86,8 +84,11 @@ func (client *ContainerAppsAPIClient) getCustomDomainVerificationIDCreateRequest
 }
 
 // getCustomDomainVerificationIDHandleResponse handles the GetCustomDomainVerificationID response.
-func (client *ContainerAppsAPIClient) getCustomDomainVerificationIDHandleResponse(resp *http.Response) (ContainerAppsAPIClientGetCustomDomainVerificationIDResponse, error) {
+func (client *ContainerAppsAPIClient) getCustomDomainVerificationIDHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsAPIClientGetCustomDomainVerificationIDResponse, error) {
 	result := ContainerAppsAPIClientGetCustomDomainVerificationIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return ContainerAppsAPIClientGetCustomDomainVerificationIDResponse{}, err
@@ -120,19 +121,14 @@ func (client *ContainerAppsAPIClient) JobExecution(ctx context.Context, resource
 	if err != nil {
 		return ContainerAppsAPIClientJobExecutionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainerAppsAPIClientJobExecutionResponse{}, err
-	}
-	resp, err := client.jobExecutionHandleResponse(httpResp)
-	return resp, err
+	return client.jobExecutionHandleResponse(httpResp, http.StatusOK)
 }
 
 // jobExecutionCreateRequest creates the JobExecution request.
 func (client *ContainerAppsAPIClient) jobExecutionCreateRequest(ctx context.Context, resourceGroupName string, jobName string, jobExecutionName string, _ *ContainerAppsAPIClientJobExecutionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/jobs/{jobName}/executions/{jobExecutionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -159,8 +155,11 @@ func (client *ContainerAppsAPIClient) jobExecutionCreateRequest(ctx context.Cont
 }
 
 // jobExecutionHandleResponse handles the JobExecution response.
-func (client *ContainerAppsAPIClient) jobExecutionHandleResponse(resp *http.Response) (ContainerAppsAPIClientJobExecutionResponse, error) {
+func (client *ContainerAppsAPIClient) jobExecutionHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsAPIClientJobExecutionResponse, error) {
 	result := ContainerAppsAPIClientJobExecutionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecution); err != nil {
 		return ContainerAppsAPIClientJobExecutionResponse{}, err
 	}

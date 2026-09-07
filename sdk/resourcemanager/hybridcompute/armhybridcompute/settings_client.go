@@ -19,7 +19,7 @@ import (
 // SettingsClient contains the methods for the Settings group.
 // Don't use this type directly, use NewSettingsClient() instead.
 //
-// Generated from API version 2025-09-16-preview
+// Generated from API version 2026-07-15
 type SettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type SettingsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SettingsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *SettingsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return SettingsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SettingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *SettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, baseProvider string, baseResourceType string, baseResourceName string, settingsResourceName string, _ *SettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{baseProvider}/{baseResourceType}/{baseResourceName}/providers/Microsoft.HybridCompute/settings/{settingsResourceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -103,15 +101,18 @@ func (client *SettingsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250916Preview)
+	reqQP.Set("api-version", version20260715)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SettingsClient) getHandleResponse(resp *http.Response) (SettingsClientGetResponse, error) {
+func (client *SettingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SettingsClientGetResponse, error) {
 	result := SettingsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Settings); err != nil {
 		return SettingsClientGetResponse{}, err
 	}
@@ -141,19 +142,14 @@ func (client *SettingsClient) Patch(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return SettingsClientPatchResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SettingsClientPatchResponse{}, err
-	}
-	resp, err := client.patchHandleResponse(httpResp)
-	return resp, err
+	return client.patchHandleResponse(httpResp, http.StatusOK)
 }
 
 // patchCreateRequest creates the Patch request.
 func (client *SettingsClient) patchCreateRequest(ctx context.Context, resourceGroupName string, baseProvider string, baseResourceType string, baseResourceName string, settingsResourceName string, parameters Settings, _ *SettingsClientPatchOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{baseProvider}/{baseResourceType}/{baseResourceName}/providers/Microsoft.HybridCompute/settings/{settingsResourceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -181,7 +177,7 @@ func (client *SettingsClient) patchCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250916Preview)
+	reqQP.Set("api-version", version20260715)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -192,8 +188,11 @@ func (client *SettingsClient) patchCreateRequest(ctx context.Context, resourceGr
 }
 
 // patchHandleResponse handles the Patch response.
-func (client *SettingsClient) patchHandleResponse(resp *http.Response) (SettingsClientPatchResponse, error) {
+func (client *SettingsClient) patchHandleResponse(resp *http.Response, successCodes ...int) (SettingsClientPatchResponse, error) {
 	result := SettingsClientPatchResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Settings); err != nil {
 		return SettingsClientPatchResponse{}, err
 	}
@@ -223,19 +222,14 @@ func (client *SettingsClient) Update(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return SettingsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return SettingsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *SettingsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, baseProvider string, baseResourceType string, baseResourceName string, settingsResourceName string, parameters Settings, _ *SettingsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{baseProvider}/{baseResourceType}/{baseResourceName}/providers/Microsoft.HybridCompute/settings/{settingsResourceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -263,7 +257,7 @@ func (client *SettingsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250916Preview)
+	reqQP.Set("api-version", version20260715)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -274,8 +268,11 @@ func (client *SettingsClient) updateCreateRequest(ctx context.Context, resourceG
 }
 
 // updateHandleResponse handles the Update response.
-func (client *SettingsClient) updateHandleResponse(resp *http.Response) (SettingsClientUpdateResponse, error) {
+func (client *SettingsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (SettingsClientUpdateResponse, error) {
 	result := SettingsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Settings); err != nil {
 		return SettingsClientUpdateResponse{}, err
 	}

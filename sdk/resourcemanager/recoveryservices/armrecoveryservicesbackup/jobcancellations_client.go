@@ -18,6 +18,8 @@ import (
 
 // JobCancellationsClient contains the methods for the JobCancellations group.
 // Don't use this type directly, use NewJobCancellationsClient() instead.
+//
+// Generated from API version 2026-07-01
 type JobCancellationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type JobCancellationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewJobCancellationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobCancellationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -42,8 +47,6 @@ func NewJobCancellationsClient(subscriptionID string, credential azcore.TokenCre
 // Trigger - Cancels a job. This is an asynchronous operation. To know the status of the cancellation, call
 // GetCancelOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - JobCancellationsClientTriggerOptions contains the optional parameters for the JobCancellationsClient.Trigger
 //     method.
@@ -62,8 +65,7 @@ func (client *JobCancellationsClient) Trigger(ctx context.Context, vaultName str
 		return JobCancellationsClientTriggerResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return JobCancellationsClientTriggerResponse{}, err
+		return JobCancellationsClientTriggerResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return JobCancellationsClientTriggerResponse{}, nil
 }
@@ -72,7 +74,7 @@ func (client *JobCancellationsClient) Trigger(ctx context.Context, vaultName str
 func (client *JobCancellationsClient) triggerCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, jobName string, _ *JobCancellationsClientTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupJobs/{jobName}/cancel"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if vaultName == "" {
@@ -92,7 +94,7 @@ func (client *JobCancellationsClient) triggerCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

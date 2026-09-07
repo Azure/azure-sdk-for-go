@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-01-preview/IpAccessRulesSecurityPolicyPut.json
+// Generated from example definition: 2026-03-01/IpAccessRulesSecurityPolicyPut.json
 func ExampleSecurityPoliciesInterfaceClient_BeginCreateOrUpdate_putIPAccessRulesSecurityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleSecurityPoliciesInterfaceClient_BeginCreateOrUpdate_putIPAccessRules
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/WafSecurityPolicyPut.json
+// Generated from example definition: 2026-03-01/WafSecurityPolicyPut.json
 func ExampleSecurityPoliciesInterfaceClient_BeginCreateOrUpdate_putWafSecurityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleSecurityPoliciesInterfaceClient_BeginCreateOrUpdate_putWafSecurityPo
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/SecurityPolicyDelete.json
+// Generated from example definition: 2026-03-01/SecurityPolicyDelete.json
 func ExampleSecurityPoliciesInterfaceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,7 +126,7 @@ func ExampleSecurityPoliciesInterfaceClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-03-01-preview/SecurityPolicyGet.json
+// Generated from example definition: 2026-03-01/SecurityPolicyGet.json
 func ExampleSecurityPoliciesInterfaceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExampleSecurityPoliciesInterfaceClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/SecurityPoliciesGetList.json
+// Generated from example definition: 2026-03-01/SecurityPoliciesGetList.json
 func ExampleSecurityPoliciesInterfaceClient_NewListByTrafficControllerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExampleSecurityPoliciesInterfaceClient_NewListByTrafficControllerPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01-preview/IpAccessRulesSecurityPolicyPatch.json
+// Generated from example definition: 2026-03-01/IpAccessRulesSecurityPolicyPatch.json
 func ExampleSecurityPoliciesInterfaceClient_Update_updateIPAccessRulesSecurityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +247,7 @@ func ExampleSecurityPoliciesInterfaceClient_Update_updateIPAccessRulesSecurityPo
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/WafSecurityPolicyPatch.json
+// Generated from example definition: 2026-03-01/WafSecurityPolicyPatch.json
 func ExampleSecurityPoliciesInterfaceClient_Update_updateWafSecurityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

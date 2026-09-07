@@ -1,6 +1,6 @@
 # Release History
 
-## 2.2.0-beta.1 (2026-03-19)
+## 2.2.0 (2026-06-24)
 ### Features Added
 
 - New value `MarketplaceSubscriptionStatusUnsubscribed` added to enum type `MarketplaceSubscriptionStatus`

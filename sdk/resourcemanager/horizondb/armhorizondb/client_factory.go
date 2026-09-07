@@ -32,6 +32,14 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAdministratorsClient creates a new instance of AdministratorsClient.
+func (c *ClientFactory) NewAdministratorsClient() *AdministratorsClient {
+	return &AdministratorsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewClustersClient creates a new instance of ClustersClient.
 func (c *ClientFactory) NewClustersClient() *ClustersClient {
 	return &ClustersClient{

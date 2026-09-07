@@ -5,7 +5,7 @@
 package armcognitiveservices
 
 const (
-	version20260315Preview string = "2026-03-15-preview"
+	version20260715Preview string = "2026-07-15-preview"
 )
 
 // AbusePenaltyAction - The action of AbusePenalty.
@@ -127,6 +127,21 @@ func PossibleAgentDeploymentTypeValues() []AgentDeploymentType {
 	}
 }
 
+// AgentHostingType - Type of infrastructure used to host Foundry agents.
+type AgentHostingType string
+
+const (
+	// AgentHostingTypeManagedCluster - Agents are hosted on an Azure Kubernetes Service managed cluster.
+	AgentHostingTypeManagedCluster AgentHostingType = "ManagedCluster"
+)
+
+// PossibleAgentHostingTypeValues returns the possible values for the AgentHostingType const type.
+func PossibleAgentHostingTypeValues() []AgentHostingType {
+	return []AgentHostingType{
+		AgentHostingTypeManagedCluster,
+	}
+}
+
 // AgentProtocol - Protocol used by the agent/exposed by a deployment.
 type AgentProtocol string
 
@@ -175,6 +190,57 @@ func PossibleAgenticApplicationProvisioningStateValues() []AgenticApplicationPro
 		AgenticApplicationProvisioningStateFailed,
 		AgenticApplicationProvisioningStateSucceeded,
 		AgenticApplicationProvisioningStateUpdating,
+	}
+}
+
+// ArcDeploymentComputeType - Compute type for an Arc deployment.
+type ArcDeploymentComputeType string
+
+const (
+	// ArcDeploymentComputeTypeCPU - CPU compute.
+	ArcDeploymentComputeTypeCPU ArcDeploymentComputeType = "cpu"
+	// ArcDeploymentComputeTypeGpu - GPU compute.
+	ArcDeploymentComputeTypeGpu ArcDeploymentComputeType = "gpu"
+)
+
+// PossibleArcDeploymentComputeTypeValues returns the possible values for the ArcDeploymentComputeType const type.
+func PossibleArcDeploymentComputeTypeValues() []ArcDeploymentComputeType {
+	return []ArcDeploymentComputeType{
+		ArcDeploymentComputeTypeCPU,
+		ArcDeploymentComputeTypeGpu,
+	}
+}
+
+// ArcDeploymentRuntime - Inference runtime for an Arc deployment.
+type ArcDeploymentRuntime string
+
+const (
+	// ArcDeploymentRuntimeOnnx - ONNX runtime.
+	ArcDeploymentRuntimeOnnx ArcDeploymentRuntime = "onnx-genai"
+	// ArcDeploymentRuntimeVllm - vLLM runtime.
+	ArcDeploymentRuntimeVllm ArcDeploymentRuntime = "vllm"
+)
+
+// PossibleArcDeploymentRuntimeValues returns the possible values for the ArcDeploymentRuntime const type.
+func PossibleArcDeploymentRuntimeValues() []ArcDeploymentRuntime {
+	return []ArcDeploymentRuntime{
+		ArcDeploymentRuntimeOnnx,
+		ArcDeploymentRuntimeVllm,
+	}
+}
+
+// ArcDeploymentSKUName - SKU for an Arc deployment.
+type ArcDeploymentSKUName string
+
+const (
+	// ArcDeploymentSKUNameArc - Arc SKU.
+	ArcDeploymentSKUNameArc ArcDeploymentSKUName = "Arc"
+)
+
+// PossibleArcDeploymentSKUNameValues returns the possible values for the ArcDeploymentSKUName const type.
+func PossibleArcDeploymentSKUNameValues() []ArcDeploymentSKUName {
+	return []ArcDeploymentSKUName{
+		ArcDeploymentSKUNameArc,
 	}
 }
 
@@ -1326,14 +1392,15 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 type ProvisioningState string
 
 const (
-	ProvisioningStateAccepted     ProvisioningState = "Accepted"
-	ProvisioningStateCanceled     ProvisioningState = "Canceled"
-	ProvisioningStateCreating     ProvisioningState = "Creating"
-	ProvisioningStateDeleting     ProvisioningState = "Deleting"
-	ProvisioningStateFailed       ProvisioningState = "Failed"
-	ProvisioningStateMoving       ProvisioningState = "Moving"
-	ProvisioningStateResolvingDNS ProvisioningState = "ResolvingDNS"
-	ProvisioningStateSucceeded    ProvisioningState = "Succeeded"
+	ProvisioningStateAccepted             ProvisioningState = "Accepted"
+	ProvisioningStateCanceled             ProvisioningState = "Canceled"
+	ProvisioningStateCreating             ProvisioningState = "Creating"
+	ProvisioningStateDeleting             ProvisioningState = "Deleting"
+	ProvisioningStateExtensionUnreachable ProvisioningState = "ExtensionUnreachable"
+	ProvisioningStateFailed               ProvisioningState = "Failed"
+	ProvisioningStateMoving               ProvisioningState = "Moving"
+	ProvisioningStateResolvingDNS         ProvisioningState = "ResolvingDNS"
+	ProvisioningStateSucceeded            ProvisioningState = "Succeeded"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
@@ -1343,6 +1410,7 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateCanceled,
 		ProvisioningStateCreating,
 		ProvisioningStateDeleting,
+		ProvisioningStateExtensionUnreachable,
 		ProvisioningStateFailed,
 		ProvisioningStateMoving,
 		ProvisioningStateResolvingDNS,
@@ -1425,6 +1493,125 @@ func PossibleRaiActionTypeValues() []RaiActionType {
 		RaiActionTypeHITL,
 		RaiActionTypeNone,
 		RaiActionTypeRETRY,
+	}
+}
+
+// RaiEgressDefaultAction - The default action when no user-defined egress rules match.
+type RaiEgressDefaultAction string
+
+const (
+	// RaiEgressDefaultActionAllow - Allow traffic by default when no rules match.
+	RaiEgressDefaultActionAllow RaiEgressDefaultAction = "Allow"
+	// RaiEgressDefaultActionDeny - Deny traffic by default when no rules match.
+	RaiEgressDefaultActionDeny RaiEgressDefaultAction = "Deny"
+)
+
+// PossibleRaiEgressDefaultActionValues returns the possible values for the RaiEgressDefaultAction const type.
+func PossibleRaiEgressDefaultActionValues() []RaiEgressDefaultAction {
+	return []RaiEgressDefaultAction{
+		RaiEgressDefaultActionAllow,
+		RaiEgressDefaultActionDeny,
+	}
+}
+
+// RaiEgressHeaderOperation - The operation to apply to a header in a Transform or Rewrite action.
+type RaiEgressHeaderOperation string
+
+const (
+	// RaiEgressHeaderOperationInsert - Add the header only if it is not already present.
+	RaiEgressHeaderOperationInsert RaiEgressHeaderOperation = "Insert"
+	// RaiEgressHeaderOperationRemove - Remove the header if present.
+	RaiEgressHeaderOperationRemove RaiEgressHeaderOperation = "Remove"
+	// RaiEgressHeaderOperationSet - Set or overwrite the header value, creating it if it does not exist.
+	RaiEgressHeaderOperationSet RaiEgressHeaderOperation = "Set"
+)
+
+// PossibleRaiEgressHeaderOperationValues returns the possible values for the RaiEgressHeaderOperation const type.
+func PossibleRaiEgressHeaderOperationValues() []RaiEgressHeaderOperation {
+	return []RaiEgressHeaderOperation{
+		RaiEgressHeaderOperationInsert,
+		RaiEgressHeaderOperationRemove,
+		RaiEgressHeaderOperationSet,
+	}
+}
+
+// RaiEgressMode - The enforcement mode for egress rules.
+// If omitted on create, the server defaults to Enforced.
+type RaiEgressMode string
+
+const (
+	// RaiEgressModeAudit - Rules are evaluated and logged but not enforced. Traffic is always forwarded regardless of
+	// rule action. A would-be Deny is logged but not applied. Transform and Rewrite actions are
+	// still applied to matching traffic (only Deny enforcement is suppressed).
+	RaiEgressModeAudit RaiEgressMode = "Audit"
+	// RaiEgressModeEnforced - Rules are enforced. Matching traffic is allowed or denied per rule actions.
+	RaiEgressModeEnforced RaiEgressMode = "Enforced"
+)
+
+// PossibleRaiEgressModeValues returns the possible values for the RaiEgressMode const type.
+func PossibleRaiEgressModeValues() []RaiEgressMode {
+	return []RaiEgressMode{
+		RaiEgressModeAudit,
+		RaiEgressModeEnforced,
+	}
+}
+
+// RaiEgressRuleActionType - The kind of action an egress rule takes when it matches.
+type RaiEgressRuleActionType string
+
+const (
+	// RaiEgressRuleActionTypeAllow - Allow the matched traffic.
+	RaiEgressRuleActionTypeAllow RaiEgressRuleActionType = "Allow"
+	// RaiEgressRuleActionTypeDeny - Deny the matched traffic.
+	RaiEgressRuleActionTypeDeny RaiEgressRuleActionType = "Deny"
+	// RaiEgressRuleActionTypeRewrite - Redirect the matched traffic to a new destination, optionally applying header transforms.
+	// Requires a rewrite target.
+	RaiEgressRuleActionTypeRewrite RaiEgressRuleActionType = "Rewrite"
+	// RaiEgressRuleActionTypeTransform - Forward the matched traffic after applying header transforms. Requires at least one
+	// header.
+	RaiEgressRuleActionTypeTransform RaiEgressRuleActionType = "Transform"
+)
+
+// PossibleRaiEgressRuleActionTypeValues returns the possible values for the RaiEgressRuleActionType const type.
+func PossibleRaiEgressRuleActionTypeValues() []RaiEgressRuleActionType {
+	return []RaiEgressRuleActionType{
+		RaiEgressRuleActionTypeAllow,
+		RaiEgressRuleActionTypeDeny,
+		RaiEgressRuleActionTypeRewrite,
+		RaiEgressRuleActionTypeTransform,
+	}
+}
+
+// RaiEgressRuleType - The type of an egress rule, determining what kind of traffic matching it performs.
+type RaiEgressRuleType string
+
+const (
+	// RaiEgressRuleTypeFqdn - Fully qualified domain name (FQDN) based rule matching on host and path patterns.
+	RaiEgressRuleTypeFqdn RaiEgressRuleType = "Fqdn"
+)
+
+// PossibleRaiEgressRuleTypeValues returns the possible values for the RaiEgressRuleType const type.
+func PossibleRaiEgressRuleTypeValues() []RaiEgressRuleType {
+	return []RaiEgressRuleType{
+		RaiEgressRuleTypeFqdn,
+	}
+}
+
+// RaiEgressScheme - URL scheme for rewrite targets. Only HTTP and HTTPS are supported.
+type RaiEgressScheme string
+
+const (
+	// RaiEgressSchemeHTTP - HTTP scheme.
+	RaiEgressSchemeHTTP RaiEgressScheme = "http"
+	// RaiEgressSchemeHTTPS - HTTPS scheme.
+	RaiEgressSchemeHTTPS RaiEgressScheme = "https"
+)
+
+// PossibleRaiEgressSchemeValues returns the possible values for the RaiEgressScheme const type.
+func PossibleRaiEgressSchemeValues() []RaiEgressScheme {
+	return []RaiEgressScheme{
+		RaiEgressSchemeHTTP,
+		RaiEgressSchemeHTTPS,
 	}
 }
 
@@ -1795,16 +1982,16 @@ func PossibleUpgradeAvailabilityStatusValues() []UpgradeAvailabilityStatus {
 type VMPriority string
 
 const (
-	// VMPriorityLowPriority - Low-priority VM.
-	VMPriorityLowPriority VMPriority = "LowPriority"
 	// VMPriorityRegular - Regular VM priority.
 	VMPriorityRegular VMPriority = "Regular"
+	// VMPrioritySpot - Spot VM priority.
+	VMPrioritySpot VMPriority = "Spot"
 )
 
 // PossibleVMPriorityValues returns the possible values for the VMPriority const type.
 func PossibleVMPriorityValues() []VMPriority {
 	return []VMPriority{
-		VMPriorityLowPriority,
 		VMPriorityRegular,
+		VMPrioritySpot,
 	}
 }

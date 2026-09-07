@@ -20,7 +20,7 @@ import (
 // group.
 // Don't use this type directly, use NewVPNServerConfigurationsAssociatedWithVirtualWanClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type VPNServerConfigurationsAssociatedWithVirtualWanClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -31,6 +31,9 @@ type VPNServerConfigurationsAssociatedWithVirtualWanClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewVPNServerConfigurationsAssociatedWithVirtualWanClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VPNServerConfigurationsAssociatedWithVirtualWanClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -82,8 +85,7 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) listOperati
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -92,7 +94,7 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) listOperati
 func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) listCreateRequest(ctx context.Context, resourceGroupName string, virtualWANName string, _ *VPNServerConfigurationsAssociatedWithVirtualWanClientBeginListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{virtualWANName}/vpnServerConfigurations"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -108,7 +110,7 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) listCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

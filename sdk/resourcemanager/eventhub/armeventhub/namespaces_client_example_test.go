@@ -123,7 +123,7 @@ func ExampleNamespacesClient_BeginCreateOrUpdate_namespaceCreate() {
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armeventhub.EHNamespaceProperties{
 	// 			ClusterArmID: to.Ptr("/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.EventHub/clusters/enc-test"),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-16T22:36:06.107Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.February, 16, 22, 36, 6, 107000000, time.UTC)),
 	// 			DisableLocalAuth: to.Ptr(false),
 	// 			Encryption: &armeventhub.Encryption{
 	// 				KeySource: to.Ptr("Microsoft.KeyVault"),
@@ -164,7 +164,7 @@ func ExampleNamespacesClient_BeginCreateOrUpdate_namespaceCreate() {
 	// 			},
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceBusEndpoint: to.Ptr("https://NamespaceSample.servicebus.windows-int.net:443/"),
-	// 			UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-16T22:37:42.29Z"); return t}()),
+	// 			UpdatedAt: to.Ptr(time.Date(2021, time.February, 16, 22, 37, 42, 290000000, time.UTC)),
 	// 			ZoneRedundant: to.Ptr(false),
 	// 		},
 	// 		SKU: &armeventhub.SKU{
@@ -229,7 +229,7 @@ func ExampleNamespacesClient_BeginCreateOrUpdate_namespaceWithGeoDrCreate() {
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armeventhub.EHNamespaceProperties{
 	// 			ClusterArmID: to.Ptr("/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.EventHub/clusters/enc-test"),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-16T22:36:06.107Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.February, 16, 22, 36, 6, 107000000, time.UTC)),
 	// 			DisableLocalAuth: to.Ptr(false),
 	// 			GeoDataReplication: &armeventhub.GeoDataReplicationProperties{
 	// 				Locations: []*armeventhub.NamespaceReplicaLocation{
@@ -258,7 +258,7 @@ func ExampleNamespacesClient_BeginCreateOrUpdate_namespaceWithGeoDrCreate() {
 	// 			MinimumTLSVersion: to.Ptr(armeventhub.TLSVersionOne2),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceBusEndpoint: to.Ptr("https://NamespaceGeoDRCreateSample.servicebus.windows-int.net:443/"),
-	// 			UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-16T22:37:42.29Z"); return t}()),
+	// 			UpdatedAt: to.Ptr(time.Date(2021, time.February, 16, 22, 37, 42, 290000000, time.UTC)),
 	// 			ZoneRedundant: to.Ptr(false),
 	// 		},
 	// 		SKU: &armeventhub.SKU{
@@ -545,7 +545,7 @@ func ExampleNamespacesClient_Get() {
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armeventhub.EHNamespaceProperties{
 	// 			ClusterArmID: to.Ptr("/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.EventHub/clusters/enc-test"),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-30T00:28:38.963Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 28, 38, 963000000, time.UTC)),
 	// 			DisableLocalAuth: to.Ptr(false),
 	// 			Encryption: &armeventhub.Encryption{
 	// 				KeySource: to.Ptr("Microsoft.KeyVault"),
@@ -589,7 +589,7 @@ func ExampleNamespacesClient_Get() {
 	// 			},
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceBusEndpoint: to.Ptr("https://NamespaceSample.servicebus.windows-int.net:443"),
-	// 			UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-30T00:30:55.143Z"); return t}()),
+	// 			UpdatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 30, 55, 143000000, time.UTC)),
 	// 			ZoneRedundant: to.Ptr(false),
 	// 		},
 	// 		SKU: &armeventhub.SKU{
@@ -755,7 +755,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armeventhub.EHNamespaceProperties{
 		// 					ClusterArmID: to.Ptr("/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.EventHub/clusters/enc-test"),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-30T00:28:38.963Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 28, 38, 963000000, time.UTC)),
 		// 					DisableLocalAuth: to.Ptr(false),
 		// 					Encryption: &armeventhub.Encryption{
 		// 						KeySource: to.Ptr("Microsoft.KeyVault"),
@@ -777,7 +777,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 					MinimumTLSVersion: to.Ptr(armeventhub.TLSVersionOne2),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://NamespaceSample.servicebus.windows-int.net:443/"),
-		// 					UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-30T00:30:55.143Z"); return t}()),
+		// 					UpdatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 30, 55, 143000000, time.UTC)),
 		// 					ZoneRedundant: to.Ptr(false),
 		// 				},
 		// 				SKU: &armeventhub.SKU{
@@ -895,7 +895,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armeventhub.EHNamespaceProperties{
 		// 					ClusterArmID: to.Ptr("/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.EventHub/clusters/enc-test"),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-30T00:28:38.963Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 28, 38, 963000000, time.UTC)),
 		// 					DisableLocalAuth: to.Ptr(false),
 		// 					Encryption: &armeventhub.Encryption{
 		// 						KeySource: to.Ptr("Microsoft.KeyVault"),
@@ -916,7 +916,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("MetricGUID:NamespaceSample"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://NamespaceSample.servicebus.windows-int.net:443/"),
-		// 					UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-30T00:30:55.143Z"); return t}()),
+		// 					UpdatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 30, 55, 143000000, time.UTC)),
 		// 					ZoneRedundant: to.Ptr(false),
 		// 				},
 		// 				SKU: &armeventhub.SKU{
@@ -1111,7 +1111,7 @@ func ExampleNamespacesClient_Update() {
 	// 		},
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armeventhub.EHNamespaceProperties{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-30T00:28:38.963Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 28, 38, 963000000, time.UTC)),
 	// 			DisableLocalAuth: to.Ptr(false),
 	// 			Encryption: &armeventhub.Encryption{
 	// 				KeySource: to.Ptr("Microsoft.KeyVault"),
@@ -1138,7 +1138,7 @@ func ExampleNamespacesClient_Update() {
 	// 			},
 	// 			ProvisioningState: to.Ptr("ActivatingIdentity"),
 	// 			ServiceBusEndpoint: to.Ptr("https://NamespaceSample.servicebus.windows-int.net:443/"),
-	// 			UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-30T00:31:13.657Z"); return t}()),
+	// 			UpdatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 31, 13, 657000000, time.UTC)),
 	// 			ZoneRedundant: to.Ptr(false),
 	// 		},
 	// 		SKU: &armeventhub.SKU{

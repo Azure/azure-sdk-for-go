@@ -6,6 +6,16 @@ package armcloudhealth
 
 import "time"
 
+// AddDataAnnotationRequest - Request body for adding a data annotation.
+type AddDataAnnotationRequest struct {
+	// REQUIRED; Annotation details as a dynamic key-value pair bag. Service-enforced limits: a maximum of 10 entries per annotation
+	// and a maximum value length of 256 characters. Requests exceeding these limits will be rejected with a 400 response.
+	AnnotationDetails map[string]*string
+
+	// Optional description of the annotation
+	Description *string
+}
+
 // AlertConfiguration - Alert configuration details
 type AlertConfiguration struct {
 	// REQUIRED; The severity of triggered alert.
@@ -91,6 +101,59 @@ type AzureMonitorWorkspaceSignals struct {
 	Signals []*PrometheusMetricsSignal
 }
 
+// AzureResourceHealthSignal - Azure resource health signal configuration
+type AzureResourceHealthSignal struct {
+	// Whether to automatically add a signal for the Azure resource's availability state from Azure Resource Health. Defaults
+	// to Enabled.
+	Enabled *ResourceHealthAvailabilityStateSignalBehavior
+
+	// READ-ONLY; The unique name of the Azure resource health signal. System assigned.
+	SignalName *string
+
+	// READ-ONLY; Current status of the Azure resource health signal.
+	Status *AzureResourceHealthSignalStatus
+}
+
+// AzureResourceHealthSignalStatus - Status of an Azure Resource Health signal, including availability information reported
+// by Azure Resource Health.
+type AzureResourceHealthSignalStatus struct {
+	// Additional context as provided by the submitter
+	AdditionalContext *string
+
+	// READ-ONLY; Timestamp when Azure Resource Health observed the current availability state.
+	AvailabilityReportedTime *time.Time
+
+	// READ-ONLY; Availability state of the Azure resource as reported by Azure Resource Health.
+	AvailabilityState *ResourceHealthAvailabilityState
+
+	// READ-ONLY; Whether the status changing event was planned or unplanned.
+	Category *ResourceHealthCategory
+
+	// READ-ONLY; Detailed status of the Azure resource as reported by Azure Resource Health.
+	DetailedStatus *string
+
+	// READ-ONLY; Error message if the signal status cannot be retrieved
+	Error *string
+
+	// READ-ONLY; Health state of this signal
+	HealthState *HealthState
+
+	// READ-ONLY; Whether the current availability state is 'Persistent' or 'Transient'.
+	ReasonChronicity *ResourceHealthReasonChronicity
+
+	// READ-ONLY; Reason type for the current availability state (e.g. 'Unplanned', 'Planned', 'UserInitiated').
+	ReasonType *ResourceHealthReasonType
+
+	// READ-ONLY; Timestamp when the value was reported
+	ReportedAt *time.Time
+
+	// READ-ONLY; Human-readable summary of the current availability state from Azure Resource Health.
+	Summary *string
+
+	// READ-ONLY; Reported value of the signal
+	Value *float64
+}
+
 // AzureResourceSignal - An Azure Resource Metric signal instance assigned to an entity.
 type AzureResourceSignal struct {
 	// REQUIRED; Unique name of the signal within the entity.
@@ -106,10 +169,7 @@ type AzureResourceSignal struct {
 	// Unit of the signal result (e.g. Bytes, MilliSeconds, Percent, Count))
 	DataUnit *string
 
-	// Optional: Dimension to split by
-	Dimension *string
-
-	// Optional: Dimension filter to apply to the dimension. Must only be set if also Dimension is set.
+	// Optional: Dimension filter to apply to the dimension.
 	DimensionFilter *string
 
 	// Display name
@@ -158,14 +218,33 @@ type AzureResourceSignals struct {
 	// Azure resource kind (e.g., 'functionapp'). Populated by the UI for icon rendering. Can be null if not populated.
 	AzureResourceKind *string
 
+	// Optional configuration for automatically adding a signal based on the resource's availability state in Azure Resource Health.
+	ResourceHealth *AzureResourceHealthSignal
+
 	// Signals assigned to this group.
 	Signals []*AzureResourceSignal
+}
+
+// DataAnnotation - A single data annotation on an entity
+type DataAnnotation struct {
+	// REQUIRED; Annotation details as a dynamic key-value pair bag. Service-enforced limits: a maximum of 10 entries per annotation
+	// and a maximum value length of 256 characters. Requests exceeding these limits will be rejected with a 400 response.
+	AnnotationDetails map[string]*string
+
+	// Optional description of the annotation
+	Description *string
+
+	// READ-ONLY; Auto-assigned identifier for the annotation
+	AnnotationID *string
+
+	// READ-ONLY; Timestamp when the annotation was created
+	CreatedAt *time.Time
 }
 
 // DependenciesSignalGroupV2 - Properties for dependent entities, i.e. child entities
 type DependenciesSignalGroupV2 struct {
 	// REQUIRED; Aggregation type for child dependencies.
-	AggregationType *DependenciesAggregationType
+	AggregationType *AggregationType
 
 	// Degraded threshold for aggregation. For MinHealthy: parent is degraded when healthy count/percentage falls to or below
 	// this value. For MaxNotHealthy: parent is degraded when not-healthy count/percentage reaches or exceeds this value. Optional
@@ -181,7 +260,7 @@ type DependenciesSignalGroupV2 struct {
 	UnhealthyThreshold *float64
 
 	// Unit type for the aggregation thresholds. Required when aggregationType is MinHealthy or MaxNotHealthy.
-	Unit *DependenciesAggregationUnit
+	Unit *AggregationUnit
 }
 
 // DiscoveryError - Error details for a failed discovery operation
@@ -237,12 +316,17 @@ type DiscoveryRuleProperties struct {
 	// REQUIRED; Specification of the discovery rule defining how entities are discovered.
 	Specification DiscoveryRuleSpecificationClassification
 
-	// READ-ONLY; Name of the entity which represents the discovery rule. Note: It might take a few minutes after creating the
-	// discovery rule until the entity is created.
-	EntityName *string
+	// Whether to automatically add a signal for the Azure resource's availability state from Azure Resource Health to the discovered
+	// entities. Defaults to `Enabled`: discovery rules updated via this API version without setting this field will begin emitting
+	// a Resource Health availability signal. Pass `Disabled` to preserve pre-`2026-05-01-preview` behavior.
+	AddResourceHealthSignal *ResourceHealthAvailabilityStateSignalBehavior
 
 	// Display name
 	DisplayName *string
+
+	// READ-ONLY; Name of the entity which represents the discovery rule. Note: It might take a few minutes after creating the
+	// discovery rule until the entity is created.
+	EntityName *string
 
 	// READ-ONLY; Error details if the last discovery operation failed.
 	Error *DiscoveryError
@@ -303,8 +387,15 @@ type EntityHistoryRequest struct {
 	// End time for the history query. Defaults to now if not specified.
 	EndAt *time.Time
 
+	// An opaque string value that identifies the portion of the result set to be returned with the next operation. Must not be
+	// combined with startAt or endAt.
+	NextMarker *string
+
 	// Start time for the history query. Defaults to 24 hours ago if not specified.
 	StartAt *time.Time
+
+	// Maximum number of health state transitions to return per page. Defaults to 1000.
+	Top *int32
 }
 
 // EntityHistoryResponse - Response containing entity health state transitions
@@ -314,6 +405,9 @@ type EntityHistoryResponse struct {
 
 	// REQUIRED; List of health state transitions
 	History []*HealthStateTransition
+
+	// An opaque string value that identifies the portion of the result set to be returned with the next operation.
+	NextMarker *string
 }
 
 // EntityListResult - The response of a Entity list operation.
@@ -344,6 +438,12 @@ type EntityProperties struct {
 
 	// Impact of the entity in health state propagation
 	Impact *EntityImpact
+
+	// Logical aggregation groups over the signals on this entity. Overlap is allowed: the same signal may appear in more than
+	// one group's members. Each group is evaluated independently according to its strategy, and a shared signal can contribute
+	// to multiple group states and related per-group telemetry. Group states contribute alongside any ungrouped signals and the
+	// dependency-aggregated child health to the entity's overall worst-of composite.
+	SignalAggregationGroups []*SignalAggregationGroup
 
 	// Signal groups which are assigned to this entity
 	SignalGroups *SignalGroups
@@ -402,6 +502,51 @@ func (e *ExternalSignal) GetSignalInstanceProperties() *SignalInstanceProperties
 type ExternalSignalGroup struct {
 	// READ-ONLY; Signals assigned to this signal group.
 	Signals []*ExternalSignal
+}
+
+// GetDataAnnotationsRequest - Request body for querying data annotations
+type GetDataAnnotationsRequest struct {
+	// End of UTC time range. Defaults to now if not specified.
+	EndAt *time.Time
+
+	// An opaque string value that identifies the portion of the result set to be returned with the next operation. Must not be
+	// combined with startAt or endAt.
+	NextMarker *string
+
+	// Start of UTC time range. Defaults to 24 hours ago if not specified.
+	StartAt *time.Time
+
+	// Maximum number of annotations to return per page. Defaults to 100.
+	Top *int32
+}
+
+// GetDataAnnotationsResponse - Response containing data annotations for an entity
+type GetDataAnnotationsResponse struct {
+	// REQUIRED; List of data annotations
+	Annotations []*DataAnnotation
+
+	// REQUIRED; Name of the entity
+	EntityName *string
+
+	// An opaque string value that identifies the portion of the result set to be returned with the next operation.
+	NextMarker *string
+}
+
+// GetSignalRecommendationsResponse - Response from `getSignalRecommendations` containing two independent suggestion streams
+// for the Azure resource type represented by the target Entity. `recommendedSignals` lists signals broadly recommended to
+// be enabled by default; `recommendedConfigurations` lists additional metrics that are not broadly applicable but, if a caller
+// chooses to monitor one of them, ship with suggested starting-point thresholds. The two arrays are independent — items are
+// not paired by index, and callers should treat them as two separate suggestion streams.
+type GetSignalRecommendationsResponse struct {
+	// REQUIRED; Additional signal configurations for metrics that are not broadly applicable to every health model for an Entity
+	// of this resource type, but if a caller chooses to monitor one of these metrics, the provided thresholds are suggested as
+	// a starting point. Independent of `recommendedSignals` — not paired by index.
+	RecommendedConfigurations []*SignalConfiguration
+
+	// REQUIRED; Signals that are broadly recommended to be enabled by default for health models monitoring an Entity of this
+	// resource type. Each entry is a complete signal configuration (metric, aggregation, thresholds) ready to be added to a health
+	// model. Independent of `recommendedConfigurations` — not paired by index.
+	RecommendedSignals []*SignalConfiguration
 }
 
 // HealthModel - A HealthModel resource
@@ -887,10 +1032,7 @@ type ResourceMetricSignalDefinitionProperties struct {
 	// Unit of the signal result (e.g. Bytes, MilliSeconds, Percent, Count))
 	DataUnit *string
 
-	// Optional: Dimension to split by
-	Dimension *string
-
-	// Optional: Dimension filter to apply to the dimension. Must only be set if also Dimension is set.
+	// Optional: Dimension filter to apply to the dimension.
 	DimensionFilter *string
 
 	// Display name
@@ -917,6 +1059,80 @@ func (r *ResourceMetricSignalDefinitionProperties) GetSignalDefinitionProperties
 		SignalKind:        r.SignalKind,
 		Tags:              r.Tags,
 	}
+}
+
+// SignalAggregationGroup - A logical group of signals on an entity, evaluated under a configurable aggregation strategy.
+// Groups are independent even when they share members. Each group's aggregated state is one of the inputs to the entity's
+// composite health computation alongside any signals not declared in any group's members[].
+type SignalAggregationGroup struct {
+	// REQUIRED; Names of signals on this entity which are members of the group. Members are matched by name; references to signals
+	// that do not currently exist on the entity are accepted (typically for pre-declared external signals) and surfaced via 'unresolvedMembers'.
+	// A signal may be listed in multiple groups; no duplicates within this list.
+	Members []*string
+
+	// REQUIRED; Name of the aggregation group. Unique within the entity.
+	Name *string
+
+	// Aggregation strategy applied across the members of this group.
+	AggregationType *AggregationType
+
+	// Degraded threshold for threshold-bearing strategies (MinHealthy, MaxNotHealthy). For MinHealthy: group is degraded when
+	// the healthy member count/percentage falls to or below this value. For MaxNotHealthy: group is degraded when the not-healthy
+	// member count/percentage reaches or exceeds this value. Optional — if not set, the group transitions directly between Healthy
+	// and Unhealthy. MUST NOT be set when aggregationType is WorstOf or BestOf.
+	DegradedThreshold *float64
+
+	// Display name
+	DisplayName *string
+
+	// If true (default), members reporting Unknown are excluded from the aggregation. For MinHealthy and MaxNotHealthy this flag
+	// affects the denominator/count and is meaningful. For WorstOf and BestOf the flag has no observable effect: under WorstOf,
+	// Unknown=0 is the lowest severity and can never beat any non-Unknown member in a Max() so filtering it changes nothing observable;
+	// under BestOf, Unknown is unconditionally excluded by the strategy itself irrespective of the flag. The flag is retained
+	// on the contract for vocabulary symmetry across all four strategies.
+	IgnoreUnknown *bool
+
+	// Unhealthy threshold for threshold-bearing strategies. Required when aggregationType is MinHealthy or MaxNotHealthy; MUST
+	// NOT be set otherwise.
+	UnhealthyThreshold *float64
+
+	// Unit type for the thresholds. Required when aggregationType is MinHealthy or MaxNotHealthy; MUST NOT be set otherwise.
+	Unit *AggregationUnit
+
+	// READ-ONLY; Computed aggregated health state of the group as of the last entity evaluation. Unknown if no resolvable members
+	// or all members filtered out.
+	AggregatedHealthState *HealthState
+
+	// READ-ONLY; Members listed in 'members' that do not currently resolve to a signal on this entity at the time of the last
+	// entity evaluation. Treated as Unknown during aggregation. Empty/omitted when every member resolves.
+	UnresolvedMembers []*string
+}
+
+// SignalConfiguration - A signal configuration for an Azure resource type
+type SignalConfiguration struct {
+	// REQUIRED; Unique identifier of the recommended signal configuration.
+	SignalID *string
+
+	// Type of aggregation to apply to the metric.
+	AggregationType *MetricAggregationType
+
+	// Optional dimension filter to apply to the metric.
+	DimensionFilter *string
+
+	// Evaluation rules with recommended thresholds.
+	EvaluationRules *EvaluationRule
+
+	// Name of the metric (e.g. 'Percentage CPU').
+	MetricName *string
+
+	// Metric namespace (e.g. 'microsoft.compute/virtualmachines').
+	MetricNamespace *string
+
+	// Time range of the metric. ISO 8601 duration format (e.g. 'PT5M').
+	TimeGrain *string
+
+	// Unit of the metric (e.g. Percent, Bytes, Count).
+	Unit *string
 }
 
 // SignalDefinition - A signal definition in a health model
@@ -1017,8 +1233,15 @@ type SignalHistoryRequest struct {
 	// End time for the history query. Defaults to now if not specified.
 	EndAt *time.Time
 
+	// An opaque string value that identifies the portion of the result set to be returned with the next operation. Must not be
+	// combined with startAt or endAt.
+	NextMarker *string
+
 	// Start time for the history query. Defaults to 24 hours ago if not specified.
 	StartAt *time.Time
+
+	// Maximum number of data points to return per page. Defaults to 1000.
+	Top *int32
 }
 
 // SignalHistoryResponse - Response containing signal history
@@ -1031,6 +1254,9 @@ type SignalHistoryResponse struct {
 
 	// REQUIRED; Name of the signal
 	SignalName *string
+
+	// An opaque string value that identifies the portion of the result set to be returned with the next operation.
+	NextMarker *string
 }
 
 // SignalInstanceProperties - Additional properties for signal instances assigned to an entity
@@ -1053,6 +1279,9 @@ func (s *SignalInstanceProperties) GetSignalInstanceProperties() *SignalInstance
 
 // SignalStatus - Status of a signal
 type SignalStatus struct {
+	// Additional context as provided by the submitter
+	AdditionalContext *string
+
 	// READ-ONLY; Error message if the signal status cannot be retrieved
 	Error *string
 
@@ -1092,7 +1321,10 @@ type ThresholdRuleV2 struct {
 	// REQUIRED; Operator how to compare the signal value with the threshold
 	Operator *SignalOperator
 
-	// REQUIRED; Threshold value
+	// Sensitivity level for dynamic threshold detection. Only applicable when operator is Dynamic.
+	Sensitivity *DynamicThresholdSensitivity
+
+	// Threshold value
 	Threshold *float64
 }
 

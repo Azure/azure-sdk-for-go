@@ -30,6 +30,9 @@ type DynamicSchemaVersionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDynamicSchemaVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DynamicSchemaVersionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -84,8 +87,7 @@ func (client *DynamicSchemaVersionsClient) createOrUpdate(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -94,7 +96,7 @@ func (client *DynamicSchemaVersionsClient) createOrUpdate(ctx context.Context, r
 func (client *DynamicSchemaVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, resource DynamicSchemaVersion, _ *DynamicSchemaVersionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}/versions/{dynamicSchemaVersionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -170,8 +172,7 @@ func (client *DynamicSchemaVersionsClient) deleteOperation(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -180,7 +181,7 @@ func (client *DynamicSchemaVersionsClient) deleteOperation(ctx context.Context, 
 func (client *DynamicSchemaVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, _ *DynamicSchemaVersionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}/versions/{dynamicSchemaVersionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -231,19 +232,14 @@ func (client *DynamicSchemaVersionsClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return DynamicSchemaVersionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DynamicSchemaVersionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *DynamicSchemaVersionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, _ *DynamicSchemaVersionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}/versions/{dynamicSchemaVersionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -274,8 +270,11 @@ func (client *DynamicSchemaVersionsClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *DynamicSchemaVersionsClient) getHandleResponse(resp *http.Response) (DynamicSchemaVersionsClientGetResponse, error) {
+func (client *DynamicSchemaVersionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DynamicSchemaVersionsClientGetResponse, error) {
 	result := DynamicSchemaVersionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DynamicSchemaVersion); err != nil {
 		return DynamicSchemaVersionsClientGetResponse{}, err
 	}
@@ -299,51 +298,65 @@ func (client *DynamicSchemaVersionsClient) NewListByDynamicSchemaPager(resourceG
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDynamicSchemaCreateRequest(ctx, resourceGroupName, schemaName, dynamicSchemaName, options)
-			}, nil)
+			req, err := client.listByDynamicSchemaCreateRequest(ctx, resourceGroupName, schemaName, dynamicSchemaName, nextLink, options)
 			if err != nil {
 				return DynamicSchemaVersionsClientListByDynamicSchemaResponse{}, err
 			}
-			return client.listByDynamicSchemaHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DynamicSchemaVersionsClientListByDynamicSchemaResponse{}, err
+			}
+			return client.listByDynamicSchemaHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDynamicSchemaCreateRequest creates the ListByDynamicSchema request.
-func (client *DynamicSchemaVersionsClient) listByDynamicSchemaCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, _ *DynamicSchemaVersionsClientListByDynamicSchemaOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}/versions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DynamicSchemaVersionsClient) listByDynamicSchemaCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, nextLink string, _ *DynamicSchemaVersionsClientListByDynamicSchemaOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}/versions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if schemaName == "" {
+			return nil, errors.New("parameter schemaName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{schemaName}", url.PathEscape(schemaName))
+		if dynamicSchemaName == "" {
+			return nil, errors.New("parameter dynamicSchemaName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{dynamicSchemaName}", url.PathEscape(dynamicSchemaName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if schemaName == "" {
-		return nil, errors.New("parameter schemaName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{schemaName}", url.PathEscape(schemaName))
-	if dynamicSchemaName == "" {
-		return nil, errors.New("parameter dynamicSchemaName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{dynamicSchemaName}", url.PathEscape(dynamicSchemaName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByDynamicSchemaHandleResponse handles the ListByDynamicSchema response.
-func (client *DynamicSchemaVersionsClient) listByDynamicSchemaHandleResponse(resp *http.Response) (DynamicSchemaVersionsClientListByDynamicSchemaResponse, error) {
+func (client *DynamicSchemaVersionsClient) listByDynamicSchemaHandleResponse(resp *http.Response, successCodes ...int) (DynamicSchemaVersionsClientListByDynamicSchemaResponse, error) {
 	result := DynamicSchemaVersionsClientListByDynamicSchemaResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DynamicSchemaVersionListResult); err != nil {
 		return DynamicSchemaVersionsClientListByDynamicSchemaResponse{}, err
 	}
@@ -373,19 +386,14 @@ func (client *DynamicSchemaVersionsClient) Update(ctx context.Context, resourceG
 	if err != nil {
 		return DynamicSchemaVersionsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DynamicSchemaVersionsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *DynamicSchemaVersionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, properties DynamicSchemaVersion, _ *DynamicSchemaVersionsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}/versions/{dynamicSchemaVersionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -420,8 +428,11 @@ func (client *DynamicSchemaVersionsClient) updateCreateRequest(ctx context.Conte
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DynamicSchemaVersionsClient) updateHandleResponse(resp *http.Response) (DynamicSchemaVersionsClientUpdateResponse, error) {
+func (client *DynamicSchemaVersionsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (DynamicSchemaVersionsClientUpdateResponse, error) {
 	result := DynamicSchemaVersionsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DynamicSchemaVersion); err != nil {
 		return DynamicSchemaVersionsClientUpdateResponse{}, err
 	}

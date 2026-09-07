@@ -19,7 +19,7 @@ import (
 // RaiBlocklistItemsClient contains the methods for the RaiBlocklistItems group.
 // Don't use this type directly, use NewRaiBlocklistItemsClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-07-15-preview
 type RaiBlocklistItemsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type RaiBlocklistItemsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRaiBlocklistItemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RaiBlocklistItemsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *RaiBlocklistItemsClient) BatchAdd(ctx context.Context, resourceGro
 	if err != nil {
 		return RaiBlocklistItemsClientBatchAddResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RaiBlocklistItemsClientBatchAddResponse{}, err
-	}
-	resp, err := client.batchAddHandleResponse(httpResp)
-	return resp, err
+	return client.batchAddHandleResponse(httpResp, http.StatusOK)
 }
 
 // batchAddCreateRequest creates the BatchAdd request.
 func (client *RaiBlocklistItemsClient) batchAddCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItems []*RaiBlocklistItemBulkRequest, _ *RaiBlocklistItemsClientBatchAddOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/addRaiBlocklistItems"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -95,7 +93,7 @@ func (client *RaiBlocklistItemsClient) batchAddCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -106,8 +104,11 @@ func (client *RaiBlocklistItemsClient) batchAddCreateRequest(ctx context.Context
 }
 
 // batchAddHandleResponse handles the BatchAdd response.
-func (client *RaiBlocklistItemsClient) batchAddHandleResponse(resp *http.Response) (RaiBlocklistItemsClientBatchAddResponse, error) {
+func (client *RaiBlocklistItemsClient) batchAddHandleResponse(resp *http.Response, successCodes ...int) (RaiBlocklistItemsClientBatchAddResponse, error) {
 	result := RaiBlocklistItemsClientBatchAddResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RaiBlocklist); err != nil {
 		return RaiBlocklistItemsClientBatchAddResponse{}, err
 	}
@@ -137,8 +138,7 @@ func (client *RaiBlocklistItemsClient) BatchDelete(ctx context.Context, resource
 		return RaiBlocklistItemsClientBatchDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return RaiBlocklistItemsClientBatchDeleteResponse{}, err
+		return RaiBlocklistItemsClientBatchDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return RaiBlocklistItemsClientBatchDeleteResponse{}, nil
 }
@@ -147,7 +147,7 @@ func (client *RaiBlocklistItemsClient) BatchDelete(ctx context.Context, resource
 func (client *RaiBlocklistItemsClient) batchDeleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemsNames []*string, _ *RaiBlocklistItemsClientBatchDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/deleteRaiBlocklistItems"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -167,7 +167,7 @@ func (client *RaiBlocklistItemsClient) batchDeleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, raiBlocklistItemsNames); err != nil {
@@ -199,19 +199,14 @@ func (client *RaiBlocklistItemsClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return RaiBlocklistItemsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return RaiBlocklistItemsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *RaiBlocklistItemsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemName string, raiBlocklistItem RaiBlocklistItem, _ *RaiBlocklistItemsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -235,7 +230,7 @@ func (client *RaiBlocklistItemsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -246,8 +241,11 @@ func (client *RaiBlocklistItemsClient) createOrUpdateCreateRequest(ctx context.C
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *RaiBlocklistItemsClient) createOrUpdateHandleResponse(resp *http.Response) (RaiBlocklistItemsClientCreateOrUpdateResponse, error) {
+func (client *RaiBlocklistItemsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (RaiBlocklistItemsClientCreateOrUpdateResponse, error) {
 	result := RaiBlocklistItemsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RaiBlocklistItem); err != nil {
 		return RaiBlocklistItemsClientCreateOrUpdateResponse{}, err
 	}
@@ -296,8 +294,7 @@ func (client *RaiBlocklistItemsClient) deleteOperation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -306,7 +303,7 @@ func (client *RaiBlocklistItemsClient) deleteOperation(ctx context.Context, reso
 func (client *RaiBlocklistItemsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemName string, _ *RaiBlocklistItemsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -330,7 +327,7 @@ func (client *RaiBlocklistItemsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -356,19 +353,14 @@ func (client *RaiBlocklistItemsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return RaiBlocklistItemsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RaiBlocklistItemsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *RaiBlocklistItemsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemName string, _ *RaiBlocklistItemsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -392,15 +384,18 @@ func (client *RaiBlocklistItemsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RaiBlocklistItemsClient) getHandleResponse(resp *http.Response) (RaiBlocklistItemsClientGetResponse, error) {
+func (client *RaiBlocklistItemsClient) getHandleResponse(resp *http.Response, successCodes ...int) (RaiBlocklistItemsClientGetResponse, error) {
 	result := RaiBlocklistItemsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RaiBlocklistItem); err != nil {
 		return RaiBlocklistItemsClientGetResponse{}, err
 	}
@@ -424,51 +419,65 @@ func (client *RaiBlocklistItemsClient) NewListPager(resourceGroupName string, ac
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, accountName, raiBlocklistName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, raiBlocklistName, nextLink, options)
 			if err != nil {
 				return RaiBlocklistItemsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RaiBlocklistItemsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *RaiBlocklistItemsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, _ *RaiBlocklistItemsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RaiBlocklistItemsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, nextLink string, _ *RaiBlocklistItemsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		if raiBlocklistName == "" {
+			return nil, errors.New("parameter raiBlocklistName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{raiBlocklistName}", url.PathEscape(raiBlocklistName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if raiBlocklistName == "" {
-		return nil, errors.New("parameter raiBlocklistName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{raiBlocklistName}", url.PathEscape(raiBlocklistName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RaiBlocklistItemsClient) listHandleResponse(resp *http.Response) (RaiBlocklistItemsClientListResponse, error) {
+func (client *RaiBlocklistItemsClient) listHandleResponse(resp *http.Response, successCodes ...int) (RaiBlocklistItemsClientListResponse, error) {
 	result := RaiBlocklistItemsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RaiBlockListItemsResult); err != nil {
 		return RaiBlocklistItemsClientListResponse{}, err
 	}

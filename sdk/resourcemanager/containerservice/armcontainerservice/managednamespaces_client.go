@@ -19,7 +19,7 @@ import (
 // ManagedNamespacesClient contains the methods for the ManagedNamespaces group.
 // Don't use this type directly, use NewManagedNamespacesClient() instead.
 //
-// Generated from API version 2026-04-02-preview
+// Generated from API version 2026-06-02-preview
 type ManagedNamespacesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ManagedNamespacesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedNamespacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedNamespacesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -85,8 +88,7 @@ func (client *ManagedNamespacesClient) createOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -95,7 +97,7 @@ func (client *ManagedNamespacesClient) createOrUpdate(ctx context.Context, resou
 func (client *ManagedNamespacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, managedNamespaceName string, parameters ManagedNamespace, _ *ManagedNamespacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/managedNamespaces/{managedNamespaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -115,7 +117,7 @@ func (client *ManagedNamespacesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260402Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -166,8 +168,7 @@ func (client *ManagedNamespacesClient) deleteOperation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -176,7 +177,7 @@ func (client *ManagedNamespacesClient) deleteOperation(ctx context.Context, reso
 func (client *ManagedNamespacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, managedNamespaceName string, _ *ManagedNamespacesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/managedNamespaces/{managedNamespaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -196,7 +197,7 @@ func (client *ManagedNamespacesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260402Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -221,19 +222,14 @@ func (client *ManagedNamespacesClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ManagedNamespacesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedNamespacesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ManagedNamespacesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, managedNamespaceName string, _ *ManagedNamespacesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/managedNamespaces/{managedNamespaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -253,15 +249,18 @@ func (client *ManagedNamespacesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260402Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedNamespacesClient) getHandleResponse(resp *http.Response) (ManagedNamespacesClientGetResponse, error) {
+func (client *ManagedNamespacesClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedNamespacesClientGetResponse, error) {
 	result := ManagedNamespacesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedNamespace); err != nil {
 		return ManagedNamespacesClientGetResponse{}, err
 	}
@@ -284,47 +283,61 @@ func (client *ManagedNamespacesClient) NewListByManagedClusterPager(resourceGrou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByManagedClusterCreateRequest(ctx, resourceGroupName, resourceName, options)
-			}, nil)
+			req, err := client.listByManagedClusterCreateRequest(ctx, resourceGroupName, resourceName, nextLink, options)
 			if err != nil {
 				return ManagedNamespacesClientListByManagedClusterResponse{}, err
 			}
-			return client.listByManagedClusterHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedNamespacesClientListByManagedClusterResponse{}, err
+			}
+			return client.listByManagedClusterHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByManagedClusterCreateRequest creates the ListByManagedCluster request.
-func (client *ManagedNamespacesClient) listByManagedClusterCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ManagedNamespacesClientListByManagedClusterOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/managedNamespaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedNamespacesClient) listByManagedClusterCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, nextLink string, _ *ManagedNamespacesClientListByManagedClusterOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/managedNamespaces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if resourceName == "" {
+			return nil, errors.New("parameter resourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260402Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260602Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByManagedClusterHandleResponse handles the ListByManagedCluster response.
-func (client *ManagedNamespacesClient) listByManagedClusterHandleResponse(resp *http.Response) (ManagedNamespacesClientListByManagedClusterResponse, error) {
+func (client *ManagedNamespacesClient) listByManagedClusterHandleResponse(resp *http.Response, successCodes ...int) (ManagedNamespacesClientListByManagedClusterResponse, error) {
 	result := ManagedNamespacesClientListByManagedClusterResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedNamespaceListResult); err != nil {
 		return ManagedNamespacesClientListByManagedClusterResponse{}, err
 	}
@@ -352,19 +365,14 @@ func (client *ManagedNamespacesClient) ListCredential(ctx context.Context, resou
 	if err != nil {
 		return ManagedNamespacesClientListCredentialResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedNamespacesClientListCredentialResponse{}, err
-	}
-	resp, err := client.listCredentialHandleResponse(httpResp)
-	return resp, err
+	return client.listCredentialHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCredentialCreateRequest creates the ListCredential request.
 func (client *ManagedNamespacesClient) listCredentialCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, managedNamespaceName string, _ *ManagedNamespacesClientListCredentialOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/managedNamespaces/{managedNamespaceName}/listCredential"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -384,15 +392,18 @@ func (client *ManagedNamespacesClient) listCredentialCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260402Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listCredentialHandleResponse handles the ListCredential response.
-func (client *ManagedNamespacesClient) listCredentialHandleResponse(resp *http.Response) (ManagedNamespacesClientListCredentialResponse, error) {
+func (client *ManagedNamespacesClient) listCredentialHandleResponse(resp *http.Response, successCodes ...int) (ManagedNamespacesClientListCredentialResponse, error) {
 	result := ManagedNamespacesClientListCredentialResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CredentialResults); err != nil {
 		return ManagedNamespacesClientListCredentialResponse{}, err
 	}
@@ -421,19 +432,14 @@ func (client *ManagedNamespacesClient) Update(ctx context.Context, resourceGroup
 	if err != nil {
 		return ManagedNamespacesClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedNamespacesClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *ManagedNamespacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, managedNamespaceName string, parameters TagsObject, _ *ManagedNamespacesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/managedNamespaces/{managedNamespaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -453,7 +459,7 @@ func (client *ManagedNamespacesClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260402Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -464,8 +470,11 @@ func (client *ManagedNamespacesClient) updateCreateRequest(ctx context.Context, 
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ManagedNamespacesClient) updateHandleResponse(resp *http.Response) (ManagedNamespacesClientUpdateResponse, error) {
+func (client *ManagedNamespacesClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ManagedNamespacesClientUpdateResponse, error) {
 	result := ManagedNamespacesClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedNamespace); err != nil {
 		return ManagedNamespacesClientUpdateResponse{}, err
 	}

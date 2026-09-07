@@ -19,7 +19,7 @@ import (
 // ResourceClient contains the methods for the Resource group.
 // Don't use this type directly, use NewResourceClient() instead.
 //
-// Generated from API version 2026-04-15-preview
+// Generated from API version 2026-06-15-preview
 type ResourceClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ResourceClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *ResourceClient) CheckFilePathAvailability(ctx context.Context, loc
 	if err != nil {
 		return ResourceClientCheckFilePathAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceClientCheckFilePathAvailabilityResponse{}, err
-	}
-	resp, err := client.checkFilePathAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkFilePathAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkFilePathAvailabilityCreateRequest creates the CheckFilePathAvailability request.
 func (client *ResourceClient) checkFilePathAvailabilityCreateRequest(ctx context.Context, location string, body FilePathAvailabilityRequest, _ *ResourceClientCheckFilePathAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkFilePathAvailability"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -87,7 +85,7 @@ func (client *ResourceClient) checkFilePathAvailabilityCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260415Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -98,8 +96,11 @@ func (client *ResourceClient) checkFilePathAvailabilityCreateRequest(ctx context
 }
 
 // checkFilePathAvailabilityHandleResponse handles the CheckFilePathAvailability response.
-func (client *ResourceClient) checkFilePathAvailabilityHandleResponse(resp *http.Response) (ResourceClientCheckFilePathAvailabilityResponse, error) {
+func (client *ResourceClient) checkFilePathAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientCheckFilePathAvailabilityResponse, error) {
 	result := ResourceClientCheckFilePathAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckAvailabilityResponse); err != nil {
 		return ResourceClientCheckFilePathAvailabilityResponse{}, err
 	}
@@ -128,19 +129,14 @@ func (client *ResourceClient) CheckNameAvailability(ctx context.Context, locatio
 	if err != nil {
 		return ResourceClientCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
 func (client *ResourceClient) checkNameAvailabilityCreateRequest(ctx context.Context, location string, body ResourceNameAvailabilityRequest, _ *ResourceClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkNameAvailability"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -152,7 +148,7 @@ func (client *ResourceClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260415Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -163,8 +159,11 @@ func (client *ResourceClient) checkNameAvailabilityCreateRequest(ctx context.Con
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *ResourceClient) checkNameAvailabilityHandleResponse(resp *http.Response) (ResourceClientCheckNameAvailabilityResponse, error) {
+func (client *ResourceClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientCheckNameAvailabilityResponse, error) {
 	result := ResourceClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckAvailabilityResponse); err != nil {
 		return ResourceClientCheckNameAvailabilityResponse{}, err
 	}
@@ -193,19 +192,14 @@ func (client *ResourceClient) CheckQuotaAvailability(ctx context.Context, locati
 	if err != nil {
 		return ResourceClientCheckQuotaAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceClientCheckQuotaAvailabilityResponse{}, err
-	}
-	resp, err := client.checkQuotaAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkQuotaAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkQuotaAvailabilityCreateRequest creates the CheckQuotaAvailability request.
 func (client *ResourceClient) checkQuotaAvailabilityCreateRequest(ctx context.Context, location string, body QuotaAvailabilityRequest, _ *ResourceClientCheckQuotaAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkQuotaAvailability"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -217,7 +211,7 @@ func (client *ResourceClient) checkQuotaAvailabilityCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260415Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -228,8 +222,11 @@ func (client *ResourceClient) checkQuotaAvailabilityCreateRequest(ctx context.Co
 }
 
 // checkQuotaAvailabilityHandleResponse handles the CheckQuotaAvailability response.
-func (client *ResourceClient) checkQuotaAvailabilityHandleResponse(resp *http.Response) (ResourceClientCheckQuotaAvailabilityResponse, error) {
+func (client *ResourceClient) checkQuotaAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientCheckQuotaAvailabilityResponse, error) {
 	result := ResourceClientCheckQuotaAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckAvailabilityResponse); err != nil {
 		return ResourceClientCheckQuotaAvailabilityResponse{}, err
 	}
@@ -258,19 +255,14 @@ func (client *ResourceClient) QueryNetworkSiblingSet(ctx context.Context, locati
 	if err != nil {
 		return ResourceClientQueryNetworkSiblingSetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceClientQueryNetworkSiblingSetResponse{}, err
-	}
-	resp, err := client.queryNetworkSiblingSetHandleResponse(httpResp)
-	return resp, err
+	return client.queryNetworkSiblingSetHandleResponse(httpResp, http.StatusOK)
 }
 
 // queryNetworkSiblingSetCreateRequest creates the QueryNetworkSiblingSet request.
 func (client *ResourceClient) queryNetworkSiblingSetCreateRequest(ctx context.Context, location string, body QueryNetworkSiblingSetRequest, _ *ResourceClientQueryNetworkSiblingSetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/queryNetworkSiblingSet"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -282,7 +274,7 @@ func (client *ResourceClient) queryNetworkSiblingSetCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260415Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -293,8 +285,11 @@ func (client *ResourceClient) queryNetworkSiblingSetCreateRequest(ctx context.Co
 }
 
 // queryNetworkSiblingSetHandleResponse handles the QueryNetworkSiblingSet response.
-func (client *ResourceClient) queryNetworkSiblingSetHandleResponse(resp *http.Response) (ResourceClientQueryNetworkSiblingSetResponse, error) {
+func (client *ResourceClient) queryNetworkSiblingSetHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientQueryNetworkSiblingSetResponse, error) {
 	result := ResourceClientQueryNetworkSiblingSetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSiblingSet); err != nil {
 		return ResourceClientQueryNetworkSiblingSetResponse{}, err
 	}
@@ -322,19 +317,14 @@ func (client *ResourceClient) QueryRegionInfo(ctx context.Context, location stri
 	if err != nil {
 		return ResourceClientQueryRegionInfoResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceClientQueryRegionInfoResponse{}, err
-	}
-	resp, err := client.queryRegionInfoHandleResponse(httpResp)
-	return resp, err
+	return client.queryRegionInfoHandleResponse(httpResp, http.StatusOK)
 }
 
 // queryRegionInfoCreateRequest creates the QueryRegionInfo request.
 func (client *ResourceClient) queryRegionInfoCreateRequest(ctx context.Context, location string, _ *ResourceClientQueryRegionInfoOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/regionInfo"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -346,15 +336,18 @@ func (client *ResourceClient) queryRegionInfoCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260415Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // queryRegionInfoHandleResponse handles the QueryRegionInfo response.
-func (client *ResourceClient) queryRegionInfoHandleResponse(resp *http.Response) (ResourceClientQueryRegionInfoResponse, error) {
+func (client *ResourceClient) queryRegionInfoHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientQueryRegionInfoResponse, error) {
 	result := ResourceClientQueryRegionInfoResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegionInfo); err != nil {
 		return ResourceClientQueryRegionInfoResponse{}, err
 	}
@@ -405,8 +398,7 @@ func (client *ResourceClient) updateNetworkSiblingSet(ctx context.Context, locat
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -415,7 +407,7 @@ func (client *ResourceClient) updateNetworkSiblingSet(ctx context.Context, locat
 func (client *ResourceClient) updateNetworkSiblingSetCreateRequest(ctx context.Context, location string, body UpdateNetworkSiblingSetRequest, _ *ResourceClientBeginUpdateNetworkSiblingSetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/updateNetworkSiblingSet"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -427,7 +419,7 @@ func (client *ResourceClient) updateNetworkSiblingSetCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260415Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

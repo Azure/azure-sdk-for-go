@@ -185,12 +185,32 @@ type AgentPoolListResult struct {
 	NextLink *string
 }
 
+// AgentPoolNICPublicIPAddressConfiguration - Public IP configuration applied to a secondary NIC on an agent pool. `ipTags`
+// and `publicIPPrefixID` are mutually exclusive, matching the primary NIC's behavior. For more information, see https://aka.ms/aks/multi-nic
+type AgentPoolNICPublicIPAddressConfiguration struct {
+	// REQUIRED; IP version of the public IP provisioned for this NIC. Required: its presence is what enables public IP provisioning,
+	// so an empty configuration allocates nothing. `IPv4` is the only accepted value.
+	PublicIPAddressVersion *AgentPoolNICPublicIPAddressVersion
+
+	// IP tags to attach to the public IP allocated for this NIC. Each tag's `ipTagType` must be `FirstPartyUsage`, `NetworkDomain`,
+	// or `RoutingPreference`. Mutually exclusive with `publicIPPrefixID`.
+	IPTags []*IPTag
+
+	// The resource ID of a public IP prefix to draw this NIC's public IP from. Mutually exclusive with `ipTags`.
+	PublicIPPrefixID *string
+}
+
 // AgentPoolNetworkInterface - Configuration of a secondary network interface provisioned on each VM instance in the agent
 // pool. For more information, see https://aka.ms/aks/multi-nic
 type AgentPoolNetworkInterface struct {
 	// Whether accelerated networking is enabled on this secondary NIC. If omitted, this defaults to true only when the agent
 	// pool VM SKU supports accelerated networking. Validation will fail if it is enabled on an unsupported SKU or NIC configuration.
 	EnableAcceleratedNetworking *bool
+
+	// Public IP configuration for this secondary NIC. Only valid when `type` is `Standard`. Set `publicIPAddressVersion` to provision
+	// a per-VM instance-level public IP for the NIC, then optionally shape it with `ipTags` or `publicIPPrefixID`. If omitted,
+	// no public IP is provisioned. Idle timeout is not configurable. For more information, see https://aka.ms/aks/multi-nic
+	PublicIPAddressConfiguration *AgentPoolNICPublicIPAddressConfiguration
 
 	// Type of NIC to be provisioned on the VM.
 	Type *AgentPoolNetworkInterfaceType
@@ -207,6 +227,9 @@ type AgentPoolNetworkProfile struct {
 
 	// The IDs of the application security groups which agent pool will associate when created.
 	ApplicationSecurityGroups []*string
+
+	// DRANET settings of an agent pool.
+	Dranet *DRANETProfile
 
 	// The resource IDs of public IP prefixes for node public IPs. At most one IPv4 and one IPv6 prefix may be specified. Order
 	// does not matter; the RP determines IP version from the referenced resource's publicIPAddressVersion. Requires enableNodePublicIP
@@ -257,6 +280,42 @@ type AgentPoolStatus struct {
 	// READ-ONLY; The error detail information of the agent pool. Preserves the detailed info of failure. If there was no error,
 	// this field is omitted.
 	ProvisioningError *ErrorDetail
+}
+
+// AgentPoolUpdate - Agent pool.
+type AgentPoolUpdate struct {
+	// Properties for the agent pool.
+	Properties *AgentPoolUpdateProperties
+}
+
+// AgentPoolUpdateManualScaleProfile - Specifications on number of machines.
+type AgentPoolUpdateManualScaleProfile struct {
+	// Number of nodes.
+	Count *int32
+
+	// VM size that AKS will use when creating and scaling e.g. 'Standard_E4s_v3', 'Standard_E16s_v3' or 'Standard_D16s_v5'.
+	Size *string
+}
+
+// AgentPoolUpdateProperties - Properties for the agent pool.
+type AgentPoolUpdateProperties struct {
+	// Number of agents (VMs) to host docker containers.
+	Count *int32
+
+	// Specifications on VirtualMachines agent pool.
+	VirtualMachinesProfile *AgentPoolUpdateVirtualMachinesProfile
+}
+
+// AgentPoolUpdateScaleProfile - Specifications on how to scale a VirtualMachines agent pool.
+type AgentPoolUpdateScaleProfile struct {
+	// Specifications on how to scale the VirtualMachines agent pool to a fixed size.
+	Manual []*AgentPoolUpdateManualScaleProfile
+}
+
+// AgentPoolUpdateVirtualMachinesProfile - Specifications on VirtualMachines agent pool.
+type AgentPoolUpdateVirtualMachinesProfile struct {
+	// Specifications on how to scale a VirtualMachines agent pool.
+	Scale *AgentPoolUpdateScaleProfile
 }
 
 // AgentPoolUpgradeProfile - The list of available upgrades for an agent pool.
@@ -353,6 +412,73 @@ type AgentPoolWindowsProfile struct {
 	DisableOutboundNat *bool
 }
 
+// AlertConfiguration - Alert configuration for a managed cluster. Allows configuring AKS-managed alerts
+// that notify users of important cluster events and conditions.
+type AlertConfiguration struct {
+	// The resource-specific properties for this resource.
+	Properties *AlertConfigurationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AlertConfigurationListResult - The response of a AlertConfiguration list operation.
+type AlertConfigurationListResult struct {
+	// REQUIRED; The AlertConfiguration items on this page
+	Value []*AlertConfiguration
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// AlertConfigurationProperties - Properties of the alert configuration.
+type AlertConfigurationProperties struct {
+	// REQUIRED; The mode of the alert configuration. Specifies how AKS manages the alerts.
+	Mode *AlertConfigurationMode
+
+	// REQUIRED; Notification settings for the alert configuration.
+	Notification *AlertNotification
+
+	// READ-ONLY; The current provisioning state of the alert configuration.
+	ProvisioningState *AlertConfigurationProvisioningState
+}
+
+// AlertNotification - Notification settings for the alert configuration.
+type AlertNotification struct {
+	// REQUIRED; The resource ID of the Azure Monitor action group to send notifications to.
+	ActionGroupID *string
+}
+
+// AllowedSubject - A subject authorized to use the identity binding for token exchange.
+// The namespace selector is required and must be non-empty. The service
+// account selector is optional; when omitted, all service accounts in
+// matching namespaces are authorized. Selectors within a single
+// AllowedSubject are AND'd; multiple AllowedSubjects on an
+// IdentityBinding are OR'd.
+type AllowedSubject struct {
+	// REQUIRED; Label selector matching the namespaces in which this identity may be
+	// used. Must be non-empty: an empty selector would match every namespace
+	// and is rejected to prevent overly permissive bindings. Use the built-in
+	// `kubernetes.io/metadata.name` label to target specific namespaces by
+	// name.
+	NamespaceSelector *LabelSelector
+
+	// Optional label selector matching the service accounts (within the
+	// namespaces matched by `namespaceSelector`) that may use this identity.
+	// When omitted, all service accounts in matching namespaces are
+	// authorized. When provided, it must be non-empty.
+	ServiceAccountSelector *LabelSelector
+}
+
 // AutoScaleProfile - Specifications on auto-scaling.
 type AutoScaleProfile struct {
 	// The maximum number of nodes of the specified sizes.
@@ -411,6 +537,92 @@ type BastionProfile struct {
 
 	// READ-ONLY; The resource ID of the managed bastion associated with the managed cluster.
 	BastionID *string
+}
+
+// BootstrapAzureConfig - Azure configuration returned as part of FlexNode bootstrap data.
+type BootstrapAzureConfig struct {
+	// READ-ONLY; Bootstrap token for node enrollment. Do not cache or log.
+	BootstrapToken *BootstrapTokenInfo
+
+	// READ-ONLY; Azure Resource Manager endpoint for the cloud environment.
+	ResourceManagerEndpoint *string
+
+	// READ-ONLY; Target agent pool name.
+	TargetAgentPoolName *string
+
+	// READ-ONLY; Target cluster identity.
+	TargetCluster *BootstrapTargetCluster
+}
+
+// BootstrapComponentVersions - Component versions returned as part of FlexNode bootstrap data.
+type BootstrapComponentVersions struct {
+	// READ-ONLY; Containerd version.
+	Containerd *string
+
+	// READ-ONLY; Kubernetes version.
+	Kubernetes *string
+
+	// READ-ONLY; Runc version.
+	Runc *string
+}
+
+// BootstrapKubeletConfig - Kubelet configuration returned as part of FlexNode bootstrap data.
+type BootstrapKubeletConfig struct {
+	// READ-ONLY; Base64-encoded PEM certificate of the cluster CA. Do not cache or log.
+	CaCertData *string
+
+	// READ-ONLY; FQDN of the Kubernetes API server.
+	ClusterFQDN *string
+}
+
+// BootstrapNetworkingConfig - Network configuration returned as part of FlexNode bootstrap data.
+type BootstrapNetworkingConfig struct {
+	// READ-ONLY; CNI plugin version.
+	CniVersion *string
+
+	// READ-ONLY; IP address of the cluster DNS service.
+	DNSServiceIP *string
+}
+
+// BootstrapNodeConfig - Node configuration returned as part of FlexNode bootstrap data.
+type BootstrapNodeConfig struct {
+	// READ-ONLY; Kubelet configuration.
+	Kubelet *BootstrapKubeletConfig
+
+	// READ-ONLY; Node labels to apply during registration.
+	Labels map[string]*string
+
+	// READ-ONLY; Maximum pods per node.
+	MaxPods *int32
+
+	// READ-ONLY; Node taints in the format 'key=value:effect'.
+	Taints []*string
+}
+
+// BootstrapTargetCluster - Target AKS cluster for FlexNode bootstrap.
+type BootstrapTargetCluster struct {
+	// READ-ONLY; Azure resource ID of the target AKS cluster.
+	ResourceID *string
+}
+
+// BootstrapTokenInfo - Bootstrap token information.
+type BootstrapTokenInfo struct {
+	// READ-ONLY; Short-lived bootstrap token for kubelet. Do not cache or log.
+	Token *string
+}
+
+// CapacityReservation - The Capacity Reservation to provide virtual machines from a reserved group of Machines
+type CapacityReservation struct {
+	// The Capacity Reservation Group to provide virtual machines from a reserved group of Machines
+	CapacityReservationGroup *CapacityReservationGroup
+}
+
+// CapacityReservationGroup - The Capacity Reservation Group to provide virtual machines from a reserved group of Machines
+type CapacityReservationGroup struct {
+	// The fully qualified resource ID of the Capacity Reservation Group to provide virtual machines from a reserved group of
+	// Machines. This is of the form: '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Compute/capacityreservationgroups/{capacityReservationGroupName}'
+	// Customers use it to create a Machine with a specified CRG. For more information see [Capacity Reservation](aka.ms/CapacityReservation)
+	ID *string
 }
 
 // ClusterUpgradeSettings - Settings for upgrading a cluster.
@@ -490,6 +702,12 @@ type CredentialResult struct {
 type CredentialResults struct {
 	// READ-ONLY; Base64-encoded Kubernetes configuration file.
 	Kubeconfigs []*CredentialResult
+}
+
+// DRANETProfile - DRANET settings of an agent pool.
+type DRANETProfile struct {
+	// The DRANET mode for the agent pool.
+	Mode *DRANETMode
 }
 
 // DailySchedule - For schedules like: 'recur every day' or 'recur every 3 days'.
@@ -719,6 +937,14 @@ type IdentityBindingProperties struct {
 	// REQUIRED; Managed identity profile for the identity binding.
 	ManagedIdentity *IdentityBindingManagedIdentityProfile
 
+	// Optional list of subjects authorized to use this identity binding for
+	// token exchange. Each entry pairs a required namespace label selector
+	// with an optional service account label selector; selectors within an
+	// entry are AND'd, and multiple entries are OR'd. When omitted or empty,
+	// authorization falls back exclusively to ClusterRole/ClusterRoleBinding
+	// evaluation. Maximum 100 entries.
+	AllowedSubjects []*AllowedSubject
+
 	// READ-ONLY; The OIDC issuer URL of the IdentityBinding.
 	OidcIssuer *IdentityBindingOidcIssuerProfile
 
@@ -887,6 +1113,18 @@ type JWTAuthenticatorProperties struct {
 	// REQUIRED; The JWT OIDC issuer details.
 	Issuer *JWTAuthenticatorIssuer
 
+	// PEM-encoded CA certificate bundle used to validate the connection when fetching discovery information. Use this for issuer
+	// endpoints that use private certificate authorities
+	// or environments where TLS inspection is performed.
+	// The bundle must contain only CERTIFICATE PEM blocks, up to 10 CA certificates, and must be no larger than 20 KB in total.
+	// Include all CA certificates needed to validate
+	// the issuer endpoint's TLS certificate. Certificate revocation checking is not supported.
+	// If provided, only these CAs are trusted instead of the well-known root CAs.
+	// If not provided and the managed cluster's properties.securityProfile.customCATrustCertificates is set, those certificates
+	// will be used instead. Otherwise, only the well-known
+	// root CAs are trusted.
+	CertificateAuthorityBundle *string
+
 	// The rules that are applied to validate token claims to authenticate users. All the expressions must evaluate to true for
 	// validation to succeed.
 	ClaimValidationRules []*JWTAuthenticatorValidationRule
@@ -943,6 +1181,10 @@ type KubeletConfig struct {
 	// The maximum size (e.g. 10Mi) of container log file before it is rotated.
 	ContainerLogMaxSizeMB *int32
 
+	// Maximum grace period, in seconds, for pods to terminate during a soft eviction; caps the pod's terminationGracePeriodSeconds.
+	// Default is 60, applied when the cluster's `enableNodeHardening` property is true. Only applicable for Linux nodepools.
+	EvictionMaxPodGracePeriodInSeconds *int32
+
 	// If set to true it will make the Kubelet fail to start if swap is enabled on the node.
 	FailSwapOn *bool
 
@@ -968,6 +1210,18 @@ type KubeletConfig struct {
 
 	// Specifies the default seccomp profile applied to all workloads. If not specified, 'Unconfined' will be used by default.
 	SeccompDefault *SeccompDefault
+
+	// Grace periods for soft eviction signals — how long a threshold must be held before pod eviction. Same defaulting and pairing
+	// rules as softEvictionThreshold. Values are Go-style duration strings (e.g. '1m30s'); supported units are 'ns', 'us', 'ms',
+	// 's', 'm', and 'h'. Only applicable for Linux nodepools.
+	SoftEvictionGracePeriod *SoftEvictionGracePeriod
+
+	// Soft eviction thresholds for kubelet. When crossed, pods are evicted after the paired softEvictionGracePeriod. System defaults
+	// apply when the cluster's `enableNodeHardening` property is true; otherwise no soft eviction is configured. For each signal
+	// (memoryAvailable, nodeFsAvailable, nodeFsInodesFree), the entries in softEvictionThreshold and softEvictionGracePeriod
+	// must be in the same state: both omitted (default), both non-empty (override), or both empty strings (opt that signal out).
+	// Only applicable for Linux nodepools. See https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#soft-eviction-thresholds.
+	SoftEvictionThreshold *SoftEvictionThreshold
 
 	// The Topology Manager policy to use. For more information see [Kubernetes Topology Manager](https://kubernetes.io/docs/tasks/administer-cluster/topology-manager).
 	// The default is 'none'. Allowed values are 'none', 'best-effort', 'restricted', and 'single-numa-node'.
@@ -1068,6 +1322,10 @@ type LinuxProfile struct {
 
 	// REQUIRED; The SSH configuration for Linux-based VMs running on Azure.
 	SSH *SSHConfiguration
+}
+
+// ListBootstrapDataRequest - Empty request body for listing FlexNode bootstrap data.
+type ListBootstrapDataRequest struct {
 }
 
 // LoadBalancer - The configurations regarding multiple standard load balancers. If not supplied, single load balancer mode
@@ -1343,6 +1601,9 @@ type MachineProperties struct {
 	// The properties having to do with machine billing.
 	Billing *MachineBillingProfile
 
+	// The Capacity Reservation Group to provide virtual machines from a reserved group of Machines
+	CapacityReservation *CapacityReservation
+
 	// The eviction policy for machine. This cannot be specified unless the priority is 'Spot'. If not specified, the default
 	// is 'Delete'.
 	EvictionPolicy *ScaleSetEvictionPolicy
@@ -1466,6 +1727,12 @@ type MaintenanceConfigurationProperties struct {
 	// Maintenance window for the maintenance configuration.
 	MaintenanceWindow *MaintenanceWindow
 
+	// The fully qualified resource ID of the maintenance window that this maintenance configuration is linked to. When set, the
+	// schedule is derived read-only from the linked maintenance window — maintenanceWindow becomes a computed field. When absent
+	// (the default), the schedule is defined inline via the maintenanceWindow property. The caller must have read access to the
+	// target maintenance window.
+	MaintenanceWindowID *string
+
 	// Time slots on which upgrade is not allowed.
 	NotAllowedTime []*TimeSpan
 
@@ -1500,10 +1767,8 @@ type MaintenanceWindow struct {
 	UTCOffset *string
 }
 
-// MaintenanceWindowResource - A maintenance window is a resource-group-scoped resource that defines a reusable
-// maintenance schedule which can be linked to maintenance configurations on one
-// or more managed clusters.
-// For more information, see https://aka.ms/aks/maintenance-windows.
+// MaintenanceWindowResource - A maintenance window is a resource-group-scoped resource that defines a reusable maintenance
+// schedule which can be linked to maintenance configurations on one or more managed clusters. For more information, see https://aka.ms/aks/maintenance-windows.
 type MaintenanceWindowResource struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
@@ -2212,8 +2477,8 @@ type ManagedClusterAzureMonitorProfile struct {
 	// for an overview.
 	AppMonitoring *ManagedClusterAzureMonitorProfileAppMonitoring
 
-	// Azure Monitor Container Insights Profile for Kubernetes Events, Inventory and Container stdout & stderr logs etc. See aka.ms/AzureMonitorContainerInsights
-	// for an overview.
+	// Set this to enable and configure Azure Monitor Container Insights for the cluster, which collects Kubernetes events, inventory,
+	// and container stdout & stderr logs. See aka.ms/AzureMonitorContainerInsights for an overview.
 	ContainerInsights *ManagedClusterAzureMonitorProfileContainerInsights
 
 	// Metrics profile for the Azure Monitor managed service for Prometheus addon. Collect out-of-the-box Kubernetes infrastructure
@@ -2229,13 +2494,13 @@ type ManagedClusterAzureMonitorProfileAppMonitoring struct {
 	// for an overview.
 	AutoInstrumentation *ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation
 
-	// Application Monitoring Open Telemetry Logs and Traces Profile for AKS. Collects OpenTelemetry logs and traces of the application
+	// Application Monitoring OpenTelemetry logs and traces profile for AKS. Collects OpenTelemetry logs and traces of the application
 	// using Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring
 	// for an overview.
 	OpenTelemetryLogsAndTraces *ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces
 
-	// Application Monitoring Open Telemetry Metrics Profile for AKS. Collects OpenTelemetry metrics of the application using
-	// Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring
+	// Application Monitoring OpenTelemetry Metrics Profile for AKS. Collects OpenTelemetry metrics of the application using Azure
+	// Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring
 	// for an overview.
 	OpenTelemetryMetrics *ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics
 }
@@ -2248,49 +2513,45 @@ type ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation struct {
 	Enabled *bool
 }
 
-// ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces - Application Monitoring Open Telemetry Logs and
-// Traces Profile for AKS. Collects OpenTelemetry logs and traces of the application using Azure Monitor OpenTelemetry based
+// ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces - Application Monitoring OpenTelemetry logs and
+// traces profile for AKS. Collects OpenTelemetry logs and traces of the application using Azure Monitor OpenTelemetry based
 // SDKs. See https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
 type ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces struct {
-	// Indicates if Application Monitoring Open Telemetry Logs and traces is enabled or not.
+	// Indicates if Application Monitoring OpenTelemetry Logs and traces is enabled or not.
 	Enabled *bool
 
-	// The host port for Open Telemetry GRPC logs and traces. If not specified, the default port is 28332.
+	// The host port for OpenTelemetry GRPC logs and traces. If not specified, the default port is 28332.
 	GrpcPort *int64
 
-	// The host port for Open Telemetry HTTP/PROTOBUF logs and traces. If not specified, the default port is 28331.
+	// The host port for OpenTelemetry HTTP/PROTOBUF logs and traces. If not specified, the default port is 28331.
 	HTTPPort *int64
 }
 
-// ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics - Application Monitoring Open Telemetry Metrics Profile
+// ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics - Application Monitoring OpenTelemetry Metrics Profile
 // for AKS. Collects OpenTelemetry metrics of the application using Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs
 // and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
 type ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics struct {
-	// Indicates if Application Monitoring Open Telemetry Metrics is enabled or not.
+	// Indicates if Application Monitoring OpenTelemetry Metrics is enabled or not.
 	Enabled *bool
 
-	// The host port for Open Telemetry GRPC metrics. If not specified, the default port is 28334.
+	// The host port for OpenTelemetry GRPC metrics. If not specified, the default port is 28334.
 	GrpcPort *int64
 
-	// The host port for Open Telemetry HTTP/PROTOBUF metrics. If not specified, the default port is 28333.
+	// The host port for OpenTelemetry HTTP/PROTOBUF metrics. If not specified, the default port is 28333.
 	HTTPPort *int64
 }
 
-// ManagedClusterAzureMonitorProfileContainerInsights - Azure Monitor Container Insights Profile for Kubernetes Events, Inventory
-// and Container stdout & stderr logs etc. See aka.ms/AzureMonitorContainerInsights for an overview.
+// ManagedClusterAzureMonitorProfileContainerInsights - Azure Monitor Container Insights profile. Represents the configuration
+// for collecting Kubernetes events, inventory, and container stdout & stderr logs. See aka.ms/AzureMonitorContainerInsights
+// for an overview.
 type ManagedClusterAzureMonitorProfileContainerInsights struct {
-	// Configures container network logs ingestion with Azure Monitor. Which network logs to ingest is controlled by the CRD found
-	// in the following links. No network logs are ingested by default. More information on container network logs can be found
-	// at https://aka.ms/ContainerNetworkLogsDoc. More information on configuring container network log can be found at https://aka.ms/acns/howtoenablecnl.
-	// If not specified, the default is Disabled.
+	// Configures container network logs ingestion with Azure Monitor. The log types ingested are controlled by the associated
+	// CRD; if unspecified, defaults to `Disabled`. See https://aka.ms/ContainerNetworkLogsDoc and https://aka.ms/acns/howtoenablecnl
+	// for details.
 	ContainerNetworkLogs *ContainerNetworkLogs
 
-	// Indicates whether custom metrics collection has to be disabled or not. If not specified the default is false. No custom
-	// metrics will be emitted if this field is false but the container insights enabled field is false
-	DisableCustomMetrics *bool
-
-	// Indicates whether prometheus metrics scraping is disabled or not. If not specified the default is false. No prometheus
-	// metrics will be emitted if this field is false but the container insights enabled field is false
+	// Indicates whether prometheus metrics scraping is disabled or not. If not specified the default is false i.e. the prometheus
+	// scraping is enabled.
 	DisablePrometheusMetricsScraping *bool
 
 	// Indicates if Azure Monitor Container Insights Logs Addon is enabled or not.
@@ -2605,6 +2866,9 @@ type ManagedClusterNATGatewayProfile struct {
 	// Desired outbound IP resources for the managed NAT Gateway.
 	OutboundIPs *ManagedClusterNATGatewayProfileOutboundIPs
 
+	// The SKU of the managed cluster NAT Gateway. Defaults to 'StandardV2' where available in the region, otherwise 'Standard'.
+	SKU *ManagedClusterNATGatewaySKU
+
 	// READ-ONLY; The effective outbound IP resources of the cluster NAT gateway.
 	EffectiveOutboundIPs []*ResourceReference
 }
@@ -2817,6 +3081,12 @@ type ManagedClusterProperties struct {
 	// Namespace as a ARM Resource.
 	EnableNamespaceResources *bool
 
+	// Whether to enable node hardening at the cluster level. When enabled, AKS applies hardened defaults for soft eviction thresholds,
+	// kube-reserved, and system-reserved on all Linux node pools in the cluster. Per-node-pool kubeletConfig settings take precedence
+	// over hardening defaults. On agent pools running Kubernetes 1.37 or later, node hardening is enabled by default and cannot
+	// be disabled; setting this field to false has no effect on those pools.
+	EnableNodeHardening *bool
+
 	// Whether to enable Kubernetes Role-Based Access Control.
 	EnableRBAC *bool
 
@@ -2883,7 +3153,7 @@ type ManagedClusterProperties struct {
 	// PublicNetworkAccess of the managedCluster. Allow or deny public network access for AKS
 	PublicNetworkAccess *PublicNetworkAccess
 
-	// Profile of the pod scheduler configuration.
+	// Profile with scheduler-related settings, like the configuration mode for each scheduler managed by AKS. See https://aka.ms/aks/scheduler-profile.
 	SchedulerProfile *SchedulerProfile
 
 	// Security profile for the managed cluster.
@@ -3097,37 +3367,37 @@ type ManagedClusterSecurityProfileDefender struct {
 	// empty.
 	LogAnalyticsWorkspaceResourceID *string
 
-	// Microsoft Defender settings for security gating, validates container images eligibility for deployment based on Defender
-	// for Containers security findings. Using Admission Controller, it either audits or prevents the deployment of images that
-	// do not meet security standards.
+	// Microsoft Defender settings for security gating. This validates container images eligibility for deployment based on Defender
+	// for Containers security findings. Using Admission Controller, it either audits or prevents deployment of images that do
+	// not meet security standards. For more information, see https://aka.ms/KubernetesDefenderAuditRule.
 	SecurityGating *ManagedClusterSecurityProfileDefenderSecurityGating
 
 	// Microsoft Defender threat detection for Cloud settings for the security profile.
 	SecurityMonitoring *ManagedClusterSecurityProfileDefenderSecurityMonitoring
 }
 
-// ManagedClusterSecurityProfileDefenderSecurityGating - Microsoft Defender settings for security gating, validates container
-// images eligibility for deployment based on Defender for Containers security findings. Using Admission Controller, it either
-// audits or prevents the deployment of images that do not meet security standards.
+// ManagedClusterSecurityProfileDefenderSecurityGating - Microsoft Defender settings for security gating. This validates container
+// image eligibility for deployment based on Defender for Containers security findings. Using Admission Controller, it either
+// audits or prevents deployment of images that do not meet security standards.
 type ManagedClusterSecurityProfileDefenderSecurityGating struct {
-	// In use only while registry access granted by secret rather than managed identity. Set whether to grant the Defender gating
-	// agent access to the cluster's secrets for pulling images from registries. If secret access is denied and the registry requires
-	// pull secrets, the add-on will not perform any image validation. Default value is false.
+	// In use only while registry access is granted by secret rather than managed identity. Sets whether to grant the Defender
+	// gating agent access to cluster secrets for pulling images from registries. If secret access is denied and the registry
+	// requires pull secrets, the add-on will not perform image validation. Default value is false.
 	AllowSecretAccess *bool
 
-	// Whether to enable Defender security gating. When enabled, the gating feature will scan container images and audit or block
-	// the deployment of images that do not meet security standards according to the configured security rules.
+	// Whether to enable Defender security gating. When enabled, the gating feature scans container images and audits or blocks
+	// deployment of images that do not meet security standards according to configured security rules. For more information,
+	// see https://aka.ms/KubernetesDefenderAuditRule.
 	Enabled *bool
 
-	// List of identities that the admission controller will make use of in order to pull security artifacts from the registry.
-	// These are the same identities used by the cluster to pull container images. Each identity provided should have federated
-	// identity credential attached to it.
-	Identities []*ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem
+	// List of identities that the admission controller uses to pull security artifacts from registries. These are the same identities
+	// used by the cluster to pull container images. For more information on configuring this identity, see https://learn.microsoft.com/en-us/azure/defender-for-cloud/gated-deployment-infrastructure-as-code.
+	Identities []*ManagedClusterSecurityProfileDefenderSecurityGatingIdentity
 }
 
-// ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem - Identity information used by Defender security gating
-// to access container registries.
-type ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem struct {
+// ManagedClusterSecurityProfileDefenderSecurityGatingIdentity - Identity mapping used by Defender security gating for registry
+// access.
+type ManagedClusterSecurityProfileDefenderSecurityGatingIdentity struct {
 	// The container registry for which the identity will be used; the identity specified here should have a federated identity
 	// credential attached to it.
 	AzureContainerRegistry *string
@@ -3641,6 +3911,11 @@ type NetworkProfile struct {
 	// for more information about the differences between load balancer SKUs.
 	LoadBalancerSKU *LoadBalancerSKU
 
+	// The Azure resource ID of the NAT gateway to use for egress at cluster startup when outboundType is 'userAssignedNATGateway'
+	// using StandardV2 Public IP, backend pool type is podIP, and load balancer type is service SKU. This is of the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/natGateways/{natGatewayName}'.
+	// When using managed NATGateway this field is auto populated. For more information, see https://aka.ms/aks/container-native-slb
+	NatGatewayID *string
+
 	// Profile of the cluster NAT gateway.
 	NatGatewayProfile *ManagedClusterNATGatewayProfile
 
@@ -3770,6 +4045,10 @@ type NodeImageVersionsListResult struct {
 
 // NvidiaGPUProfile - NVIDIA-specific GPU settings
 type NvidiaGPUProfile struct {
+	// NVIDIA GPU resource allocation mode. DevicePlugin installs the NVIDIA
+	// Kubernetes device plugin. DRA installs the NVIDIA DRA driver.
+	DriverMode *NvidiaDriverMode
+
 	// The Managed GPU experience installs additional components, such as the Data Center GPU Manager (DCGM) metrics for monitoring,
 	// on top of the GPU driver for you. For more details of what is installed, check out aka.ms/aks/managed-gpu.
 	ManagementMode *ManagementMode
@@ -3814,8 +4093,14 @@ type OperationStatusResult struct {
 	// The start time of the operation.
 	StartTime *time.Time
 
+	// READ-ONLY; The type of the operation.
+	OperationType *string
+
 	// READ-ONLY; Fully qualified ID of the resource against which the original async operation was started.
 	ResourceID *string
+
+	// READ-ONLY; The type of the suboperation.
+	SubOperationType *string
 }
 
 // OperationStatusResultList - The operations list. It contains an URL link to get the next set of results.
@@ -3870,6 +4155,21 @@ type OutboundEnvironmentEndpointCollection struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// PoolBootstrapData - Bootstrap configuration for a FlexNode pool.
+type PoolBootstrapData struct {
+	// READ-ONLY; Azure environment and cluster identity information.
+	Azure *BootstrapAzureConfig
+
+	// READ-ONLY; Component versions for the node runtime.
+	Components *BootstrapComponentVersions
+
+	// READ-ONLY; Network configuration for the node.
+	Networking *BootstrapNetworkingConfig
+
+	// READ-ONLY; Node-level configuration for kubelet, labels, and taints.
+	Node *BootstrapNodeConfig
 }
 
 // PortRange - The port range.
@@ -4250,21 +4550,16 @@ type Schedule struct {
 	Weekly *WeeklySchedule
 }
 
-// SchedulerInstanceProfile - The scheduler profile for a single scheduler instance.
+// SchedulerInstanceProfile - Profile with settings related to a specific instance of an AKS-managed scheduler.
 type SchedulerInstanceProfile struct {
-	// The config customization mode for this scheduler instance.
+	// The configuration mode to be used by the AKS-managed scheduler.
 	SchedulerConfigMode *SchedulerConfigMode
 }
 
-// SchedulerProfile - The pod scheduler profile for the cluster.
+// SchedulerProfile - Profile with scheduler-related settings, like the configuration mode for each scheduler managed by AKS.
+// See https://aka.ms/aks/scheduler-profile.
 type SchedulerProfile struct {
-	// Mapping of each scheduler instance to its profile.
-	SchedulerInstanceProfiles *SchedulerProfileSchedulerInstanceProfiles
-}
-
-// SchedulerProfileSchedulerInstanceProfiles - Mapping of each scheduler instance to its profile.
-type SchedulerProfileSchedulerInstanceProfiles struct {
-	// The scheduler profile for the upstream scheduler instance.
+	// Profile with settings related to upstream variant of kube-scheduler (https://github.com/kubernetes/kubernetes/tree/master/pkg/scheduler).
 	Upstream *SchedulerInstanceProfile
 }
 
@@ -4350,6 +4645,44 @@ type SnapshotProperties struct {
 
 	// READ-ONLY; The size of the VM.
 	VMSize *string
+}
+
+// SoftEvictionGracePeriod - Grace periods for kubelet soft eviction thresholds. Each field is a Go-style duration string
+// (e.g. '1m30s') that specifies how long the corresponding soft eviction signal must be crossed before pod eviction is triggered.
+// A grace period only applies when the matching soft eviction threshold is set.
+type SoftEvictionGracePeriod struct {
+	// The grace period for the memoryAvailable soft eviction signal, expressed as a Go-style duration string (e.g. '30s', '1m30s').
+	// Supported units are 'ns', 'us', 'ms', 's', 'm', and 'h'. Must be greater than or equal to '30s'. Default is '30s'.
+	MemoryAvailable *string
+
+	// The grace period for the nodeFsAvailable soft eviction signal, expressed as a Go-style duration string (e.g. '30s', '1m30s').
+	// Supported units are 'ns', 'us', 'ms', 's', 'm', and 'h'. Must be greater than or equal to '30s'. Default is '2m'.
+	NodeFsAvailable *string
+
+	// The grace period for the nodeFsInodesFree soft eviction signal, expressed as a Go-style duration string (e.g. '30s', '1m30s').
+	// Supported units are 'ns', 'us', 'ms', 's', 'm', and 'h'. Must be greater than or equal to '30s'. Default is '2m'.
+	NodeFsInodesFree *string
+}
+
+// SoftEvictionThreshold - Soft eviction thresholds for kubelet. These thresholds trigger graceful pod eviction when node
+// resources drop below the specified values for at least the corresponding grace period defined in softEvictionGracePeriod.
+// Supported formats are Ki, Mi, Gi, or percentages using %.
+type SoftEvictionThreshold struct {
+	// The threshold for available memory below which soft pod eviction is triggered. Accepts absolute values (e.g. '500Mi') or
+	// percentage values (e.g. '5%'). Absolute minimum is 100Mi; percentage minimum is 2%. Default uses a capacity-based step
+	// ladder: 500Mi for nodes with <=8GiB, 750Mi for 16GiB, and 1024Mi (1Gi) for >=32GiB. Must also be greater than the effective
+	// hardEvictionThreshold.memoryAvailable.
+	MemoryAvailable *string
+
+	// The threshold for available node filesystem space below which soft pod eviction is triggered. Accepts absolute values (e.g.
+	// '1Gi') or percentage values (e.g. '10%'). Default is '12%'. Must be greater than or equal to 10% and greater than the effective
+	// hardEvictionThreshold.nodeFsAvailable.
+	NodeFsAvailable *string
+
+	// The threshold for available inodes on the node filesystem below which soft pod eviction is triggered. Accepts absolute
+	// inode counts (e.g. '100000') or percentage values (e.g. '5%'). Default is '7%'. Percentage values must be greater than
+	// or equal to 5% and greater than the effective hardEvictionThreshold.nodeFsInodesFree.
+	NodeFsInodesFree *string
 }
 
 // SysctlConfig - Sysctl settings for Linux agent nodes.

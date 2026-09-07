@@ -5,7 +5,7 @@
 package armcloudhealth
 
 const (
-	version20260101Preview string = "2026-01-01-preview"
+	version20260901Preview string = "2026-09-01-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -20,6 +20,50 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// AggregationType - Aggregation strategy for combining a set of health states into one.
+type AggregationType string
+
+const (
+	// AggregationTypeBestOf - Best (least severe) health state across the non-Unknown members is propagated. Unknown members
+	// are excluded from the selection; if every member is Unknown the group resolves to Unknown. The 'ignoreUnknown' flag has
+	// no observable effect for this strategy and is documented as such.
+	AggregationTypeBestOf AggregationType = "BestOf"
+	// AggregationTypeMaxNotHealthy - Healthy if the count/percentage of not-healthy members stays below the threshold.
+	AggregationTypeMaxNotHealthy AggregationType = "MaxNotHealthy"
+	// AggregationTypeMinHealthy - Healthy if the count/percentage of healthy members meets the threshold.
+	AggregationTypeMinHealthy AggregationType = "MinHealthy"
+	// AggregationTypeWorstOf - Worst health state across members is propagated. Default behavior.
+	AggregationTypeWorstOf AggregationType = "WorstOf"
+)
+
+// PossibleAggregationTypeValues returns the possible values for the AggregationType const type.
+func PossibleAggregationTypeValues() []AggregationType {
+	return []AggregationType{
+		AggregationTypeBestOf,
+		AggregationTypeMaxNotHealthy,
+		AggregationTypeMinHealthy,
+		AggregationTypeWorstOf,
+	}
+}
+
+// AggregationUnit - Unit type for the thresholds used by threshold-bearing aggregation strategies.
+type AggregationUnit string
+
+const (
+	// AggregationUnitAbsolute - Threshold is an absolute count of members.
+	AggregationUnitAbsolute AggregationUnit = "Absolute"
+	// AggregationUnitPercentage - Threshold is a percentage of members (0-100).
+	AggregationUnitPercentage AggregationUnit = "Percentage"
+)
+
+// PossibleAggregationUnitValues returns the possible values for the AggregationUnit const type.
+func PossibleAggregationUnitValues() []AggregationUnit {
+	return []AggregationUnit{
+		AggregationUnitAbsolute,
+		AggregationUnitPercentage,
 	}
 }
 
@@ -88,45 +132,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// DependenciesAggregationType - Aggregation type for child dependencies.
-type DependenciesAggregationType string
-
-const (
-	// DependenciesAggregationTypeMaxNotHealthy - Healthy if the count/percentage of not-healthy children stays below the threshold.
-	DependenciesAggregationTypeMaxNotHealthy DependenciesAggregationType = "MaxNotHealthy"
-	// DependenciesAggregationTypeMinHealthy - Healthy if the count/percentage of healthy children meets the threshold.
-	DependenciesAggregationTypeMinHealthy DependenciesAggregationType = "MinHealthy"
-	// DependenciesAggregationTypeWorstOf - Default behavior: Worst child health state is propagated.
-	DependenciesAggregationTypeWorstOf DependenciesAggregationType = "WorstOf"
-)
-
-// PossibleDependenciesAggregationTypeValues returns the possible values for the DependenciesAggregationType const type.
-func PossibleDependenciesAggregationTypeValues() []DependenciesAggregationType {
-	return []DependenciesAggregationType{
-		DependenciesAggregationTypeMaxNotHealthy,
-		DependenciesAggregationTypeMinHealthy,
-		DependenciesAggregationTypeWorstOf,
-	}
-}
-
-// DependenciesAggregationUnit - Unit type for dependency aggregation thresholds.
-type DependenciesAggregationUnit string
-
-const (
-	// DependenciesAggregationUnitAbsolute - Threshold is an absolute count of entities.
-	DependenciesAggregationUnitAbsolute DependenciesAggregationUnit = "Absolute"
-	// DependenciesAggregationUnitPercentage - Threshold is a percentage of entities (0-100).
-	DependenciesAggregationUnitPercentage DependenciesAggregationUnit = "Percentage"
-)
-
-// PossibleDependenciesAggregationUnitValues returns the possible values for the DependenciesAggregationUnit const type.
-func PossibleDependenciesAggregationUnitValues() []DependenciesAggregationUnit {
-	return []DependenciesAggregationUnit{
-		DependenciesAggregationUnitAbsolute,
-		DependenciesAggregationUnitPercentage,
-	}
-}
-
 // DiscoveryRuleKind - Discovery rule specification kind discriminator
 type DiscoveryRuleKind string
 
@@ -178,6 +183,27 @@ func PossibleDiscoveryRuleRelationshipDiscoveryBehaviorValues() []DiscoveryRuleR
 	return []DiscoveryRuleRelationshipDiscoveryBehavior{
 		DiscoveryRuleRelationshipDiscoveryBehaviorDisabled,
 		DiscoveryRuleRelationshipDiscoveryBehaviorEnabled,
+	}
+}
+
+// DynamicThresholdSensitivity - Sensitivity level for dynamic threshold detection
+type DynamicThresholdSensitivity string
+
+const (
+	// DynamicThresholdSensitivityHigh - High sensitivity — more anomalies detected, tighter threshold band
+	DynamicThresholdSensitivityHigh DynamicThresholdSensitivity = "High"
+	// DynamicThresholdSensitivityLow - Low sensitivity — fewer anomalies detected, wider threshold band
+	DynamicThresholdSensitivityLow DynamicThresholdSensitivity = "Low"
+	// DynamicThresholdSensitivityMedium - Medium sensitivity — balanced detection
+	DynamicThresholdSensitivityMedium DynamicThresholdSensitivity = "Medium"
+)
+
+// PossibleDynamicThresholdSensitivityValues returns the possible values for the DynamicThresholdSensitivity const type.
+func PossibleDynamicThresholdSensitivityValues() []DynamicThresholdSensitivity {
+	return []DynamicThresholdSensitivity{
+		DynamicThresholdSensitivityHigh,
+		DynamicThresholdSensitivityLow,
+		DynamicThresholdSensitivityMedium,
 	}
 }
 
@@ -233,8 +259,6 @@ type HealthState string
 const (
 	// HealthStateDegraded - Degraded status
 	HealthStateDegraded HealthState = "Degraded"
-	// HealthStateDeleted - Deleted status
-	HealthStateDeleted HealthState = "Deleted"
 	// HealthStateHealthy - Healthy status
 	HealthStateHealthy HealthState = "Healthy"
 	// HealthStateUnhealthy - Unhealthy status
@@ -247,7 +271,6 @@ const (
 func PossibleHealthStateValues() []HealthState {
 	return []HealthState{
 		HealthStateDegraded,
-		HealthStateDeleted,
 		HealthStateHealthy,
 		HealthStateUnhealthy,
 		HealthStateUnknown,
@@ -330,6 +353,8 @@ type RefreshInterval string
 const (
 	// RefreshIntervalPT10M - Ten Minutes
 	RefreshIntervalPT10M RefreshInterval = "PT10M"
+	// RefreshIntervalPT15M - Fifteen Minutes
+	RefreshIntervalPT15M RefreshInterval = "PT15M"
 	// RefreshIntervalPT1H - One Hour
 	RefreshIntervalPT1H RefreshInterval = "PT1H"
 	// RefreshIntervalPT1M - One Minute
@@ -346,11 +371,111 @@ const (
 func PossibleRefreshIntervalValues() []RefreshInterval {
 	return []RefreshInterval{
 		RefreshIntervalPT10M,
+		RefreshIntervalPT15M,
 		RefreshIntervalPT1H,
 		RefreshIntervalPT1M,
 		RefreshIntervalPT2H,
 		RefreshIntervalPT30M,
 		RefreshIntervalPT5M,
+	}
+}
+
+// ResourceHealthAvailabilityState - Availability state of an Azure resource as reported by Azure Resource Health.
+type ResourceHealthAvailabilityState string
+
+const (
+	// ResourceHealthAvailabilityStateAvailable - The resource is available.
+	ResourceHealthAvailabilityStateAvailable ResourceHealthAvailabilityState = "Available"
+	// ResourceHealthAvailabilityStateDegraded - The resource is degraded.
+	ResourceHealthAvailabilityStateDegraded ResourceHealthAvailabilityState = "Degraded"
+	// ResourceHealthAvailabilityStateUnavailable - The resource is unavailable.
+	ResourceHealthAvailabilityStateUnavailable ResourceHealthAvailabilityState = "Unavailable"
+	// ResourceHealthAvailabilityStateUnknown - The resource availability state is unknown.
+	ResourceHealthAvailabilityStateUnknown ResourceHealthAvailabilityState = "Unknown"
+)
+
+// PossibleResourceHealthAvailabilityStateValues returns the possible values for the ResourceHealthAvailabilityState const type.
+func PossibleResourceHealthAvailabilityStateValues() []ResourceHealthAvailabilityState {
+	return []ResourceHealthAvailabilityState{
+		ResourceHealthAvailabilityStateAvailable,
+		ResourceHealthAvailabilityStateDegraded,
+		ResourceHealthAvailabilityStateUnavailable,
+		ResourceHealthAvailabilityStateUnknown,
+	}
+}
+
+// ResourceHealthAvailabilityStateSignalBehavior - Resource health availability state signal behavior
+type ResourceHealthAvailabilityStateSignalBehavior string
+
+const (
+	// ResourceHealthAvailabilityStateSignalBehaviorDisabled - Do not automatically add resource health availability state signal
+	ResourceHealthAvailabilityStateSignalBehaviorDisabled ResourceHealthAvailabilityStateSignalBehavior = "Disabled"
+	// ResourceHealthAvailabilityStateSignalBehaviorEnabled - Automatically add resource health availability state signal
+	ResourceHealthAvailabilityStateSignalBehaviorEnabled ResourceHealthAvailabilityStateSignalBehavior = "Enabled"
+)
+
+// PossibleResourceHealthAvailabilityStateSignalBehaviorValues returns the possible values for the ResourceHealthAvailabilityStateSignalBehavior const type.
+func PossibleResourceHealthAvailabilityStateSignalBehaviorValues() []ResourceHealthAvailabilityStateSignalBehavior {
+	return []ResourceHealthAvailabilityStateSignalBehavior{
+		ResourceHealthAvailabilityStateSignalBehaviorDisabled,
+		ResourceHealthAvailabilityStateSignalBehaviorEnabled,
+	}
+}
+
+// ResourceHealthCategory - Whether an Azure Resource Health status changing event was planned or unplanned.
+type ResourceHealthCategory string
+
+const (
+	// ResourceHealthCategoryPlanned - The event was planned.
+	ResourceHealthCategoryPlanned ResourceHealthCategory = "Planned"
+	// ResourceHealthCategoryUnplanned - The event was unplanned.
+	ResourceHealthCategoryUnplanned ResourceHealthCategory = "Unplanned"
+)
+
+// PossibleResourceHealthCategoryValues returns the possible values for the ResourceHealthCategory const type.
+func PossibleResourceHealthCategoryValues() []ResourceHealthCategory {
+	return []ResourceHealthCategory{
+		ResourceHealthCategoryPlanned,
+		ResourceHealthCategoryUnplanned,
+	}
+}
+
+// ResourceHealthReasonChronicity - Whether the current Azure Resource Health availability state is persistent or transient.
+type ResourceHealthReasonChronicity string
+
+const (
+	// ResourceHealthReasonChronicityPersistent - Persistent state.
+	ResourceHealthReasonChronicityPersistent ResourceHealthReasonChronicity = "Persistent"
+	// ResourceHealthReasonChronicityTransient - Transient state.
+	ResourceHealthReasonChronicityTransient ResourceHealthReasonChronicity = "Transient"
+)
+
+// PossibleResourceHealthReasonChronicityValues returns the possible values for the ResourceHealthReasonChronicity const type.
+func PossibleResourceHealthReasonChronicityValues() []ResourceHealthReasonChronicity {
+	return []ResourceHealthReasonChronicity{
+		ResourceHealthReasonChronicityPersistent,
+		ResourceHealthReasonChronicityTransient,
+	}
+}
+
+// ResourceHealthReasonType - Reason type for the current Azure Resource Health availability state.
+type ResourceHealthReasonType string
+
+const (
+	// ResourceHealthReasonTypePlanned - Planned reason.
+	ResourceHealthReasonTypePlanned ResourceHealthReasonType = "Planned"
+	// ResourceHealthReasonTypeUnplanned - Unplanned reason.
+	ResourceHealthReasonTypeUnplanned ResourceHealthReasonType = "Unplanned"
+	// ResourceHealthReasonTypeUserInitiated - User-initiated reason.
+	ResourceHealthReasonTypeUserInitiated ResourceHealthReasonType = "UserInitiated"
+)
+
+// PossibleResourceHealthReasonTypeValues returns the possible values for the ResourceHealthReasonType const type.
+func PossibleResourceHealthReasonTypeValues() []ResourceHealthReasonType {
+	return []ResourceHealthReasonType{
+		ResourceHealthReasonTypePlanned,
+		ResourceHealthReasonTypeUnplanned,
+		ResourceHealthReasonTypeUserInitiated,
 	}
 }
 
@@ -378,6 +503,9 @@ func PossibleSignalKindValues() []SignalKind {
 type SignalOperator string
 
 const (
+	// SignalOperatorDynamic - Dynamic threshold — uses deviation from a ML-computed baseline to determine health state transitions.
+	// Only valid for the unhealthy threshold rule. Requires `sensitivity` and `lookBackWindow` on the rule; `threshold` is ignored.
+	SignalOperatorDynamic SignalOperator = "Dynamic"
 	// SignalOperatorEqual - Equal to
 	SignalOperatorEqual SignalOperator = "Equal"
 	// SignalOperatorGreaterThan - Greater than
@@ -395,6 +523,7 @@ const (
 // PossibleSignalOperatorValues returns the possible values for the SignalOperator const type.
 func PossibleSignalOperatorValues() []SignalOperator {
 	return []SignalOperator{
+		SignalOperatorDynamic,
 		SignalOperatorEqual,
 		SignalOperatorGreaterThan,
 		SignalOperatorGreaterThanOrEqual,

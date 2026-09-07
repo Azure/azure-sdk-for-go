@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/ServiceEndpointPolicyDefinitionCreate.json
+// Generated from example definition: 2025-09-01/ServiceEndpointPolicyDefinitionCreate.json
 func ExampleServiceEndpointPolicyDefinitionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleServiceEndpointPolicyDefinitionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ServiceEndpointPolicyDefinitionDelete.json
+// Generated from example definition: 2025-09-01/ServiceEndpointPolicyDefinitionDelete.json
 func ExampleServiceEndpointPolicyDefinitionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleServiceEndpointPolicyDefinitionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ServiceEndpointPolicyDefinitionGet.json
+// Generated from example definition: 2025-09-01/ServiceEndpointPolicyDefinitionGet.json
 func ExampleServiceEndpointPolicyDefinitionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleServiceEndpointPolicyDefinitionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ServiceEndpointPolicyDefinitionList.json
+// Generated from example definition: 2025-09-01/ServiceEndpointPolicyDefinitionList.json
 func ExampleServiceEndpointPolicyDefinitionsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

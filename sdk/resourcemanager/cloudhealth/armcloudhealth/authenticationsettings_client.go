@@ -19,7 +19,7 @@ import (
 // AuthenticationSettingsClient contains the methods for the AuthenticationSettings group.
 // Don't use this type directly, use NewAuthenticationSettingsClient() instead.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-09-01-preview
 type AuthenticationSettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type AuthenticationSettingsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAuthenticationSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AuthenticationSettingsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -83,8 +86,7 @@ func (client *AuthenticationSettingsClient) createOrUpdate(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -93,7 +95,7 @@ func (client *AuthenticationSettingsClient) createOrUpdate(ctx context.Context, 
 func (client *AuthenticationSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, resource AuthenticationSetting, _ *AuthenticationSettingsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -113,7 +115,7 @@ func (client *AuthenticationSettingsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -164,8 +166,7 @@ func (client *AuthenticationSettingsClient) deleteOperation(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -174,7 +175,7 @@ func (client *AuthenticationSettingsClient) deleteOperation(ctx context.Context,
 func (client *AuthenticationSettingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, _ *AuthenticationSettingsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -194,7 +195,7 @@ func (client *AuthenticationSettingsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -220,19 +221,14 @@ func (client *AuthenticationSettingsClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return AuthenticationSettingsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AuthenticationSettingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *AuthenticationSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, _ *AuthenticationSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -252,15 +248,18 @@ func (client *AuthenticationSettingsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AuthenticationSettingsClient) getHandleResponse(resp *http.Response) (AuthenticationSettingsClientGetResponse, error) {
+func (client *AuthenticationSettingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AuthenticationSettingsClientGetResponse, error) {
 	result := AuthenticationSettingsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthenticationSetting); err != nil {
 		return AuthenticationSettingsClientGetResponse{}, err
 	}
@@ -283,47 +282,61 @@ func (client *AuthenticationSettingsClient) NewListByHealthModelPager(resourceGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByHealthModelCreateRequest(ctx, resourceGroupName, healthModelName, options)
-			}, nil)
+			req, err := client.listByHealthModelCreateRequest(ctx, resourceGroupName, healthModelName, nextLink, options)
 			if err != nil {
 				return AuthenticationSettingsClientListByHealthModelResponse{}, err
 			}
-			return client.listByHealthModelHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AuthenticationSettingsClientListByHealthModelResponse{}, err
+			}
+			return client.listByHealthModelHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByHealthModelCreateRequest creates the ListByHealthModel request.
-func (client *AuthenticationSettingsClient) listByHealthModelCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, _ *AuthenticationSettingsClientListByHealthModelOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AuthenticationSettingsClient) listByHealthModelCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, nextLink string, _ *AuthenticationSettingsClientListByHealthModelOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if healthModelName == "" {
+			return nil, errors.New("parameter healthModelName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{healthModelName}", url.PathEscape(healthModelName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if healthModelName == "" {
-		return nil, errors.New("parameter healthModelName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{healthModelName}", url.PathEscape(healthModelName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByHealthModelHandleResponse handles the ListByHealthModel response.
-func (client *AuthenticationSettingsClient) listByHealthModelHandleResponse(resp *http.Response) (AuthenticationSettingsClientListByHealthModelResponse, error) {
+func (client *AuthenticationSettingsClient) listByHealthModelHandleResponse(resp *http.Response, successCodes ...int) (AuthenticationSettingsClientListByHealthModelResponse, error) {
 	result := AuthenticationSettingsClientListByHealthModelResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthenticationSettingListResult); err != nil {
 		return AuthenticationSettingsClientListByHealthModelResponse{}, err
 	}

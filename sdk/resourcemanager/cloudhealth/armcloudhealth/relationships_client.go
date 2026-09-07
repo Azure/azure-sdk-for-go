@@ -20,7 +20,7 @@ import (
 // RelationshipsClient contains the methods for the Relationships group.
 // Don't use this type directly, use NewRelationshipsClient() instead.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-09-01-preview
 type RelationshipsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -31,6 +31,9 @@ type RelationshipsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRelationshipsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RelationshipsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -85,8 +88,7 @@ func (client *RelationshipsClient) createOrUpdate(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -95,7 +97,7 @@ func (client *RelationshipsClient) createOrUpdate(ctx context.Context, resourceG
 func (client *RelationshipsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, resource Relationship, _ *RelationshipsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships/{relationshipName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -115,7 +117,7 @@ func (client *RelationshipsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -167,8 +169,7 @@ func (client *RelationshipsClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -177,7 +178,7 @@ func (client *RelationshipsClient) deleteOperation(ctx context.Context, resource
 func (client *RelationshipsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, _ *RelationshipsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships/{relationshipName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -197,7 +198,7 @@ func (client *RelationshipsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -223,19 +224,14 @@ func (client *RelationshipsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return RelationshipsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RelationshipsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *RelationshipsClient) getCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, _ *RelationshipsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships/{relationshipName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -255,15 +251,18 @@ func (client *RelationshipsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RelationshipsClient) getHandleResponse(resp *http.Response) (RelationshipsClientGetResponse, error) {
+func (client *RelationshipsClient) getHandleResponse(resp *http.Response, successCodes ...int) (RelationshipsClientGetResponse, error) {
 	result := RelationshipsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Relationship); err != nil {
 		return RelationshipsClientGetResponse{}, err
 	}
@@ -286,50 +285,64 @@ func (client *RelationshipsClient) NewListByHealthModelPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByHealthModelCreateRequest(ctx, resourceGroupName, healthModelName, options)
-			}, nil)
+			req, err := client.listByHealthModelCreateRequest(ctx, resourceGroupName, healthModelName, nextLink, options)
 			if err != nil {
 				return RelationshipsClientListByHealthModelResponse{}, err
 			}
-			return client.listByHealthModelHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RelationshipsClientListByHealthModelResponse{}, err
+			}
+			return client.listByHealthModelHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByHealthModelCreateRequest creates the ListByHealthModel request.
-func (client *RelationshipsClient) listByHealthModelCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, options *RelationshipsClientListByHealthModelOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RelationshipsClient) listByHealthModelCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, nextLink string, options *RelationshipsClientListByHealthModelOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if healthModelName == "" {
+			return nil, errors.New("parameter healthModelName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{healthModelName}", url.PathEscape(healthModelName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if healthModelName == "" {
-		return nil, errors.New("parameter healthModelName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{healthModelName}", url.PathEscape(healthModelName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	if options != nil && options.Timestamp != nil {
-		reqQP.Set("timestamp", datetime.RFC3339(*options.Timestamp).String())
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260901Preview)
+		if options != nil && options.Timestamp != nil {
+			reqQP.Set("timestamp", datetime.RFC3339((*options.Timestamp).UTC()).String())
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByHealthModelHandleResponse handles the ListByHealthModel response.
-func (client *RelationshipsClient) listByHealthModelHandleResponse(resp *http.Response) (RelationshipsClientListByHealthModelResponse, error) {
+func (client *RelationshipsClient) listByHealthModelHandleResponse(resp *http.Response, successCodes ...int) (RelationshipsClientListByHealthModelResponse, error) {
 	result := RelationshipsClientListByHealthModelResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RelationshipListResult); err != nil {
 		return RelationshipsClientListByHealthModelResponse{}, err
 	}

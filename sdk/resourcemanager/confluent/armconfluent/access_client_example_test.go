@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-18-preview/Access_CreateRoleBinding_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_CreateRoleBinding_MaximumSet_Gen.json
 func ExampleAccessClient_CreateRoleBinding_accessCreateRoleBindingMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleAccessClient_CreateRoleBinding_accessCreateRoleBindingMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_CreateRoleBinding_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_CreateRoleBinding_MinimumSet_Gen.json
 func ExampleAccessClient_CreateRoleBinding_accessCreateRoleBindingMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleAccessClient_CreateRoleBinding_accessCreateRoleBindingMinimumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_DeleteRoleBinding_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_DeleteRoleBinding_MaximumSet_Gen.json
 func ExampleAccessClient_DeleteRoleBinding_accessDeleteRoleBindingMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleAccessClient_DeleteRoleBinding_accessDeleteRoleBindingMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_DeleteRoleBinding_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_DeleteRoleBinding_MinimumSet_Gen.json
 func ExampleAccessClient_DeleteRoleBinding_accessDeleteRoleBindingMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleAccessClient_DeleteRoleBinding_accessDeleteRoleBindingMinimumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_InviteUser_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_InviteUser_MaximumSet_Gen.json
 func ExampleAccessClient_InviteUser_accessInviteUserMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleAccessClient_InviteUser_accessInviteUserMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_InviteUser_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_InviteUser_MinimumSet_Gen.json
 func ExampleAccessClient_InviteUser_accessInviteUserMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleAccessClient_InviteUser_accessInviteUserMinimumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListClusters_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListClusters_MaximumSet_Gen.json
 func ExampleAccessClient_ListClusters_accessListClustersMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -274,7 +274,7 @@ func ExampleAccessClient_ListClusters_accessListClustersMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListClusters_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListClusters_MinimumSet_Gen.json
 func ExampleAccessClient_ListClusters_accessListClustersMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -298,7 +298,7 @@ func ExampleAccessClient_ListClusters_accessListClustersMinimumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListEnvironments_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListEnvironments_MaximumSet_Gen.json
 func ExampleAccessClient_ListEnvironments_accessListEnvironmentsMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -348,7 +348,7 @@ func ExampleAccessClient_ListEnvironments_accessListEnvironmentsMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListEnvironments_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListEnvironments_MinimumSet_Gen.json
 func ExampleAccessClient_ListEnvironments_accessListEnvironmentsMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -372,7 +372,7 @@ func ExampleAccessClient_ListEnvironments_accessListEnvironmentsMinimumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListInvitations_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListInvitations_MaximumSet_Gen.json
 func ExampleAccessClient_ListInvitations_accessListInvitationsMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -426,7 +426,7 @@ func ExampleAccessClient_ListInvitations_accessListInvitationsMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListInvitations_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListInvitations_MinimumSet_Gen.json
 func ExampleAccessClient_ListInvitations_accessListInvitationsMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -450,7 +450,7 @@ func ExampleAccessClient_ListInvitations_accessListInvitationsMinimumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListRoleBindingNameList_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListRoleBindingNameList_MaximumSet_Gen.json
 func ExampleAccessClient_ListRoleBindingNameList_accessListRoleBindingNameListMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -489,7 +489,7 @@ func ExampleAccessClient_ListRoleBindingNameList_accessListRoleBindingNameListMa
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListRoleBindingNameList_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListRoleBindingNameList_MinimumSet_Gen.json
 func ExampleAccessClient_ListRoleBindingNameList_accessListRoleBindingNameListMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -513,7 +513,7 @@ func ExampleAccessClient_ListRoleBindingNameList_accessListRoleBindingNameListMi
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListRoleBindings_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListRoleBindings_MaximumSet_Gen.json
 func ExampleAccessClient_ListRoleBindings_accessListRoleBindingsMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -565,7 +565,7 @@ func ExampleAccessClient_ListRoleBindings_accessListRoleBindingsMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListRoleBindings_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListRoleBindings_MinimumSet_Gen.json
 func ExampleAccessClient_ListRoleBindings_accessListRoleBindingsMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -589,7 +589,7 @@ func ExampleAccessClient_ListRoleBindings_accessListRoleBindingsMinimumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListServiceAccounts_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListServiceAccounts_MaximumSet_Gen.json
 func ExampleAccessClient_ListServiceAccounts_accessListServiceAccountsMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -640,7 +640,7 @@ func ExampleAccessClient_ListServiceAccounts_accessListServiceAccountsMaximumSet
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListServiceAccounts_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListServiceAccounts_MinimumSet_Gen.json
 func ExampleAccessClient_ListServiceAccounts_accessListServiceAccountsMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -664,7 +664,7 @@ func ExampleAccessClient_ListServiceAccounts_accessListServiceAccountsMinimumSet
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListUsers_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListUsers_MaximumSet_Gen.json
 func ExampleAccessClient_ListUsers_accessListUsersMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -716,7 +716,7 @@ func ExampleAccessClient_ListUsers_accessListUsersMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListUsers_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListUsers_MinimumSet_Gen.json
 func ExampleAccessClient_ListUsers_accessListUsersMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

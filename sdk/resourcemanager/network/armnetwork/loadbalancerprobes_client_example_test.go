@@ -7,11 +7,11 @@ package armnetwork_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/LoadBalancerProbeGet.json
+// Generated from example definition: 2025-09-01/LoadBalancerProbeGet.json
 func ExampleLoadBalancerProbesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleLoadBalancerProbesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/LoadBalancerProbeList.json
+// Generated from example definition: 2025-09-01/LoadBalancerProbeList.json
 func ExampleLoadBalancerProbesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

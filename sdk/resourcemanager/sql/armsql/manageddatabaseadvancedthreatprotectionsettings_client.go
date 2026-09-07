@@ -19,6 +19,8 @@ import (
 // ManagedDatabaseAdvancedThreatProtectionSettingsClient contains the methods for the ManagedDatabaseAdvancedThreatProtectionSettings
 // group.
 // Don't use this type directly, use NewManagedDatabaseAdvancedThreatProtectionSettingsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ManagedDatabaseAdvancedThreatProtectionSettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -29,6 +31,9 @@ type ManagedDatabaseAdvancedThreatProtectionSettingsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedDatabaseAdvancedThreatProtectionSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedDatabaseAdvancedThreatProtectionSettingsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -42,8 +47,6 @@ func NewManagedDatabaseAdvancedThreatProtectionSettingsClient(subscriptionID str
 
 // CreateOrUpdate - Creates or updates a managed database's Advanced Threat Protection state.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -65,19 +68,14 @@ func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) CreateOrUpd
 	if err != nil {
 		return ManagedDatabaseAdvancedThreatProtectionSettingsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedDatabaseAdvancedThreatProtectionSettingsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters ManagedDatabaseAdvancedThreatProtection, _ *ManagedDatabaseAdvancedThreatProtectionSettingsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,8 +99,8 @@ func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) createOrUpd
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -112,8 +110,11 @@ func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) createOrUpd
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) createOrUpdateHandleResponse(resp *http.Response) (ManagedDatabaseAdvancedThreatProtectionSettingsClientCreateOrUpdateResponse, error) {
+func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabaseAdvancedThreatProtectionSettingsClientCreateOrUpdateResponse, error) {
 	result := ManagedDatabaseAdvancedThreatProtectionSettingsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDatabaseAdvancedThreatProtection); err != nil {
 		return ManagedDatabaseAdvancedThreatProtectionSettingsClientCreateOrUpdateResponse{}, err
 	}
@@ -122,8 +123,6 @@ func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) createOrUpd
 
 // Get - Gets a managed database's Advanced Threat Protection state.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -144,19 +143,14 @@ func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) Get(ctx con
 	if err != nil {
 		return ManagedDatabaseAdvancedThreatProtectionSettingsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedDatabaseAdvancedThreatProtectionSettingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, advancedThreatProtectionName AdvancedThreatProtectionName, _ *ManagedDatabaseAdvancedThreatProtectionSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -180,15 +174,18 @@ func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) getCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) getHandleResponse(resp *http.Response) (ManagedDatabaseAdvancedThreatProtectionSettingsClientGetResponse, error) {
+func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabaseAdvancedThreatProtectionSettingsClientGetResponse, error) {
 	result := ManagedDatabaseAdvancedThreatProtectionSettingsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDatabaseAdvancedThreatProtection); err != nil {
 		return ManagedDatabaseAdvancedThreatProtectionSettingsClientGetResponse{}, err
 	}
@@ -196,8 +193,6 @@ func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) getHandleRe
 }
 
 // NewListByDatabasePager - Gets a list of managed database's Advanced Threat Protection states.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -214,51 +209,65 @@ func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) NewListByDa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
-			}, nil)
+			req, err := client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, nextLink, options)
 			if err != nil {
 				return ManagedDatabaseAdvancedThreatProtectionSettingsClientListByDatabaseResponse{}, err
 			}
-			return client.listByDatabaseHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedDatabaseAdvancedThreatProtectionSettingsClientListByDatabaseResponse{}, err
+			}
+			return client.listByDatabaseHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, _ *ManagedDatabaseAdvancedThreatProtectionSettingsClientListByDatabaseOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/advancedThreatProtectionSettings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, nextLink string, _ *ManagedDatabaseAdvancedThreatProtectionSettingsClientListByDatabaseOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/advancedThreatProtectionSettings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if managedInstanceName == "" {
+			return nil, errors.New("parameter managedInstanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+		if databaseName == "" {
+			return nil, errors.New("parameter databaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) listByDatabaseHandleResponse(resp *http.Response) (ManagedDatabaseAdvancedThreatProtectionSettingsClientListByDatabaseResponse, error) {
+func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) listByDatabaseHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabaseAdvancedThreatProtectionSettingsClientListByDatabaseResponse, error) {
 	result := ManagedDatabaseAdvancedThreatProtectionSettingsClientListByDatabaseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDatabaseAdvancedThreatProtectionListResult); err != nil {
 		return ManagedDatabaseAdvancedThreatProtectionSettingsClientListByDatabaseResponse{}, err
 	}

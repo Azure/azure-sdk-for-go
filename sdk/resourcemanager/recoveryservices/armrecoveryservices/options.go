@@ -14,6 +14,29 @@ type ClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DeletedVaultsClientBeginUndeleteOptions contains the optional parameters for the DeletedVaultsClient.BeginUndelete method.
+type DeletedVaultsClientBeginUndeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DeletedVaultsClientGetOperationStatusOptions contains the optional parameters for the DeletedVaultsClient.GetOperationStatus
+// method.
+type DeletedVaultsClientGetOperationStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeletedVaultsClientGetOptions contains the optional parameters for the DeletedVaultsClient.Get method.
+type DeletedVaultsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeletedVaultsClientListBySubscriptionIDOptions contains the optional parameters for the DeletedVaultsClient.NewListBySubscriptionIDPager
+// method.
+type DeletedVaultsClientListBySubscriptionIDOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientGetOperationResultOptions contains the optional parameters for the OperationsClient.GetOperationResult
 // method.
 type OperationsClientGetOperationResultOptions struct {

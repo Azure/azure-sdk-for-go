@@ -19,7 +19,7 @@ import (
 // LogAnalyticsClient contains the methods for the LogAnalytics group.
 // Don't use this type directly, use NewLogAnalyticsClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-04-01
 type LogAnalyticsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type LogAnalyticsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLogAnalyticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LogAnalyticsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -44,7 +47,7 @@ func NewLogAnalyticsClient(subscriptionID string, credential azcore.TokenCredent
 // BeginExportRequestRateByInterval - Export logs that show Api requests made by this subscription in the given time window
 // to show throttling activities.
 // If the operation fails it returns an *azcore.ResponseError type.
-//   - location - The location name.
+//   - location - The name of the Azure region.
 //   - parameters - Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
 //   - options - LogAnalyticsClientBeginExportRequestRateByIntervalOptions contains the optional parameters for the LogAnalyticsClient.BeginExportRequestRateByInterval
 //     method.
@@ -83,8 +86,7 @@ func (client *LogAnalyticsClient) exportRequestRateByInterval(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -93,7 +95,7 @@ func (client *LogAnalyticsClient) exportRequestRateByInterval(ctx context.Contex
 func (client *LogAnalyticsClient) exportRequestRateByIntervalCreateRequest(ctx context.Context, location string, parameters RequestRateByIntervalInput, _ *LogAnalyticsClientBeginExportRequestRateByIntervalOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess/getRequestRateByInterval"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -105,7 +107,7 @@ func (client *LogAnalyticsClient) exportRequestRateByIntervalCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -118,7 +120,7 @@ func (client *LogAnalyticsClient) exportRequestRateByIntervalCreateRequest(ctx c
 // BeginExportThrottledRequests - Export logs that show total throttled Api requests for this subscription in the given time
 // window.
 // If the operation fails it returns an *azcore.ResponseError type.
-//   - location - The location name.
+//   - location - The name of the Azure region.
 //   - parameters - The request body
 //   - options - LogAnalyticsClientBeginExportThrottledRequestsOptions contains the optional parameters for the LogAnalyticsClient.BeginExportThrottledRequests
 //     method.
@@ -156,8 +158,7 @@ func (client *LogAnalyticsClient) exportThrottledRequests(ctx context.Context, l
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -166,7 +167,7 @@ func (client *LogAnalyticsClient) exportThrottledRequests(ctx context.Context, l
 func (client *LogAnalyticsClient) exportThrottledRequestsCreateRequest(ctx context.Context, location string, parameters ThrottledRequestsInput, _ *LogAnalyticsClientBeginExportThrottledRequestsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess/getThrottledRequests"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -178,7 +179,7 @@ func (client *LogAnalyticsClient) exportThrottledRequestsCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

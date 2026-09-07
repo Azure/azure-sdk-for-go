@@ -45,7 +45,7 @@ func ExampleConditionalCreditsClient_BeginCancel() {
 	// 			AllowContributors: to.Ptr(armbillingbenefits.EnablementModeEnabled),
 	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:11111111-1111-1111-1111-111111111111_2025-10-28"),
 	// 			DisplayName: to.Ptr("Conditional Credit 20250801"),
-	// 			EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 			EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 			EntityType: to.Ptr(armbillingbenefits.ConditionalCreditEntityTypePrimary),
 	// 			Milestones: []*armbillingbenefits.ConditionalCreditMilestone{
 	// 				{
@@ -57,11 +57,11 @@ func ExampleConditionalCreditsClient_BeginCancel() {
 	// 							Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
 	// 						},
 	// 						Duration: to.Ptr(armbillingbenefits.Term("P3M")),
-	// 						EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
-	// 						StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T00:00:00Z"); return t}()),
+	// 						EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
+	// 						StartAt: to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
 	// 						SystemID: to.Ptr("credit98765432"),
 	// 					},
-	// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-30T23:59:59Z"); return t}()),
+	// 					EndAt: to.Ptr(time.Date(2025, time.September, 30, 23, 59, 59, 0, time.UTC)),
 	// 					MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440001"),
 	// 					SpendTarget: &armbillingbenefits.Price{
 	// 						Amount: to.Ptr[float64](50000),
@@ -80,7 +80,7 @@ func ExampleConditionalCreditsClient_BeginCancel() {
 	// 						Duration: to.Ptr(armbillingbenefits.Term("P3M")),
 	// 						SystemID: to.Ptr("credit98765433"),
 	// 					},
-	// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 					EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 					MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440002"),
 	// 					SpendTarget: &armbillingbenefits.Price{
 	// 						Amount: to.Ptr[float64](100000),
@@ -91,14 +91,14 @@ func ExampleConditionalCreditsClient_BeginCancel() {
 	// 			},
 	// 			ProductCode: to.Ptr("000187f7-0000-0260-ab43-b8473ce57f1d"),
 	// 			ProvisioningState: to.Ptr(armbillingbenefits.ConditionalCreditsProvisioningStateSucceeded),
-	// 			StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T00:00:00Z"); return t}()),
+	// 			StartAt: to.Ptr(time.Date(2025, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 			Status: to.Ptr(armbillingbenefits.ConditionalCreditStatusCanceled),
 	// 			SystemID: to.Ptr("CACO-SYSTEM-20250801"),
 	// 		},
 	// 		SystemData: &armbillingbenefits.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
 	// 		},
 	// 		Tags: map[string]*string{
@@ -127,7 +127,7 @@ func ExampleConditionalCreditsClient_BeginCreateOrUpdate_conditionalCreditCreate
 			EntityType:        to.Ptr(armbillingbenefits.ConditionalCreditEntityTypeContributor),
 			PrimaryResourceID: to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/conditionalCredits/conditionalCredit_20250801"),
 			ProductCode:       to.Ptr("000187f7-0000-0260-ab43-b8473ce57f1d"),
-			StartAt:           to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T00:00:00Z"); return t }()),
+			StartAt:           to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
 		},
 		Tags: map[string]*string{
 			"environment": to.Ptr("dev"),
@@ -153,12 +153,12 @@ func ExampleConditionalCreditsClient_BeginCreateOrUpdate_conditionalCreditCreate
 	// 		Properties: &armbillingbenefits.ContributorConditionalCreditProperties{
 	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:11111111-1111-1111-1111-111111111111_2025-10-28"),
 	// 			DisplayName: to.Ptr("Contributor Conditional Credit 20250801"),
-	// 			EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 			EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 			EntityType: to.Ptr(armbillingbenefits.ConditionalCreditEntityTypeContributor),
 	// 			Milestones: []*armbillingbenefits.ContributorConditionalCreditMilestone{
 	// 				{
 	// 					Name: to.Ptr("Milestone 1"),
-	// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-30T23:59:59Z"); return t}()),
+	// 					EndAt: to.Ptr(time.Date(2025, time.September, 30, 23, 59, 59, 0, time.UTC)),
 	// 					MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440001"),
 	// 					SpendTarget: &armbillingbenefits.Price{
 	// 						Amount: to.Ptr[float64](50000),
@@ -168,7 +168,7 @@ func ExampleConditionalCreditsClient_BeginCreateOrUpdate_conditionalCreditCreate
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("Milestone 2"),
-	// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 					EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 					MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440002"),
 	// 					SpendTarget: &armbillingbenefits.Price{
 	// 						Amount: to.Ptr[float64](100000),
@@ -181,14 +181,14 @@ func ExampleConditionalCreditsClient_BeginCreateOrUpdate_conditionalCreditCreate
 	// 			PrimaryResourceID: to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/conditionalCredits/conditionalCredit_20250801"),
 	// 			ProductCode: to.Ptr("000187f7-0000-0260-ab43-b8473ce57f1d"),
 	// 			ProvisioningState: to.Ptr(armbillingbenefits.ConditionalCreditsProvisioningStateSucceeded),
-	// 			StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T00:00:00Z"); return t}()),
+	// 			StartAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
 	// 			Status: to.Ptr(armbillingbenefits.ConditionalCreditStatusActive),
 	// 			SystemID: to.Ptr("CACO-SYSTEM-001"),
 	// 		},
 	// 		SystemData: &armbillingbenefits.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
 	// 		},
 	// 		Tags: map[string]*string{
@@ -227,7 +227,7 @@ func ExampleConditionalCreditsClient_BeginCreateOrUpdate_conditionalCreditCreate
 						},
 						Duration: to.Ptr(armbillingbenefits.Term("P3M")),
 					},
-					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-30T23:59:59Z"); return t }()),
+					EndAt: to.Ptr(time.Date(2025, time.September, 30, 23, 59, 59, 0, time.UTC)),
 					SpendTarget: &armbillingbenefits.Price{
 						Amount:       to.Ptr[float64](50000),
 						CurrencyCode: to.Ptr("USD"),
@@ -243,7 +243,7 @@ func ExampleConditionalCreditsClient_BeginCreateOrUpdate_conditionalCreditCreate
 						},
 						Duration: to.Ptr(armbillingbenefits.Term("P3M")),
 					},
-					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t }()),
+					EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 					SpendTarget: &armbillingbenefits.Price{
 						Amount:       to.Ptr[float64](100000),
 						CurrencyCode: to.Ptr("USD"),
@@ -251,7 +251,7 @@ func ExampleConditionalCreditsClient_BeginCreateOrUpdate_conditionalCreditCreate
 				},
 			},
 			ProductCode: to.Ptr("000187f7-0000-0260-ab43-b8473ce57f1d"),
-			StartAt:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T00:00:00Z"); return t }()),
+			StartAt:     to.Ptr(time.Date(2025, time.July, 1, 0, 0, 0, 0, time.UTC)),
 		},
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -278,7 +278,7 @@ func ExampleConditionalCreditsClient_BeginCreateOrUpdate_conditionalCreditCreate
 	// 			AllowContributors: to.Ptr(armbillingbenefits.EnablementModeEnabled),
 	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:11111111-1111-1111-1111-111111111111_2025-10-28"),
 	// 			DisplayName: to.Ptr("Conditional Credit 20250801"),
-	// 			EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 			EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 			EntityType: to.Ptr(armbillingbenefits.ConditionalCreditEntityTypePrimary),
 	// 			Milestones: []*armbillingbenefits.ConditionalCreditMilestone{
 	// 				{
@@ -291,11 +291,11 @@ func ExampleConditionalCreditsClient_BeginCreateOrUpdate_conditionalCreditCreate
 	// 							Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
 	// 						},
 	// 						Duration: to.Ptr(armbillingbenefits.Term("P3M")),
-	// 						EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
-	// 						StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T00:00:00Z"); return t}()),
+	// 						EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
+	// 						StartAt: to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
 	// 						SystemID: to.Ptr("credit98765432"),
 	// 					},
-	// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-30T23:59:59Z"); return t}()),
+	// 					EndAt: to.Ptr(time.Date(2025, time.September, 30, 23, 59, 59, 0, time.UTC)),
 	// 					MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440001"),
 	// 					SpendTarget: &armbillingbenefits.Price{
 	// 						Amount: to.Ptr[float64](50000),
@@ -315,7 +315,7 @@ func ExampleConditionalCreditsClient_BeginCreateOrUpdate_conditionalCreditCreate
 	// 						Duration: to.Ptr(armbillingbenefits.Term("P3M")),
 	// 						SystemID: to.Ptr("credit98765432"),
 	// 					},
-	// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 					EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 					MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440002"),
 	// 					SpendTarget: &armbillingbenefits.Price{
 	// 						Amount: to.Ptr[float64](100000),
@@ -326,14 +326,14 @@ func ExampleConditionalCreditsClient_BeginCreateOrUpdate_conditionalCreditCreate
 	// 			},
 	// 			ProductCode: to.Ptr("000187f7-0000-0260-ab43-b8473ce57f1d"),
 	// 			ProvisioningState: to.Ptr(armbillingbenefits.ConditionalCreditsProvisioningStateSucceeded),
-	// 			StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T00:00:00Z"); return t}()),
+	// 			StartAt: to.Ptr(time.Date(2025, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 			Status: to.Ptr(armbillingbenefits.ConditionalCreditStatusActive),
 	// 			SystemID: to.Ptr("CACO-SYSTEM-20250801"),
 	// 		},
 	// 		SystemData: &armbillingbenefits.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
 	// 		},
 	// 		Tags: map[string]*string{
@@ -393,7 +393,7 @@ func ExampleConditionalCreditsClient_Get() {
 	// 			AllowContributors: to.Ptr(armbillingbenefits.EnablementModeEnabled),
 	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:11111111-1111-1111-1111-111111111111_2025-10-28"),
 	// 			DisplayName: to.Ptr("Conditional Credit 20250801"),
-	// 			EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 			EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 			EntityType: to.Ptr(armbillingbenefits.ConditionalCreditEntityTypePrimary),
 	// 			Milestones: []*armbillingbenefits.ConditionalCreditMilestone{
 	// 				{
@@ -405,11 +405,11 @@ func ExampleConditionalCreditsClient_Get() {
 	// 							Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
 	// 						},
 	// 						Duration: to.Ptr(armbillingbenefits.Term("P3M")),
-	// 						EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
-	// 						StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T00:00:00Z"); return t}()),
+	// 						EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
+	// 						StartAt: to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
 	// 						SystemID: to.Ptr("credit98765432"),
 	// 					},
-	// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-30T23:59:59Z"); return t}()),
+	// 					EndAt: to.Ptr(time.Date(2025, time.September, 30, 23, 59, 59, 0, time.UTC)),
 	// 					MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440001"),
 	// 					SpendTarget: &armbillingbenefits.Price{
 	// 						Amount: to.Ptr[float64](50000),
@@ -428,7 +428,7 @@ func ExampleConditionalCreditsClient_Get() {
 	// 						Duration: to.Ptr(armbillingbenefits.Term("P3M")),
 	// 						SystemID: to.Ptr("credit98765433"),
 	// 					},
-	// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 					EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 					MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440002"),
 	// 					SpendTarget: &armbillingbenefits.Price{
 	// 						Amount: to.Ptr[float64](100000),
@@ -439,14 +439,14 @@ func ExampleConditionalCreditsClient_Get() {
 	// 			},
 	// 			ProductCode: to.Ptr("000187f7-0000-0260-ab43-b8473ce57f1d"),
 	// 			ProvisioningState: to.Ptr(armbillingbenefits.ConditionalCreditsProvisioningStateSucceeded),
-	// 			StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T00:00:00Z"); return t}()),
+	// 			StartAt: to.Ptr(time.Date(2025, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 			Status: to.Ptr(armbillingbenefits.ConditionalCreditStatusActive),
 	// 			SystemID: to.Ptr("CACO-SYSTEM-20250801"),
 	// 		},
 	// 		SystemData: &armbillingbenefits.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
 	// 		},
 	// 		Tags: map[string]*string{
@@ -492,7 +492,7 @@ func ExampleConditionalCreditsClient_NewListByResourceGroupPager() {
 		// 					AllowContributors: to.Ptr(armbillingbenefits.EnablementModeEnabled),
 		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:11111111-1111-1111-1111-111111111111_2025-10-28"),
 		// 					DisplayName: to.Ptr("Conditional Credit 20250801"),
-		// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 					EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 					EntityType: to.Ptr(armbillingbenefits.ConditionalCreditEntityTypePrimary),
 		// 					Milestones: []*armbillingbenefits.ConditionalCreditMilestone{
 		// 						{
@@ -504,11 +504,11 @@ func ExampleConditionalCreditsClient_NewListByResourceGroupPager() {
 		// 									Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
 		// 								},
 		// 								Duration: to.Ptr(armbillingbenefits.Term("P3M")),
-		// 								EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
-		// 								StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T00:00:00Z"); return t}()),
+		// 								EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
+		// 								StartAt: to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 								SystemID: to.Ptr("credit98765432"),
 		// 							},
-		// 							EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-30T23:59:59Z"); return t}()),
+		// 							EndAt: to.Ptr(time.Date(2025, time.September, 30, 23, 59, 59, 0, time.UTC)),
 		// 							MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440001"),
 		// 							SpendTarget: &armbillingbenefits.Price{
 		// 								Amount: to.Ptr[float64](50000),
@@ -525,7 +525,7 @@ func ExampleConditionalCreditsClient_NewListByResourceGroupPager() {
 		// 								},
 		// 								Duration: to.Ptr(armbillingbenefits.Term("P3M")),
 		// 							},
-		// 							EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 							EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 							MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440002"),
 		// 							SpendTarget: &armbillingbenefits.Price{
 		// 								Amount: to.Ptr[float64](100000),
@@ -536,14 +536,14 @@ func ExampleConditionalCreditsClient_NewListByResourceGroupPager() {
 		// 					},
 		// 					ProductCode: to.Ptr("000187f7-0000-0260-ab43-b8473ce57f1d"),
 		// 					ProvisioningState: to.Ptr(armbillingbenefits.ConditionalCreditsProvisioningStateSucceeded),
-		// 					StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T00:00:00Z"); return t}()),
+		// 					StartAt: to.Ptr(time.Date(2025, time.July, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armbillingbenefits.ConditionalCreditStatusActive),
 		// 					SystemID: to.Ptr("CACO-SYSTEM-20250801"),
 		// 				},
 		// 				SystemData: &armbillingbenefits.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
 		// 				},
 		// 				Tags: map[string]*string{
@@ -563,14 +563,14 @@ func ExampleConditionalCreditsClient_NewListByResourceGroupPager() {
 		// 					EntityType: to.Ptr(armbillingbenefits.ConditionalCreditEntityTypePrimary),
 		// 					ProductCode: to.Ptr("000187f7-0000-0260-ab43-b8473ce57f1d"),
 		// 					ProvisioningState: to.Ptr(armbillingbenefits.ConditionalCreditsProvisioningStateSucceeded),
-		// 					StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T00:00:00Z"); return t}()),
+		// 					StartAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armbillingbenefits.ConditionalCreditStatusActive),
 		// 					SystemID: to.Ptr("CACO-SYSTEM-SIMPLE-20250801"),
 		// 				},
 		// 				SystemData: &armbillingbenefits.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
 		// 				},
 		// 				Tags: map[string]*string{
@@ -618,7 +618,7 @@ func ExampleConditionalCreditsClient_NewListBySubscriptionPager() {
 		// 					AllowContributors: to.Ptr(armbillingbenefits.EnablementModeEnabled),
 		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:11111111-1111-1111-1111-111111111111_2025-10-28"),
 		// 					DisplayName: to.Ptr("Conditional Credit 20250801"),
-		// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 					EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 					EntityType: to.Ptr(armbillingbenefits.ConditionalCreditEntityTypePrimary),
 		// 					Milestones: []*armbillingbenefits.ConditionalCreditMilestone{
 		// 						{
@@ -631,11 +631,11 @@ func ExampleConditionalCreditsClient_NewListBySubscriptionPager() {
 		// 									Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
 		// 								},
 		// 								Duration: to.Ptr(armbillingbenefits.Term("P3M")),
-		// 								EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
-		// 								StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T00:00:00Z"); return t}()),
+		// 								EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
+		// 								StartAt: to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 								SystemID: to.Ptr("credit98765432"),
 		// 							},
-		// 							EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-30T23:59:59Z"); return t}()),
+		// 							EndAt: to.Ptr(time.Date(2025, time.September, 30, 23, 59, 59, 0, time.UTC)),
 		// 							MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440001"),
 		// 							SpendTarget: &armbillingbenefits.Price{
 		// 								Amount: to.Ptr[float64](50000),
@@ -653,7 +653,7 @@ func ExampleConditionalCreditsClient_NewListBySubscriptionPager() {
 		// 								},
 		// 								Duration: to.Ptr(armbillingbenefits.Term("P3M")),
 		// 							},
-		// 							EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 							EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 							MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440002"),
 		// 							SpendTarget: &armbillingbenefits.Price{
 		// 								Amount: to.Ptr[float64](100000),
@@ -664,14 +664,14 @@ func ExampleConditionalCreditsClient_NewListBySubscriptionPager() {
 		// 					},
 		// 					ProductCode: to.Ptr("000187f7-0000-0260-ab43-b8473ce57f1d"),
 		// 					ProvisioningState: to.Ptr(armbillingbenefits.ConditionalCreditsProvisioningStateSucceeded),
-		// 					StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T00:00:00Z"); return t}()),
+		// 					StartAt: to.Ptr(time.Date(2025, time.July, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armbillingbenefits.ConditionalCreditStatusActive),
 		// 					SystemID: to.Ptr("CACO-SYSTEM-20250801"),
 		// 				},
 		// 				SystemData: &armbillingbenefits.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
 		// 				},
 		// 				Tags: map[string]*string{
@@ -687,7 +687,7 @@ func ExampleConditionalCreditsClient_NewListBySubscriptionPager() {
 		// 				Properties: &armbillingbenefits.ContributorConditionalCreditProperties{
 		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:11111111-1111-1111-1111-111111111111_2025-10-28"),
 		// 					DisplayName: to.Ptr("Contributor Conditional Credit 20250801"),
-		// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 					EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 					EntityType: to.Ptr(armbillingbenefits.ConditionalCreditEntityTypeContributor),
 		// 					Milestones: []*armbillingbenefits.ContributorConditionalCreditMilestone{
 		// 						{
@@ -700,11 +700,11 @@ func ExampleConditionalCreditsClient_NewListBySubscriptionPager() {
 		// 									Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
 		// 								},
 		// 								Duration: to.Ptr(armbillingbenefits.Term("P3M")),
-		// 								EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
-		// 								StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T00:00:00Z"); return t}()),
+		// 								EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
+		// 								StartAt: to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 								SystemID: to.Ptr("credit98765432"),
 		// 							},
-		// 							EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-30T23:59:59Z"); return t}()),
+		// 							EndAt: to.Ptr(time.Date(2025, time.September, 30, 23, 59, 59, 0, time.UTC)),
 		// 							MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440001"),
 		// 							SpendTarget: &armbillingbenefits.Price{
 		// 								Amount: to.Ptr[float64](50000),
@@ -722,7 +722,7 @@ func ExampleConditionalCreditsClient_NewListBySubscriptionPager() {
 		// 								},
 		// 								Duration: to.Ptr(armbillingbenefits.Term("P3M")),
 		// 							},
-		// 							EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 							EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 							MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440002"),
 		// 							SpendTarget: &armbillingbenefits.Price{
 		// 								Amount: to.Ptr[float64](100000),
@@ -735,14 +735,14 @@ func ExampleConditionalCreditsClient_NewListBySubscriptionPager() {
 		// 					PrimaryResourceID: to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/conditionalCredits/conditionalCredit_20250801"),
 		// 					ProductCode: to.Ptr("000187f7-0000-0260-ab43-b8473ce57f1d"),
 		// 					ProvisioningState: to.Ptr(armbillingbenefits.ConditionalCreditsProvisioningStateSucceeded),
-		// 					StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T00:00:00Z"); return t}()),
+		// 					StartAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armbillingbenefits.ConditionalCreditStatusActive),
 		// 					SystemID: to.Ptr("CACO-SYSTEM-20250801"),
 		// 				},
 		// 				SystemData: &armbillingbenefits.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
 		// 				},
 		// 				Tags: map[string]*string{
@@ -759,7 +759,7 @@ func ExampleConditionalCreditsClient_NewListBySubscriptionPager() {
 		// 					AllowContributors: to.Ptr(armbillingbenefits.EnablementModeDisabled),
 		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:11111111-1111-1111-1111-111111111111_2025-10-28"),
 		// 					DisplayName: to.Ptr("Simple Conditional Credit"),
-		// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 					EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 					EntityType: to.Ptr(armbillingbenefits.ConditionalCreditEntityTypePrimary),
 		// 					Milestones: []*armbillingbenefits.ConditionalCreditMilestone{
 		// 						{
@@ -772,7 +772,7 @@ func ExampleConditionalCreditsClient_NewListBySubscriptionPager() {
 		// 								},
 		// 								Duration: to.Ptr(armbillingbenefits.TermP1M),
 		// 							},
-		// 							EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 							EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 							MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440003"),
 		// 							SpendTarget: &armbillingbenefits.Price{
 		// 								Amount: to.Ptr[float64](25000),
@@ -783,14 +783,14 @@ func ExampleConditionalCreditsClient_NewListBySubscriptionPager() {
 		// 					},
 		// 					ProductCode: to.Ptr("000187f7-0000-0260-ab43-b8473ce57f1d"),
 		// 					ProvisioningState: to.Ptr(armbillingbenefits.ConditionalCreditsProvisioningStateSucceeded),
-		// 					StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T00:00:00Z"); return t}()),
+		// 					StartAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armbillingbenefits.ConditionalCreditStatusActive),
 		// 					SystemID: to.Ptr("CACO-SYSTEM-SIMPLE-20250801"),
 		// 				},
 		// 				SystemData: &armbillingbenefits.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
 		// 				},
 		// 				Tags: map[string]*string{
@@ -838,7 +838,7 @@ func ExampleConditionalCreditsClient_NewScopeListPager() {
 		// 					BenefitResourceID: to.Ptr("/subscriptions/30000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.BillingBenefits/conditionalcredits/testprimaryconditionalcredit"),
 		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:11111111-1111-1111-1111-111111111111_2025-10-28"),
 		// 					DisplayName: to.Ptr("Conditional Credit 20250801"),
-		// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-31T23:59:59Z"); return t}()),
+		// 					EndAt: to.Ptr(time.Date(2026, time.March, 31, 23, 59, 59, 0, time.UTC)),
 		// 					EntityType: to.Ptr(armbillingbenefits.ConditionalCreditEntityTypePrimary),
 		// 					Milestones: []*armbillingbenefits.ConditionalCreditMilestone{
 		// 						{
@@ -850,11 +850,11 @@ func ExampleConditionalCreditsClient_NewScopeListPager() {
 		// 									CurrencyCode: to.Ptr("USD"),
 		// 									Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
 		// 								},
-		// 								EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
-		// 								StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T00:00:00Z"); return t}()),
+		// 								EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
+		// 								StartAt: to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 								SystemID: to.Ptr("credit98765432"),
 		// 							},
-		// 							EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T00:00:00Z"); return t}()),
+		// 							EndAt: to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 							MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440001"),
 		// 							SpendTarget: &armbillingbenefits.Price{
 		// 								Amount: to.Ptr[float64](50000),
@@ -872,7 +872,7 @@ func ExampleConditionalCreditsClient_NewScopeListPager() {
 		// 								},
 		// 								Duration: to.Ptr(armbillingbenefits.Term("P3M")),
 		// 							},
-		// 							EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-31T23:59:59Z"); return t}()),
+		// 							EndAt: to.Ptr(time.Date(2026, time.March, 31, 23, 59, 59, 0, time.UTC)),
 		// 							MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440002"),
 		// 							SpendTarget: &armbillingbenefits.Price{
 		// 								Amount: to.Ptr[float64](100000),
@@ -883,14 +883,14 @@ func ExampleConditionalCreditsClient_NewScopeListPager() {
 		// 					},
 		// 					ProductCode: to.Ptr("000187f7-0000-0260-ab43-b8473ce57f1d"),
 		// 					ProvisioningState: to.Ptr(armbillingbenefits.ConditionalCreditsProvisioningStateSucceeded),
-		// 					StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T00:00:00Z"); return t}()),
+		// 					StartAt: to.Ptr(time.Date(2025, time.July, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armbillingbenefits.ConditionalCreditStatusActive),
 		// 					SystemID: to.Ptr("C20251028000000000000"),
 		// 				},
 		// 				SystemData: &armbillingbenefits.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
 		// 				},
 		// 				Tags: map[string]*string{
@@ -907,7 +907,7 @@ func ExampleConditionalCreditsClient_NewScopeListPager() {
 		// 					BenefitResourceID: to.Ptr("/subscriptions/30000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.BillingBenefits/conditionalcredits/testprimaryconditionalcredit2"),
 		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:11111111-1111-1111-1111-111111111111_2025-10-28"),
 		// 					DisplayName: to.Ptr("Conditional Credit 20250802"),
-		// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-31T23:59:59Z"); return t}()),
+		// 					EndAt: to.Ptr(time.Date(2026, time.July, 31, 23, 59, 59, 0, time.UTC)),
 		// 					EntityType: to.Ptr(armbillingbenefits.ConditionalCreditEntityTypeContributor),
 		// 					Milestones: []*armbillingbenefits.ContributorConditionalCreditMilestone{
 		// 						{
@@ -920,7 +920,7 @@ func ExampleConditionalCreditsClient_NewScopeListPager() {
 		// 								},
 		// 								Duration: to.Ptr(armbillingbenefits.Term("P3M")),
 		// 							},
-		// 							EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-31T23:59:59Z"); return t}()),
+		// 							EndAt: to.Ptr(time.Date(2026, time.July, 31, 23, 59, 59, 0, time.UTC)),
 		// 							MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440003"),
 		// 							SpendTarget: &armbillingbenefits.Price{
 		// 								Amount: to.Ptr[float64](75000),
@@ -933,14 +933,14 @@ func ExampleConditionalCreditsClient_NewScopeListPager() {
 		// 					PrimaryResourceID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/conditionalCredits/conditionalCredit_20250801"),
 		// 					ProductCode: to.Ptr("000187f7-0000-0260-ab43-b8473ce57f1d"),
 		// 					ProvisioningState: to.Ptr(armbillingbenefits.ConditionalCreditsProvisioningStateSucceeded),
-		// 					StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T00:00:00Z"); return t}()),
+		// 					StartAt: to.Ptr(time.Date(2026, time.April, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armbillingbenefits.ConditionalCreditStatusActive),
 		// 					SystemID: to.Ptr("C20251028000000000000"),
 		// 				},
 		// 				SystemData: &armbillingbenefits.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-02T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.September, 2, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-02T01:01:01.1075056Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.September, 2, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
 		// 				},
 		// 				Tags: map[string]*string{
@@ -977,10 +977,10 @@ func ExampleConditionalCreditsClient_BeginUpdate_conditionalCreditUpdate() {
 							Grain:        to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
 						},
 						Duration: to.Ptr(armbillingbenefits.Term("P3M")),
-						EndAt:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t }()),
-						StartAt:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T00:00:00Z"); return t }()),
+						EndAt:    to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
+						StartAt:  to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
 					},
-					EndAt:       to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-30T23:59:59Z"); return t }()),
+					EndAt:       to.Ptr(time.Date(2025, time.September, 30, 23, 59, 59, 0, time.UTC)),
 					MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440001"),
 					SpendTarget: &armbillingbenefits.Price{
 						Amount:       to.Ptr[float64](60000),
@@ -997,7 +997,7 @@ func ExampleConditionalCreditsClient_BeginUpdate_conditionalCreditUpdate() {
 						},
 						Duration: to.Ptr(armbillingbenefits.Term("P3M")),
 					},
-					EndAt:       to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t }()),
+					EndAt:       to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 					MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440002"),
 					SpendTarget: &armbillingbenefits.Price{
 						Amount:       to.Ptr[float64](100000),
@@ -1014,7 +1014,7 @@ func ExampleConditionalCreditsClient_BeginUpdate_conditionalCreditUpdate() {
 						},
 						Duration: to.Ptr(armbillingbenefits.Term("P3M")),
 					},
-					EndAt:       to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-31T23:59:59Z"); return t }()),
+					EndAt:       to.Ptr(time.Date(2026, time.March, 31, 23, 59, 59, 0, time.UTC)),
 					MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440003"),
 					SpendTarget: &armbillingbenefits.Price{
 						Amount:       to.Ptr[float64](150000),
@@ -1048,7 +1048,7 @@ func ExampleConditionalCreditsClient_BeginUpdate_conditionalCreditUpdate() {
 	// 			AllowContributors: to.Ptr(armbillingbenefits.EnablementModeEnabled),
 	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:11111111-1111-1111-1111-111111111111_2025-10-28"),
 	// 			DisplayName: to.Ptr("Updated Conditional Credit 20250801"),
-	// 			EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T00:00:00Z"); return t}()),
+	// 			EndAt: to.Ptr(time.Date(2026, time.April, 1, 0, 0, 0, 0, time.UTC)),
 	// 			EntityType: to.Ptr(armbillingbenefits.ConditionalCreditEntityTypePrimary),
 	// 			Milestones: []*armbillingbenefits.ConditionalCreditMilestone{
 	// 				{
@@ -1060,11 +1060,11 @@ func ExampleConditionalCreditsClient_BeginUpdate_conditionalCreditUpdate() {
 	// 							Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
 	// 						},
 	// 						Duration: to.Ptr(armbillingbenefits.Term("P3M")),
-	// 						EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
-	// 						StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T00:00:00Z"); return t}()),
+	// 						EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
+	// 						StartAt: to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
 	// 						SystemID: to.Ptr("credit98765432"),
 	// 					},
-	// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-30T23:59:59Z"); return t}()),
+	// 					EndAt: to.Ptr(time.Date(2025, time.September, 30, 23, 59, 59, 0, time.UTC)),
 	// 					MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440001"),
 	// 					SpendTarget: &armbillingbenefits.Price{
 	// 						Amount: to.Ptr[float64](60000),
@@ -1081,7 +1081,7 @@ func ExampleConditionalCreditsClient_BeginUpdate_conditionalCreditUpdate() {
 	// 						},
 	// 						Duration: to.Ptr(armbillingbenefits.Term("P3M")),
 	// 					},
-	// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 					EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 					MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440002"),
 	// 					SpendTarget: &armbillingbenefits.Price{
 	// 						Amount: to.Ptr[float64](100000),
@@ -1098,7 +1098,7 @@ func ExampleConditionalCreditsClient_BeginUpdate_conditionalCreditUpdate() {
 	// 						},
 	// 						Duration: to.Ptr(armbillingbenefits.Term("P3M")),
 	// 					},
-	// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-31T23:59:59Z"); return t}()),
+	// 					EndAt: to.Ptr(time.Date(2026, time.March, 31, 23, 59, 59, 0, time.UTC)),
 	// 					MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440003"),
 	// 					SpendTarget: &armbillingbenefits.Price{
 	// 						Amount: to.Ptr[float64](150000),
@@ -1109,14 +1109,14 @@ func ExampleConditionalCreditsClient_BeginUpdate_conditionalCreditUpdate() {
 	// 			},
 	// 			ProductCode: to.Ptr("000187f7-0000-0260-ab43-b8473ce57f1d"),
 	// 			ProvisioningState: to.Ptr(armbillingbenefits.ConditionalCreditsProvisioningStateSucceeded),
-	// 			StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T00:00:00Z"); return t}()),
+	// 			StartAt: to.Ptr(time.Date(2025, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 			Status: to.Ptr(armbillingbenefits.ConditionalCreditStatusActive),
 	// 			SystemID: to.Ptr("CONDITIONALCREDITS-SYSTEM-20250801"),
 	// 		},
 	// 		SystemData: &armbillingbenefits.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T02:15:30.2080047Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 2, 15, 30, 208004700, time.UTC)),
 	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
 	// 		},
 	// 		Tags: map[string]*string{
@@ -1177,11 +1177,11 @@ func ExampleConditionalCreditsClient_BeginUpdate_conditionalCreditUpdateContribu
 	// 							Grain: to.Ptr(armbillingbenefits.CommitmentGrainFullTerm),
 	// 						},
 	// 						Duration: to.Ptr(armbillingbenefits.Term("P3M")),
-	// 						EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
-	// 						StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T00:00:00Z"); return t}()),
+	// 						EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
+	// 						StartAt: to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
 	// 						SystemID: to.Ptr("credit98765432"),
 	// 					},
-	// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-30T23:59:59Z"); return t}()),
+	// 					EndAt: to.Ptr(time.Date(2025, time.September, 30, 23, 59, 59, 0, time.UTC)),
 	// 					MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440001"),
 	// 					SpendTarget: &armbillingbenefits.Price{
 	// 						Amount: to.Ptr[float64](50000),
@@ -1198,7 +1198,7 @@ func ExampleConditionalCreditsClient_BeginUpdate_conditionalCreditUpdateContribu
 	// 						},
 	// 						Duration: to.Ptr(armbillingbenefits.Term("P3M")),
 	// 					},
-	// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 					EndAt: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 					MilestoneID: to.Ptr("550e8400-e29b-41d4-a716-446655440002"),
 	// 					SpendTarget: &armbillingbenefits.Price{
 	// 						Amount: to.Ptr[float64](100000),
@@ -1211,14 +1211,14 @@ func ExampleConditionalCreditsClient_BeginUpdate_conditionalCreditUpdateContribu
 	// 			PrimaryResourceID: to.Ptr("/subscriptions/{primaryCloudSubId}/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/conditionalCredits/conditionalCredit_20250801"),
 	// 			ProductCode: to.Ptr("000187f7-0000-0260-ab43-b8473ce57f1d"),
 	// 			ProvisioningState: to.Ptr(armbillingbenefits.ConditionalCreditsProvisioningStateSucceeded),
-	// 			StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T00:00:00Z"); return t}()),
+	// 			StartAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
 	// 			Status: to.Ptr(armbillingbenefits.ConditionalCreditStatusActive),
 	// 			SystemID: to.Ptr("CONDITIONALCREDITS-SYSTEM-20250801"),
 	// 		},
 	// 		SystemData: &armbillingbenefits.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T02:15:30.2080047Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 2, 15, 30, 208004700, time.UTC)),
 	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
 	// 		},
 	// 		Tags: map[string]*string{

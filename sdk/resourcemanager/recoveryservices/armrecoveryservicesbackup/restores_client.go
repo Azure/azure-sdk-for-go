@@ -18,6 +18,8 @@ import (
 
 // RestoresClient contains the methods for the Restores group.
 // Don't use this type directly, use NewRestoresClient() instead.
+//
+// Generated from API version 2026-07-01
 type RestoresClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type RestoresClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRestoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestoresClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -43,8 +48,6 @@ func NewRestoresClient(subscriptionID string, credential azcore.TokenCredential,
 // call, use
 // GetProtectedItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - RestoresClientBeginTriggerOptions contains the optional parameters for the RestoresClient.BeginTrigger method.
 func (client *RestoresClient) BeginTrigger(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters RestoreRequestResource, options *RestoresClientBeginTriggerOptions) (*runtime.Poller[RestoresClientTriggerResponse], error) {
@@ -68,8 +71,6 @@ func (client *RestoresClient) BeginTrigger(ctx context.Context, vaultName string
 // use
 // GetProtectedItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 func (client *RestoresClient) trigger(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters RestoreRequestResource, options *RestoresClientBeginTriggerOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RestoresClient.BeginTrigger"
@@ -85,8 +86,7 @@ func (client *RestoresClient) trigger(ctx context.Context, vaultName string, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -95,7 +95,7 @@ func (client *RestoresClient) trigger(ctx context.Context, vaultName string, res
 func (client *RestoresClient) triggerCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters RestoreRequestResource, options *RestoresClientBeginTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/restore"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if vaultName == "" {
@@ -127,8 +127,8 @@ func (client *RestoresClient) triggerCreateRequest(ctx context.Context, vaultNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
 		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
 	}

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-31-preview/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest.json
+// Generated from example definition: 2026-07-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest.json
 func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestoreRequest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,122 @@ func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestore
 	}
 }
 
-// Generated from example definition: 2026-01-31-preview/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
+// Generated from example definition: 2026-07-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_DataDiskEncryption.json
+func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestoreRequestWithIdentityBasedRestoreDetailsAndPerDiskEncryptionSettings() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRestoresClient().BeginTrigger(ctx, "testVault", "netsdktestrg", "Azure", "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "348916168024334", armrecoveryservicesbackup.RestoreRequestResource{
+		Properties: &armrecoveryservicesbackup.IaasVMRestoreRequest{
+			CreateNewCloudService: to.Ptr(false),
+			EncryptionDetails: &armrecoveryservicesbackup.EncryptionDetails{
+				EncryptionEnabled: to.Ptr(false),
+			},
+			IdentityBasedRestoreDetails: &armrecoveryservicesbackup.IdentityBasedRestoreDetails{
+				TargetStorageAccountID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Storage/storageAccounts/testingAccount"),
+			},
+			IdentityInfo: &armrecoveryservicesbackup.IdentityInfo{
+				IsSystemAssignedIdentity: to.Ptr(true),
+			},
+			ObjectType:                   to.Ptr("IaasVMRestoreRequest"),
+			OriginalStorageAccountOption: to.Ptr(false),
+			RecoveryPointID:              to.Ptr("348916168024334"),
+			RecoveryType:                 to.Ptr(armrecoveryservicesbackup.RecoveryTypeAlternateLocation),
+			Region:                       to.Ptr("southeastasia"),
+			SecuredVMDetails: &armrecoveryservicesbackup.SecuredVMDetails{
+				SecuredVMOsDiskEncryptionSetID: to.Ptr("/subscriptions/5288acd1-ba79-4377-9205-9f220331a44a/resourceGroups/asmaskarrg-cvm-os-cmk-3cmk-1none-data-2606040706/providers/Microsoft.Compute/diskEncryptionSets/des-os"),
+				DataDiskEncryptionSettings: &armrecoveryservicesbackup.DataDiskEncryptionSettings{
+					PerDiskEncryptionSetIDs: []*armrecoveryservicesbackup.PerDiskEncryptionSetID{
+						{
+							Lun:                 to.Ptr[int32](0),
+							DiskEncryptionSetID: to.Ptr("/subscriptions/5288acd1-ba79-4377-9205-9f220331a44a/resourceGroups/asmaskarrg-cvm-os-cmk-3cmk-1none-data-2606040706/providers/Microsoft.Compute/diskEncryptionSets/des-data-lun-0"),
+						},
+						{
+							Lun:                 to.Ptr[int32](1),
+							DiskEncryptionSetID: to.Ptr("/subscriptions/5288acd1-ba79-4377-9205-9f220331a44a/resourceGroups/asmaskarrg-cvm-os-cmk-3cmk-1none-data-2606040706/providers/Microsoft.Compute/diskEncryptionSets/des-data-lun-1"),
+						},
+						{
+							Lun:                 to.Ptr[int32](2),
+							DiskEncryptionSetID: to.Ptr("/subscriptions/5288acd1-ba79-4377-9205-9f220331a44a/resourceGroups/asmaskarrg-cvm-os-cmk-3cmk-1none-data-2606040706/providers/Microsoft.Compute/diskEncryptionSets/des-data-lun-2"),
+						},
+					},
+					DataDiskEncryptionIdentity: to.Ptr("/subscriptions/5288acd1-ba79-4377-9205-9f220331a44a/resourcegroups/asmaskarrg-cvm-os-cmk-3cmk-1none-data-2606040706/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-cdde"),
+				},
+			},
+			SourceResourceID:       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1"),
+			SubnetID:               to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet/subnets/default"),
+			TargetResourceGroupID:  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2"),
+			TargetVirtualMachineID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2/providers/Microsoft.Compute/virtualmachines/RSMDALRVM981435"),
+			VirtualNetworkID:       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_DataDiskEncryption_SingleEntry.json
+func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestoreRequestWithIdentityBasedRestoreDetailsAndDataDiskEncryptionSettings() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRestoresClient().BeginTrigger(ctx, "testVault", "netsdktestrg", "Azure", "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "348916168024334", armrecoveryservicesbackup.RestoreRequestResource{
+		Properties: &armrecoveryservicesbackup.IaasVMRestoreRequest{
+			CreateNewCloudService: to.Ptr(false),
+			EncryptionDetails: &armrecoveryservicesbackup.EncryptionDetails{
+				EncryptionEnabled: to.Ptr(false),
+			},
+			IdentityBasedRestoreDetails: &armrecoveryservicesbackup.IdentityBasedRestoreDetails{
+				TargetStorageAccountID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Storage/storageAccounts/testingAccount"),
+			},
+			IdentityInfo: &armrecoveryservicesbackup.IdentityInfo{
+				IsSystemAssignedIdentity: to.Ptr(true),
+			},
+			ObjectType:                   to.Ptr("IaasVMRestoreRequest"),
+			OriginalStorageAccountOption: to.Ptr(false),
+			RecoveryPointID:              to.Ptr("348916168024334"),
+			RecoveryType:                 to.Ptr(armrecoveryservicesbackup.RecoveryTypeAlternateLocation),
+			Region:                       to.Ptr("southeastasia"),
+			SecuredVMDetails: &armrecoveryservicesbackup.SecuredVMDetails{
+				SecuredVMOsDiskEncryptionSetID: to.Ptr("/subscriptions/5288acd1-ba79-4377-9205-9f220331a44a/resourceGroups/asmaskarrg-cvm-os-cmk-3cmk-1none-data-2606040706/providers/Microsoft.Compute/diskEncryptionSets/des-os"),
+				DataDiskEncryptionSettings: &armrecoveryservicesbackup.DataDiskEncryptionSettings{
+					DataDiskEncryptionSetID:    to.Ptr("/subscriptions/5288acd1-ba79-4377-9205-9f220331a44a/resourceGroups/asmaskarrg-cvm-os-cmk-3cmk-1none-data-2606040706/providers/Microsoft.Compute/diskEncryptionSets/des-data-lun-0"),
+					DataDiskEncryptionIdentity: to.Ptr("/subscriptions/5288acd1-ba79-4377-9205-9f220331a44a/resourcegroups/asmaskarrg-cvm-os-cmk-3cmk-1none-data-2606040706/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-cdde"),
+				},
+			},
+			SourceResourceID:       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1"),
+			SubnetID:               to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet/subnets/default"),
+			TargetResourceGroupID:  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2"),
+			TargetVirtualMachineID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2/providers/Microsoft.Compute/virtualmachines/RSMDALRVM981435"),
+			VirtualNetworkID:       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
 func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestoreRequestWithIdentityBasedRestoreDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +213,7 @@ func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestore
 	}
 }
 
-// Generated from example definition: 2026-01-31-preview/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreWithRehydrationRequest.json
+// Generated from example definition: 2026-07-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreWithRehydrationRequest.json
 func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestoreWithRehydrationRequest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +256,7 @@ func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVMWithIaasVMRestore
 	}
 }
 
-// Generated from example definition: 2026-01-31-preview/AzureIaasVm/TriggerRestore_ResourceGuardEnabled.json
+// Generated from example definition: 2026-07-01/AzureIaasVm/TriggerRestore_ResourceGuardEnabled.json
 func ExampleRestoresClient_BeginTrigger_restoreWithResourceGuardEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +300,7 @@ func ExampleRestoresClient_BeginTrigger_restoreWithResourceGuardEnabled() {
 	}
 }
 
-// Generated from example definition: 2026-01-31-preview/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
+// Generated from example definition: 2026-07-01/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
 func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVMRestoreRequest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,7 +343,7 @@ func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVMRestoreRequest() {
 	}
 }
 
-// Generated from example definition: 2026-01-31-preview/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
+// Generated from example definition: 2026-07-01/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
 func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVMRestoreRequestWithIdentityBasedRestoreDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -269,7 +384,7 @@ func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVMRestoreRequestWith
 	}
 }
 
-// Generated from example definition: 2026-01-31-preview/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreWithRehydrationRequest.json
+// Generated from example definition: 2026-07-01/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreWithRehydrationRequest.json
 func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVMRestoreWithRehydrationRequest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -297,6 +412,71 @@ func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVMRestoreWithRehydra
 			Region:           to.Ptr("southeastasia"),
 			SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1"),
 			StorageAccountID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testingRg/providers/Microsoft.Storage/storageAccounts/testAccount"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01/AzureStorage/TriggerRestore_AzureFileShare_WithSAMI.json
+func ExampleRestoresClient_BeginTrigger_restoreAzureFileShareToOriginalLocationWithManagedIdentity() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRestoresClient().BeginTrigger(ctx, "swaggertestvault", "SwaggerTestRg", "Azure", "StorageContainer;Storage;SwaggerTestRg;swaggertestsa", "AzureFileShare;testshare", "932886657837421071", armrecoveryservicesbackup.RestoreRequestResource{
+		Properties: &armrecoveryservicesbackup.AzureFileShareRestoreRequest{
+			ObjectType:         to.Ptr("AzureFileShareRestoreRequest"),
+			RecoveryType:       to.Ptr(armrecoveryservicesbackup.RecoveryTypeOriginalLocation),
+			SourceResourceID:   to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa"),
+			CopyOptions:        to.Ptr(armrecoveryservicesbackup.CopyOptionsOverwrite),
+			RestoreRequestType: to.Ptr(armrecoveryservicesbackup.RestoreRequestTypeFullShareRestore),
+			IdentityInfo: &armrecoveryservicesbackup.IdentityInfo{
+				IsSystemAssignedIdentity: to.Ptr(true),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01/AzureStorage/TriggerRestore_AzureFileShare_WithUAMI.json
+func ExampleRestoresClient_BeginTrigger_restoreAzureFileShareToOriginalLocationWithUserAssignedManagedIdentity() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRestoresClient().BeginTrigger(ctx, "swaggertestvault", "SwaggerTestRg", "Azure", "StorageContainer;Storage;SwaggerTestRg;swaggertestsa", "AzureFileShare;testshare", "932886657837421071", armrecoveryservicesbackup.RestoreRequestResource{
+		Properties: &armrecoveryservicesbackup.AzureFileShareRestoreRequest{
+			ObjectType:         to.Ptr("AzureFileShareRestoreRequest"),
+			RecoveryType:       to.Ptr(armrecoveryservicesbackup.RecoveryTypeOriginalLocation),
+			SourceResourceID:   to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa"),
+			CopyOptions:        to.Ptr(armrecoveryservicesbackup.CopyOptionsOverwrite),
+			RestoreRequestType: to.Ptr(armrecoveryservicesbackup.RestoreRequestTypeFullShareRestore),
+			IdentityInfo: &armrecoveryservicesbackup.IdentityInfo{
+				IsSystemAssignedIdentity:  to.Ptr(false),
+				ManagedIdentityResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/swaggertestuami"),
+			},
 		},
 	}, nil)
 	if err != nil {

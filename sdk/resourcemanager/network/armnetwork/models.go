@@ -207,6 +207,43 @@ type AddressPrefixItem struct {
 	AddressPrefixType *AddressPrefixType
 }
 
+// AddressPrefixSet - Address prefix set child resource of an application security group.
+type AddressPrefixSet struct {
+	// Resource ID.
+	ID *string
+
+	// Properties of the address prefix set.
+	Properties *AddressPrefixSetPropertiesFormat
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// AddressPrefixSetListResult - The response of a AddressPrefixSet list operation.
+type AddressPrefixSetListResult struct {
+	// REQUIRED; The AddressPrefixSet items on this page
+	Value []*AddressPrefixSet
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// AddressPrefixSetPropertiesFormat - Properties of address prefix set.
+type AddressPrefixSetPropertiesFormat struct {
+	// REQUIRED; The list of address prefixes in CIDR notation. Supports both IPv4 and IPv6 CIDR notation (e.g. '10.0.0.0/16',
+	// '2001:db8::/32').
+	AddressPrefixes []*string
+
+	// READ-ONLY; The provisioning state of the address prefix set resource.
+	ProvisioningState *ProvisioningState
+}
+
 // AddressSpace contains an array of IP address ranges that can be used by subnets of the virtual network.
 type AddressSpace struct {
 	// A list of address blocks reserved for this virtual network in CIDR notation.
@@ -949,6 +986,9 @@ type ApplicationGatewayFrontendPortPropertiesFormat struct {
 
 // ApplicationGatewayGlobalConfiguration - Application Gateway global configuration.
 type ApplicationGatewayGlobalConfiguration struct {
+	// Disable default server header in response.
+	DisableDefaultServerHeaderInResponse *bool
+
 	// Enable request buffering.
 	EnableRequestBuffering *bool
 
@@ -2119,6 +2159,9 @@ type ApplicationRule struct {
 
 	// List of source IpGroups for this rule.
 	SourceIPGroups []*string
+
+	// List of source Kubernetes Selector Groups for this rule.
+	SourceKubeSelectorGroups []*string
 
 	// List of FQDNs for this rule.
 	TargetFqdns []*string
@@ -3494,6 +3537,135 @@ type ConfigurationGroup struct {
 	Properties *GroupProperties
 }
 
+// ConnectionAnalyzer - Defines a connection analyzer resource.
+type ConnectionAnalyzer struct {
+	// REQUIRED; Resource location.
+	Location *string
+
+	// REQUIRED; Properties of the connection analyzer.
+	Properties *ConnectionAnalyzerProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; Resource ID of the connection analyzer.
+	ID *string
+
+	// READ-ONLY; Name of the connection analyzer.
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// ConnectionAnalyzerEndpoint - Describes a source or destination endpoint of a connection analyzer.
+// The schema is intentionally permissive (a flat object) because the set of
+// valid fields is determined by `type` and is enforced server-side by the
+// Network Resource Provider. The required and allowed fields per `type` are:
+//
+//   - `VM`, `VMSS`, `BastionHost`, `ApplicationGateway`: `resourceId` is
+//
+// required and must be the ARM resource ID of the corresponding resource
+// (a virtual machine, virtual machine scale set or VMSS instance, Azure
+// Bastion host, or Application Gateway, respectively); `address` is not
+// used; `port` is optional.
+//
+//   - `ExternalAddress`: `address` is required and must be an IP address or
+//
+// FQDN reachable from outside Azure; `resourceId` is not used; `port` is
+// optional.
+// Requests that supply fields not allowed for the chosen `type`, or omit a
+// required field, are rejected by the service with a validation error. This
+// follows the same convention used by `ConnectivitySource` and
+// `ConnectivityDestination` on Network Watcher.
+type ConnectionAnalyzerEndpoint struct {
+	// REQUIRED; The type of the endpoint. Determines which of `resourceId` and `address`
+	// are required; see the model-level documentation for the per-type contract.
+	Type *ConnectionAnalyzerEndpointType
+
+	// IP address or FQDN of the endpoint. Required when `type` is
+	// `ExternalAddress`. Not used for the resource-typed endpoint kinds (`VM`,
+	// `VMSS`, `BastionHost`, `ApplicationGateway`).
+	Address *string
+
+	// Port to use for the endpoint (0-65535).
+	Port *int32
+
+	// ARM resource ID of the endpoint resource. Required when `type` is `VM`,
+	// `VMSS`, `BastionHost`, or `ApplicationGateway`. Not used when `type` is
+	// `ExternalAddress`.
+	ResourceID *string
+}
+
+// ConnectionAnalyzerListResult - List of connection analyzers.
+type ConnectionAnalyzerListResult struct {
+	// URL to get the next set of results.
+	NextLink *string
+
+	// Information about connection analyzers.
+	Value []*ConnectionAnalyzer
+}
+
+// ConnectionAnalyzerProperties - Properties of a connection analyzer.
+type ConnectionAnalyzerProperties struct {
+	// REQUIRED; Destination endpoint of the connection analyzer.
+	Destination *ConnectionAnalyzerEndpoint
+
+	// REQUIRED; List of diagnostic operations to run.
+	DiagnosticOperations []*DiagnosticOperation
+
+	// REQUIRED; Source endpoint of the connection analyzer.
+	Source *ConnectionAnalyzerEndpoint
+
+	// Per-operation diagnostic settings.
+	DiagnosticOperationsSettings *DiagnosticOperationsSettings
+
+	// Time-to-live (days) before the analyzer expires.
+	ExpiryInDays *int32
+
+	// Output settings (e.g. storage account).
+	OutputSettings *OutputSettings
+
+	// Protocol-level settings.
+	ProtocolSettings *ProtocolSettings
+
+	// READ-ONLY; The provisioning state of the connection analyzer resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; UTC time when the connection analyzer request was received.
+	RequestTime *time.Time
+
+	// READ-ONLY; Current execution status of the connection analyzer.
+	Status *ConnectionAnalyzerStatus
+}
+
+// ConnectionAnalyzerQueryStatusResult - Status result returned when querying a connection analyzer for its diagnostic results.
+type ConnectionAnalyzerQueryStatusResult struct {
+	// Current execution status of the connection analyzer.
+	ConnectionAnalyzerStatus *ConnectionAnalyzerStatus
+
+	// Results of the individual diagnostic operations.
+	DiagnosticOperationResults []*DiagnosticOperationResult
+
+	// Error message if the connection analyzer operation failed.
+	Error *string
+
+	// UTC time when the connection analyzer expires.
+	ExpiryInUTC *time.Time
+
+	// Storage path where the connection analyzer output is written.
+	OutputStoragePath *string
+
+	// READ-ONLY; Resource ID of the connection analyzer.
+	ID *string
+}
+
 // ConnectionMonitor - Parameters that define the operation to create a connection monitor.
 type ConnectionMonitor struct {
 	// REQUIRED; Properties of the connection monitor.
@@ -3887,6 +4059,15 @@ type ConnectionSharedKeyResultList struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// ConnectivityCheckSettings - Settings that control how connectivity checks are performed by the connection analyzer.
+type ConnectivityCheckSettings struct {
+	// Whether to generate a hop-by-hop path during the connectivity check. Default value is true.
+	GeneratePath *bool
+
+	// Preferred IP version for the connectivity check.
+	PreferredIPVersion *PreferredIPVersion
 }
 
 // ConnectivityConfiguration - The network manager connectivity configuration resource
@@ -4595,6 +4776,31 @@ type DeviceProperties struct {
 type DhcpOptions struct {
 	// The list of DNS servers IP addresses.
 	DNSServers []*string
+}
+
+// DiagnosticOperationResult - Result of an individual diagnostic operation run by a connection analyzer.
+type DiagnosticOperationResult struct {
+	// REQUIRED; The diagnostic operation that was run.
+	DiagnosticOperation *DiagnosticOperation
+
+	// Error encountered while running the diagnostic operation, if any.
+	Error *string
+
+	// The result of the diagnostic operation, serialized as a JSON string.
+	// The payload shape varies by `diagnosticOperation`. For example, a
+	// `ConnectivityCheck` operation returns a JSON object such as
+	// `{ "ConnectivityStatus": "Reachable" }`. Consumers should parse this
+	// string as JSON according to the corresponding diagnostic operation.
+	Result *string
+}
+
+// DiagnosticOperationsSettings - Diagnostic settings to provide for the ConnectionAnalyzer operation.
+type DiagnosticOperationsSettings struct {
+	// Settings for the ConnectivityCheck diagnostic operation.
+	ConnectivityCheckSettings *ConnectivityCheckSettings
+
+	// Settings for the ExpressRouteDiagnostic diagnostic operation.
+	ExpressRouteDiagnosticsSettings *ExpressRouteDiagnosticsSettings
 }
 
 // Dimension of the metric.
@@ -5317,6 +5523,9 @@ type ExpressRouteCircuitPeeringPropertiesFormat struct {
 
 // ExpressRouteCircuitPropertiesFormat - Properties of ExpressRouteCircuit.
 type ExpressRouteCircuitPropertiesFormat struct {
+	// Activation Key from partner cloud provider.
+	ActivationKey *string
+
 	// Allow classic operations.
 	AllowClassicOperations *bool
 
@@ -5344,6 +5553,9 @@ type ExpressRouteCircuitPropertiesFormat struct {
 	// Flag denoting global reach status.
 	GlobalReachEnabled *bool
 
+	// Account ID of customer account on partner cloud provider.
+	PartnerAccountID *string
+
 	// The list of peerings.
 	Peerings []*ExpressRouteCircuitPeering
 
@@ -5364,6 +5576,9 @@ type ExpressRouteCircuitPropertiesFormat struct {
 
 	// READ-ONLY; The provisioning state of the express route circuit resource.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The resiliency level of the ExpressRoute circuit.
+	ResiliencyLevel *ResiliencyLevel
 
 	// READ-ONLY; The identifier of the circuit traffic. Outer tag for QinQ encapsulation.
 	Stag *int32
@@ -5696,6 +5911,15 @@ type ExpressRouteCrossConnectionsRoutesTableSummaryListResult struct {
 	NextLink *string
 }
 
+// ExpressRouteDiagnosticsSettings - Settings that control how Express Route diagnostics are performed by the connection analyzer.
+type ExpressRouteDiagnosticsSettings struct {
+	// Bandwidth (in Mbps) to use for the Express Route diagnostic.
+	Bandwidth *float32
+
+	// Resource ID of the Express Route circuit.
+	ErCircuitResourceID *string
+}
+
 type ExpressRouteFailoverCircuitResourceDetails struct {
 	// Connection name associated with the circuit
 	ConnectionName *string
@@ -5859,6 +6083,219 @@ type ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds struct {
 
 	// Minimum number of scale units deployed for ExpressRoute gateway.
 	Min *int32
+}
+
+// ExpressRouteLag - ExpressRoute LAG
+//
+// ExpressRouteLag resource definition.
+type ExpressRouteLag struct {
+	// The identity of ExpressRouteLag, if configured.
+	Identity *ManagedServiceIdentity
+
+	// Resource location.
+	Location *string
+
+	// ExpressRouteLag properties.
+	Properties *ExpressRouteLagPropertiesFormat
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; The unique identifier of the resource.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+// ExpressRouteLagLink
+//
+// ExpressRouteLagLink child resource definition.
+type ExpressRouteLagLink struct {
+	// ExpressRouteLagLink properties.
+	Properties *ExpressRouteLagLinkPropertiesFormat
+
+	// READ-ONLY; The unique identifier of the resource.
+	ID *string
+
+	// READ-ONLY; Name of child link resource that is unique among child link resources of the parent.
+	Name *string
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+}
+
+// ExpressRouteLagLinkListResult - ExpressRoute LAG Link List Result
+//
+// Paged collection of ExpressRouteLagLink items
+type ExpressRouteLagLinkListResult struct {
+	// REQUIRED; The ExpressRouteLagLink items on this page
+	Value []*ExpressRouteLagLink
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ExpressRouteLagLinkPropertiesFormat - ExpressRouteLagLink Resource Properties
+//
+// Properties specific to ExpressRouteLagLink resources.
+type ExpressRouteLagLinkPropertiesFormat struct {
+	// Administrative state of the link.
+	AdminState *ExpressRouteLinkAdminState
+
+	// MacSec configuration.
+	MacSecConfig *ExpressRouteLinkMacSecConfig
+
+	// ExpressRouteLagMember Sub-Resources
+	//
+	// The set of members of the ExpressRouteLagLink resource.
+	Members []*ExpressRouteLagMember
+
+	// READ-ONLY; Name of Azure router interface.
+	InterfaceName *string
+
+	// READ-ONLY; The provisioning state of the express route LAG link resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Name of Azure router associated with link.
+	RouterName *string
+}
+
+// ExpressRouteLagListResult - ExpressRoute LAG List Result
+//
+// Paged collection of ExpressRouteLag items
+type ExpressRouteLagListResult struct {
+	// REQUIRED; The ExpressRouteLag items on this page
+	Value []*ExpressRouteLag
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ExpressRouteLagMember
+//
+// ExpressRouteLagMember child resource definition.
+type ExpressRouteLagMember struct {
+	// ExpressRouteLagMember properties.
+	Properties *ExpressRouteLagMemberPropertiesFormat
+
+	// READ-ONLY; The unique identifier of the resource.
+	ID *string
+
+	// READ-ONLY; Name of child member resource that is unique among child member resources of the parent.
+	Name *string
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+}
+
+// ExpressRouteLagMemberListResult - ExpressRoute LAG Member List Result
+//
+// Paged collection of ExpressRouteLagMember items
+type ExpressRouteLagMemberListResult struct {
+	// REQUIRED; The ExpressRouteLagMember items on this page
+	Value []*ExpressRouteLagMember
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ExpressRouteLagMemberPropertiesFormat - ExpressRouteLagMember Resource Properties
+//
+// Properties specific to ExpressRouteLagMember resources.
+type ExpressRouteLagMemberPropertiesFormat struct {
+	// Administrative state of the member port.
+	AdminState *ExpressRouteLinkAdminState
+
+	// READ-ONLY; Cololocation for ExpressRoute member.
+	ColoLocation *string
+
+	// READ-ONLY; Physical fiber port type.
+	ConnectorType *ExpressRouteLinkConnectorType
+
+	// READ-ONLY; Name of Azure router interface.
+	InterfaceName *string
+
+	// READ-ONLY; Mapping between physical port to patch panel port.
+	PatchPanelID *string
+
+	// READ-ONLY; The provisioning state of the express route LAG member resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Mapping of physical patch panel to rack.
+	RackID *string
+}
+
+// ExpressRouteLagPropertiesFormat - ExpressRouteLag Resource Properties
+//
+// Properties specific to ExpressRouteLag resources.
+type ExpressRouteLagPropertiesFormat struct {
+	// Bandwidth of procured LAG in Gbps.
+	BandwidthInGbps *int32
+
+	// The billing type of the ExpressRouteLag resource.
+	BillingType *ExpressRouteLagBillingType
+
+	// Encapsulation method on LAG.
+	Encapsulation *ExpressRouteLagEncapsulation
+
+	// LACP timer configuration.
+	LacpTimer *ExpressRouteLagLacpTimer
+
+	// ExpressRouteLagLink Sub-Resources
+	//
+	// The set of links of the ExpressRouteLag resource.
+	Links []*ExpressRouteLagLink
+
+	// Minimum number of active ports required for LAG.
+	MinimumActivePortsRequired *int32
+
+	// Number of ports in the LAG.
+	NumberOfPorts *int32
+
+	// The name of the peering location that the ExpressRouteLag is mapped to physically.
+	PeeringLocation *string
+
+	// READ-ONLY; The date and time when the ExpressRouteLag was allocated.
+	AllocationDate *string
+
+	// READ-ONLY; Ether type of the LAG.
+	EtherType *string
+
+	// READ-ONLY; Maximum transmission unit of the LAG.
+	Mtu *string
+
+	// READ-ONLY; Aggregate Gbps of associated circuit bandwidths.
+	ProvisionedBandwidthInGbps *float64
+
+	// READ-ONLY; The provisioning state of the express route LAG resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The resource GUID property of the express route LAG resource.
+	ResourceGUID *string
+}
+
+// ExpressRouteLagUpdateTagsOrIdentityRequest - ExpressRouteLag Update Tags or Identity Request
+//
+// Parameters for updating ExpressRouteLag tags or identity.
+type ExpressRouteLagUpdateTagsOrIdentityRequest struct {
+	// The identity of ExpressRouteLag, if configured.
+	Identity *ManagedServiceIdentity
+
+	// Resource tags.
+	Tags map[string]*string
 }
 
 // ExpressRouteLink
@@ -6626,6 +7063,45 @@ type FirewallPolicyIntrusionDetectionSignatureSpecification struct {
 	Mode *FirewallPolicyIntrusionDetectionStateType
 }
 
+// FirewallPolicyKubeSelectorGroup - Firewall Policy Kubernetes Selector Group resource.
+type FirewallPolicyKubeSelectorGroup struct {
+	// Resource ID.
+	ID *string
+
+	// Name of the resource.
+	Name *string
+
+	// The properties of the firewall policy Kubernetes selector group.
+	Properties *FirewallPolicyKubeSelectorGroupProperties
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// FirewallPolicyKubeSelectorGroupListResult - The response of a FirewallPolicyKubeSelectorGroup list operation.
+type FirewallPolicyKubeSelectorGroupListResult struct {
+	// REQUIRED; The FirewallPolicyKubeSelectorGroup items on this page
+	Value []*FirewallPolicyKubeSelectorGroup
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// FirewallPolicyKubeSelectorGroupProperties - Properties of the Kubernetes Selector Group.
+type FirewallPolicyKubeSelectorGroupProperties struct {
+	// Kubernetes Namespace selector for matching namespaces in the Kubernetes cluster.
+	NamespaceSelector *KubeLabelSelector
+
+	// Kubernetes Pod selector for matching pods in the Kubernetes cluster.
+	PodSelector *KubeLabelSelector
+
+	// READ-ONLY; The provisioning state of the firewall policy Kubernetes selector group resource.
+	ProvisioningState *ProvisioningState
+}
+
 // FirewallPolicyListResult - The response of a FirewallPolicy list operation.
 type FirewallPolicyListResult struct {
 	// REQUIRED; The FirewallPolicy items on this page
@@ -6722,11 +7198,18 @@ type FirewallPolicyPropertiesFormat struct {
 	// TLS Configuration definition.
 	TransportSecurity *FirewallPolicyTransportSecurity
 
+	// READ-ONLY; Indicates that the Firewall Policy is managed by AFC (Azure Firewall for Containers). When set, the policy is
+	// treated as read-only for callers that do not supply the AFC-managed sync marker on write operations.
+	AfcManaged *bool
+
 	// READ-ONLY; List of references to Child Firewall Policies.
 	ChildPolicies []*SubResource
 
 	// READ-ONLY; List of references to Azure Firewalls that this Firewall Policy is associated with.
 	Firewalls []*SubResource
+
+	// READ-ONLY; List of references to FirewallPolicyKubeSelectorGroups.
+	KubeSelectorGroups []*SubResource
 
 	// READ-ONLY; The provisioning state of the firewall policy resource.
 	ProvisioningState *ProvisioningState
@@ -6884,6 +7367,54 @@ type FirewallPolicyTransportSecurity struct {
 	CertificateAuthority *FirewallPolicyCertificateAuthority
 }
 
+// FirstPartyServiceTag - First party service tag resource.
+type FirstPartyServiceTag struct {
+	// Resource location.
+	Location *string
+
+	// Properties of the first party service tag.
+	Properties *FirstPartyServiceTagPropertiesFormat
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; The unique identifier of the resource.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+// FirstPartyServiceTagListResult - The response of a FirstPartyServiceTag list operation.
+type FirstPartyServiceTagListResult struct {
+	// REQUIRED; The FirstPartyServiceTag items on this page
+	Value []*FirstPartyServiceTag
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// FirstPartyServiceTagPropertiesFormat - Properties of the first party service tag.
+type FirstPartyServiceTagPropertiesFormat struct {
+	// REQUIRED; The value of the first party service tag.
+	Value *string
+
+	// READ-ONLY; The reason for failure, if any.
+	FailedReason *string
+
+	// READ-ONLY; The provisioning state of the first party service tag resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The resource GUID property of the first party service tag resource.
+	ResourceGUID *string
+}
+
 // FlowLog - A flow log resource.
 type FlowLog struct {
 	// Resource ID.
@@ -7038,6 +7569,11 @@ type FrontendIPConfigurationPropertiesFormat struct {
 	// The DDoS protection settings associated with the frontend IP configuration.
 	DdosSettings *DdosFrontendIPConfigurationSettings
 
+	// Enables UDP flow tracking for traffic associated with the frontend IP configuration. When enabled, packets belonging to
+	// the same UDP flow are consistently directed to the same backend instance. This setting applies to all associated load balancing
+	// rules and takes precedence over rule-level enableConnectionTracking settings.
+	EnableConnectionTracking *bool
+
 	// The reference to gateway load balancer frontend IP.
 	GatewayLoadBalancer *SubResource
 
@@ -7082,6 +7618,27 @@ type GatewayCustomBgpIPAddressIPConfiguration struct {
 
 	// REQUIRED; The IpconfigurationId of ipconfiguration which belongs to gateway.
 	IPConfigurationID *string
+}
+
+// GatewayEffectiveRoute - Gateway effective routing details.
+type GatewayEffectiveRoute struct {
+	// READ-ONLY; The list of address prefixes for the effective route.
+	AddressPrefixes []*string
+
+	// READ-ONLY; The gateway's local address.
+	LocalAddress *string
+
+	// READ-ONLY; The IP address of the next hop for the effective route.
+	NextHopIPAddress *string
+
+	// READ-ONLY; The next hop type of the effective route.
+	NextHopType *GatewayEffectiveRouteNextHopType
+}
+
+// GatewayEffectiveRouteListResult - List of virtual network gateway effective routes.
+type GatewayEffectiveRouteListResult struct {
+	// List of gateway effective routes.
+	Value []*GatewayEffectiveRoute
 }
 
 // GatewayLoadBalancerTunnelInterface - Gateway load balancer tunnel interface of a load balancer backend address pool.
@@ -7201,6 +7758,21 @@ type GatewayRouteSetsInformation struct {
 
 	// List of Gateway Route Sets
 	RouteSets []*GatewayRouteSet
+}
+
+// GenerateExpressRouteLagsLOARequest - The customer name to be printed on a letter of authorization for ExpressRouteLag.
+type GenerateExpressRouteLagsLOARequest struct {
+	// REQUIRED; The customer name.
+	CustomerName *string
+
+	// The list of member names for which LOA should be generated.
+	Members []*string
+}
+
+// GenerateExpressRouteLagsLOAResult - Response for GenerateExpressRouteLagsLOA API service call.
+type GenerateExpressRouteLagsLOAResult struct {
+	// The content as a base64 encoded string.
+	EncodedContent *string
 }
 
 // GenerateExpressRoutePortsLOARequest - The customer name to be printed on a letter of authorization.
@@ -7533,6 +8105,9 @@ type HubVirtualNetworkConnectionProperties struct {
 	// Enable internet security.
 	EnableInternetSecurity *bool
 
+	// Enable Only IPv6 Peering for this connection.
+	EnableOnlyIPv6Peering *EnableOnlyIPv6PeeringState
+
 	// Reference to the remote virtual network.
 	RemoteVirtualNetwork *SubResource
 
@@ -7798,6 +8373,9 @@ type IPSecPolicy struct {
 
 // IPTag - Contains the IpTag associated with the object.
 type IPTag struct {
+	// The resource ID of the first party service tag associated with the IP tag.
+	FirstPartyServiceTagID *string
+
 	// The IP tag type. Example: FirstPartyUsage.
 	IPTagType *string
 
@@ -8515,6 +9093,34 @@ type IpamPoolUpdateProperties struct {
 	DisplayName *string
 }
 
+// KubeLabelSelector - Kubernetes Label Selector for matching labels in Kubernetes Selector Groups.
+type KubeLabelSelector struct {
+	// matchExpressions is a list of label selector requirements. The requirements are ANDed.
+	MatchExpressions []*LabelSelectorExpression
+
+	// matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+	// map is equivalent to an element of matchExpressions, whose key field is "key", the
+	// operator is "In", and the values array contains only "value". The requirements are ANDed.
+	MatchLabels map[string]*string
+}
+
+// LabelSelectorExpression - A label selector requirement is a selector that contains values, a key, and an operator that
+// relates the key and values.
+type LabelSelectorExpression struct {
+	// key is a string of 63 characters or less, and must consist of alphanumeric characters,
+	// '-', '_' or '.'.
+	Key *string
+
+	// operator represents a key's relationship to a set of values.
+	// Valid operators are In, NotIn, Exists and DoesNotExist.
+	Operator *LabelSelectorOperator
+
+	// values is an array of string values. If the operator is In or NotIn,
+	// the values array must be non-empty. If the operator is Exists or DoesNotExist,
+	// the values array must be empty.
+	Values []*string
+}
+
 // ListConnectionPoliciesResult - List of ConnectionPolicies and a URL nextLink to get the next set of results.
 type ListConnectionPoliciesResult struct {
 	// REQUIRED; The ConnectionPolicy items on this page
@@ -8876,6 +9482,10 @@ type LoadBalancerPropertiesFormat struct {
 	// Object collection representing the load balancing rules Gets the provisioning.
 	LoadBalancingRules []*LoadBalancingRule
 
+	// The load balancer mode. Set to `Advanced` to enable additional capabilities on a Standard SKU load balancer. Advanced mode
+	// must be specified at creation and cannot be changed afterward.
+	Mode *LoadBalancerMode
+
 	// The outbound rules.
 	OutboundRules []*OutboundRule
 
@@ -8964,8 +9574,8 @@ type LoadBalancingRulePropertiesFormat struct {
 	// rule.
 	DisableOutboundSnat *bool
 
-	// Defines whether connections between 2 communicating endpoints can be tracked and associated to the same backend VM over
-	// its lifetime when using UDP protocol.
+	// Enables UDP flow tracking for the load balancing rule. This property is retained for rule-level configuration compatibility.
+	// When enableConnectionTracking is specified on the associated frontend IP configuration, the frontend setting takes precedence.
 	EnableConnectionTracking *bool
 
 	// Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn Availability
@@ -9483,6 +10093,27 @@ type MigrateLoadBalancerToIPBasedRequest struct {
 type MigratedPools struct {
 	// A list of pools migrated from Nic based to IP based pool
 	MigratedPools []*string
+}
+
+// MoveIPConfigurationItem - An item representing a source and target IP configuration for a move operation.
+type MoveIPConfigurationItem struct {
+	// REQUIRED; The source IP configuration to move from.
+	SourceIPConfiguration *MoveIPConfigurationResourceReference
+
+	// REQUIRED; The target IP configuration to move to.
+	TargetIPConfiguration *MoveIPConfigurationResourceReference
+}
+
+// MoveIPConfigurationResourceReference - Reference to an IP configuration resource by ARM resource ID.
+type MoveIPConfigurationResourceReference struct {
+	// REQUIRED; The ARM resource ID of the IP configuration.
+	ID *string
+}
+
+// MoveIPConfigurationsRequest - Request body for the MoveIpConfigurations operation.
+type MoveIPConfigurationsRequest struct {
+	// REQUIRED; A list of IP configuration move items.
+	MoveIPConfigurationItems []*MoveIPConfigurationItem
 }
 
 // NatGateway - Nat Gateway resource.
@@ -10149,6 +10780,12 @@ type OutboundRulePropertiesFormat struct {
 
 	// READ-ONLY; The provisioning state of the outbound rule resource.
 	ProvisioningState *ProvisioningState
+}
+
+// OutputSettings - Settings that control where the connection analyzer writes its results.
+type OutputSettings struct {
+	// Storage account where output is written.
+	StorageAccountSettings *StorageAccountSettings
 }
 
 // OwaspCrsExclusionEntry - Allow to exclude some variable satisfy the condition for the WAF check.
@@ -11258,6 +11895,15 @@ type ProtocolConfiguration struct {
 	HTTPConfiguration *HTTPConfiguration
 }
 
+// ProtocolSettings - Protocol-level settings for the connection analyzer.
+type ProtocolSettings struct {
+	// HTTP configuration (used when protocol is Http or Https).
+	HTTPConfiguration *HTTPConfiguration
+
+	// Network protocol.
+	Protocol *Protocol
+}
+
 // PublicIPAddress - Public IP address resource.
 type PublicIPAddress struct {
 	// The extended location of the public ip address.
@@ -11369,6 +12015,9 @@ type PublicIPAddressPropertiesFormat struct {
 
 	// READ-ONLY; The resource GUID property of the public IP address resource.
 	ResourceGUID *string
+
+	// READ-ONLY; Whether the public IP address SKU has been upgraded from Standard to StandardV2.
+	UpgradedToV2 *bool
 }
 
 // PublicIPAddressSKU - SKU of a public IP address.
@@ -11468,6 +12117,9 @@ type PublicIPPrefixPropertiesFormat struct {
 
 	// READ-ONLY; The resource GUID property of the public IP prefix resource.
 	ResourceGUID *string
+
+	// READ-ONLY; Whether the public IP prefix SKU has been upgraded from Standard to StandardV2.
+	UpgradedToV2 *bool
 }
 
 // PublicIPPrefixSKU - SKU of a public IP prefix.
@@ -12248,6 +12900,9 @@ type Rule struct {
 
 	// List of source IpGroups for this rule.
 	SourceIPGroups []*string
+
+	// List of source Kubernetes Selector Groups for this rule.
+	SourceKubeSelectorGroups []*string
 }
 
 // GetFirewallPolicyRule implements the FirewallPolicyRuleClassification interface for type Rule.
@@ -12996,7 +13651,8 @@ type ServiceGateway struct {
 	Tags map[string]*string
 
 	// A list of availability zones denoting the zone in which service gateway should be deployed.
-	// - The zone values must be provided as strings representing numeric identifiers like "1", "2", "3" etc.
+	//
+	//   - The zone values must be provided as strings representing numeric identifiers like "1", "2", "3" etc.
 	Zones []*string
 
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
@@ -13015,6 +13671,12 @@ type ServiceGateway struct {
 	Type *string
 }
 
+// ServiceGatewayActionOkResponseBody - Empty success response.
+type ServiceGatewayActionOkResponseBody struct {
+	// READ-ONLY; The status of the operation.
+	Status *string
+}
+
 // ServiceGatewayAddress - Properties of the service gateway address.
 type ServiceGatewayAddress struct {
 	// Address to update
@@ -13030,9 +13692,10 @@ type ServiceGatewayAddressLocation struct {
 	AddressLocation *string
 
 	// Specifies the type of update operation to perform on addresses within the address location of service gateway.
-	// - FullUpdate: Replaces all existing address data with the new list provided in the request. Any previously defined addresses
-	// not included will be removed.
-	// - PartialUpdate: Updates only the specified addresses.
+	//
+	//   - FullUpdate: Replaces all existing address data with the new list provided in the request. Any previously defined addresses
+	//     not included will be removed.
+	//   - PartialUpdate: Updates only the specified addresses.
 	AddressUpdateAction *AddressUpdateAction
 
 	// An array of addresses to create or update in locations.
@@ -13120,9 +13783,10 @@ type ServiceGatewayServiceRequest struct {
 // ServiceGatewayUpdateAddressLocationsRequest - Properties of the service gateway update address locations request.
 type ServiceGatewayUpdateAddressLocationsRequest struct {
 	// Specifies the type of update operation to perform on address locations within the service gateway.
-	// - FullUpdate: Replaces all existing address location data with the new list provided in the request. Any previously defined
-	// locations not included will be removed.
-	// - PartialUpdate: Updates only the specified address locations.
+	//
+	//   - FullUpdate: Replaces all existing address location data with the new list provided in the request. Any previously defined
+	//     locations not included will be removed.
+	//   - PartialUpdate: Updates only the specified address locations.
 	Action *UpdateAction
 
 	// An array of address locations to create or update.
@@ -13132,9 +13796,10 @@ type ServiceGatewayUpdateAddressLocationsRequest struct {
 // ServiceGatewayUpdateServicesRequest - Properties of the service gateway update services request.
 type ServiceGatewayUpdateServicesRequest struct {
 	// Specifies the type of update operation to perform on services within the service gateway.
-	// - FullUpdate: Replaces all existing services with the new list provided in the request. Any previously defined services
-	// not included will be removed.
-	// - PartialUpdate: Updates only the specified services.
+	//
+	//   - FullUpdate: Replaces all existing services with the new list provided in the request. Any previously defined services not
+	//     included will be removed.
+	//   - PartialUpdate: Updates only the specified services.
 	Action *ServiceUpdateAction
 
 	// Collection of service updates.
@@ -13417,6 +14082,15 @@ type StopCircuitLinkFailoverTestParameterBody struct {
 type StopSiteFailoverTestParameterBody struct {
 	// REQUIRED; Parameters supplied to stop the failover simulation on the express route gateway.
 	StopParameters *ExpressRouteFailoverStopAPIParameters
+}
+
+// StorageAccountSettings - Storage account where the connection analyzer writes its output.
+type StorageAccountSettings struct {
+	// REQUIRED; Resource ID of the storage account.
+	StorageAccountID *string
+
+	// Sub-path within the storage account where results are written.
+	Path *string
 }
 
 // SubResource - Reference to another subresource.
@@ -14870,6 +15544,18 @@ type VirtualApplianceBootDiagnosticParameters struct {
 	SerialConsoleStorageSasURL *string
 }
 
+// VirtualApplianceCommitMigrationProperties - Properties supplied to commit the migration of a Network Virtual Appliance.
+type VirtualApplianceCommitMigrationProperties struct {
+	// REQUIRED; The type of migration workflow to commit.
+	MigrationType *MigrationType
+}
+
+// VirtualApplianceCommitMigrationRequest - Parameters supplied to commit the migration of a Network Virtual Appliance.
+type VirtualApplianceCommitMigrationRequest struct {
+	// Properties of the commit migration request.
+	Properties *VirtualApplianceCommitMigrationProperties
+}
+
 // VirtualApplianceConnection - NetworkVirtualApplianceConnection resource.
 type VirtualApplianceConnection struct {
 	// Resource ID.
@@ -14915,6 +15601,18 @@ type VirtualApplianceConnectionProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// VirtualApplianceExecuteMigrationProperties - Properties supplied to execute the migration of a Network Virtual Appliance.
+type VirtualApplianceExecuteMigrationProperties struct {
+	// REQUIRED; The type of migration workflow to execute.
+	MigrationType *MigrationType
+}
+
+// VirtualApplianceExecuteMigrationRequest - Parameters supplied to execute the migration of a Network Virtual Appliance.
+type VirtualApplianceExecuteMigrationRequest struct {
+	// Properties of the execute migration request.
+	Properties *VirtualApplianceExecuteMigrationProperties
+}
+
 // VirtualApplianceIPConfiguration - Represents a single IP configuration.
 type VirtualApplianceIPConfiguration struct {
 	// For hub NVAs, primary IP configs must be named 'privatenicipconfig' and 'publicnicipconfig', with non-primary configs using
@@ -14952,6 +15650,18 @@ type VirtualApplianceListResult struct {
 	NextLink *string
 }
 
+// VirtualApplianceMigrationStatus - The migration status of a Network Virtual Appliance.
+type VirtualApplianceMigrationStatus struct {
+	// The current phase of the migration workflow (for example, Prepare, Execute, Commit, or Abort).
+	MigrationPhase *string
+
+	// The detailed status of the current migration phase.
+	MigrationPhaseStatus *string
+
+	// The type of migration workflow currently in progress or last performed.
+	MigrationType *MigrationType
+}
+
 // VirtualApplianceNetworkInterfaceConfiguration - Represents a single NIC configuration.
 type VirtualApplianceNetworkInterfaceConfiguration struct {
 	// NIC type. This should be either PublicNic or PrivateNic.
@@ -14981,14 +15691,42 @@ type VirtualApplianceNicProperties struct {
 	// READ-ONLY; Private IP address.
 	PrivateIPAddress *string
 
+	// READ-ONLY; Private IPv6 address. Populated for dual-stack NVAs, including on additional-NIC configurations when the NVA
+	// is dual-stack.
+	PrivateIPAddressV6 *string
+
 	// READ-ONLY; Public IP address.
 	PublicIPAddress *string
+
+	// READ-ONLY; Public IPv6 address. Populated for dual-stack NVAs, including on additional-NIC configurations when the NVA
+	// is dual-stack.
+	PublicIPAddressV6 *string
+}
+
+// VirtualAppliancePrepareMigrationProperties - Properties supplied to prepare the migration of a Network Virtual Appliance.
+type VirtualAppliancePrepareMigrationProperties struct {
+	// REQUIRED; The type of migration workflow to prepare.
+	MigrationType *MigrationType
+
+	// The marketplace version to migrate to. Applicable when migrationType is MigrateToNewOSVersion.
+	MarketPlaceVersion *string
+}
+
+// VirtualAppliancePrepareMigrationRequest - Parameters supplied to prepare the migration of a Network Virtual Appliance.
+type VirtualAppliancePrepareMigrationRequest struct {
+	// Properties of the prepare migration request.
+	Properties *VirtualAppliancePrepareMigrationProperties
 }
 
 // VirtualAppliancePropertiesFormat - Network Virtual Appliance definition.
 type VirtualAppliancePropertiesFormat struct {
 	// Details required for Additional Network Interface. This property is not compatible with the NVA deployed in VNets.
 	AdditionalNics []*VirtualApplianceAdditionalNicProperties
+
+	// The address families to deploy the NVA in. ["IPv4", "IPv6"] deploys a dual-stack NVA (the vHub/VNet must also be dual-stack).
+	// ["IPv4"], an empty array, or omitting the field deploys an IPv4-only NVA. The value "IPv6" may only appear in combination
+	// with "IPv4"; standalone ["IPv6"] is reserved for future use and is rejected by the service today.
+	AddressFamily []*IPVersion
 
 	// BootStrapConfigurationBlobs storage URLs.
 	BootStrapConfigurationBlobs []*string
@@ -15029,15 +15767,25 @@ type VirtualAppliancePropertiesFormat struct {
 	// READ-ONLY; Address Prefix.
 	AddressPrefix *string
 
+	// READ-ONLY; Address Prefix for Dual-Stack NVAs.
+	AddressPrefixV6 *string
+
 	// READ-ONLY; The deployment type. PartnerManaged for the SaaS NVA
 	DeploymentType *string
 
 	// READ-ONLY; List of references to InboundSecurityRules.
 	InboundSecurityRules []*SubResource
 
+	// READ-ONLY; The migration status of the Network Virtual Appliance.
+	MigrationStatus *VirtualApplianceMigrationStatus
+
 	// READ-ONLY; A Internal Load Balancer's HA port frontend IP address. Can be used to set routes & UDR to load balance traffic
 	// between NVA instances
 	PrivateIPAddress *string
+
+	// READ-ONLY; An Internal Load Balancer's HA port frontend IPv6 address. Can be used to set routes & UDR to load balance traffic
+	// between NVA instances. This field appears in dual-stack NVAs.
+	PrivateIPAddressV6 *string
 
 	// READ-ONLY; The provisioning state of the resource.
 	ProvisioningState *ProvisioningState
@@ -15231,6 +15979,9 @@ type VirtualHubProperties struct {
 	// Address-prefix for this VirtualHub.
 	AddressPrefix *string
 
+	// IPv6 Address-prefix for this VirtualHub.
+	AddressPrefixV6 *string
+
 	// Flag to control transit for VirtualRouter hub.
 	AllowBranchToBranchTraffic *bool
 
@@ -15275,6 +16026,9 @@ type VirtualHubProperties struct {
 
 	// VirtualRouter IPs.
 	VirtualRouterIPs []*string
+
+	// VirtualRouter IPv6 IPs.
+	VirtualRouterIPsV6 []*string
 
 	// The VirtualWAN to which the VirtualHub belongs.
 	VirtualWan *SubResource

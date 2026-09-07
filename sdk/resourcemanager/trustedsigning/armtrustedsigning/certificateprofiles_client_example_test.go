@@ -213,7 +213,7 @@ func ExampleCertificateProfilesClient_RevokeCertificate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = clientFactory.NewCertificateProfilesClient().RevokeCertificate(ctx, "MyResourceGroup", "MyAccount", "profileA", armtrustedsigning.RevokeCertificate{
-		EffectiveAt:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25+00:00"); return t }()),
+		EffectiveAt:  to.Ptr(time.Date(2023, time.November, 12, 23, 40, 25, 0, time.UTC)),
 		Reason:       to.Ptr("KeyCompromised"),
 		Remarks:      to.Ptr("test"),
 		SerialNumber: to.Ptr("xxxxxxxxxxxxxxxxxx"),

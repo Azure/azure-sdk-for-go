@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-08-18-preview/MarketplaceAgreements_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/MarketplaceAgreements_Create_MaximumSet_Gen.json
 func ExampleMarketplaceAgreementsClient_Create_createConfluentMarketplaceAgreementInTheSubscriptionMaximumset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleMarketplaceAgreementsClient_Create_createConfluentMarketplaceAgreeme
 			Plan:              to.Ptr("vgphlikczel"),
 			LicenseTextLink:   to.Ptr("ztckliskduxmcluia"),
 			PrivacyPolicyLink: to.Ptr("wwvlrlfhzmvfjgimkhkqcaxn"),
-			RetrieveDatetime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t }()),
+			RetrieveDatetime:  to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 			Signature:         to.Ptr("cfdxpybzzsrgcdtebmqzzskxfiool"),
 			Accepted:          to.Ptr(true),
 		},
@@ -50,10 +50,10 @@ func ExampleMarketplaceAgreementsClient_Create_createConfluentMarketplaceAgreeme
 	// 		SystemData: &armconfluent.SystemData{
 	// 			CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 		},
 	// 		Properties: &armconfluent.AgreementProperties{
 	// 			Publisher: to.Ptr("cxcrrfggvdmvcchohkyatlvbpyy"),
@@ -61,7 +61,7 @@ func ExampleMarketplaceAgreementsClient_Create_createConfluentMarketplaceAgreeme
 	// 			Plan: to.Ptr("vgphlikczel"),
 	// 			LicenseTextLink: to.Ptr("ztckliskduxmcluia"),
 	// 			PrivacyPolicyLink: to.Ptr("wwvlrlfhzmvfjgimkhkqcaxn"),
-	// 			RetrieveDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			RetrieveDatetime: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 			Signature: to.Ptr("cfdxpybzzsrgcdtebmqzzskxfiool"),
 	// 			Accepted: to.Ptr(true),
 	// 		},
@@ -69,7 +69,7 @@ func ExampleMarketplaceAgreementsClient_Create_createConfluentMarketplaceAgreeme
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/MarketplaceAgreements_Create_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/MarketplaceAgreements_Create_MinimumSet_Gen.json
 func ExampleMarketplaceAgreementsClient_Create_createConfluentMarketplaceAgreementInTheSubscriptionMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleMarketplaceAgreementsClient_Create_createConfluentMarketplaceAgreeme
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/MarketplaceAgreements_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/MarketplaceAgreements_List_MaximumSet_Gen.json
 func ExampleMarketplaceAgreementsClient_NewListPager_listConfluentMarketplaceAgreementsInTheSubscriptionMaximumset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,10 +125,10 @@ func ExampleMarketplaceAgreementsClient_NewListPager_listConfluentMarketplaceAgr
 		// 				SystemData: &armconfluent.SystemData{
 		// 					CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 		// 					CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 		// 					LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 		// 				},
 		// 				Properties: &armconfluent.AgreementProperties{
 		// 					Publisher: to.Ptr("cxcrrfggvdmvcchohkyatlvbpyy"),
@@ -136,7 +136,7 @@ func ExampleMarketplaceAgreementsClient_NewListPager_listConfluentMarketplaceAgr
 		// 					Plan: to.Ptr("vgphlikczel"),
 		// 					LicenseTextLink: to.Ptr("ztckliskduxmcluia"),
 		// 					PrivacyPolicyLink: to.Ptr("wwvlrlfhzmvfjgimkhkqcaxn"),
-		// 					RetrieveDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+		// 					RetrieveDatetime: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 		// 					Signature: to.Ptr("cfdxpybzzsrgcdtebmqzzskxfiool"),
 		// 					Accepted: to.Ptr(true),
 		// 				},
@@ -148,7 +148,7 @@ func ExampleMarketplaceAgreementsClient_NewListPager_listConfluentMarketplaceAgr
 	}
 }
 
-// Generated from example definition: 2025-08-18-preview/MarketplaceAgreements_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/MarketplaceAgreements_List_MinimumSet_Gen.json
 func ExampleMarketplaceAgreementsClient_NewListPager_listConfluentMarketplaceAgreementsInTheSubscriptionMinimumset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

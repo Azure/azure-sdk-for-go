@@ -43,7 +43,7 @@ func ExampleClusterRecoveryPointClient_Get() {
 	// 				},
 	// 				RecoveryPointSyncType: to.Ptr(armrecoveryservicessiterecovery.RecoveryPointSyncTypeMultiVMSyncRecoveryPoint),
 	// 			},
-	// 			RecoveryPointTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-19T10:51:29.6329144Z"); return t}()),
+	// 			RecoveryPointTime: to.Ptr(time.Date(2024, time.January, 19, 10, 51, 29, 632914400, time.UTC)),
 	// 			RecoveryPointType: to.Ptr(armrecoveryservicessiterecovery.ClusterRecoveryPointTypeCrashConsistent),
 	// 		},
 	// 	},

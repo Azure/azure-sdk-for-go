@@ -349,9 +349,10 @@ func PossibleCheckNameResourceTypesValues() []CheckNameResourceTypes {
 }
 
 // ClientCertMode - This composes with ClientCertEnabled setting.
-// - ClientCertEnabled: false means ClientCert is ignored.
-// - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.
-// - ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
+//
+//   - ClientCertEnabled: false means ClientCert is ignored.
+//   - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.
+//   - ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
 type ClientCertMode string
 
 const (

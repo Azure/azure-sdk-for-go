@@ -4,6 +4,30 @@
 
 package armnetwork
 
+// AddressPrefixSetsClientBeginCreateOrUpdateOptions contains the optional parameters for the AddressPrefixSetsClient.BeginCreateOrUpdate
+// method.
+type AddressPrefixSetsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AddressPrefixSetsClientBeginDeleteOptions contains the optional parameters for the AddressPrefixSetsClient.BeginDelete
+// method.
+type AddressPrefixSetsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AddressPrefixSetsClientGetOptions contains the optional parameters for the AddressPrefixSetsClient.Get method.
+type AddressPrefixSetsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AddressPrefixSetsClientListOptions contains the optional parameters for the AddressPrefixSetsClient.NewListPager method.
+type AddressPrefixSetsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AdminRuleCollectionsClientBeginDeleteOptions contains the optional parameters for the AdminRuleCollectionsClient.BeginDelete
 // method.
 type AdminRuleCollectionsClientBeginDeleteOptions struct {
@@ -1087,6 +1111,67 @@ type ExpressRouteGatewaysClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ExpressRouteLagsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExpressRouteLagsClient.BeginCreateOrUpdate
+// method.
+type ExpressRouteLagsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExpressRouteLagsClientBeginDeleteOptions contains the optional parameters for the ExpressRouteLagsClient.BeginDelete method.
+type ExpressRouteLagsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ExpressRouteLagsClientGenerateLoaOptions contains the optional parameters for the ExpressRouteLagsClient.GenerateLoa method.
+type ExpressRouteLagsClientGenerateLoaOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExpressRouteLagsClientGetOptions contains the optional parameters for the ExpressRouteLagsClient.Get method.
+type ExpressRouteLagsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExpressRouteLagsClientLinksGetOptions contains the optional parameters for the ExpressRouteLagsClient.LinksGet method.
+type ExpressRouteLagsClientLinksGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExpressRouteLagsClientLinksListOptions contains the optional parameters for the ExpressRouteLagsClient.NewLinksListPager
+// method.
+type ExpressRouteLagsClientLinksListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExpressRouteLagsClientListByResourceGroupOptions contains the optional parameters for the ExpressRouteLagsClient.NewListByResourceGroupPager
+// method.
+type ExpressRouteLagsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExpressRouteLagsClientListOptions contains the optional parameters for the ExpressRouteLagsClient.NewListPager method.
+type ExpressRouteLagsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExpressRouteLagsClientMembersGetOptions contains the optional parameters for the ExpressRouteLagsClient.MembersGet method.
+type ExpressRouteLagsClientMembersGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExpressRouteLagsClientMembersListOptions contains the optional parameters for the ExpressRouteLagsClient.NewMembersListPager
+// method.
+type ExpressRouteLagsClientMembersListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExpressRouteLagsClientUpdateOptions contains the optional parameters for the ExpressRouteLagsClient.Update method.
+type ExpressRouteLagsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ExpressRouteLinksClientGetOptions contains the optional parameters for the ExpressRouteLinksClient.Get method.
 type ExpressRouteLinksClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -1192,6 +1277,10 @@ type ExpressRouteServiceProvidersClientListOptions struct {
 // FirewallPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the FirewallPoliciesClient.BeginCreateOrUpdate
 // method.
 type FirewallPoliciesClientBeginCreateOrUpdateOptions struct {
+	// Indicates that the write originates from AFC (Azure Firewall for Containers) and is permitted to modify an AFC-managed
+	// Firewall Policy.
+	AfcManagedSync *bool
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -1282,6 +1371,32 @@ type FirewallPolicyIdpsSignaturesOverridesClientPutOptions struct {
 	// placeholder for future optional parameters
 }
 
+// FirewallPolicyKubeSelectorGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the FirewallPolicyKubeSelectorGroupsClient.BeginCreateOrUpdate
+// method.
+type FirewallPolicyKubeSelectorGroupsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FirewallPolicyKubeSelectorGroupsClientBeginDeleteOptions contains the optional parameters for the FirewallPolicyKubeSelectorGroupsClient.BeginDelete
+// method.
+type FirewallPolicyKubeSelectorGroupsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FirewallPolicyKubeSelectorGroupsClientGetOptions contains the optional parameters for the FirewallPolicyKubeSelectorGroupsClient.Get
+// method.
+type FirewallPolicyKubeSelectorGroupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FirewallPolicyKubeSelectorGroupsClientListOptions contains the optional parameters for the FirewallPolicyKubeSelectorGroupsClient.NewListPager
+// method.
+type FirewallPolicyKubeSelectorGroupsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // FirewallPolicyRuleCollectionGroupDraftsClientCreateOrUpdateOptions contains the optional parameters for the FirewallPolicyRuleCollectionGroupDraftsClient.CreateOrUpdate
 // method.
 type FirewallPolicyRuleCollectionGroupDraftsClientCreateOrUpdateOptions struct {
@@ -1323,6 +1438,44 @@ type FirewallPolicyRuleCollectionGroupsClientGetOptions struct {
 // FirewallPolicyRuleCollectionGroupsClientListOptions contains the optional parameters for the FirewallPolicyRuleCollectionGroupsClient.NewListPager
 // method.
 type FirewallPolicyRuleCollectionGroupsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FirstPartyServiceTagsClientBeginCreateOrUpdateOptions contains the optional parameters for the FirstPartyServiceTagsClient.BeginCreateOrUpdate
+// method.
+type FirstPartyServiceTagsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FirstPartyServiceTagsClientBeginDeleteOptions contains the optional parameters for the FirstPartyServiceTagsClient.BeginDelete
+// method.
+type FirstPartyServiceTagsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FirstPartyServiceTagsClientBeginUpdateTagsOptions contains the optional parameters for the FirstPartyServiceTagsClient.BeginUpdateTags
+// method.
+type FirstPartyServiceTagsClientBeginUpdateTagsOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FirstPartyServiceTagsClientGetOptions contains the optional parameters for the FirstPartyServiceTagsClient.Get method.
+type FirstPartyServiceTagsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FirstPartyServiceTagsClientListAllOptions contains the optional parameters for the FirstPartyServiceTagsClient.NewListAllPager
+// method.
+type FirstPartyServiceTagsClientListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FirstPartyServiceTagsClientListOptions contains the optional parameters for the FirstPartyServiceTagsClient.NewListPager
+// method.
+type FirstPartyServiceTagsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3549,20 +3702,6 @@ type ServiceGatewaysClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
-// ServiceGatewaysClientBeginUpdateAddressLocationsOptions contains the optional parameters for the ServiceGatewaysClient.BeginUpdateAddressLocations
-// method.
-type ServiceGatewaysClientBeginUpdateAddressLocationsOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ServiceGatewaysClientBeginUpdateServicesOptions contains the optional parameters for the ServiceGatewaysClient.BeginUpdateServices
-// method.
-type ServiceGatewaysClientBeginUpdateServicesOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // ServiceGatewaysClientGetAddressLocationsOptions contains the optional parameters for the ServiceGatewaysClient.NewGetAddressLocationsPager
 // method.
 type ServiceGatewaysClientGetAddressLocationsOptions struct {
@@ -3587,6 +3726,18 @@ type ServiceGatewaysClientListAllOptions struct {
 
 // ServiceGatewaysClientListOptions contains the optional parameters for the ServiceGatewaysClient.NewListPager method.
 type ServiceGatewaysClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceGatewaysClientUpdateAddressLocationsOptions contains the optional parameters for the ServiceGatewaysClient.UpdateAddressLocations
+// method.
+type ServiceGatewaysClientUpdateAddressLocationsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceGatewaysClientUpdateServicesOptions contains the optional parameters for the ServiceGatewaysClient.UpdateServices
+// method.
+type ServiceGatewaysClientUpdateServicesOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4134,6 +4285,20 @@ type VirtualApplianceSitesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// VirtualAppliancesClientBeginAbortMigrationOptions contains the optional parameters for the VirtualAppliancesClient.BeginAbortMigration
+// method.
+type VirtualAppliancesClientBeginAbortMigrationOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VirtualAppliancesClientBeginCommitMigrationOptions contains the optional parameters for the VirtualAppliancesClient.BeginCommitMigration
+// method.
+type VirtualAppliancesClientBeginCommitMigrationOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // VirtualAppliancesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualAppliancesClient.BeginCreateOrUpdate
 // method.
 type VirtualAppliancesClientBeginCreateOrUpdateOptions struct {
@@ -4148,9 +4313,23 @@ type VirtualAppliancesClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// VirtualAppliancesClientBeginExecuteMigrationOptions contains the optional parameters for the VirtualAppliancesClient.BeginExecuteMigration
+// method.
+type VirtualAppliancesClientBeginExecuteMigrationOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // VirtualAppliancesClientBeginGetBootDiagnosticLogsOptions contains the optional parameters for the VirtualAppliancesClient.BeginGetBootDiagnosticLogs
 // method.
 type VirtualAppliancesClientBeginGetBootDiagnosticLogsOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VirtualAppliancesClientBeginPrepareMigrationOptions contains the optional parameters for the VirtualAppliancesClient.BeginPrepareMigration
+// method.
+type VirtualAppliancesClientBeginPrepareMigrationOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -4544,6 +4723,13 @@ type VirtualNetworkGatewaysClientBeginGetBgpPeerStatusOptions struct {
 	ResumeToken string
 }
 
+// VirtualNetworkGatewaysClientBeginGetEffectiveRoutesOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGetEffectiveRoutes
+// method.
+type VirtualNetworkGatewaysClientBeginGetEffectiveRoutesOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // VirtualNetworkGatewaysClientBeginGetFailoverAllTestDetailsOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGetFailoverAllTestDetails
 // method.
 type VirtualNetworkGatewaysClientBeginGetFailoverAllTestDetailsOptions struct {
@@ -4822,6 +5008,13 @@ type VirtualNetworksClientBeginListDdosProtectionStatusOptions struct {
 	Top *int32
 }
 
+// VirtualNetworksClientBeginMoveIPConfigurationsOptions contains the optional parameters for the VirtualNetworksClient.BeginMoveIPConfigurations
+// method.
+type VirtualNetworksClientBeginMoveIPConfigurationsOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // VirtualNetworksClientCheckIPAddressAvailabilityOptions contains the optional parameters for the VirtualNetworksClient.CheckIPAddressAvailability
 // method.
 type VirtualNetworksClientCheckIPAddressAvailabilityOptions struct {
@@ -4951,6 +5144,27 @@ type WatchersClientBeginCheckConnectivityOptions struct {
 	ResumeToken string
 }
 
+// WatchersClientBeginConnectionAnalyzersCreateOptions contains the optional parameters for the WatchersClient.BeginConnectionAnalyzersCreate
+// method.
+type WatchersClientBeginConnectionAnalyzersCreateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// WatchersClientBeginConnectionAnalyzersDeleteOptions contains the optional parameters for the WatchersClient.BeginConnectionAnalyzersDelete
+// method.
+type WatchersClientBeginConnectionAnalyzersDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// WatchersClientBeginConnectionAnalyzersQueryOptions contains the optional parameters for the WatchersClient.BeginConnectionAnalyzersQuery
+// method.
+type WatchersClientBeginConnectionAnalyzersQueryOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // WatchersClientBeginDeleteOptions contains the optional parameters for the WatchersClient.BeginDelete method.
 type WatchersClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -5023,6 +5237,24 @@ type WatchersClientBeginSetFlowLogConfigurationOptions struct {
 type WatchersClientBeginVerifyIPFlowOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
+}
+
+// WatchersClientConnectionAnalyzersGetOptions contains the optional parameters for the WatchersClient.ConnectionAnalyzersGet
+// method.
+type WatchersClientConnectionAnalyzersGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WatchersClientConnectionAnalyzersListOptions contains the optional parameters for the WatchersClient.NewConnectionAnalyzersListPager
+// method.
+type WatchersClientConnectionAnalyzersListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WatchersClientConnectionAnalyzersUpdateTagsOptions contains the optional parameters for the WatchersClient.ConnectionAnalyzersUpdateTags
+// method.
+type WatchersClientConnectionAnalyzersUpdateTagsOptions struct {
+	// placeholder for future optional parameters
 }
 
 // WatchersClientCreateOrUpdateOptions contains the optional parameters for the WatchersClient.CreateOrUpdate method.

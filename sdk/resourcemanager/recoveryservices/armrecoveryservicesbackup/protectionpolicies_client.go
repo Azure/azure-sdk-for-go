@@ -18,6 +18,8 @@ import (
 
 // ProtectionPoliciesClient contains the methods for the ProtectionPolicies group.
 // Don't use this type directly, use NewProtectionPoliciesClient() instead.
+//
+// Generated from API version 2026-07-01
 type ProtectionPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type ProtectionPoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProtectionPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectionPoliciesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -43,8 +48,6 @@ func NewProtectionPoliciesClient(subscriptionID string, credential azcore.TokenC
 // fetched
 // using GetPolicyOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectionPoliciesClientCreateOrUpdateOptions contains the optional parameters for the ProtectionPoliciesClient.CreateOrUpdate
 //     method.
@@ -62,19 +65,14 @@ func (client *ProtectionPoliciesClient) CreateOrUpdate(ctx context.Context, vaul
 	if err != nil {
 		return ProtectionPoliciesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return ProtectionPoliciesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ProtectionPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, policyName string, parameters ProtectionPolicyResource, options *ProtectionPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupPolicies/{policyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if vaultName == "" {
@@ -94,8 +92,8 @@ func (client *ProtectionPoliciesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
 		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
@@ -108,8 +106,11 @@ func (client *ProtectionPoliciesClient) createOrUpdateCreateRequest(ctx context.
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ProtectionPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (ProtectionPoliciesClientCreateOrUpdateResponse, error) {
+func (client *ProtectionPoliciesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ProtectionPoliciesClientCreateOrUpdateResponse, error) {
 	result := ProtectionPoliciesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionPolicyResource); err != nil {
 		return ProtectionPoliciesClientCreateOrUpdateResponse{}, err
 	}
@@ -120,8 +121,6 @@ func (client *ProtectionPoliciesClient) createOrUpdateHandleResponse(resp *http.
 // of the
 // operation can be fetched using GetProtectionPolicyOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectionPoliciesClientBeginDeleteOptions contains the optional parameters for the ProtectionPoliciesClient.BeginDelete
 //     method.
@@ -146,8 +145,6 @@ func (client *ProtectionPoliciesClient) BeginDelete(ctx context.Context, vaultNa
 // the
 // operation can be fetched using GetProtectionPolicyOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 func (client *ProtectionPoliciesClient) deleteOperation(ctx context.Context, vaultName string, resourceGroupName string, policyName string, options *ProtectionPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProtectionPoliciesClient.BeginDelete"
@@ -163,8 +160,7 @@ func (client *ProtectionPoliciesClient) deleteOperation(ctx context.Context, vau
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -173,7 +169,7 @@ func (client *ProtectionPoliciesClient) deleteOperation(ctx context.Context, vau
 func (client *ProtectionPoliciesClient) deleteCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, policyName string, _ *ProtectionPoliciesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupPolicies/{policyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if vaultName == "" {
@@ -193,16 +189,14 @@ func (client *ProtectionPoliciesClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Provides the details of the backup policies associated to Recovery Services Vault. This is an asynchronous
 // operation. Status of the operation can be fetched using GetPolicyOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectionPoliciesClientGetOptions contains the optional parameters for the ProtectionPoliciesClient.Get method.
 func (client *ProtectionPoliciesClient) Get(ctx context.Context, vaultName string, resourceGroupName string, policyName string, options *ProtectionPoliciesClientGetOptions) (ProtectionPoliciesClientGetResponse, error) {
@@ -219,19 +213,14 @@ func (client *ProtectionPoliciesClient) Get(ctx context.Context, vaultName strin
 	if err != nil {
 		return ProtectionPoliciesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProtectionPoliciesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ProtectionPoliciesClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, policyName string, _ *ProtectionPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupPolicies/{policyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if vaultName == "" {
@@ -251,15 +240,18 @@ func (client *ProtectionPoliciesClient) getCreateRequest(ctx context.Context, va
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProtectionPoliciesClient) getHandleResponse(resp *http.Response) (ProtectionPoliciesClientGetResponse, error) {
+func (client *ProtectionPoliciesClient) getHandleResponse(resp *http.Response, successCodes ...int) (ProtectionPoliciesClientGetResponse, error) {
 	result := ProtectionPoliciesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionPolicyResource); err != nil {
 		return ProtectionPoliciesClientGetResponse{}, err
 	}

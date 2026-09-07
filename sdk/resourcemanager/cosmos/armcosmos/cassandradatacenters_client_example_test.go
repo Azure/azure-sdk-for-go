@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraDataCenterCreate.json
+// Generated from example definition: 2026-03-15/CosmosDBManagedCassandraDataCenterCreate.json
 func ExampleCassandraDataCentersClient_BeginCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,10 +25,10 @@ func ExampleCassandraDataCentersClient_BeginCreateUpdate() {
 	}
 	poller, err := clientFactory.NewCassandraDataCentersClient().BeginCreateUpdate(ctx, "cassandra-prod-rg", "cassandra-prod", "dc1", armcosmos.DataCenterResource{
 		Properties: &armcosmos.DataCenterResourceProperties{
-			Base64EncodedCassandraYamlFragment: to.Ptr("Y29tcGFjdGlvbl90aHJvdWdocHV0X21iX3Blcl9zZWM6IDMyCmNvbXBhY3Rpb25fbGFyZ2VfcGFydGl0aW9uX3dhcm5pbmdfdGhyZXNob2xkX21iOiAxMDA="),
 			DataCenterLocation:                 to.Ptr("West US 2"),
 			DelegatedSubnetID:                  to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/dc1-subnet"),
 			NodeCount:                          to.Ptr[int32](9),
+			Base64EncodedCassandraYamlFragment: to.Ptr("Y29tcGFjdGlvbl90aHJvdWdocHV0X21iX3Blcl9zZWM6IDMyCmNvbXBhY3Rpb25fbGFyZ2VfcGFydGl0aW9uX3dhcm5pbmdfdGhyZXNob2xkX21iOiAxMDA="),
 		},
 	}, nil)
 	if err != nil {
@@ -36,21 +36,21 @@ func ExampleCassandraDataCentersClient_BeginCreateUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraDataCentersClientCreateUpdateResponse{
-	// 	DataCenterResource: &armcosmos.DataCenterResource{
+	// 	DataCenterResource: armcosmos.DataCenterResource{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod/dataCenters/dc1"),
 	// 		Name: to.Ptr("dc1"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters/dataCenters"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod/dataCenters/dc1"),
 	// 		Properties: &armcosmos.DataCenterResourceProperties{
+	// 			ProvisioningState: to.Ptr(armcosmos.ManagedCassandraProvisioningStateSucceeded),
 	// 			DataCenterLocation: to.Ptr("West US 2"),
 	// 			DelegatedSubnetID: to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/dc1"),
 	// 			NodeCount: to.Ptr[int32](9),
-	// 			ProvisioningState: to.Ptr(armcosmos.ManagedCassandraProvisioningStateSucceeded),
 	// 			SeedNodes: []*armcosmos.SeedNode{
 	// 				{
 	// 					IPAddress: to.Ptr("192.168.12.2"),
@@ -67,7 +67,7 @@ func ExampleCassandraDataCentersClient_BeginCreateUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraDataCenterDelete.json
+// Generated from example definition: 2026-03-15/CosmosDBManagedCassandraDataCenterDelete.json
 func ExampleCassandraDataCentersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,11 +84,11 @@ func ExampleCassandraDataCentersClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraDataCenterGet.json
+// Generated from example definition: 2026-03-15/CosmosDBManagedCassandraDataCenterGet.json
 func ExampleCassandraDataCentersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,16 +107,16 @@ func ExampleCassandraDataCentersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraDataCentersClientGetResponse{
-	// 	DataCenterResource: &armcosmos.DataCenterResource{
+	// 	DataCenterResource: armcosmos.DataCenterResource{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod/dataCenters/dc1"),
 	// 		Name: to.Ptr("dc1"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters/dataCenters"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod/dataCenters/dc1"),
 	// 		Properties: &armcosmos.DataCenterResourceProperties{
-	// 			Base64EncodedCassandraYamlFragment: to.Ptr("Y29tcGFjdGlvbl90aHJvdWdocHV0X21iX3Blcl9zZWM6IDMyCmNvbXBhY3Rpb25fbGFyZ2VfcGFydGl0aW9uX3dhcm5pbmdfdGhyZXNob2xkX21iOiAxMDA="),
+	// 			ProvisioningState: to.Ptr(armcosmos.ManagedCassandraProvisioningStateSucceeded),
 	// 			DataCenterLocation: to.Ptr("West US 2"),
 	// 			DelegatedSubnetID: to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/dc1"),
 	// 			NodeCount: to.Ptr[int32](9),
-	// 			ProvisioningState: to.Ptr(armcosmos.ManagedCassandraProvisioningStateSucceeded),
+	// 			Base64EncodedCassandraYamlFragment: to.Ptr("Y29tcGFjdGlvbl90aHJvdWdocHV0X21iX3Blcl9zZWM6IDMyCmNvbXBhY3Rpb25fbGFyZ2VfcGFydGl0aW9uX3dhcm5pbmdfdGhyZXNob2xkX21iOiAxMDA="),
 	// 			SeedNodes: []*armcosmos.SeedNode{
 	// 				{
 	// 					IPAddress: to.Ptr("192.168.12.2"),
@@ -133,7 +133,7 @@ func ExampleCassandraDataCentersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraDataCenterList.json
+// Generated from example definition: 2026-03-15/CosmosDBManagedCassandraDataCenterList.json
 func ExampleCassandraDataCentersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,15 +159,14 @@ func ExampleCassandraDataCentersClient_NewListPager() {
 		// 	ListDataCenters: armcosmos.ListDataCenters{
 		// 		Value: []*armcosmos.DataCenterResource{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod/dataCenters/dc1"),
 		// 				Name: to.Ptr("dc1"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters/dataCenters"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod/dataCenters/dc1"),
 		// 				Properties: &armcosmos.DataCenterResourceProperties{
-		// 					Base64EncodedCassandraYamlFragment: to.Ptr("Y29tcGFjdGlvbl90aHJvdWdocHV0X21iX3Blcl9zZWM6IDMyCmNvbXBhY3Rpb25fbGFyZ2VfcGFydGl0aW9uX3dhcm5pbmdfdGhyZXNob2xkX21iOiAxMDA="),
+		// 					ProvisioningState: to.Ptr(armcosmos.ManagedCassandraProvisioningStateSucceeded),
 		// 					DataCenterLocation: to.Ptr("West US 2"),
 		// 					DelegatedSubnetID: to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/dc1"),
 		// 					NodeCount: to.Ptr[int32](9),
-		// 					ProvisioningState: to.Ptr(armcosmos.ManagedCassandraProvisioningStateSucceeded),
 		// 					SeedNodes: []*armcosmos.SeedNode{
 		// 						{
 		// 							IPAddress: to.Ptr("192.168.12.2"),
@@ -179,6 +178,7 @@ func ExampleCassandraDataCentersClient_NewListPager() {
 		// 							IPAddress: to.Ptr("192.168.12.4"),
 		// 						},
 		// 					},
+		// 					Base64EncodedCassandraYamlFragment: to.Ptr("Y29tcGFjdGlvbl90aHJvdWdocHV0X21iX3Blcl9zZWM6IDMyCmNvbXBhY3Rpb25fbGFyZ2VfcGFydGl0aW9uX3dhcm5pbmdfdGhyZXNob2xkX21iOiAxMDA="),
 		// 				},
 		// 			},
 		// 		},
@@ -187,7 +187,7 @@ func ExampleCassandraDataCentersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraDataCenterPatch.json
+// Generated from example definition: 2026-03-15/CosmosDBManagedCassandraDataCenterPatch.json
 func ExampleCassandraDataCentersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,10 +200,10 @@ func ExampleCassandraDataCentersClient_BeginUpdate() {
 	}
 	poller, err := clientFactory.NewCassandraDataCentersClient().BeginUpdate(ctx, "cassandra-prod-rg", "cassandra-prod", "dc1", armcosmos.DataCenterResource{
 		Properties: &armcosmos.DataCenterResourceProperties{
-			Base64EncodedCassandraYamlFragment: to.Ptr("Y29tcGFjdGlvbl90aHJvdWdocHV0X21iX3Blcl9zZWM6IDMyCmNvbXBhY3Rpb25fbGFyZ2VfcGFydGl0aW9uX3dhcm5pbmdfdGhyZXNob2xkX21iOiAxMDA="),
 			DataCenterLocation:                 to.Ptr("West US 2"),
 			DelegatedSubnetID:                  to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/dc1-subnet"),
 			NodeCount:                          to.Ptr[int32](9),
+			Base64EncodedCassandraYamlFragment: to.Ptr("Y29tcGFjdGlvbl90aHJvdWdocHV0X21iX3Blcl9zZWM6IDMyCmNvbXBhY3Rpb25fbGFyZ2VfcGFydGl0aW9uX3dhcm5pbmdfdGhyZXNob2xkX21iOiAxMDA="),
 		},
 	}, nil)
 	if err != nil {
@@ -211,22 +211,22 @@ func ExampleCassandraDataCentersClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraDataCentersClientUpdateResponse{
-	// 	DataCenterResource: &armcosmos.DataCenterResource{
+	// 	DataCenterResource: armcosmos.DataCenterResource{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod/dataCenters/dc1"),
 	// 		Name: to.Ptr("dc1"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters/dataCenters"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod/dataCenters/dc1"),
 	// 		Properties: &armcosmos.DataCenterResourceProperties{
-	// 			Base64EncodedCassandraYamlFragment: to.Ptr("Y29tcGFjdGlvbl90aHJvdWdocHV0X21iX3Blcl9zZWM6IDMyCmNvbXBhY3Rpb25fbGFyZ2VfcGFydGl0aW9uX3dhcm5pbmdfdGhyZXNob2xkX21iOiAxMDA="),
-	// 			DataCenterLocation: to.Ptr("West US 2"),
-	// 			DelegatedSubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/dc1"),
-	// 			NodeCount: to.Ptr[int32](9),
 	// 			ProvisioningState: to.Ptr(armcosmos.ManagedCassandraProvisioningStateSucceeded),
+	// 			DataCenterLocation: to.Ptr("West US 2"),
+	// 			DelegatedSubnetID: to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/dc1"),
+	// 			NodeCount: to.Ptr[int32](9),
+	// 			Base64EncodedCassandraYamlFragment: to.Ptr("Y29tcGFjdGlvbl90aHJvdWdocHV0X21iX3Blcl9zZWM6IDMyCmNvbXBhY3Rpb25fbGFyZ2VfcGFydGl0aW9uX3dhcm5pbmdfdGhyZXNob2xkX21iOiAxMDA="),
 	// 			SeedNodes: []*armcosmos.SeedNode{
 	// 				{
 	// 					IPAddress: to.Ptr("192.168.12.2"),

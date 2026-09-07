@@ -18,6 +18,8 @@ import (
 
 // TableResourcesClient contains the methods for the TableResources group.
 // Don't use this type directly, use NewTableResourcesClient() instead.
+//
+// Generated from API version 2026-03-15
 type TableResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type TableResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTableResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TableResourcesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,8 +46,6 @@ func NewTableResourcesClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginCreateUpdateTable - Create or update an Azure Cosmos DB Table
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - tableName - Cosmos DB table name.
@@ -68,8 +71,6 @@ func (client *TableResourcesClient) BeginCreateUpdateTable(ctx context.Context, 
 
 // CreateUpdateTable - Create or update an Azure Cosmos DB Table
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *TableResourcesClient) createUpdateTable(ctx context.Context, resourceGroupName string, accountName string, tableName string, createUpdateTableParameters TableCreateUpdateParameters, options *TableResourcesClientBeginCreateUpdateTableOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TableResourcesClient.BeginCreateUpdateTable"
@@ -85,8 +86,7 @@ func (client *TableResourcesClient) createUpdateTable(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -95,7 +95,7 @@ func (client *TableResourcesClient) createUpdateTable(ctx context.Context, resou
 func (client *TableResourcesClient) createUpdateTableCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, createUpdateTableParameters TableCreateUpdateParameters, _ *TableResourcesClientBeginCreateUpdateTableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -115,8 +115,8 @@ func (client *TableResourcesClient) createUpdateTableCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateTableParameters); err != nil {
@@ -127,8 +127,6 @@ func (client *TableResourcesClient) createUpdateTableCreateRequest(ctx context.C
 
 // BeginCreateUpdateTableRoleAssignment - Creates or updates an Azure Cosmos DB Table Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - roleAssignmentID - The GUID for the Role Assignment.
@@ -154,8 +152,6 @@ func (client *TableResourcesClient) BeginCreateUpdateTableRoleAssignment(ctx con
 
 // CreateUpdateTableRoleAssignment - Creates or updates an Azure Cosmos DB Table Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *TableResourcesClient) createUpdateTableRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateTableRoleAssignmentParameters TableRoleAssignmentResource, options *TableResourcesClientBeginCreateUpdateTableRoleAssignmentOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TableResourcesClient.BeginCreateUpdateTableRoleAssignment"
@@ -171,8 +167,7 @@ func (client *TableResourcesClient) createUpdateTableRoleAssignment(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -181,7 +176,7 @@ func (client *TableResourcesClient) createUpdateTableRoleAssignment(ctx context.
 func (client *TableResourcesClient) createUpdateTableRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateTableRoleAssignmentParameters TableRoleAssignmentResource, _ *TableResourcesClientBeginCreateUpdateTableRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tableRoleAssignments/{roleAssignmentId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -201,8 +196,8 @@ func (client *TableResourcesClient) createUpdateTableRoleAssignmentCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateTableRoleAssignmentParameters); err != nil {
@@ -213,8 +208,6 @@ func (client *TableResourcesClient) createUpdateTableRoleAssignmentCreateRequest
 
 // BeginCreateUpdateTableRoleDefinition - Creates or updates an Azure Cosmos DB Table Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - roleDefinitionID - The GUID for the Role Definition.
@@ -240,8 +233,6 @@ func (client *TableResourcesClient) BeginCreateUpdateTableRoleDefinition(ctx con
 
 // CreateUpdateTableRoleDefinition - Creates or updates an Azure Cosmos DB Table Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *TableResourcesClient) createUpdateTableRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateTableRoleDefinitionParameters TableRoleDefinitionResource, options *TableResourcesClientBeginCreateUpdateTableRoleDefinitionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TableResourcesClient.BeginCreateUpdateTableRoleDefinition"
@@ -257,8 +248,7 @@ func (client *TableResourcesClient) createUpdateTableRoleDefinition(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -267,7 +257,7 @@ func (client *TableResourcesClient) createUpdateTableRoleDefinition(ctx context.
 func (client *TableResourcesClient) createUpdateTableRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateTableRoleDefinitionParameters TableRoleDefinitionResource, _ *TableResourcesClientBeginCreateUpdateTableRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tableRoleDefinitions/{roleDefinitionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -287,8 +277,8 @@ func (client *TableResourcesClient) createUpdateTableRoleDefinitionCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateTableRoleDefinitionParameters); err != nil {
@@ -299,8 +289,6 @@ func (client *TableResourcesClient) createUpdateTableRoleDefinitionCreateRequest
 
 // BeginDeleteTable - Deletes an existing Azure Cosmos DB Table.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - tableName - Cosmos DB table name.
@@ -325,8 +313,6 @@ func (client *TableResourcesClient) BeginDeleteTable(ctx context.Context, resour
 
 // DeleteTable - Deletes an existing Azure Cosmos DB Table.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *TableResourcesClient) deleteTable(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientBeginDeleteTableOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TableResourcesClient.BeginDeleteTable"
@@ -342,8 +328,7 @@ func (client *TableResourcesClient) deleteTable(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -352,7 +337,7 @@ func (client *TableResourcesClient) deleteTable(ctx context.Context, resourceGro
 func (client *TableResourcesClient) deleteTableCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, _ *TableResourcesClientBeginDeleteTableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -372,15 +357,13 @@ func (client *TableResourcesClient) deleteTableCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginDeleteTableRoleAssignment - Deletes an existing Azure Cosmos DB Table Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - roleAssignmentID - The GUID for the Role Assignment.
@@ -405,8 +388,6 @@ func (client *TableResourcesClient) BeginDeleteTableRoleAssignment(ctx context.C
 
 // DeleteTableRoleAssignment - Deletes an existing Azure Cosmos DB Table Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *TableResourcesClient) deleteTableRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *TableResourcesClientBeginDeleteTableRoleAssignmentOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TableResourcesClient.BeginDeleteTableRoleAssignment"
@@ -422,8 +403,7 @@ func (client *TableResourcesClient) deleteTableRoleAssignment(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -432,7 +412,7 @@ func (client *TableResourcesClient) deleteTableRoleAssignment(ctx context.Contex
 func (client *TableResourcesClient) deleteTableRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, _ *TableResourcesClientBeginDeleteTableRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tableRoleAssignments/{roleAssignmentId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -452,15 +432,13 @@ func (client *TableResourcesClient) deleteTableRoleAssignmentCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginDeleteTableRoleDefinition - Deletes an existing Azure Cosmos DB Table Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - roleDefinitionID - The GUID for the Role Definition.
@@ -485,8 +463,6 @@ func (client *TableResourcesClient) BeginDeleteTableRoleDefinition(ctx context.C
 
 // DeleteTableRoleDefinition - Deletes an existing Azure Cosmos DB Table Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *TableResourcesClient) deleteTableRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *TableResourcesClientBeginDeleteTableRoleDefinitionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TableResourcesClient.BeginDeleteTableRoleDefinition"
@@ -502,8 +478,7 @@ func (client *TableResourcesClient) deleteTableRoleDefinition(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -512,7 +487,7 @@ func (client *TableResourcesClient) deleteTableRoleDefinition(ctx context.Contex
 func (client *TableResourcesClient) deleteTableRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, _ *TableResourcesClientBeginDeleteTableRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tableRoleDefinitions/{roleDefinitionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -532,15 +507,13 @@ func (client *TableResourcesClient) deleteTableRoleDefinitionCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // GetTable - Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - tableName - Cosmos DB table name.
@@ -559,19 +532,14 @@ func (client *TableResourcesClient) GetTable(ctx context.Context, resourceGroupN
 	if err != nil {
 		return TableResourcesClientGetTableResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TableResourcesClientGetTableResponse{}, err
-	}
-	resp, err := client.getTableHandleResponse(httpResp)
-	return resp, err
+	return client.getTableHandleResponse(httpResp, http.StatusOK)
 }
 
 // getTableCreateRequest creates the GetTable request.
 func (client *TableResourcesClient) getTableCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, _ *TableResourcesClientGetTableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -591,15 +559,18 @@ func (client *TableResourcesClient) getTableCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getTableHandleResponse handles the GetTable response.
-func (client *TableResourcesClient) getTableHandleResponse(resp *http.Response) (TableResourcesClientGetTableResponse, error) {
+func (client *TableResourcesClient) getTableHandleResponse(resp *http.Response, successCodes ...int) (TableResourcesClientGetTableResponse, error) {
 	result := TableResourcesClientGetTableResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TableGetResults); err != nil {
 		return TableResourcesClientGetTableResponse{}, err
 	}
@@ -608,8 +579,6 @@ func (client *TableResourcesClient) getTableHandleResponse(resp *http.Response) 
 
 // GetTableRoleAssignment - Retrieves the properties of an existing Azure Cosmos DB Table Role Assignment with the given Id.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - roleAssignmentID - The GUID for the Role Assignment.
@@ -629,19 +598,14 @@ func (client *TableResourcesClient) GetTableRoleAssignment(ctx context.Context, 
 	if err != nil {
 		return TableResourcesClientGetTableRoleAssignmentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TableResourcesClientGetTableRoleAssignmentResponse{}, err
-	}
-	resp, err := client.getTableRoleAssignmentHandleResponse(httpResp)
-	return resp, err
+	return client.getTableRoleAssignmentHandleResponse(httpResp, http.StatusOK)
 }
 
 // getTableRoleAssignmentCreateRequest creates the GetTableRoleAssignment request.
 func (client *TableResourcesClient) getTableRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, _ *TableResourcesClientGetTableRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tableRoleAssignments/{roleAssignmentId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -661,15 +625,18 @@ func (client *TableResourcesClient) getTableRoleAssignmentCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getTableRoleAssignmentHandleResponse handles the GetTableRoleAssignment response.
-func (client *TableResourcesClient) getTableRoleAssignmentHandleResponse(resp *http.Response) (TableResourcesClientGetTableRoleAssignmentResponse, error) {
+func (client *TableResourcesClient) getTableRoleAssignmentHandleResponse(resp *http.Response, successCodes ...int) (TableResourcesClientGetTableRoleAssignmentResponse, error) {
 	result := TableResourcesClientGetTableRoleAssignmentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TableRoleAssignmentResource); err != nil {
 		return TableResourcesClientGetTableRoleAssignmentResponse{}, err
 	}
@@ -678,8 +645,6 @@ func (client *TableResourcesClient) getTableRoleAssignmentHandleResponse(resp *h
 
 // GetTableRoleDefinition - Retrieves the properties of an existing Azure Cosmos DB Table Role Definition with the given Id.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - roleDefinitionID - The GUID for the Role Definition.
@@ -699,19 +664,14 @@ func (client *TableResourcesClient) GetTableRoleDefinition(ctx context.Context, 
 	if err != nil {
 		return TableResourcesClientGetTableRoleDefinitionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TableResourcesClientGetTableRoleDefinitionResponse{}, err
-	}
-	resp, err := client.getTableRoleDefinitionHandleResponse(httpResp)
-	return resp, err
+	return client.getTableRoleDefinitionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getTableRoleDefinitionCreateRequest creates the GetTableRoleDefinition request.
 func (client *TableResourcesClient) getTableRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, _ *TableResourcesClientGetTableRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tableRoleDefinitions/{roleDefinitionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -731,15 +691,18 @@ func (client *TableResourcesClient) getTableRoleDefinitionCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getTableRoleDefinitionHandleResponse handles the GetTableRoleDefinition response.
-func (client *TableResourcesClient) getTableRoleDefinitionHandleResponse(resp *http.Response) (TableResourcesClientGetTableRoleDefinitionResponse, error) {
+func (client *TableResourcesClient) getTableRoleDefinitionHandleResponse(resp *http.Response, successCodes ...int) (TableResourcesClientGetTableRoleDefinitionResponse, error) {
 	result := TableResourcesClientGetTableRoleDefinitionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TableRoleDefinitionResource); err != nil {
 		return TableResourcesClientGetTableRoleDefinitionResponse{}, err
 	}
@@ -749,8 +712,6 @@ func (client *TableResourcesClient) getTableRoleDefinitionHandleResponse(resp *h
 // GetTableThroughput - Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided
 // name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - tableName - Cosmos DB table name.
@@ -770,19 +731,14 @@ func (client *TableResourcesClient) GetTableThroughput(ctx context.Context, reso
 	if err != nil {
 		return TableResourcesClientGetTableThroughputResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TableResourcesClientGetTableThroughputResponse{}, err
-	}
-	resp, err := client.getTableThroughputHandleResponse(httpResp)
-	return resp, err
+	return client.getTableThroughputHandleResponse(httpResp, http.StatusOK)
 }
 
 // getTableThroughputCreateRequest creates the GetTableThroughput request.
 func (client *TableResourcesClient) getTableThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, _ *TableResourcesClientGetTableThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -802,15 +758,18 @@ func (client *TableResourcesClient) getTableThroughputCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getTableThroughputHandleResponse handles the GetTableThroughput response.
-func (client *TableResourcesClient) getTableThroughputHandleResponse(resp *http.Response) (TableResourcesClientGetTableThroughputResponse, error) {
+func (client *TableResourcesClient) getTableThroughputHandleResponse(resp *http.Response, successCodes ...int) (TableResourcesClientGetTableThroughputResponse, error) {
 	result := TableResourcesClientGetTableThroughputResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputSettingsGetResults); err != nil {
 		return TableResourcesClientGetTableThroughputResponse{}, err
 	}
@@ -818,8 +777,6 @@ func (client *TableResourcesClient) getTableThroughputHandleResponse(resp *http.
 }
 
 // NewListTableRoleAssignmentsPager - Retrieves the list of all Azure Cosmos DB Table Role Assignments.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - TableResourcesClientListTableRoleAssignmentsOptions contains the optional parameters for the TableResourcesClient.NewListTableRoleAssignmentsPager
@@ -835,47 +792,61 @@ func (client *TableResourcesClient) NewListTableRoleAssignmentsPager(resourceGro
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listTableRoleAssignmentsCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listTableRoleAssignmentsCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return TableResourcesClientListTableRoleAssignmentsResponse{}, err
 			}
-			return client.listTableRoleAssignmentsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TableResourcesClientListTableRoleAssignmentsResponse{}, err
+			}
+			return client.listTableRoleAssignmentsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listTableRoleAssignmentsCreateRequest creates the ListTableRoleAssignments request.
-func (client *TableResourcesClient) listTableRoleAssignmentsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *TableResourcesClientListTableRoleAssignmentsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tableRoleAssignments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *TableResourcesClient) listTableRoleAssignmentsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *TableResourcesClientListTableRoleAssignmentsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tableRoleAssignments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listTableRoleAssignmentsHandleResponse handles the ListTableRoleAssignments response.
-func (client *TableResourcesClient) listTableRoleAssignmentsHandleResponse(resp *http.Response) (TableResourcesClientListTableRoleAssignmentsResponse, error) {
+func (client *TableResourcesClient) listTableRoleAssignmentsHandleResponse(resp *http.Response, successCodes ...int) (TableResourcesClientListTableRoleAssignmentsResponse, error) {
 	result := TableResourcesClientListTableRoleAssignmentsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TableRoleAssignmentListResult); err != nil {
 		return TableResourcesClientListTableRoleAssignmentsResponse{}, err
 	}
@@ -883,8 +854,6 @@ func (client *TableResourcesClient) listTableRoleAssignmentsHandleResponse(resp 
 }
 
 // NewListTableRoleDefinitionsPager - Retrieves the list of all Azure Cosmos DB Table Role Definitions.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - TableResourcesClientListTableRoleDefinitionsOptions contains the optional parameters for the TableResourcesClient.NewListTableRoleDefinitionsPager
@@ -900,47 +869,61 @@ func (client *TableResourcesClient) NewListTableRoleDefinitionsPager(resourceGro
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listTableRoleDefinitionsCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listTableRoleDefinitionsCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return TableResourcesClientListTableRoleDefinitionsResponse{}, err
 			}
-			return client.listTableRoleDefinitionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TableResourcesClientListTableRoleDefinitionsResponse{}, err
+			}
+			return client.listTableRoleDefinitionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listTableRoleDefinitionsCreateRequest creates the ListTableRoleDefinitions request.
-func (client *TableResourcesClient) listTableRoleDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *TableResourcesClientListTableRoleDefinitionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tableRoleDefinitions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *TableResourcesClient) listTableRoleDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *TableResourcesClientListTableRoleDefinitionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tableRoleDefinitions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listTableRoleDefinitionsHandleResponse handles the ListTableRoleDefinitions response.
-func (client *TableResourcesClient) listTableRoleDefinitionsHandleResponse(resp *http.Response) (TableResourcesClientListTableRoleDefinitionsResponse, error) {
+func (client *TableResourcesClient) listTableRoleDefinitionsHandleResponse(resp *http.Response, successCodes ...int) (TableResourcesClientListTableRoleDefinitionsResponse, error) {
 	result := TableResourcesClientListTableRoleDefinitionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TableRoleDefinitionListResult); err != nil {
 		return TableResourcesClientListTableRoleDefinitionsResponse{}, err
 	}
@@ -948,8 +931,6 @@ func (client *TableResourcesClient) listTableRoleDefinitionsHandleResponse(resp 
 }
 
 // NewListTablesPager - Lists the Tables under an existing Azure Cosmos DB database account.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - TableResourcesClientListTablesOptions contains the optional parameters for the TableResourcesClient.NewListTablesPager
@@ -965,47 +946,61 @@ func (client *TableResourcesClient) NewListTablesPager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listTablesCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listTablesCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return TableResourcesClientListTablesResponse{}, err
 			}
-			return client.listTablesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TableResourcesClientListTablesResponse{}, err
+			}
+			return client.listTablesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listTablesCreateRequest creates the ListTables request.
-func (client *TableResourcesClient) listTablesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *TableResourcesClientListTablesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *TableResourcesClient) listTablesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *TableResourcesClientListTablesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listTablesHandleResponse handles the ListTables response.
-func (client *TableResourcesClient) listTablesHandleResponse(resp *http.Response) (TableResourcesClientListTablesResponse, error) {
+func (client *TableResourcesClient) listTablesHandleResponse(resp *http.Response, successCodes ...int) (TableResourcesClientListTablesResponse, error) {
 	result := TableResourcesClientListTablesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TableListResult); err != nil {
 		return TableResourcesClientListTablesResponse{}, err
 	}
@@ -1014,8 +1009,6 @@ func (client *TableResourcesClient) listTablesHandleResponse(resp *http.Response
 
 // BeginMigrateTableToAutoscale - Migrate an Azure Cosmos DB Table from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - tableName - Cosmos DB table name.
@@ -1040,8 +1033,6 @@ func (client *TableResourcesClient) BeginMigrateTableToAutoscale(ctx context.Con
 
 // MigrateTableToAutoscale - Migrate an Azure Cosmos DB Table from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *TableResourcesClient) migrateTableToAutoscale(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientBeginMigrateTableToAutoscaleOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TableResourcesClient.BeginMigrateTableToAutoscale"
@@ -1057,8 +1048,7 @@ func (client *TableResourcesClient) migrateTableToAutoscale(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1067,7 +1057,7 @@ func (client *TableResourcesClient) migrateTableToAutoscale(ctx context.Context,
 func (client *TableResourcesClient) migrateTableToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, _ *TableResourcesClientBeginMigrateTableToAutoscaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default/migrateToAutoscale"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1087,16 +1077,14 @@ func (client *TableResourcesClient) migrateTableToAutoscaleCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginMigrateTableToManualThroughput - Migrate an Azure Cosmos DB Table from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - tableName - Cosmos DB table name.
@@ -1121,8 +1109,6 @@ func (client *TableResourcesClient) BeginMigrateTableToManualThroughput(ctx cont
 
 // MigrateTableToManualThroughput - Migrate an Azure Cosmos DB Table from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *TableResourcesClient) migrateTableToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientBeginMigrateTableToManualThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TableResourcesClient.BeginMigrateTableToManualThroughput"
@@ -1138,8 +1124,7 @@ func (client *TableResourcesClient) migrateTableToManualThroughput(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1148,7 +1133,7 @@ func (client *TableResourcesClient) migrateTableToManualThroughput(ctx context.C
 func (client *TableResourcesClient) migrateTableToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, _ *TableResourcesClientBeginMigrateTableToManualThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default/migrateToManualThroughput"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1168,16 +1153,14 @@ func (client *TableResourcesClient) migrateTableToManualThroughputCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginRetrieveContinuousBackupInformation - Retrieves continuous backup information for a table.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - tableName - Cosmos DB table name.
@@ -1203,8 +1186,6 @@ func (client *TableResourcesClient) BeginRetrieveContinuousBackupInformation(ctx
 
 // RetrieveContinuousBackupInformation - Retrieves continuous backup information for a table.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *TableResourcesClient) retrieveContinuousBackupInformation(ctx context.Context, resourceGroupName string, accountName string, tableName string, location ContinuousBackupRestoreLocation, options *TableResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TableResourcesClient.BeginRetrieveContinuousBackupInformation"
@@ -1220,8 +1201,7 @@ func (client *TableResourcesClient) retrieveContinuousBackupInformation(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1230,7 +1210,7 @@ func (client *TableResourcesClient) retrieveContinuousBackupInformation(ctx cont
 func (client *TableResourcesClient) retrieveContinuousBackupInformationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, location ContinuousBackupRestoreLocation, _ *TableResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}/retrieveContinuousBackupInformation"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1250,8 +1230,8 @@ func (client *TableResourcesClient) retrieveContinuousBackupInformationCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, location); err != nil {
@@ -1262,8 +1242,6 @@ func (client *TableResourcesClient) retrieveContinuousBackupInformationCreateReq
 
 // BeginUpdateTableThroughput - Update RUs per second of an Azure Cosmos DB Table
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - tableName - Cosmos DB table name.
@@ -1289,8 +1267,6 @@ func (client *TableResourcesClient) BeginUpdateTableThroughput(ctx context.Conte
 
 // UpdateTableThroughput - Update RUs per second of an Azure Cosmos DB Table
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *TableResourcesClient) updateTableThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *TableResourcesClientBeginUpdateTableThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TableResourcesClient.BeginUpdateTableThroughput"
@@ -1306,8 +1282,7 @@ func (client *TableResourcesClient) updateTableThroughput(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1316,7 +1291,7 @@ func (client *TableResourcesClient) updateTableThroughput(ctx context.Context, r
 func (client *TableResourcesClient) updateTableThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, updateThroughputParameters ThroughputSettingsUpdateParameters, _ *TableResourcesClientBeginUpdateTableThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1336,8 +1311,8 @@ func (client *TableResourcesClient) updateTableThroughputCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateThroughputParameters); err != nil {

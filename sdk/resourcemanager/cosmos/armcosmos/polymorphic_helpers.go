@@ -16,74 +16,12 @@ func unmarshalBackupPolicyClassification(rawMsg json.RawMessage) (BackupPolicyCl
 	}
 	var b BackupPolicyClassification
 	switch m["type"] {
-	case string(BackupPolicyTypePeriodic):
-		b = &PeriodicModeBackupPolicy{}
 	case string(BackupPolicyTypeContinuous):
 		b = &ContinuousModeBackupPolicy{}
+	case string(BackupPolicyTypePeriodic):
+		b = &PeriodicModeBackupPolicy{}
 	default:
 		b = &BackupPolicy{}
-	}
-	if err := json.Unmarshal(rawMsg, b); err != nil {
-		return nil, err
-	}
-	return b, nil
-}
-
-func unmarshalBaseCopyJobPropertiesClassification(rawMsg json.RawMessage) (BaseCopyJobPropertiesClassification, error) {
-	if rawMsg == nil || string(rawMsg) == "null" {
-		return nil, nil
-	}
-	var m map[string]any
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b BaseCopyJobPropertiesClassification
-	switch m["jobType"] {
-	case string(CopyJobTypeCassandraRUToCassandraRU):
-		b = &CassandraRUToCassandraRUCopyJobProperties{}
-	case string(CopyJobTypeAzureBlobStorageToCassandraRU):
-		b = &BlobToCassandraRUCopyJobProperties{}
-	case string(CopyJobTypeCassandraRUToAzureBlobStorage):
-		b = &CassandraRUToBlobCopyJobProperties{}
-	case string(CopyJobTypeMongoRUToMongoRU):
-		b = &MongoRUToMongoRUCopyJobProperties{}
-	case string(CopyJobTypeMongoRUToMongoVCore):
-		b = &MongoRUToMongoVCoreCopyJobProperties{}
-	case string(CopyJobTypeNoSQLRUToNoSQLRU):
-		b = &NoSQLRUToNoSQLRUCopyJobProperties{}
-	default:
-		b = &BaseCopyJobProperties{}
-	}
-	if err := json.Unmarshal(rawMsg, b); err != nil {
-		return nil, err
-	}
-	return b, nil
-}
-
-func unmarshalDataTransferDataSourceSinkClassification(rawMsg json.RawMessage) (DataTransferDataSourceSinkClassification, error) {
-	if rawMsg == nil || string(rawMsg) == "null" {
-		return nil, nil
-	}
-	var m map[string]any
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b DataTransferDataSourceSinkClassification
-	switch m["component"] {
-	case string(DataTransferComponentBaseCosmosDataTransferDataSourceSink):
-		b = &BaseCosmosDataTransferDataSourceSink{}
-	case string(DataTransferComponentCosmosDBCassandra):
-		b = &CassandraDataTransferDataSourceSink{}
-	case string(DataTransferComponentCosmosDBMongo):
-		b = &MongoDataTransferDataSourceSink{}
-	case string(DataTransferComponentCosmosDBMongoVCore):
-		b = &MongoVCoreDataTransferDataSourceSink{}
-	case string(DataTransferComponentCosmosDBSQL):
-		b = &SQLDataTransferDataSourceSink{}
-	case string(DataTransferComponentAzureBlobStorage):
-		b = &AzureBlobDataTransferDataSourceSink{}
-	default:
-		b = &DataTransferDataSourceSink{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err
@@ -103,12 +41,12 @@ func unmarshalServiceResourceCreateUpdatePropertiesClassification(rawMsg json.Ra
 	switch m["serviceType"] {
 	case string(ServiceTypeDataTransfer):
 		b = &DataTransferServiceResourceCreateUpdateProperties{}
-	case string(ServiceTypeSQLDedicatedGateway):
-		b = &SQLDedicatedGatewayServiceResourceCreateUpdateProperties{}
 	case string(ServiceTypeGraphAPICompute):
 		b = &GraphAPIComputeServiceResourceCreateUpdateProperties{}
 	case string(ServiceTypeMaterializedViewsBuilder):
 		b = &MaterializedViewsBuilderServiceResourceCreateUpdateProperties{}
+	case string(ServiceTypeSQLDedicatedGateway):
+		b = &SQLDedicatedGatewayServiceResourceCreateUpdateProperties{}
 	default:
 		b = &ServiceResourceCreateUpdateProperties{}
 	}
@@ -130,12 +68,12 @@ func unmarshalServiceResourcePropertiesClassification(rawMsg json.RawMessage) (S
 	switch m["serviceType"] {
 	case string(ServiceTypeDataTransfer):
 		b = &DataTransferServiceResourceProperties{}
-	case string(ServiceTypeSQLDedicatedGateway):
-		b = &SQLDedicatedGatewayServiceResourceProperties{}
 	case string(ServiceTypeGraphAPICompute):
 		b = &GraphAPIComputeServiceResourceProperties{}
 	case string(ServiceTypeMaterializedViewsBuilder):
 		b = &MaterializedViewsBuilderServiceResourceProperties{}
+	case string(ServiceTypeSQLDedicatedGateway):
+		b = &SQLDedicatedGatewayServiceResourceProperties{}
 	default:
 		b = &ServiceResourceProperties{}
 	}

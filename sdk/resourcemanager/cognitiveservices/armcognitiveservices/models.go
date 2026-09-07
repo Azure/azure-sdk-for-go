@@ -415,8 +415,18 @@ type AccountModelListResult struct {
 
 // AccountProperties - Properties of Cognitive Services account.
 type AccountProperties struct {
+	// Specifies whether A365 logging is enabled. Defaults to true. Set to false to opt out.
+	A365LoggingEnabled *bool
+
 	// The api properties for special APIs.
 	APIProperties *APIProperties
+
+	// Customer-owned AKS hosting configurations for Foundry agents. This property can only be specified when the account is created;
+	// an existing account without a hosting configuration cannot add one later. This API version supports exactly one configuration,
+	// while the array shape is reserved for future API versions that may support multiple configurations. Once set, the configuration
+	// cannot be changed, removed, or reordered. Account update requests should omit this property or send the complete existing
+	// value unchanged. Responses only include hosting configuration types defined by the requested API version.
+	AgentHostingConfigurations []AgentHostingConfigurationClassification
 
 	// Specifies whether this resource support project management as child resources, used as containers for access management,
 	// data isolation and cost in AI Foundry.
@@ -428,6 +438,9 @@ type AccountProperties struct {
 
 	// Specifies the projects, by project name, that are associated with this resource.
 	AssociatedProjects []*string
+
+	// Reusable default agent capability settings inherited by child projects.
+	CapabilitySettings *CapabilitySettings
 
 	// Optional subdomain name used for token-based authentication.
 	CustomSubDomainName *string
@@ -620,6 +633,20 @@ type AgentDeploymentResourceArmPaginatedResult struct {
 	Value []*AgentDeployment
 }
 
+// AgentHostingConfiguration - Base configuration for hosting Foundry agents.
+type AgentHostingConfiguration struct {
+	// REQUIRED; Type of infrastructure used to host Foundry agents.
+	HostingType *AgentHostingType
+
+	// REQUIRED; Unique name of the hosting configuration within the Foundry account.
+	Name *string
+}
+
+// GetAgentHostingConfiguration implements the AgentHostingConfigurationClassification interface for type AgentHostingConfiguration.
+func (a *AgentHostingConfiguration) GetAgentHostingConfiguration() *AgentHostingConfiguration {
+	return a
+}
+
 // AgentProtocolVersion - Type modeling the protocol and version used by an agent/exposed by a deployment.
 type AgentProtocolVersion struct {
 	// The protocol used by the agent/exposed by a deployment.
@@ -721,6 +748,200 @@ type ApplicationTrafficRoutingPolicy struct {
 
 	// Gets or sets the collection of traffic routing rules.
 	Rules []*TrafficRoutingRule
+}
+
+// ArcDeployment - Cognitive Services account Arc deployment, backed by customer-managed Arc-enabled Kubernetes resources.
+type ArcDeployment struct {
+	// REQUIRED; Properties of the Cognitive Services Arc deployment.
+	Properties *ArcDeploymentProperties
+
+	// REQUIRED; The Arc deployment SKU. Only the SKU name is required for Arc deployments.
+	SKU *ArcDeploymentSKU
+
+	// READ-ONLY; Resource Etag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ArcDeploymentCPUMemoryResourceRequirements - CPU and memory resource requirements for an Arc deployment replica.
+type ArcDeploymentCPUMemoryResourceRequirements struct {
+	// REQUIRED; Kubernetes CPU quantity string, for example 500m, 2, 4, or 8.
+	CPU *string
+
+	// REQUIRED; Kubernetes memory quantity string, for example 512Mi, 2Gi, or 16Gi.
+	Memory *string
+}
+
+// ArcDeploymentKubernetesResources - Per-replica Kubernetes resource requests and limits for an Arc deployment.
+type ArcDeploymentKubernetesResources struct {
+	// Kubernetes resource limits for each deployment replica.
+	Limits *ArcDeploymentResourceRequirements
+
+	// Kubernetes CPU and memory resource requests for each deployment replica.
+	Requests *ArcDeploymentCPUMemoryResourceRequirements
+}
+
+// ArcDeploymentListResult - The list of Arc deployments.
+type ArcDeploymentListResult struct {
+	// READ-ONLY; Gets the list of Arc deployments and their properties.
+	Value []*ArcDeployment
+
+	// The link used to get the next page of Arc deployments.
+	NextLink *string
+}
+
+// ArcDeploymentModel - Model reference for an Arc deployment.
+type ArcDeploymentModel struct {
+	// REQUIRED; Deployment model format.
+	Format *string
+
+	// REQUIRED; Deployment model name.
+	Name *string
+}
+
+// ArcDeploymentPatchCPUMemoryResourceRequirements - CPU and memory resource requirements for an Arc deployment replica update.
+type ArcDeploymentPatchCPUMemoryResourceRequirements struct {
+	// Kubernetes CPU quantity string, for example 500m, 2, 4, or 8.
+	CPU *string
+
+	// Kubernetes memory quantity string, for example 512Mi, 2Gi, or 16Gi.
+	Memory *string
+}
+
+// ArcDeploymentPatchKubernetesResources - Per-replica Kubernetes resource requests and limits for an Arc deployment update.
+type ArcDeploymentPatchKubernetesResources struct {
+	// Kubernetes resource limits for each deployment replica.
+	Limits *ArcDeploymentResourceRequirements
+
+	// Kubernetes CPU and memory resource requests for each deployment replica.
+	Requests *ArcDeploymentPatchCPUMemoryResourceRequirements
+}
+
+// ArcDeploymentProperties - Properties of a Cognitive Services Arc deployment.
+type ArcDeploymentProperties struct {
+	// REQUIRED; Compute type for the deployment. Required on creation and immutable after creation.
+	Compute *ArcDeploymentComputeType
+
+	// REQUIRED; Full Azure resource ID of the Foundry inference extension on the target Arc-enabled Kubernetes cluster. Required
+	// on creation and immutable after creation.
+	ExtensionID *string
+
+	// REQUIRED; Model reference. Required on creation and immutable after creation.
+	Model *ArcDeploymentModel
+
+	// REQUIRED; Physical replica count on the Arc cluster.
+	Replicas *int32
+
+	// REQUIRED; Per-replica Kubernetes resource requests and limits.
+	Resources *ArcDeploymentKubernetesResources
+
+	// REQUIRED; Inference runtime. Required on creation and immutable after creation.
+	Runtime *ArcDeploymentRuntime
+
+	// The deployment state.
+	DeploymentState *DeploymentState
+
+	// Optional deployment template identifier for advanced vLLM tuning. Allowed only when runtime is vllm.
+	// Example: azureml://registries/{registry}/deploymenttemplates/{template}/versions/{version}
+	DeploymentTemplate *string
+
+	// Kubernetes node selector key-value map used to schedule pods onto nodes with matching labels.
+	NodeSelector map[string]*string
+
+	// The name of RAI policy.
+	RaiPolicyName *string
+
+	// READ-ONLY; Read-only. Deployment capabilities represented as key-value pairs.
+	Capabilities map[string]*string
+
+	// READ-ONLY; Read-only. Base URL for inference calls to this deployment on the Arc cluster. Populated when provisioningState
+	// is Succeeded.
+	InferenceEndpoint *string
+
+	// READ-ONLY; Read-only. Status message and timestamp from the last provisioning operation.
+	ProvisioningDetails *ArcDeploymentProvisioningDetails
+
+	// READ-ONLY; Read-only. Current provisioning state.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Read-only. Effective vLLM runtime parameters resolved for the deployed model. Returned only when runtime is
+	// vllm.
+	VllmParameters *ArcDeploymentVllmParameters
+}
+
+// ArcDeploymentProvisioningDetails - Provisioning status details for an Arc deployment.
+type ArcDeploymentProvisioningDetails struct {
+	// Timestamp of the last provisioning operation.
+	LastOperationTimestamp *time.Time
+
+	// A human-readable status message from the last provisioning operation.
+	Message *string
+}
+
+// ArcDeploymentResourceRequirements - Kubernetes resource requirements for an Arc deployment replica.
+// Specify either cpu and memory together, or gpu. GPU is supported only in limits, not requests.
+type ArcDeploymentResourceRequirements struct {
+	// Kubernetes CPU quantity string, for example 500m, 2, 4, or 8.
+	// Required with memory when specifying CPU and memory limits. Do not specify with gpu.
+	CPU *string
+
+	// Kubernetes GPU quantity, for example 1, 2, or 5.
+	// Required when specifying GPU limits. Do not specify with cpu or memory.
+	Gpu *int32
+
+	// Kubernetes memory quantity string, for example 512Mi, 2Gi, or 16Gi.
+	// Required with cpu when specifying CPU and memory limits. Do not specify with gpu.
+	Memory *string
+}
+
+// ArcDeploymentSKU - SKU for an Arc deployment.
+type ArcDeploymentSKU struct {
+	// REQUIRED; The name of the Arc deployment SKU. Must be Arc.
+	Name *ArcDeploymentSKUName
+}
+
+// ArcDeploymentUpdate - The object used to update an Arc deployment.
+type ArcDeploymentUpdate struct {
+	// Properties that can be updated on an Arc deployment.
+	Properties *ArcDeploymentUpdateProperties
+}
+
+// ArcDeploymentUpdateProperties - Mutable properties for an Arc deployment.
+type ArcDeploymentUpdateProperties struct {
+	// Kubernetes node selector key-value map used to schedule pods onto nodes with matching labels.
+	NodeSelector map[string]*string
+
+	// Physical replica count on the Arc cluster.
+	Replicas *int32
+
+	// Per-replica Kubernetes resource requests and limits.
+	Resources *ArcDeploymentPatchKubernetesResources
+}
+
+// ArcDeploymentVllmParameters - Effective vLLM runtime parameters for an Arc deployment.
+type ArcDeploymentVllmParameters struct {
+	// Whether eager execution is enforced for the vLLM runtime.
+	EnforceEager *bool
+
+	// Fraction of GPU memory reserved for model execution.
+	GpuMemoryUtilization *float32
+
+	// Maximum model context length.
+	MaxModelLen *int32
+
+	// Number of GPUs used for tensor parallelism.
+	TensorParallelSize *int32
 }
 
 // AssignedIdentity - Type representing an identity assignment
@@ -850,6 +1071,19 @@ type CapabilityHostResourceArmPaginatedResult struct {
 	Value []*CapabilityHost
 }
 
+// CapabilitySettings - Extensible agent capability configuration. Carries the Azure resource IDs of the agent storage dependencies.
+// Modeled as an object so future capability-backed resources can be added without changing the account or project contract.
+type CapabilitySettings struct {
+	// Azure resource ID of the blob store used by agent file and artifact storage.
+	BlobStore *string
+
+	// Azure resource ID of the document store used by agent runtime state.
+	DocumentStore *string
+
+	// Azure resource ID of the vector store used by agent retrieval and indexing.
+	VectorStore *string
+}
+
 // CapacityConfig - The capacity configuration.
 type CapacityConfig struct {
 	// The array of allowed values for capacity.
@@ -913,6 +1147,9 @@ type ClusterComputeProperties struct {
 	// Field has constant value ComputeTypeCluster, any specified value is ignored.
 	ComputeType *ComputeType
 
+	// REQUIRED; The location of the compute resource.
+	Location *string
+
 	// REQUIRED; Pools attached to this compute cluster.
 	Pools []*Pool
 
@@ -935,6 +1172,7 @@ func (c *ClusterComputeProperties) GetComputeProperties() *ComputeProperties {
 		ComputeType:       c.ComputeType,
 		CreationTime:      c.CreationTime,
 		Errors:            c.Errors,
+		Location:          c.Location,
 		ProvisioningState: c.ProvisioningState,
 	}
 }
@@ -1144,9 +1382,6 @@ type Compute struct {
 	// The kind (type) of compute resource.
 	Kind *string
 
-	// The location of the compute resource.
-	Location *string
-
 	// Resource tags.
 	Tags map[string]*string
 
@@ -1213,6 +1448,9 @@ type ComputeOperationStatusProperties struct {
 type ComputeProperties struct {
 	// REQUIRED; The type of compute resource.
 	ComputeType *ComputeType
+
+	// REQUIRED; The location of the compute resource.
+	Location *string
 
 	// READ-ONLY; Creation time of the compute resource.
 	CreationTime *time.Time
@@ -1379,6 +1617,9 @@ type ContainerInstanceComputeProperties struct {
 	// REQUIRED; Container image URI (e.g., MCR or ACR image path) for the container instance.
 	ImageLink *string
 
+	// REQUIRED; The location of the compute resource.
+	Location *string
+
 	// REQUIRED; ARM resource ID of the parent cluster that hosts this container instance.
 	TargetClusterID *string
 
@@ -1407,6 +1648,7 @@ func (c *ContainerInstanceComputeProperties) GetComputeProperties() *ComputeProp
 		ComputeType:       c.ComputeType,
 		CreationTime:      c.CreationTime,
 		Errors:            c.Errors,
+		Location:          c.Location,
 		ProvisioningState: c.ProvisioningState,
 	}
 }
@@ -1617,6 +1859,9 @@ type DeploymentProperties struct {
 	// Internal use only.
 	CapacitySettings *DeploymentCapacitySettings
 
+	// The resource ID of the context cache container associated with this deployment.
+	ContextCacheContainerID *string
+
 	// The current capacity.
 	CurrentCapacity *int32
 
@@ -1645,6 +1890,9 @@ type DeploymentProperties struct {
 	// for standard pricing or 'Priority' for higher-priority processing with premium pricing. Note: Pause operations are only
 	// supported on Standard, DataZoneStandard, and GlobalStandard SKUs.
 	ServiceTier *ServiceTier
+
+	// Speculative decoding settings for the deployment. This configuration applies to Fireworks model formats.
+	SpeculativeDecoding *DeploymentSpeculativeDecoding
 
 	// Specifies the deployment name that should serve requests when the request would have otherwise been throttled due to reaching
 	// current deployment throughput limit.
@@ -1712,6 +1960,15 @@ type DeploymentSizeCapacity struct {
 
 	// READ-ONLY; The total available capacity for this deployment size.
 	TotalAvailableCapacity *int32
+}
+
+// DeploymentSpeculativeDecoding - Speculative decoding settings for a deployment.
+type DeploymentSpeculativeDecoding struct {
+	// REQUIRED; Draft model used to generate speculative decoding tokens.
+	DraftModel *DeploymentModel
+
+	// The number of draft tokens attempted per speculation step.
+	DraftTokenCount *int32
 }
 
 // DomainAvailability - Domain availability.
@@ -2029,6 +2286,41 @@ func (m *ManagedAgentDeployment) GetAgentDeploymentProperties() *AgentDeployment
 	}
 }
 
+// ManagedClusterAgentHostingConfiguration - Configuration for hosting Foundry agents on an Azure Kubernetes Service managed
+// cluster.
+type ManagedClusterAgentHostingConfiguration struct {
+	// REQUIRED; Azure resource ID of the customer-owned AKS managed cluster that runs the hosted agent workloads.
+	ClusterResourceID *string
+
+	// REQUIRED; Azure resource ID of the user-assigned managed identity used by the Foundry resource provider to manage the hosting
+	// configuration. The identity must be assigned to the Foundry account in identity.userAssignedIdentities.
+	HostingManagementIdentityResourceID *string
+
+	// CONSTANT; Type of infrastructure used to host Foundry agents.
+	// Field has constant value AgentHostingTypeManagedCluster, any specified value is ignored.
+	HostingType *AgentHostingType
+
+	// REQUIRED; Unique name of the hosting configuration within the Foundry account.
+	Name *string
+
+	// REQUIRED; Azure resource ID of the customer-owned storage account used by the hosted agents. The storage account must be
+	// in the same subscription and region as the AKS cluster, and its data-plane endpoint must be reachable from the workload
+	// network.
+	StorageAccountResourceID *string
+
+	// REQUIRED; Azure resource ID of the separate user-assigned managed identity federated to service accounts on the AKS cluster.
+	// Hosted agents use this identity to access the Azure Storage blob data plane.
+	WorkloadIdentityResourceID *string
+}
+
+// GetAgentHostingConfiguration implements the AgentHostingConfigurationClassification interface for type ManagedClusterAgentHostingConfiguration.
+func (m *ManagedClusterAgentHostingConfiguration) GetAgentHostingConfiguration() *AgentHostingConfiguration {
+	return &AgentHostingConfiguration{
+		HostingType: m.HostingType,
+		Name:        m.Name,
+	}
+}
+
 // ManagedComputeCapacity - Managed compute capacity information for Cognitive Services managed compute deployments.
 // Provides available accelerator capacity per type and region at the subscription level.
 type ManagedComputeCapacity struct {
@@ -2067,9 +2359,6 @@ type ManagedComputeCapacityProperties struct {
 
 	// READ-ONLY; Capacity information broken down by deployment size.
 	DeploymentSizeCapacities []*DeploymentSizeCapacity
-
-	// READ-ONLY; The Azure region where the capacity is available.
-	Location *string
 }
 
 // ManagedComputeDeployment - Cognitive Services account managed compute deployment, backed by managed compute (GPU) resources.
@@ -2149,6 +2438,10 @@ type ManagedComputeDeploymentProperties struct {
 
 	// READ-ONLY; Read-only. Number of accelerators (GPUs) consumed by each model instance, sourced from the deployment template.
 	AcceleratorsPerInstance *int32
+
+	// READ-ONLY; Deployment capabilities represented as key-value pairs.
+	// Example: { assetsV2: "true" }.
+	Capabilities map[string]*string
 
 	// READ-ONLY; Read-only. Status message and timestamp from the last provisioning operation.
 	ProvisioningDetails *ManagedComputeDeploymentProvisioningDetails
@@ -3038,7 +3331,7 @@ type Pool struct {
 	// REQUIRED; The number of nodes in the pool.
 	NodeCount *int32
 
-	// REQUIRED; The VM priority of the pool.
+	// The VM priority of the pool.
 	VMPriority *VMPriority
 }
 
@@ -3276,6 +3569,10 @@ type ProjectListResult struct {
 
 // ProjectProperties - Properties of Cognitive Services Project'.
 type ProjectProperties struct {
+	// Effective agent capability settings for the project. Optional partial override of the account defaults; omitted fields
+	// inherit from the parent account when present. Settable only at create time.
+	CapabilitySettings *CapabilitySettings
+
 	// The description of the Cognitive Services Project.
 	Description *string
 
@@ -3510,6 +3807,149 @@ type RaiContentFilterProperties struct {
 	Source *RaiPolicyContentSource
 }
 
+// RaiEgressHeaderTransform - A header transformation applied to matched traffic.
+// For Set or Insert operations, exactly one of value or valueRef must be provided.
+// For Remove operations, neither value nor valueRef should be set.
+type RaiEgressHeaderTransform struct {
+	// REQUIRED; The HTTP header name (e.g., "Authorization", "X-Custom-Auth").
+	Name *string
+
+	// REQUIRED; The operation to perform on this header.
+	Operation *RaiEgressHeaderOperation
+
+	// A static header value. Write-only: accepted on create/update, never returned on read.
+	// If omitted on update, the existing value is preserved. Use this for non-sensitive values;
+	// for credentials, use valueRef instead.
+	Value *string
+
+	// A dynamic header value resolved at request time from a secret or managed identity.
+	ValueRef *RaiEgressHeaderValueRef
+}
+
+// RaiEgressHeaderValueRef - A dynamic source for a header value. Exactly one of secretRef or managedIdentityRef must be set.
+type RaiEgressHeaderValueRef struct {
+	// Resolve the value from a managed-identity token.
+	ManagedIdentityRef *RaiEgressManagedIdentityRef
+
+	// Resolve the value from a stored secret.
+	SecretRef *RaiEgressSecretRef
+}
+
+// RaiEgressManagedIdentityRef - A reference to a managed-identity token used as a header value.
+type RaiEgressManagedIdentityRef struct {
+	// REQUIRED; The resource/audience the token is requested for.
+	Resource *string
+
+	// Optional format for the resolved token; "{value}" is the placeholder, e.g. "Bearer {value}".
+	Format *string
+}
+
+// RaiEgressPolicyConfig - Egress (outbound network) policy configuration nested within an RAI policy.
+// Controls which external endpoints sandboxed agents can reach and what
+// transformations (header injection, URL rewrite) are applied to matching traffic.
+type RaiEgressPolicyConfig struct {
+	// The default action when no user-defined rules match.
+	// Deny blocks unmatched traffic; Allow permits it. Transform and Rewrite rules
+	// are always applied to their matched traffic regardless of this setting —
+	// defaultAction only governs traffic that does not match any rule.
+	// If omitted on create, the server defaults to Deny (fail-closed). On subsequent
+	// GET requests, the server always returns the effective value.
+	DefaultAction *RaiEgressDefaultAction
+
+	// Description of the egress policy.
+	Description *string
+
+	// The enforcement mode for egress rules.
+	// If omitted on create, the server defaults to Enforced. On subsequent GET
+	// requests, the server always returns the effective mode.
+	Mode *RaiEgressMode
+
+	// Ordered list of egress rules. First matching rule wins.
+	// Rules are evaluated in declaration order; the first rule whose match criteria
+	// are satisfied determines the action taken on the request.
+	Rules []*RaiEgressRule
+}
+
+// RaiEgressRewriteTarget - Where a Rewrite action sends matched traffic. At least one field must be set;
+// omitted fields retain the original request values. This constraint is enforced
+// by the server (400 Bad Request if all fields are omitted).
+type RaiEgressRewriteTarget struct {
+	// Target host. Original host is kept if omitted.
+	Host *string
+
+	// Target path (literal string). Original path (and query) is kept if omitted.
+	Path *string
+
+	// Target scheme. Original scheme is kept if omitted.
+	Scheme *RaiEgressScheme
+}
+
+// RaiEgressRule - A single egress rule. Rules are evaluated in order; first match wins.
+type RaiEgressRule struct {
+	// REQUIRED; The action to take when this rule matches, including the action type and any
+	// type-specific configuration (headers for Transform, rewrite target for Rewrite).
+	Action *RaiEgressRuleAction
+
+	// REQUIRED; Name of the rule. Must be unique within the policy.
+	Name *string
+
+	// REQUIRED; The type of rule (e.g., Fqdn). Determines how match criteria are interpreted.
+	RuleType *RaiEgressRuleType
+
+	// Description of the rule.
+	Description *string
+
+	// The match criteria for this rule.
+	Match *RaiEgressRuleMatch
+}
+
+// RaiEgressRuleAction - The action an egress rule takes when it matches.
+//
+//   - Allow/Deny: no additional fields needed; headers and rewrite must not be set.
+//   - Transform: headers is required with at least one entry; rewrite must not be set.
+//   - Rewrite: rewrite is required with at least one of scheme/host/path;
+//
+// headers is optional for injecting headers alongside the redirect.
+type RaiEgressRuleAction struct {
+	// REQUIRED; The kind of action.
+	ActionType *RaiEgressRuleActionType
+
+	// Header transforms to apply. Required for Transform; optional for Rewrite;
+	// not allowed for Allow or Deny.
+	Headers []*RaiEgressHeaderTransform
+
+	// Destination override. Required for Rewrite; not allowed otherwise.
+	Rewrite *RaiEgressRewriteTarget
+}
+
+// RaiEgressRuleMatch - The match criteria for an egress rule.
+// If both host and path are omitted, the rule matches all traffic.
+// Host uses DNS wildcard syntax (e.g., "\*.openai.com" matches "api.openai.com").
+// Path uses URI prefix matching with an asterisk as a single-segment wildcard.
+// For example, "/v1/\*" matches "/v1/chat".
+type RaiEgressRuleMatch struct {
+	// Host pattern to match using DNS wildcard syntax (e.g., "\*.openai.com").
+	// A leading "\*." matches any subdomain. Omit to match all hosts.
+	Host *string
+
+	// Path pattern to match using URI prefix matching.
+	// An asterisk serves as a single-segment wildcard.
+	// For example, "/v1/\*" matches "/v1/chat". Omit to match all paths.
+	Path *string
+}
+
+// RaiEgressSecretRef - A reference to a stored secret used as a header value.
+type RaiEgressSecretRef struct {
+	// REQUIRED; Identifier of the secret to inject.
+	SecretID *string
+
+	// Optional format for the resolved value; "{value}" is the placeholder, e.g. "Bearer {value}".
+	Format *string
+
+	// Optional key within the secret.
+	SecretKey *string
+}
+
 // RaiExternalSafetyProviderResult - The list of cognitive services RAI External Safety Providers.
 type RaiExternalSafetyProviderResult struct {
 	// The link used to get the next page of Rai External Safety Provider.
@@ -3646,6 +4086,10 @@ type RaiPolicyProperties struct {
 
 	// The list of custom Blocklist.
 	CustomBlocklists []*CustomBlocklistConfig
+
+	// Egress (outbound network) policy controlling which external endpoints sandboxed
+	// agents can reach. Includes rules with Allow/Deny/Transform/Rewrite actions.
+	EgressPolicy *RaiEgressPolicyConfig
 
 	// Rai policy mode. The enum value mapping is as below: Default = 0, Deferred=1, Blocking=2, Asynchronous_filter =3. Please
 	// use 'Asynchronous_filter' after 2025-06-01. It is the same as 'Deferred' in previous version.

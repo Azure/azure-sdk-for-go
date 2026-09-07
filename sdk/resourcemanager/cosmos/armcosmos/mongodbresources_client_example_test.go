@@ -10,11 +10,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
 	"log"
-	"time"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBCollectionCreateUpdate.json
-func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection_cosmosDbMongoDbcollectionCreateUpdate() {
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBCollectionCreateUpdate.json
+func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -26,11 +25,10 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection_cosmosDbMo
 	}
 	poller, err := clientFactory.NewMongoDBResourcesClient().BeginCreateUpdateMongoDBCollection(ctx, "rg1", "ddb1", "databaseName", "collectionName", armcosmos.MongoDBCollectionCreateUpdateParameters{
 		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
 		Properties: &armcosmos.MongoDBCollectionCreateUpdateProperties{
-			Options: &armcosmos.CreateUpdateOptions{},
 			Resource: &armcosmos.MongoDBCollectionResource{
-				AnalyticalStorageTTL: to.Ptr[int32](500),
-				ID:                   to.Ptr("collectionName"),
+				ID: to.Ptr("collectionName"),
 				Indexes: []*armcosmos.MongoIndex{
 					{
 						Key: &armcosmos.MongoIndexKeys{
@@ -55,106 +53,29 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection_cosmosDbMo
 					"testKey": to.Ptr("Hash"),
 				},
 			},
-		},
-		Tags: map[string]*string{},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse{
-	// 	MongoDBCollectionGetResults: &armcosmos.MongoDBCollectionGetResults{
-	// 		Name: to.Ptr("collectionName"),
-	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/mongodbCollections"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/mongodbCollections/collectionName"),
-	// 		Location: to.Ptr("West US"),
-	// 		Properties: &armcosmos.MongoDBCollectionGetProperties{
-	// 			Resource: &armcosmos.MongoDBCollectionGetPropertiesResource{
-	// 				AnalyticalStorageTTL: to.Ptr[int32](500),
-	// 				ID: to.Ptr("collectionName"),
-	// 				Indexes: []*armcosmos.MongoIndex{
-	// 					{
-	// 						Key: &armcosmos.MongoIndexKeys{
-	// 							Keys: []*string{
-	// 								to.Ptr("_ts"),
-	// 							},
-	// 						},
-	// 						Options: &armcosmos.MongoIndexOptions{
-	// 							ExpireAfterSeconds: to.Ptr[int32](100),
-	// 							Unique: to.Ptr(true),
-	// 						},
-	// 					},
-	// 					{
-	// 						Key: &armcosmos.MongoIndexKeys{
-	// 							Keys: []*string{
-	// 								to.Ptr("_id"),
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				ShardKey: map[string]*string{
-	// 					"testKey": to.Ptr("Hash"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBCollectionRestore.json
-func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection_cosmosDbMongoDbcollectionRestore() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMongoDBResourcesClient().BeginCreateUpdateMongoDBCollection(ctx, "rg1", "ddb1", "databaseName", "collectionName", armcosmos.MongoDBCollectionCreateUpdateParameters{
-		Location: to.Ptr("West US"),
-		Properties: &armcosmos.MongoDBCollectionCreateUpdateProperties{
 			Options: &armcosmos.CreateUpdateOptions{},
-			Resource: &armcosmos.MongoDBCollectionResource{
-				CreateMode: to.Ptr(armcosmos.CreateModeRestore),
-				ID:         to.Ptr("collectionName"),
-				RestoreParameters: &armcosmos.ResourceRestoreParameters{
-					RestoreSource:          to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/WestUS/restorableDatabaseAccounts/restorableDatabaseAccountId"),
-					RestoreTimestampInUTC:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-20T18:28:00Z"); return t }()),
-					RestoreWithTTLDisabled: to.Ptr(false),
-				},
-			},
 		},
-		Tags: map[string]*string{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse{
-	// 	MongoDBCollectionGetResults: &armcosmos.MongoDBCollectionGetResults{
+	// 	MongoDBCollectionGetResults: armcosmos.MongoDBCollectionGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/mongodbCollections/collectionName"),
 	// 		Name: to.Ptr("collectionName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/mongodbCollections"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/mongodbCollections/collectionName"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.MongoDBCollectionGetProperties{
 	// 			Resource: &armcosmos.MongoDBCollectionGetPropertiesResource{
-	// 				AnalyticalStorageTTL: to.Ptr[int32](500),
 	// 				ID: to.Ptr("collectionName"),
 	// 				Indexes: []*armcosmos.MongoIndex{
 	// 					{
@@ -181,14 +102,12 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection_cosmosDbMo
 	// 				},
 	// 			},
 	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBDatabaseCreateUpdate.json
-func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBDatabase_cosmosDbMongoDbdatabaseCreateUpdate() {
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBDatabaseCreateUpdate.json
+func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -200,96 +119,42 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBDatabase_cosmosDbMong
 	}
 	poller, err := clientFactory.NewMongoDBResourcesClient().BeginCreateUpdateMongoDBDatabase(ctx, "rg1", "ddb1", "databaseName", armcosmos.MongoDBDatabaseCreateUpdateParameters{
 		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
 		Properties: &armcosmos.MongoDBDatabaseCreateUpdateProperties{
-			Options: &armcosmos.CreateUpdateOptions{},
 			Resource: &armcosmos.MongoDBDatabaseResource{
 				ID: to.Ptr("databaseName"),
 			},
-		},
-		Tags: map[string]*string{},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.MongoDBResourcesClientCreateUpdateMongoDBDatabaseResponse{
-	// 	MongoDBDatabaseGetResults: &armcosmos.MongoDBDatabaseGetResults{
-	// 		Name: to.Ptr("databaseName"),
-	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName"),
-	// 		Location: to.Ptr("West US"),
-	// 		Properties: &armcosmos.MongoDBDatabaseGetProperties{
-	// 			Resource: &armcosmos.MongoDBDatabaseGetPropertiesResource{
-	// 				ID: to.Ptr("updatedDatabaseName"),
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBDatabaseRestore.json
-func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBDatabase_cosmosDbMongoDbdatabaseRestore() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMongoDBResourcesClient().BeginCreateUpdateMongoDBDatabase(ctx, "rg1", "ddb1", "databaseName", armcosmos.MongoDBDatabaseCreateUpdateParameters{
-		Location: to.Ptr("West US"),
-		Properties: &armcosmos.MongoDBDatabaseCreateUpdateProperties{
 			Options: &armcosmos.CreateUpdateOptions{},
-			Resource: &armcosmos.MongoDBDatabaseResource{
-				CreateMode: to.Ptr(armcosmos.CreateModeRestore),
-				ID:         to.Ptr("databaseName"),
-				RestoreParameters: &armcosmos.ResourceRestoreParameters{
-					RestoreSource:          to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/WestUS/restorableDatabaseAccounts/restorableDatabaseAccountId"),
-					RestoreTimestampInUTC:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-20T18:28:00Z"); return t }()),
-					RestoreWithTTLDisabled: to.Ptr(false),
-				},
-			},
 		},
-		Tags: map[string]*string{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientCreateUpdateMongoDBDatabaseResponse{
-	// 	MongoDBDatabaseGetResults: &armcosmos.MongoDBDatabaseGetResults{
+	// 	MongoDBDatabaseGetResults: armcosmos.MongoDBDatabaseGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName"),
 	// 		Name: to.Ptr("databaseName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.MongoDBDatabaseGetProperties{
 	// 			Resource: &armcosmos.MongoDBDatabaseGetPropertiesResource{
-	// 				ID: to.Ptr("updatedDatabaseName"),
+	// 				ID: to.Ptr("databaseName"),
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBRoleDefinitionCreateUpdate.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBRoleDefinitionCreateUpdate.json
 func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,24 +167,24 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoRoleDefinition() {
 	}
 	poller, err := clientFactory.NewMongoDBResourcesClient().BeginCreateUpdateMongoRoleDefinition(ctx, "myMongoRoleDefinitionId", "myResourceGroupName", "myAccountName", armcosmos.MongoRoleDefinitionCreateUpdateParameters{
 		Properties: &armcosmos.MongoRoleDefinitionResource{
+			RoleName:     to.Ptr("myRoleName"),
 			DatabaseName: to.Ptr("sales"),
 			Privileges: []*armcosmos.Privilege{
 				{
+					Resource: &armcosmos.PrivilegeResource{
+						Db:         to.Ptr("sales"),
+						Collection: to.Ptr("sales"),
+					},
 					Actions: []*string{
 						to.Ptr("insert"),
 						to.Ptr("find"),
 					},
-					Resource: &armcosmos.PrivilegeResource{
-						Collection: to.Ptr("sales"),
-						Db:         to.Ptr("sales"),
-					},
 				},
 			},
-			RoleName: to.Ptr("myRoleName"),
 			Roles: []*armcosmos.Role{
 				{
-					Db:   to.Ptr("sales"),
 					Role: to.Ptr("myInheritedRole"),
+					Db:   to.Ptr("sales"),
 				},
 			},
 		},
@@ -329,32 +194,32 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoRoleDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientCreateUpdateMongoRoleDefinitionResponse{
-	// 	MongoRoleDefinitionGetResults: &armcosmos.MongoRoleDefinitionGetResults{
+	// 	MongoRoleDefinitionGetResults: armcosmos.MongoRoleDefinitionGetResults{
+	// 		ID: to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongodbRoleDefinitions/myMongoDbRoleDefinitionId"),
 	// 		Name: to.Ptr("myMongoDbRoleDefinitionId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongoDbRoleDefinitionId"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongodbRoleDefinitions/myMongoDbRoleDefinitionId"),
 	// 		Properties: &armcosmos.MongoRoleDefinitionResource{
+	// 			RoleName: to.Ptr("myRoleName"),
 	// 			Type: to.Ptr(armcosmos.MongoRoleDefinitionTypeCustomRole),
 	// 			DatabaseName: to.Ptr("sales"),
 	// 			Privileges: []*armcosmos.Privilege{
 	// 				{
+	// 					Resource: &armcosmos.PrivilegeResource{
+	// 						Db: to.Ptr("sales"),
+	// 						Collection: to.Ptr("coll"),
+	// 					},
 	// 					Actions: []*string{
 	// 						to.Ptr("find"),
 	// 						to.Ptr("insert"),
 	// 					},
-	// 					Resource: &armcosmos.PrivilegeResource{
-	// 						Collection: to.Ptr("coll"),
-	// 						Db: to.Ptr("sales"),
-	// 					},
 	// 				},
 	// 			},
-	// 			RoleName: to.Ptr("myRoleName"),
 	// 			Roles: []*armcosmos.Role{
 	// 				{
 	// 					Db: to.Ptr("sales"),
@@ -366,7 +231,7 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBUserDefinitionCreateUpdate.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBUserDefinitionCreateUpdate.json
 func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoUserDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -379,17 +244,17 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoUserDefinition() {
 	}
 	poller, err := clientFactory.NewMongoDBResourcesClient().BeginCreateUpdateMongoUserDefinition(ctx, "myMongoUserDefinitionId", "myResourceGroupName", "myAccountName", armcosmos.MongoUserDefinitionCreateUpdateParameters{
 		Properties: &armcosmos.MongoUserDefinitionResource{
-			CustomData:   to.Ptr("My custom data"),
-			DatabaseName: to.Ptr("sales"),
-			Mechanisms:   to.Ptr("SCRAM-SHA-256"),
+			UserName:     to.Ptr("myUserName"),
 			Password:     to.Ptr("myPassword"),
+			DatabaseName: to.Ptr("sales"),
+			CustomData:   to.Ptr("My custom data"),
 			Roles: []*armcosmos.Role{
 				{
-					Db:   to.Ptr("sales"),
 					Role: to.Ptr("myReadRole"),
+					Db:   to.Ptr("sales"),
 				},
 			},
-			UserName: to.Ptr("myUserName"),
+			Mechanisms: to.Ptr("SCRAM-SHA-256"),
 		},
 	}, nil)
 	if err != nil {
@@ -397,33 +262,33 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoUserDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientCreateUpdateMongoUserDefinitionResponse{
-	// 	MongoUserDefinitionGetResults: &armcosmos.MongoUserDefinitionGetResults{
+	// 	MongoUserDefinitionGetResults: armcosmos.MongoUserDefinitionGetResults{
+	// 		ID: to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongodbUserDefinitions/myUserId"),
 	// 		Name: to.Ptr("myUserName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbUserDefinitions"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongodbUserDefinitions/myUserId"),
 	// 		Properties: &armcosmos.MongoUserDefinitionResource{
-	// 			CustomData: to.Ptr("My custom data"),
+	// 			UserName: to.Ptr("myUserName"),
 	// 			DatabaseName: to.Ptr("sales"),
-	// 			Mechanisms: to.Ptr("SCRAM-SHA-256"),
+	// 			CustomData: to.Ptr("My custom data"),
 	// 			Roles: []*armcosmos.Role{
 	// 				{
 	// 					Db: to.Ptr("sales"),
 	// 					Role: to.Ptr("myReadRole"),
 	// 				},
 	// 			},
-	// 			UserName: to.Ptr("myUserName"),
+	// 			Mechanisms: to.Ptr("SCRAM-SHA-256"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBCollectionDelete.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBCollectionDelete.json
 func ExampleMongoDBResourcesClient_BeginDeleteMongoDBCollection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -440,11 +305,11 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoDBCollection() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBDatabaseDelete.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBDatabaseDelete.json
 func ExampleMongoDBResourcesClient_BeginDeleteMongoDBDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -461,11 +326,11 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoDBDatabase() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBRoleDefinitionDelete.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBRoleDefinitionDelete.json
 func ExampleMongoDBResourcesClient_BeginDeleteMongoRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -482,7 +347,7 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoRoleDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -491,7 +356,7 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBUserDefinitionDelete.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBUserDefinitionDelete.json
 func ExampleMongoDBResourcesClient_BeginDeleteMongoUserDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -508,7 +373,7 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoUserDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -517,7 +382,7 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoUserDefinition() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBCollectionGet.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBCollectionGet.json
 func ExampleMongoDBResourcesClient_GetMongoDBCollection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -536,17 +401,15 @@ func ExampleMongoDBResourcesClient_GetMongoDBCollection() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientGetMongoDBCollectionResponse{
-	// 	MongoDBCollectionGetResults: &armcosmos.MongoDBCollectionGetResults{
+	// 	MongoDBCollectionGetResults: armcosmos.MongoDBCollectionGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/mongodbCollections/collectionName"),
 	// 		Name: to.Ptr("collectionName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/mongodbCollections"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/mongodbCollections/collectionName"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.MongoDBCollectionGetProperties{
 	// 			Resource: &armcosmos.MongoDBCollectionGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
-	// 				AnalyticalStorageTTL: to.Ptr[int32](500),
 	// 				ID: to.Ptr("testcoll"),
 	// 				Indexes: []*armcosmos.MongoIndex{
 	// 					{
@@ -564,15 +427,16 @@ func ExampleMongoDBResourcesClient_GetMongoDBCollection() {
 	// 				ShardKey: map[string]*string{
 	// 					"testKey": to.Ptr("Hash"),
 	// 				},
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBCollectionThroughputGet.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBCollectionThroughputGet.json
 func ExampleMongoDBResourcesClient_GetMongoDBCollectionThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -591,30 +455,30 @@ func ExampleMongoDBResourcesClient_GetMongoDBCollectionThroughput() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientGetMongoDBCollectionThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/mongodbCollections/collectionName/throughputSettings/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/mongodbCollections/throughputSettings"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/mongodbCollections/collectionName/throughputSettings/default"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
-	// 				InstantMaximumThroughput: to.Ptr("10000"),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				MinimumThroughput: to.Ptr("400"),
 	// 				OfferReplacePending: to.Ptr("true"),
+	// 				InstantMaximumThroughput: to.Ptr("10000"),
 	// 				SoftAllowedMaximumThroughput: to.Ptr("1000000"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBDatabaseGet.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBDatabaseGet.json
 func ExampleMongoDBResourcesClient_GetMongoDBDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -633,26 +497,26 @@ func ExampleMongoDBResourcesClient_GetMongoDBDatabase() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientGetMongoDBDatabaseResponse{
-	// 	MongoDBDatabaseGetResults: &armcosmos.MongoDBDatabaseGetResults{
+	// 	MongoDBDatabaseGetResults: armcosmos.MongoDBDatabaseGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName"),
 	// 		Name: to.Ptr("databaseName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.MongoDBDatabaseGetProperties{
 	// 			Resource: &armcosmos.MongoDBDatabaseGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				ID: to.Ptr("databaseName"),
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
-	// 				ID: to.Ptr("databaseName"),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBDatabaseThroughputGet.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBDatabaseThroughputGet.json
 func ExampleMongoDBResourcesClient_GetMongoDBDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -671,30 +535,30 @@ func ExampleMongoDBResourcesClient_GetMongoDBDatabaseThroughput() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/throughputSettings/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/throughputSettings"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/throughputSettings/default"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
-	// 				InstantMaximumThroughput: to.Ptr("10000"),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				MinimumThroughput: to.Ptr("400"),
 	// 				OfferReplacePending: to.Ptr("true"),
+	// 				InstantMaximumThroughput: to.Ptr("10000"),
 	// 				SoftAllowedMaximumThroughput: to.Ptr("1000000"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBRoleDefinitionGet.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBRoleDefinitionGet.json
 func ExampleMongoDBResourcesClient_GetMongoRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -713,26 +577,26 @@ func ExampleMongoDBResourcesClient_GetMongoRoleDefinition() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientGetMongoRoleDefinitionResponse{
-	// 	MongoRoleDefinitionGetResults: &armcosmos.MongoRoleDefinitionGetResults{
+	// 	MongoRoleDefinitionGetResults: armcosmos.MongoRoleDefinitionGetResults{
+	// 		ID: to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongodbRoleDefinitions/myMongoDbRoleDefinitionId"),
 	// 		Name: to.Ptr("myMongoRoleDefinitionId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbRoleDefinitions"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongodbRoleDefinitions/myMongoDbRoleDefinitionId"),
 	// 		Properties: &armcosmos.MongoRoleDefinitionResource{
+	// 			RoleName: to.Ptr("myRoleName"),
 	// 			Type: to.Ptr(armcosmos.MongoRoleDefinitionTypeCustomRole),
 	// 			DatabaseName: to.Ptr("sales"),
 	// 			Privileges: []*armcosmos.Privilege{
 	// 				{
+	// 					Resource: &armcosmos.PrivilegeResource{
+	// 						Db: to.Ptr("sales"),
+	// 						Collection: to.Ptr("coll"),
+	// 					},
 	// 					Actions: []*string{
 	// 						to.Ptr("find"),
 	// 						to.Ptr("insert"),
 	// 					},
-	// 					Resource: &armcosmos.PrivilegeResource{
-	// 						Collection: to.Ptr("coll"),
-	// 						Db: to.Ptr("sales"),
-	// 					},
 	// 				},
 	// 			},
-	// 			RoleName: to.Ptr("myRoleName"),
 	// 			Roles: []*armcosmos.Role{
 	// 				{
 	// 					Db: to.Ptr("sales"),
@@ -744,7 +608,7 @@ func ExampleMongoDBResourcesClient_GetMongoRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBUserDefinitionGet.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBUserDefinitionGet.json
 func ExampleMongoDBResourcesClient_GetMongoUserDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -763,91 +627,27 @@ func ExampleMongoDBResourcesClient_GetMongoUserDefinition() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientGetMongoUserDefinitionResponse{
-	// 	MongoUserDefinitionGetResults: &armcosmos.MongoUserDefinitionGetResults{
+	// 	MongoUserDefinitionGetResults: armcosmos.MongoUserDefinitionGetResults{
+	// 		ID: to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongodbUserDefinitions/myUserId"),
 	// 		Name: to.Ptr("myUserId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbUserDefinitions"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongodbUserDefinitions/myUserId"),
 	// 		Properties: &armcosmos.MongoUserDefinitionResource{
-	// 			CustomData: to.Ptr("My custom data"),
+	// 			UserName: to.Ptr("myUserName"),
 	// 			DatabaseName: to.Ptr("sales"),
-	// 			Mechanisms: to.Ptr("SCRAM-SHA-256"),
+	// 			CustomData: to.Ptr("My custom data"),
 	// 			Roles: []*armcosmos.Role{
 	// 				{
 	// 					Db: to.Ptr("sales"),
 	// 					Role: to.Ptr("myReadRole"),
 	// 				},
 	// 			},
-	// 			UserName: to.Ptr("myUserName"),
+	// 			Mechanisms: to.Ptr("SCRAM-SHA-256"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBCollectionPartitionMerge.json
-func ExampleMongoDBResourcesClient_BeginListMongoDBCollectionPartitionMerge() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMongoDBResourcesClient().BeginListMongoDBCollectionPartitionMerge(ctx, "rgName", "ddb1", "databaseName", "collectionName", armcosmos.MergeParameters{
-		IsDryRun: to.Ptr(false),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.MongoDBResourcesClientListMongoDBCollectionPartitionMergeResponse{
-	// 	PhysicalPartitionStorageInfoCollection: &armcosmos.PhysicalPartitionStorageInfoCollection{
-	// 		PhysicalPartitionStorageInfoCollection: []*armcosmos.PhysicalPartitionStorageInfo{
-	// 			{
-	// 				ID: to.Ptr("0"),
-	// 				StorageInKB: to.Ptr[float64](333),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("1"),
-	// 				StorageInKB: to.Ptr[float64](305),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("177"),
-	// 				StorageInKB: to.Ptr[float64](368),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("178"),
-	// 				StorageInKB: to.Ptr[float64](96313),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("5"),
-	// 				StorageInKB: to.Ptr[float64](194),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("6"),
-	// 				StorageInKB: to.Ptr[float64](331),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("7"),
-	// 				StorageInKB: to.Ptr[float64](384),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("8"),
-	// 				StorageInKB: to.Ptr[float64](246),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBCollectionList.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBCollectionList.json
 func ExampleMongoDBResourcesClient_NewListMongoDBCollectionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -873,13 +673,14 @@ func ExampleMongoDBResourcesClient_NewListMongoDBCollectionsPager() {
 		// 	MongoDBCollectionListResult: armcosmos.MongoDBCollectionListResult{
 		// 		Value: []*armcosmos.MongoDBCollectionGetResults{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/mongodbCollections/collectionName"),
 		// 				Name: to.Ptr("collectionName"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/mongodbCollections"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/mongodbCollections/collectionName"),
 		// 				Location: to.Ptr("West US"),
+		// 				Tags: map[string]*string{
+		// 				},
 		// 				Properties: &armcosmos.MongoDBCollectionGetProperties{
 		// 					Resource: &armcosmos.MongoDBCollectionGetPropertiesResource{
-		// 						AnalyticalStorageTTL: to.Ptr[int32](500),
 		// 						ID: to.Ptr("testcoll"),
 		// 						Indexes: []*armcosmos.MongoIndex{
 		// 							{
@@ -899,8 +700,6 @@ func ExampleMongoDBResourcesClient_NewListMongoDBCollectionsPager() {
 		// 						},
 		// 					},
 		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
 		// 			},
 		// 		},
 		// 	},
@@ -908,7 +707,7 @@ func ExampleMongoDBResourcesClient_NewListMongoDBCollectionsPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBDatabaseList.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBDatabaseList.json
 func ExampleMongoDBResourcesClient_NewListMongoDBDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -934,16 +733,16 @@ func ExampleMongoDBResourcesClient_NewListMongoDBDatabasesPager() {
 		// 	MongoDBDatabaseListResult: armcosmos.MongoDBDatabaseListResult{
 		// 		Value: []*armcosmos.MongoDBDatabaseGetResults{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName"),
 		// 				Name: to.Ptr("databaseName"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName"),
 		// 				Location: to.Ptr("West US"),
+		// 				Tags: map[string]*string{
+		// 				},
 		// 				Properties: &armcosmos.MongoDBDatabaseGetProperties{
 		// 					Resource: &armcosmos.MongoDBDatabaseGetPropertiesResource{
 		// 						ID: to.Ptr("databaseName"),
 		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
 		// 				},
 		// 			},
 		// 		},
@@ -952,7 +751,7 @@ func ExampleMongoDBResourcesClient_NewListMongoDBDatabasesPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBRoleDefinitionList.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBRoleDefinitionList.json
 func ExampleMongoDBResourcesClient_NewListMongoRoleDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -978,25 +777,25 @@ func ExampleMongoDBResourcesClient_NewListMongoRoleDefinitionsPager() {
 		// 	MongoRoleDefinitionListResult: armcosmos.MongoRoleDefinitionListResult{
 		// 		Value: []*armcosmos.MongoRoleDefinitionGetResults{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongodbRoleDefinitions/myRoleDefinitionId"),
 		// 				Name: to.Ptr("myRoleDefinitionId"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbRoleDefinitions"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongodbRoleDefinitions/myRoleDefinitionId"),
 		// 				Properties: &armcosmos.MongoRoleDefinitionResource{
+		// 					RoleName: to.Ptr("myRoleName"),
 		// 					Type: to.Ptr(armcosmos.MongoRoleDefinitionTypeCustomRole),
 		// 					DatabaseName: to.Ptr("sales"),
 		// 					Privileges: []*armcosmos.Privilege{
 		// 						{
+		// 							Resource: &armcosmos.PrivilegeResource{
+		// 								Db: to.Ptr("sales"),
+		// 								Collection: to.Ptr("coll"),
+		// 							},
 		// 							Actions: []*string{
 		// 								to.Ptr("find"),
 		// 								to.Ptr("insert"),
 		// 							},
-		// 							Resource: &armcosmos.PrivilegeResource{
-		// 								Collection: to.Ptr("coll"),
-		// 								Db: to.Ptr("sales"),
-		// 							},
 		// 						},
 		// 					},
-		// 					RoleName: to.Ptr("myRoleName"),
 		// 					Roles: []*armcosmos.Role{
 		// 						{
 		// 							Db: to.Ptr("sales"),
@@ -1011,7 +810,7 @@ func ExampleMongoDBResourcesClient_NewListMongoRoleDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBUserDefinitionList.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBUserDefinitionList.json
 func ExampleMongoDBResourcesClient_NewListMongoUserDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1037,20 +836,20 @@ func ExampleMongoDBResourcesClient_NewListMongoUserDefinitionsPager() {
 		// 	MongoUserDefinitionListResult: armcosmos.MongoUserDefinitionListResult{
 		// 		Value: []*armcosmos.MongoUserDefinitionGetResults{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongodbUserDefinitions/myUserId"),
 		// 				Name: to.Ptr("myUserId"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbUserDefinitions"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongodbUserDefinitions/myUserId"),
 		// 				Properties: &armcosmos.MongoUserDefinitionResource{
-		// 					CustomData: to.Ptr("My custom data"),
+		// 					UserName: to.Ptr("myUserName"),
 		// 					DatabaseName: to.Ptr("sales"),
-		// 					Mechanisms: to.Ptr("SCRAM-SHA-256"),
+		// 					CustomData: to.Ptr("My custom data"),
 		// 					Roles: []*armcosmos.Role{
 		// 						{
 		// 							Db: to.Ptr("sales"),
 		// 							Role: to.Ptr("myReadRole"),
 		// 						},
 		// 					},
-		// 					UserName: to.Ptr("myUserName"),
+		// 					Mechanisms: to.Ptr("SCRAM-SHA-256"),
 		// 				},
 		// 			},
 		// 		},
@@ -1059,7 +858,7 @@ func ExampleMongoDBResourcesClient_NewListMongoUserDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBCollectionMigrateToAutoscale.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBCollectionMigrateToAutoscale.json
 func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1076,31 +875,31 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToAutoscale() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				AutoscaleSettings: &armcosmos.AutoscaleSettingsResource{
 	// 					MaxThroughput: to.Ptr[int32](4000),
 	// 				},
 	// 				MinimumThroughput: to.Ptr("4000"),
 	// 				OfferReplacePending: to.Ptr("false"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBCollectionMigrateToManualThroughput.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBCollectionMigrateToManualThroughput.json
 func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1117,28 +916,28 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToManualThroughp
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				MinimumThroughput: to.Ptr("400"),
 	// 				OfferReplacePending: to.Ptr("true"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBDatabaseMigrateToAutoscale.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBDatabaseMigrateToAutoscale.json
 func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1155,31 +954,31 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToAutoscale() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				AutoscaleSettings: &armcosmos.AutoscaleSettingsResource{
 	// 					MaxThroughput: to.Ptr[int32](4000),
 	// 				},
 	// 				MinimumThroughput: to.Ptr("4000"),
 	// 				OfferReplacePending: to.Ptr("false"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBDatabaseMigrateToManualThroughput.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBDatabaseMigrateToManualThroughput.json
 func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1196,364 +995,28 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToManualThroughput
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				MinimumThroughput: to.Ptr("400"),
 	// 				OfferReplacePending: to.Ptr("true"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBCollectionRedistributeThroughput.json
-func ExampleMongoDBResourcesClient_BeginMongoDBContainerRedistributeThroughput() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMongoDBResourcesClient().BeginMongoDBContainerRedistributeThroughput(ctx, "rg1", "ddb1", "databaseName", "collectionName", armcosmos.RedistributeThroughputParameters{
-		Properties: &armcosmos.RedistributeThroughputProperties{
-			Resource: &armcosmos.RedistributeThroughputPropertiesResource{
-				SourcePhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-					{
-						ID:         to.Ptr("2"),
-						Throughput: to.Ptr[float64](5000),
-					},
-					{
-						ID: to.Ptr("3"),
-					},
-				},
-				TargetPhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-					{
-						ID:         to.Ptr("0"),
-						Throughput: to.Ptr[float64](5000),
-					},
-					{
-						ID:         to.Ptr("1"),
-						Throughput: to.Ptr[float64](5000),
-					},
-				},
-				ThroughputPolicy: to.Ptr(armcosmos.ThroughputPolicyTypeCustom),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.MongoDBResourcesClientMongoDBContainerRedistributeThroughputResponse{
-	// 	PhysicalPartitionThroughputInfoResult: &armcosmos.PhysicalPartitionThroughputInfoResult{
-	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
-	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
-	// 				PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-	// 					{
-	// 						ID: to.Ptr("0"),
-	// 						TargetThroughput: to.Ptr[float64](5000),
-	// 						Throughput: to.Ptr[float64](5000),
-	// 					},
-	// 					{
-	// 						ID: to.Ptr("1"),
-	// 						TargetThroughput: to.Ptr[float64](5000),
-	// 						Throughput: to.Ptr[float64](5000),
-	// 					},
-	// 					{
-	// 						ID: to.Ptr("2"),
-	// 						TargetThroughput: to.Ptr[float64](5000),
-	// 						Throughput: to.Ptr[float64](5000),
-	// 					},
-	// 					{
-	// 						ID: to.Ptr("3"),
-	// 						TargetThroughput: to.Ptr[float64](3000),
-	// 						Throughput: to.Ptr[float64](3000),
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBCollectionRetrieveThroughputDistribution.json
-func ExampleMongoDBResourcesClient_BeginMongoDBContainerRetrieveThroughputDistribution() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMongoDBResourcesClient().BeginMongoDBContainerRetrieveThroughputDistribution(ctx, "rg1", "ddb1", "databaseName", "collectionName", armcosmos.RetrieveThroughputParameters{
-		Properties: &armcosmos.RetrieveThroughputProperties{
-			Resource: &armcosmos.RetrieveThroughputPropertiesResource{
-				PhysicalPartitionIDs: []*armcosmos.PhysicalPartitionID{
-					{
-						ID: to.Ptr("0"),
-					},
-					{
-						ID: to.Ptr("1"),
-					},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.MongoDBResourcesClientMongoDBContainerRetrieveThroughputDistributionResponse{
-	// 	PhysicalPartitionThroughputInfoResult: &armcosmos.PhysicalPartitionThroughputInfoResult{
-	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
-	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
-	// 				PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-	// 					{
-	// 						ID: to.Ptr("0"),
-	// 						TargetThroughput: to.Ptr[float64](5000),
-	// 						Throughput: to.Ptr[float64](5000),
-	// 					},
-	// 					{
-	// 						ID: to.Ptr("1"),
-	// 						TargetThroughput: to.Ptr[float64](5000),
-	// 						Throughput: to.Ptr[float64](5000),
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBDatabasePartitionMerge.json
-func ExampleMongoDBResourcesClient_BeginMongoDBDatabasePartitionMerge() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMongoDBResourcesClient().BeginMongoDBDatabasePartitionMerge(ctx, "rgName", "ddb1", "databaseName", armcosmos.MergeParameters{
-		IsDryRun: to.Ptr(false),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.MongoDBResourcesClientMongoDBDatabasePartitionMergeResponse{
-	// 	PhysicalPartitionStorageInfoCollection: &armcosmos.PhysicalPartitionStorageInfoCollection{
-	// 		PhysicalPartitionStorageInfoCollection: []*armcosmos.PhysicalPartitionStorageInfo{
-	// 			{
-	// 				ID: to.Ptr("0"),
-	// 				StorageInKB: to.Ptr[float64](333),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("1"),
-	// 				StorageInKB: to.Ptr[float64](305),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("177"),
-	// 				StorageInKB: to.Ptr[float64](368),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("178"),
-	// 				StorageInKB: to.Ptr[float64](96313),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("5"),
-	// 				StorageInKB: to.Ptr[float64](194),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("6"),
-	// 				StorageInKB: to.Ptr[float64](331),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("7"),
-	// 				StorageInKB: to.Ptr[float64](384),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("8"),
-	// 				StorageInKB: to.Ptr[float64](246),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBDatabaseRedistributeThroughput.json
-func ExampleMongoDBResourcesClient_BeginMongoDBDatabaseRedistributeThroughput() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMongoDBResourcesClient().BeginMongoDBDatabaseRedistributeThroughput(ctx, "rg1", "ddb1", "databaseName", armcosmos.RedistributeThroughputParameters{
-		Properties: &armcosmos.RedistributeThroughputProperties{
-			Resource: &armcosmos.RedistributeThroughputPropertiesResource{
-				SourcePhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-					{
-						ID:         to.Ptr("2"),
-						Throughput: to.Ptr[float64](5000),
-					},
-					{
-						ID: to.Ptr("3"),
-					},
-				},
-				TargetPhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-					{
-						ID:         to.Ptr("0"),
-						Throughput: to.Ptr[float64](5000),
-					},
-					{
-						ID:         to.Ptr("1"),
-						Throughput: to.Ptr[float64](5000),
-					},
-				},
-				ThroughputPolicy: to.Ptr(armcosmos.ThroughputPolicyTypeCustom),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.MongoDBResourcesClientMongoDBDatabaseRedistributeThroughputResponse{
-	// 	PhysicalPartitionThroughputInfoResult: &armcosmos.PhysicalPartitionThroughputInfoResult{
-	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
-	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
-	// 				PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-	// 					{
-	// 						ID: to.Ptr("0"),
-	// 						TargetThroughput: to.Ptr[float64](5000),
-	// 						Throughput: to.Ptr[float64](5000),
-	// 					},
-	// 					{
-	// 						ID: to.Ptr("1"),
-	// 						TargetThroughput: to.Ptr[float64](5000),
-	// 						Throughput: to.Ptr[float64](5000),
-	// 					},
-	// 					{
-	// 						ID: to.Ptr("2"),
-	// 						TargetThroughput: to.Ptr[float64](5000),
-	// 						Throughput: to.Ptr[float64](5000),
-	// 					},
-	// 					{
-	// 						ID: to.Ptr("3"),
-	// 						TargetThroughput: to.Ptr[float64](3000),
-	// 						Throughput: to.Ptr[float64](3000),
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBDatabaseRetrieveThroughputDistribution.json
-func ExampleMongoDBResourcesClient_BeginMongoDBDatabaseRetrieveThroughputDistribution() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMongoDBResourcesClient().BeginMongoDBDatabaseRetrieveThroughputDistribution(ctx, "rg1", "ddb1", "databaseName", armcosmos.RetrieveThroughputParameters{
-		Properties: &armcosmos.RetrieveThroughputProperties{
-			Resource: &armcosmos.RetrieveThroughputPropertiesResource{
-				PhysicalPartitionIDs: []*armcosmos.PhysicalPartitionID{
-					{
-						ID: to.Ptr("0"),
-					},
-					{
-						ID: to.Ptr("1"),
-					},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.MongoDBResourcesClientMongoDBDatabaseRetrieveThroughputDistributionResponse{
-	// 	PhysicalPartitionThroughputInfoResult: &armcosmos.PhysicalPartitionThroughputInfoResult{
-	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
-	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
-	// 				PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-	// 					{
-	// 						ID: to.Ptr("0"),
-	// 						TargetThroughput: to.Ptr[float64](5000),
-	// 						Throughput: to.Ptr[float64](5000),
-	// 					},
-	// 					{
-	// 						ID: to.Ptr("1"),
-	// 						TargetThroughput: to.Ptr[float64](5000),
-	// 						Throughput: to.Ptr[float64](5000),
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBCollectionBackupInformation.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBCollectionBackupInformation.json
 func ExampleMongoDBResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1572,13 +1035,13 @@ func ExampleMongoDBResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientRetrieveContinuousBackupInformationResponse{
-	// 	BackupInformation: &armcosmos.BackupInformation{
+	// 	BackupInformation: armcosmos.BackupInformation{
 	// 		ContinuousBackupInformation: &armcosmos.ContinuousBackupInformation{
 	// 			LatestRestorableTimestamp: to.Ptr("2021-02-05T02:40:50Z"),
 	// 		},
@@ -1586,7 +1049,7 @@ func ExampleMongoDBResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBCollectionThroughputUpdate.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBCollectionThroughputUpdate.json
 func ExampleMongoDBResourcesClient_BeginUpdateMongoDBCollectionThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1599,46 +1062,46 @@ func ExampleMongoDBResourcesClient_BeginUpdateMongoDBCollectionThroughput() {
 	}
 	poller, err := clientFactory.NewMongoDBResourcesClient().BeginUpdateMongoDBCollectionThroughput(ctx, "rg1", "ddb1", "databaseName", "collectionName", armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
 		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
 			Resource: &armcosmos.ThroughputSettingsResource{
 				Throughput: to.Ptr[int32](400),
 			},
 		},
-		Tags: map[string]*string{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientUpdateMongoDBCollectionThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/mongodbCollections/collectionName/throughputSettings/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/mongodbCollections/throughputSettings"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/mongodbCollections/collectionName/throughputSettings/default"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				MinimumThroughput: to.Ptr("400"),
 	// 				OfferReplacePending: to.Ptr("true"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMongoDBDatabaseThroughputUpdate.json
+// Generated from example definition: 2026-03-15/CosmosDBMongoDBDatabaseThroughputUpdate.json
 func ExampleMongoDBResourcesClient_BeginUpdateMongoDBDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1651,40 +1114,40 @@ func ExampleMongoDBResourcesClient_BeginUpdateMongoDBDatabaseThroughput() {
 	}
 	poller, err := clientFactory.NewMongoDBResourcesClient().BeginUpdateMongoDBDatabaseThroughput(ctx, "rg1", "ddb1", "databaseName", armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
 		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
 			Resource: &armcosmos.ThroughputSettingsResource{
 				Throughput: to.Ptr[int32](400),
 			},
 		},
-		Tags: map[string]*string{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/throughputSettings/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/throughputSettings"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/throughputSettings/default"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				MinimumThroughput: to.Ptr("400"),
 	// 				OfferReplacePending: to.Ptr("true"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }

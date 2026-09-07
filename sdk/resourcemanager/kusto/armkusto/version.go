@@ -6,5 +6,5 @@ package armkusto
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto"
-	moduleVersion = "v2.4.0-beta.1"
+	moduleVersion = "v2.4.0"
 )

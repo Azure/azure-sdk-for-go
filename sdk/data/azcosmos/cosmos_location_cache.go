@@ -6,17 +6,20 @@ package azcosmos
 import (
 	"fmt"
 	"net/url"
+	"strings"
 	"sync"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 const defaultExpirationTime time.Duration = time.Minute * 5
 
 const (
-	none requestedOperations = iota
-	read
-	write
-	all
+	none  requestedOperations = 0
+	read                      = 0b01
+	write                     = 0b10
+	all                       = read | write
 )
 
 type requestedOperations int
@@ -27,18 +30,18 @@ type locationUnavailabilityInfo struct {
 }
 
 type databaseAccountLocationsInfo struct {
-	prefLocations                 []string
-	availWriteLocations           []string
-	availReadLocations            []string
-	availWriteEndpointsByLocation map[string]url.URL
-	availReadEndpointsByLocation  map[string]url.URL
+	prefLocations                 []regionId
+	availWriteLocations           []regionId
+	availReadLocations            []regionId
+	availWriteEndpointsByLocation map[regionId]url.URL
+	availReadEndpointsByLocation  map[regionId]url.URL
 	writeEndpoints                []url.URL
 	readEndpoints                 []url.URL
 }
 
 type accountRegion struct {
-	Name     string `json:"name"`
-	Endpoint string `json:"databaseAccountEndpoint"`
+	Name     regionId `json:"name"`
+	Endpoint string   `json:"databaseAccountEndpoint"`
 }
 
 type userConsistencyPolicy struct {
@@ -69,9 +72,13 @@ type locationCache struct {
 }
 
 func newLocationCache(prefLocations []string, defaultEndpoint url.URL, enableCrossRegionRetries bool) *locationCache {
+	prefRegions := make([]regionId, len(prefLocations))
+	for i, loc := range prefLocations {
+		prefRegions[i] = newRegionId(loc)
+	}
 	return &locationCache{
 		defaultEndpoint:                   defaultEndpoint,
-		locationInfo:                      *newDatabaseAccountLocationsInfo(prefLocations, defaultEndpoint),
+		locationInfo:                      *newDatabaseAccountLocationsInfo(prefRegions, defaultEndpoint),
 		locationUnavailabilityInfoMap:     make(map[url.URL]locationUnavailabilityInfo),
 		unavailableLocationExpirationTime: defaultExpirationTime,
 		enableCrossRegionRetries:          enableCrossRegionRetries,
@@ -91,7 +98,11 @@ func (lc *locationCache) update(writeLocations []accountRegion, readLocations []
 func (lc *locationCache) updateLocked(writeLocations []accountRegion, readLocations []accountRegion, prefList []string, enableMultipleWriteLocations *bool) error {
 	nextLoc := copyDatabaseAccountLocationsInfo(lc.locationInfo)
 	if prefList != nil {
-		nextLoc.prefLocations = prefList
+		prefRegions := make([]regionId, len(prefList))
+		for i, loc := range prefList {
+			prefRegions[i] = newRegionId(loc)
+		}
+		nextLoc.prefLocations = prefRegions
 	}
 	if enableMultipleWriteLocations != nil {
 		lc.enableMultipleWriteLocations = *enableMultipleWriteLocations
@@ -138,9 +149,29 @@ func (lc *locationCache) updateLocked(writeLocations []accountRegion, readLocati
 		}
 	}
 	nextLoc.readEndpoints = lc.getPrefAvailableEndpointsLocked(nextLoc.availReadEndpointsByLocation, nextLoc.availReadLocations, nextLoc.prefLocations, read, readFallback)
+
+	// Only compare and log if the event is enabled
+	if log.Should(EventEndpointManager) {
+		writeEndpointsChanged := !urlSlicesEqual(lc.locationInfo.writeEndpoints, nextLoc.writeEndpoints)
+		readEndpointsChanged := !urlSlicesEqual(lc.locationInfo.readEndpoints, nextLoc.readEndpoints)
+
+		if writeEndpointsChanged || readEndpointsChanged {
+			log.Writef(EventEndpointManager,
+				"\n===== Endpoint Priority Recomputed =====\n"+
+					"Preferred regions: %s\n"+
+					"Write endpoint priority: %s\n"+
+					"Read endpoint priority: %s\n"+
+					"Multi-write locations enabled: %v\n"+
+					"=========================================\n",
+				formatRegionList(nextLoc.prefLocations),
+				formatEndpointList(nextLoc.writeEndpoints),
+				formatEndpointList(nextLoc.readEndpoints),
+				lc.enableMultipleWriteLocations)
+		}
+	}
+
 	lc.lastUpdateTime = time.Now()
 	lc.locationInfo = nextLoc
-	// TODO: log
 	return nil
 }
 
@@ -208,7 +239,7 @@ func (lc *locationCache) writeEndpoints() ([]url.URL, error) {
 	return lc.locationInfo.writeEndpoints, nil
 }
 
-func (lc *locationCache) getLocation(endpoint url.URL) string {
+func (lc *locationCache) getLocation(endpoint url.URL) regionId {
 	// Take a read lock for the duration of the lookup. The reads of
 	// locationInfo.availWriteEndpointsByLocation /
 	// availReadEndpointsByLocation and enableMultipleWriteLocations race
@@ -217,7 +248,13 @@ func (lc *locationCache) getLocation(endpoint url.URL) string {
 	// with the data-plane lookup that calls into here.
 	lc.mapMutex.RLock()
 	defer lc.mapMutex.RUnlock()
-	firstLoc := ""
+	return lc.getLocationLocked(endpoint)
+}
+
+// getLocationLocked is the non-locking variant of getLocation for callers
+// that already hold lc.mapMutex (read or write).
+func (lc *locationCache) getLocationLocked(endpoint url.URL) regionId {
+	var firstLoc regionId
 	for location, uri := range lc.locationInfo.availWriteEndpointsByLocation {
 		if uri == endpoint {
 			return location
@@ -306,6 +343,8 @@ func endpointKey(u url.URL) url.URL {
 // eliminates the check-then-act race exploited by concurrent callers.
 func (lc *locationCache) markEndpointUnavailable(endpoint url.URL, op requestedOperations) (wasAlreadyUnavailable bool, err error) {
 	now := time.Now()
+	region := lc.getLocation(endpoint)
+
 	lc.mapMutex.Lock()
 	defer lc.mapMutex.Unlock()
 	if info, ok := lc.locationUnavailabilityInfoMap[endpoint]; ok {
@@ -328,6 +367,9 @@ func (lc *locationCache) markEndpointUnavailable(endpoint url.URL, op requestedO
 	if wasAlreadyUnavailable {
 		return wasAlreadyUnavailable, nil
 	}
+	log.Writef(EventEndpointManager,
+		"Marked endpoint unavailable: endpoint=%s, region=%s, operation=%s",
+		endpoint.Host, region, operationName(op))
 	return wasAlreadyUnavailable, lc.updateLocked(nil, nil, nil, nil)
 }
 
@@ -343,9 +385,28 @@ func (lc *locationCache) refreshStaleEndpoints() {
 
 func (lc *locationCache) refreshStaleEndpointsLocked() {
 	for endpoint, info := range lc.locationUnavailabilityInfoMap {
-		if time.Since(info.lastCheckTime) > lc.unavailableLocationExpirationTime {
+		t := time.Since(info.lastCheckTime)
+		if t > lc.unavailableLocationExpirationTime {
+			region := lc.getLocationLocked(endpoint)
+			log.Writef(EventEndpointManager,
+				"Endpoint is now available: endpoint=%s, region=%s, unavailableFor=%v",
+				endpoint.Host, region, t)
 			delete(lc.locationUnavailabilityInfoMap, endpoint)
 		}
+	}
+}
+
+// forceRefreshStaleEndpoints forces all stale endpoints to be cleared immediately (for testing)
+func (lc *locationCache) forceRefreshStaleEndpoints() {
+	lc.mapMutex.Lock()
+	defer lc.mapMutex.Unlock()
+	for endpoint, info := range lc.locationUnavailabilityInfoMap {
+		t := time.Since(info.lastCheckTime)
+		region := lc.getLocationLocked(endpoint)
+		log.Writef(EventEndpointManager,
+			"Endpoint is now available: endpoint=%s, region=%s, unavailableFor=%v",
+			endpoint.Host, region, t)
+		delete(lc.locationUnavailabilityInfoMap, endpoint)
 	}
 }
 
@@ -368,7 +429,7 @@ func (lc *locationCache) isEndpointUnavailableLocked(endpoint url.URL, ops reque
 // the tail. Callers pass prefLocations explicitly so updateLocked can compute
 // route lists from the in-progress nextLoc snapshot rather than the
 // already-committed lc.locationInfo.
-func (lc *locationCache) getPrefAvailableEndpointsLocked(endpointsByLoc map[string]url.URL, locs []string, prefLocations []string, availOps requestedOperations, fallbackEndpoint url.URL) []url.URL {
+func (lc *locationCache) getPrefAvailableEndpointsLocked(endpointsByLoc map[regionId]url.URL, locs []regionId, prefLocations []regionId, availOps requestedOperations, fallbackEndpoint url.URL) []url.URL {
 	endpoints := make([]url.URL, 0)
 	if lc.enableCrossRegionRetries {
 		if lc.canUseMultipleWriteLocs() || availOps&read != 0 {
@@ -404,28 +465,32 @@ func (lc *locationCache) getPrefAvailableEndpointsLocked(endpointsByLoc map[stri
 	return endpoints
 }
 
-func getEndpointsByLocation(locs []accountRegion) (map[string]url.URL, []string, error) {
-	endpointsByLoc := make(map[string]url.URL)
-	parsedLocs := make([]string, 0)
+func getEndpointsByLocation(locs []accountRegion) (map[regionId]url.URL, []regionId, error) {
+	endpointsByLoc := make(map[regionId]url.URL)
+	parsedLocs := make([]regionId, 0)
 	for _, loc := range locs {
 		endpoint, err := url.Parse(loc.Endpoint)
 		if err != nil {
 			return nil, nil, err
 		}
 		if loc.Name != "" {
-			endpointsByLoc[loc.Name] = *endpoint
-			parsedLocs = append(parsedLocs, loc.Name)
+			// Always canonicalize so that names set directly in Go code
+			// (e.g., accountRegion{Name: "East US"}) match the canonicalized
+			// prefLocations produced by newRegionId / UnmarshalJSON.
+			canonical := newRegionId(string(loc.Name))
+			endpointsByLoc[canonical] = *endpoint
+			parsedLocs = append(parsedLocs, canonical)
 		}
 		// TODO else: log
 	}
 	return endpointsByLoc, parsedLocs, nil
 }
 
-func newDatabaseAccountLocationsInfo(prefLocations []string, defaultEndpoint url.URL) *databaseAccountLocationsInfo {
-	availWriteLocs := make([]string, 0)
-	availReadLocs := make([]string, 0)
-	availWriteEndpointsByLocation := make(map[string]url.URL)
-	availReadEndpointsByLocation := make(map[string]url.URL)
+func newDatabaseAccountLocationsInfo(prefLocations []regionId, defaultEndpoint url.URL) *databaseAccountLocationsInfo {
+	availWriteLocs := make([]regionId, 0)
+	availReadLocs := make([]regionId, 0)
+	availWriteEndpointsByLocation := make(map[regionId]url.URL)
+	availReadEndpointsByLocation := make(map[regionId]url.URL)
 	// Pre-populated seed: the lists contain defaultEndpoint until the first
 	// successful Update() replaces them with regional endpoints. This is
 	// safe because the pipeline policy (globalEndpointManagerPolicy) blocks
@@ -455,4 +520,55 @@ func copyDatabaseAccountLocationsInfo(other databaseAccountLocationsInfo) databa
 		writeEndpoints:                other.writeEndpoints,
 		readEndpoints:                 other.readEndpoints,
 	}
+}
+
+// Helper function to format region lists for logging
+func formatRegionList(regions []regionId) string {
+	if len(regions) == 0 {
+		return "[]"
+	}
+	strs := make([]string, len(regions))
+	for i, r := range regions {
+		strs[i] = r.String()
+	}
+	return "[" + strings.Join(strs, ", ") + "]"
+}
+
+// Helper function to format endpoint lists for logging
+func formatEndpointList(endpoints []url.URL) string {
+	if len(endpoints) == 0 {
+		return "[]"
+	}
+	strs := make([]string, len(endpoints))
+	for i, e := range endpoints {
+		strs[i] = e.Host
+	}
+	return "[" + strings.Join(strs, ", ") + "]"
+}
+
+// Helper to get operation name string
+func operationName(op requestedOperations) string {
+	switch op {
+	case read:
+		return "read"
+	case write:
+		return "write"
+	case all:
+		return "all"
+	default:
+		return "none"
+	}
+}
+
+// Helper to compare URL slices
+func urlSlicesEqual(a, b []url.URL) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if a[i].Host != b[i].Host {
+			return false
+		}
+	}
+	return true
 }

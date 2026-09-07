@@ -18,6 +18,8 @@ import (
 
 // VirtualClustersClient contains the methods for the VirtualClusters group.
 // Don't use this type directly, use NewVirtualClustersClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type VirtualClustersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type VirtualClustersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewVirtualClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualClustersClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,8 +46,6 @@ func NewVirtualClustersClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreateOrUpdate - Creates virtual cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualClusterName - The name of the virtual cluster.
 //   - parameters - The requested virtual cluster resource state.
@@ -67,8 +70,6 @@ func (client *VirtualClustersClient) BeginCreateOrUpdate(ctx context.Context, re
 
 // CreateOrUpdate - Creates virtual cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *VirtualClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualClusterName string, parameters VirtualCluster, options *VirtualClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualClustersClient.BeginCreateOrUpdate"
@@ -84,8 +85,7 @@ func (client *VirtualClustersClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -94,7 +94,7 @@ func (client *VirtualClustersClient) createOrUpdate(ctx context.Context, resourc
 func (client *VirtualClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualClusterName string, parameters VirtualCluster, _ *VirtualClustersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters/{virtualClusterName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -110,8 +110,8 @@ func (client *VirtualClustersClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -122,8 +122,6 @@ func (client *VirtualClustersClient) createOrUpdateCreateRequest(ctx context.Con
 
 // BeginDelete - Deletes a virtual cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualClusterName - The name of the virtual cluster.
 //   - options - VirtualClustersClientBeginDeleteOptions contains the optional parameters for the VirtualClustersClient.BeginDelete
@@ -147,8 +145,6 @@ func (client *VirtualClustersClient) BeginDelete(ctx context.Context, resourceGr
 
 // Delete - Deletes a virtual cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *VirtualClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualClusterName string, options *VirtualClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualClustersClient.BeginDelete"
@@ -164,8 +160,7 @@ func (client *VirtualClustersClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -174,7 +169,7 @@ func (client *VirtualClustersClient) deleteOperation(ctx context.Context, resour
 func (client *VirtualClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualClusterName string, _ *VirtualClustersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters/{virtualClusterName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -190,15 +185,13 @@ func (client *VirtualClustersClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets a virtual cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualClusterName - The name of the virtual cluster.
 //   - options - VirtualClustersClientGetOptions contains the optional parameters for the VirtualClustersClient.Get method.
@@ -216,19 +209,14 @@ func (client *VirtualClustersClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return VirtualClustersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VirtualClustersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *VirtualClustersClient) getCreateRequest(ctx context.Context, resourceGroupName string, virtualClusterName string, _ *VirtualClustersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters/{virtualClusterName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -244,15 +232,18 @@ func (client *VirtualClustersClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualClustersClient) getHandleResponse(resp *http.Response) (VirtualClustersClientGetResponse, error) {
+func (client *VirtualClustersClient) getHandleResponse(resp *http.Response, successCodes ...int) (VirtualClustersClientGetResponse, error) {
 	result := VirtualClustersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualCluster); err != nil {
 		return VirtualClustersClientGetResponse{}, err
 	}
@@ -260,8 +251,6 @@ func (client *VirtualClustersClient) getHandleResponse(resp *http.Response) (Vir
 }
 
 // NewListPager - Gets a list of all virtualClusters in the subscription.
-//
-// Generated from API version 2025-02-01-preview
 //   - options - VirtualClustersClientListOptions contains the optional parameters for the VirtualClustersClient.NewListPager
 //     method.
 func (client *VirtualClustersClient) NewListPager(options *VirtualClustersClientListOptions) *runtime.Pager[VirtualClustersClientListResponse] {
@@ -275,39 +264,53 @@ func (client *VirtualClustersClient) NewListPager(options *VirtualClustersClient
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return VirtualClustersClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VirtualClustersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *VirtualClustersClient) listCreateRequest(ctx context.Context, _ *VirtualClustersClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/virtualClusters"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *VirtualClustersClient) listCreateRequest(ctx context.Context, nextLink string, _ *VirtualClustersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/virtualClusters"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *VirtualClustersClient) listHandleResponse(resp *http.Response) (VirtualClustersClientListResponse, error) {
+func (client *VirtualClustersClient) listHandleResponse(resp *http.Response, successCodes ...int) (VirtualClustersClientListResponse, error) {
 	result := VirtualClustersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualClusterListResult); err != nil {
 		return VirtualClustersClientListResponse{}, err
 	}
@@ -315,8 +318,6 @@ func (client *VirtualClustersClient) listHandleResponse(resp *http.Response) (Vi
 }
 
 // NewListByResourceGroupPager - Gets a list of virtual clusters in a resource group.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - VirtualClustersClientListByResourceGroupOptions contains the optional parameters for the VirtualClustersClient.NewListByResourceGroupPager
 //     method.
@@ -331,43 +332,57 @@ func (client *VirtualClustersClient) NewListByResourceGroupPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return VirtualClustersClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VirtualClustersClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *VirtualClustersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *VirtualClustersClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *VirtualClustersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *VirtualClustersClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *VirtualClustersClient) listByResourceGroupHandleResponse(resp *http.Response) (VirtualClustersClientListByResourceGroupResponse, error) {
+func (client *VirtualClustersClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (VirtualClustersClientListByResourceGroupResponse, error) {
 	result := VirtualClustersClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualClusterListResult); err != nil {
 		return VirtualClustersClientListByResourceGroupResponse{}, err
 	}
@@ -376,8 +391,6 @@ func (client *VirtualClustersClient) listByResourceGroupHandleResponse(resp *htt
 
 // BeginUpdate - Updates an existing virtual cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualClusterName - The name of the virtual cluster.
 //   - parameters - The requested virtual cluster resource state.
@@ -402,8 +415,6 @@ func (client *VirtualClustersClient) BeginUpdate(ctx context.Context, resourceGr
 
 // Update - Updates an existing virtual cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *VirtualClustersClient) update(ctx context.Context, resourceGroupName string, virtualClusterName string, parameters VirtualClusterUpdate, options *VirtualClustersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualClustersClient.BeginUpdate"
@@ -419,8 +430,7 @@ func (client *VirtualClustersClient) update(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -429,7 +439,7 @@ func (client *VirtualClustersClient) update(ctx context.Context, resourceGroupNa
 func (client *VirtualClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, virtualClusterName string, parameters VirtualClusterUpdate, _ *VirtualClustersClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters/{virtualClusterName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -445,8 +455,8 @@ func (client *VirtualClustersClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -457,8 +467,6 @@ func (client *VirtualClustersClient) updateCreateRequest(ctx context.Context, re
 
 // BeginUpdateDNSServers - Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualClusterName - The name of the virtual cluster.
 //   - options - VirtualClustersClientBeginUpdateDNSServersOptions contains the optional parameters for the VirtualClustersClient.BeginUpdateDNSServers
@@ -482,8 +490,6 @@ func (client *VirtualClustersClient) BeginUpdateDNSServers(ctx context.Context, 
 
 // UpdateDNSServers - Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *VirtualClustersClient) updateDNSServers(ctx context.Context, resourceGroupName string, virtualClusterName string, options *VirtualClustersClientBeginUpdateDNSServersOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualClustersClient.BeginUpdateDNSServers"
@@ -499,8 +505,7 @@ func (client *VirtualClustersClient) updateDNSServers(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -509,7 +514,7 @@ func (client *VirtualClustersClient) updateDNSServers(ctx context.Context, resou
 func (client *VirtualClustersClient) updateDNSServersCreateRequest(ctx context.Context, resourceGroupName string, virtualClusterName string, _ *VirtualClustersClientBeginUpdateDNSServersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters/{virtualClusterName}/updateManagedInstanceDnsServers"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -525,8 +530,8 @@ func (client *VirtualClustersClient) updateDNSServersCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

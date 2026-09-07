@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/IpGroupsCreate.json
+// Generated from example definition: 2025-09-01/IpGroupsCreate.json
 func ExampleIPGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleIPGroupsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/IpGroupsDelete.json
+// Generated from example definition: 2025-09-01/IpGroupsDelete.json
 func ExampleIPGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleIPGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/IpGroupsGet.json
+// Generated from example definition: 2025-09-01/IpGroupsGet.json
 func ExampleIPGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +142,7 @@ func ExampleIPGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/IpGroupsListBySubscription.json
+// Generated from example definition: 2025-09-01/IpGroupsListBySubscription.json
 func ExampleIPGroupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,7 +217,7 @@ func ExampleIPGroupsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/IpGroupsListByResourceGroup.json
+// Generated from example definition: 2025-09-01/IpGroupsListByResourceGroup.json
 func ExampleIPGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,7 +292,7 @@ func ExampleIPGroupsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/IpGroupsUpdateTags.json
+// Generated from example definition: 2025-09-01/IpGroupsUpdateTags.json
 func ExampleIPGroupsClient_UpdateGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

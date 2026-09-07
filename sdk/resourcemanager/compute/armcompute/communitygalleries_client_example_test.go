@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-03/communityGalleryExamples/CommunityGallery_Get.json
+// Generated from example definition: 2025-12-03/communityGalleryExamples/CommunityGallery_Get.json
 func ExampleCommunityGalleriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

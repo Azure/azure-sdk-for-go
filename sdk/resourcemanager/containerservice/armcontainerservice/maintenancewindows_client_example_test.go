@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-04-02-preview/MaintenanceWindowsCreateOrUpdate.json
+// Generated from example definition: 2026-06-02-preview/MaintenanceWindowsCreateOrUpdate.json
 func ExampleMaintenanceWindowsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,14 +36,14 @@ func ExampleMaintenanceWindowsClient_BeginCreateOrUpdate() {
 					DayOfWeek:     to.Ptr(armcontainerservice.WeekDaySaturday),
 				},
 			},
-			StartDate:     to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-04-05"); return t }()),
+			StartDate:     to.Ptr(time.Date(2026, time.April, 5, 0, 0, 0, 0, time.UTC)),
 			StartTime:     to.Ptr("02:00"),
 			DurationHours: to.Ptr[int32](8),
 			UTCOffset:     to.Ptr("-07:00"),
 			NotAllowedDates: []*armcontainerservice.DateSpan{
 				{
-					Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-12-23"); return t }()),
-					End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2027-01-03"); return t }()),
+					Start: to.Ptr(time.Date(2026, time.December, 23, 0, 0, 0, 0, time.UTC)),
+					End:   to.Ptr(time.Date(2027, time.January, 3, 0, 0, 0, 0, time.UTC)),
 				},
 			},
 		},
@@ -75,30 +75,30 @@ func ExampleMaintenanceWindowsClient_BeginCreateOrUpdate() {
 	// 					DayOfWeek: to.Ptr(armcontainerservice.WeekDaySaturday),
 	// 				},
 	// 			},
-	// 			StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-04-05"); return t}()),
+	// 			StartDate: to.Ptr(time.Date(2026, time.April, 5, 0, 0, 0, 0, time.UTC)),
 	// 			StartTime: to.Ptr("02:00"),
 	// 			DurationHours: to.Ptr[int32](8),
 	// 			UTCOffset: to.Ptr("-07:00"),
 	// 			NotAllowedDates: []*armcontainerservice.DateSpan{
 	// 				{
-	// 					Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-12-23"); return t}()),
-	// 					End: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2027-01-03"); return t}()),
+	// 					Start: to.Ptr(time.Date(2026, time.December, 23, 0, 0, 0, 0, time.UTC)),
+	// 					End: to.Ptr(time.Date(2027, time.January, 3, 0, 0, 0, 0, time.UTC)),
 	// 				},
 	// 			},
 	// 		},
 	// 		SystemData: &armcontainerservice.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T10:00:00Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 1, 10, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T10:00:00Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 1, 10, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-02-preview/MaintenanceWindowsDelete.json
+// Generated from example definition: 2026-06-02-preview/MaintenanceWindowsDelete.json
 func ExampleMaintenanceWindowsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleMaintenanceWindowsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-02-preview/MaintenanceWindowsGet.json
+// Generated from example definition: 2026-06-02-preview/MaintenanceWindowsGet.json
 func ExampleMaintenanceWindowsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,30 +154,30 @@ func ExampleMaintenanceWindowsClient_Get() {
 	// 					DayOfWeek: to.Ptr(armcontainerservice.WeekDaySaturday),
 	// 				},
 	// 			},
-	// 			StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-04-05"); return t}()),
+	// 			StartDate: to.Ptr(time.Date(2026, time.April, 5, 0, 0, 0, 0, time.UTC)),
 	// 			StartTime: to.Ptr("02:00"),
 	// 			DurationHours: to.Ptr[int32](8),
 	// 			UTCOffset: to.Ptr("-07:00"),
 	// 			NotAllowedDates: []*armcontainerservice.DateSpan{
 	// 				{
-	// 					Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-12-23"); return t}()),
-	// 					End: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2027-01-03"); return t}()),
+	// 					Start: to.Ptr(time.Date(2026, time.December, 23, 0, 0, 0, 0, time.UTC)),
+	// 					End: to.Ptr(time.Date(2027, time.January, 3, 0, 0, 0, 0, time.UTC)),
 	// 				},
 	// 			},
 	// 		},
 	// 		SystemData: &armcontainerservice.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T10:00:00Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 1, 10, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T10:00:00Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 1, 10, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-02-preview/MaintenanceWindowsList.json
+// Generated from example definition: 2026-06-02-preview/MaintenanceWindowsList.json
 func ExampleMaintenanceWindowsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,7 +218,7 @@ func ExampleMaintenanceWindowsClient_NewListPager() {
 		// 							DayOfWeek: to.Ptr(armcontainerservice.WeekDaySaturday),
 		// 						},
 		// 					},
-		// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-04-05"); return t}()),
+		// 					StartDate: to.Ptr(time.Date(2026, time.April, 5, 0, 0, 0, 0, time.UTC)),
 		// 					StartTime: to.Ptr("02:00"),
 		// 					DurationHours: to.Ptr[int32](8),
 		// 					UTCOffset: to.Ptr("-07:00"),
@@ -228,10 +228,10 @@ func ExampleMaintenanceWindowsClient_NewListPager() {
 		// 				SystemData: &armcontainerservice.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T10:00:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 1, 10, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T10:00:00Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 1, 10, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -258,10 +258,10 @@ func ExampleMaintenanceWindowsClient_NewListPager() {
 		// 				SystemData: &armcontainerservice.SystemData{
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-02T14:30:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 2, 14, 30, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-02T14:30:00Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 2, 14, 30, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -270,7 +270,7 @@ func ExampleMaintenanceWindowsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-02-preview/MaintenanceWindowsListBySubscription.json
+// Generated from example definition: 2026-06-02-preview/MaintenanceWindowsListBySubscription.json
 func ExampleMaintenanceWindowsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -311,7 +311,7 @@ func ExampleMaintenanceWindowsClient_NewListBySubscriptionPager() {
 		// 							DayOfWeek: to.Ptr(armcontainerservice.WeekDaySaturday),
 		// 						},
 		// 					},
-		// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-04-05"); return t}()),
+		// 					StartDate: to.Ptr(time.Date(2026, time.April, 5, 0, 0, 0, 0, time.UTC)),
 		// 					StartTime: to.Ptr("02:00"),
 		// 					DurationHours: to.Ptr[int32](8),
 		// 					UTCOffset: to.Ptr("-07:00"),
@@ -321,10 +321,10 @@ func ExampleMaintenanceWindowsClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armcontainerservice.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T10:00:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 1, 10, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T10:00:00Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 1, 10, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -351,10 +351,10 @@ func ExampleMaintenanceWindowsClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armcontainerservice.SystemData{
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-02T14:30:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 2, 14, 30, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-02T14:30:00Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 2, 14, 30, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -363,7 +363,7 @@ func ExampleMaintenanceWindowsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-02-preview/MaintenanceWindowsUpdateTags.json
+// Generated from example definition: 2026-06-02-preview/MaintenanceWindowsUpdateTags.json
 func ExampleMaintenanceWindowsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -404,24 +404,24 @@ func ExampleMaintenanceWindowsClient_UpdateTags() {
 	// 					DayOfWeek: to.Ptr(armcontainerservice.WeekDaySaturday),
 	// 				},
 	// 			},
-	// 			StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-04-05"); return t}()),
+	// 			StartDate: to.Ptr(time.Date(2026, time.April, 5, 0, 0, 0, 0, time.UTC)),
 	// 			StartTime: to.Ptr("02:00"),
 	// 			DurationHours: to.Ptr[int32](8),
 	// 			UTCOffset: to.Ptr("-07:00"),
 	// 			NotAllowedDates: []*armcontainerservice.DateSpan{
 	// 				{
-	// 					Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-12-23"); return t}()),
-	// 					End: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2027-01-03"); return t}()),
+	// 					Start: to.Ptr(time.Date(2026, time.December, 23, 0, 0, 0, 0, time.UTC)),
+	// 					End: to.Ptr(time.Date(2027, time.January, 3, 0, 0, 0, 0, time.UTC)),
 	// 				},
 	// 			},
 	// 		},
 	// 		SystemData: &armcontainerservice.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T10:00:00Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 1, 10, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T12:00:00Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 1, 12, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }

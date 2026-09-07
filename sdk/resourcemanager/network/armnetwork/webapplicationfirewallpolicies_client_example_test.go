@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/WafPolicyCreateOrUpdate.json
+// Generated from example definition: 2025-09-01/WafPolicyCreateOrUpdate.json
 func ExampleWebApplicationFirewallPoliciesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -679,7 +679,7 @@ func ExampleWebApplicationFirewallPoliciesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/WafPolicyDelete.json
+// Generated from example definition: 2025-09-01/WafPolicyDelete.json
 func ExampleWebApplicationFirewallPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -705,7 +705,7 @@ func ExampleWebApplicationFirewallPoliciesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/WafPolicyGet.json
+// Generated from example definition: 2025-09-01/WafPolicyGet.json
 func ExampleWebApplicationFirewallPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1122,7 +1122,7 @@ func ExampleWebApplicationFirewallPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/WafListPolicies.json
+// Generated from example definition: 2025-09-01/WafListPolicies.json
 func ExampleWebApplicationFirewallPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1365,7 +1365,7 @@ func ExampleWebApplicationFirewallPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/WafListAllPolicies.json
+// Generated from example definition: 2025-09-01/WafListAllPolicies.json
 func ExampleWebApplicationFirewallPoliciesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

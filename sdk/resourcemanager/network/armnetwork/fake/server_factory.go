@@ -507,6 +507,12 @@ type ServerFactory struct {
 	// VirtualWansServer contains the fakes for client VirtualWansClient
 	VirtualWansServer VirtualWansServer
 
+	// VmssNetworkInterfacesServer contains the fakes for client VmssNetworkInterfacesClient
+	VmssNetworkInterfacesServer VmssNetworkInterfacesServer
+
+	// VmssPublicIPAddressesServer contains the fakes for client VmssPublicIPAddressesClient
+	VmssPublicIPAddressesServer VmssPublicIPAddressesServer
+
 	// WatchersServer contains the fakes for client WatchersClient
 	WatchersServer WatchersServer
 
@@ -695,6 +701,8 @@ type ServerFactoryTransport struct {
 	trVirtualRouterPeeringsServer                           *VirtualRouterPeeringsServerTransport
 	trVirtualRoutersServer                                  *VirtualRoutersServerTransport
 	trVirtualWansServer                                     *VirtualWansServerTransport
+	trVmssNetworkInterfacesServer                           *VmssNetworkInterfacesServerTransport
+	trVmssPublicIPAddressesServer                           *VmssPublicIPAddressesServerTransport
 	trWatchersServer                                        *WatchersServerTransport
 	trWebApplicationFirewallPoliciesServer                  *WebApplicationFirewallPoliciesServerTransport
 	trWebCategoriesServer                                   *WebCategoriesServerTransport
@@ -1473,6 +1481,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "VirtualWansClient":
 		initServer(&s.trMu, &s.trVirtualWansServer, func() *VirtualWansServerTransport { return NewVirtualWansServerTransport(&s.srv.VirtualWansServer) })
 		resp, err = s.trVirtualWansServer.Do(req)
+	case "VmssNetworkInterfacesClient":
+		initServer(&s.trMu, &s.trVmssNetworkInterfacesServer, func() *VmssNetworkInterfacesServerTransport {
+			return NewVmssNetworkInterfacesServerTransport(&s.srv.VmssNetworkInterfacesServer)
+		})
+		resp, err = s.trVmssNetworkInterfacesServer.Do(req)
+	case "VmssPublicIPAddressesClient":
+		initServer(&s.trMu, &s.trVmssPublicIPAddressesServer, func() *VmssPublicIPAddressesServerTransport {
+			return NewVmssPublicIPAddressesServerTransport(&s.srv.VmssPublicIPAddressesServer)
+		})
+		resp, err = s.trVmssPublicIPAddressesServer.Do(req)
 	case "WatchersClient":
 		initServer(&s.trMu, &s.trWatchersServer, func() *WatchersServerTransport { return NewWatchersServerTransport(&s.srv.WatchersServer) })
 		resp, err = s.trWatchersServer.Do(req)

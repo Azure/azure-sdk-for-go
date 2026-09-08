@@ -1824,13 +1824,6 @@ type InterfacesClientGetVirtualMachineScaleSetIPConfigurationOptions struct {
 	Expand *string
 }
 
-// InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceOptions contains the optional parameters for the InterfacesClient.GetVirtualMachineScaleSetNetworkInterface
-// method.
-type InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceOptions struct {
-	// Expands referenced resources.
-	Expand *string
-}
-
 // InterfacesClientListAllOptions contains the optional parameters for the InterfacesClient.NewListAllPager method.
 type InterfacesClientListAllOptions struct {
 	// placeholder for future optional parameters
@@ -1863,12 +1856,6 @@ type InterfacesClientListVirtualMachineScaleSetIPConfigurationsOptions struct {
 // InterfacesClientListVirtualMachineScaleSetNetworkInterfacesOptions contains the optional parameters for the InterfacesClient.NewListVirtualMachineScaleSetNetworkInterfacesPager
 // method.
 type InterfacesClientListVirtualMachineScaleSetNetworkInterfacesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesOptions contains the optional parameters for the InterfacesClient.NewListVirtualMachineScaleSetVMNetworkInterfacesPager
-// method.
-type InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2725,13 +2712,6 @@ type PublicIPAddressesClientGetOptions struct {
 	Expand *string
 }
 
-// PublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressOptions contains the optional parameters for the PublicIPAddressesClient.GetVirtualMachineScaleSetPublicIPAddress
-// method.
-type PublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressOptions struct {
-	// Expands referenced resources.
-	Expand *string
-}
-
 // PublicIPAddressesClientListAllOptions contains the optional parameters for the PublicIPAddressesClient.NewListAllPager
 // method.
 type PublicIPAddressesClientListAllOptions struct {
@@ -2758,12 +2738,6 @@ type PublicIPAddressesClientListOptions struct {
 // PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesOptions contains the optional parameters for the PublicIPAddressesClient.NewListVirtualMachineScaleSetPublicIPAddressesPager
 // method.
 type PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesOptions contains the optional parameters for the PublicIPAddressesClient.NewListVirtualMachineScaleSetVMPublicIPAddressesPager
-// method.
-type PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5134,6 +5108,32 @@ type VirtualWansClientListOptions struct {
 
 // VirtualWansClientUpdateTagsOptions contains the optional parameters for the VirtualWansClient.UpdateTags method.
 type VirtualWansClientUpdateTagsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VmssNetworkInterfacesClientGetVirtualMachineScaleSetNetworkInterfaceOptions contains the optional parameters for the VmssNetworkInterfacesClient.GetVirtualMachineScaleSetNetworkInterface
+// method.
+type VmssNetworkInterfacesClientGetVirtualMachineScaleSetNetworkInterfaceOptions struct {
+	// Expands referenced resources.
+	Expand *string
+}
+
+// VmssNetworkInterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesOptions contains the optional parameters for the
+// VmssNetworkInterfacesClient.NewListVirtualMachineScaleSetVMNetworkInterfacesPager method.
+type VmssNetworkInterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VmssPublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressOptions contains the optional parameters for the VmssPublicIPAddressesClient.GetVirtualMachineScaleSetPublicIPAddress
+// method.
+type VmssPublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressOptions struct {
+	// Expands referenced resources.
+	Expand *string
+}
+
+// VmssPublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesOptions contains the optional parameters for the
+// VmssPublicIPAddressesClient.NewListVirtualMachineScaleSetVMPublicIPAddressesPager method.
+type VmssPublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesOptions struct {
 	// placeholder for future optional parameters
 }
 

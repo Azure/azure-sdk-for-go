@@ -45,10 +45,6 @@ type PublicIPAddressesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetCloudServicePublicIPAddress func(ctx context.Context, resourceGroupName string, cloudServiceName string, roleInstanceName string, networkInterfaceName string, ipConfigurationName string, publicIPAddressName string, options *armnetwork.PublicIPAddressesClientGetCloudServicePublicIPAddressOptions) (resp azfake.Responder[armnetwork.PublicIPAddressesClientGetCloudServicePublicIPAddressResponse], errResp azfake.ErrorResponder)
 
-	// GetVirtualMachineScaleSetPublicIPAddress is the fake for method PublicIPAddressesClient.GetVirtualMachineScaleSetPublicIPAddress
-	// HTTP status codes to indicate success: http.StatusOK
-	GetVirtualMachineScaleSetPublicIPAddress func(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, publicIPAddressName string, options *armnetwork.PublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressOptions) (resp azfake.Responder[armnetwork.PublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressResponse], errResp azfake.ErrorResponder)
-
 	// NewListPager is the fake for method PublicIPAddressesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, options *armnetwork.PublicIPAddressesClientListOptions) (resp azfake.PagerResponder[armnetwork.PublicIPAddressesClientListResponse])
@@ -68,10 +64,6 @@ type PublicIPAddressesServer struct {
 	// NewListVirtualMachineScaleSetPublicIPAddressesPager is the fake for method PublicIPAddressesClient.NewListVirtualMachineScaleSetPublicIPAddressesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListVirtualMachineScaleSetPublicIPAddressesPager func(resourceGroupName string, virtualMachineScaleSetName string, options *armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesOptions) (resp azfake.PagerResponder[armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse])
-
-	// NewListVirtualMachineScaleSetVMPublicIPAddressesPager is the fake for method PublicIPAddressesClient.NewListVirtualMachineScaleSetVMPublicIPAddressesPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListVirtualMachineScaleSetVMPublicIPAddressesPager func(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, options *armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesOptions) (resp azfake.PagerResponder[armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse])
 
 	// BeginReserveCloudServicePublicIPAddress is the fake for method PublicIPAddressesClient.BeginReserveCloudServicePublicIPAddress
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -97,7 +89,6 @@ func NewPublicIPAddressesServerTransport(srv *PublicIPAddressesServer) *PublicIP
 		newListCloudServicePublicIPAddressesPager:             newTracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListCloudServicePublicIPAddressesResponse]](),
 		newListCloudServiceRoleInstancePublicIPAddressesPager: newTracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse]](),
 		newListVirtualMachineScaleSetPublicIPAddressesPager:   newTracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse]](),
-		newListVirtualMachineScaleSetVMPublicIPAddressesPager: newTracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse]](),
 		beginReserveCloudServicePublicIPAddress:               newTracker[azfake.PollerResponder[armnetwork.PublicIPAddressesClientReserveCloudServicePublicIPAddressResponse]](),
 	}
 }
@@ -115,7 +106,6 @@ type PublicIPAddressesServerTransport struct {
 	newListCloudServicePublicIPAddressesPager             *tracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListCloudServicePublicIPAddressesResponse]]
 	newListCloudServiceRoleInstancePublicIPAddressesPager *tracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse]]
 	newListVirtualMachineScaleSetPublicIPAddressesPager   *tracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse]]
-	newListVirtualMachineScaleSetVMPublicIPAddressesPager *tracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse]]
 	beginReserveCloudServicePublicIPAddress               *tracker[azfake.PollerResponder[armnetwork.PublicIPAddressesClientReserveCloudServicePublicIPAddressResponse]]
 }
 
@@ -152,8 +142,6 @@ func (p *PublicIPAddressesServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = p.dispatchGet(req)
 			case "PublicIPAddressesClient.GetCloudServicePublicIPAddress":
 				res.resp, res.err = p.dispatchGetCloudServicePublicIPAddress(req)
-			case "PublicIPAddressesClient.GetVirtualMachineScaleSetPublicIPAddress":
-				res.resp, res.err = p.dispatchGetVirtualMachineScaleSetPublicIPAddress(req)
 			case "PublicIPAddressesClient.NewListPager":
 				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PublicIPAddressesClient.NewListAllPager":
@@ -164,8 +152,6 @@ func (p *PublicIPAddressesServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = p.dispatchNewListCloudServiceRoleInstancePublicIPAddressesPager(req)
 			case "PublicIPAddressesClient.NewListVirtualMachineScaleSetPublicIPAddressesPager":
 				res.resp, res.err = p.dispatchNewListVirtualMachineScaleSetPublicIPAddressesPager(req)
-			case "PublicIPAddressesClient.NewListVirtualMachineScaleSetVMPublicIPAddressesPager":
-				res.resp, res.err = p.dispatchNewListVirtualMachineScaleSetVMPublicIPAddressesPager(req)
 			case "PublicIPAddressesClient.BeginReserveCloudServicePublicIPAddress":
 				res.resp, res.err = p.dispatchBeginReserveCloudServicePublicIPAddress(req)
 			case "PublicIPAddressesClient.UpdateTags":
@@ -468,63 +454,6 @@ func (p *PublicIPAddressesServerTransport) dispatchGetCloudServicePublicIPAddres
 	return resp, nil
 }
 
-func (p *PublicIPAddressesServerTransport) dispatchGetVirtualMachineScaleSetPublicIPAddress(req *http.Request) (*http.Response, error) {
-	if p.srv.GetVirtualMachineScaleSetPublicIPAddress == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetVirtualMachineScaleSetPublicIPAddress not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<virtualMachineScaleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachines/(?P<virtualmachineIndex>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkInterfaces/(?P<networkInterfaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ipconfigurations/(?P<ipConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/publicipaddresses/(?P<publicIpAddressName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 8 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	virtualMachineScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualMachineScaleSetName")])
-	if err != nil {
-		return nil, err
-	}
-	virtualmachineIndexParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualmachineIndex")])
-	if err != nil {
-		return nil, err
-	}
-	networkInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
-	if err != nil {
-		return nil, err
-	}
-	ipConfigurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ipConfigurationName")])
-	if err != nil {
-		return nil, err
-	}
-	publicIPAddressNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("publicIpAddressName")])
-	if err != nil {
-		return nil, err
-	}
-	expandParam := getOptional(qp.Get("$expand"))
-	var options *armnetwork.PublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressOptions
-	if expandParam != nil {
-		options = &armnetwork.PublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressOptions{
-			Expand: expandParam,
-		}
-	}
-	respr, errRespr := p.srv.GetVirtualMachineScaleSetPublicIPAddress(req.Context(), resourceGroupNameParam, virtualMachineScaleSetNameParam, virtualmachineIndexParam, networkInterfaceNameParam, ipConfigurationNameParam, publicIPAddressNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PublicIPAddress, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (p *PublicIPAddressesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -726,59 +655,6 @@ func (p *PublicIPAddressesServerTransport) dispatchNewListVirtualMachineScaleSet
 	}
 	if !server.PagerResponderMore(newListVirtualMachineScaleSetPublicIPAddressesPager) {
 		p.newListVirtualMachineScaleSetPublicIPAddressesPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (p *PublicIPAddressesServerTransport) dispatchNewListVirtualMachineScaleSetVMPublicIPAddressesPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListVirtualMachineScaleSetVMPublicIPAddressesPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListVirtualMachineScaleSetVMPublicIPAddressesPager not implemented")}
-	}
-	newListVirtualMachineScaleSetVMPublicIPAddressesPager := p.newListVirtualMachineScaleSetVMPublicIPAddressesPager.get(req)
-	if newListVirtualMachineScaleSetVMPublicIPAddressesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<virtualMachineScaleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachines/(?P<virtualmachineIndex>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkInterfaces/(?P<networkInterfaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ipconfigurations/(?P<ipConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/publicipaddresses`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 7 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		virtualMachineScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualMachineScaleSetName")])
-		if err != nil {
-			return nil, err
-		}
-		virtualmachineIndexParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualmachineIndex")])
-		if err != nil {
-			return nil, err
-		}
-		networkInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
-		if err != nil {
-			return nil, err
-		}
-		ipConfigurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ipConfigurationName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListVirtualMachineScaleSetVMPublicIPAddressesPager(resourceGroupNameParam, virtualMachineScaleSetNameParam, virtualmachineIndexParam, networkInterfaceNameParam, ipConfigurationNameParam, nil)
-		newListVirtualMachineScaleSetVMPublicIPAddressesPager = &resp
-		p.newListVirtualMachineScaleSetVMPublicIPAddressesPager.add(req, newListVirtualMachineScaleSetVMPublicIPAddressesPager)
-		server.PagerResponderInjectNextLinks(newListVirtualMachineScaleSetVMPublicIPAddressesPager, req, func(page *armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListVirtualMachineScaleSetVMPublicIPAddressesPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListVirtualMachineScaleSetVMPublicIPAddressesPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListVirtualMachineScaleSetVMPublicIPAddressesPager) {
-		p.newListVirtualMachineScaleSetVMPublicIPAddressesPager.remove(req)
 	}
 	return resp, nil
 }

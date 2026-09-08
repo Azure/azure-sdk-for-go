@@ -1342,6 +1342,22 @@ func (c *ClientFactory) NewVirtualWansClient() *VirtualWansClient {
 	}
 }
 
+// NewVmssNetworkInterfacesClient creates a new instance of VmssNetworkInterfacesClient.
+func (c *ClientFactory) NewVmssNetworkInterfacesClient() *VmssNetworkInterfacesClient {
+	return &VmssNetworkInterfacesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewVmssPublicIPAddressesClient creates a new instance of VmssPublicIPAddressesClient.
+func (c *ClientFactory) NewVmssPublicIPAddressesClient() *VmssPublicIPAddressesClient {
+	return &VmssPublicIPAddressesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewWatchersClient creates a new instance of WatchersClient.
 func (c *ClientFactory) NewWatchersClient() *WatchersClient {
 	return &WatchersClient{

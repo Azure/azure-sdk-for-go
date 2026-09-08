@@ -41,19 +41,14 @@ func CreateResourceGroup(ctx context.Context, subscriptionId string, cred azcore
 	}, nil
 }
 
-// DeleteResourceGroup will delete the resource group with the given name and wait for the deletion to complete.
-// It returns the completed poller.
+// DeleteResourceGroup will delete the resource group with the given name.
+// It will do the deletion asynchronously and return the poller which can be used to wait for the result.
 func DeleteResourceGroup(ctx context.Context, subscriptionId string, cred azcore.TokenCredential, options *arm.ClientOptions, resourceGroupName string) (*runtime.Poller[armresources.ResourceGroupsClientDeleteResponse], error) {
 	rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, cred, options)
 	if err != nil {
 		return nil, err
 	}
-	poller, err := rgClient.BeginDelete(ctx, resourceGroupName, nil)
-	if err != nil {
-		return nil, err
-	}
-	_, err = PollForTest(ctx, poller)
-	return poller, err
+	return rgClient.BeginDelete(ctx, resourceGroupName, nil)
 }
 
 // CreateDeployment will create a resource using arm template.

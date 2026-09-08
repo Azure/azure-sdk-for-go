@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-01-preview/ContainerGroupCreateConfidential.json
+// Generated from example definition: 2026-09-01-preview/ContainerGroupCreateConfidential.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate_confidentialContainerGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_confidentialContainerGroup
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/ContainerGroupCreateOrUpdateStandbyPool.json
+// Generated from example definition: 2026-09-01-preview/ContainerGroupCreateOrUpdateStandbyPool.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupCreateOrUpdateWithStandbyPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -252,7 +252,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupCreateOrUpda
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/ContainerGroupEncryptionProperties.json
+// Generated from example definition: 2026-09-01-preview/ContainerGroupEncryptionProperties.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupWithEncryptionProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -395,7 +395,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupWithEncrypti
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/ContainerGroupExtensions.json
+// Generated from example definition: 2026-09-01-preview/ContainerGroupExtensions.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupCreateWithExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -554,7 +554,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupCreateWithEx
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/ContainerGroupsCreateOrUpdate.json
+// Generated from example definition: 2026-09-01-preview/ContainerGroupsCreateOrUpdate.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -793,7 +793,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpd
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/ContainerGroupsCreateOrUpdateManagedIdentityAzureFileshare.json
+// Generated from example definition: 2026-09-01-preview/ContainerGroupsCreateOrUpdateManagedIdentityAzureFileshare.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpdateManagedIdentityAzureFileshare() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1043,7 +1043,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpd
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/ContainerGroupsCreateOrUpdateSecretReference.json
+// Generated from example definition: 2026-09-01-preview/ContainerGroupsCreateOrUpdateSecretReference.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpdateSecretReference() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1362,7 +1362,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpd
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/ContainerGroupsCreatePriority.json
+// Generated from example definition: 2026-09-01-preview/ContainerGroupsCreatePriority.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateWithPriority() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1459,7 +1459,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateWithP
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/ContainerGroupsDelete.json
+// Generated from example definition: 2026-09-01-preview/ContainerGroupsDelete.json
 func ExampleContainerGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1554,7 +1554,7 @@ func ExampleContainerGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/ContainerGroupsGetPriority.json
+// Generated from example definition: 2026-09-01-preview/ContainerGroupsGetPriority.json
 func ExampleContainerGroupsClient_Get_containerGroupsGetWithPriority() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1655,7 +1655,7 @@ func ExampleContainerGroupsClient_Get_containerGroupsGetWithPriority() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/ContainerGroupsGet_Failed.json
+// Generated from example definition: 2026-09-01-preview/ContainerGroupsGet_Failed.json
 func ExampleContainerGroupsClient_Get_containerGroupsGetFailed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1782,7 +1782,7 @@ func ExampleContainerGroupsClient_Get_containerGroupsGetFailed() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/ContainerGroupsGet_Succeeded.json
+// Generated from example definition: 2026-09-01-preview/ContainerGroupsGet_Succeeded.json
 func ExampleContainerGroupsClient_Get_containerGroupsGetSucceeded() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1873,7 +1873,7 @@ func ExampleContainerGroupsClient_Get_containerGroupsGetSucceeded() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/ContainerGroupsGetOutboundNetworkDependenciesEndpoints.json
+// Generated from example definition: 2026-09-01-preview/ContainerGroupsGetOutboundNetworkDependenciesEndpoints.json
 func ExampleContainerGroupsClient_GetOutboundNetworkDependenciesEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1897,7 +1897,7 @@ func ExampleContainerGroupsClient_GetOutboundNetworkDependenciesEndpoints() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/ContainerGroupsList.json
+// Generated from example definition: 2026-09-01-preview/ContainerGroupsList.json
 func ExampleContainerGroupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1997,7 +1997,7 @@ func ExampleContainerGroupsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/ContainerGroupsListByResourceGroup.json
+// Generated from example definition: 2026-09-01-preview/ContainerGroupsListByResourceGroup.json
 func ExampleContainerGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2097,7 +2097,7 @@ func ExampleContainerGroupsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/ContainerGroupsRestart.json
+// Generated from example definition: 2026-09-01-preview/ContainerGroupsRestart.json
 func ExampleContainerGroupsClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2118,7 +2118,7 @@ func ExampleContainerGroupsClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/ContainerGroupsStart.json
+// Generated from example definition: 2026-09-01-preview/ContainerGroupsStart.json
 func ExampleContainerGroupsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2139,7 +2139,7 @@ func ExampleContainerGroupsClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/ContainerGroupsStop.json
+// Generated from example definition: 2026-09-01-preview/ContainerGroupsStop.json
 func ExampleContainerGroupsClient_Stop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2156,7 +2156,7 @@ func ExampleContainerGroupsClient_Stop() {
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/ContainerGroupsUpdate.json
+// Generated from example definition: 2026-09-01-preview/ContainerGroupsUpdate.json
 func ExampleContainerGroupsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

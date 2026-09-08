@@ -33,6 +33,9 @@ type ServerFactory struct {
 	// LocationServer contains the fakes for client LocationClient
 	LocationServer LocationServer
 
+	// ManagedVirtualNodePoolsServer contains the fakes for client ManagedVirtualNodePoolsClient
+	ManagedVirtualNodePoolsServer ManagedVirtualNodePoolsServer
+
 	// NGroupsServer contains the fakes for client NGroupsClient
 	NGroupsServer NGroupsServer
 
@@ -63,6 +66,7 @@ type ServerFactoryTransport struct {
 	trContainerGroupsServer              *ContainerGroupsServerTransport
 	trContainersServer                   *ContainersServerTransport
 	trLocationServer                     *LocationServerTransport
+	trManagedVirtualNodePoolsServer      *ManagedVirtualNodePoolsServerTransport
 	trNGroupsServer                      *NGroupsServerTransport
 	trOperationsServer                   *OperationsServerTransport
 	trSubnetServiceAssociationLinkServer *SubnetServiceAssociationLinkServerTransport
@@ -103,6 +107,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "LocationClient":
 		initServer(&s.trMu, &s.trLocationServer, func() *LocationServerTransport { return NewLocationServerTransport(&s.srv.LocationServer) })
 		resp, err = s.trLocationServer.Do(req)
+	case "ManagedVirtualNodePoolsClient":
+		initServer(&s.trMu, &s.trManagedVirtualNodePoolsServer, func() *ManagedVirtualNodePoolsServerTransport {
+			return NewManagedVirtualNodePoolsServerTransport(&s.srv.ManagedVirtualNodePoolsServer)
+		})
+		resp, err = s.trManagedVirtualNodePoolsServer.Do(req)
 	case "NGroupsClient":
 		initServer(&s.trMu, &s.trNGroupsServer, func() *NGroupsServerTransport { return NewNGroupsServerTransport(&s.srv.NGroupsServer) })
 		resp, err = s.trNGroupsServer.Do(req)

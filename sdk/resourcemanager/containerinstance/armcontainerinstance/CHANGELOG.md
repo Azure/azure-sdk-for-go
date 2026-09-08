@@ -1,10 +1,11 @@
 # Release History
 
-## 3.0.0-beta.2 (2026-07-23)
+## 3.0.0-beta.2 (2026-09-08)
 ### Features Added
 
 - New enum type `AiAgentsGroupProvisioningState` with values `AiAgentsGroupProvisioningStateAccepted`, `AiAgentsGroupProvisioningStateCanceled`, `AiAgentsGroupProvisioningStateDeleting`, `AiAgentsGroupProvisioningStateFailed`, `AiAgentsGroupProvisioningStateSucceeded`, `AiAgentsGroupProvisioningStateUpdating`
 - New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New enum type `ManagedVirtualNodePoolProvisioningState` with values `ManagedVirtualNodePoolProvisioningStateAccepted`, `ManagedVirtualNodePoolProvisioningStateCanceled`, `ManagedVirtualNodePoolProvisioningStateDeleting`, `ManagedVirtualNodePoolProvisioningStateFailed`, `ManagedVirtualNodePoolProvisioningStateSucceeded`, `ManagedVirtualNodePoolProvisioningStateUpdating`
 - New function `NewAiAgentsGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AiAgentsGroupsClient, error)`
 - New function `*AiAgentsGroupsClient.Connect(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *AiAgentsGroupsClientConnectOptions) (AiAgentsGroupsClientConnectResponse, error)`
 - New function `*AiAgentsGroupsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, resource AiAgentsGroup, options *AiAgentsGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AiAgentsGroupsClientCreateOrUpdateResponse], error)`
@@ -14,6 +15,14 @@
 - New function `*AiAgentsGroupsClient.NewListBySubscriptionPager(options *AiAgentsGroupsClientListBySubscriptionOptions) *runtime.Pager[AiAgentsGroupsClientListBySubscriptionResponse]`
 - New function `*AiAgentsGroupsClient.BeginUpdate(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, properties AiAgentsGroupTagsUpdate, options *AiAgentsGroupsClientBeginUpdateOptions) (*runtime.Poller[AiAgentsGroupsClientUpdateResponse], error)`
 - New function `*ClientFactory.NewAiAgentsGroupsClient() *AiAgentsGroupsClient`
+- New function `*ClientFactory.NewManagedVirtualNodePoolsClient() *ManagedVirtualNodePoolsClient`
+- New function `NewManagedVirtualNodePoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedVirtualNodePoolsClient, error)`
+- New function `*ManagedVirtualNodePoolsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedVirtualNodePoolName string, resource ManagedVirtualNodePool, options *ManagedVirtualNodePoolsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ManagedVirtualNodePoolsClientCreateOrUpdateResponse], error)`
+- New function `*ManagedVirtualNodePoolsClient.BeginDelete(ctx context.Context, resourceGroupName string, managedVirtualNodePoolName string, options *ManagedVirtualNodePoolsClientBeginDeleteOptions) (*runtime.Poller[ManagedVirtualNodePoolsClientDeleteResponse], error)`
+- New function `*ManagedVirtualNodePoolsClient.Get(ctx context.Context, resourceGroupName string, managedVirtualNodePoolName string, options *ManagedVirtualNodePoolsClientGetOptions) (ManagedVirtualNodePoolsClientGetResponse, error)`
+- New function `*ManagedVirtualNodePoolsClient.NewListByResourceGroupPager(resourceGroupName string, options *ManagedVirtualNodePoolsClientListByResourceGroupOptions) *runtime.Pager[ManagedVirtualNodePoolsClientListByResourceGroupResponse]`
+- New function `*ManagedVirtualNodePoolsClient.NewListBySubscriptionPager(options *ManagedVirtualNodePoolsClientListBySubscriptionOptions) *runtime.Pager[ManagedVirtualNodePoolsClientListBySubscriptionResponse]`
+- New function `*ManagedVirtualNodePoolsClient.BeginUpdate(ctx context.Context, resourceGroupName string, managedVirtualNodePoolName string, properties ManagedVirtualNodePoolUpdate, options *ManagedVirtualNodePoolsClientBeginUpdateOptions) (*runtime.Poller[ManagedVirtualNodePoolsClientUpdateResponse], error)`
 - New struct `AiAgentsGroup`
 - New struct `AiAgentsGroupAccessToken`
 - New struct `AiAgentsGroupListResult`
@@ -21,6 +30,12 @@
 - New struct `AiAgentsGroupProperties`
 - New struct `AiAgentsGroupTagsUpdate`
 - New struct `ManagedServiceIdentity`
+- New struct `ManagedVirtualNodePool`
+- New struct `ManagedVirtualNodePoolContainerGroup`
+- New struct `ManagedVirtualNodePoolListResult`
+- New struct `ManagedVirtualNodePoolPatchProperties`
+- New struct `ManagedVirtualNodePoolProperties`
+- New struct `ManagedVirtualNodePoolUpdate`
 - New struct `SubnetReference`
 - New struct `UserAssignedIdentity`
 - New field `UserAssignedIdentityClientID` in struct `AzureFileVolume`

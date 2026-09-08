@@ -19,7 +19,7 @@ import (
 // AiAgentsGroupsClient contains the methods for the AiAgentsGroups group.
 // Don't use this type directly, use NewAiAgentsGroupsClient() instead.
 //
-// Generated from API version 2026-08-01-preview
+// Generated from API version 2026-09-01-preview
 type AiAgentsGroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type AiAgentsGroupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAiAgentsGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AiAgentsGroupsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *AiAgentsGroupsClient) Connect(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AiAgentsGroupsClientConnectResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AiAgentsGroupsClientConnectResponse{}, err
-	}
-	resp, err := client.connectHandleResponse(httpResp)
-	return resp, err
+	return client.connectHandleResponse(httpResp, http.StatusOK)
 }
 
 // connectCreateRequest creates the Connect request.
 func (client *AiAgentsGroupsClient) connectCreateRequest(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, _ *AiAgentsGroupsClientConnectOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/aiAgentsGroups/{aiAgentsGroupName}/connect"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -90,15 +88,18 @@ func (client *AiAgentsGroupsClient) connectCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // connectHandleResponse handles the Connect response.
-func (client *AiAgentsGroupsClient) connectHandleResponse(resp *http.Response) (AiAgentsGroupsClientConnectResponse, error) {
+func (client *AiAgentsGroupsClient) connectHandleResponse(resp *http.Response, successCodes ...int) (AiAgentsGroupsClientConnectResponse, error) {
 	result := AiAgentsGroupsClientConnectResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AiAgentsGroupAccessToken); err != nil {
 		return AiAgentsGroupsClientConnectResponse{}, err
 	}
@@ -150,8 +151,7 @@ func (client *AiAgentsGroupsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -160,7 +160,7 @@ func (client *AiAgentsGroupsClient) createOrUpdate(ctx context.Context, resource
 func (client *AiAgentsGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, resource AiAgentsGroup, _ *AiAgentsGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/aiAgentsGroups/{aiAgentsGroupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -176,7 +176,7 @@ func (client *AiAgentsGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -230,8 +230,7 @@ func (client *AiAgentsGroupsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -240,7 +239,7 @@ func (client *AiAgentsGroupsClient) deleteOperation(ctx context.Context, resourc
 func (client *AiAgentsGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, _ *AiAgentsGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/aiAgentsGroups/{aiAgentsGroupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -256,7 +255,7 @@ func (client *AiAgentsGroupsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -282,19 +281,14 @@ func (client *AiAgentsGroupsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return AiAgentsGroupsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AiAgentsGroupsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *AiAgentsGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, _ *AiAgentsGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/aiAgentsGroups/{aiAgentsGroupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -310,15 +304,18 @@ func (client *AiAgentsGroupsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AiAgentsGroupsClient) getHandleResponse(resp *http.Response) (AiAgentsGroupsClientGetResponse, error) {
+func (client *AiAgentsGroupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AiAgentsGroupsClientGetResponse, error) {
 	result := AiAgentsGroupsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AiAgentsGroup); err != nil {
 		return AiAgentsGroupsClientGetResponse{}, err
 	}
@@ -342,43 +339,57 @@ func (client *AiAgentsGroupsClient) NewListByResourceGroupPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return AiAgentsGroupsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AiAgentsGroupsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AiAgentsGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *AiAgentsGroupsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/aiAgentsGroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AiAgentsGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *AiAgentsGroupsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/aiAgentsGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AiAgentsGroupsClient) listByResourceGroupHandleResponse(resp *http.Response) (AiAgentsGroupsClientListByResourceGroupResponse, error) {
+func (client *AiAgentsGroupsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (AiAgentsGroupsClientListByResourceGroupResponse, error) {
 	result := AiAgentsGroupsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AiAgentsGroupListResult); err != nil {
 		return AiAgentsGroupsClientListByResourceGroupResponse{}, err
 	}
@@ -401,39 +412,53 @@ func (client *AiAgentsGroupsClient) NewListBySubscriptionPager(options *AiAgents
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return AiAgentsGroupsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AiAgentsGroupsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *AiAgentsGroupsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *AiAgentsGroupsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/aiAgentsGroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AiAgentsGroupsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *AiAgentsGroupsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/aiAgentsGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *AiAgentsGroupsClient) listBySubscriptionHandleResponse(resp *http.Response) (AiAgentsGroupsClientListBySubscriptionResponse, error) {
+func (client *AiAgentsGroupsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (AiAgentsGroupsClientListBySubscriptionResponse, error) {
 	result := AiAgentsGroupsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AiAgentsGroupListResult); err != nil {
 		return AiAgentsGroupsClientListBySubscriptionResponse{}, err
 	}
@@ -485,8 +510,7 @@ func (client *AiAgentsGroupsClient) update(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -495,7 +519,7 @@ func (client *AiAgentsGroupsClient) update(ctx context.Context, resourceGroupNam
 func (client *AiAgentsGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, properties AiAgentsGroupTagsUpdate, _ *AiAgentsGroupsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/aiAgentsGroups/{aiAgentsGroupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -511,7 +535,7 @@ func (client *AiAgentsGroupsClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

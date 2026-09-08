@@ -19,7 +19,7 @@ import (
 // SubnetServiceAssociationLinkClient contains the methods for the SubnetServiceAssociationLink group.
 // Don't use this type directly, use NewSubnetServiceAssociationLinkClient() instead.
 //
-// Generated from API version 2026-08-01-preview
+// Generated from API version 2026-09-01-preview
 type SubnetServiceAssociationLinkClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -120,7 +120,7 @@ func (client *SubnetServiceAssociationLinkClient) deleteCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

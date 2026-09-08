@@ -183,6 +183,44 @@ type LocationClientListUsageOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ManagedVirtualNodePoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedVirtualNodePoolsClient.BeginCreateOrUpdate
+// method.
+type ManagedVirtualNodePoolsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ManagedVirtualNodePoolsClientBeginDeleteOptions contains the optional parameters for the ManagedVirtualNodePoolsClient.BeginDelete
+// method.
+type ManagedVirtualNodePoolsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ManagedVirtualNodePoolsClientBeginUpdateOptions contains the optional parameters for the ManagedVirtualNodePoolsClient.BeginUpdate
+// method.
+type ManagedVirtualNodePoolsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ManagedVirtualNodePoolsClientGetOptions contains the optional parameters for the ManagedVirtualNodePoolsClient.Get method.
+type ManagedVirtualNodePoolsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedVirtualNodePoolsClientListByResourceGroupOptions contains the optional parameters for the ManagedVirtualNodePoolsClient.NewListByResourceGroupPager
+// method.
+type ManagedVirtualNodePoolsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedVirtualNodePoolsClientListBySubscriptionOptions contains the optional parameters for the ManagedVirtualNodePoolsClient.NewListBySubscriptionPager
+// method.
+type ManagedVirtualNodePoolsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // NGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the NGroupsClient.BeginCreateOrUpdate method.
 type NGroupsClientBeginCreateOrUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.

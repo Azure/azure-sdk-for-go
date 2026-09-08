@@ -186,6 +186,41 @@ type LocationClientListUsageResponse struct {
 	UsageListResult
 }
 
+// ManagedVirtualNodePoolsClientCreateOrUpdateResponse contains the response from method ManagedVirtualNodePoolsClient.BeginCreateOrUpdate.
+type ManagedVirtualNodePoolsClientCreateOrUpdateResponse struct {
+	// A managed virtual node pool resource.
+	ManagedVirtualNodePool
+}
+
+// ManagedVirtualNodePoolsClientDeleteResponse contains the response from method ManagedVirtualNodePoolsClient.BeginDelete.
+type ManagedVirtualNodePoolsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ManagedVirtualNodePoolsClientGetResponse contains the response from method ManagedVirtualNodePoolsClient.Get.
+type ManagedVirtualNodePoolsClientGetResponse struct {
+	// A managed virtual node pool resource.
+	ManagedVirtualNodePool
+}
+
+// ManagedVirtualNodePoolsClientListByResourceGroupResponse contains the response from method ManagedVirtualNodePoolsClient.NewListByResourceGroupPager.
+type ManagedVirtualNodePoolsClientListByResourceGroupResponse struct {
+	// The response of a ManagedVirtualNodePool list operation.
+	ManagedVirtualNodePoolListResult
+}
+
+// ManagedVirtualNodePoolsClientListBySubscriptionResponse contains the response from method ManagedVirtualNodePoolsClient.NewListBySubscriptionPager.
+type ManagedVirtualNodePoolsClientListBySubscriptionResponse struct {
+	// The response of a ManagedVirtualNodePool list operation.
+	ManagedVirtualNodePoolListResult
+}
+
+// ManagedVirtualNodePoolsClientUpdateResponse contains the response from method ManagedVirtualNodePoolsClient.BeginUpdate.
+type ManagedVirtualNodePoolsClientUpdateResponse struct {
+	// A managed virtual node pool resource.
+	ManagedVirtualNodePool
+}
+
 // NGroupsClientCreateOrUpdateResponse contains the response from method NGroupsClient.BeginCreateOrUpdate.
 type NGroupsClientCreateOrUpdateResponse struct {
 	// Describes the NGroups resource.

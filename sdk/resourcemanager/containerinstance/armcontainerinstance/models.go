@@ -973,6 +973,110 @@ type ManagedServiceIdentity struct {
 	TenantID *string
 }
 
+// ManagedVirtualNodePool - A managed virtual node pool resource.
+type ManagedVirtualNodePool struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// The properties of the managed virtual node pool.
+	Properties *ManagedVirtualNodePoolProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ManagedVirtualNodePoolContainerGroup - A container group associated with a managed virtual node pool.
+type ManagedVirtualNodePoolContainerGroup struct {
+	// READ-ONLY; The Azure resource ID of the container group.
+	ResourceID *string
+
+	// READ-ONLY; The state of the container group.
+	State *string
+
+	// READ-ONLY; The type of the container group.
+	Type *string
+}
+
+// ManagedVirtualNodePoolListResult - The response of a ManagedVirtualNodePool list operation.
+type ManagedVirtualNodePoolListResult struct {
+	// REQUIRED; The ManagedVirtualNodePool items on this page
+	Value []*ManagedVirtualNodePool
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ManagedVirtualNodePoolPatchProperties - Updatable resource-specific properties for `ManagedVirtualNodePool` PATCH.
+type ManagedVirtualNodePoolPatchProperties struct {
+	// Maximum number of nodes the pool can scale to.
+	MaxNodes *int32
+
+	// Minimum number of nodes maintained by the pool.
+	MinNodes *int32
+}
+
+// ManagedVirtualNodePoolProperties - Properties of a managed virtual node pool.
+type ManagedVirtualNodePoolProperties struct {
+	// REQUIRED; The Azure resource ID of the AI agents group associated with the node pool. Set at create time and immutable
+	// thereafter.
+	AiAgentGroupResourceID *string
+
+	// REQUIRED; The Azure resource ID of the backing AKS managed cluster. Set at create time and immutable thereafter.
+	AksClusterResourceID *string
+
+	// REQUIRED; The Azure resource ID of the user-assigned managed identity used by the node pool. Set at create time and immutable
+	// thereafter.
+	ManagedIdentityResourceID *string
+
+	// Maximum number of nodes the pool can scale to.
+	MaxNodes *int32
+
+	// Minimum number of nodes maintained by the pool.
+	MinNodes *int32
+
+	// READ-ONLY; The container groups associated with the node pool.
+	ContainerGroups []*ManagedVirtualNodePoolContainerGroup
+
+	// READ-ONLY; The status of the last provisioning operation on the resource.
+	ProvisioningState *ManagedVirtualNodePoolProvisioningState
+
+	// READ-ONLY; The number of container groups that are ready in the node pool.
+	ReadyCount *int32
+
+	// READ-ONLY; The Azure resource ID of the subnet used by container groups in the node pool.
+	SubnetResourceID *string
+
+	// READ-ONLY; The desired number of container groups for the node pool.
+	TargetCount *int32
+}
+
+// ManagedVirtualNodePoolUpdate - The type used for updating a `ManagedVirtualNodePool` resource.
+type ManagedVirtualNodePoolUpdate struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// Resource-specific properties that can be updated via PATCH.
+	Properties *ManagedVirtualNodePoolPatchProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
 // NGroup - Describes the NGroups resource.
 type NGroup struct {
 	// The identity of the NGroup, if configured.
@@ -1399,10 +1503,12 @@ type Volume struct {
 	// The git repo volume.
 	GitRepo *GitRepoVolume
 
-	// The secret volume.
+	// Defines files for a secret volume. Dictionary keys are file names and values are Base64-encoded secret data used as file
+	// contents. The values are sensitive, and the service does not return the contents of this property in GET responses.
 	Secret map[string]*string
 
-	// The secret reference volume.
+	// Defines files for a secret reference volume. Dictionary keys are file names and values identify entries in the container
+	// group's secretReferences collection. This property contains reference names rather than secret values.
 	SecretReference map[string]*string
 }
 

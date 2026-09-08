@@ -5,7 +5,7 @@
 package armcontainerinstance
 
 const (
-	version20260801Preview string = "2026-08-01-preview"
+	version20260901Preview string = "2026-09-01-preview"
 )
 
 // AiAgentsGroupProvisioningState - The provisioning state of an AiAgentsGroup resource.
@@ -358,6 +358,36 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// ManagedVirtualNodePoolProvisioningState - The provisioning state of a ManagedVirtualNodePool resource.
+type ManagedVirtualNodePoolProvisioningState string
+
+const (
+	// ManagedVirtualNodePoolProvisioningStateAccepted - The resource provisioning request was accepted but not yet started.
+	ManagedVirtualNodePoolProvisioningStateAccepted ManagedVirtualNodePoolProvisioningState = "Accepted"
+	// ManagedVirtualNodePoolProvisioningStateCanceled - Resource creation was canceled.
+	ManagedVirtualNodePoolProvisioningStateCanceled ManagedVirtualNodePoolProvisioningState = "Canceled"
+	// ManagedVirtualNodePoolProvisioningStateDeleting - The resource is being deleted.
+	ManagedVirtualNodePoolProvisioningStateDeleting ManagedVirtualNodePoolProvisioningState = "Deleting"
+	// ManagedVirtualNodePoolProvisioningStateFailed - Resource creation failed.
+	ManagedVirtualNodePoolProvisioningStateFailed ManagedVirtualNodePoolProvisioningState = "Failed"
+	// ManagedVirtualNodePoolProvisioningStateSucceeded - Resource has been created.
+	ManagedVirtualNodePoolProvisioningStateSucceeded ManagedVirtualNodePoolProvisioningState = "Succeeded"
+	// ManagedVirtualNodePoolProvisioningStateUpdating - The resource is being updated.
+	ManagedVirtualNodePoolProvisioningStateUpdating ManagedVirtualNodePoolProvisioningState = "Updating"
+)
+
+// PossibleManagedVirtualNodePoolProvisioningStateValues returns the possible values for the ManagedVirtualNodePoolProvisioningState const type.
+func PossibleManagedVirtualNodePoolProvisioningStateValues() []ManagedVirtualNodePoolProvisioningState {
+	return []ManagedVirtualNodePoolProvisioningState{
+		ManagedVirtualNodePoolProvisioningStateAccepted,
+		ManagedVirtualNodePoolProvisioningStateCanceled,
+		ManagedVirtualNodePoolProvisioningStateDeleting,
+		ManagedVirtualNodePoolProvisioningStateFailed,
+		ManagedVirtualNodePoolProvisioningStateSucceeded,
+		ManagedVirtualNodePoolProvisioningStateUpdating,
 	}
 }
 

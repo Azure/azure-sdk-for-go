@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-01-preview/AiAgentsGroupsConnect.json
+// Generated from example definition: 2026-09-01-preview/AiAgentsGroupsConnect.json
 func ExampleAiAgentsGroupsClient_Connect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,12 +34,12 @@ func ExampleAiAgentsGroupsClient_Connect() {
 	// 	AiAgentsGroupAccessToken: armcontainerinstance.AiAgentsGroupAccessToken{
 	// 		Endpoint: to.Ptr("https://sandbox-endpoint.eastus.containerinstance.azure.com"),
 	// 		AccessToken: to.Ptr("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."),
-	// 		NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-01T12:00:00Z"); return t}()),
+	// 		NotAfter: to.Ptr(time.Date(2026, time.June, 1, 12, 0, 0, 0, time.UTC)),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/AiAgentsGroupsCreateOrUpdate.json
+// Generated from example definition: 2026-09-01-preview/AiAgentsGroupsCreateOrUpdate.json
 func ExampleAiAgentsGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleAiAgentsGroupsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/AiAgentsGroupsDelete.json
+// Generated from example definition: 2026-09-01-preview/AiAgentsGroupsDelete.json
 func ExampleAiAgentsGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleAiAgentsGroupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/AiAgentsGroupsGet.json
+// Generated from example definition: 2026-09-01-preview/AiAgentsGroupsGet.json
 func ExampleAiAgentsGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleAiAgentsGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/AiAgentsGroupsListByResourceGroup.json
+// Generated from example definition: 2026-09-01-preview/AiAgentsGroupsListByResourceGroup.json
 func ExampleAiAgentsGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExampleAiAgentsGroupsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/AiAgentsGroupsListBySubscription.json
+// Generated from example definition: 2026-09-01-preview/AiAgentsGroupsListBySubscription.json
 func ExampleAiAgentsGroupsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -264,7 +264,7 @@ func ExampleAiAgentsGroupsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/AiAgentsGroupsUpdate.json
+// Generated from example definition: 2026-09-01-preview/AiAgentsGroupsUpdate.json
 func ExampleAiAgentsGroupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

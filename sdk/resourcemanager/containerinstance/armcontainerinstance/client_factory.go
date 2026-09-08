@@ -80,6 +80,14 @@ func (c *ClientFactory) NewLocationClient() *LocationClient {
 	}
 }
 
+// NewManagedVirtualNodePoolsClient creates a new instance of ManagedVirtualNodePoolsClient.
+func (c *ClientFactory) NewManagedVirtualNodePoolsClient() *ManagedVirtualNodePoolsClient {
+	return &ManagedVirtualNodePoolsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewNGroupsClient creates a new instance of NGroupsClient.
 func (c *ClientFactory) NewNGroupsClient() *NGroupsClient {
 	return &NGroupsClient{

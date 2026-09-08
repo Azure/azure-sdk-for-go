@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.Elastic": "2025-06-01"
+    "Microsoft.Elastic": "2026-03-15-preview"
   },
   "emitterVersion": "0.17.3"
 }

@@ -149,6 +149,11 @@ type MonitorsClientBeginCreateOptions struct {
 type MonitorsClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
+
+	// Indicates whether to perform a soft delete. When set to true, the Azure resource (Liftr integration) only is deleted and
+	// not the Partner Cloud resource. When set to false (default), the resource is permanently deleted from both Azure and the
+	// Partner Cloud.
+	SoftDelete *bool
 }
 
 // MonitorsClientBeginUpdateOptions contains the optional parameters for the MonitorsClient.BeginUpdate method.

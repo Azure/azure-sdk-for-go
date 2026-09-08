@@ -19,7 +19,7 @@ import (
 // MonitorClient contains the methods for the Monitor group.
 // Don't use this type directly, use NewMonitorClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-03-15-preview
 type MonitorClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -108,7 +108,7 @@ func (client *MonitorClient) upgradeCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20260315Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

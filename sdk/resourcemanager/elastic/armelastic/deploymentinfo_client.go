@@ -19,7 +19,7 @@ import (
 // DeploymentInfoClient contains the methods for the DeploymentInfo group.
 // Don't use this type directly, use NewDeploymentInfoClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-03-15-preview
 type DeploymentInfoClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -86,7 +86,7 @@ func (client *DeploymentInfoClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20260315Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -1,11 +1,12 @@
 # Release History
 
-## 5.0.0-beta.2 (2026-07-29)
+## 5.0.0-beta.2 (2026-09-08)
 ### Features Added
 
 - New field `AssetVersion`, `PathOnCompute` in struct `CustomModelJobOutput`
 - New field `AssetVersion`, `PathOnCompute` in struct `MLFlowModelJobOutput`
 - New field `AssetVersion`, `PathOnCompute` in struct `MLTableJobOutput`
+- New field `EnableRemoteAccessClientServer` in struct `Ray`
 - New field `AssetVersion`, `PathOnCompute` in struct `TritonModelJobOutput`
 - New field `AssetVersion`, `PathOnCompute` in struct `URIFileJobOutput`
 - New field `AssetVersion`, `PathOnCompute` in struct `URIFolderJobOutput`

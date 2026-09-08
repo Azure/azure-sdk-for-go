@@ -9459,6 +9459,9 @@ type Ray struct {
 	// The port to bind the dashboard server to.
 	DashboardPort *int32
 
+	// Whether to expose the Ray Client server through the AML proxy on the default port 10001.
+	EnableRemoteAccessClientServer *bool
+
 	// Additional arguments passed to ray start in head node.
 	HeadNodeAdditionalArgs *string
 

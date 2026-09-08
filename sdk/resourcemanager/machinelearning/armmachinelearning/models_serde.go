@@ -19288,6 +19288,7 @@ func (r Ray) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "address", r.Address)
 	populate(objectMap, "dashboardPort", r.DashboardPort)
 	objectMap["distributionType"] = DistributionTypeRay
+	populate(objectMap, "enableRemoteAccessClientServer", r.EnableRemoteAccessClientServer)
 	populate(objectMap, "headNodeAdditionalArgs", r.HeadNodeAdditionalArgs)
 	populate(objectMap, "includeDashboard", r.IncludeDashboard)
 	populate(objectMap, "port", r.Port)
@@ -19312,6 +19313,9 @@ func (r *Ray) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "distributionType":
 			err = unpopulate(val, "DistributionType", &r.DistributionType)
+			delete(rawMsg, key)
+		case "enableRemoteAccessClientServer":
+			err = unpopulate(val, "EnableRemoteAccessClientServer", &r.EnableRemoteAccessClientServer)
 			delete(rawMsg, key)
 		case "headNodeAdditionalArgs":
 			err = unpopulate(val, "HeadNodeAdditionalArgs", &r.HeadNodeAdditionalArgs)

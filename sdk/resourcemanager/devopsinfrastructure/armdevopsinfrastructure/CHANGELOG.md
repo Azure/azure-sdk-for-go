@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (2026-07-23)
+## 1.1.0-beta.1 (2026-09-08)
 ### Features Added
 
 - New enum type `AvailabilityStatus` with values `AvailabilityStatusAvailable`, `AvailabilityStatusUnavailable`

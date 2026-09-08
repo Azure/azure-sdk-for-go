@@ -72,3 +72,96 @@ extends:
               EnableRaceDetector: true
               EnvVars:
                 EMULATOR: 'true'
+
+      # The driver and the emulator are committed under internal/native/lib rather than built
+      # here. Building them needs crates.io, which the agents cannot reach, and the distribution
+      # design puts these binaries in their own modules in a separate repository anyway. That
+      # repository does not yet carry a module for this platform, so the committed copies stand in
+      # until it does. This stage is expected to shrink to a module dependency at that point.
+      - stage: DriverEmulator
+        displayName: 'Cosmos Emulator (v2 driver)'
+        # A stage with no dependsOn implicitly depends on the one before it, which would queue this
+        # behind the Windows emulator stage above and skip it entirely whenever that stage fails.
+        # This stage shares nothing with it: it builds what it needs itself, from binaries that are
+        # already in the tree. An empty dependsOn is what makes that independence explicit.
+        dependsOn: []
+        variables:
+        - template: /eng/pipelines/templates/variables/globals.yml@self
+        - template: /eng/pipelines/templates/variables/image.yml@self
+        - name: DriverLibDir
+          value: $(Build.SourcesDirectory)/sdk/data/azcosmos/internal/native/lib/linux_amd64
+        jobs:
+        - job: RunDriverEmulatorTests
+          displayName: Run the driver emulator tests
+
+          pool:
+            name: $(LINUXPOOL)
+            image: $(LINUXVMIMAGE)
+            os: linux
+
+          steps:
+          - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml@self
+            parameters:
+              AgentImage: ubuntu
+
+          # Detect checkout corruption before making the emulator executable. The checksum and
+          # binary share one review trust boundary; this is integrity checking, not independent
+          # provenance attestation.
+          - script: |
+              set -euo pipefail
+              cd sdk/data/azcosmos
+              sha256sum -c internal/native/lib/SHA256SUMS
+            displayName: 'Check committed artifact integrity'
+
+          # Fail here rather than leaving the tests to fail at link time with a less obvious
+          # message.
+          - script: |
+              set -euo pipefail
+              test -f "sdk/data/azcosmos/internal/native/linuxamd64/libazurecosmosdriver.syso"
+              test -f "$(DriverLibDir)/azure_data_cosmos_emulator"
+              chmod +x "$(DriverLibDir)/azure_data_cosmos_emulator"
+              file "sdk/data/azcosmos/internal/native/linuxamd64/libazurecosmosdriver.syso"
+            displayName: 'Check the committed driver artifacts'
+
+          # The emulator writes one JSON record to stdout once every listener is bound, and logs to
+          # stderr, so the endpoint is read from that record rather than guessed. Its config asks
+          # for an OS-assigned port, so nothing collides with whatever else is on the agent.
+          - script: |
+              set -euo pipefail
+              config='sdk/data/azcosmos/internal/testdata/emulator-config.json'
+              nohup "$(DriverLibDir)/azure_data_cosmos_emulator" --config "$config" \
+                > "$(Agent.TempDirectory)/emulator-ready.json" \
+                2> "$(Agent.TempDirectory)/emulator.log" &
+
+              for _ in $(seq 1 60); do
+                if grep -q '"event":"ready"' "$(Agent.TempDirectory)/emulator-ready.json" 2>/dev/null; then
+                  endpoint=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['accountEndpoint'])" \
+                    "$(Agent.TempDirectory)/emulator-ready.json")
+                  echo "emulator ready at $endpoint"
+                  echo "##vso[task.setvariable variable=EmulatorEndpoint]$endpoint"
+                  exit 0
+                fi
+                sleep 1
+              done
+              echo '##[error] The emulator did not become ready.'
+              tail -50 "$(Agent.TempDirectory)/emulator.log" || true
+              exit 1
+            displayName: 'Start the in-memory Cosmos emulator'
+
+          - task: GoTool@0
+            inputs:
+              version: '1.26.1'
+            displayName: "Select Go Version"
+
+          - template: /eng/pipelines/templates/steps/create-go-workspace.yml@self
+
+          - template:  /eng/pipelines/templates/steps/build-test.yml@self
+            parameters:
+              ServiceDirectory: 'data/azcosmos'
+              Image: $(vm.image)
+              GoVersion: '1.26.1'
+              EnableRaceDetector: true
+              EnvVars:
+                EMULATOR: 'true'
+                AZCOSMOS_ENDPOINT: $(EmulatorEndpoint)
+                CGO_ENABLED: '1'

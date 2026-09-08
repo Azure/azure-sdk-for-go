@@ -1,0 +1,37 @@
+{
+  "account": {
+    "id": "azcosmos-go-v2",
+    "writeMode": "single",
+    "consistency": "session",
+    "perPartitionFailover": false,
+    "throttling": false,
+    "regions": [
+      {
+        "name": "East US",
+        "gatewayPort": 0,
+        "regionId": 0
+      }
+    ],
+    "replication": {
+      "minDelayMs": 0,
+      "maxDelayMs": 0,
+      "maxBufferedReplications": 10000
+    }
+  },
+  "management": {
+    "port": 0
+  },
+  "databases": [
+    {
+      "id": "itemdb",
+      "containers": [
+        {
+          "id": "items",
+          "partitionKey": { "paths": ["/pk"], "kind": "Hash", "version": 2 },
+          "partitionCount": 4,
+          "throughput": 400
+        }
+      ]
+    }
+  ]
+}

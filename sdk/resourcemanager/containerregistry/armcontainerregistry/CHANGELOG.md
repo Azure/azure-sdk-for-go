@@ -1,8 +1,13 @@
 # Release History
 
 ## 3.1.0-beta.3 (2026-09-06)
+### Breaking Changes
+
+- Field `TokenID` in struct `SyncProperties` is no longer marked as required in the generated model. This is a requirement relaxation, not a Go field-type breaking change: the type remains `*string` and JSON serialization of `tokenId` is unchanged.
+
 ### Features Added
 
+- Updated API version from `2026-03-01-preview` to `2026-09-01-preview`
 - New enum type `AuthType` with values `AuthTypeManagedIdentity`, `AuthTypeSyncToken`
 - New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
 - New struct `ManagedServiceIdentity`

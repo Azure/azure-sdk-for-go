@@ -94,7 +94,7 @@ func CreateDatabaseAccount(useMultipleWriteLocations bool, enforceSingleMasterWr
 }
 
 func ResetLocationCache() *locationCache {
-	lc := newLocationCache(prefLocs, *defaultEndpoint, true)
+	lc := newLocationCache(prefLocs, *defaultEndpoint, true, false /*disableEndpointDiscovery*/)
 	lc.enableCrossRegionRetries = true
 	return lc
 }
@@ -467,5 +467,44 @@ func TestWriteEndpointUsedAsFallbackForRead(t *testing.T) {
 
 	if actualReadEndpointsOrder != expectedReadEndpointOrder {
 		t.Errorf("Expected read endpoint order %s, but was %s", expectedReadEndpointOrder, actualReadEndpointsOrder)
+	}
+}
+
+func TestResolveServiceEndpointWithEndpointDiscoveryDisabled(t *testing.T) {
+	// With endpoint discovery disabled the location cache must ignore the
+	// account's advertised read/write locations and always resolve to the
+	// endpoint the client was constructed with (defaultEndpoint), for both
+	// read and write operations. This is the behavior relied on when the
+	// account is reached through an endpoint on a different domain than the
+	// one it advertises.
+	lc := newLocationCache(prefLocs, *defaultEndpoint, true /*enableCrossRegionRetries*/, true /*disableEndpointDiscovery*/)
+	dbAcct := CreateDatabaseAccount(true, false)
+	if err := lc.update(dbAcct.WriteRegions, dbAcct.ReadRegions, nil, &dbAcct.EnableMultipleWriteLocations); err != nil {
+		t.Fatalf("Received error updating location cache: %s", err.Error())
+	}
+
+	writeEndpoint := lc.resolveServiceEndpoint(0, resourceTypeDocument, true /*isWriteOperation*/, false /*useWriteEndpoint*/)
+	if writeEndpoint != *defaultEndpoint {
+		t.Errorf("Expected write endpoint to resolve to default endpoint %s, but was %s", defaultEndpoint.String(), writeEndpoint.String())
+	}
+
+	readEndpoint := lc.resolveServiceEndpoint(0, resourceTypeDocument, false /*isWriteOperation*/, false /*useWriteEndpoint*/)
+	if readEndpoint != *defaultEndpoint {
+		t.Errorf("Expected read endpoint to resolve to default endpoint %s, but was %s", defaultEndpoint.String(), readEndpoint.String())
+	}
+}
+
+func TestResolveServiceEndpointWithEndpointDiscoveryEnabled(t *testing.T) {
+	// Sanity check the inverse: with discovery enabled the cache resolves to
+	// the account's advertised regional endpoints, not the default endpoint.
+	lc := newLocationCache(prefLocs, *defaultEndpoint, true /*enableCrossRegionRetries*/, false /*disableEndpointDiscovery*/)
+	dbAcct := CreateDatabaseAccount(true, false)
+	if err := lc.update(dbAcct.WriteRegions, dbAcct.ReadRegions, nil, &dbAcct.EnableMultipleWriteLocations); err != nil {
+		t.Fatalf("Received error updating location cache: %s", err.Error())
+	}
+
+	readEndpoint := lc.resolveServiceEndpoint(0, resourceTypeDocument, false /*isWriteOperation*/, false /*useWriteEndpoint*/)
+	if readEndpoint == *defaultEndpoint {
+		t.Errorf("Expected read endpoint to resolve to an advertised regional endpoint, but got the default endpoint %s", defaultEndpoint.String())
 	}
 }

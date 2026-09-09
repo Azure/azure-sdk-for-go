@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/test"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
@@ -217,6 +218,102 @@ func TestUnit_PartitionClient_PrefetchLimit(t *testing.T) {
 		client, err := newPartitionClient(int32(defaultMaxCreditSize) + 1)
 		require.EqualError(t, err, fmt.Sprintf("options.Prefetch cannot exceed %d", defaultMaxCreditSize))
 		require.Nil(t, client)
+	})
+}
+
+func TestUnit_PartitionClient_GetPartitionProperties(t *testing.T) {
+	lastEnqueuedOn := time.Date(2024, 1, 2, 3, 4, 5, 0, time.UTC)
+
+	newFakeNS := func() *internal.FakeNSForPartClient {
+		return &internal.FakeNSForPartClient{
+			RPCLink: &internal.FakeRPCLink{
+				Response: &amqpwrap.RPCResponse{
+					Code: 200,
+					Message: &amqp.Message{
+						Value: map[string]any{
+							"name":                          "eventHubName",
+							"partition":                     "101",
+							"begin_sequence_number":         int64(100),
+							"last_enqueued_sequence_number": int64(200),
+							"last_enqueued_offset":          "300",
+							"last_enqueued_time_utc":        lastEnqueuedOn,
+							"is_partition_empty":            false,
+						},
+					},
+				},
+			},
+		}
+	}
+
+	expectedProps := PartitionProperties{
+		BeginningSequenceNumber:    100,
+		EventHubName:               "eventHubName",
+		IsEmpty:                    false,
+		LastEnqueuedOffset:         "300",
+		LastEnqueuedOn:             lastEnqueuedOn,
+		LastEnqueuedSequenceNumber: 200,
+		PartitionID:                "101",
+	}
+
+	t.Run("returns the properties for this client's partition", func(t *testing.T) {
+		ns := newFakeNS()
+
+		client, err := newPartitionClient(partitionClientArgs{
+			namespace:   ns,
+			eventHub:    "eventHubName",
+			partitionID: "101",
+		}, nil)
+		require.NoError(t, err)
+
+		props, err := client.GetPartitionProperties(context.Background(), nil)
+		require.NoError(t, err)
+		require.Equal(t, expectedProps, props)
+
+		// the client uses its own partition ID, the caller does not pass one.
+		rpcLink := ns.RPCLink.(*internal.FakeRPCLink)
+		require.Equal(t, 1, len(rpcLink.Requests))
+		require.Equal(t, "READ", rpcLink.Requests[0].ApplicationProperties["operation"])
+		require.Equal(t, "com.microsoft:partition", rpcLink.Requests[0].ApplicationProperties["type"])
+		require.Equal(t, "eventHubName", rpcLink.Requests[0].ApplicationProperties["name"])
+		require.Equal(t, "101", rpcLink.Requests[0].ApplicationProperties["partition"])
+		require.NotEmpty(t, rpcLink.Requests[0].ApplicationProperties["security_token"])
+
+		test.RequireClose(t, client)
+	})
+
+	t.Run("fails after the client is closed", func(t *testing.T) {
+		client, err := newPartitionClient(partitionClientArgs{
+			namespace:   newFakeNS(),
+			eventHub:    "eventHubName",
+			partitionID: "101",
+		}, nil)
+		require.NoError(t, err)
+
+		test.RequireClose(t, client)
+
+		props, err := client.GetPartitionProperties(context.Background(), nil)
+		require.EqualError(t, err, "client has been closed by user")
+		require.Equal(t, PartitionProperties{}, props)
+	})
+
+	t.Run("ProcessorPartitionClient forwards to the inner client", func(t *testing.T) {
+		client, err := newPartitionClient(partitionClientArgs{
+			namespace:   newFakeNS(),
+			eventHub:    "eventHubName",
+			partitionID: "101",
+		}, nil)
+		require.NoError(t, err)
+
+		processorClient := &ProcessorPartitionClient{
+			partitionID: "101",
+			innerClient: client,
+		}
+
+		props, err := processorClient.GetPartitionProperties(context.Background(), nil)
+		require.NoError(t, err)
+		require.Equal(t, expectedProps, props)
+
+		test.RequireClose(t, client)
 	})
 }
 

@@ -37,7 +37,7 @@ type GetEventHubPropertiesOptions struct {
 }
 
 // getEventHubProperties gets event hub properties, like the available partition IDs and when the Event Hub was created.
-func getEventHubProperties[LinkT internal.AMQPLink](ctx context.Context, eventName log.Event, ns internal.NamespaceForManagementOps, links *internal.Links[LinkT], eventHub string, retryOptions RetryOptions, options *GetEventHubPropertiesOptions) (EventHubProperties, error) {
+func getEventHubProperties(ctx context.Context, eventName log.Event, ns internal.NamespaceForManagementOps, links internal.LinksForManagementOps, eventHub string, retryOptions RetryOptions, options *GetEventHubPropertiesOptions) (EventHubProperties, error) {
 	var props EventHubProperties
 
 	err := links.RetryManagement(ctx, eventName, "getEventHubProperties", retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.RPCLink]) error {
@@ -114,7 +114,7 @@ type GetPartitionPropertiesOptions struct {
 
 // getPartitionProperties gets properties for a specific partition. This includes data like the last enqueued sequence number, the first sequence
 // number and when an event was last enqueued to the partition.
-func getPartitionProperties[LinkT internal.AMQPLink](ctx context.Context, eventName log.Event, ns internal.NamespaceForManagementOps, links *internal.Links[LinkT], eventHub string, partitionID string, retryOptions RetryOptions, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
+func getPartitionProperties(ctx context.Context, eventName log.Event, ns internal.NamespaceForManagementOps, links internal.LinksForManagementOps, eventHub string, partitionID string, retryOptions RetryOptions, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
 	var props PartitionProperties
 
 	err := links.RetryManagement(ctx, eventName, "getPartitionProperties", retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.RPCLink]) error {

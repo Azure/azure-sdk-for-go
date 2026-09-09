@@ -168,15 +168,13 @@ type DeploymentExtended struct {
 	Type *string
 }
 
+// DeploymentExtensionConfigItem - Represents the value for an extension config property.
 type DeploymentExtensionConfigItem struct {
 	// The Azure Key Vault reference used to retrieve the secret value of the extension config property.
 	KeyVaultReference *KeyVaultParameterReference
 
 	// The value of the extension config property.
 	Value any
-
-	// READ-ONLY; The value type of the extension config property.
-	Type *ExtensionConfigPropertyType
 }
 
 type DeploymentExtensionDefinition struct {
@@ -186,7 +184,11 @@ type DeploymentExtensionDefinition struct {
 	// READ-ONLY; The extension configuration.
 	Config map[string]*DeploymentExtensionConfigItem
 
-	// READ-ONLY; The extension configuration ID. It uniquely identifies a deployment control plane within an extension.
+	// READ-ONLY; The extension configuration hash. Can be used to distinguish different configurations that have the same config
+	// ID.
+	ConfigHash *string
+
+	// READ-ONLY; The extension configuration ID. It uniquely identifies a deployment target within an extension.
 	ConfigID *string
 
 	// READ-ONLY; The extension name.
@@ -409,6 +411,28 @@ type DeploymentPropertiesExtended struct {
 	ValidatedResources []*ResourceReference
 }
 
+// DeploymentResourceWhatIfPrediction - A prediction for a deployment resource by its symbolic name path.
+type DeploymentResourceWhatIfPrediction struct {
+	// REQUIRED; The symbolic name path to the resource in the deployment template, including nested deployment(s) and extension
+	// if applicable.
+	SymbolicNamePath []*string
+
+	// The predicted API version.
+	APIVersion *string
+
+	// The predicted extension usage.
+	Extension *DeploymentExtensionDefinition
+
+	// The predicted extensible resource identifiers.
+	Identifiers any
+
+	// The predicted fully-qualified Azure resource ID.
+	ResourceID *string
+
+	// The predicted resource type.
+	ResourceType *string
+}
+
 // DeploymentValidateResult - Information from validate template deployment response.
 type DeploymentValidateResult struct {
 	// The template deployment properties.
@@ -472,6 +496,9 @@ type DeploymentWhatIfProperties struct {
 	// The URI of parameters file. You use this element to link to an existing parameters file. Use either the parametersLink
 	// property or the parameters property, but not both.
 	ParametersLink *ParametersLink
+
+	// Resource predictions that can be utilized by what-if to produce potential modification changes.
+	ResourcePredictions []*DeploymentResourceWhatIfPrediction
 
 	// The template content. You use this element when you want to pass the template syntax directly in the request rather than
 	// link to an existing template. It can be a JObject or well-formed JSON string. Use either the templateLink property or the
@@ -649,6 +676,9 @@ type ProviderResourceType struct {
 
 // ResourceReference - The resource Id model.
 type ResourceReference struct {
+	// The symbolic name path to the resource in the deployment template, including nested deployment(s) and extension if applicable.
+	SymbolicNamePath []*string
+
 	// READ-ONLY; The API version the resource was deployed with.
 	APIVersion *string
 
@@ -738,6 +768,9 @@ type TargetResource struct {
 
 	// The symbolic name of the resource as defined in the deployment template.
 	SymbolicName *string
+
+	// The symbolic name path to the resource in the deployment template, including nested deployment(s) and extension if applicable.
+	SymbolicNamePath []*string
 }
 
 // TemplateHashResult - Result of the request to calculate template hash. It contains a string of minified template and its
@@ -803,8 +836,11 @@ type WhatIfChange struct {
 	// resource has.
 	Identifiers any
 
-	// Resource ID
+	// The fully-qualified ARM resource ID for this change.
 	ResourceID *string
+
+	// The resource type of the resource.
+	ResourceType *string
 
 	// The symbolic name of the resource responsible for this change.
 	SymbolicName *string

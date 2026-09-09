@@ -14,7 +14,7 @@ import (
 type UploadResponse = generated.BlockBlobClientUploadResponse
 
 // UploadBlobFromURLResponse contains the response from the method Client.UploadBlobFromURL
-type UploadBlobFromURLResponse = generated.BlockBlobClientPutBlobFromURLResponse
+type UploadBlobFromURLResponse = generated.BlockBlobClientUploadBlobFromURLResponse
 
 // StageBlockResponse contains the response from method Client.StageBlock.
 type StageBlockResponse = generated.BlockBlobClientStageBlockResponse

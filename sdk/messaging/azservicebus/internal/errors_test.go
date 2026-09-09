@@ -153,6 +153,14 @@ func Test_IsNonRetriable(t *testing.T) {
 	}
 }
 
+func TestGetRecoveryKind_NotAllowedWrapperScope(t *testing.T) {
+	remoteErr := &amqp.Error{Condition: amqp.ErrCondNotAllowed}
+
+	require.Equal(t, RecoveryKindFatal, GetRecoveryKind(&amqp.Error{Condition: amqp.ErrCondNotAllowed}))
+	require.Equal(t, RecoveryKindFatal, GetRecoveryKind(&amqp.LinkError{RemoteErr: remoteErr}))
+	require.Equal(t, RecoveryKindConn, GetRecoveryKind(&amqp.ConnError{RemoteErr: remoteErr}))
+}
+
 func Test_ServiceBusError_NoRecoveryNeeded(t *testing.T) {
 	var tempErrors = []error{
 		&amqp.Error{Condition: amqp.ErrCond("com.microsoft:server-busy")},

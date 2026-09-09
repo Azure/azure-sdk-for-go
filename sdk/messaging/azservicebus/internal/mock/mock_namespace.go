@@ -67,6 +67,20 @@ func (mr *MockNamespaceForAMQPLinksMockRecorder) Close(permanently interface{}) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockNamespaceForAMQPLinks)(nil).Close), permanently)
 }
 
+// CloseIfNeeded mocks base method.
+func (m *MockNamespaceForAMQPLinks) CloseIfNeeded(clientRevision uint64) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CloseIfNeeded", clientRevision)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CloseIfNeeded indicates an expected call of CloseIfNeeded.
+func (mr *MockNamespaceForAMQPLinksMockRecorder) CloseIfNeeded(clientRevision interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CloseIfNeeded", reflect.TypeOf((*MockNamespaceForAMQPLinks)(nil).CloseIfNeeded), clientRevision)
+}
+
 // GetEntityAudience mocks base method.
 func (m *MockNamespaceForAMQPLinks) GetEntityAudience(entityPath string) string {
 	m.ctrl.T.Helper()

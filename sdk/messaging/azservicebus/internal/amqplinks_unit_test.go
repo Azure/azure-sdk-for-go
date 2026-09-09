@@ -98,6 +98,45 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 	}
 }
 
+func TestAMQPLinksRetrySkipsStaleCleanup(t *testing.T) {
+	ns := &FakeNS{}
+	var receivers []*FakeAMQPReceiver
+
+	links := NewAMQPLinks(NewAMQPLinksArgs{
+		NS:         ns,
+		EntityPath: "entityPath",
+		CreateLinkFunc: func(ctx context.Context, session amqpwrap.AMQPSession) (amqpwrap.AMQPSenderCloser, amqpwrap.AMQPReceiverCloser, error) {
+			receiver := &FakeAMQPReceiver{}
+			receivers = append(receivers, receiver)
+			return &FakeAMQPSender{}, receiver, nil
+		},
+		GetRecoveryKindFunc: GetRecoveryKind,
+	}).(*AMQPLinksImpl)
+
+	defer func() {
+		require.NoError(t, links.Close(context.Background(), true))
+	}()
+
+	var recoveryErr error
+	err := links.Retry(context.Background(), log.Event("NotUsed"), "OverallOperation", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
+		recoveryDone := make(chan struct{})
+		go func() {
+			recoveryErr = links.RecoverIfNeeded(ctx, lwid.ID, &amqp.ConnError{})
+			close(recoveryDone)
+		}()
+		<-recoveryDone
+
+		return &amqp.ConnError{}
+	}, exported.RetryOptions{MaxRetries: -1})
+
+	var connErr *amqp.ConnError
+	require.ErrorAs(t, err, &connErr)
+	require.NoError(t, recoveryErr)
+	require.Len(t, receivers, 2)
+	require.Equal(t, 1, receivers[0].Closed)
+	require.Equal(t, 0, receivers[1].Closed)
+}
+
 func TestAMQPLinks_Logging(t *testing.T) {
 	t.Run("link", func(t *testing.T) {
 		receiver := &FakeAMQPReceiver{}

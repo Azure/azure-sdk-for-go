@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.9 (2026-08-21)
+## 2.0.0-beta.9 (2026-09-09)
 ### Breaking Changes
 
 - `PrivateEndpointProvisioningStateApproving`, `PrivateEndpointProvisioningStateDropping`, `PrivateEndpointProvisioningStateReady`, `PrivateEndpointProvisioningStateRejecting` from enum `PrivateEndpointProvisioningState` has been removed

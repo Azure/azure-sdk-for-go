@@ -18,9 +18,9 @@ import (
 
 // OfferingsServer is a fake server for instances of the armsearch.OfferingsClient type.
 type OfferingsServer struct {
-	// List is the fake for method OfferingsClient.List
+	// Fetch is the fake for method OfferingsClient.Fetch
 	// HTTP status codes to indicate success: http.StatusOK
-	List func(ctx context.Context, options *armsearch.OfferingsClientListOptions) (resp azfake.Responder[armsearch.OfferingsClientListResponse], errResp azfake.ErrorResponder)
+	Fetch func(ctx context.Context, options *armsearch.OfferingsClientFetchOptions) (resp azfake.Responder[armsearch.OfferingsClientFetchResponse], errResp azfake.ErrorResponder)
 }
 
 // NewOfferingsServerTransport creates a new instance of OfferingsServerTransport with the provided implementation.
@@ -57,8 +57,8 @@ func (o *OfferingsServerTransport) dispatchToMethodFake(req *http.Request, metho
 		}
 		if !intercepted {
 			switch method {
-			case "OfferingsClient.List":
-				res.resp, res.err = o.dispatchList(req)
+			case "OfferingsClient.Fetch":
+				res.resp, res.err = o.dispatchFetch(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -75,11 +75,11 @@ func (o *OfferingsServerTransport) dispatchToMethodFake(req *http.Request, metho
 	}
 }
 
-func (o *OfferingsServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
-	if o.srv.List == nil {
-		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
+func (o *OfferingsServerTransport) dispatchFetch(req *http.Request) (*http.Response, error) {
+	if o.srv.Fetch == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Fetch not implemented")}
 	}
-	respr, errRespr := o.srv.List(req.Context(), nil)
+	respr, errRespr := o.srv.Fetch(req.Context(), nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -87,7 +87,7 @@ func (o *OfferingsServerTransport) dispatchList(req *http.Request) (*http.Respon
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OfferingsListResult, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OfferingsResult, req)
 	if err != nil {
 		return nil, err
 	}

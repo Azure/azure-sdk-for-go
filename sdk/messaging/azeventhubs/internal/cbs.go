@@ -51,7 +51,7 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 		return origErr
 	}
 
-	token, err := provider.GetToken(audience)
+	token, err := provider.GetToken(ctx, audience)
 	if err != nil {
 		azlog.Writef(exported.EventAuth, "Failed to get token from provider: %s", err)
 		return closeLink(ctx, err)

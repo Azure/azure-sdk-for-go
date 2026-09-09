@@ -61,21 +61,21 @@ type singleUseTokenProvider auth.Token
 
 // GetToken will return this token.
 // This function makes us compatible with auth.TokenProvider.
-func (tp *singleUseTokenProvider) GetToken(uri string) (*auth.Token, error) {
+func (tp *singleUseTokenProvider) GetToken(ctx context.Context, uri string) (*auth.Token, error) {
 	return (*auth.Token)(tp), nil
 }
 
 // GetToken will retrieve a new token.
 // This function makes us compatible with auth.TokenProvider.
-func (tp *TokenProvider) GetToken(uri string) (*auth.Token, error) {
-	token, _, err := tp.getTokenImpl(uri)
+func (tp *TokenProvider) GetToken(ctx context.Context, uri string) (*auth.Token, error) {
+	token, _, err := tp.getTokenImpl(ctx, uri)
 	return token, err
 }
 
 // GetToken returns a token (that is compatible as an auth.TokenProvider) and
 // the calculated time when you should renew your token.
-func (tp *TokenProvider) GetTokenAsTokenProvider(uri string) (*singleUseTokenProvider, time.Time, error) {
-	token, renewAt, err := tp.getTokenImpl(uri)
+func (tp *TokenProvider) GetTokenAsTokenProvider(ctx context.Context, uri string) (*singleUseTokenProvider, time.Time, error) {
+	token, renewAt, err := tp.getTokenImpl(ctx, uri)
 
 	if err != nil {
 		return nil, time.Time{}, err
@@ -84,17 +84,17 @@ func (tp *TokenProvider) GetTokenAsTokenProvider(uri string) (*singleUseTokenPro
 	return (*singleUseTokenProvider)(token), renewAt, nil
 }
 
-func (tp *TokenProvider) getTokenImpl(uri string) (*auth.Token, time.Time, error) {
+func (tp *TokenProvider) getTokenImpl(ctx context.Context, uri string) (*auth.Token, time.Time, error) {
 	if tp.sasTokenProvider != nil {
-		return tp.getSASToken(uri)
+		return tp.getSASToken(ctx, uri)
 	} else {
-		return tp.getAZCoreToken()
+		return tp.getAZCoreToken(ctx)
 	}
 }
 
-func (tpa *TokenProvider) getAZCoreToken() (*auth.Token, time.Time, error) {
+func (tpa *TokenProvider) getAZCoreToken(ctx context.Context) (*auth.Token, time.Time, error) {
 	// not sure if URI plays in here.
-	accessToken, err := tpa.tokenCred.GetToken(context.TODO(), policy.TokenRequestOptions{
+	accessToken, err := tpa.tokenCred.GetToken(ctx, policy.TokenRequestOptions{
 		Scopes: []string{
 			"https://eventhubs.azure.net//.default",
 		},
@@ -115,8 +115,8 @@ func (tpa *TokenProvider) getAZCoreToken() (*auth.Token, time.Time, error) {
 		nil
 }
 
-func (tpa *TokenProvider) getSASToken(uri string) (*auth.Token, time.Time, error) {
-	authToken, err := tpa.sasTokenProvider.GetToken(uri)
+func (tpa *TokenProvider) getSASToken(ctx context.Context, uri string) (*auth.Token, time.Time, error) {
+	authToken, err := tpa.sasTokenProvider.GetToken(ctx, uri)
 
 	if err != nil {
 		return nil, time.Time{}, err

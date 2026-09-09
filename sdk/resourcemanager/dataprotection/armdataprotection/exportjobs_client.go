@@ -19,7 +19,7 @@ import (
 // ExportJobsClient contains the methods for the ExportJobs group.
 // Don't use this type directly, use NewExportJobsClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-04-01-preview
 type ExportJobsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -108,7 +108,7 @@ func (client *ExportJobsClient) triggerCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260401Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

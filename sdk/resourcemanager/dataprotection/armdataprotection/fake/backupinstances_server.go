@@ -560,6 +560,14 @@ func (b *BackupInstancesServerTransport) dispatchBeginResumeProtection(req *http
 		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		raw, err := readRequestBody(req)
+		if err != nil {
+			return nil, err
+		}
+		body, err := unmarshalResumeProtectionRequestClassification(raw)
+		if err != nil {
+			return nil, err
+		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -572,7 +580,13 @@ func (b *BackupInstancesServerTransport) dispatchBeginResumeProtection(req *http
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := b.srv.BeginResumeProtection(req.Context(), resourceGroupNameParam, vaultNameParam, backupInstanceNameParam, nil)
+		var options *armdataprotection.BackupInstancesClientBeginResumeProtectionOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armdataprotection.BackupInstancesClientBeginResumeProtectionOptions{
+				Parameters: body,
+			}
+		}
+		respr, errRespr := b.srv.BeginResumeProtection(req.Context(), resourceGroupNameParam, vaultNameParam, backupInstanceNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

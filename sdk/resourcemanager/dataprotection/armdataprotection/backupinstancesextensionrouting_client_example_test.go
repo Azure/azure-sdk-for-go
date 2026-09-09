@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/BackupInstanceOperations/ListBackupInstancesExtensionRouting.json
+// Generated from example definition: 2026-04-01-preview/BackupInstanceOperations/ListBackupInstancesExtensionRouting.json
 func ExampleBackupInstancesExtensionRoutingClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

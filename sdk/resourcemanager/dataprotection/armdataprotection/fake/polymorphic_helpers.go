@@ -54,3 +54,22 @@ func unmarshalFeatureValidationRequestBaseClassification(rawMsg json.RawMessage)
 	}
 	return b, nil
 }
+
+func unmarshalResumeProtectionRequestClassification(rawMsg json.RawMessage) (armdataprotection.ResumeProtectionRequestClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b armdataprotection.ResumeProtectionRequestClassification
+	switch m["objectType"] {
+	default:
+		b = &armdataprotection.ResumeProtectionRequest{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}

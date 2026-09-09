@@ -5,7 +5,7 @@
 package armdataprotection
 
 const (
-	version20260301 string = "2026-03-01"
+	version20260401Preview string = "2026-04-01-preview"
 )
 
 type AKSVolumeTypes string
@@ -93,6 +93,24 @@ func PossibleBCDRSecurityLevelValues() []BCDRSecurityLevel {
 		BCDRSecurityLevelGood,
 		BCDRSecurityLevelNotSupported,
 		BCDRSecurityLevelPoor,
+	}
+}
+
+// BackupSolutionType - Backup solution types for PostgreSQL Flexible Server.
+type BackupSolutionType string
+
+const (
+	// BackupSolutionTypeLogicalBackup - Logical backup type
+	BackupSolutionTypeLogicalBackup BackupSolutionType = "LogicalBackup"
+	// BackupSolutionTypePhysicalBackup - Physical backup type
+	BackupSolutionTypePhysicalBackup BackupSolutionType = "PhysicalBackup"
+)
+
+// PossibleBackupSolutionTypeValues returns the possible values for the BackupSolutionType const type.
+func PossibleBackupSolutionTypeValues() []BackupSolutionType {
+	return []BackupSolutionType{
+		BackupSolutionTypeLogicalBackup,
+		BackupSolutionTypePhysicalBackup,
 	}
 }
 
@@ -638,6 +656,21 @@ func PossibleRestoreTargetLocationTypeValues() []RestoreTargetLocationType {
 		RestoreTargetLocationTypeAzureBlobs,
 		RestoreTargetLocationTypeAzureFiles,
 		RestoreTargetLocationTypeInvalid,
+	}
+}
+
+// ResumeProtectionRequestObjectType - Type of Datasource object, used to initialize the right inherited type
+type ResumeProtectionRequestObjectType string
+
+const (
+	// ResumeProtectionRequestObjectTypeResumeProtectionRequest - Resume Protection Request Type.
+	ResumeProtectionRequestObjectTypeResumeProtectionRequest ResumeProtectionRequestObjectType = "ResumeProtectionRequest"
+)
+
+// PossibleResumeProtectionRequestObjectTypeValues returns the possible values for the ResumeProtectionRequestObjectType const type.
+func PossibleResumeProtectionRequestObjectTypeValues() []ResumeProtectionRequestObjectType {
+	return []ResumeProtectionRequestObjectType{
+		ResumeProtectionRequestObjectTypeResumeProtectionRequest,
 	}
 }
 

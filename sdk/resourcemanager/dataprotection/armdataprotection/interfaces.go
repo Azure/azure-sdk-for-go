@@ -55,7 +55,8 @@ type BackupCriteriaClassification interface {
 // Call the interface's GetBackupDatasourceParameters() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AdlsBlobBackupDatasourceParameters, *AdlsBlobBackupDatasourceParametersForAutoProtection, *BackupDatasourceParameters,
-// - *BlobBackupDatasourceParameters, *BlobBackupDatasourceParametersForAutoProtection, *KubernetesClusterBackupDatasourceParameters
+// - *BlobBackupDatasourceParameters, *BlobBackupDatasourceParametersForAutoProtection, *KubernetesClusterBackupDatasourceParameters,
+// - *PostgreSQLFlexibleServerBackupDatasourceParameters
 type BackupDatasourceParametersClassification interface {
 	// GetBackupDatasourceParameters returns the BackupDatasourceParameters content of the underlying type.
 	GetBackupDatasourceParameters() *BackupDatasourceParameters
@@ -187,6 +188,15 @@ type OperationExtendedInfoClassification interface {
 type RestoreTargetInfoBaseClassification interface {
 	// GetRestoreTargetInfoBase returns the RestoreTargetInfoBase content of the underlying type.
 	GetRestoreTargetInfoBase() *RestoreTargetInfoBase
+}
+
+// ResumeProtectionRequestClassification provides polymorphic access to related types.
+// Call the interface's GetResumeProtectionRequest() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ResumeProtectionRequest
+type ResumeProtectionRequestClassification interface {
+	// GetResumeProtectionRequest returns the ResumeProtectionRequest content of the underlying type.
+	GetResumeProtectionRequest() *ResumeProtectionRequest
 }
 
 // TriggerContextClassification provides polymorphic access to related types.

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/ManagedInstanceAdministratorCreate.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceAdministratorCreate.json
 func ExampleManagedInstanceAdministratorsClient_BeginCreateOrUpdate_createAdministratorOfManagedInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleManagedInstanceAdministratorsClient_BeginCreateOrUpdate_createAdmini
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/ManagedInstanceAdministratorUpdate.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceAdministratorUpdate.json
 func ExampleManagedInstanceAdministratorsClient_BeginCreateOrUpdate_updateAdministratorOfManagedInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleManagedInstanceAdministratorsClient_BeginCreateOrUpdate_updateAdmini
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/ManagedInstanceAdministratorDelete.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceAdministratorDelete.json
 func ExampleManagedInstanceAdministratorsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleManagedInstanceAdministratorsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/ManagedInstanceAdministratorGet.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceAdministratorGet.json
 func ExampleManagedInstanceAdministratorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,7 +164,7 @@ func ExampleManagedInstanceAdministratorsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/ManagedInstanceAdministratorListByInstance.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceAdministratorListByInstance.json
 func ExampleManagedInstanceAdministratorsClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

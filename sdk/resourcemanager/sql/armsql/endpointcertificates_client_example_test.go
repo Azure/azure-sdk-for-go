@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/EndpointCertificatesGet.json
+// Generated from example definition: 2026-08-01-preview/EndpointCertificatesGet.json
 func ExampleEndpointCertificatesClient_Get_getsAnEndpointCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleEndpointCertificatesClient_Get_getsAnEndpointCertificate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/EndpointCertificatesGetWithTrustedRootCertificate.json
+// Generated from example definition: 2026-08-01-preview/EndpointCertificatesGetWithTrustedRootCertificate.json
 func ExampleEndpointCertificatesClient_Get_getsAnEndpointCertificateIncludingTrustedRootCertificates() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleEndpointCertificatesClient_Get_getsAnEndpointCertificateIncludingTru
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/EndpointCertificatesListByInstance.json
+// Generated from example definition: 2026-08-01-preview/EndpointCertificatesListByInstance.json
 func ExampleEndpointCertificatesClient_NewListByInstancePager_getAListOfEndpointCertificates() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleEndpointCertificatesClient_NewListByInstancePager_getAListOfEndpoint
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/EndpointCertificatesListByInstanceWithTrustedRootCertificates.json
+// Generated from example definition: 2026-08-01-preview/EndpointCertificatesListByInstanceWithTrustedRootCertificates.json
 func ExampleEndpointCertificatesClient_NewListByInstancePager_getAListOfEndpointCertificatesIncludingTrustedRootCertificates() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

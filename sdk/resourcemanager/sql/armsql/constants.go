@@ -5,7 +5,7 @@
 package armsql
 
 const (
-	version20250801Preview string = "2025-08-01-preview"
+	version20260801Preview string = "2026-08-01-preview"
 )
 
 type AdministratorName string
@@ -1459,6 +1459,27 @@ func PossibleIdentityTypeValues() []IdentityType {
 		IdentityTypeSystemAssigned,
 		IdentityTypeSystemAssignedUserAssigned,
 		IdentityTypeUserAssigned,
+	}
+}
+
+// ImmutabilityStatus - The immutability status of the backups governed by this short term retention policy.
+type ImmutabilityStatus string
+
+const (
+	// ImmutabilityStatusDisabled - Disabled
+	ImmutabilityStatusDisabled ImmutabilityStatus = "Disabled"
+	// ImmutabilityStatusEnabled - Enabled
+	ImmutabilityStatusEnabled ImmutabilityStatus = "Enabled"
+	// ImmutabilityStatusLocked - Locked
+	ImmutabilityStatusLocked ImmutabilityStatus = "Locked"
+)
+
+// PossibleImmutabilityStatusValues returns the possible values for the ImmutabilityStatus const type.
+func PossibleImmutabilityStatusValues() []ImmutabilityStatus {
+	return []ImmutabilityStatus{
+		ImmutabilityStatusDisabled,
+		ImmutabilityStatusEnabled,
+		ImmutabilityStatusLocked,
 	}
 }
 

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/DeletedServerGet.json
+// Generated from example definition: 2026-08-01-preview/DeletedServerGet.json
 func ExampleDeletedServersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleDeletedServersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/DeletedServerListBySubscription.json
+// Generated from example definition: 2026-08-01-preview/DeletedServerListBySubscription.json
 func ExampleDeletedServersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleDeletedServersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/DeletedServerList.json
+// Generated from example definition: 2026-08-01-preview/DeletedServerList.json
 func ExampleDeletedServersClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +160,7 @@ func ExampleDeletedServersClient_NewListByLocationPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/DeletedServerRecover.json
+// Generated from example definition: 2026-08-01-preview/DeletedServerRecover.json
 func ExampleDeletedServersClient_BeginRecover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

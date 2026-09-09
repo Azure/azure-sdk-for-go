@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/CreateManagedShortTermRetentionPolicyRestorableDropped.json
+// Generated from example definition: 2026-08-01-preview/CreateManagedShortTermRetentionPolicyRestorableDropped.json
 func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClie
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/GetManagedShortTermRetentionPolicyRestorableDropped.json
+// Generated from example definition: 2026-08-01-preview/GetManagedShortTermRetentionPolicyRestorableDropped.json
 func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,12 +75,13 @@ func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClie
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/managedInstance/testsvr/restorableDroppedDatabases/testdb,131403269876900000/backupShortTermRetentionPolicies/default"),
 	// 		Properties: &armsql.ManagedBackupShortTermRetentionPolicyProperties{
 	// 			RetentionDays: to.Ptr[int32](14),
+	// 			ImmutabilityStatus: to.Ptr(armsql.ImmutabilityStatusEnabled),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/GetListManagedShortTermRetentionPolicyRestorableDropped.json
+// Generated from example definition: 2026-08-01-preview/GetListManagedShortTermRetentionPolicyRestorableDropped.json
 func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient_NewListByRestorableDroppedDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,6 +112,7 @@ func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClie
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/managedInstances/testsvr/restorableDroppedDatabases/testdb,131403269876900000/backupShortTermRetentionPolicies/default"),
 		// 				Properties: &armsql.ManagedBackupShortTermRetentionPolicyProperties{
 		// 					RetentionDays: to.Ptr[int32](14),
+		// 					ImmutabilityStatus: to.Ptr(armsql.ImmutabilityStatusEnabled),
 		// 				},
 		// 			},
 		// 			{
@@ -119,6 +121,7 @@ func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClie
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/managedInstances/testsvr/restorableDroppedDatabases/testdb,131403269876900000/backupShortTermRetentionPolicies/default"),
 		// 				Properties: &armsql.ManagedBackupShortTermRetentionPolicyProperties{
 		// 					RetentionDays: to.Ptr[int32](14),
+		// 					ImmutabilityStatus: to.Ptr(armsql.ImmutabilityStatusEnabled),
 		// 				},
 		// 			},
 		// 		},
@@ -127,7 +130,7 @@ func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClie
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/UpdateManagedShortTermRetentionPolicyRestorableDropped.json
+// Generated from example definition: 2026-08-01-preview/UpdateManagedShortTermRetentionPolicyRestorableDropped.json
 func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +143,8 @@ func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClie
 	}
 	poller, err := clientFactory.NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient().BeginUpdate(ctx, "resourceGroup", "testsvr", "testdb,131403269876900000", armsql.ManagedShortTermRetentionPolicyNameDefault, armsql.ManagedBackupShortTermRetentionPolicy{
 		Properties: &armsql.ManagedBackupShortTermRetentionPolicyProperties{
-			RetentionDays: to.Ptr[int32](14),
+			RetentionDays:    to.Ptr[int32](14),
+			LockImmutability: to.Ptr(false),
 		},
 	}, nil)
 	if err != nil {
@@ -160,6 +164,7 @@ func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClie
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup/providers/Microsoft.Sql/managedInstances/testsvr/restorableDroppedDatabases/testdb,131403269876900000/backupShortTermRetentionPolicies/default"),
 	// 		Properties: &armsql.ManagedBackupShortTermRetentionPolicyProperties{
 	// 			RetentionDays: to.Ptr[int32](14),
+	// 			ImmutabilityStatus: to.Ptr(armsql.ImmutabilityStatusEnabled),
 	// 		},
 	// 	},
 	// }

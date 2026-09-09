@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/CreateShortTermRetentionPolicy.json
+// Generated from example definition: 2026-08-01-preview/CreateShortTermRetentionPolicy.json
 func ExampleBackupShortTermRetentionPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleBackupShortTermRetentionPoliciesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/GetShortTermRetentionPolicy.json
+// Generated from example definition: 2026-08-01-preview/GetShortTermRetentionPolicy.json
 func ExampleBackupShortTermRetentionPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,12 +78,13 @@ func ExampleBackupShortTermRetentionPoliciesClient_Get() {
 	// 		Properties: &armsql.BackupShortTermRetentionPolicyProperties{
 	// 			DiffBackupIntervalInHours: to.Ptr(		armsql.DiffBackupIntervalInHoursTwentyFour),
 	// 			RetentionDays: to.Ptr[int32](7),
+	// 			ImmutabilityStatus: to.Ptr(armsql.ImmutabilityStatusEnabled),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/ListShortTermRetentionPoliciesByDatabase.json
+// Generated from example definition: 2026-08-01-preview/ListShortTermRetentionPoliciesByDatabase.json
 func ExampleBackupShortTermRetentionPoliciesClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,6 +116,7 @@ func ExampleBackupShortTermRetentionPoliciesClient_NewListByDatabasePager() {
 		// 				Properties: &armsql.BackupShortTermRetentionPolicyProperties{
 		// 					DiffBackupIntervalInHours: to.Ptr(				armsql.DiffBackupIntervalInHoursTwentyFour),
 		// 					RetentionDays: to.Ptr[int32](7),
+		// 					ImmutabilityStatus: to.Ptr(armsql.ImmutabilityStatusEnabled),
 		// 				},
 		// 			},
 		// 		},
@@ -123,7 +125,7 @@ func ExampleBackupShortTermRetentionPoliciesClient_NewListByDatabasePager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/UpdateShortTermRetentionPolicy.json
+// Generated from example definition: 2026-08-01-preview/UpdateShortTermRetentionPolicy.json
 func ExampleBackupShortTermRetentionPoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,6 +140,7 @@ func ExampleBackupShortTermRetentionPoliciesClient_BeginUpdate() {
 		Properties: &armsql.BackupShortTermRetentionPolicyProperties{
 			DiffBackupIntervalInHours: to.Ptr(armsql.DiffBackupIntervalInHoursTwentyFour),
 			RetentionDays:             to.Ptr[int32](7),
+			LockImmutability:          to.Ptr(false),
 		},
 	}, nil)
 	if err != nil {
@@ -158,6 +161,7 @@ func ExampleBackupShortTermRetentionPoliciesClient_BeginUpdate() {
 	// 		Properties: &armsql.BackupShortTermRetentionPolicyProperties{
 	// 			DiffBackupIntervalInHours: to.Ptr(		armsql.DiffBackupIntervalInHoursTwentyFour),
 	// 			RetentionDays: to.Ptr[int32](7),
+	// 			ImmutabilityStatus: to.Ptr(armsql.ImmutabilityStatusEnabled),
 	// 		},
 	// 	},
 	// }

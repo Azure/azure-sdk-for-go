@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/DistributedAvailabilityGroupsCreateMax.json
+// Generated from example definition: 2026-08-01-preview/DistributedAvailabilityGroupsCreateMax.json
 func ExampleDistributedAvailabilityGroupsClient_BeginCreateOrUpdate_createADistributedAvailabilityGroupWithAllProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleDistributedAvailabilityGroupsClient_BeginCreateOrUpdate_createADistr
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/DistributedAvailabilityGroupsCreateMin.json
+// Generated from example definition: 2026-08-01-preview/DistributedAvailabilityGroupsCreateMin.json
 func ExampleDistributedAvailabilityGroupsClient_BeginCreateOrUpdate_createADistributedAvailabilityGroupWithMinimalProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleDistributedAvailabilityGroupsClient_BeginCreateOrUpdate_createADistr
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/DistributedAvailabilityGroupsDelete.json
+// Generated from example definition: 2026-08-01-preview/DistributedAvailabilityGroupsDelete.json
 func ExampleDistributedAvailabilityGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +156,7 @@ func ExampleDistributedAvailabilityGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/DistributedAvailabilityGroupsFailover.json
+// Generated from example definition: 2026-08-01-preview/DistributedAvailabilityGroupsFailover.json
 func ExampleDistributedAvailabilityGroupsClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,13 +194,13 @@ func ExampleDistributedAvailabilityGroupsClient_BeginFailover() {
 	// 					InstanceReplicaID: to.Ptr("4713ed91-1e8c-497d-9bd4-d8a3935ae49a"),
 	// 					InstanceSendReplicationLagSeconds: to.Ptr[int32](1),
 	// 					LastBackupLsn: to.Ptr("71000009405700001"),
-	// 					LastBackupTime: to.Ptr(time.Date(2025, time.August, 1, 0, 0, 0, 0, time.UTC)),
+	// 					LastBackupTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
 	// 					LastCommitLsn: to.Ptr("71000009407900004"),
-	// 					LastCommitTime: to.Ptr(time.Date(2025, time.August, 1, 0, 0, 0, 0, time.UTC)),
+	// 					LastCommitTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
 	// 					LastHardenedLsn: to.Ptr("71000009408100001"),
-	// 					LastHardenedTime: to.Ptr(time.Date(2025, time.August, 1, 0, 0, 0, 0, time.UTC)),
+	// 					LastHardenedTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
 	// 					LastReceivedLsn: to.Ptr("71000009407900001"),
-	// 					LastReceivedTime: to.Ptr(time.Date(2025, time.August, 1, 0, 0, 0, 0, time.UTC)),
+	// 					LastReceivedTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
 	// 					PartnerReplicaID: to.Ptr("8ffa9723-a1ec-4323-b929-c4aedee3894b"),
 	// 					ReplicaState: to.Ptr("Catchup"),
 	// 					SynchronizationHealth: to.Ptr(armsql.ReplicaSynchronizationHealthHEALTHY),
@@ -222,7 +222,7 @@ func ExampleDistributedAvailabilityGroupsClient_BeginFailover() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/DistributedAvailabilityGroupsGet.json
+// Generated from example definition: 2026-08-01-preview/DistributedAvailabilityGroupsGet.json
 func ExampleDistributedAvailabilityGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,13 +254,13 @@ func ExampleDistributedAvailabilityGroupsClient_Get() {
 	// 					InstanceReplicaID: to.Ptr("4713ed91-1e8c-497d-9bd4-d8a3935ae49a"),
 	// 					InstanceSendReplicationLagSeconds: to.Ptr[int32](1),
 	// 					LastBackupLsn: to.Ptr("71000009405700001"),
-	// 					LastBackupTime: to.Ptr(time.Date(2025, time.August, 1, 0, 0, 0, 0, time.UTC)),
+	// 					LastBackupTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
 	// 					LastCommitLsn: to.Ptr("71000009407900004"),
-	// 					LastCommitTime: to.Ptr(time.Date(2025, time.August, 1, 0, 0, 0, 0, time.UTC)),
+	// 					LastCommitTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
 	// 					LastHardenedLsn: to.Ptr("71000009408100001"),
-	// 					LastHardenedTime: to.Ptr(time.Date(2025, time.August, 1, 0, 0, 0, 0, time.UTC)),
+	// 					LastHardenedTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
 	// 					LastReceivedLsn: to.Ptr("71000009407900001"),
-	// 					LastReceivedTime: to.Ptr(time.Date(2025, time.August, 1, 0, 0, 0, 0, time.UTC)),
+	// 					LastReceivedTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
 	// 					PartnerReplicaID: to.Ptr("8ffa9723-a1ec-4323-b929-c4aedee3894b"),
 	// 					ReplicaState: to.Ptr("Seeding"),
 	// 					SeedingProgress: to.Ptr("80%"),
@@ -283,7 +283,7 @@ func ExampleDistributedAvailabilityGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/DistributedAvailabilityGroupsListByInstance.json
+// Generated from example definition: 2026-08-01-preview/DistributedAvailabilityGroupsListByInstance.json
 func ExampleDistributedAvailabilityGroupsClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -360,13 +360,13 @@ func ExampleDistributedAvailabilityGroupsClient_NewListByInstancePager() {
 		// 							SynchronizationHealth: to.Ptr(armsql.ReplicaSynchronizationHealthHEALTHY),
 		// 							ConnectedState: to.Ptr(armsql.ReplicaConnectedStateCONNECTED),
 		// 							LastReceivedLsn: to.Ptr("71000009407900001"),
-		// 							LastReceivedTime: to.Ptr(time.Date(2025, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 							LastReceivedTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
 		// 							LastCommitLsn: to.Ptr("71000009407900004"),
-		// 							LastCommitTime: to.Ptr(time.Date(2025, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 							LastCommitTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
 		// 							LastHardenedLsn: to.Ptr("71000009408100001"),
-		// 							LastHardenedTime: to.Ptr(time.Date(2025, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 							LastHardenedTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
 		// 							LastBackupLsn: to.Ptr("71000009405700001"),
-		// 							LastBackupTime: to.Ptr(time.Date(2025, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 							LastBackupTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
 		// 							InstanceSendReplicationLagSeconds: to.Ptr[int32](1),
 		// 							InstanceRedoReplicationLagSeconds: to.Ptr[int32](1),
 		// 						},
@@ -406,7 +406,7 @@ func ExampleDistributedAvailabilityGroupsClient_NewListByInstancePager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/DistributedAvailabilityGroupsSetRole.json
+// Generated from example definition: 2026-08-01-preview/DistributedAvailabilityGroupsSetRole.json
 func ExampleDistributedAvailabilityGroupsClient_BeginSetRole() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -444,7 +444,7 @@ func ExampleDistributedAvailabilityGroupsClient_BeginSetRole() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/DistributedAvailabilityGroupsUpdate.json
+// Generated from example definition: 2026-08-01-preview/DistributedAvailabilityGroupsUpdate.json
 func ExampleDistributedAvailabilityGroupsClient_BeginUpdate_updateTheDistributedAvailabilityGroupReplicationModeBeforeDeletingIt() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -483,7 +483,7 @@ func ExampleDistributedAvailabilityGroupsClient_BeginUpdate_updateTheDistributed
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/DistributedAvailabilityGroupsUpdateDatabases.json
+// Generated from example definition: 2026-08-01-preview/DistributedAvailabilityGroupsUpdateDatabases.json
 func ExampleDistributedAvailabilityGroupsClient_BeginUpdate_updateTheDatabasesOfADistributedAvailabilityGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -542,13 +542,13 @@ func ExampleDistributedAvailabilityGroupsClient_BeginUpdate_updateTheDatabasesOf
 	// 					SynchronizationHealth: to.Ptr(armsql.ReplicaSynchronizationHealthHEALTHY),
 	// 					ConnectedState: to.Ptr(armsql.ReplicaConnectedStateCONNECTED),
 	// 					LastReceivedLsn: to.Ptr("71000009407900001"),
-	// 					LastReceivedTime: to.Ptr(time.Date(2025, time.August, 1, 0, 0, 0, 0, time.UTC)),
+	// 					LastReceivedTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
 	// 					LastCommitLsn: to.Ptr("71000009407900004"),
-	// 					LastCommitTime: to.Ptr(time.Date(2025, time.August, 1, 0, 0, 0, 0, time.UTC)),
+	// 					LastCommitTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
 	// 					LastHardenedLsn: to.Ptr("71000009408100001"),
-	// 					LastHardenedTime: to.Ptr(time.Date(2025, time.August, 1, 0, 0, 0, 0, time.UTC)),
+	// 					LastHardenedTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
 	// 					LastBackupLsn: to.Ptr("71000009405700001"),
-	// 					LastBackupTime: to.Ptr(time.Date(2025, time.August, 1, 0, 0, 0, 0, time.UTC)),
+	// 					LastBackupTime: to.Ptr(time.Date(2026, time.August, 1, 0, 0, 0, 0, time.UTC)),
 	// 					InstanceSendReplicationLagSeconds: to.Ptr[int32](1),
 	// 					InstanceRedoReplicationLagSeconds: to.Ptr[int32](1),
 	// 				},
@@ -561,13 +561,13 @@ func ExampleDistributedAvailabilityGroupsClient_BeginUpdate_updateTheDatabasesOf
 	// 					SynchronizationHealth: to.Ptr(armsql.ReplicaSynchronizationHealthPARTIALLYHEALTHY),
 	// 					ConnectedState: to.Ptr(armsql.ReplicaConnectedStateCONNECTED),
 	// 					LastReceivedLsn: to.Ptr("72000010508000002"),
-	// 					LastReceivedTime: to.Ptr(time.Date(2025, time.August, 1, 0, 5, 0, 0, time.UTC)),
+	// 					LastReceivedTime: to.Ptr(time.Date(2026, time.August, 1, 0, 5, 0, 0, time.UTC)),
 	// 					LastCommitLsn: to.Ptr("72000010508000005"),
-	// 					LastCommitTime: to.Ptr(time.Date(2025, time.August, 1, 0, 5, 0, 0, time.UTC)),
+	// 					LastCommitTime: to.Ptr(time.Date(2026, time.August, 1, 0, 5, 0, 0, time.UTC)),
 	// 					LastHardenedLsn: to.Ptr("72000010509200002"),
-	// 					LastHardenedTime: to.Ptr(time.Date(2025, time.August, 1, 0, 5, 0, 0, time.UTC)),
+	// 					LastHardenedTime: to.Ptr(time.Date(2026, time.August, 1, 0, 5, 0, 0, time.UTC)),
 	// 					LastBackupLsn: to.Ptr("72000010506800002"),
-	// 					LastBackupTime: to.Ptr(time.Date(2025, time.August, 1, 0, 5, 0, 0, time.UTC)),
+	// 					LastBackupTime: to.Ptr(time.Date(2026, time.August, 1, 0, 5, 0, 0, time.UTC)),
 	// 					InstanceSendReplicationLagSeconds: to.Ptr[int32](0),
 	// 					InstanceRedoReplicationLagSeconds: to.Ptr[int32](0),
 	// 				},
@@ -580,13 +580,13 @@ func ExampleDistributedAvailabilityGroupsClient_BeginUpdate_updateTheDatabasesOf
 	// 					SynchronizationHealth: to.Ptr(armsql.ReplicaSynchronizationHealthPARTIALLYHEALTHY),
 	// 					ConnectedState: to.Ptr(armsql.ReplicaConnectedStateCONNECTED),
 	// 					LastReceivedLsn: to.Ptr("72000010508000002"),
-	// 					LastReceivedTime: to.Ptr(time.Date(2025, time.August, 1, 0, 5, 0, 0, time.UTC)),
+	// 					LastReceivedTime: to.Ptr(time.Date(2026, time.August, 1, 0, 5, 0, 0, time.UTC)),
 	// 					LastCommitLsn: to.Ptr("72000010508000005"),
-	// 					LastCommitTime: to.Ptr(time.Date(2025, time.August, 1, 0, 5, 0, 0, time.UTC)),
+	// 					LastCommitTime: to.Ptr(time.Date(2026, time.August, 1, 0, 5, 0, 0, time.UTC)),
 	// 					LastHardenedLsn: to.Ptr("72000010509200002"),
-	// 					LastHardenedTime: to.Ptr(time.Date(2025, time.August, 1, 0, 5, 0, 0, time.UTC)),
+	// 					LastHardenedTime: to.Ptr(time.Date(2026, time.August, 1, 0, 5, 0, 0, time.UTC)),
 	// 					LastBackupLsn: to.Ptr("72000010506800002"),
-	// 					LastBackupTime: to.Ptr(time.Date(2025, time.August, 1, 0, 5, 0, 0, time.UTC)),
+	// 					LastBackupTime: to.Ptr(time.Date(2026, time.August, 1, 0, 5, 0, 0, time.UTC)),
 	// 					InstanceSendReplicationLagSeconds: to.Ptr[int32](0),
 	// 					InstanceRedoReplicationLagSeconds: to.Ptr[int32](0),
 	// 				},

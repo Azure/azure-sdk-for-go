@@ -31,7 +31,7 @@ type DrillRunsServer struct {
 	BeginFailOver func(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, options *armresiliencemanagement.DrillRunsClientBeginFailOverOptions) (resp azfake.PollerResponder[armresiliencemanagement.DrillRunsClientFailOverResponse], errResp azfake.ErrorResponder)
 
 	// BeginGenerateReport is the fake for method DrillRunsClient.BeginGenerateReport
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGenerateReport func(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, options *armresiliencemanagement.DrillRunsClientBeginGenerateReportOptions) (resp azfake.PollerResponder[armresiliencemanagement.DrillRunsClientGenerateReportResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method DrillRunsClient.Get
@@ -43,7 +43,7 @@ type DrillRunsServer struct {
 	NewListPager func(serviceGroupName string, drillName string, options *armresiliencemanagement.DrillRunsClientListOptions) (resp azfake.PagerResponder[armresiliencemanagement.DrillRunsClientListResponse])
 
 	// BeginListReportDownloadURL is the fake for method DrillRunsClient.BeginListReportDownloadURL
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginListReportDownloadURL func(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, body armresiliencemanagement.ListReportDownloadURLRequest, options *armresiliencemanagement.DrillRunsClientBeginListReportDownloadURLOptions) (resp azfake.PollerResponder[armresiliencemanagement.DrillRunsClientListReportDownloadURLResponse], errResp azfake.ErrorResponder)
 
 	// BeginMarkAsComplete is the fake for method DrillRunsClient.BeginMarkAsComplete
@@ -261,7 +261,7 @@ func (d *DrillRunsServerTransport) dispatchBeginGenerateReport(req *http.Request
 	}
 	beginGenerateReport := d.beginGenerateReport.get(req)
 	if beginGenerateReport == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/drillRuns/(?P<drillRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generateReport`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/drillRuns/(?P<drillRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/generateReport`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -292,9 +292,9 @@ func (d *DrillRunsServerTransport) dispatchBeginGenerateReport(req *http.Request
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		d.beginGenerateReport.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginGenerateReport) {
 		d.beginGenerateReport.remove(req)
@@ -387,7 +387,7 @@ func (d *DrillRunsServerTransport) dispatchBeginListReportDownloadURL(req *http.
 	}
 	beginListReportDownloadURL := d.beginListReportDownloadURL.get(req)
 	if beginListReportDownloadURL == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/drillRuns/(?P<drillRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listReportDownloadUrl`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/drillRuns/(?P<drillRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listReportDownloadUrl`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -422,9 +422,9 @@ func (d *DrillRunsServerTransport) dispatchBeginListReportDownloadURL(req *http.
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		d.beginListReportDownloadURL.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginListReportDownloadURL) {
 		d.beginListReportDownloadURL.remove(req)

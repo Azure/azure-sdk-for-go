@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.0 (2026-08-26)
+## 0.2.0 (2026-09-10)
 ### Breaking Changes
 
 - Function `*DrillRunsClient.BeginFailOver` parameter(s) have been changed from `(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, body DrillRunFailoverRequest, options *DrillRunsClientBeginFailOverOptions)` to `(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, options *DrillRunsClientBeginFailOverOptions)`
@@ -31,6 +31,7 @@
 - New struct `DrillRunReprotectRequest`
 - New struct `HealthModelMonitoringProperties`
 - New struct `ListReportDownloadURLRequest`
+- New struct `ListReportDownloadURLResponse`
 - New struct `ReportStageStatus`
 - New struct `ResiliencyProperties`
 - New struct `ResourceCrossZoneVMRecoveryProtectionSetting`

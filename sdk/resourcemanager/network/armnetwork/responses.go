@@ -1695,12 +1695,6 @@ type InterfacesClientGetVirtualMachineScaleSetIPConfigurationResponse struct {
 	InterfaceIPConfiguration
 }
 
-// InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceResponse contains the response from method InterfacesClient.GetVirtualMachineScaleSetNetworkInterface.
-type InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceResponse struct {
-	// A network interface in a resource group.
-	Interface
-}
-
 // InterfacesClientListAllResponse contains the response from method InterfacesClient.NewListAllPager.
 type InterfacesClientListAllResponse struct {
 	// The response of a NetworkInterface list operation.
@@ -1739,12 +1733,6 @@ type InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse struct {
 
 // InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse contains the response from method InterfacesClient.NewListVirtualMachineScaleSetNetworkInterfacesPager.
 type InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse struct {
-	// The response of a NetworkInterface list operation.
-	InterfaceListResult
-}
-
-// InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse contains the response from method InterfacesClient.NewListVirtualMachineScaleSetVMNetworkInterfacesPager.
-type InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse struct {
 	// The response of a NetworkInterface list operation.
 	InterfaceListResult
 }
@@ -2514,12 +2502,6 @@ type PublicIPAddressesClientGetResponse struct {
 	PublicIPAddress
 }
 
-// PublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressResponse contains the response from method PublicIPAddressesClient.GetVirtualMachineScaleSetPublicIPAddress.
-type PublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressResponse struct {
-	// Public IP address resource.
-	PublicIPAddress
-}
-
 // PublicIPAddressesClientListAllResponse contains the response from method PublicIPAddressesClient.NewListAllPager.
 type PublicIPAddressesClientListAllResponse struct {
 	// The response of a PublicIPAddress list operation.
@@ -2546,12 +2528,6 @@ type PublicIPAddressesClientListResponse struct {
 
 // PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse contains the response from method PublicIPAddressesClient.NewListVirtualMachineScaleSetPublicIPAddressesPager.
 type PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse struct {
-	// The response of a PublicIPAddress list operation.
-	PublicIPAddressListResult
-}
-
-// PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse contains the response from method PublicIPAddressesClient.NewListVirtualMachineScaleSetVMPublicIPAddressesPager.
-type PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse struct {
 	// The response of a PublicIPAddress list operation.
 	PublicIPAddressListResult
 }
@@ -4584,6 +4560,30 @@ type VirtualWansClientListResponse struct {
 type VirtualWansClientUpdateTagsResponse struct {
 	// VirtualWAN Resource.
 	VirtualWAN
+}
+
+// VmssNetworkInterfacesClientGetVirtualMachineScaleSetNetworkInterfaceResponse contains the response from method VmssNetworkInterfacesClient.GetVirtualMachineScaleSetNetworkInterface.
+type VmssNetworkInterfacesClientGetVirtualMachineScaleSetNetworkInterfaceResponse struct {
+	// A network interface in a resource group.
+	Interface
+}
+
+// VmssNetworkInterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse contains the response from method VmssNetworkInterfacesClient.NewListVirtualMachineScaleSetVMNetworkInterfacesPager.
+type VmssNetworkInterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse struct {
+	// The response of a NetworkInterface list operation.
+	InterfaceListResult
+}
+
+// VmssPublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressResponse contains the response from method VmssPublicIPAddressesClient.GetVirtualMachineScaleSetPublicIPAddress.
+type VmssPublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressResponse struct {
+	// Public IP address resource.
+	PublicIPAddress
+}
+
+// VmssPublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse contains the response from method VmssPublicIPAddressesClient.NewListVirtualMachineScaleSetVMPublicIPAddressesPager.
+type VmssPublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse struct {
+	// The response of a PublicIPAddress list operation.
+	PublicIPAddressListResult
 }
 
 // WatchersClientCheckConnectivityResponse contains the response from method WatchersClient.BeginCheckConnectivity.

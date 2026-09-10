@@ -45,10 +45,6 @@ type InterfacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetVirtualMachineScaleSetIPConfiguration func(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, options *armnetwork.InterfacesClientGetVirtualMachineScaleSetIPConfigurationOptions) (resp azfake.Responder[armnetwork.InterfacesClientGetVirtualMachineScaleSetIPConfigurationResponse], errResp azfake.ErrorResponder)
 
-	// GetVirtualMachineScaleSetNetworkInterface is the fake for method InterfacesClient.GetVirtualMachineScaleSetNetworkInterface
-	// HTTP status codes to indicate success: http.StatusOK
-	GetVirtualMachineScaleSetNetworkInterface func(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, options *armnetwork.InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceOptions) (resp azfake.Responder[armnetwork.InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceResponse], errResp azfake.ErrorResponder)
-
 	// NewListPager is the fake for method InterfacesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, options *armnetwork.InterfacesClientListOptions) (resp azfake.PagerResponder[armnetwork.InterfacesClientListResponse])
@@ -77,10 +73,6 @@ type InterfacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListVirtualMachineScaleSetNetworkInterfacesPager func(resourceGroupName string, virtualMachineScaleSetName string, options *armnetwork.InterfacesClientListVirtualMachineScaleSetNetworkInterfacesOptions) (resp azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse])
 
-	// NewListVirtualMachineScaleSetVMNetworkInterfacesPager is the fake for method InterfacesClient.NewListVirtualMachineScaleSetVMNetworkInterfacesPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListVirtualMachineScaleSetVMNetworkInterfacesPager func(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, options *armnetwork.InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesOptions) (resp azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse])
-
 	// UpdateTags is the fake for method InterfacesClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
 	UpdateTags func(ctx context.Context, resourceGroupName string, networkInterfaceName string, parameters armnetwork.TagsObject, options *armnetwork.InterfacesClientUpdateTagsOptions) (resp azfake.Responder[armnetwork.InterfacesClientUpdateTagsResponse], errResp azfake.ErrorResponder)
@@ -102,7 +94,6 @@ func NewInterfacesServerTransport(srv *InterfacesServer) *InterfacesServerTransp
 		beginListEffectiveNetworkSecurityGroups:               newTracker[azfake.PollerResponder[armnetwork.InterfacesClientListEffectiveNetworkSecurityGroupsResponse]](),
 		newListVirtualMachineScaleSetIPConfigurationsPager:    newTracker[azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse]](),
 		newListVirtualMachineScaleSetNetworkInterfacesPager:   newTracker[azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse]](),
-		newListVirtualMachineScaleSetVMNetworkInterfacesPager: newTracker[azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse]](),
 	}
 }
 
@@ -120,7 +111,6 @@ type InterfacesServerTransport struct {
 	beginListEffectiveNetworkSecurityGroups               *tracker[azfake.PollerResponder[armnetwork.InterfacesClientListEffectiveNetworkSecurityGroupsResponse]]
 	newListVirtualMachineScaleSetIPConfigurationsPager    *tracker[azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse]]
 	newListVirtualMachineScaleSetNetworkInterfacesPager   *tracker[azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse]]
-	newListVirtualMachineScaleSetVMNetworkInterfacesPager *tracker[azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse]]
 }
 
 // Do implements the policy.Transporter interface for InterfacesServerTransport.
@@ -156,8 +146,6 @@ func (i *InterfacesServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = i.dispatchBeginGetEffectiveRouteTable(req)
 			case "InterfacesClient.GetVirtualMachineScaleSetIPConfiguration":
 				res.resp, res.err = i.dispatchGetVirtualMachineScaleSetIPConfiguration(req)
-			case "InterfacesClient.GetVirtualMachineScaleSetNetworkInterface":
-				res.resp, res.err = i.dispatchGetVirtualMachineScaleSetNetworkInterface(req)
 			case "InterfacesClient.NewListPager":
 				res.resp, res.err = i.dispatchNewListPager(req)
 			case "InterfacesClient.NewListAllPager":
@@ -172,8 +160,6 @@ func (i *InterfacesServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = i.dispatchNewListVirtualMachineScaleSetIPConfigurationsPager(req)
 			case "InterfacesClient.NewListVirtualMachineScaleSetNetworkInterfacesPager":
 				res.resp, res.err = i.dispatchNewListVirtualMachineScaleSetNetworkInterfacesPager(req)
-			case "InterfacesClient.NewListVirtualMachineScaleSetVMNetworkInterfacesPager":
-				res.resp, res.err = i.dispatchNewListVirtualMachineScaleSetVMNetworkInterfacesPager(req)
 			case "InterfacesClient.UpdateTags":
 				res.resp, res.err = i.dispatchUpdateTags(req)
 			default:
@@ -465,55 +451,6 @@ func (i *InterfacesServerTransport) dispatchGetVirtualMachineScaleSetIPConfigura
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).InterfaceIPConfiguration, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (i *InterfacesServerTransport) dispatchGetVirtualMachineScaleSetNetworkInterface(req *http.Request) (*http.Response, error) {
-	if i.srv.GetVirtualMachineScaleSetNetworkInterface == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetVirtualMachineScaleSetNetworkInterface not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<virtualMachineScaleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachines/(?P<virtualmachineIndex>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkInterfaces/(?P<networkInterfaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	virtualMachineScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualMachineScaleSetName")])
-	if err != nil {
-		return nil, err
-	}
-	virtualmachineIndexParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualmachineIndex")])
-	if err != nil {
-		return nil, err
-	}
-	networkInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
-	if err != nil {
-		return nil, err
-	}
-	expandParam := getOptional(qp.Get("$expand"))
-	var options *armnetwork.InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceOptions
-	if expandParam != nil {
-		options = &armnetwork.InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceOptions{
-			Expand: expandParam,
-		}
-	}
-	respr, errRespr := i.srv.GetVirtualMachineScaleSetNetworkInterface(req.Context(), resourceGroupNameParam, virtualMachineScaleSetNameParam, virtualmachineIndexParam, networkInterfaceNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Interface, req)
 	if err != nil {
 		return nil, err
 	}
@@ -814,51 +751,6 @@ func (i *InterfacesServerTransport) dispatchNewListVirtualMachineScaleSetNetwork
 	}
 	if !server.PagerResponderMore(newListVirtualMachineScaleSetNetworkInterfacesPager) {
 		i.newListVirtualMachineScaleSetNetworkInterfacesPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (i *InterfacesServerTransport) dispatchNewListVirtualMachineScaleSetVMNetworkInterfacesPager(req *http.Request) (*http.Response, error) {
-	if i.srv.NewListVirtualMachineScaleSetVMNetworkInterfacesPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListVirtualMachineScaleSetVMNetworkInterfacesPager not implemented")}
-	}
-	newListVirtualMachineScaleSetVMNetworkInterfacesPager := i.newListVirtualMachineScaleSetVMNetworkInterfacesPager.get(req)
-	if newListVirtualMachineScaleSetVMNetworkInterfacesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<virtualMachineScaleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachines/(?P<virtualmachineIndex>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkInterfaces`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		virtualMachineScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualMachineScaleSetName")])
-		if err != nil {
-			return nil, err
-		}
-		virtualmachineIndexParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualmachineIndex")])
-		if err != nil {
-			return nil, err
-		}
-		resp := i.srv.NewListVirtualMachineScaleSetVMNetworkInterfacesPager(resourceGroupNameParam, virtualMachineScaleSetNameParam, virtualmachineIndexParam, nil)
-		newListVirtualMachineScaleSetVMNetworkInterfacesPager = &resp
-		i.newListVirtualMachineScaleSetVMNetworkInterfacesPager.add(req, newListVirtualMachineScaleSetVMNetworkInterfacesPager)
-		server.PagerResponderInjectNextLinks(newListVirtualMachineScaleSetVMNetworkInterfacesPager, req, func(page *armnetwork.InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListVirtualMachineScaleSetVMNetworkInterfacesPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		i.newListVirtualMachineScaleSetVMNetworkInterfacesPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListVirtualMachineScaleSetVMNetworkInterfacesPager) {
-		i.newListVirtualMachineScaleSetVMNetworkInterfacesPager.remove(req)
 	}
 	return resp, nil
 }

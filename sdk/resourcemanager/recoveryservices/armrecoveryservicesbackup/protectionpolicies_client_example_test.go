@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Complex.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Complex.json
 func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateFullAzureVMProtectionPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateFullAzureVMPro
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Simple.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Simple.json
 func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateSimpleAzureVMProtectionPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -271,7 +271,7 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateSimpleAzureVMP
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/V2Policy/IaaS_v2_daily.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/V2Policy/IaaS_v2_daily.json
 func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateEnhancedAzureVMProtectionPolicyWithDailyBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -458,7 +458,7 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateEnhancedAzureV
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/V2Policy/IaaS_v2_hourly.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/V2Policy/IaaS_v2_hourly.json
 func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateEnhancedAzureVMProtectionPolicyWithHourlyBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -645,7 +645,7 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateEnhancedAzureV
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
+// Generated from example definition: 2026-08-01/AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
 func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateDailyAzureStorageProtectionPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -824,7 +824,7 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateDailyAzureStor
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hardened.json
+// Generated from example definition: 2026-08-01/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hardened.json
 func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateAzureStorageVaultStandardProtectionPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1008,7 +1008,7 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateAzureStorageVa
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hourly.json
+// Generated from example definition: 2026-08-01/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hourly.json
 func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateHourlyAzureStorageProtectionPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1179,7 +1179,7 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateHourlyAzureSto
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AzureWorkload/ProtectionPolicies_CreateOrUpdate_Complex.json
+// Generated from example definition: 2026-08-01/AzureWorkload/ProtectionPolicies_CreateOrUpdate_Complex.json
 func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateFullAzureWorkloadProtectionPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1440,7 +1440,7 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateFullAzureWorkl
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/ProtectionPolicies_Delete.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/ProtectionPolicies_Delete.json
 func ExampleProtectionPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1466,7 +1466,7 @@ func ExampleProtectionPoliciesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/ProtectionPolicies_Get.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/ProtectionPolicies_Get.json
 func ExampleProtectionPoliciesClient_Get_getAzureIaasVMProtectionPolicyDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1518,7 +1518,7 @@ func ExampleProtectionPoliciesClient_Get_getAzureIaasVMProtectionPolicyDetails()
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/V2Policy/v2-Get-Policy.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/V2Policy/v2-Get-Policy.json
 func ExampleProtectionPoliciesClient_Get_getAzureIaasVMEnhancedProtectionPolicyDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/AgentApplication/createOrUpdate.json
+// Generated from example definition: 2026-07-15-preview/AgentApplication/createOrUpdate.json
 func ExampleAgentApplicationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,10 +58,10 @@ func ExampleAgentApplicationsClient_BeginCreateOrUpdate() {
 	// 			},
 	// 		},
 	// 		SystemData: &armcognitiveservices.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-29T12:34:56.999Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.September, 29, 12, 34, 56, 999000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-29T12:34:56.999Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.September, 29, 12, 34, 56, 999000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
 	// 		},
@@ -69,7 +69,7 @@ func ExampleAgentApplicationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/AgentApplication/delete.json
+// Generated from example definition: 2026-07-15-preview/AgentApplication/delete.json
 func ExampleAgentApplicationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleAgentApplicationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/AgentApplication/disable.json
+// Generated from example definition: 2026-07-15-preview/AgentApplication/disable.json
 func ExampleAgentApplicationsClient_Disable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleAgentApplicationsClient_Disable() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/AgentApplication/enable.json
+// Generated from example definition: 2026-07-15-preview/AgentApplication/enable.json
 func ExampleAgentApplicationsClient_Enable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExampleAgentApplicationsClient_Enable() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/AgentApplication/get.json
+// Generated from example definition: 2026-07-15-preview/AgentApplication/get.json
 func ExampleAgentApplicationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,10 +166,10 @@ func ExampleAgentApplicationsClient_Get() {
 	// 			},
 	// 		},
 	// 		SystemData: &armcognitiveservices.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-29T12:34:56.999Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.September, 29, 12, 34, 56, 999000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-29T12:34:56.999Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.September, 29, 12, 34, 56, 999000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
 	// 		},
@@ -177,7 +177,7 @@ func ExampleAgentApplicationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/AgentApplication/list.json
+// Generated from example definition: 2026-07-15-preview/AgentApplication/list.json
 func ExampleAgentApplicationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,10 +225,10 @@ func ExampleAgentApplicationsClient_NewListPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armcognitiveservices.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-29T12:34:56.999Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.September, 29, 12, 34, 56, 999000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-29T12:34:56.999Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.September, 29, 12, 34, 56, 999000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
 		// 				},
@@ -239,7 +239,7 @@ func ExampleAgentApplicationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/AgentApplication/listAgents.json
+// Generated from example definition: 2026-07-15-preview/AgentApplication/listAgents.json
 func ExampleAgentApplicationsClient_ListAgents() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -270,10 +270,10 @@ func ExampleAgentApplicationsClient_ListAgents() {
 	// 					AgentName: to.Ptr("CustomerSupportAgent"),
 	// 				},
 	// 				SystemData: &armcognitiveservices.SystemData{
-	// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-29T12:34:56.999Z"); return t}()),
+	// 					CreatedAt: to.Ptr(time.Date(2024, time.September, 29, 12, 34, 56, 999000000, time.UTC)),
 	// 					CreatedBy: to.Ptr("user@contoso.com"),
 	// 					CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
-	// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-29T12:34:56.999Z"); return t}()),
+	// 					LastModifiedAt: to.Ptr(time.Date(2024, time.September, 29, 12, 34, 56, 999000000, time.UTC)),
 	// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 					LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
 	// 				},
@@ -287,10 +287,10 @@ func ExampleAgentApplicationsClient_ListAgents() {
 	// 					AgentName: to.Ptr("TechnicalSupportAgent"),
 	// 				},
 	// 				SystemData: &armcognitiveservices.SystemData{
-	// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-29T12:34:56.999Z"); return t}()),
+	// 					CreatedAt: to.Ptr(time.Date(2024, time.September, 29, 12, 34, 56, 999000000, time.UTC)),
 	// 					CreatedBy: to.Ptr("user@contoso.com"),
 	// 					CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
-	// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-29T12:34:56.999Z"); return t}()),
+	// 					LastModifiedAt: to.Ptr(time.Date(2024, time.September, 29, 12, 34, 56, 999000000, time.UTC)),
 	// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 					LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
 	// 				},

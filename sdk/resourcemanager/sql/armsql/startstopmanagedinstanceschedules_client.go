@@ -30,6 +30,9 @@ type StartStopManagedInstanceSchedulesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewStartStopManagedInstanceSchedulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StartStopManagedInstanceSchedulesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -70,7 +73,7 @@ func (client *StartStopManagedInstanceSchedulesClient) CreateOrUpdate(ctx contex
 func (client *StartStopManagedInstanceSchedulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, startStopScheduleName StartStopScheduleName, parameters StartStopManagedInstanceSchedule, _ *StartStopManagedInstanceSchedulesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/startStopSchedules/{startStopScheduleName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -143,7 +146,7 @@ func (client *StartStopManagedInstanceSchedulesClient) Delete(ctx context.Contex
 func (client *StartStopManagedInstanceSchedulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, startStopScheduleName StartStopScheduleName, _ *StartStopManagedInstanceSchedulesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/startStopSchedules/{startStopScheduleName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -196,7 +199,7 @@ func (client *StartStopManagedInstanceSchedulesClient) Get(ctx context.Context, 
 func (client *StartStopManagedInstanceSchedulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, startStopScheduleName StartStopScheduleName, _ *StartStopManagedInstanceSchedulesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/startStopSchedules/{startStopScheduleName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -272,7 +275,7 @@ func (client *StartStopManagedInstanceSchedulesClient) listByInstanceCreateReque
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/startStopSchedules"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {

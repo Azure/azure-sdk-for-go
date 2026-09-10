@@ -10429,6 +10429,33 @@ func (i *InquiryValidation) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type InstantItemRecoveryOperationResultRequest.
+func (i InstantItemRecoveryOperationResultRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "provisionInstantItemRecoveryOperationId", i.ProvisionInstantItemRecoveryOperationID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type InstantItemRecoveryOperationResultRequest.
+func (i *InstantItemRecoveryOperationResultRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", i, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "provisionInstantItemRecoveryOperationId":
+			err = unpopulate(val, "ProvisionInstantItemRecoveryOperationID", &i.ProvisionInstantItemRecoveryOperationID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", i, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type InstantItemRecoveryTarget.
 func (i InstantItemRecoveryTarget) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)

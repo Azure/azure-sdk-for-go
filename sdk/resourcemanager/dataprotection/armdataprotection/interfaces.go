@@ -55,7 +55,8 @@ type BackupCriteriaClassification interface {
 // Call the interface's GetBackupDatasourceParameters() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AdlsBlobBackupDatasourceParameters, *AdlsBlobBackupDatasourceParametersForAutoProtection, *BackupDatasourceParameters,
-// - *BlobBackupDatasourceParameters, *BlobBackupDatasourceParametersForAutoProtection, *KubernetesClusterBackupDatasourceParameters
+// - *BlobBackupDatasourceParameters, *BlobBackupDatasourceParametersForAutoProtection, *GenericBackupDatasourceParameters,
+// - *KubernetesClusterBackupDatasourceParameters
 type BackupDatasourceParametersClassification interface {
 	// GetBackupDatasourceParameters returns the BackupDatasourceParameters content of the underlying type.
 	GetBackupDatasourceParameters() *BackupDatasourceParameters
@@ -164,8 +165,8 @@ type FeatureValidationResponseBaseClassification interface {
 // ItemLevelRestoreCriteriaClassification provides polymorphic access to related types.
 // Call the interface's GetItemLevelRestoreCriteria() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *ItemLevelRestoreCriteria, *ItemPathBasedRestoreCriteria, *KubernetesClusterRestoreCriteria, *KubernetesClusterVaultTierRestoreCriteria,
-// - *KubernetesPVRestoreCriteria, *KubernetesStorageClassRestoreCriteria, *RangeBasedItemLevelRestoreCriteria
+// - *GenericRestoreDatasourceCriteria, *ItemLevelRestoreCriteria, *ItemPathBasedRestoreCriteria, *KubernetesClusterRestoreCriteria,
+// - *KubernetesClusterVaultTierRestoreCriteria, *KubernetesPVRestoreCriteria, *KubernetesStorageClassRestoreCriteria, *RangeBasedItemLevelRestoreCriteria
 type ItemLevelRestoreCriteriaClassification interface {
 	// GetItemLevelRestoreCriteria returns the ItemLevelRestoreCriteria content of the underlying type.
 	GetItemLevelRestoreCriteria() *ItemLevelRestoreCriteria

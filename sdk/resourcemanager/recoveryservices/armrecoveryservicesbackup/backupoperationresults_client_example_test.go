@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/Common/ProtectedItem_Delete_OperationResult.json
+// Generated from example definition: 2026-08-01/Common/ProtectedItem_Delete_OperationResult.json
 func ExampleBackupOperationResultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

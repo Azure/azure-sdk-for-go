@@ -81,7 +81,7 @@ func (o *OperationStatusServerTransport) dispatchGet(req *http.Request) (*http.R
 	if o.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.AzureResilienceManagement/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/operationStatuses/(?P<operationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.AzureResilienceManagement/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/operationStatuses/(?P<operationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

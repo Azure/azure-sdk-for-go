@@ -1,5 +1,49 @@
 # Release History
 
+## 0.3.0 (2026-08-21)
+### Breaking Changes
+
+- Type of `OccurrenceExtensionProperties.ProvisioningState` has been changed from `*ResourceProvisioningState` to `*OccurrenceResourceProvisioningState`
+- Type of `OccurrenceResource.ProvisioningState` has been changed from `*ResourceProvisioningState` to `*OccurrenceResourceProvisioningState`
+- Type of `ScheduledActionProperties.ProvisioningState` has been changed from `*RecurringScheduledActionsProvisioningState` to `*ScheduledActionsProvisioningState`
+- Type of `ScheduledActionsExtensionProperties.ProvisioningState` has been changed from `*RecurringScheduledActionsProvisioningState` to `*ScheduledActionsProvisioningState`
+- Type of `ScheduledActionsSchedule.DeadlineType` has been changed from `*RecurringScheduledActionsDeadlineType` to `*ScheduledActionsDeadlineType`
+- Type of `ScheduledActionsSchedule.ExecutionParameters` has been changed from `*RecurringScheduledActionsExecutionParameters` to `*ScheduledActionsExecutionParameters`
+- Type of `ScheduledActionsScheduleUpdate.DeadlineType` has been changed from `*RecurringScheduledActionsDeadlineType` to `*ScheduledActionsDeadlineType`
+- Type of `ScheduledActionsScheduleUpdate.ExecutionParameters` has been changed from `*RecurringScheduledActionsExecutionParameters` to `*ScheduledActionsExecutionParameters`
+- Enum `RecurringScheduledActionsDeadlineType` has been removed
+- Enum `RecurringScheduledActionsProvisioningState` has been removed
+- Enum `RecurringScheduledActionsResourceOperationType` has been removed
+- Enum `ResourceProvisioningState` has been removed
+- Struct `RecurringScheduledActionsExecutionParameters` has been removed
+- Struct `RecurringScheduledActionsRetryPolicy` has been removed
+
+### Features Added
+
+- New enum type `CapacityRecommendationStatus` with values `CapacityRecommendationStatusFailed`, `CapacityRecommendationStatusNotInitiated`, `CapacityRecommendationStatusSkipped`, `CapacityRecommendationStatusSucceeded`
+- New enum type `OccurrenceResourceProvisioningState` with values `OccurrenceResourceProvisioningStateCanceled`, `OccurrenceResourceProvisioningStateCancelling`, `OccurrenceResourceProvisioningStateCreated`, `OccurrenceResourceProvisioningStateFailed`, `OccurrenceResourceProvisioningStateInvalidState`, `OccurrenceResourceProvisioningStateRescheduling`, `OccurrenceResourceProvisioningStateScheduled`, `OccurrenceResourceProvisioningStateSucceeded`
+- New enum type `PartialFulfillmentMode` with values `PartialFulfillmentModeDisabled`, `PartialFulfillmentModeEnabled`
+- New enum type `PartialFulfillmentReason` with values `PartialFulfillmentReasonInsufficientCapacity`, `PartialFulfillmentReasonInsufficientQuota`, `PartialFulfillmentReasonNone`
+- New enum type `ScheduledActionsDeadlineType` with values `ScheduledActionsDeadlineTypeCompleteBy`, `ScheduledActionsDeadlineTypeInitiateAt`, `ScheduledActionsDeadlineTypeUnknown`
+- New enum type `ScheduledActionsProvisioningState` with values `ScheduledActionsProvisioningStateCanceled`, `ScheduledActionsProvisioningStateDeleting`, `ScheduledActionsProvisioningStateFailed`, `ScheduledActionsProvisioningStateSucceeded`
+- New enum type `ScheduledActionsResourceOperationType` with values `ScheduledActionsResourceOperationTypeCreate`, `ScheduledActionsResourceOperationTypeDeallocate`, `ScheduledActionsResourceOperationTypeDelete`, `ScheduledActionsResourceOperationTypeHibernate`, `ScheduledActionsResourceOperationTypeStart`, `ScheduledActionsResourceOperationTypeUnknown`
+- New function `*BulkCreateCustomClient.NewVirtualMachinesGetOperationStatusPager(resourceGroupName string, location string, name string, options *BulkCreateCustomClientVirtualMachinesGetOperationStatusOptions) *runtime.Pager[BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse]`
+- New struct `BulkCreateCustomOperationStatusListResult`
+- New struct `BulkCreateCustomResource`
+- New struct `BulkCreateCustomVirtualMachineInfo`
+- New struct `CapacityRecommendation`
+- New struct `CapacityRecommendationDetails`
+- New struct `CapacityRecommendationParameters`
+- New struct `CapacityRecommendationPlacementScore`
+- New struct `CapacityRecommendationSize`
+- New struct `PartialFulfillmentPolicy`
+- New struct `ScheduledActionsExecutionParameters`
+- New struct `ScheduledActionsRetryPolicy`
+- New field `MinCapacity`, `PartialFulfillmentPolicy`, `Resources` in struct `BulkCreateCustomProperties`
+- New field `CapacityRecommendationParameters` in struct `ExecutionParameters`
+- New field `CapacityRecommendation` in struct `ResourceOperationDetails`
+
+
 ## 0.2.0 (2026-07-30)
 ### Features Added
 

@@ -93,7 +93,7 @@ func (s *SettingsServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<baseProvider>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<baseResourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<baseResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridCompute/settings/(?P<settingsResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<baseProvider>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<baseResourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<baseResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridCompute/settings/(?P<settingsResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -138,7 +138,7 @@ func (s *SettingsServerTransport) dispatchPatch(req *http.Request) (*http.Respon
 	if s.srv.Patch == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Patch not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<baseProvider>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<baseResourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<baseResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridCompute/settings/(?P<settingsResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<baseProvider>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<baseResourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<baseResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridCompute/settings/(?P<settingsResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -187,7 +187,7 @@ func (s *SettingsServerTransport) dispatchUpdate(req *http.Request) (*http.Respo
 	if s.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<baseProvider>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<baseResourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<baseResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridCompute/settings/(?P<settingsResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<baseProvider>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<baseResourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<baseResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridCompute/settings/(?P<settingsResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {

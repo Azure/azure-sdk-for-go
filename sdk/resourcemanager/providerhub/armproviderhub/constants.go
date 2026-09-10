@@ -5,7 +5,7 @@
 package armproviderhub
 
 const (
-	version20240901 string = "2024-09-01"
+	version20251001 string = "2025-10-01"
 )
 
 // AdditionalOptions - The additional options.
@@ -86,30 +86,6 @@ func PossibleAvailabilityZonePolicyValues() []AvailabilityZonePolicy {
 		AvailabilityZonePolicyMultiZoned,
 		AvailabilityZonePolicyNotSpecified,
 		AvailabilityZonePolicySingleZoned,
-	}
-}
-
-// AvailableCheckInManifestEnvironment - The environment type.
-type AvailableCheckInManifestEnvironment string
-
-const (
-	AvailableCheckInManifestEnvironmentAll          AvailableCheckInManifestEnvironment = "All"
-	AvailableCheckInManifestEnvironmentCanary       AvailableCheckInManifestEnvironment = "Canary"
-	AvailableCheckInManifestEnvironmentFairfax      AvailableCheckInManifestEnvironment = "Fairfax"
-	AvailableCheckInManifestEnvironmentMooncake     AvailableCheckInManifestEnvironment = "Mooncake"
-	AvailableCheckInManifestEnvironmentNotSpecified AvailableCheckInManifestEnvironment = "NotSpecified"
-	AvailableCheckInManifestEnvironmentProd         AvailableCheckInManifestEnvironment = "Prod"
-)
-
-// PossibleAvailableCheckInManifestEnvironmentValues returns the possible values for the AvailableCheckInManifestEnvironment const type.
-func PossibleAvailableCheckInManifestEnvironmentValues() []AvailableCheckInManifestEnvironment {
-	return []AvailableCheckInManifestEnvironment{
-		AvailableCheckInManifestEnvironmentAll,
-		AvailableCheckInManifestEnvironmentCanary,
-		AvailableCheckInManifestEnvironmentFairfax,
-		AvailableCheckInManifestEnvironmentMooncake,
-		AvailableCheckInManifestEnvironmentNotSpecified,
-		AvailableCheckInManifestEnvironmentProd,
 	}
 }
 
@@ -312,8 +288,10 @@ func PossibleExtendedLocationTypeValues() []ExtendedLocationType {
 type ExtensionCategory string
 
 const (
-	ExtensionCategoryBestMatchOperationBegin                   ExtensionCategory = "BestMatchOperationBegin"
-	ExtensionCategoryNotSpecified                              ExtensionCategory = "NotSpecified"
+	ExtensionCategoryBestMatchOperationBegin ExtensionCategory = "BestMatchOperationBegin"
+	ExtensionCategoryNotSpecified            ExtensionCategory = "NotSpecified"
+	// ExtensionCategoryResourceBillingNotification - Resource billing notification extension category.
+	ExtensionCategoryResourceBillingNotification               ExtensionCategory = "ResourceBillingNotification"
 	ExtensionCategoryResourceCreationBegin                     ExtensionCategory = "ResourceCreationBegin"
 	ExtensionCategoryResourceCreationCompleted                 ExtensionCategory = "ResourceCreationCompleted"
 	ExtensionCategoryResourceCreationValidate                  ExtensionCategory = "ResourceCreationValidate"
@@ -337,6 +315,7 @@ func PossibleExtensionCategoryValues() []ExtensionCategory {
 	return []ExtensionCategory{
 		ExtensionCategoryBestMatchOperationBegin,
 		ExtensionCategoryNotSpecified,
+		ExtensionCategoryResourceBillingNotification,
 		ExtensionCategoryResourceCreationBegin,
 		ExtensionCategoryResourceCreationCompleted,
 		ExtensionCategoryResourceCreationValidate,
@@ -498,6 +477,24 @@ func PossibleLegacyOperationValues() []LegacyOperation {
 	}
 }
 
+// LinkedAccessCheckOptions - The options for the linked access check.
+type LinkedAccessCheckOptions string
+
+const (
+	// LinkedAccessCheckOptionsIgnoreEmptyStringLinkedType - Ignore the linked access check when the linked type is an empty string.
+	LinkedAccessCheckOptionsIgnoreEmptyStringLinkedType LinkedAccessCheckOptions = "IgnoreEmptyStringLinkedType"
+	// LinkedAccessCheckOptionsNotSpecified - Default value.
+	LinkedAccessCheckOptionsNotSpecified LinkedAccessCheckOptions = "NotSpecified"
+)
+
+// PossibleLinkedAccessCheckOptionsValues returns the possible values for the LinkedAccessCheckOptions const type.
+func PossibleLinkedAccessCheckOptionsValues() []LinkedAccessCheckOptions {
+	return []LinkedAccessCheckOptions{
+		LinkedAccessCheckOptionsIgnoreEmptyStringLinkedType,
+		LinkedAccessCheckOptionsNotSpecified,
+	}
+}
+
 // LinkedAction - The linked action.
 type LinkedAction string
 
@@ -570,21 +567,22 @@ func PossibleLoggingDirectionsValues() []LoggingDirections {
 	}
 }
 
-// ManifestResourceDeletionPolicy - The resource deletion policy.
-type ManifestResourceDeletionPolicy string
+// ManifestCheckinOption - The manifest checkin option.
+type ManifestCheckinOption string
 
 const (
-	ManifestResourceDeletionPolicyCascade      ManifestResourceDeletionPolicy = "Cascade"
-	ManifestResourceDeletionPolicyForce        ManifestResourceDeletionPolicy = "Force"
-	ManifestResourceDeletionPolicyNotSpecified ManifestResourceDeletionPolicy = "NotSpecified"
+	// ManifestCheckinOptionAttemptAutomaticManifestCheckin - Attempt an automatic manifest checkin as part of the rollout.
+	ManifestCheckinOptionAttemptAutomaticManifestCheckin ManifestCheckinOption = "AttemptAutomaticManifestCheckin"
+	// ManifestCheckinOptionDoNotAttemptAutomaticManifestCheckin - Do not attempt an automatic manifest checkin as part of the
+	// rollout.
+	ManifestCheckinOptionDoNotAttemptAutomaticManifestCheckin ManifestCheckinOption = "DoNotAttemptAutomaticManifestCheckin"
 )
 
-// PossibleManifestResourceDeletionPolicyValues returns the possible values for the ManifestResourceDeletionPolicy const type.
-func PossibleManifestResourceDeletionPolicyValues() []ManifestResourceDeletionPolicy {
-	return []ManifestResourceDeletionPolicy{
-		ManifestResourceDeletionPolicyCascade,
-		ManifestResourceDeletionPolicyForce,
-		ManifestResourceDeletionPolicyNotSpecified,
+// PossibleManifestCheckinOptionValues returns the possible values for the ManifestCheckinOption const type.
+func PossibleManifestCheckinOptionValues() []ManifestCheckinOption {
+	return []ManifestCheckinOption{
+		ManifestCheckinOptionAttemptAutomaticManifestCheckin,
+		ManifestCheckinOptionDoNotAttemptAutomaticManifestCheckin,
 	}
 }
 
@@ -595,6 +593,7 @@ const (
 	MarketplaceTypeAddOn        MarketplaceType = "AddOn"
 	MarketplaceTypeBypass       MarketplaceType = "Bypass"
 	MarketplaceTypeNotSpecified MarketplaceType = "NotSpecified"
+	MarketplaceTypeProviderHub  MarketplaceType = "ProviderHub"
 	MarketplaceTypeStore        MarketplaceType = "Store"
 )
 
@@ -604,6 +603,7 @@ func PossibleMarketplaceTypeValues() []MarketplaceType {
 		MarketplaceTypeAddOn,
 		MarketplaceTypeBypass,
 		MarketplaceTypeNotSpecified,
+		MarketplaceTypeProviderHub,
 		MarketplaceTypeStore,
 	}
 }
@@ -907,33 +907,27 @@ func PossibleQuotaPolicyValues() []QuotaPolicy {
 	}
 }
 
-// Readiness - The readiness.
-type Readiness string
+// RPaaSResourceDeletionPolicy - The resource deletion policy.
+type RPaaSResourceDeletionPolicy string
 
 const (
-	ReadinessClosingDown    Readiness = "ClosingDown"
-	ReadinessDeprecated     Readiness = "Deprecated"
-	ReadinessGA             Readiness = "GA"
-	ReadinessInDevelopment  Readiness = "InDevelopment"
-	ReadinessInternalOnly   Readiness = "InternalOnly"
-	ReadinessPrivatePreview Readiness = "PrivatePreview"
-	ReadinessPublicPreview  Readiness = "PublicPreview"
-	ReadinessRemovedFromARM Readiness = "RemovedFromARM"
-	ReadinessRetired        Readiness = "Retired"
+	// RPaaSResourceDeletionPolicyCascade - Cascade deletion policy.
+	RPaaSResourceDeletionPolicyCascade                        RPaaSResourceDeletionPolicy = "Cascade"
+	RPaaSResourceDeletionPolicyCascadeDeleteAll               RPaaSResourceDeletionPolicy = "CascadeDeleteAll"
+	RPaaSResourceDeletionPolicyCascadeDeleteProxyOnlyChildren RPaaSResourceDeletionPolicy = "CascadeDeleteProxyOnlyChildren"
+	// RPaaSResourceDeletionPolicyForce - Force deletion policy.
+	RPaaSResourceDeletionPolicyForce        RPaaSResourceDeletionPolicy = "Force"
+	RPaaSResourceDeletionPolicyNotSpecified RPaaSResourceDeletionPolicy = "NotSpecified"
 )
 
-// PossibleReadinessValues returns the possible values for the Readiness const type.
-func PossibleReadinessValues() []Readiness {
-	return []Readiness{
-		ReadinessClosingDown,
-		ReadinessDeprecated,
-		ReadinessGA,
-		ReadinessInDevelopment,
-		ReadinessInternalOnly,
-		ReadinessPrivatePreview,
-		ReadinessPublicPreview,
-		ReadinessRemovedFromARM,
-		ReadinessRetired,
+// PossibleRPaaSResourceDeletionPolicyValues returns the possible values for the RPaaSResourceDeletionPolicy const type.
+func PossibleRPaaSResourceDeletionPolicyValues() []RPaaSResourceDeletionPolicy {
+	return []RPaaSResourceDeletionPolicy{
+		RPaaSResourceDeletionPolicyCascade,
+		RPaaSResourceDeletionPolicyCascadeDeleteAll,
+		RPaaSResourceDeletionPolicyCascadeDeleteProxyOnlyChildren,
+		RPaaSResourceDeletionPolicyForce,
+		RPaaSResourceDeletionPolicyNotSpecified,
 	}
 }
 
@@ -959,16 +953,12 @@ func PossibleRegionalityValues() []Regionality {
 type ResourceAccessPolicy string
 
 const (
-	ResourceAccessPolicyAcisActionAllowed ResourceAccessPolicy = "AcisActionAllowed"
-	ResourceAccessPolicyAcisReadAllowed   ResourceAccessPolicy = "AcisReadAllowed"
-	ResourceAccessPolicyNotSpecified      ResourceAccessPolicy = "NotSpecified"
+	ResourceAccessPolicyNotSpecified ResourceAccessPolicy = "NotSpecified"
 )
 
 // PossibleResourceAccessPolicyValues returns the possible values for the ResourceAccessPolicy const type.
 func PossibleResourceAccessPolicyValues() []ResourceAccessPolicy {
 	return []ResourceAccessPolicy{
-		ResourceAccessPolicyAcisActionAllowed,
-		ResourceAccessPolicyAcisReadAllowed,
 		ResourceAccessPolicyNotSpecified,
 	}
 }
@@ -977,17 +967,20 @@ func PossibleResourceAccessPolicyValues() []ResourceAccessPolicy {
 type ResourceDeletionPolicy string
 
 const (
-	ResourceDeletionPolicyCascadeDeleteAll               ResourceDeletionPolicy = "CascadeDeleteAll"
-	ResourceDeletionPolicyCascadeDeleteProxyOnlyChildren ResourceDeletionPolicy = "CascadeDeleteProxyOnlyChildren"
-	ResourceDeletionPolicyNotSpecified                   ResourceDeletionPolicy = "NotSpecified"
+	ResourceDeletionPolicyCascade      ResourceDeletionPolicy = "Cascade"
+	ResourceDeletionPolicyForce        ResourceDeletionPolicy = "Force"
+	ResourceDeletionPolicyNotSpecified ResourceDeletionPolicy = "NotSpecified"
+	// ResourceDeletionPolicySoftDelete - Soft delete deletion policy.
+	ResourceDeletionPolicySoftDelete ResourceDeletionPolicy = "SoftDelete"
 )
 
 // PossibleResourceDeletionPolicyValues returns the possible values for the ResourceDeletionPolicy const type.
 func PossibleResourceDeletionPolicyValues() []ResourceDeletionPolicy {
 	return []ResourceDeletionPolicy{
-		ResourceDeletionPolicyCascadeDeleteAll,
-		ResourceDeletionPolicyCascadeDeleteProxyOnlyChildren,
+		ResourceDeletionPolicyCascade,
+		ResourceDeletionPolicyForce,
 		ResourceDeletionPolicyNotSpecified,
+		ResourceDeletionPolicySoftDelete,
 	}
 }
 
@@ -1013,7 +1006,9 @@ func PossibleResourceProviderCapabilitiesEffectValues() []ResourceProviderCapabi
 type ResourceProviderType string
 
 const (
-	ResourceProviderTypeAuthorizationFree          ResourceProviderType = "AuthorizationFree"
+	ResourceProviderTypeAuthorizationFree ResourceProviderType = "AuthorizationFree"
+	// ResourceProviderTypeDecommissioned - The resource provider has been decommissioned.
+	ResourceProviderTypeDecommissioned             ResourceProviderType = "Decommissioned"
 	ResourceProviderTypeExternal                   ResourceProviderType = "External"
 	ResourceProviderTypeHidden                     ResourceProviderType = "Hidden"
 	ResourceProviderTypeInternal                   ResourceProviderType = "Internal"
@@ -1027,6 +1022,7 @@ const (
 func PossibleResourceProviderTypeValues() []ResourceProviderType {
 	return []ResourceProviderType{
 		ResourceProviderTypeAuthorizationFree,
+		ResourceProviderTypeDecommissioned,
 		ResourceProviderTypeExternal,
 		ResourceProviderTypeHidden,
 		ResourceProviderTypeInternal,
@@ -1266,22 +1262,6 @@ func PossibleServiceClientOptionsTypeValues() []ServiceClientOptionsType {
 	return []ServiceClientOptionsType{
 		ServiceClientOptionsTypeDisableAutomaticDecompression,
 		ServiceClientOptionsTypeNotSpecified,
-	}
-}
-
-// ServiceFeatureFlagAction - The service feature flag.
-type ServiceFeatureFlagAction string
-
-const (
-	ServiceFeatureFlagActionCreate      ServiceFeatureFlagAction = "Create"
-	ServiceFeatureFlagActionDoNotCreate ServiceFeatureFlagAction = "DoNotCreate"
-)
-
-// PossibleServiceFeatureFlagActionValues returns the possible values for the ServiceFeatureFlagAction const type.
-func PossibleServiceFeatureFlagActionValues() []ServiceFeatureFlagAction {
-	return []ServiceFeatureFlagAction{
-		ServiceFeatureFlagActionCreate,
-		ServiceFeatureFlagActionDoNotCreate,
 	}
 }
 
@@ -1556,5 +1536,26 @@ func PossibleTrafficRegionCategoryValues() []TrafficRegionCategory {
 		TrafficRegionCategoryNotSpecified,
 		TrafficRegionCategoryRestOfTheWorldGroupOne,
 		TrafficRegionCategoryRestOfTheWorldGroupTwo,
+	}
+}
+
+// WriteLockState - The state of the write lock feature.
+type WriteLockState string
+
+const (
+	// WriteLockStateDisabled - The write lock feature is disabled. The write-operations on the resource will follow the last-write-wins
+	// semantics when the write lock feature is disabled.
+	WriteLockStateDisabled WriteLockState = "Disabled"
+	// WriteLockStateEnabled - The write lock feature is enabled. Ensures that only one write-operation i.e., PUT, PATCH and DELETE,
+	// is allowed on a resource at any given time. Other concurrent write-operations, if any, will be rejected until the lock
+	// on the resource is released by the ongoing write-operation. The feature overrides the 'resourceConcurrencyControlOptions'.
+	WriteLockStateEnabled WriteLockState = "Enabled"
+)
+
+// PossibleWriteLockStateValues returns the possible values for the WriteLockState const type.
+func PossibleWriteLockStateValues() []WriteLockState {
+	return []WriteLockState{
+		WriteLockStateDisabled,
+		WriteLockStateEnabled,
 	}
 }

@@ -151,7 +151,7 @@ func (d *DrillRunsServerTransport) dispatchBeginAddNotes(req *http.Request) (*ht
 	}
 	beginAddNotes := d.beginAddNotes.get(req)
 	if beginAddNotes == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/drillRuns/(?P<drillRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/addNotes`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/drillRuns/(?P<drillRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/addNotes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -203,7 +203,7 @@ func (d *DrillRunsServerTransport) dispatchBeginFailOver(req *http.Request) (*ht
 	}
 	beginFailOver := d.beginFailOver.get(req)
 	if beginFailOver == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/drillRuns/(?P<drillRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failOver`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/drillRuns/(?P<drillRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/failOver`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -307,7 +307,7 @@ func (d *DrillRunsServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/drillRuns/(?P<drillRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/drillRuns/(?P<drillRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -346,7 +346,7 @@ func (d *DrillRunsServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	}
 	newListPager := d.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/drillRuns`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/drillRuns`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -439,7 +439,7 @@ func (d *DrillRunsServerTransport) dispatchBeginMarkAsComplete(req *http.Request
 	}
 	beginMarkAsComplete := d.beginMarkAsComplete.get(req)
 	if beginMarkAsComplete == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/drillRuns/(?P<drillRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/markAsComplete`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/drillRuns/(?P<drillRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/markAsComplete`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -491,7 +491,7 @@ func (d *DrillRunsServerTransport) dispatchBeginReprotect(req *http.Request) (*h
 	}
 	beginReprotect := d.beginReprotect.get(req)
 	if beginReprotect == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/drillRuns/(?P<drillRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reprotect`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/drillRuns/(?P<drillRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reprotect`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -549,7 +549,7 @@ func (d *DrillRunsServerTransport) dispatchBeginResume(req *http.Request) (*http
 	}
 	beginResume := d.beginResume.get(req)
 	if beginResume == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/drillRuns/(?P<drillRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resume`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/drillRuns/(?P<drillRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resume`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

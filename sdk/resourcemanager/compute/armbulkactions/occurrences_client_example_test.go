@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-07-06-preview/Occurrences_Cancel_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/Occurrences_Cancel_MaximumSet_Gen.json
 func ExampleOccurrencesClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleOccurrencesClient_BeginCancel() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/Occurrences_Delay_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/Occurrences_Delay_MaximumSet_Gen.json
 func ExampleOccurrencesClient_BeginDelay() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleOccurrencesClient_BeginDelay() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/Occurrences_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/Occurrences_Get_MaximumSet_Gen.json
 func ExampleOccurrencesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleOccurrencesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/Occurrences_ListByScheduledAction_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/Occurrences_ListByScheduledAction_MaximumSet_Gen.json
 func ExampleOccurrencesClient_NewListByScheduledActionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,7 +238,7 @@ func ExampleOccurrencesClient_NewListByScheduledActionPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/Occurrences_ListResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/Occurrences_ListResources_MaximumSet_Gen.json
 func ExampleOccurrencesClient_NewListResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -274,7 +274,7 @@ func ExampleOccurrencesClient_NewListResourcesPager() {
 		// 					},
 		// 				},
 		// 				ScheduledTime: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 59, 751000000, time.UTC)),
-		// 				ProvisioningState: to.Ptr(armbulkactions.ResourceProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armbulkactions.OccurrenceResourceProvisioningStateSucceeded),
 		// 				ErrorDetails: &armbulkactions.Error{
 		// 					Code: to.Ptr("InternalServerError"),
 		// 					Message: to.Ptr("An internal error occurred."),

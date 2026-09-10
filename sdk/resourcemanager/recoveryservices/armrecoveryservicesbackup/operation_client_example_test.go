@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/ValidateOperation_RestoreDisk.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/ValidateOperation_RestoreDisk.json
 func ExampleOperationClient_Validate_validateOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleOperationClient_Validate_validateOperation() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/ValidateOperation_RestoreDisk_IdentityBasedRestoreDetails.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/ValidateOperation_RestoreDisk_IdentityBasedRestoreDetails.json
 func ExampleOperationClient_Validate_validateOperationWithIdentityBasedRestoreDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

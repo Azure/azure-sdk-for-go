@@ -87,7 +87,7 @@ func (f *ForecastServerTransport) dispatchExternalCloudProviderUsage(req *http.R
 	if f.srv.ExternalCloudProviderUsage == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExternalCloudProviderUsage not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.CostManagement/(?P<externalCloudProviderType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<externalCloudProviderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/forecast`
+	const regexStr = `/providers/Microsoft\.CostManagement/(?P<externalCloudProviderType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<externalCloudProviderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/forecast`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -138,7 +138,7 @@ func (f *ForecastServerTransport) dispatchUsage(req *http.Request) (*http.Respon
 	if f.srv.Usage == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Usage not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/forecast`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.CostManagement/forecast`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

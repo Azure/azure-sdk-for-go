@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/AzureStorage/ProtectionContainers_List.json
+// Generated from example definition: 2026-08-01/AzureStorage/ProtectionContainers_List.json
 func ExampleBackupProtectionContainersClient_NewListPager_listBackupProtectionContainers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleBackupProtectionContainersClient_NewListPager_listBackupProtectionCo
 	}
 }
 
-// Generated from example definition: 2026-07-01/AzureStorage/ProtectionContainers_List_WithAccessType.json
+// Generated from example definition: 2026-08-01/AzureStorage/ProtectionContainers_List_WithAccessType.json
 func ExampleBackupProtectionContainersClient_NewListPager_listBackupProtectionContainersWithAccessType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

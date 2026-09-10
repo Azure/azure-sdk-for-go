@@ -2,15 +2,22 @@
 
 <!-- cSpell:ignore documentdb unmarshalling -->
 
-## 1.6.0-beta.3 (Unreleased)
+## 1.6.0-beta.4 (Unreleased)
 
 ### Features Added
+* Added `ClientOptions.DisableEndpointDiscovery`. When set to `true`, the client ignores the account's advertised readable/writable locations for routing and sends every request to the endpoint the client was constructed with. Cross-region failover is suppressed in this mode while same-region (same-endpoint) transport retries are preserved. `PreferredRegions` may still be set but has no effect on routing. This supports environments where the account advertises a document endpoint whose host is not reachable from the client's network and all traffic must instead flow through the endpoint the client was created with (e.g. a reverse proxy on a different domain). See [PR 27508](https://github.com/Azure/azure-sdk-for-go/pull/27508).
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.6.0-beta.3 (2026-09-01)
+
+### Bugs Fixed
+
+* Fixed `ReadManyItems` requests that target a single logical partition key to include that key in service telemetry, allowing `CDBPartitionKeyRUConsumption` to attribute the request charge to the partition. See [PR 27491](https://github.com/Azure/azure-sdk-for-go/pull/27491).
 
 ## 1.6.0-beta.2 (2026-08-03)
 

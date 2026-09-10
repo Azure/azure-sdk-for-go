@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/TieringCost/FetchTieringCostForPolicy.json
+// Generated from example definition: 2026-08-01/TieringCost/FetchTieringCostForPolicy.json
 func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForPoli
 	// }
 }
 
-// Generated from example definition: 2026-07-01/TieringCost/FetchTieringCostForProtectedItem.json
+// Generated from example definition: 2026-08-01/TieringCost/FetchTieringCostForProtectedItem.json
 func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForProtectedItem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForProt
 	// }
 }
 
-// Generated from example definition: 2026-07-01/TieringCost/FetchTieringCostForRehydrate.json
+// Generated from example definition: 2026-08-01/TieringCost/FetchTieringCostForRehydrate.json
 func ExampleFetchTieringCostClient_BeginPost_getTheRehydrationCostForRecoveryPoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheRehydrationCostForRecoveryPoi
 	// }
 }
 
-// Generated from example definition: 2026-07-01/TieringCost/FetchTieringCostForVault.json
+// Generated from example definition: 2026-08-01/TieringCost/FetchTieringCostForVault.json
 func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

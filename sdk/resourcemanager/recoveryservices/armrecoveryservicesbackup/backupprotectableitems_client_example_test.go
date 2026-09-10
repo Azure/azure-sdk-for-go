@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/BackupProtectableItems_List.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/BackupProtectableItems_List.json
 func ExampleBackupProtectableItemsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

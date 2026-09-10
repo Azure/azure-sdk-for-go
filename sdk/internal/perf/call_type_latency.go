@@ -5,19 +5,35 @@ package perf
 
 import (
 	"fmt"
+	"math/rand"
 	"sort"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 )
+
+var callTypeCollectorSeed int64
 
 type callTypeLatencyCollector struct {
 	mu     sync.Mutex
 	values map[string][]time.Duration
+	seen   map[string]int64
+	max    int
+	rng    *rand.Rand
 }
 
 func newCallTypeLatencyCollector() *callTypeLatencyCollector {
-	return &callTypeLatencyCollector{values: map[string][]time.Duration{}}
+	return newBoundedCallTypeLatencyCollector(0)
+}
+
+func newBoundedCallTypeLatencyCollector(max int) *callTypeLatencyCollector {
+	return &callTypeLatencyCollector{
+		values: map[string][]time.Duration{},
+		seen:   map[string]int64{},
+		max:    max,
+		rng:    rand.New(rand.NewSource(time.Now().UnixNano() + atomic.AddInt64(&callTypeCollectorSeed, 1))),
+	}
 }
 
 func (c *callTypeLatencyCollector) Add(callType string, duration time.Duration) {
@@ -30,7 +46,20 @@ func (c *callTypeLatencyCollector) Add(callType string, duration time.Duration) 
 		callType = "operation"
 	}
 	c.mu.Lock()
-	c.values[callType] = append(c.values[callType], duration)
+	c.seen[callType]++
+	if c.max < 0 {
+		c.mu.Unlock()
+		return
+	}
+	values := c.values[callType]
+	if c.max == 0 || len(values) < c.max {
+		c.values[callType] = append(values, duration)
+	} else {
+		index := c.rng.Int63n(c.seen[callType])
+		if index < int64(c.max) {
+			values[index] = duration
+		}
+	}
 	c.mu.Unlock()
 }
 
@@ -43,14 +72,16 @@ func (c *callTypeLatencyCollector) MergeFrom(other *callTypeLatencyCollector) {
 	}
 	other.mu.Lock()
 	copied := make(map[string][]time.Duration, len(other.values))
+	copiedSeen := make(map[string]int64, len(other.seen))
 	for k, v := range other.values {
 		copied[k] = append([]time.Duration(nil), v...)
+		copiedSeen[k] = other.seen[k]
 	}
 	other.mu.Unlock()
 
 	c.mu.Lock()
 	for k, v := range copied {
-		c.values[k] = append(c.values[k], v...)
+		c.values[k], c.seen[k] = mergeReservoirs(c.values[k], c.seen[k], v, copiedSeen[k], c.max, c.rng)
 	}
 	c.mu.Unlock()
 }

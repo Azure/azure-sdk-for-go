@@ -19,7 +19,7 @@ import (
 // NamespaceDevicesClient contains the methods for the NamespaceDevices group.
 // Don't use this type directly, use NewNamespaceDevicesClient() instead.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-11-01
 type NamespaceDevicesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -115,7 +115,7 @@ func (client *NamespaceDevicesClient) createOrReplaceCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -195,7 +195,7 @@ func (client *NamespaceDevicesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -247,7 +247,7 @@ func (client *NamespaceDevicesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -265,38 +265,38 @@ func (client *NamespaceDevicesClient) getHandleResponse(resp *http.Response, suc
 	return result, nil
 }
 
-// NewListByResourceGroupPager - List NamespaceDevice resources by Namespace
+// NewListByNamespacePager - List NamespaceDevice resources by Namespace
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
-//   - options - NamespaceDevicesClientListByResourceGroupOptions contains the optional parameters for the NamespaceDevicesClient.NewListByResourceGroupPager
+//   - options - NamespaceDevicesClientListByNamespaceOptions contains the optional parameters for the NamespaceDevicesClient.NewListByNamespacePager
 //     method.
-func (client *NamespaceDevicesClient) NewListByResourceGroupPager(resourceGroupName string, namespaceName string, options *NamespaceDevicesClientListByResourceGroupOptions) *runtime.Pager[NamespaceDevicesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[NamespaceDevicesClientListByResourceGroupResponse]{
-		More: func(page NamespaceDevicesClientListByResourceGroupResponse) bool {
+func (client *NamespaceDevicesClient) NewListByNamespacePager(resourceGroupName string, namespaceName string, options *NamespaceDevicesClientListByNamespaceOptions) *runtime.Pager[NamespaceDevicesClientListByNamespaceResponse] {
+	return runtime.NewPager(runtime.PagingHandler[NamespaceDevicesClientListByNamespaceResponse]{
+		More: func(page NamespaceDevicesClientListByNamespaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *NamespaceDevicesClientListByResourceGroupResponse) (NamespaceDevicesClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NamespaceDevicesClient.NewListByResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *NamespaceDevicesClientListByNamespaceResponse) (NamespaceDevicesClientListByNamespaceResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NamespaceDevicesClient.NewListByNamespacePager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, namespaceName, nextLink, options)
+			req, err := client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, nextLink, options)
 			if err != nil {
-				return NamespaceDevicesClientListByResourceGroupResponse{}, err
+				return NamespaceDevicesClientListByNamespaceResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return NamespaceDevicesClientListByResourceGroupResponse{}, err
+				return NamespaceDevicesClientListByNamespaceResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
+			return client.listByNamespaceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *NamespaceDevicesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, _ *NamespaceDevicesClientListByResourceGroupOptions) (*policy.Request, error) {
+// listByNamespaceCreateRequest creates the ListByNamespace request.
+func (client *NamespaceDevicesClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, _ *NamespaceDevicesClientListByNamespaceOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
@@ -323,102 +323,23 @@ func (client *NamespaceDevicesClient) listByResourceGroupCreateRequest(ctx conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301Preview)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
 	return req, nil
 }
 
-// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *NamespaceDevicesClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (NamespaceDevicesClientListByResourceGroupResponse, error) {
-	result := NamespaceDevicesClientListByResourceGroupResponse{}
+// listByNamespaceHandleResponse handles the ListByNamespace response.
+func (client *NamespaceDevicesClient) listByNamespaceHandleResponse(resp *http.Response, successCodes ...int) (NamespaceDevicesClientListByNamespaceResponse, error) {
+	result := NamespaceDevicesClientListByNamespaceResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceDeviceListResult); err != nil {
-		return NamespaceDevicesClientListByResourceGroupResponse{}, err
+		return NamespaceDevicesClientListByNamespaceResponse{}, err
 	}
 	return result, nil
-}
-
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - namespaceName - The name of the namespace.
-//   - deviceName - The name of the device.
-//   - body - The content of the action request
-//   - options - NamespaceDevicesClientBeginRevokeOptions contains the optional parameters for the NamespaceDevicesClient.BeginRevoke
-//     method.
-func (client *NamespaceDevicesClient) BeginRevoke(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, body DeviceCredentialsRevokeRequest, options *NamespaceDevicesClientBeginRevokeOptions) (*runtime.Poller[NamespaceDevicesClientRevokeResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.revoke(ctx, resourceGroupName, namespaceName, deviceName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NamespaceDevicesClientRevokeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NamespaceDevicesClientRevokeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Revoke -
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NamespaceDevicesClient) revoke(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, body DeviceCredentialsRevokeRequest, options *NamespaceDevicesClientBeginRevokeOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NamespaceDevicesClient.BeginRevoke"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.revokeCreateRequest(ctx, resourceGroupName, namespaceName, deviceName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// revokeCreateRequest creates the Revoke request.
-func (client *NamespaceDevicesClient) revokeCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, body DeviceCredentialsRevokeRequest, _ *NamespaceDevicesClientBeginRevokeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/devices/{deviceName}/revoke"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if deviceName == "" {
-		return nil, errors.New("parameter deviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deviceName}", url.PathEscape(deviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // BeginUpdate - Update a NamespaceDevice
@@ -492,7 +413,7 @@ func (client *NamespaceDevicesClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

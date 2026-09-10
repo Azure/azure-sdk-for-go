@@ -19,7 +19,7 @@ import (
 // NamespaceAssetsClient contains the methods for the NamespaceAssets group.
 // Don't use this type directly, use NewNamespaceAssetsClient() instead.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-11-01
 type NamespaceAssetsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -115,7 +115,7 @@ func (client *NamespaceAssetsClient) createOrReplaceCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -195,8 +195,89 @@ func (client *NamespaceAssetsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginExecuteAction - A long-running resource action.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - namespaceName - The name of the namespace.
+//   - assetName - The name of the asset.
+//   - body - The content of the action request
+//   - options - NamespaceAssetsClientBeginExecuteActionOptions contains the optional parameters for the NamespaceAssetsClient.BeginExecuteAction
+//     method.
+func (client *NamespaceAssetsClient) BeginExecuteAction(ctx context.Context, resourceGroupName string, namespaceName string, assetName string, body NamespaceAssetExecuteActionRequest, options *NamespaceAssetsClientBeginExecuteActionOptions) (*runtime.Poller[NamespaceAssetsClientExecuteActionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.executeAction(ctx, resourceGroupName, namespaceName, assetName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NamespaceAssetsClientExecuteActionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NamespaceAssetsClientExecuteActionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// ExecuteAction - A long-running resource action.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NamespaceAssetsClient) executeAction(ctx context.Context, resourceGroupName string, namespaceName string, assetName string, body NamespaceAssetExecuteActionRequest, options *NamespaceAssetsClientBeginExecuteActionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NamespaceAssetsClient.BeginExecuteAction"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.executeActionCreateRequest(ctx, resourceGroupName, namespaceName, assetName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// executeActionCreateRequest creates the ExecuteAction request.
+func (client *NamespaceAssetsClient) executeActionCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, assetName string, body NamespaceAssetExecuteActionRequest, _ *NamespaceAssetsClientBeginExecuteActionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/assets/{assetName}/executeAction"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if namespaceName == "" {
+		return nil, errors.New("parameter namespaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+	if assetName == "" {
+		return nil, errors.New("parameter assetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{assetName}", url.PathEscape(assetName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -247,7 +328,7 @@ func (client *NamespaceAssetsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -265,38 +346,38 @@ func (client *NamespaceAssetsClient) getHandleResponse(resp *http.Response, succ
 	return result, nil
 }
 
-// NewListByResourceGroupPager - List NamespaceAsset resources by Namespace
+// NewListByNamespacePager - List NamespaceAsset resources by Namespace
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
-//   - options - NamespaceAssetsClientListByResourceGroupOptions contains the optional parameters for the NamespaceAssetsClient.NewListByResourceGroupPager
+//   - options - NamespaceAssetsClientListByNamespaceOptions contains the optional parameters for the NamespaceAssetsClient.NewListByNamespacePager
 //     method.
-func (client *NamespaceAssetsClient) NewListByResourceGroupPager(resourceGroupName string, namespaceName string, options *NamespaceAssetsClientListByResourceGroupOptions) *runtime.Pager[NamespaceAssetsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[NamespaceAssetsClientListByResourceGroupResponse]{
-		More: func(page NamespaceAssetsClientListByResourceGroupResponse) bool {
+func (client *NamespaceAssetsClient) NewListByNamespacePager(resourceGroupName string, namespaceName string, options *NamespaceAssetsClientListByNamespaceOptions) *runtime.Pager[NamespaceAssetsClientListByNamespaceResponse] {
+	return runtime.NewPager(runtime.PagingHandler[NamespaceAssetsClientListByNamespaceResponse]{
+		More: func(page NamespaceAssetsClientListByNamespaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *NamespaceAssetsClientListByResourceGroupResponse) (NamespaceAssetsClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NamespaceAssetsClient.NewListByResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *NamespaceAssetsClientListByNamespaceResponse) (NamespaceAssetsClientListByNamespaceResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NamespaceAssetsClient.NewListByNamespacePager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, namespaceName, nextLink, options)
+			req, err := client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, nextLink, options)
 			if err != nil {
-				return NamespaceAssetsClientListByResourceGroupResponse{}, err
+				return NamespaceAssetsClientListByNamespaceResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return NamespaceAssetsClientListByResourceGroupResponse{}, err
+				return NamespaceAssetsClientListByNamespaceResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
+			return client.listByNamespaceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *NamespaceAssetsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, _ *NamespaceAssetsClientListByResourceGroupOptions) (*policy.Request, error) {
+// listByNamespaceCreateRequest creates the ListByNamespace request.
+func (client *NamespaceAssetsClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, _ *NamespaceAssetsClientListByNamespaceOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
@@ -323,21 +404,21 @@ func (client *NamespaceAssetsClient) listByResourceGroupCreateRequest(ctx contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301Preview)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
 	return req, nil
 }
 
-// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *NamespaceAssetsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (NamespaceAssetsClientListByResourceGroupResponse, error) {
-	result := NamespaceAssetsClientListByResourceGroupResponse{}
+// listByNamespaceHandleResponse handles the ListByNamespace response.
+func (client *NamespaceAssetsClient) listByNamespaceHandleResponse(resp *http.Response, successCodes ...int) (NamespaceAssetsClientListByNamespaceResponse, error) {
+	result := NamespaceAssetsClientListByNamespaceResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceAssetListResult); err != nil {
-		return NamespaceAssetsClientListByResourceGroupResponse{}, err
+		return NamespaceAssetsClientListByNamespaceResponse{}, err
 	}
 	return result, nil
 }
@@ -413,7 +494,7 @@ func (client *NamespaceAssetsClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

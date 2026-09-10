@@ -77,6 +77,11 @@ type AssetsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AsyncOperationStatusClientGetOptions contains the optional parameters for the AsyncOperationStatusClient.Get method.
+type AsyncOperationStatusClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // BillingContainersClientGetOptions contains the optional parameters for the BillingContainersClient.Get method.
 type BillingContainersClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -88,39 +93,81 @@ type BillingContainersClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CredentialsClientBeginCreateOrUpdateOptions contains the optional parameters for the CredentialsClient.BeginCreateOrUpdate
+// CertificateAuthoritiesClientBeginActivateOptions contains the optional parameters for the CertificateAuthoritiesClient.BeginActivate
 // method.
-type CredentialsClientBeginCreateOrUpdateOptions struct {
+type CertificateAuthoritiesClientBeginActivateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// CredentialsClientBeginDeleteOptions contains the optional parameters for the CredentialsClient.BeginDelete method.
-type CredentialsClientBeginDeleteOptions struct {
+// CertificateAuthoritiesClientBeginCreateOrReplaceOptions contains the optional parameters for the CertificateAuthoritiesClient.BeginCreateOrReplace
+// method.
+type CertificateAuthoritiesClientBeginCreateOrReplaceOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// CredentialsClientBeginSynchronizeOptions contains the optional parameters for the CredentialsClient.BeginSynchronize method.
-type CredentialsClientBeginSynchronizeOptions struct {
+// CertificateAuthoritiesClientBeginDeleteOptions contains the optional parameters for the CertificateAuthoritiesClient.BeginDelete
+// method.
+type CertificateAuthoritiesClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// CredentialsClientBeginUpdateOptions contains the optional parameters for the CredentialsClient.BeginUpdate method.
-type CredentialsClientBeginUpdateOptions struct {
+// CertificateAuthoritiesClientBeginRevokeAndRotateOptions contains the optional parameters for the CertificateAuthoritiesClient.BeginRevokeAndRotate
+// method.
+type CertificateAuthoritiesClientBeginRevokeAndRotateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// CredentialsClientGetOptions contains the optional parameters for the CredentialsClient.Get method.
-type CredentialsClientGetOptions struct {
+// CertificateAuthoritiesClientBeginUpdateOptions contains the optional parameters for the CertificateAuthoritiesClient.BeginUpdate
+// method.
+type CertificateAuthoritiesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// CertificateAuthoritiesClientGetOptions contains the optional parameters for the CertificateAuthoritiesClient.Get method.
+type CertificateAuthoritiesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CredentialsClientListByResourceGroupOptions contains the optional parameters for the CredentialsClient.NewListByResourceGroupPager
+// CertificateAuthoritiesClientListByNamespaceOptions contains the optional parameters for the CertificateAuthoritiesClient.NewListByNamespacePager
 // method.
-type CredentialsClientListByResourceGroupOptions struct {
+type CertificateAuthoritiesClientListByNamespaceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificatePoliciesClientBeginCreateOrReplaceOptions contains the optional parameters for the CertificatePoliciesClient.BeginCreateOrReplace
+// method.
+type CertificatePoliciesClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// CertificatePoliciesClientBeginDeleteOptions contains the optional parameters for the CertificatePoliciesClient.BeginDelete
+// method.
+type CertificatePoliciesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// CertificatePoliciesClientBeginUpdateOptions contains the optional parameters for the CertificatePoliciesClient.BeginUpdate
+// method.
+type CertificatePoliciesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// CertificatePoliciesClientGetOptions contains the optional parameters for the CertificatePoliciesClient.Get method.
+type CertificatePoliciesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificatePoliciesClientListByCertificateAuthorityOptions contains the optional parameters for the CertificatePoliciesClient.NewListByCertificateAuthorityPager
+// method.
+type CertificatePoliciesClientListByCertificateAuthorityOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -137,6 +184,13 @@ type NamespaceAssetsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// NamespaceAssetsClientBeginExecuteActionOptions contains the optional parameters for the NamespaceAssetsClient.BeginExecuteAction
+// method.
+type NamespaceAssetsClientBeginExecuteActionOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // NamespaceAssetsClientBeginUpdateOptions contains the optional parameters for the NamespaceAssetsClient.BeginUpdate method.
 type NamespaceAssetsClientBeginUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -148,9 +202,9 @@ type NamespaceAssetsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespaceAssetsClientListByResourceGroupOptions contains the optional parameters for the NamespaceAssetsClient.NewListByResourceGroupPager
+// NamespaceAssetsClientListByNamespaceOptions contains the optional parameters for the NamespaceAssetsClient.NewListByNamespacePager
 // method.
-type NamespaceAssetsClientListByResourceGroupOptions struct {
+type NamespaceAssetsClientListByNamespaceOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -167,12 +221,6 @@ type NamespaceDevicesClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
-// NamespaceDevicesClientBeginRevokeOptions contains the optional parameters for the NamespaceDevicesClient.BeginRevoke method.
-type NamespaceDevicesClientBeginRevokeOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // NamespaceDevicesClientBeginUpdateOptions contains the optional parameters for the NamespaceDevicesClient.BeginUpdate method.
 type NamespaceDevicesClientBeginUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -184,9 +232,9 @@ type NamespaceDevicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespaceDevicesClientListByResourceGroupOptions contains the optional parameters for the NamespaceDevicesClient.NewListByResourceGroupPager
+// NamespaceDevicesClientListByNamespaceOptions contains the optional parameters for the NamespaceDevicesClient.NewListByNamespacePager
 // method.
-type NamespaceDevicesClientListByResourceGroupOptions struct {
+type NamespaceDevicesClientListByNamespaceOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -217,9 +265,9 @@ type NamespaceDiscoveredAssetsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespaceDiscoveredAssetsClientListByResourceGroupOptions contains the optional parameters for the NamespaceDiscoveredAssetsClient.NewListByResourceGroupPager
+// NamespaceDiscoveredAssetsClientListByNamespaceOptions contains the optional parameters for the NamespaceDiscoveredAssetsClient.NewListByNamespacePager
 // method.
-type NamespaceDiscoveredAssetsClientListByResourceGroupOptions struct {
+type NamespaceDiscoveredAssetsClientListByNamespaceOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -250,9 +298,9 @@ type NamespaceDiscoveredDevicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespaceDiscoveredDevicesClientListByResourceGroupOptions contains the optional parameters for the NamespaceDiscoveredDevicesClient.NewListByResourceGroupPager
+// NamespaceDiscoveredDevicesClientListByNamespaceOptions contains the optional parameters for the NamespaceDiscoveredDevicesClient.NewListByNamespacePager
 // method.
-type NamespaceDiscoveredDevicesClientListByResourceGroupOptions struct {
+type NamespaceDiscoveredDevicesClientListByNamespaceOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -308,45 +356,33 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PoliciesClientBeginActivateBringYourOwnRootOptions contains the optional parameters for the PoliciesClient.BeginActivateBringYourOwnRoot
+// RegistryDevicesClientBeginCreateOrReplaceOptions contains the optional parameters for the RegistryDevicesClient.BeginCreateOrReplace
 // method.
-type PoliciesClientBeginActivateBringYourOwnRootOptions struct {
+type RegistryDevicesClientBeginCreateOrReplaceOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// PoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the PoliciesClient.BeginCreateOrUpdate method.
-type PoliciesClientBeginCreateOrUpdateOptions struct {
+// RegistryDevicesClientBeginDeleteOptions contains the optional parameters for the RegistryDevicesClient.BeginDelete method.
+type RegistryDevicesClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// PoliciesClientBeginDeleteOptions contains the optional parameters for the PoliciesClient.BeginDelete method.
-type PoliciesClientBeginDeleteOptions struct {
+// RegistryDevicesClientBeginUpdateOptions contains the optional parameters for the RegistryDevicesClient.BeginUpdate method.
+type RegistryDevicesClientBeginUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// PoliciesClientBeginRevokeIssuerOptions contains the optional parameters for the PoliciesClient.BeginRevokeIssuer method.
-type PoliciesClientBeginRevokeIssuerOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// PoliciesClientBeginUpdateOptions contains the optional parameters for the PoliciesClient.BeginUpdate method.
-type PoliciesClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// PoliciesClientGetOptions contains the optional parameters for the PoliciesClient.Get method.
-type PoliciesClientGetOptions struct {
+// RegistryDevicesClientGetOptions contains the optional parameters for the RegistryDevicesClient.Get method.
+type RegistryDevicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PoliciesClientListByResourceGroupOptions contains the optional parameters for the PoliciesClient.NewListByResourceGroupPager
+// RegistryDevicesClientListByNamespaceOptions contains the optional parameters for the RegistryDevicesClient.NewListByNamespacePager
 // method.
-type PoliciesClientListByResourceGroupOptions struct {
+type RegistryDevicesClientListByNamespaceOptions struct {
 	// placeholder for future optional parameters
 }
 

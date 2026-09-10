@@ -19,7 +19,7 @@ import (
 // BillingContainersClient contains the methods for the BillingContainers group.
 // Don't use this type directly, use NewBillingContainersClient() instead.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-11-01
 type BillingContainersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -81,7 +81,7 @@ func (client *BillingContainersClient) getCreateRequest(ctx context.Context, bil
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -147,7 +147,7 @@ func (client *BillingContainersClient) listBySubscriptionCreateRequest(ctx conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301Preview)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

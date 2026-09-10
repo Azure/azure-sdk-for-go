@@ -77,6 +77,7 @@ func (h *httpTracePolicy) Do(req *policy.Request) (resp *http.Response, err erro
 		}()
 
 		req = req.WithContext(ctx)
+		tracer.InjectHeaders(ctx, req.Raw().Header)
 	}
 	resp, err = req.Next()
 	return

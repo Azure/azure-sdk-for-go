@@ -152,6 +152,21 @@ func (f *Client) URL() string {
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-file.
 func (f *Client) Create(ctx context.Context, fileContentLength int64, options *CreateOptions) (CreateResponse, error) {
 	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
+
+	if options != nil && options.OptionalBody != nil && options.TransactionalValidation != nil {
+		// Defensive: CRC64 types (precomputed/computed) aren't publicly exported from this
+		// package so callers can't reach this, but reject them to avoid a silent no-op via SetCRC64.
+		if _, ok := options.TransactionalValidation.(TransferValidationTypeMD5); !ok &&
+			exported.GetStructuredBodyType(options.TransactionalValidation) == "" {
+			return CreateResponse{}, errors.New("unsupported TransactionalValidation type for Create; only MD5 and structured message CRC64 are supported")
+		}
+		body, err := options.TransactionalValidation.Apply(options.OptionalBody, opts)
+		if err != nil {
+			return CreateResponse{}, err
+		}
+		opts.Optionalbody = body
+	}
+
 	return f.generated().Create(ctx, fileContentLength, opts)
 }
 

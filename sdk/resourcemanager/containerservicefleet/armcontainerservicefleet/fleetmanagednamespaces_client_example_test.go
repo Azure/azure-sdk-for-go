@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/FleetManagedNamespaces_CreateOrUpdate.json
+// Generated from example definition: 2026-06-02-preview/FleetManagedNamespaces_CreateOrUpdate.json
 func ExampleFleetManagedNamespacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +214,7 @@ func ExampleFleetManagedNamespacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/FleetManagedNamespaces_Delete.json
+// Generated from example definition: 2026-06-02-preview/FleetManagedNamespaces_Delete.json
 func ExampleFleetManagedNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,7 +235,7 @@ func ExampleFleetManagedNamespacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/FleetManagedNamespaces_Get.json
+// Generated from example definition: 2026-06-02-preview/FleetManagedNamespaces_Get.json
 func ExampleFleetManagedNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -356,7 +356,7 @@ func ExampleFleetManagedNamespacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/FleetManagedNamespaces_ListByFleet.json
+// Generated from example definition: 2026-06-02-preview/FleetManagedNamespaces_ListByFleet.json
 func ExampleFleetManagedNamespacesClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -488,7 +488,7 @@ func ExampleFleetManagedNamespacesClient_NewListByFleetPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/FleetManagedNamespaces_Update.json
+// Generated from example definition: 2026-06-02-preview/FleetManagedNamespaces_Update.json
 func ExampleFleetManagedNamespacesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -499,7 +499,25 @@ func ExampleFleetManagedNamespacesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewFleetManagedNamespacesClient().BeginUpdate(ctx, "rgfleets", "fleet1", "namespace1", armcontainerservicefleet.FleetManagedNamespacePatch{}, nil)
+	poller, err := clientFactory.NewFleetManagedNamespacesClient().BeginUpdate(ctx, "rgfleets", "fleet1", "namespace1", armcontainerservicefleet.FleetManagedNamespacePatch{
+		Properties: &armcontainerservicefleet.FleetManagedNamespacePropertiesPatch{
+			PropagationPolicy: &armcontainerservicefleet.PropagationPolicyPatch{
+				PlacementProfile: &armcontainerservicefleet.PlacementProfilePatch{
+					DefaultClusterResourcePlacement: &armcontainerservicefleet.ClusterResourcePlacementSpecPatch{
+						RolloutStrategy: &armcontainerservicefleet.RolloutStrategy{
+							Type: to.Ptr(armcontainerservicefleet.RolloutStrategyTypeExternal),
+							ClusterUpdateStrategy: &armcontainerservicefleet.ClusterUpdateStrategyReference{
+								Name: to.Ptr("my-staged-update-strategy"),
+							},
+						},
+					},
+				},
+			},
+		},
+		Tags: map[string]*string{
+			"tag2": to.Ptr("tagValue2"),
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -582,6 +600,12 @@ func ExampleFleetManagedNamespacesClient_BeginUpdate() {
 	// 									Value: to.Ptr("true"),
 	// 									Effect: to.Ptr(armcontainerservicefleet.TaintEffectNoSchedule),
 	// 								},
+	// 							},
+	// 						},
+	// 						RolloutStrategy: &armcontainerservicefleet.RolloutStrategy{
+	// 							Type: to.Ptr(armcontainerservicefleet.RolloutStrategyTypeExternal),
+	// 							ClusterUpdateStrategy: &armcontainerservicefleet.ClusterUpdateStrategyReference{
+	// 								Name: to.Ptr("my-staged-update-strategy"),
 	// 							},
 	// 						},
 	// 					},

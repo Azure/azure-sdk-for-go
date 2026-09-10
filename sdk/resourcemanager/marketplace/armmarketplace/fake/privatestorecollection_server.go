@@ -124,7 +124,7 @@ func (p *PrivateStoreCollectionServerTransport) dispatchApproveAllItems(req *htt
 	if p.srv.ApproveAllItems == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ApproveAllItems not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/collections/(?P<collectionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/approveAllItems`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/approveAllItems`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -157,7 +157,7 @@ func (p *PrivateStoreCollectionServerTransport) dispatchCreateOrUpdate(req *http
 	if p.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/collections/(?P<collectionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -194,7 +194,7 @@ func (p *PrivateStoreCollectionServerTransport) dispatchDelete(req *http.Request
 	if p.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/collections/(?P<collectionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -227,7 +227,7 @@ func (p *PrivateStoreCollectionServerTransport) dispatchDisableApproveAllItems(r
 	if p.srv.DisableApproveAllItems == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DisableApproveAllItems not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/collections/(?P<collectionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disableApproveAllItems`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/disableApproveAllItems`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -260,7 +260,7 @@ func (p *PrivateStoreCollectionServerTransport) dispatchGet(req *http.Request) (
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/collections/(?P<collectionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -293,7 +293,7 @@ func (p *PrivateStoreCollectionServerTransport) dispatchList(req *http.Request) 
 	if p.srv.List == nil {
 		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/collections`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -322,15 +322,19 @@ func (p *PrivateStoreCollectionServerTransport) dispatchPost(req *http.Request) 
 	if p.srv.Post == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Post not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/collections/(?P<collectionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsText(req)
-	if err != nil {
-		return nil, err
+	var body armmarketplace.Operation
+	if req.Body != nil {
+		bodyRaw, err := server.UnmarshalRequestAsText(req)
+		if err != nil {
+			return nil, err
+		}
+		body = armmarketplace.Operation(bodyRaw)
 	}
 	privateStoreIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateStoreId")])
 	if err != nil {
@@ -341,10 +345,9 @@ func (p *PrivateStoreCollectionServerTransport) dispatchPost(req *http.Request) 
 		return nil, err
 	}
 	var options *armmarketplace.PrivateStoreCollectionClientPostOptions
-	if !reflect.ValueOf(body).IsZero() {
-		op := armmarketplace.Operation(body)
+	if req.Body != nil {
 		options = &armmarketplace.PrivateStoreCollectionClientPostOptions{
-			Payload: &op,
+			Payload: &body,
 		}
 	}
 	respr, errRespr := p.srv.Post(req.Context(), privateStoreIDParam, collectionIDParam, options)
@@ -366,7 +369,7 @@ func (p *PrivateStoreCollectionServerTransport) dispatchTransferOffers(req *http
 	if p.srv.TransferOffers == nil {
 		return nil, &nonRetriableError{errors.New("fake for method TransferOffers not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/collections/(?P<collectionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/transferOffers`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/transferOffers`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

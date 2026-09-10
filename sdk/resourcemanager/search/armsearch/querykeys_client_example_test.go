@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/SearchCreateQueryKey.json
+// Generated from example definition: 2026-09-01-preview/SearchCreateQueryKey.json
 func ExampleQueryKeysClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleQueryKeysClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchDeleteQueryKey.json
+// Generated from example definition: 2026-09-01-preview/SearchDeleteQueryKey.json
 func ExampleQueryKeysClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleQueryKeysClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchListQueryKeysBySearchService.json
+// Generated from example definition: 2026-09-01-preview/SearchListQueryKeysBySearchService.json
 func ExampleQueryKeysClient_NewListBySearchServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

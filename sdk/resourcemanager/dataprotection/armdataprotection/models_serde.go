@@ -1473,6 +1473,7 @@ func (b *BackupSchedule) UnmarshalJSON(data []byte) error {
 func (b BackupVault) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "bcdrSecurityLevel", b.BcdrSecurityLevel)
+	populate(objectMap, "costManagementSettings", b.CostManagementSettings)
 	populate(objectMap, "featureSettings", b.FeatureSettings)
 	populate(objectMap, "isVaultProtectedByResourceGuard", b.IsVaultProtectedByResourceGuard)
 	populate(objectMap, "monitoringSettings", b.MonitoringSettings)
@@ -1498,6 +1499,9 @@ func (b *BackupVault) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "bcdrSecurityLevel":
 			err = unpopulate(val, "BcdrSecurityLevel", &b.BcdrSecurityLevel)
+			delete(rawMsg, key)
+		case "costManagementSettings":
+			err = unpopulate(val, "CostManagementSettings", &b.CostManagementSettings)
 			delete(rawMsg, key)
 		case "featureSettings":
 			err = unpopulate(val, "FeatureSettings", &b.FeatureSettings)
@@ -2138,6 +2142,33 @@ func (c *CopyOption) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type CostManagementSettings.
+func (c CostManagementSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "granularityLevel", c.GranularityLevel)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CostManagementSettings.
+func (c *CostManagementSettings) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "granularityLevel":
+			err = unpopulate(val, "GranularityLevel", &c.GranularityLevel)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type CrossRegionRestoreDetails.
 func (c CrossRegionRestoreDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -2769,6 +2800,7 @@ func (d *DeletedBackupInstanceResourceList) UnmarshalJSON(data []byte) error {
 func (d DeletedBackupVault) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "bcdrSecurityLevel", d.BcdrSecurityLevel)
+	populate(objectMap, "costManagementSettings", d.CostManagementSettings)
 	populate(objectMap, "featureSettings", d.FeatureSettings)
 	populate(objectMap, "isVaultProtectedByResourceGuard", d.IsVaultProtectedByResourceGuard)
 	populate(objectMap, "monitoringSettings", d.MonitoringSettings)
@@ -2798,6 +2830,9 @@ func (d *DeletedBackupVault) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "bcdrSecurityLevel":
 			err = unpopulate(val, "BcdrSecurityLevel", &d.BcdrSecurityLevel)
+			delete(rawMsg, key)
+		case "costManagementSettings":
+			err = unpopulate(val, "CostManagementSettings", &d.CostManagementSettings)
 			delete(rawMsg, key)
 		case "featureSettings":
 			err = unpopulate(val, "FeatureSettings", &d.FeatureSettings)
@@ -3407,6 +3442,68 @@ func (f *FetchSecondaryRPsRequestParameters) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %s", f, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GenericBackupDatasourceParameters.
+func (g GenericBackupDatasourceParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["objectType"] = "GenericBackupDatasourceParameters"
+	populate(objectMap, "resourceSelectors", g.ResourceSelectors)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type GenericBackupDatasourceParameters.
+func (g *GenericBackupDatasourceParameters) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", g, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "objectType":
+			err = unpopulate(val, "ObjectType", &g.ObjectType)
+			delete(rawMsg, key)
+		case "resourceSelectors":
+			err = unpopulate(val, "ResourceSelectors", &g.ResourceSelectors)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", g, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GenericRestoreDatasourceCriteria.
+func (g GenericRestoreDatasourceCriteria) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["objectType"] = "GenericRestoreDatasourceCriteria"
+	populate(objectMap, "resourceSelectors", g.ResourceSelectors)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type GenericRestoreDatasourceCriteria.
+func (g *GenericRestoreDatasourceCriteria) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", g, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "objectType":
+			err = unpopulate(val, "ObjectType", &g.ObjectType)
+			delete(rawMsg, key)
+		case "resourceSelectors":
+			err = unpopulate(val, "ResourceSelectors", &g.ResourceSelectors)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", g, err.Error())
 		}
 	}
 	return nil
@@ -4317,6 +4414,7 @@ func (o *OperationResource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PatchBackupVaultInput.
 func (p PatchBackupVaultInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "costManagementSettings", p.CostManagementSettings)
 	populate(objectMap, "featureSettings", p.FeatureSettings)
 	populate(objectMap, "monitoringSettings", p.MonitoringSettings)
 	populate(objectMap, "resourceGuardOperationRequests", p.ResourceGuardOperationRequests)
@@ -4333,6 +4431,9 @@ func (p *PatchBackupVaultInput) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "costManagementSettings":
+			err = unpopulate(val, "CostManagementSettings", &p.CostManagementSettings)
+			delete(rawMsg, key)
 		case "featureSettings":
 			err = unpopulate(val, "FeatureSettings", &p.FeatureSettings)
 			delete(rawMsg, key)
@@ -4936,6 +5037,41 @@ func (r *ResourceGuardResourceList) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &r.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ResourceListSelectionCriteria.
+func (r ResourceListSelectionCriteria) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "objectType", r.ObjectType)
+	populate(objectMap, "resourceIdentifiers", r.ResourceIdentifiers)
+	populate(objectMap, "resourceNameOverrides", r.ResourceNameOverrides)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceListSelectionCriteria.
+func (r *ResourceListSelectionCriteria) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "objectType":
+			err = unpopulate(val, "ObjectType", &r.ObjectType)
+			delete(rawMsg, key)
+		case "resourceIdentifiers":
+			err = unpopulate(val, "ResourceIdentifiers", &r.ResourceIdentifiers)
+			delete(rawMsg, key)
+		case "resourceNameOverrides":
+			err = unpopulate(val, "ResourceNameOverrides", &r.ResourceNameOverrides)
 			delete(rawMsg, key)
 		}
 		if err != nil {

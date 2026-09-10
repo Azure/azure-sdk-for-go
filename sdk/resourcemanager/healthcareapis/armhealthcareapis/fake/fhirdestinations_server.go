@@ -87,7 +87,7 @@ func (f *FhirDestinationsServerTransport) dispatchNewListByIotConnectorPager(req
 	}
 	newListByIotConnectorPager := f.newListByIotConnectorPager.get(req)
 	if newListByIotConnectorPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HealthcareApis/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/iotconnectors/(?P<iotConnectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fhirdestinations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthcareApis/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/iotconnectors/(?P<iotConnectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fhirdestinations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

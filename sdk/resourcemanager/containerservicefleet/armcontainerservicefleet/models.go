@@ -24,6 +24,12 @@ type Affinity struct {
 	ClusterAffinity *ClusterAffinity
 }
 
+// AffinityPatch - The affinity settings that can be patched.
+type AffinityPatch struct {
+	// The cluster affinity settings that can be patched.
+	ClusterAffinity *ClusterAffinityPatch
+}
+
 // AgentProfile - Agent profile for the Fleet hub.
 type AgentProfile struct {
 	// The ID of the subnet which the Fleet hub node will join on startup. If this is not specified, a vnet and subnet will be
@@ -101,7 +107,7 @@ type AutoUpgradeProfileProperties struct {
 	// "1.30".
 	// By default, this is empty.
 	// If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
-	// If upgrade channel is Rapid, Stable or NodeImage, this field must be empty.
+	// If upgrade channel is not TargetKubernetesVersion, this field must be empty.
 	TargetKubernetesVersion *string
 
 	// The resource id of the UpdateStrategy resource to reference. If not specified, the auto upgrade will run on all clusters
@@ -117,6 +123,9 @@ type AutoUpgradeProfileStatus struct {
 	// READ-ONLY; The error details of the last trigger.
 	LastTriggerError *ErrorDetail
 
+	// READ-ONLY; Additional information about the last trigger attempt.
+	LastTriggerMessage *string
+
 	// READ-ONLY; The status of the last AutoUpgrade trigger.
 	LastTriggerStatus *AutoUpgradeLastTriggerStatus
 
@@ -128,6 +137,17 @@ type AutoUpgradeProfileStatus struct {
 	LastTriggeredAt *time.Time
 }
 
+// CiliumProperties - The Cilium specific properties of the member cluster.
+type CiliumProperties struct {
+	// READ-ONLY; Cilium requires each cluster to be assigned a unique numeric cluster id from 1 - 255. The id is managed by Fleet
+	// and cannot be set by the user.
+	ID *int32
+
+	// READ-ONLY; Cilium requires each cluster to be assigned a unique human-readable name. The name is managed by Fleet, based
+	// on the Fleet Member name, and cannot be set by the user.
+	Name *string
+}
+
 // ClusterAffinity contains cluster affinity scheduling rules for the selected resources.
 type ClusterAffinity struct {
 	// If the affinity requirements specified by this field are not met at scheduling time, the resource will not be scheduled
@@ -136,17 +156,104 @@ type ClusterAffinity struct {
 	RequiredDuringSchedulingIgnoredDuringExecution *ClusterSelector
 }
 
+// ClusterAffinityPatch - The cluster affinity rules that can be patched.
+type ClusterAffinityPatch struct {
+	// The required cluster selector that can be patched.
+	RequiredDuringSchedulingIgnoredDuringExecution *ClusterSelectorPatch
+}
+
+// ClusterMeshProfile - A cluster mesh profile stores the general information about the mesh.
+type ClusterMeshProfile struct {
+	// The resource-specific properties for this resource.
+	Properties *ClusterMeshProfileProperties
+
+	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ClusterMeshProfileListResult - The response of a ClusterMeshProfile list operation.
+type ClusterMeshProfileListResult struct {
+	// REQUIRED; The ClusterMeshProfile items on this page
+	Value []*ClusterMeshProfile
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ClusterMeshProfileProperties - A cluster mesh profile stores the general information about the mesh.
+type ClusterMeshProfileProperties struct {
+	// Select the members of the mesh.
+	//
+	//   - Only key/value pairs with the `=` operator are accepted in the label selector.
+	//   - If empty or not specified, no Fleet members will be selected to join the mesh.
+	MemberSelector *MemberSelector
+
+	// READ-ONLY; The provisioning state of the cluster mesh profile.
+	ProvisioningState *ClusterMeshProfileProvisioningState
+
+	// READ-ONLY; The cluster mesh profile status.
+	Status *ClusterMeshProfileStatus
+}
+
+// ClusterMeshProfileStatus - Status of the cluster mesh.
+type ClusterMeshProfileStatus struct {
+	// READ-ONLY; The state of the cluster mesh.
+	State *ClusterMeshState
+
+	// READ-ONLY; The last applied MemberSelector for the cluster mesh profile.
+	LastAppliedMemberSelector *MemberSelector
+
+	// READ-ONLY; The last operation error of the cluster mesh profile.
+	LastOperationError *ErrorDetail
+
+	// READ-ONLY; The last operation ID for the cluster mesh profile.
+	LastOperationID *string
+}
+
 // ClusterResourcePlacementSpec defines the desired state of ClusterResourcePlacement.
 type ClusterResourcePlacementSpec struct {
 	// Policy defines how to select member clusters to place the selected resources. If unspecified, all the joined member clusters
 	// are selected.
 	Policy *PlacementPolicy
+
+	// The rollout strategy configuration for the cluster resource placement.
+	RolloutStrategy *RolloutStrategy
+}
+
+// ClusterResourcePlacementSpecPatch - The ClusterResourcePlacement settings that can be patched.
+type ClusterResourcePlacementSpecPatch struct {
+	// The placement policy that can be patched.
+	Policy *PlacementPolicyPatch
+
+	// The rollout strategy configuration that can be patched.
+	RolloutStrategy *RolloutStrategy
 }
 
 // ClusterSelector
 type ClusterSelector struct {
 	// REQUIRED; ClusterSelectorTerms is a list of cluster selector terms. The terms are `ORed`.
 	ClusterSelectorTerms []*ClusterSelectorTerm
+}
+
+// ClusterSelectorPatch - The cluster selector settings that can be patched.
+type ClusterSelectorPatch struct {
+	// The cluster selector terms that can be patched.
+	ClusterSelectorTerms []*ClusterSelectorTermPatch
 }
 
 // ClusterSelectorTerm
@@ -160,6 +267,21 @@ type ClusterSelectorTerm struct {
 	// only be used with `RequiredDuringSchedulingIgnoredDuringExecution` affinity terms. This field is beta-level; it is for
 	// the property-based scheduling feature and is only functional when a property provider is enabled in the deployment.
 	PropertySelector *PropertySelector
+}
+
+// ClusterSelectorTermPatch - A cluster selector term that can be patched.
+type ClusterSelectorTermPatch struct {
+	// The label selector that can be patched.
+	LabelSelector *LabelSelectorPatch
+
+	// The property selector that can be patched.
+	PropertySelector *PropertySelectorPatch
+}
+
+// ClusterUpdateStrategyReference - A reference to an existing cluster staged update strategy.
+type ClusterUpdateStrategyReference struct {
+	// The name of an existing cluster staged update strategy.
+	Name *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -308,6 +430,9 @@ type FleetManagedNamespaceListResult struct {
 
 // FleetManagedNamespacePatch - The properties of a fleet managed namespace that can be patched.
 type FleetManagedNamespacePatch struct {
+	// The updatable properties of the fleet managed namespace.
+	Properties *FleetManagedNamespacePropertiesPatch
+
 	// Resource tags.
 	Tags map[string]*string
 }
@@ -334,6 +459,21 @@ type FleetManagedNamespaceProperties struct {
 
 	// READ-ONLY; Status information of the last operation for fleet managed namespace.
 	Status *FleetManagedNamespaceStatus
+}
+
+// FleetManagedNamespacePropertiesPatch - The properties of a fleet managed namespace that can be patched.
+type FleetManagedNamespacePropertiesPatch struct {
+	// Action if the managed namespace with the same name already exists.
+	AdoptionPolicy *AdoptionPolicy
+
+	// Delete options of a fleet managed namespace.
+	DeletePolicy *DeletePolicy
+
+	// The namespace properties for the fleet managed namespace.
+	ManagedNamespaceProperties *ManagedNamespaceProperties
+
+	// The profile of the propagation to create the namespace.
+	PropagationPolicy *PropagationPolicyPatch
 }
 
 // FleetManagedNamespaceStatus - Status information for the fleet managed namespace.
@@ -388,6 +528,9 @@ type FleetMemberProperties struct {
 
 	// The labels for the fleet member.
 	Labels map[string]*string
+
+	// READ-ONLY; The Mesh Member Properties associated with this Fleet Member.
+	MeshProperties *MeshProperties
 
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *FleetMemberProvisioningState
@@ -523,6 +666,9 @@ type GateConfiguration struct {
 
 	// The human-readable display name of the Gate.
 	DisplayName *string
+
+	// Scheduled start configuration for gates of type ScheduledStart.
+	ScheduledStartConfiguration *ScheduledStartConfiguration
 }
 
 // GateListResult - The response of a Gate list operation.
@@ -560,6 +706,9 @@ type GateProperties struct {
 	// The human-readable display name of the Gate.
 	DisplayName *string
 
+	// Details for ScheduledStart gate
+	ScheduledStartProperties *ScheduledStartProperties
+
 	// READ-ONLY; The provisioning state of the Gate resource.
 	ProvisioningState *GateProvisioningState
 }
@@ -591,6 +740,16 @@ type LabelSelector struct {
 	MatchLabels map[string]*string
 }
 
+// LabelSelectorPatch - The label selector settings that can be patched.
+type LabelSelectorPatch struct {
+	// The label selector requirements that can be patched.
+	MatchExpressions []*LabelSelectorRequirementPatch
+
+	// matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions,
+	// whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed.
+	MatchLabels map[string]*string
+}
+
 // LabelSelectorRequirement - A label selector requirement is a selector that contains values, a key, and an operator that
 // relates the key and values.
 type LabelSelectorRequirement struct {
@@ -598,6 +757,19 @@ type LabelSelectorRequirement struct {
 	Key *string
 
 	// REQUIRED; operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.
+	Operator *LabelSelectorOperator
+
+	// values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator
+	// is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch.
+	Values []*string
+}
+
+// LabelSelectorRequirementPatch - A label selector requirement that can be patched.
+type LabelSelectorRequirementPatch struct {
+	// key is the label key that the selector applies to.
+	Key *string
+
+	// operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.
 	Operator *LabelSelectorOperator
 
 	// values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator
@@ -654,6 +826,12 @@ type ManagedServiceIdentity struct {
 	TenantID *string
 }
 
+// MemberSelector - Select members of a fleet.
+type MemberSelector struct {
+	// REQUIRED; Kubernetes-style label selector for selecting Fleet members, e.g. `env=production`.
+	ByLabel *string
+}
+
 // MemberUpdateStatus - The status of a member update operation.
 type MemberUpdateStatus struct {
 	// READ-ONLY; The Azure resource id of the target Kubernetes cluster.
@@ -670,6 +848,33 @@ type MemberUpdateStatus struct {
 
 	// READ-ONLY; The status of the MemberUpdate operation.
 	Status *UpdateStatus
+}
+
+// MeshMemberStatus - Status of the mesh member.
+type MeshMemberStatus struct {
+	// READ-ONLY; The mesh member state.
+	State *MeshMemberState
+
+	// READ-ONLY; The error affecting this member.
+	Error *ErrorDetail
+
+	// READ-ONLY; The last operation ID that affected the mesh properties of the fleet member.
+	LastOperationID *string
+
+	// READ-ONLY; When the status was last updated.
+	LastUpdatedAt *time.Time
+}
+
+// MeshProperties - The Mesh Member data for a Fleet Member resource.
+type MeshProperties struct {
+	// READ-ONLY; The Cilium cluster properties.
+	CiliumProperties *CiliumProperties
+
+	// READ-ONLY; Resource id of the cluster mesh profile associated with this mesh member.
+	ClusterMeshProfileResourceID *string
+
+	// READ-ONLY; The status of the mesh member.
+	Status *MeshMemberStatus
 }
 
 // NetworkPolicy - The network policy for the managed namespace.
@@ -776,10 +981,31 @@ type PlacementPolicy struct {
 	Tolerations []*Toleration
 }
 
+// PlacementPolicyPatch - The placement policy settings that can be patched.
+type PlacementPolicyPatch struct {
+	// The cluster affinity settings that can be patched.
+	Affinity *AffinityPatch
+
+	// The member cluster names that can be patched.
+	ClusterNames []*string
+
+	// The placement type that can be patched.
+	PlacementType *PlacementType
+
+	// The tolerations that can be patched.
+	Tolerations []*Toleration
+}
+
 // PlacementProfile - The configuration profile for default ClusterResourcePlacement for placement.
 type PlacementProfile struct {
 	// The default ClusterResourcePlacement policy configuration.
 	DefaultClusterResourcePlacement *ClusterResourcePlacementSpec
+}
+
+// PlacementProfilePatch - The placement profile settings that can be patched.
+type PlacementProfilePatch struct {
+	// The default ClusterResourcePlacement policy configuration that can be patched.
+	DefaultClusterResourcePlacement *ClusterResourcePlacementSpecPatch
 }
 
 // PropagationPolicy - The propagation to be used for provisioning the namespace among the fleet.
@@ -791,10 +1017,25 @@ type PropagationPolicy struct {
 	PlacementProfile *PlacementProfile
 }
 
+// PropagationPolicyPatch - The propagation settings that can be patched.
+type PropagationPolicyPatch struct {
+	// The placement profile that can be patched.
+	PlacementProfile *PlacementProfilePatch
+
+	// The type of the policy to be used.
+	Type *PropagationType
+}
+
 // PropertySelector helps user specify property requirements when picking clusters for resource placement.
 type PropertySelector struct {
 	// REQUIRED; MatchExpressions is an array of PropertySelectorRequirements. The requirements are AND'd.
 	MatchExpressions []*PropertySelectorRequirement
+}
+
+// PropertySelectorPatch - The property selector settings that can be patched.
+type PropertySelectorPatch struct {
+	// The property selector requirements that can be patched.
+	MatchExpressions []*PropertySelectorRequirementPatch
 }
 
 // PropertySelectorRequirement is a specific property requirement when picking clusters for resource placement.
@@ -814,6 +1055,18 @@ type PropertySelectorRequirement struct {
 	Values []*string
 }
 
+// PropertySelectorRequirementPatch - A property selector requirement that can be patched.
+type PropertySelectorRequirementPatch struct {
+	// The property name that can be patched.
+	Name *string
+
+	// The property selector operator that can be patched.
+	Operator *PropertySelectorOperator
+
+	// The property values that can be patched.
+	Values []*string
+}
+
 // ResourceQuota - The resource quota for the managed namespace.
 type ResourceQuota struct {
 	// The CPU limit for the managed namespace. See more at https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu
@@ -827,6 +1080,42 @@ type ResourceQuota struct {
 
 	// The memory request for the managed namespace. See more at https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-memory
 	MemoryRequest *string
+}
+
+// RolloutStrategy - The rollout strategy configuration.
+type RolloutStrategy struct {
+	// Reference to an existing cluster update strategy. Required when type is External.
+	ClusterUpdateStrategy *ClusterUpdateStrategyReference
+
+	// The type of rollout strategy. Default is RollingUpdate.
+	Type *RolloutStrategyType
+}
+
+// ScheduledStartConfiguration - Configuration for ScheduledStart gate
+type ScheduledStartConfiguration struct {
+	// REQUIRED; The day of the week when the scheduled start occurs.
+	StartDay *DayOfWeek
+
+	// REQUIRED; The local time of day when the scheduled start occurs in 24-hour (HH:mm) format.
+	StartTime *string
+
+	// REQUIRED; The UTC offset for the scheduled time in HH:mm format, -14:00 to +14:00
+	UTCOffset *string
+}
+
+// ScheduledStartProperties - Properties for ScheduledStart gate
+type ScheduledStartProperties struct {
+	// REQUIRED; The day of the week when the scheduled start occurs.
+	StartDay *DayOfWeek
+
+	// REQUIRED; The local time of day when the scheduled start occurs in 24-hour (HH:mm) format.
+	StartTime *string
+
+	// REQUIRED; The UTC offset for the scheduled time in HH:mm format, -14:00 to +14:00
+	UTCOffset *string
+
+	// READ-ONLY; The absolute UTC time when the gate will complete. Set when the gate is created.
+	AbsoluteStartTime *time.Time
 }
 
 // SkipProperties - The properties of a skip operation containing multiple skip requests.
@@ -899,6 +1188,18 @@ type UpdateGroup struct {
 	// A list of Gates that will be created before this Group is executed.
 	BeforeGates []*GateConfiguration
 
+	// Limits the number of member (cluster) upgrade failures tolerated within this group.
+	// Failures are evaluated over members within this group only.
+	// Accepts either:
+	// • A fixed count n, where n >= 0
+	// • A percentage p%, where 0 <= p <= 100
+	// Percentage resolves at stage start using: resolvedThreshold = ceil(p * N),
+	// where p is the percentage as a decimal and N is the number of members in this group at scope start.
+	// Examples:
+	// • "3" --> up to 3 member upgrade failures are tolerated within this group. The 4th failure causes the group to fail.
+	// • "25%" --> up to 25% of the members in this group can fail their upgrade before the group is considered failed.
+	MaxAllowedFailures *string
+
 	// The max number of upgrades that can run concurrently in this specific group.
 	// Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the group you want to tolerate at a time.
 	// Actual concurrency may be lower depending on stage-level concurrency limits or individual member conditions.
@@ -913,6 +1214,17 @@ type UpdateGroup struct {
 	// • "100%" --> “all at once”, up to all members for this group upgrade at the same time.
 	// • "25%" --> up to 25% of the members in the group will be upgraded at the same time.
 	MaxConcurrency *string
+
+	// Select the members of the group.
+	//
+	//   - If specified, label-based selection will override group name based selection,
+	//
+	// and Name is only used as an identifier.
+	//
+	//   - If not specified, group name based selection will be used, and Name must match a
+	//
+	// group name of an existing fleet member.
+	MemberSelector *MemberSelector
 }
 
 // UpdateGroupStatus - The status of a UpdateGroup.
@@ -922,6 +1234,13 @@ type UpdateGroupStatus struct {
 
 	// READ-ONLY; The list of Gates that will run before this UpdateGroup.
 	BeforeGates []*UpdateRunGateStatus
+
+	// READ-ONLY; The total member upgrade failures within the group.
+	FailureCount *int32
+
+	// READ-ONLY; The max number of member upgrade failures allowed within this group, resolved from the UpdateStrategy.UpdateGroup.maxAllowedFailures
+	// value.
+	MaxAllowedFailures *int32
 
 	// READ-ONLY; The max number of upgrades that can run concurrently in this group, resolved from the UpdateStrategy.UpdateGroup.maxConcurrency
 	// value. If no value was provided, this value defaults to "1".
@@ -1036,6 +1355,9 @@ type UpdateRunProperties struct {
 
 // UpdateRunStatus - The status of a UpdateRun.
 type UpdateRunStatus struct {
+	// READ-ONLY; Total member upgrade failures across the entire UpdateRun.
+	FailureCount *int32
+
 	// READ-ONLY; The node image upgrade specs for the update run. It is only set in update run when `NodeImageSelection.type`
 	// is `Consistent`.
 	NodeImageSelection *NodeImageSelectionStatus
@@ -1075,6 +1397,19 @@ type UpdateStage struct {
 	// Defines the groups to be executed in parallel in this stage. Duplicate groups are not allowed. Min size: 1.
 	Groups []*UpdateGroup
 
+	// Limits the number of member (cluster) upgrade failures tolerated within this stage.
+	// Failures are evaluated over all members within all groups within this stage.
+	// Accepts either:
+	// • A fixed count n, where n >= 0
+	// • A percentage p%, where 0 <= p <= 100
+	// Percentage resolves at stage start using: resolvedThreshold = ceil(p * N),
+	// where p is the percentage as a decimal and N is the number of members in this stage at scope start.
+	// Examples:
+	// • "3" --> up to 3 member upgrade failures are tolerated within this stage. The 4th failure would cause the entire stage
+	// to fail.
+	// • "25%" --> up to 25% of the members in this stage can fail their upgrade before the stage is considered failed.
+	MaxAllowedFailures *string
+
 	// The max number of upgrades that can run concurrently across all groups in this stage.
 	// Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the stage you want to tolerate at a time.
 	// Actual concurrency may be lower depending on group-level concurrency limits or individual member conditions.
@@ -1088,6 +1423,13 @@ type UpdateStage struct {
 	// • "100%" --> “all at once”; up to all clusters in this stage upgrade at the same time.
 	// • "25%" --> up to 25% of the stage’s total clusters upgrade at the same time.
 	MaxConcurrency *string
+
+	// Select the members of the stage.
+	//
+	//   - If specified without UpdateGroup, one implicit group containing the selected members will be created.
+	//   - If specified with UpdateGroup, members will be pre-filtered before group-level selection logic is applied.
+	//   - If not specified, group-level selection logic will be used.
+	MemberSelector *MemberSelector
 }
 
 // UpdateStageStatus - The status of a UpdateStage.
@@ -1101,8 +1443,15 @@ type UpdateStageStatus struct {
 	// READ-ONLY; The list of Gates that will run before this UpdateStage.
 	BeforeGates []*UpdateRunGateStatus
 
+	// READ-ONLY; The total member upgrade failures within the stage.
+	FailureCount *int32
+
 	// READ-ONLY; The list of groups to be updated as part of this UpdateStage.
 	Groups []*UpdateGroupStatus
+
+	// READ-ONLY; The max number of member upgrade failures allowed within this stage, resolved from the UpdateStrategy.UpdateStage.maxAllowedFailures
+	// value.
+	MaxAllowedFailures *int32
 
 	// READ-ONLY; The max number of upgrades that can run concurrently across all groups in this stage, resolved from the UpdateStrategy.UpdateStage.maxConcurrency
 	// value.

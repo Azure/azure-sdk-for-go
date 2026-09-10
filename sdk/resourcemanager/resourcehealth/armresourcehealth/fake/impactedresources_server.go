@@ -106,7 +106,7 @@ func (i *ImpactedResourcesServerTransport) dispatchGet(req *http.Request) (*http
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/impactedResources/(?P<impactedResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/impactedResources/(?P<impactedResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -139,7 +139,7 @@ func (i *ImpactedResourcesServerTransport) dispatchGetByTenantID(req *http.Reque
 	if i.srv.GetByTenantID == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByTenantID not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/impactedResources/(?P<impactedResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/impactedResources/(?P<impactedResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -174,7 +174,7 @@ func (i *ImpactedResourcesServerTransport) dispatchNewListBySubscriptionIDAndEve
 	}
 	newListBySubscriptionIDAndEventIDPager := i.newListBySubscriptionIDAndEventIDPager.get(req)
 	if newListBySubscriptionIDAndEventIDPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/impactedResources`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/impactedResources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -219,7 +219,7 @@ func (i *ImpactedResourcesServerTransport) dispatchNewListByTenantIDAndEventIDPa
 	}
 	newListByTenantIDAndEventIDPager := i.newListByTenantIDAndEventIDPager.get(req)
 	if newListByTenantIDAndEventIDPager == nil {
-		const regexStr = `/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/impactedResources`
+		const regexStr = `/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/impactedResources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

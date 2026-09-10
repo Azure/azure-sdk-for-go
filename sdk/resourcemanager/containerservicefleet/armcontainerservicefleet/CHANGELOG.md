@@ -1,5 +1,60 @@
 # Release History
 
+## 3.1.0-beta.1 (2026-09-03)
+### Features Added
+
+- New value `GateTypeScheduledStart` added to enum type `GateType`
+- New value `UpgradeChannelSecurityPatch` added to enum type `UpgradeChannel`
+- New enum type `ClusterMeshProfileProvisioningState` with values `ClusterMeshProfileProvisioningStateCanceled`, `ClusterMeshProfileProvisioningStateFailed`, `ClusterMeshProfileProvisioningStateSucceeded`
+- New enum type `ClusterMeshState` with values `ClusterMeshStateApplying`, `ClusterMeshStateConnected`, `ClusterMeshStateDegraded`, `ClusterMeshStateFailed`, `ClusterMeshStateNotConnected`
+- New enum type `DayOfWeek` with values `DayOfWeekFriday`, `DayOfWeekMonday`, `DayOfWeekSaturday`, `DayOfWeekSunday`, `DayOfWeekThursday`, `DayOfWeekTuesday`, `DayOfWeekWednesday`
+- New enum type `MeshMemberState` with values `MeshMemberStateConnected`, `MeshMemberStateConnecting`, `MeshMemberStateDisconnecting`, `MeshMemberStateFailed`
+- New enum type `RolloutStrategyType` with values `RolloutStrategyTypeExternal`, `RolloutStrategyTypeRollingUpdate`
+- New function `*ClientFactory.NewClusterMeshProfilesClient() *ClusterMeshProfilesClient`
+- New function `NewClusterMeshProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClusterMeshProfilesClient, error)`
+- New function `*ClusterMeshProfilesClient.BeginApply(ctx context.Context, resourceGroupName string, fleetName string, clusterMeshProfileName string, options *ClusterMeshProfilesClientBeginApplyOptions) (*runtime.Poller[ClusterMeshProfilesClientApplyResponse], error)`
+- New function `*ClusterMeshProfilesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, clusterMeshProfileName string, resource ClusterMeshProfile, options *ClusterMeshProfilesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClusterMeshProfilesClientCreateOrUpdateResponse], error)`
+- New function `*ClusterMeshProfilesClient.BeginDelete(ctx context.Context, resourceGroupName string, fleetName string, clusterMeshProfileName string, options *ClusterMeshProfilesClientBeginDeleteOptions) (*runtime.Poller[ClusterMeshProfilesClientDeleteResponse], error)`
+- New function `*ClusterMeshProfilesClient.Get(ctx context.Context, resourceGroupName string, fleetName string, clusterMeshProfileName string, options *ClusterMeshProfilesClientGetOptions) (ClusterMeshProfilesClientGetResponse, error)`
+- New function `*ClusterMeshProfilesClient.NewListByFleetPager(resourceGroupName string, fleetName string, options *ClusterMeshProfilesClientListByFleetOptions) *runtime.Pager[ClusterMeshProfilesClientListByFleetResponse]`
+- New struct `AffinityPatch`
+- New struct `CiliumProperties`
+- New struct `ClusterAffinityPatch`
+- New struct `ClusterMeshProfile`
+- New struct `ClusterMeshProfileListResult`
+- New struct `ClusterMeshProfileProperties`
+- New struct `ClusterMeshProfileStatus`
+- New struct `ClusterResourcePlacementSpecPatch`
+- New struct `ClusterSelectorPatch`
+- New struct `ClusterSelectorTermPatch`
+- New struct `ClusterUpdateStrategyReference`
+- New struct `FleetManagedNamespacePropertiesPatch`
+- New struct `LabelSelectorPatch`
+- New struct `LabelSelectorRequirementPatch`
+- New struct `MemberSelector`
+- New struct `MeshMemberStatus`
+- New struct `MeshProperties`
+- New struct `PlacementPolicyPatch`
+- New struct `PlacementProfilePatch`
+- New struct `PropagationPolicyPatch`
+- New struct `PropertySelectorPatch`
+- New struct `PropertySelectorRequirementPatch`
+- New struct `RolloutStrategy`
+- New struct `ScheduledStartConfiguration`
+- New struct `ScheduledStartProperties`
+- New field `LastTriggerMessage` in struct `AutoUpgradeProfileStatus`
+- New field `RolloutStrategy` in struct `ClusterResourcePlacementSpec`
+- New field `Properties` in struct `FleetManagedNamespacePatch`
+- New field `MeshProperties` in struct `FleetMemberProperties`
+- New field `ScheduledStartConfiguration` in struct `GateConfiguration`
+- New field `ScheduledStartProperties` in struct `GateProperties`
+- New field `MaxAllowedFailures`, `MemberSelector` in struct `UpdateGroup`
+- New field `FailureCount`, `MaxAllowedFailures` in struct `UpdateGroupStatus`
+- New field `FailureCount` in struct `UpdateRunStatus`
+- New field `MaxAllowedFailures`, `MemberSelector` in struct `UpdateStage`
+- New field `FailureCount`, `MaxAllowedFailures` in struct `UpdateStageStatus`
+
+
 ## 3.0.0 (2026-08-03)
 ### Breaking Changes
 

@@ -66,19 +66,6 @@ type CertificateResponse struct {
 	Type *string
 }
 
-// DeviceRegistryNamespaceDescription - Description of the Device Registry namespace that is linked to the provisioning service.
-type DeviceRegistryNamespaceDescription struct {
-	// REQUIRED; Device Registry Namespace MI authentication type: UserAssigned, SystemAssigned.
-	AuthenticationType *DeviceRegistryNamespaceAuthenticationType
-
-	// REQUIRED; The ARM resource ID of the Device Registry namespace.
-	ResourceID *string
-
-	// The selected user-assigned identity resource Id associated with Device Registry namespace. This is required when authenticationType
-	// is UserAssigned.
-	SelectedUserAssignedIdentityResourceID *string
-}
-
 // ErrorMessage - Error response containing message and code.
 type ErrorMessage struct {
 	// standard error code
@@ -145,8 +132,8 @@ type IotDpsPropertiesDescription struct {
 	// List of authorization keys for a provisioning service.
 	AuthorizationPolicies []*SharedAccessSignatureAuthorizationRuleAccessRightsDescription
 
-	// The Device Registry namespace that is linked to the provisioning service.
-	DeviceRegistryNamespace *DeviceRegistryNamespaceDescription
+	// Disables all authentication methods other than Azure RBAC.
+	DisableLocalAuth *bool
 
 	// Optional.
 	// Indicates if the DPS instance has Data Residency enabled, removing the cross geo-pair disaster recovery.
@@ -212,9 +199,6 @@ type IotDpsSKUInfo struct {
 
 // IotHubDefinitionDescription - Description of the IoT hub.
 type IotHubDefinitionDescription struct {
-	// REQUIRED; Connection string of the IoT hub.
-	ConnectionString *string
-
 	// REQUIRED; ARM region of the IoT hub.
 	Location *string
 
@@ -223,6 +207,18 @@ type IotHubDefinitionDescription struct {
 
 	// flag for applying allocationPolicy or not for a given iot hub.
 	ApplyAllocationPolicy *bool
+
+	// IotHub MI authentication type: KeyBased, UserAssigned, SystemAssigned.
+	AuthenticationType *IotHubAuthenticationType
+
+	// Connection string of the IoT hub. This is required when authenticationType is KeyBased.
+	ConnectionString *string
+
+	// Host name of the IoT hub. This is required when connectionString is not provided.
+	HostName *string
+
+	// The selected user-assigned identity resource Id associated with IoT hub. This is required when authenticationType is UserAssigned.
+	SelectedUserAssignedIdentityResourceID *string
 
 	// READ-ONLY; Host name of the IoT hub.
 	Name *string

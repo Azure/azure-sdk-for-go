@@ -1270,6 +1270,7 @@ func (e ExemptionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "description", e.Description)
 	populate(objectMap, "displayName", e.DisplayName)
 	populate(objectMap, "exemptionCategory", e.ExemptionCategory)
+	populate(objectMap, "exemptionManagementMode", e.ExemptionManagementMode)
 	populateTime[datetime.RFC3339](objectMap, "expiresOn", e.ExpiresOn, true)
 	populateAny(objectMap, "metadata", e.Metadata)
 	populate(objectMap, "policyAssignmentId", e.PolicyAssignmentID)
@@ -1298,6 +1299,9 @@ func (e *ExemptionProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "exemptionCategory":
 			err = unpopulate(val, "ExemptionCategory", &e.ExemptionCategory)
+			delete(rawMsg, key)
+		case "exemptionManagementMode":
+			err = unpopulate(val, "ExemptionManagementMode", &e.ExemptionManagementMode)
 			delete(rawMsg, key)
 		case "expiresOn":
 			err = unpopulateTime[datetime.RFC3339](val, "ExpiresOn", &e.ExpiresOn)
@@ -1353,6 +1357,7 @@ func (e *ExemptionUpdate) UnmarshalJSON(data []byte) error {
 func (e ExemptionUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "assignmentScopeValidation", e.AssignmentScopeValidation)
+	populate(objectMap, "exemptionManagementMode", e.ExemptionManagementMode)
 	populate(objectMap, "resourceSelectors", e.ResourceSelectors)
 	return json.Marshal(objectMap)
 }
@@ -1368,6 +1373,9 @@ func (e *ExemptionUpdateProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "assignmentScopeValidation":
 			err = unpopulate(val, "AssignmentScopeValidation", &e.AssignmentScopeValidation)
+			delete(rawMsg, key)
+		case "exemptionManagementMode":
+			err = unpopulate(val, "ExemptionManagementMode", &e.ExemptionManagementMode)
 			delete(rawMsg, key)
 		case "resourceSelectors":
 			err = unpopulate(val, "ResourceSelectors", &e.ResourceSelectors)

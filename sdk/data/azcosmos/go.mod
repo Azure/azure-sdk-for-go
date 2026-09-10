@@ -3,6 +3,7 @@ module github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2
 go 1.25.0
 
 require (
+	github.com/Azure/azure-cosmos-driver/windows/amd64 v0.1.0
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.22.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.14.0
 	github.com/stretchr/testify v1.11.1

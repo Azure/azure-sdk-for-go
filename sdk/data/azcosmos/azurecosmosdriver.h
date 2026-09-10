@@ -48,6 +48,11 @@
 #define COSMOS_VALUE_KIND_BOOL   3
 #define COSMOS_VALUE_KIND_U64    4
 
+// Discriminants for cosmos_operation_options_t.query_plan_mode.
+#define COSMOS_QUERY_PLAN_MODE_UNSET           0
+#define COSMOS_QUERY_PLAN_MODE_LOCAL_PREFERRED 1
+#define COSMOS_QUERY_PLAN_MODE_GATEWAY_ONLY    2
+
 /**
  * Per spec section 3.6.1, every completion has exactly one of these outcomes.
  *
@@ -1388,9 +1393,10 @@ typedef struct cosmos_operation_options_t {
    * When true, the driver transcodes a **text** request body to binary
    * before sending it (an already-binary body is passed through) and
    * advertises `CosmosBinary`, so the caller never encodes binary itself.
-   * An explicit `false` forces binary **off** for this operation regardless
-   * of any account/runtime default; `unset` inherits a lower layer (text by
-   * default).
+   * An explicit `false` (`1`) is the text opt-out: it forces binary **off**
+   * for this operation regardless of any account/runtime default. `unset`
+   * inherits a lower layer, which enables binary encoding by default, so an
+   * all-unset options struct negotiates binary.
    *
    * The response side is uniform across operation types: point reads,
    * writes that echo content, and queries all negotiate a binary response,
@@ -1407,8 +1413,11 @@ typedef struct cosmos_operation_options_t {
    * Tri-state bool (`0` unset / `1` false / `2` true).
    *
    * Only meaningful when [`binary_encoding_enabled`](Self::binary_encoding_enabled)
-   * is true: the wire stays binary in both directions and the driver hands
-   * back text. `unset` / `false` returns the binary response as-is.
+   * resolves to true: the wire stays binary in both directions and the
+   * driver hands back text. `unset` / `false` returns the binary response
+   * as-is. Setting this to `2` is honored even when
+   * [`binary_encoding_enabled`](Self::binary_encoding_enabled) is left
+   * unset, since binary is enabled by default.
    *
    * This applies to every operation type, queries included: the wire keeps
    * the bandwidth saving and the driver transcodes each response body — for
@@ -1417,10 +1426,17 @@ typedef struct cosmos_operation_options_t {
    * Note the returned text is re-serialized by the driver rather than being
    * the service's original bytes: values are preserved, but object keys are
    * emitted in sorted order and numbers use Rust's shortest round-trip
-   * rendering. Hosts needing byte-exact service output should leave binary
-   * encoding disabled.
+   * rendering. Hosts needing byte-exact service output must explicitly
+   * disable binary encoding by setting
+   * [`binary_encoding_enabled`](Self::binary_encoding_enabled) to `1`.
    */
   int8_t binary_encoding_request_text_response;
+  /**
+   * Query-plan mode encoded as a [`CosmosQueryPlanMode`] discriminant.
+   * `0` (`Unset`) inherits. Stored as a raw `i32` so invalid host values can
+   * be rejected before materializing the enum.
+   */
+  int32_t query_plan_mode;
 } cosmos_operation_options_t;
 
 /**
@@ -1435,7 +1451,6 @@ typedef struct cosmos_operation_options_t {
  * - `operation_options`: pointer to a flat
  *   [`cosmos_operation_options_t`](crate::op_request::CosmosOperationOptions),
  *   or NULL to inherit the driver defaults.
- *
  * The account reference stays a separate handle parameter on
  * [`cosmos_driver_options_build`] — it owns `Arc`-shared state and cannot be
  * flattened into bytes.

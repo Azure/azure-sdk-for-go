@@ -16,16 +16,17 @@ Cosmos DB SDKs.
 
 ### Building with the driver
 
-The driver binding is selected automatically when cgo is enabled on glibc `linux/amd64` or
-`darwin/arm64`. No build tag or linker environment variable is required:
+The driver binding is selected automatically when cgo is enabled on glibc `linux/amd64`,
+`darwin/arm64`, or `windows/amd64`. No build tag or linker environment variable is required:
 
 ```sh
 go build ./...
 ```
 
-The native archives are committed as `.syso` files in target-specific internal packages, so Go
-preserves them in module zips and vendored builds and links the matching package automatically. No
-separate driver build or runtime sidecar is required; the resulting executable is self-contained.
+The Linux and macOS archives are committed as `.syso` files in target-specific internal packages.
+Windows links the archive and system libraries from
+`github.com/Azure/azure-cosmos-driver/windows/amd64`. The resulting executable is self-contained;
+no separate driver build or runtime sidecar is required.
 
 `CGO_ENABLED=0` and unsupported platforms select `driver_stub.go`. That diagnostic build keeps the
 API compilable, but operations report that the driver is unavailable.
@@ -34,19 +35,17 @@ Alpine and other musl-based Linux distributions are not supported yet. The bundl
 is built for glibc, and the build reports that limitation explicitly rather than linking Rust code
 compiled for a different libc ABI.
 
-**Those committed binaries are temporary and are meant to be deleted.** Checking a build artifact
-into the repository is not the plan of record: the distribution design puts each target's library
-in its own Go module in [azure-cosmos-driver](https://github.com/Azure/azure-cosmos-driver),
-selected by `GOOS`/`GOARCH`. That repository exists and already carries a darwin/arm64 module, but
-not yet one for `linux/amd64`, which is the platform CI runs on — so the copies here stand in until
-it does.
+**The committed Linux and macOS binaries are temporary and are meant to be deleted.** Checking a
+build artifact into this repository is not the plan of record: the distribution design puts each
+target's library in its own Go module in
+[azure-cosmos-driver](https://github.com/Azure/azure-cosmos-driver), selected by `GOOS`/`GOARCH`.
+The Windows module is integrated here, while the committed copies remain until equivalent tagged
+modules can replace them on every supported platform.
 
 The trigger to remove them, and the steps, are recorded in
 [`internal/native/lib/README.md`](internal/native/lib/README.md). Only `linux/amd64` and
-`darwin/arm64` are present, because those are the platforms actually built and tested; another
-platform needs its own build from
-[azure_data_cosmos_driver_native](https://github.com/Azure/azure-sdk-for-rust/tree/main/sdk/cosmos/azure_data_cosmos_driver_native)
-dropped into the matching directory, which is the cost these files impose.
+`darwin/arm64` are present as committed artifacts; `windows/amd64` is supplied by its external
+driver module.
 
 `azurecosmosdriver.h` is the header the driver generates, vendored here and pinned to the version
 in `driver.go`. That version is checked against the linked archive before any struct-sensitive ABI

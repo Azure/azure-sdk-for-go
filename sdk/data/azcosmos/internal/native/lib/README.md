@@ -17,15 +17,15 @@ first place.
 
 The distribution design puts each target's library in its own Go module in the
 [azure-cosmos-driver](https://github.com/Azure/azure-cosmos-driver) repository, selected by
-`GOOS`/`GOARCH` build constraints. That repository exists and already carries a `darwin/arm64`
-module, but not yet one for `linux/amd64`, which is the platform CI runs on.
+`GOOS`/`GOARCH` build constraints. Windows already consumes that target module; the copies here
+remain for Linux and macOS until equivalent module versions are available.
 
 ## When to delete this directory
 
 **As soon as `azure-cosmos-driver` carries a module for every platform this module builds on.**
 At that point:
 
-1. Add the driver modules to `go.mod`.
+1. Add the remaining driver modules to `go.mod`.
 2. Update `link_darwin_arm64.go` and `link_linux_amd64.go` to import the corresponding external
    target packages alongside the existing internal packages. Each external package must carry its
    archive and the system linker flags currently in `internal/native/{darwinarm64,linuxamd64}/link.go`.
@@ -103,11 +103,11 @@ and build recipe as well as the checksum. Independent artifact attestation is tr
 
 ## While they are still here
 
-Only `linux/amd64` and `darwin/arm64` are present, because those are the platforms actually built
-and tested. Another platform needs its own target-constrained `internal/native/<goos><goarch>`
-package containing the `.syso` archive and its `link.go` settings, plus a matching conditionally
-built root package import. An unsuffixed `.syso` must not be placed in the module root, where every
-target could select and link it.
+Only `linux/amd64` and `darwin/arm64` are present here. Windows uses the external target module and
+retains only the Go-owned callback shim under `internal/native/windowsamd64`. Any further platform
+must likewise keep its archive and linker settings behind a target-constrained package import. An
+unsuffixed `.syso` must not be placed in the module root, where every target could select and link
+it.
 
 The `.syso` suffix is required rather than merely convenient. Go preserves platform-specific
 `.syso` files in module zips and `go mod vendor`, then links the matching file automatically.

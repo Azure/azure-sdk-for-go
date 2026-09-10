@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-01-01/RelayOperations_List.json
+// Generated from example definition: 2026-07-01-preview/RelayOperations_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,6 +130,54 @@ func ExampleOperationsClient_NewListPager() {
 		// 					Operation: to.Ptr("Get Namespace logs"),
 		// 					Provider: to.Ptr("Microsoft Azure Relay"),
 		// 					Resource: to.Ptr("Namespace logs"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.Relay/clusters/write"),
+		// 				Display: &armrelay.OperationDisplay{
+		// 					Operation: to.Ptr("Create or Update Cluster"),
+		// 					Provider: to.Ptr("Microsoft Azure Relay"),
+		// 					Resource: to.Ptr("Cluster"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.Relay/clusters/read"),
+		// 				Display: &armrelay.OperationDisplay{
+		// 					Operation: to.Ptr("Get Cluster Resource"),
+		// 					Provider: to.Ptr("Microsoft Azure Relay"),
+		// 					Resource: to.Ptr("Cluster"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.Relay/clusters/delete"),
+		// 				Display: &armrelay.OperationDisplay{
+		// 					Operation: to.Ptr("Delete Cluster"),
+		// 					Provider: to.Ptr("Microsoft Azure Relay"),
+		// 					Resource: to.Ptr("Cluster"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.Relay/clusters/namespaces/read"),
+		// 				Display: &armrelay.OperationDisplay{
+		// 					Operation: to.Ptr("List Namespaces in Cluster"),
+		// 					Provider: to.Ptr("Microsoft Azure Relay"),
+		// 					Resource: to.Ptr("Cluster Namespaces"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.Relay/clusters/skus/read"),
+		// 				Display: &armrelay.OperationDisplay{
+		// 					Operation: to.Ptr("List Cluster SKUs"),
+		// 					Provider: to.Ptr("Microsoft Azure Relay"),
+		// 					Resource: to.Ptr("Cluster SKUs"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.Relay/availableClusterRegions/read"),
+		// 				Display: &armrelay.OperationDisplay{
+		// 					Operation: to.Ptr("List Available Cluster Regions"),
+		// 					Provider: to.Ptr("Microsoft Azure Relay"),
+		// 					Resource: to.Ptr("Available Cluster Regions"),
 		// 				},
 		// 			},
 		// 		},

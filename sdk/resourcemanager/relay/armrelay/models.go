@@ -60,6 +60,18 @@ type AuthorizationRuleProperties struct {
 	Rights []*AccessRights
 }
 
+// AvailableRelayClusterRegion - A region with available Relay cluster capacity.
+type AvailableRelayClusterRegion struct {
+	// READ-ONLY; The Azure region location.
+	Location *string
+}
+
+// AvailableRelayClustersList - The response from listing regions that have available Relay cluster capacity.
+type AvailableRelayClustersList struct {
+	// REQUIRED; Regions containing available Relay cluster capacity.
+	Value []*AvailableRelayClusterRegion
+}
+
 // CheckNameAvailability - Description of the check name availability request properties.
 type CheckNameAvailability struct {
 	// REQUIRED; The namespace name to check for availability. The namespace name can contain only letters, numbers, and hyphens.
@@ -77,6 +89,138 @@ type CheckNameAvailabilityResult struct {
 
 	// READ-ONLY; The detailed info regarding the reason associated with the namespace.
 	Message *string
+}
+
+// Cluster - A Relay dedicated cluster.
+type Cluster struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; The Relay cluster SKU.
+	SKU *ClusterSKU
+
+	// The resource-specific properties for this resource.
+	Properties *ClusterProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ClusterListResult - The response of a RelayCluster list operation.
+type ClusterListResult struct {
+	// REQUIRED; The RelayCluster items on this page
+	Value []*Cluster
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ClusterProperties - Relay cluster properties.
+type ClusterProperties struct {
+	// Indicates whether the Relay cluster was created as zone redundant.
+	ZoneRedundant *bool
+
+	// READ-ONLY; The metric ID of the Relay cluster.
+	MetricID *string
+
+	// READ-ONLY; The provisioning state of the Relay cluster.
+	ProvisioningState *ClusterProvisioningState
+
+	// READ-ONLY; The status of the Relay cluster.
+	Status *string
+
+	// READ-ONLY; Indicates whether the Relay cluster supports capacity scaling.
+	SupportsScaling *bool
+}
+
+// ClusterSKU - SKU parameters for a Relay cluster.
+type ClusterSKU struct {
+	// REQUIRED; Name of the Relay cluster SKU.
+	Name *ClusterSKUName
+
+	// The number of capacity units assigned to the Relay cluster.
+	Capacity *int32
+
+	// Tier of the Relay cluster SKU.
+	Tier *ClusterSKUTier
+}
+
+// ClusterSKUCapacity - Relay cluster SKU capacity information.
+type ClusterSKUCapacity struct {
+	// READ-ONLY; The allowed capacity values.
+	AllowedValues []*int32
+
+	// READ-ONLY; The default capacity.
+	Default *int32
+
+	// READ-ONLY; The maximum supported capacity.
+	Maximum *int32
+
+	// READ-ONLY; The minimum supported capacity.
+	Minimum *int32
+
+	// READ-ONLY; The supported scaling mode.
+	ScaleType *ClusterSKUScaleType
+}
+
+// ClusterSKUDetails - Relay cluster SKU name and tier.
+type ClusterSKUDetails struct {
+	// READ-ONLY; The SKU name.
+	Name *ClusterSKUName
+
+	// READ-ONLY; The SKU tier.
+	Tier *ClusterSKUTier
+}
+
+// ClusterSKUInfo - A SKU supported by a Relay cluster.
+type ClusterSKUInfo struct {
+	// READ-ONLY; Capacity information for the SKU.
+	Capacity *ClusterSKUCapacity
+
+	// READ-ONLY; The resource type to which the SKU applies.
+	ResourceType *string
+
+	// READ-ONLY; The SKU name and tier.
+	SKU *ClusterSKUDetails
+}
+
+// ClusterSKUListResult - The response from listing supported SKUs for a Relay cluster.
+type ClusterSKUListResult struct {
+	// REQUIRED; The SKUs supported by the Relay cluster.
+	Value []*ClusterSKUInfo
+}
+
+// ClusterSKUUpdate - Mutable Relay cluster SKU parameters.
+type ClusterSKUUpdate struct {
+	// The number of capacity units assigned to the Relay cluster.
+	Capacity *int32
+
+	// Name of the Relay cluster SKU.
+	Name *ClusterSKUName
+
+	// Tier of the Relay cluster SKU.
+	Tier *ClusterSKUTier
+}
+
+// ClusterUpdate - Parameters for updating a Relay cluster.
+type ClusterUpdate struct {
+	// The Relay cluster SKU.
+	SKU *ClusterSKUUpdate
+
+	// Resource tags.
+	Tags map[string]*string
 }
 
 // ConnectionState information.
@@ -174,6 +318,12 @@ type Namespace struct {
 	Type *string
 }
 
+// NamespaceIDListResult - The response from listing Relay namespace references in a cluster.
+type NamespaceIDListResult struct {
+	// REQUIRED; Relay namespace references assigned to the cluster.
+	Value []*NamespaceReference
+}
+
 // NamespaceListResult - The response of a RelayNamespace list operation.
 type NamespaceListResult struct {
 	// REQUIRED; The RelayNamespace items on this page
@@ -185,6 +335,12 @@ type NamespaceListResult struct {
 
 // NamespaceProperties - Properties of the namespace.
 type NamespaceProperties struct {
+	// The minimum TLS version for the namespace.
+	// Supported values are 1.2 and 1.3.
+	// The service defaults to 1.2 when the property is omitted.
+	// Existing namespaces configured with TLS 1.0 or 1.1 are reported as TLS 1.2.
+	MinimumTLSVersion *TLSVersion
+
 	// List of private endpoint connections.
 	PrivateEndpointConnections []*PrivateEndpointConnection
 
@@ -208,6 +364,12 @@ type NamespaceProperties struct {
 
 	// READ-ONLY; The time the namespace was updated.
 	UpdatedAt *time.Time
+}
+
+// NamespaceReference - A reference to a Relay namespace assigned to a cluster.
+type NamespaceReference struct {
+	// READ-ONLY; The full Azure resource ID of the Relay namespace.
+	ID *string
 }
 
 // NetworkRuleSet - Description of topic resource.

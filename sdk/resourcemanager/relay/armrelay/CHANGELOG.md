@@ -1,5 +1,41 @@
 # Release History
 
+## 2.1.0-beta.1 (2026-08-21)
+### Features Added
+
+- New enum type `ClusterProvisioningState` with values `ClusterProvisioningStateCanceled`, `ClusterProvisioningStateCreating`, `ClusterProvisioningStateDeleting`, `ClusterProvisioningStateFailed`, `ClusterProvisioningStateScaling`, `ClusterProvisioningStateSucceeded`
+- New enum type `ClusterSKUName` with values `ClusterSKUNameDedicated`
+- New enum type `ClusterSKUScaleType` with values `ClusterSKUScaleTypeAutomatic`
+- New enum type `ClusterSKUTier` with values `ClusterSKUTierDedicated`
+- New enum type `TLSVersion` with values `TLSVersion12`, `TLSVersion13`
+- New function `*ClientFactory.NewClustersClient() *ClustersClient`
+- New function `NewClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClustersClient, error)`
+- New function `*ClustersClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, resource Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClustersClientCreateOrUpdateResponse], error)`
+- New function `*ClustersClient.BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*runtime.Poller[ClustersClientDeleteResponse], error)`
+- New function `*ClustersClient.Get(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientGetOptions) (ClustersClientGetResponse, error)`
+- New function `*ClustersClient.ListAvailableClusterRegion(ctx context.Context, options *ClustersClientListAvailableClusterRegionOptions) (ClustersClientListAvailableClusterRegionResponse, error)`
+- New function `*ClustersClient.NewListByResourceGroupPager(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse]`
+- New function `*ClustersClient.NewListBySubscriptionPager(options *ClustersClientListBySubscriptionOptions) *runtime.Pager[ClustersClientListBySubscriptionResponse]`
+- New function `*ClustersClient.ListNamespaces(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientListNamespacesOptions) (ClustersClientListNamespacesResponse, error)`
+- New function `*ClustersClient.ListSKUs(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientListSKUsOptions) (ClustersClientListSKUsResponse, error)`
+- New function `*ClustersClient.Update(ctx context.Context, resourceGroupName string, clusterName string, properties ClusterUpdate, options *ClustersClientUpdateOptions) (ClustersClientUpdateResponse, error)`
+- New struct `AvailableRelayClusterRegion`
+- New struct `AvailableRelayClustersList`
+- New struct `Cluster`
+- New struct `ClusterListResult`
+- New struct `ClusterProperties`
+- New struct `ClusterSKU`
+- New struct `ClusterSKUCapacity`
+- New struct `ClusterSKUDetails`
+- New struct `ClusterSKUInfo`
+- New struct `ClusterSKUListResult`
+- New struct `ClusterSKUUpdate`
+- New struct `ClusterUpdate`
+- New struct `NamespaceIDListResult`
+- New struct `NamespaceReference`
+- New field `MinimumTLSVersion` in struct `NamespaceProperties`
+
+
 ## 2.0.0 (2026-06-24)
 ### Breaking Changes
 

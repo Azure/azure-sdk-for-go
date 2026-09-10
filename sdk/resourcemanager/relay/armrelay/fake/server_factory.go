@@ -15,6 +15,9 @@ import (
 
 // ServerFactory is a fake server for instances of the armrelay.ClientFactory type.
 type ServerFactory struct {
+	// ClustersServer contains the fakes for client ClustersClient
+	ClustersServer ClustersServer
+
 	// HybridConnectionsServer contains the fakes for client HybridConnectionsClient
 	HybridConnectionsServer HybridConnectionsServer
 
@@ -48,6 +51,7 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                *ServerFactory
 	trMu                               sync.Mutex
+	trClustersServer                   *ClustersServerTransport
 	trHybridConnectionsServer          *HybridConnectionsServerTransport
 	trNamespacesServer                 *NamespacesServerTransport
 	trOperationsServer                 *OperationsServerTransport
@@ -69,6 +73,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "ClustersClient":
+		initServer(&s.trMu, &s.trClustersServer, func() *ClustersServerTransport { return NewClustersServerTransport(&s.srv.ClustersServer) })
+		resp, err = s.trClustersServer.Do(req)
 	case "HybridConnectionsClient":
 		initServer(&s.trMu, &s.trHybridConnectionsServer, func() *HybridConnectionsServerTransport {
 			return NewHybridConnectionsServerTransport(&s.srv.HybridConnectionsServer)

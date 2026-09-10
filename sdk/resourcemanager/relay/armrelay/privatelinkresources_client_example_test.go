@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-01-01/PrivateEndpointConnections/PrivateLinkResourcesGet.json
+// Generated from example definition: 2026-07-01-preview/PrivateEndpointConnections/PrivateLinkResourcesGet.json
 func ExamplePrivateLinkResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/PrivateEndpointConnections/PrivateLinkResourcesList.json
+// Generated from example definition: 2026-07-01-preview/PrivateEndpointConnections/PrivateLinkResourcesList.json
 func ExamplePrivateLinkResourcesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

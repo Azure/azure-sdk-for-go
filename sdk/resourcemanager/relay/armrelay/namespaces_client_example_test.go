@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceCheckNameAvailability.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceCheckNameAvailability.json
 func ExampleNamespacesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleNamespacesClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceCreate.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceCreate.json
 func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,6 +61,9 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
+		},
+		Properties: &armrelay.NamespaceProperties{
+			MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		},
 	}, nil)
 	if err != nil {
@@ -83,6 +86,7 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	// 			MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-5849"),
 	// 			ProvisioningState: to.Ptr("Created"),
 	// 			ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-5849.servicebus.windows-int.net:443/"),
+	// 			MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 	// 		},
 	// 		SKU: &armrelay.SKU{
 	// 			Name: to.Ptr(armrelay.SKUNameStandard),
@@ -96,7 +100,7 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleCreate.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceAuthorizationRuleCreate.json
 func ExampleNamespacesClient_CreateOrUpdateAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +140,7 @@ func ExampleNamespacesClient_CreateOrUpdateAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/VirtualNetworkRules/RelayNetworkRuleSetCreate.json
+// Generated from example definition: 2026-07-01-preview/VirtualNetworkRules/RelayNetworkRuleSetCreate.json
 func ExampleNamespacesClient_CreateOrUpdateNetworkRuleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +220,7 @@ func ExampleNamespacesClient_CreateOrUpdateNetworkRuleSet() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceDelete.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceDelete.json
 func ExampleNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,7 +246,7 @@ func ExampleNamespacesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleDelete.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceAuthorizationRuleDelete.json
 func ExampleNamespacesClient_DeleteAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -264,7 +268,7 @@ func ExampleNamespacesClient_DeleteAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceGet.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceGet.json
 func ExampleNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -294,6 +298,7 @@ func ExampleNamespacesClient_Get() {
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceBusEndpoint: to.Ptr("https://example-RelayRelayNamespace-01.servicebus.windows.net:443/"),
 	// 			UpdatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 38, 34, 533000000, time.UTC)),
+	// 			MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 	// 		},
 	// 		SKU: &armrelay.SKU{
 	// 			Name: to.Ptr(armrelay.SKUNameStandard),
@@ -307,7 +312,7 @@ func ExampleNamespacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleGet.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceAuthorizationRuleGet.json
 func ExampleNamespacesClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -339,7 +344,7 @@ func ExampleNamespacesClient_GetAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/VirtualNetworkRules/RelayNetworkRuleSetGet.json
+// Generated from example definition: 2026-07-01-preview/VirtualNetworkRules/RelayNetworkRuleSetGet.json
 func ExampleNamespacesClient_GetNetworkRuleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -392,7 +397,7 @@ func ExampleNamespacesClient_GetNetworkRuleSet() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceListBySubscription.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceListBySubscription.json
 func ExampleNamespacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -428,6 +433,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayRelayNamespace-01.servicebus.windows.net:443/"),
 		// 					UpdatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 59, 413172400, time.UTC)),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -449,6 +455,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayRelayNamespace-02.servicebus.windows.net:443/"),
 		// 					UpdatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 49, 413172400, time.UTC)),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -465,7 +472,7 @@ func ExampleNamespacesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleListAll.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceAuthorizationRuleListAll.json
 func ExampleNamespacesClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -519,7 +526,7 @@ func ExampleNamespacesClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceListByResourceGroup.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceListByResourceGroup.json
 func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -553,6 +560,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-3054"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-3054.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -570,6 +578,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:oaisdjfoiasdjfoiajsdfoijasd"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://oaisdjfoiasdjfoiajsdfoijasd.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -587,6 +596,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:abc123"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://abc123.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -604,6 +614,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-5849"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-5849.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -623,6 +634,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-4984"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-4984.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -640,6 +652,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-5606"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-5606.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -657,6 +670,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-7703"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-7703.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -674,6 +688,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:zzzzzzzzzzzzzzzzzzzzzz-00001"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://zzzzzzzzzzzzzzzzzzzzzz-00001.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -691,6 +706,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-3919"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-3919.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -708,6 +724,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:aiosdjfaoidjasdoijasdfoijasdfofijsdf"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://aiosdjfaoidjasdoijasdfoijasdfofijsdf.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -725,6 +742,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-3413"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-3413.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -742,6 +760,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-8695"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-8695.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -759,6 +778,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-4801"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-4801.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -776,6 +796,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-2812"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-2812.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -790,7 +811,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleListKey.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceAuthorizationRuleListKey.json
 func ExampleNamespacesClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -819,7 +840,7 @@ func ExampleNamespacesClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleRegenerateKey.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceAuthorizationRuleRegenerateKey.json
 func ExampleNamespacesClient_RegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -850,7 +871,7 @@ func ExampleNamespacesClient_RegenerateKeys() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceUpdate.json
+// Generated from example definition: 2026-07-01-preview/NameSpaces/RelayNameSpaceUpdate.json
 func ExampleNamespacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -868,6 +889,9 @@ func ExampleNamespacesClient_Update() {
 			"tag5": to.Ptr("value5"),
 			"tag6": to.Ptr("value6"),
 		},
+		Properties: &armrelay.NamespaceProperties{
+			MinimumTLSVersion: to.Ptr(armrelay.TLSVersion13),
+		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -884,6 +908,7 @@ func ExampleNamespacesClient_Update() {
 	// 		Properties: &armrelay.NamespaceProperties{
 	// 			MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relayrelaynamespace-01"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			MinimumTLSVersion: to.Ptr(armrelay.TLSVersion13),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"tag3": to.Ptr("value3"),

@@ -1,5 +1,12 @@
 # Release History
 
+## 2.1.0 (2026-09-01)
+### Features Added
+
+- New enum type `TLSVersion` with values `TLSVersion12`, `TLSVersion13`
+- New field `MinimumTLSVersion` in struct `NamespaceProperties`
+
+
 ## 2.0.0 (2026-06-24)
 ### Breaking Changes
 

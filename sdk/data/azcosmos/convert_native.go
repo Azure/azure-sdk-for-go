@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-//go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
+//go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64) || (windows && amd64))
 
 package azcosmos
 
@@ -185,10 +185,12 @@ var (
 
 // nativeOperationOptions is a converted option set, in Go types.
 type nativeOperationOptions struct {
-	readConsistencyStrategy int32
-	contentResponseOnWrite  int32
-	endToEndTimeoutMillis   int64
-	excludedRegions         []string
+	readConsistencyStrategy           int32
+	contentResponseOnWrite            int32
+	endToEndTimeoutMillis             int64
+	excludedRegions                   []string
+	binaryEncodingRequestTextResponse int8
+	queryPlanMode                     int32
 }
 
 // inspectNativeOperationOptions converts an option set and reads the result back.
@@ -196,9 +198,11 @@ func inspectNativeOperationOptions(o OperationOptions) (nativeOperationOptions, 
 	options, release := o.toNative()
 
 	out := nativeOperationOptions{
-		readConsistencyStrategy: int32(options.read_consistency_strategy),
-		contentResponseOnWrite:  int32(options.content_response_on_write),
-		endToEndTimeoutMillis:   int64(options.end_to_end_timeout_ms),
+		readConsistencyStrategy:           int32(options.read_consistency_strategy),
+		contentResponseOnWrite:            int32(options.content_response_on_write),
+		endToEndTimeoutMillis:             int64(options.end_to_end_timeout_ms),
+		binaryEncodingRequestTextResponse: int8(options.binary_encoding_request_text_response),
+		queryPlanMode:                     int32(options.query_plan_mode),
 	}
 	if options.excluded_regions != nil && options.excluded_regions_len > 0 {
 		regions := unsafe.Slice(options.excluded_regions, int(options.excluded_regions_len))
@@ -215,11 +219,15 @@ func inspectNativeOperationOptions(o OperationOptions) (nativeOperationOptions, 
 func defaultNativeOperationOptions() nativeOperationOptions {
 	defaults := C.cosmos_operation_options_default()
 	return nativeOperationOptions{
-		readConsistencyStrategy: int32(defaults.read_consistency_strategy),
-		contentResponseOnWrite:  int32(defaults.content_response_on_write),
-		endToEndTimeoutMillis:   int64(defaults.end_to_end_timeout_ms),
+		readConsistencyStrategy:           int32(defaults.read_consistency_strategy),
+		contentResponseOnWrite:            int32(defaults.content_response_on_write),
+		endToEndTimeoutMillis:             int64(defaults.end_to_end_timeout_ms),
+		binaryEncodingRequestTextResponse: int8(defaults.binary_encoding_request_text_response),
+		queryPlanMode:                     int32(defaults.query_plan_mode),
 	}
 }
+
+var nativeQueryPlanModeUnset = int32(C.COSMOS_QUERY_PLAN_MODE_UNSET)
 
 // nativeReadConsistencyStrategy reports the discriminant a strategy maps to, in Go types.
 func nativeReadConsistencyStrategy(s ReadConsistencyStrategy) (int32, bool) {
@@ -242,6 +250,9 @@ func (o ClientOptions) toNative() (*C.cosmos_driver_options_config_t, func(), er
 	operationOptions, releaseOperationOptions := OperationOptions{
 		EnableContentResponseOnWrite: &contentResponse,
 	}.toNative()
+	// The driver defaults to binary response bodies. The Go API exposes JSON bytes, so keep the
+	// binary wire format while asking the driver to transcode responses back to text.
+	operationOptions.binary_encoding_request_text_response = 2
 	config.operation_options = operationOptions
 
 	var allocations []unsafe.Pointer
@@ -299,9 +310,11 @@ func inspectNativeClientOptions(o ClientOptions) (nativeClientOptions, func(), e
 	}
 	if config.operation_options != nil {
 		out.operationOptions = nativeOperationOptions{
-			readConsistencyStrategy: int32(config.operation_options.read_consistency_strategy),
-			contentResponseOnWrite:  int32(config.operation_options.content_response_on_write),
-			endToEndTimeoutMillis:   int64(config.operation_options.end_to_end_timeout_ms),
+			readConsistencyStrategy:           int32(config.operation_options.read_consistency_strategy),
+			contentResponseOnWrite:            int32(config.operation_options.content_response_on_write),
+			endToEndTimeoutMillis:             int64(config.operation_options.end_to_end_timeout_ms),
+			binaryEncodingRequestTextResponse: int8(config.operation_options.binary_encoding_request_text_response),
+			queryPlanMode:                     int32(config.operation_options.query_plan_mode),
 		}
 	}
 	return out, release, nil

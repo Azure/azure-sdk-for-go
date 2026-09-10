@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-//go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
+//go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64) || (windows && amd64))
 
 package azcosmos
 
@@ -86,6 +86,8 @@ func TestOperationOptionsToNativeKeepsDefaults(t *testing.T) {
 	t.Cleanup(release)
 
 	require.Equal(t, defaultNativeOperationOptions(), options)
+	require.Equal(t, nativeQueryPlanModeUnset, options.queryPlanMode,
+		"query plan mode is not exposed yet, so it must remain unset")
 }
 
 // The content-response setting is tri-state at the ABI, so false has to be distinguishable from
@@ -179,6 +181,15 @@ func TestOperationRequestUsesTheDriversUnsetSentinels(t *testing.T) {
 // Client options reach the driver through a flat config, so the conversion is what decides whether
 // a setting has any effect at all.
 func TestClientOptionsConvertToTheDriversConfig(t *testing.T) {
+	t.Run("response bodies remain text JSON", func(t *testing.T) {
+		options, release, err := inspectNativeClientOptions(ClientOptions{})
+		require.NoError(t, err)
+		defer release()
+
+		require.Equal(t, int8(2), options.operationOptions.binaryEncodingRequestTextResponse)
+		require.Equal(t, nativeQueryPlanModeUnset, options.operationOptions.queryPlanMode)
+	})
+
 	t.Run("preferred regions are passed in order", func(t *testing.T) {
 		options, release, err := inspectNativeClientOptions(ClientOptions{
 			Routing: PreferredRegions(RegionWestUS, RegionEastUS),

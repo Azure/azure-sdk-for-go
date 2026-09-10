@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-//go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
+//go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64) || (windows && amd64))
 
 package azcosmos
 
@@ -46,6 +46,7 @@ COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, end_to_end_timeout_ms, 24);
 COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, excluded_regions, 48);
 COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, excluded_regions_len, 56);
 COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, binary_encoding_request_text_response, 81);
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, query_plan_mode, 84);
 
 _Static_assert(sizeof(cosmos_driver_options_config_t) == 24, "driver options ABI size changed");
 _Static_assert(_Alignof(cosmos_driver_options_config_t) == 8, "driver options ABI alignment changed");
@@ -92,6 +93,6 @@ import "C"
 // package: repeating them means every file has to be kept in step, and a file that drifts is a
 // link error rather than a compile error.
 //
-// Target-specific internal packages carry the .syso archives and system-linker flags. Keeping each
-// archive behind a conditionally imported package matters because Go treats ios as darwin and
-// android as linux for build tags and .syso filename selection.
+// Target-specific imports carry either a bundled archive or an external driver module, plus the
+// Go-owned callback shim. Keeping each behind a conditional import matters because Go treats ios as
+// darwin and android as linux for build tags and native-object selection.

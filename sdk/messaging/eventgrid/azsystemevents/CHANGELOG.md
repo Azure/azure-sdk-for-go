@@ -1,5 +1,40 @@
 # Release History
 
+## 1.1.0 (2026-08-17)
+### Features Added
+
+- New value `TypeLifecycleHookEvents` added to enum type `string`
+- New enum type `ACSChatRetentionPolicyKind` with values `ACSChatRetentionPolicyKindNone`, `ACSChatRetentionPolicyKindThreadCreationDate`
+- New enum type `ACSChatThreadDeletedReasonType` with values `ACSChatThreadDeletedReasonTypeDeletedByPolicy`, `ACSChatThreadDeletedReasonTypeDeletedByUser`
+- New enum type `LifecycleHookAction` with values `LifecycleHookActionApprove`, `LifecycleHookActionReject`
+- New enum type `LifecycleHookActionState` with values `LifecycleHookActionStateApproved`, `LifecycleHookActionStateRejected`, `LifecycleHookActionStateWaiting`
+- New enum type `VirtualMachineScaleSetLifecycleHookEventState` with values `VirtualMachineScaleSetLifecycleHookEventStateActive`, `VirtualMachineScaleSetLifecycleHookEventStateCompleted`
+- New enum type `VirtualMachineScaleSetLifecycleHookEventType` with values `VirtualMachineScaleSetLifecycleHookEventTypeUpgradeAutoOSRollingBatchStarting`, `VirtualMachineScaleSetLifecycleHookEventTypeUpgradeAutoOSScheduling`
+- New struct `ACSChatRetentionPolicy`
+- New struct `APIEntityReference`
+- New struct `LifecycleHookEventsEventData`
+- New struct `OperationalInfo`
+- New struct `VirtualMachineScaleSetLifecycleHookEventAdditionalContext`
+- New struct `VirtualMachineScaleSetLifecycleHookEventProperties`
+- New struct `VirtualMachineScaleSetLifecycleHookEventTargetResource`
+- New field `SequenceID` in struct `ACSChatAzureBotCommandReceivedInThreadEventData`
+- New field `SequenceID` in struct `ACSChatMessageDeletedEventData`
+- New field `SequenceID` in struct `ACSChatMessageDeletedInThreadEventData`
+- New field `SequenceID` in struct `ACSChatMessageEditedEventData`
+- New field `SequenceID` in struct `ACSChatMessageEditedInThreadEventData`
+- New field `SequenceID` in struct `ACSChatMessageReceivedEventData`
+- New field `SequenceID` in struct `ACSChatMessageReceivedInThreadEventData`
+- New field `RetentionPolicy` in struct `ACSChatThreadCreatedEventData`
+- New field `RetentionPolicy` in struct `ACSChatThreadCreatedWithUserEventData`
+- New field `Reason` in struct `ACSChatThreadDeletedEventData`
+- New field `RetentionPolicy` in struct `ACSChatThreadPropertiesUpdatedEventData`
+- New field `RetentionPolicy` in struct `ACSChatThreadPropertiesUpdatedPerUserEventData`
+- New field `SequenceID` in struct `ACSChatTypingIndicatorReceivedInThreadEventData`
+- New field `OnBehalfOf` in struct `ACSIncomingCallEventData`
+- New field `ToBSUID` in struct `ACSMessageDeliveryStatusUpdatedEventData`
+- New field `FromBSUID` in struct `ACSMessageReceivedEventData`
+
+
 ## 1.0.1-beta.1 (2026-06-25)
 
 ### Features Added

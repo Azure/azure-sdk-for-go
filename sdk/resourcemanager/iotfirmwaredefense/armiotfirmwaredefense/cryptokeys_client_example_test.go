@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-02/CryptoKeys_ListByFirmware_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/CryptoKeys_ListByFirmware_MaximumSet_Gen.json
 func ExampleCryptoKeysClient_NewListByFirmwarePager_cryptoKeysListByFirmwareMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleCryptoKeysClient_NewListByFirmwarePager_cryptoKeysListByFirmwareMaxi
 	}
 }
 
-// Generated from example definition: 2025-08-02/CryptoKeys_ListByFirmware_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/CryptoKeys_ListByFirmware_MinimumSet_Gen.json
 func ExampleCryptoKeysClient_NewListByFirmwarePager_cryptoKeysListByFirmwareMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

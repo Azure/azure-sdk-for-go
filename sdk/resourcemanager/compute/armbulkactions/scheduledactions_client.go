@@ -19,7 +19,7 @@ import (
 // ScheduledActionsClient contains the methods for the ScheduledActions group.
 // Don't use this type directly, use NewScheduledActionsClient() instead.
 //
-// Generated from API version 2026-08-06-preview
+// Generated from API version 2026-09-06-preview
 type ScheduledActionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,11 +44,12 @@ func NewScheduledActionsClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// BeginAttachResources - Attach resources to the scheduled action so they are included in future occurrences.
+// BeginAttachResources - Adds resources to the specified scheduled action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - body - The content of the action request
+//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
+//     and hyphens.
+//   - body - The resources to add to the scheduled action.
 //   - options - ScheduledActionsClientBeginAttachResourcesOptions contains the optional parameters for the ScheduledActionsClient.BeginAttachResources
 //     method.
 func (client *ScheduledActionsClient) BeginAttachResources(ctx context.Context, resourceGroupName string, scheduledActionName string, body ResourceAttachRequest, options *ScheduledActionsClientBeginAttachResourcesOptions) (*runtime.Poller[ScheduledActionsClientAttachResourcesResponse], error) {
@@ -68,7 +69,7 @@ func (client *ScheduledActionsClient) BeginAttachResources(ctx context.Context, 
 	}
 }
 
-// AttachResources - Attach resources to the scheduled action so they are included in future occurrences.
+// AttachResources - Adds resources to the specified scheduled action.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScheduledActionsClient) attachResources(ctx context.Context, resourceGroupName string, scheduledActionName string, body ResourceAttachRequest, options *ScheduledActionsClientBeginAttachResourcesOptions) (*http.Response, error) {
 	var err error
@@ -110,7 +111,7 @@ func (client *ScheduledActionsClient) attachResourcesCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20260906Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -120,11 +121,13 @@ func (client *ScheduledActionsClient) attachResourcesCreateRequest(ctx context.C
 	return req, nil
 }
 
-// BeginCancelNextOccurrence - Cancel the next scheduled occurrence of the scheduled action.
+// BeginCancelNextOccurrence - Cancels the next occurrence of the specified scheduled action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - body - The content of the action request
+//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
+//     and hyphens.
+//   - body - The resources to cancel in the next occurrence. If no resource IDs are provided, the occurrence is canceled for
+//     all resources.
 //   - options - ScheduledActionsClientBeginCancelNextOccurrenceOptions contains the optional parameters for the ScheduledActionsClient.BeginCancelNextOccurrence
 //     method.
 func (client *ScheduledActionsClient) BeginCancelNextOccurrence(ctx context.Context, resourceGroupName string, scheduledActionName string, body CancelOccurrenceRequest, options *ScheduledActionsClientBeginCancelNextOccurrenceOptions) (*runtime.Poller[ScheduledActionsClientCancelNextOccurrenceResponse], error) {
@@ -144,7 +147,7 @@ func (client *ScheduledActionsClient) BeginCancelNextOccurrence(ctx context.Cont
 	}
 }
 
-// CancelNextOccurrence - Cancel the next scheduled occurrence of the scheduled action.
+// CancelNextOccurrence - Cancels the next occurrence of the specified scheduled action.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScheduledActionsClient) cancelNextOccurrence(ctx context.Context, resourceGroupName string, scheduledActionName string, body CancelOccurrenceRequest, options *ScheduledActionsClientBeginCancelNextOccurrenceOptions) (*http.Response, error) {
 	var err error
@@ -186,7 +189,7 @@ func (client *ScheduledActionsClient) cancelNextOccurrenceCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20260906Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -196,11 +199,12 @@ func (client *ScheduledActionsClient) cancelNextOccurrenceCreateRequest(ctx cont
 	return req, nil
 }
 
-// BeginCreateOrUpdate - Create a ScheduledAction
+// BeginCreateOrUpdate - Creates or updates a scheduled action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - resource - Resource create parameters.
+//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
+//     and hyphens.
+//   - resource - The scheduled action to create or update.
 //   - options - ScheduledActionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ScheduledActionsClient.BeginCreateOrUpdate
 //     method.
 func (client *ScheduledActionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, scheduledActionName string, resource ScheduledAction, options *ScheduledActionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ScheduledActionsClientCreateOrUpdateResponse], error) {
@@ -220,7 +224,7 @@ func (client *ScheduledActionsClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Create a ScheduledAction
+// CreateOrUpdate - Creates or updates a scheduled action.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScheduledActionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, scheduledActionName string, resource ScheduledAction, options *ScheduledActionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -262,7 +266,7 @@ func (client *ScheduledActionsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20260906Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -272,10 +276,11 @@ func (client *ScheduledActionsClient) createOrUpdateCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// BeginDelete - Delete a ScheduledAction
+// BeginDelete - Deletes the specified scheduled action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
+//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
+//     and hyphens.
 //   - options - ScheduledActionsClientBeginDeleteOptions contains the optional parameters for the ScheduledActionsClient.BeginDelete
 //     method.
 func (client *ScheduledActionsClient) BeginDelete(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginDeleteOptions) (*runtime.Poller[ScheduledActionsClientDeleteResponse], error) {
@@ -295,7 +300,7 @@ func (client *ScheduledActionsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Delete a ScheduledAction
+// Delete - Deletes the specified scheduled action.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScheduledActionsClient) deleteOperation(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -337,16 +342,17 @@ func (client *ScheduledActionsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20260906Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// BeginDetachResources - Detach resources from the scheduled action so they are excluded from future occurrences.
+// BeginDetachResources - Removes resources from the specified scheduled action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - body - The content of the action request
+//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
+//     and hyphens.
+//   - body - The resources to remove from the scheduled action.
 //   - options - ScheduledActionsClientBeginDetachResourcesOptions contains the optional parameters for the ScheduledActionsClient.BeginDetachResources
 //     method.
 func (client *ScheduledActionsClient) BeginDetachResources(ctx context.Context, resourceGroupName string, scheduledActionName string, body ResourceDetachRequest, options *ScheduledActionsClientBeginDetachResourcesOptions) (*runtime.Poller[ScheduledActionsClientDetachResourcesResponse], error) {
@@ -366,7 +372,7 @@ func (client *ScheduledActionsClient) BeginDetachResources(ctx context.Context, 
 	}
 }
 
-// DetachResources - Detach resources from the scheduled action so they are excluded from future occurrences.
+// DetachResources - Removes resources from the specified scheduled action.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScheduledActionsClient) detachResources(ctx context.Context, resourceGroupName string, scheduledActionName string, body ResourceDetachRequest, options *ScheduledActionsClientBeginDetachResourcesOptions) (*http.Response, error) {
 	var err error
@@ -408,7 +414,7 @@ func (client *ScheduledActionsClient) detachResourcesCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20260906Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -418,10 +424,11 @@ func (client *ScheduledActionsClient) detachResourcesCreateRequest(ctx context.C
 	return req, nil
 }
 
-// BeginDisable - Disable the scheduled action so its future occurrences do not run.
+// BeginDisable - Disables the specified scheduled action so future occurrences do not run.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
+//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
+//     and hyphens.
 //   - options - ScheduledActionsClientBeginDisableOptions contains the optional parameters for the ScheduledActionsClient.BeginDisable
 //     method.
 func (client *ScheduledActionsClient) BeginDisable(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginDisableOptions) (*runtime.Poller[ScheduledActionsClientDisableResponse], error) {
@@ -441,7 +448,7 @@ func (client *ScheduledActionsClient) BeginDisable(ctx context.Context, resource
 	}
 }
 
-// Disable - Disable the scheduled action so its future occurrences do not run.
+// Disable - Disables the specified scheduled action so future occurrences do not run.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScheduledActionsClient) disable(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginDisableOptions) (*http.Response, error) {
 	var err error
@@ -483,15 +490,16 @@ func (client *ScheduledActionsClient) disableCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20260906Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// BeginEnable - Enable a previously disabled scheduled action so its future occurrences run.
+// BeginEnable - Enables the specified scheduled action so new occurrences run.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
+//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
+//     and hyphens.
 //   - options - ScheduledActionsClientBeginEnableOptions contains the optional parameters for the ScheduledActionsClient.BeginEnable
 //     method.
 func (client *ScheduledActionsClient) BeginEnable(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginEnableOptions) (*runtime.Poller[ScheduledActionsClientEnableResponse], error) {
@@ -511,7 +519,7 @@ func (client *ScheduledActionsClient) BeginEnable(ctx context.Context, resourceG
 	}
 }
 
-// Enable - Enable a previously disabled scheduled action so its future occurrences run.
+// Enable - Enables the specified scheduled action so new occurrences run.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScheduledActionsClient) enable(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginEnableOptions) (*http.Response, error) {
 	var err error
@@ -553,15 +561,16 @@ func (client *ScheduledActionsClient) enableCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20260906Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// Get - Get a ScheduledAction
+// Get - Gets the specified scheduled action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
+//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
+//     and hyphens.
 //   - options - ScheduledActionsClientGetOptions contains the optional parameters for the ScheduledActionsClient.Get method.
 func (client *ScheduledActionsClient) Get(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientGetOptions) (ScheduledActionsClientGetResponse, error) {
 	var err error
@@ -600,7 +609,7 @@ func (client *ScheduledActionsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20260906Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -618,7 +627,7 @@ func (client *ScheduledActionsClient) getHandleResponse(resp *http.Response, suc
 	return result, nil
 }
 
-// NewListByResourceGroupPager - List ScheduledAction resources by resource group
+// NewListByResourceGroupPager - Lists scheduled actions in the specified resource group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ScheduledActionsClientListByResourceGroupOptions contains the optional parameters for the ScheduledActionsClient.NewListByResourceGroupPager
 //     method.
@@ -671,7 +680,7 @@ func (client *ScheduledActionsClient) listByResourceGroupCreateRequest(ctx conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260806Preview)
+		reqQP.Set("api-version", version20260906Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -690,7 +699,7 @@ func (client *ScheduledActionsClient) listByResourceGroupHandleResponse(resp *ht
 	return result, nil
 }
 
-// NewListBySubscriptionPager - List ScheduledAction resources by subscription ID
+// NewListBySubscriptionPager - Lists scheduled actions in the specified subscription.
 //   - options - ScheduledActionsClientListBySubscriptionOptions contains the optional parameters for the ScheduledActionsClient.NewListBySubscriptionPager
 //     method.
 func (client *ScheduledActionsClient) NewListBySubscriptionPager(options *ScheduledActionsClientListBySubscriptionOptions) *runtime.Pager[ScheduledActionsClientListBySubscriptionResponse] {
@@ -738,7 +747,7 @@ func (client *ScheduledActionsClient) listBySubscriptionCreateRequest(ctx contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260806Preview)
+		reqQP.Set("api-version", version20260906Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -757,9 +766,10 @@ func (client *ScheduledActionsClient) listBySubscriptionHandleResponse(resp *htt
 	return result, nil
 }
 
-// NewListResourcesPager - List resources attached to Scheduled Actions
+// NewListResourcesPager - Lists resources associated with the specified scheduled action.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
+//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
+//     and hyphens.
 //   - options - ScheduledActionsClientListResourcesOptions contains the optional parameters for the ScheduledActionsClient.NewListResourcesPager
 //     method.
 func (client *ScheduledActionsClient) NewListResourcesPager(resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientListResourcesOptions) *runtime.Pager[ScheduledActionsClientListResourcesResponse] {
@@ -815,7 +825,7 @@ func (client *ScheduledActionsClient) listResourcesCreateRequest(ctx context.Con
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260806Preview)
+		reqQP.Set("api-version", version20260906Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -834,11 +844,12 @@ func (client *ScheduledActionsClient) listResourcesHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// PatchResources - A synchronous resource action.
+// PatchResources - Updates resource-specific settings for the specified scheduled action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - body - The content of the action request
+//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
+//     and hyphens.
+//   - body - The resource-specific settings to update.
 //   - options - ScheduledActionsClientPatchResourcesOptions contains the optional parameters for the ScheduledActionsClient.PatchResources
 //     method.
 func (client *ScheduledActionsClient) PatchResources(ctx context.Context, resourceGroupName string, scheduledActionName string, body ResourcePatchRequest, options *ScheduledActionsClientPatchResourcesOptions) (ScheduledActionsClientPatchResourcesResponse, error) {
@@ -878,7 +889,7 @@ func (client *ScheduledActionsClient) patchResourcesCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20260906Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -900,10 +911,11 @@ func (client *ScheduledActionsClient) patchResourcesHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// BeginTriggerManualOccurrence - Trigger a manual occurrence of the scheduled action immediately, outside its normal schedule.
+// BeginTriggerManualOccurrence - Runs the specified scheduled action immediately.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
+//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
+//     and hyphens.
 //   - options - ScheduledActionsClientBeginTriggerManualOccurrenceOptions contains the optional parameters for the ScheduledActionsClient.BeginTriggerManualOccurrence
 //     method.
 func (client *ScheduledActionsClient) BeginTriggerManualOccurrence(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginTriggerManualOccurrenceOptions) (*runtime.Poller[ScheduledActionsClientTriggerManualOccurrenceResponse], error) {
@@ -923,7 +935,7 @@ func (client *ScheduledActionsClient) BeginTriggerManualOccurrence(ctx context.C
 	}
 }
 
-// TriggerManualOccurrence - Trigger a manual occurrence of the scheduled action immediately, outside its normal schedule.
+// TriggerManualOccurrence - Runs the specified scheduled action immediately.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScheduledActionsClient) triggerManualOccurrence(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginTriggerManualOccurrenceOptions) (*http.Response, error) {
 	var err error
@@ -965,17 +977,18 @@ func (client *ScheduledActionsClient) triggerManualOccurrenceCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20260906Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginUpdate - Update a ScheduledAction
+// BeginUpdate - Updates the specified scheduled action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - properties - The resource properties to be updated.
+//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
+//     and hyphens.
+//   - properties - The scheduled action properties to update. Omitted properties keep their current values.
 //   - options - ScheduledActionsClientBeginUpdateOptions contains the optional parameters for the ScheduledActionsClient.BeginUpdate
 //     method.
 func (client *ScheduledActionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, scheduledActionName string, properties ScheduledActionUpdate, options *ScheduledActionsClientBeginUpdateOptions) (*runtime.Poller[ScheduledActionsClientUpdateResponse], error) {
@@ -995,7 +1008,7 @@ func (client *ScheduledActionsClient) BeginUpdate(ctx context.Context, resourceG
 	}
 }
 
-// Update - Update a ScheduledAction
+// Update - Updates the specified scheduled action.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScheduledActionsClient) update(ctx context.Context, resourceGroupName string, scheduledActionName string, properties ScheduledActionUpdate, options *ScheduledActionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
@@ -1037,7 +1050,7 @@ func (client *ScheduledActionsClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20260906Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

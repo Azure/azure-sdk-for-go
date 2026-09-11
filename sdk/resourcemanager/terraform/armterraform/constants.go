@@ -5,7 +5,7 @@
 package armterraform
 
 const (
-	version20230701Preview string = "2023-07-01-preview"
+	version20260901Preview string = "2026-09-01-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -46,6 +46,27 @@ func PossibleAuthorizationScopeFilterValues() []AuthorizationScopeFilter {
 		AuthorizationScopeFilterAtScopeAndAbove,
 		AuthorizationScopeFilterAtScopeAndBelow,
 		AuthorizationScopeFilterAtScopeExact,
+	}
+}
+
+// AzureExtensionResourceType - The Azure extension resource type
+type AzureExtensionResourceType string
+
+const (
+	// AzureExtensionResourceTypeDiagnosticSettings - The Azure diagnostic settings extension resource type
+	AzureExtensionResourceTypeDiagnosticSettings AzureExtensionResourceType = "diagnostic-settings"
+	// AzureExtensionResourceTypeLocks - The Azure lock extension resource type
+	AzureExtensionResourceTypeLocks AzureExtensionResourceType = "locks"
+	// AzureExtensionResourceTypeRoleAssignments - The Azure role assignment extension resource type
+	AzureExtensionResourceTypeRoleAssignments AzureExtensionResourceType = "role-assignments"
+)
+
+// PossibleAzureExtensionResourceTypeValues returns the possible values for the AzureExtensionResourceType const type.
+func PossibleAzureExtensionResourceTypeValues() []AzureExtensionResourceType {
+	return []AzureExtensionResourceType{
+		AzureExtensionResourceTypeDiagnosticSettings,
+		AzureExtensionResourceTypeLocks,
+		AzureExtensionResourceTypeRoleAssignments,
 	}
 }
 

@@ -11,9 +11,25 @@ type BaseExportModel struct {
 	// REQUIRED; The parameter type
 	Type *Type
 
+	// Excludes specified Azure Resource Ids. Case-insensitive Azure Resource ID regular expression. Example: `["/subscriptions/[0-9a-f-]+/resourceGroups/my-rg.*"]`.
+	ExcludeAzureResource []*string
+
+	// Excludes specified Terraform resource types. Example: `["azurerm_virtual_network"]`.
+	ExcludeTerraformResource []*string
+
 	// Whether to output all non-computed properties in the generated Terraform configuration. If set to `false` empty-valued
 	// properties will be omitted from the configuration. Defaults to `true`.
 	FullProperties *bool
+
+	// Include extension resource types directly associated to the resources exported
+	IncludeExtensions []*AzureExtensionResourceType
+
+	// Whether to include internal resources managed by Azure in the exported configuration. Defaults to `false`.
+	IncludeManagedResource *bool
+
+	// Whether to include role assignments assigned to the resources exported. Defaults to `false`. This is deprecated in favor
+	// of `includeExtensions` (with `role-assignments` specified).
+	IncludeRoleAssignment *bool
 
 	// Mask sensitive attributes in the Terraform configuration. Defaults to `true`.
 	MaskSensitive *bool
@@ -66,9 +82,28 @@ type ExportQuery struct {
 	// The ARG Scope Filter parameter.
 	AuthorizationScopeFilter *AuthorizationScopeFilter
 
+	// Excludes specified Azure Resource Ids. Case-insensitive Azure Resource ID regular expression. Example: `["/subscriptions/[0-9a-f-]+/resourceGroups/my-rg.*"]`.
+	ExcludeAzureResource []*string
+
+	// Excludes specified Terraform resource types. Example: `["azurerm_virtual_network"]`.
+	ExcludeTerraformResource []*string
+
 	// Whether to output all non-computed properties in the generated Terraform configuration. If set to `false` empty-valued
 	// properties will be omitted from the configuration. Defaults to `true`.
 	FullProperties *bool
+
+	// Include extension resource types directly associated to the resources exported
+	IncludeExtensions []*AzureExtensionResourceType
+
+	// Whether to include internal resources managed by Azure in the exported configuration. Defaults to `false`.
+	IncludeManagedResource *bool
+
+	// Includes the resource group in the exported Terraform resources. Defaults to `false`.
+	IncludeResourceGroup *bool
+
+	// Whether to include role assignments assigned to the resources exported. Defaults to `false`. This is deprecated in favor
+	// of `includeExtensions` (with `role-assignments` specified).
+	IncludeRoleAssignment *bool
 
 	// Mask sensitive attributes in the Terraform configuration. Defaults to `true`.
 	MaskSensitive *bool
@@ -89,10 +124,15 @@ type ExportQuery struct {
 // GetBaseExportModel implements the BaseExportModelClassification interface for type ExportQuery.
 func (e *ExportQuery) GetBaseExportModel() *BaseExportModel {
 	return &BaseExportModel{
-		FullProperties: e.FullProperties,
-		MaskSensitive:  e.MaskSensitive,
-		TargetProvider: e.TargetProvider,
-		Type:           e.Type,
+		ExcludeAzureResource:     e.ExcludeAzureResource,
+		ExcludeTerraformResource: e.ExcludeTerraformResource,
+		FullProperties:           e.FullProperties,
+		IncludeExtensions:        e.IncludeExtensions,
+		IncludeManagedResource:   e.IncludeManagedResource,
+		IncludeRoleAssignment:    e.IncludeRoleAssignment,
+		MaskSensitive:            e.MaskSensitive,
+		TargetProvider:           e.TargetProvider,
+		Type:                     e.Type,
 	}
 }
 
@@ -105,15 +145,37 @@ type ExportResource struct {
 	// Field has constant value TypeExportResource, any specified value is ignored.
 	Type *Type
 
+	// Excludes specified Azure Resource Ids. Case-insensitive Azure Resource ID regular expression. Example: `["/subscriptions/[0-9a-f-]+/resourceGroups/my-rg.*"]`.
+	ExcludeAzureResource []*string
+
+	// Excludes specified Terraform resource types. Example: `["azurerm_virtual_network"]`.
+	ExcludeTerraformResource []*string
+
 	// Whether to output all non-computed properties in the generated Terraform configuration. If set to `false` empty-valued
 	// properties will be omitted from the configuration. Defaults to `true`.
 	FullProperties *bool
+
+	// Include extension resource types directly associated to the resources exported
+	IncludeExtensions []*AzureExtensionResourceType
+
+	// Whether to include internal resources managed by Azure in the exported configuration. Defaults to `false`.
+	IncludeManagedResource *bool
+
+	// Includes the resource group in the exported Terraform resources. Defaults to `false`.
+	IncludeResourceGroup *bool
+
+	// Whether to include role assignments assigned to the resources exported. Defaults to `false`. This is deprecated in favor
+	// of `includeExtensions` (with `role-assignments` specified).
+	IncludeRoleAssignment *bool
 
 	// Mask sensitive attributes in the Terraform configuration. Defaults to `true`.
 	MaskSensitive *bool
 
 	// The id prefix for the exported Terraform resources. Defaults to `res-`.
 	NamePattern *string
+
+	// Recursively includes child resources. Defaults to `false`.
+	Recursive *bool
 
 	// The Terraform id of the exported resource. Only effective when `resourceIds` contains only one item. Defaults to `res-0`.
 	ResourceName *string
@@ -129,10 +191,15 @@ type ExportResource struct {
 // GetBaseExportModel implements the BaseExportModelClassification interface for type ExportResource.
 func (e *ExportResource) GetBaseExportModel() *BaseExportModel {
 	return &BaseExportModel{
-		FullProperties: e.FullProperties,
-		MaskSensitive:  e.MaskSensitive,
-		TargetProvider: e.TargetProvider,
-		Type:           e.Type,
+		ExcludeAzureResource:     e.ExcludeAzureResource,
+		ExcludeTerraformResource: e.ExcludeTerraformResource,
+		FullProperties:           e.FullProperties,
+		IncludeExtensions:        e.IncludeExtensions,
+		IncludeManagedResource:   e.IncludeManagedResource,
+		IncludeRoleAssignment:    e.IncludeRoleAssignment,
+		MaskSensitive:            e.MaskSensitive,
+		TargetProvider:           e.TargetProvider,
+		Type:                     e.Type,
 	}
 }
 
@@ -145,9 +212,25 @@ type ExportResourceGroup struct {
 	// Field has constant value TypeExportResourceGroup, any specified value is ignored.
 	Type *Type
 
+	// Excludes specified Azure Resource Ids. Case-insensitive Azure Resource ID regular expression. Example: `["/subscriptions/[0-9a-f-]+/resourceGroups/my-rg.*"]`.
+	ExcludeAzureResource []*string
+
+	// Excludes specified Terraform resource types. Example: `["azurerm_virtual_network"]`.
+	ExcludeTerraformResource []*string
+
 	// Whether to output all non-computed properties in the generated Terraform configuration. If set to `false` empty-valued
 	// properties will be omitted from the configuration. Defaults to `true`.
 	FullProperties *bool
+
+	// Include extension resource types directly associated to the resources exported
+	IncludeExtensions []*AzureExtensionResourceType
+
+	// Whether to include internal resources managed by Azure in the exported configuration. Defaults to `false`.
+	IncludeManagedResource *bool
+
+	// Whether to include role assignments assigned to the resources exported. Defaults to `false`. This is deprecated in favor
+	// of `includeExtensions` (with `role-assignments` specified).
+	IncludeRoleAssignment *bool
 
 	// Mask sensitive attributes in the Terraform configuration. Defaults to `true`.
 	MaskSensitive *bool
@@ -162,10 +245,15 @@ type ExportResourceGroup struct {
 // GetBaseExportModel implements the BaseExportModelClassification interface for type ExportResourceGroup.
 func (e *ExportResourceGroup) GetBaseExportModel() *BaseExportModel {
 	return &BaseExportModel{
-		FullProperties: e.FullProperties,
-		MaskSensitive:  e.MaskSensitive,
-		TargetProvider: e.TargetProvider,
-		Type:           e.Type,
+		ExcludeAzureResource:     e.ExcludeAzureResource,
+		ExcludeTerraformResource: e.ExcludeTerraformResource,
+		FullProperties:           e.FullProperties,
+		IncludeExtensions:        e.IncludeExtensions,
+		IncludeManagedResource:   e.IncludeManagedResource,
+		IncludeRoleAssignment:    e.IncludeRoleAssignment,
+		MaskSensitive:            e.MaskSensitive,
+		TargetProvider:           e.TargetProvider,
+		Type:                     e.Type,
 	}
 }
 

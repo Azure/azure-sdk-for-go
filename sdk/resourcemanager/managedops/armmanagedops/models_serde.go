@@ -45,6 +45,7 @@ func (a AzureMonitorInformation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "dcrId", a.DcrID)
 	populate(objectMap, "enablementStatus", a.EnablementStatus)
+	populate(objectMap, "errorDetails", a.ErrorDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -62,6 +63,9 @@ func (a *AzureMonitorInformation) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "enablementStatus":
 			err = unpopulate(val, "EnablementStatus", &a.EnablementStatus)
+			delete(rawMsg, key)
+		case "errorDetails":
+			err = unpopulate(val, "ErrorDetails", &a.ErrorDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -103,6 +107,7 @@ func (c ChangeTrackingInformation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "dcrId", c.DcrID)
 	populate(objectMap, "enablementStatus", c.EnablementStatus)
+	populate(objectMap, "errorDetails", c.ErrorDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -121,6 +126,9 @@ func (c *ChangeTrackingInformation) UnmarshalJSON(data []byte) error {
 		case "enablementStatus":
 			err = unpopulate(val, "EnablementStatus", &c.EnablementStatus)
 			delete(rawMsg, key)
+		case "errorDetails":
+			err = unpopulate(val, "ErrorDetails", &c.ErrorDetails)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
@@ -133,6 +141,7 @@ func (c *ChangeTrackingInformation) UnmarshalJSON(data []byte) error {
 func (d DefenderCspmInformation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "enablementStatus", d.EnablementStatus)
+	populate(objectMap, "errorDetails", d.ErrorDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -148,6 +157,9 @@ func (d *DefenderCspmInformation) UnmarshalJSON(data []byte) error {
 		case "enablementStatus":
 			err = unpopulate(val, "EnablementStatus", &d.EnablementStatus)
 			delete(rawMsg, key)
+		case "errorDetails":
+			err = unpopulate(val, "ErrorDetails", &d.ErrorDetails)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %s", d, err.Error())
@@ -160,6 +172,7 @@ func (d *DefenderCspmInformation) UnmarshalJSON(data []byte) error {
 func (d DefenderForServersInformation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "enablementStatus", d.EnablementStatus)
+	populate(objectMap, "errorDetails", d.ErrorDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -174,6 +187,9 @@ func (d *DefenderForServersInformation) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "enablementStatus":
 			err = unpopulate(val, "EnablementStatus", &d.EnablementStatus)
+			delete(rawMsg, key)
+		case "errorDetails":
+			err = unpopulate(val, "ErrorDetails", &d.ErrorDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -257,10 +273,42 @@ func (d *DesiredConfigurationUpdate) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ErrorDetails.
+func (e ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "code", e.Code)
+	populate(objectMap, "message", e.Message)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorDetails.
+func (e *ErrorDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "code":
+			err = unpopulate(val, "Code", &e.Code)
+			delete(rawMsg, key)
+		case "message":
+			err = unpopulate(val, "Message", &e.Message)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type GuestConfigurationInformation.
 func (g GuestConfigurationInformation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "enablementStatus", g.EnablementStatus)
+	populate(objectMap, "errorDetails", g.ErrorDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -275,6 +323,9 @@ func (g *GuestConfigurationInformation) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "enablementStatus":
 			err = unpopulate(val, "EnablementStatus", &g.EnablementStatus)
+			delete(rawMsg, key)
+		case "errorDetails":
+			err = unpopulate(val, "ErrorDetails", &g.ErrorDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -724,6 +775,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 func (u UpdateManagerInformation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "enablementStatus", u.EnablementStatus)
+	populate(objectMap, "errorDetails", u.ErrorDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -738,6 +790,9 @@ func (u *UpdateManagerInformation) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "enablementStatus":
 			err = unpopulate(val, "EnablementStatus", &u.EnablementStatus)
+			delete(rawMsg, key)
+		case "errorDetails":
+			err = unpopulate(val, "ErrorDetails", &u.ErrorDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {

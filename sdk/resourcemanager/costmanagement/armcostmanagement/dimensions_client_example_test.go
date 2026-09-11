@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/ExternalBillingAccountsDimensions.json
+// Generated from example definition: 2026-06-01/ExternalBillingAccountsDimensions.json
 func ExampleDimensionsClient_NewByExternalCloudProviderTypePager_externalBillingAccountDimensionList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleDimensionsClient_NewByExternalCloudProviderTypePager_externalBilling
 	}
 }
 
-// Generated from example definition: 2025-03-01/ExternalSubscriptionsDimensions.json
+// Generated from example definition: 2026-06-01/ExternalSubscriptionsDimensions.json
 func ExampleDimensionsClient_NewByExternalCloudProviderTypePager_externalSubscriptionDimensionList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleDimensionsClient_NewByExternalCloudProviderTypePager_externalSubscri
 	}
 }
 
-// Generated from example definition: 2025-03-01/BillingAccountDimensionsList.json
+// Generated from example definition: 2026-06-01/BillingAccountDimensionsList.json
 func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -231,7 +231,7 @@ func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListLegacy() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/BillingAccountDimensionsListExpandAndTop.json
+// Generated from example definition: 2026-06-01/BillingAccountDimensionsListExpandAndTop.json
 func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListExpandAndTopLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -306,7 +306,7 @@ func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListExpandAndT
 	}
 }
 
-// Generated from example definition: 2025-03-01/BillingAccountDimensionsListWithFilter.json
+// Generated from example definition: 2026-06-01/BillingAccountDimensionsListWithFilter.json
 func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListWithFilterLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -362,7 +362,7 @@ func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListWithFilter
 	}
 }
 
-// Generated from example definition: 2025-03-01/DepartmentDimensionsList.json
+// Generated from example definition: 2026-06-01/DepartmentDimensionsList.json
 func ExampleDimensionsClient_NewListPager_departmentDimensionsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -435,7 +435,7 @@ func ExampleDimensionsClient_NewListPager_departmentDimensionsListLegacy() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/DepartmentDimensionsListExpandAndTop.json
+// Generated from example definition: 2026-06-01/DepartmentDimensionsListExpandAndTop.json
 func ExampleDimensionsClient_NewListPager_departmentDimensionsListExpandAndTopLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -510,7 +510,7 @@ func ExampleDimensionsClient_NewListPager_departmentDimensionsListExpandAndTopLe
 	}
 }
 
-// Generated from example definition: 2025-03-01/DepartmentDimensionsListWithFilter.json
+// Generated from example definition: 2026-06-01/DepartmentDimensionsListWithFilter.json
 func ExampleDimensionsClient_NewListPager_departmentDimensionsListWithFilterLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -566,7 +566,7 @@ func ExampleDimensionsClient_NewListPager_departmentDimensionsListWithFilterLega
 	}
 }
 
-// Generated from example definition: 2025-03-01/EnrollmentAccountDimensionsList.json
+// Generated from example definition: 2026-06-01/EnrollmentAccountDimensionsList.json
 func ExampleDimensionsClient_NewListPager_enrollmentAccountDimensionsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -629,7 +629,7 @@ func ExampleDimensionsClient_NewListPager_enrollmentAccountDimensionsListLegacy(
 	}
 }
 
-// Generated from example definition: 2025-03-01/EnrollmentAccountDimensionsListExpandAndTop.json
+// Generated from example definition: 2026-06-01/EnrollmentAccountDimensionsListExpandAndTop.json
 func ExampleDimensionsClient_NewListPager_enrollmentAccountDimensionsListExpandAndTopLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -704,7 +704,7 @@ func ExampleDimensionsClient_NewListPager_enrollmentAccountDimensionsListExpandA
 	}
 }
 
-// Generated from example definition: 2025-03-01/EnrollmentAccountDimensionsListWithFilter.json
+// Generated from example definition: 2026-06-01/EnrollmentAccountDimensionsListWithFilter.json
 func ExampleDimensionsClient_NewListPager_enrollmentAccountDimensionsListWithFilterLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -760,7 +760,7 @@ func ExampleDimensionsClient_NewListPager_enrollmentAccountDimensionsListWithFil
 	}
 }
 
-// Generated from example definition: 2025-03-01/MCABillingAccountDimensionsList.json
+// Generated from example definition: 2026-06-01/MCABillingAccountDimensionsList.json
 func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -823,7 +823,7 @@ func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListMca() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/MCABillingAccountDimensionsListExpandAndTop.json
+// Generated from example definition: 2026-06-01/MCABillingAccountDimensionsListExpandAndTop.json
 func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListExpandAndTopMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -898,7 +898,7 @@ func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListExpandAndT
 	}
 }
 
-// Generated from example definition: 2025-03-01/MCABillingAccountDimensionsListWithFilter.json
+// Generated from example definition: 2026-06-01/MCABillingAccountDimensionsListWithFilter.json
 func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListWithFilterMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -954,7 +954,7 @@ func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListWithFilter
 	}
 }
 
-// Generated from example definition: 2025-03-01/MCABillingProfileDimensionsList.json
+// Generated from example definition: 2026-06-01/MCABillingProfileDimensionsList.json
 func ExampleDimensionsClient_NewListPager_billingProfileDimensionsListMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1017,7 +1017,7 @@ func ExampleDimensionsClient_NewListPager_billingProfileDimensionsListMca() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/MCABillingProfileDimensionsListExpandAndTop.json
+// Generated from example definition: 2026-06-01/MCABillingProfileDimensionsListExpandAndTop.json
 func ExampleDimensionsClient_NewListPager_billingProfileDimensionsListExpandAndTopMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1092,7 +1092,7 @@ func ExampleDimensionsClient_NewListPager_billingProfileDimensionsListExpandAndT
 	}
 }
 
-// Generated from example definition: 2025-03-01/MCABillingProfileDimensionsListWithFilter.json
+// Generated from example definition: 2026-06-01/MCABillingProfileDimensionsListWithFilter.json
 func ExampleDimensionsClient_NewListPager_billingProfileDimensionsListWithFilterMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1148,7 +1148,7 @@ func ExampleDimensionsClient_NewListPager_billingProfileDimensionsListWithFilter
 	}
 }
 
-// Generated from example definition: 2025-03-01/MCACustomerDimensionsList.json
+// Generated from example definition: 2026-06-01/MCACustomerDimensionsList.json
 func ExampleDimensionsClient_NewListPager_customerDimensionsListMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1211,7 +1211,7 @@ func ExampleDimensionsClient_NewListPager_customerDimensionsListMca() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/MCACustomerDimensionsListExpandAndTop.json
+// Generated from example definition: 2026-06-01/MCACustomerDimensionsListExpandAndTop.json
 func ExampleDimensionsClient_NewListPager_customerDimensionsListExpandAndTopMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1286,7 +1286,7 @@ func ExampleDimensionsClient_NewListPager_customerDimensionsListExpandAndTopMca(
 	}
 }
 
-// Generated from example definition: 2025-03-01/MCACustomerDimensionsListWithFilter.json
+// Generated from example definition: 2026-06-01/MCACustomerDimensionsListWithFilter.json
 func ExampleDimensionsClient_NewListPager_customerDimensionsListWithFilterMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1342,7 +1342,7 @@ func ExampleDimensionsClient_NewListPager_customerDimensionsListWithFilterMca() 
 	}
 }
 
-// Generated from example definition: 2025-03-01/MCAInvoiceSectionDimensionsList.json
+// Generated from example definition: 2026-06-01/MCAInvoiceSectionDimensionsList.json
 func ExampleDimensionsClient_NewListPager_invoiceSectionDimensionsListMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1405,7 +1405,7 @@ func ExampleDimensionsClient_NewListPager_invoiceSectionDimensionsListMca() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/MCAInvoiceSectionDimensionsListExpandAndTop.json
+// Generated from example definition: 2026-06-01/MCAInvoiceSectionDimensionsListExpandAndTop.json
 func ExampleDimensionsClient_NewListPager_invoiceSectionDimensionsListExpandAndTopMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1480,7 +1480,7 @@ func ExampleDimensionsClient_NewListPager_invoiceSectionDimensionsListExpandAndT
 	}
 }
 
-// Generated from example definition: 2025-03-01/MCAInvoiceSectionDimensionsListWithFilter.json
+// Generated from example definition: 2026-06-01/MCAInvoiceSectionDimensionsListWithFilter.json
 func ExampleDimensionsClient_NewListPager_invoiceSectionDimensionsListWithFilterMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1536,7 +1536,7 @@ func ExampleDimensionsClient_NewListPager_invoiceSectionDimensionsListWithFilter
 	}
 }
 
-// Generated from example definition: 2025-03-01/ManagementGroupDimensionsList.json
+// Generated from example definition: 2026-06-01/ManagementGroupDimensionsList.json
 func ExampleDimensionsClient_NewListPager_managementGroupDimensionsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1599,7 +1599,7 @@ func ExampleDimensionsClient_NewListPager_managementGroupDimensionsListLegacy() 
 	}
 }
 
-// Generated from example definition: 2025-03-01/ManagementGroupDimensionsListExpandAndTop.json
+// Generated from example definition: 2026-06-01/ManagementGroupDimensionsListExpandAndTop.json
 func ExampleDimensionsClient_NewListPager_managementGroupDimensionsListExpandAndTopLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1674,7 +1674,7 @@ func ExampleDimensionsClient_NewListPager_managementGroupDimensionsListExpandAnd
 	}
 }
 
-// Generated from example definition: 2025-03-01/ManagementGroupDimensionsListWithFilter.json
+// Generated from example definition: 2026-06-01/ManagementGroupDimensionsListWithFilter.json
 func ExampleDimensionsClient_NewListPager_managementGroupDimensionsListWithFilterLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1730,7 +1730,7 @@ func ExampleDimensionsClient_NewListPager_managementGroupDimensionsListWithFilte
 	}
 }
 
-// Generated from example definition: 2025-03-01/ResourceGroupDimensionsList.json
+// Generated from example definition: 2026-06-01/ResourceGroupDimensionsList.json
 func ExampleDimensionsClient_NewListPager_resourceGroupDimensionsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1801,7 +1801,7 @@ func ExampleDimensionsClient_NewListPager_resourceGroupDimensionsListLegacy() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/SubscriptionDimensionsList.json
+// Generated from example definition: 2026-06-01/SubscriptionDimensionsList.json
 func ExampleDimensionsClient_NewListPager_subscriptionDimensionsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

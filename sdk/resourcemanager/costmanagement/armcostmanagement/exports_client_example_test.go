@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-03-01/ExportCreateOrUpdateByBillingAccount.json
+// Generated from example definition: 2026-06-01/ExportCreateOrUpdateByBillingAccount.json
 func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByBillingAccount() 
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportCreateOrUpdateByBillingAccountCustom.json
+// Generated from example definition: 2026-06-01/ExportCreateOrUpdateByBillingAccountCustom.json
 func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByBillingAccountCustom() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +221,7 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByBillingAccountCus
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportCreateOrUpdateByBillingAccountMonthly.json
+// Generated from example definition: 2026-06-01/ExportCreateOrUpdateByBillingAccountMonthly.json
 func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByBillingAccountMonthly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -326,7 +326,7 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByBillingAccountMon
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportCreateOrUpdateByBillingAccountPricesheet.json
+// Generated from example definition: 2026-06-01/ExportCreateOrUpdateByBillingAccountPricesheet.json
 func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByBillingAccountPricesheet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -431,7 +431,7 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByBillingAccountPri
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportCreateOrUpdateByBillingAccountReservationDetails.json
+// Generated from example definition: 2026-06-01/ExportCreateOrUpdateByBillingAccountReservationDetails.json
 func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByBillingAccountReservationDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -540,7 +540,7 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByBillingAccountRes
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportCreateOrUpdateByBillingAccountReservationRecommendation.json
+// Generated from example definition: 2026-06-01/ExportCreateOrUpdateByBillingAccountReservationRecommendation.json
 func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByBillingAccountReservationRecommendation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -673,7 +673,7 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByBillingAccountRes
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportCreateOrUpdateByBillingAccountReservationTransactions.json
+// Generated from example definition: 2026-06-01/ExportCreateOrUpdateByBillingAccountReservationTransactions.json
 func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateExportCreateOrUpdateByBillingAccountReservationTransactionsByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -780,7 +780,7 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateExportCreateOrUpdat
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportCreateOrUpdateByDepartment.json
+// Generated from example definition: 2026-06-01/ExportCreateOrUpdateByDepartment.json
 func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByDepartment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -885,7 +885,7 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByDepartment() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportCreateOrUpdateByEnrollmentAccount.json
+// Generated from example definition: 2026-06-01/ExportCreateOrUpdateByEnrollmentAccount.json
 func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByEnrollmentAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -990,7 +990,7 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByEnrollmentAccount
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportCreateOrUpdateByManagementGroup.json
+// Generated from example definition: 2026-06-01/ExportCreateOrUpdateByManagementGroup.json
 func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1095,7 +1095,7 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByManagementGroup()
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportCreateOrUpdateByResourceGroup.json
+// Generated from example definition: 2026-06-01/ExportCreateOrUpdateByResourceGroup.json
 func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1200,7 +1200,7 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByResourceGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportCreateOrUpdateBySubscription.json
+// Generated from example definition: 2026-06-01/ExportCreateOrUpdateBySubscription.json
 func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1305,7 +1305,7 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateBySubscription() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportDeleteByBillingAccount.json
+// Generated from example definition: 2026-06-01/ExportDeleteByBillingAccount.json
 func ExampleExportsClient_Delete_exportDeleteByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1327,7 +1327,7 @@ func ExampleExportsClient_Delete_exportDeleteByBillingAccount() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportDeleteByDepartment.json
+// Generated from example definition: 2026-06-01/ExportDeleteByDepartment.json
 func ExampleExportsClient_Delete_exportDeleteByDepartment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1349,7 +1349,7 @@ func ExampleExportsClient_Delete_exportDeleteByDepartment() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportDeleteByEnrollmentAccount.json
+// Generated from example definition: 2026-06-01/ExportDeleteByEnrollmentAccount.json
 func ExampleExportsClient_Delete_exportDeleteByEnrollmentAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1371,7 +1371,7 @@ func ExampleExportsClient_Delete_exportDeleteByEnrollmentAccount() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportDeleteByManagementGroup.json
+// Generated from example definition: 2026-06-01/ExportDeleteByManagementGroup.json
 func ExampleExportsClient_Delete_exportDeleteByManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1393,7 +1393,7 @@ func ExampleExportsClient_Delete_exportDeleteByManagementGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportDeleteByResourceGroup.json
+// Generated from example definition: 2026-06-01/ExportDeleteByResourceGroup.json
 func ExampleExportsClient_Delete_exportDeleteByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1415,7 +1415,7 @@ func ExampleExportsClient_Delete_exportDeleteByResourceGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportDeleteBySubscription.json
+// Generated from example definition: 2026-06-01/ExportDeleteBySubscription.json
 func ExampleExportsClient_Delete_exportDeleteBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1437,7 +1437,7 @@ func ExampleExportsClient_Delete_exportDeleteBySubscription() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportRunByBillingAccount.json
+// Generated from example definition: 2026-06-01/ExportRunByBillingAccount.json
 func ExampleExportsClient_Execute_exportRunByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1459,7 +1459,7 @@ func ExampleExportsClient_Execute_exportRunByBillingAccount() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportRunByBillingAccountWithOptionalRequestBody.json
+// Generated from example definition: 2026-06-01/ExportRunByBillingAccountWithOptionalRequestBody.json
 func ExampleExportsClient_Execute_exportRunByBillingAccountWithOptionalRequestBody() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1481,7 +1481,7 @@ func ExampleExportsClient_Execute_exportRunByBillingAccountWithOptionalRequestBo
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportRunByDepartment.json
+// Generated from example definition: 2026-06-01/ExportRunByDepartment.json
 func ExampleExportsClient_Execute_exportRunByDepartment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1503,7 +1503,7 @@ func ExampleExportsClient_Execute_exportRunByDepartment() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportRunByEnrollmentAccount.json
+// Generated from example definition: 2026-06-01/ExportRunByEnrollmentAccount.json
 func ExampleExportsClient_Execute_exportRunByEnrollmentAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1525,7 +1525,7 @@ func ExampleExportsClient_Execute_exportRunByEnrollmentAccount() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportRunByManagementGroup.json
+// Generated from example definition: 2026-06-01/ExportRunByManagementGroup.json
 func ExampleExportsClient_Execute_exportRunByManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1547,7 +1547,7 @@ func ExampleExportsClient_Execute_exportRunByManagementGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportRunByResourceGroup.json
+// Generated from example definition: 2026-06-01/ExportRunByResourceGroup.json
 func ExampleExportsClient_Execute_exportRunByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1569,7 +1569,7 @@ func ExampleExportsClient_Execute_exportRunByResourceGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportRunBySubscription.json
+// Generated from example definition: 2026-06-01/ExportRunBySubscription.json
 func ExampleExportsClient_Execute_exportRunBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1591,7 +1591,7 @@ func ExampleExportsClient_Execute_exportRunBySubscription() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportGetByBillingAccount.json
+// Generated from example definition: 2026-06-01/ExportGetByBillingAccount.json
 func ExampleExportsClient_Get_exportGetByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1653,7 +1653,7 @@ func ExampleExportsClient_Get_exportGetByBillingAccount() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportGetByDepartment.json
+// Generated from example definition: 2026-06-01/ExportGetByDepartment.json
 func ExampleExportsClient_Get_exportGetByDepartment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1715,7 +1715,7 @@ func ExampleExportsClient_Get_exportGetByDepartment() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportGetByEnrollmentAccount.json
+// Generated from example definition: 2026-06-01/ExportGetByEnrollmentAccount.json
 func ExampleExportsClient_Get_exportGetByEnrollmentAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1777,7 +1777,7 @@ func ExampleExportsClient_Get_exportGetByEnrollmentAccount() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportGetByManagementGroup.json
+// Generated from example definition: 2026-06-01/ExportGetByManagementGroup.json
 func ExampleExportsClient_Get_exportGetByManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1839,7 +1839,7 @@ func ExampleExportsClient_Get_exportGetByManagementGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportGetByResourceGroup.json
+// Generated from example definition: 2026-06-01/ExportGetByResourceGroup.json
 func ExampleExportsClient_Get_exportGetByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1901,7 +1901,7 @@ func ExampleExportsClient_Get_exportGetByResourceGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportGetBySubscription.json
+// Generated from example definition: 2026-06-01/ExportGetBySubscription.json
 func ExampleExportsClient_Get_exportGetBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1963,7 +1963,7 @@ func ExampleExportsClient_Get_exportGetBySubscription() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportRunHistoryGetByBillingAccount.json
+// Generated from example definition: 2026-06-01/ExportRunHistoryGetByBillingAccount.json
 func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2075,7 +2075,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByBillingAccoun
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportRunHistoryGetByDepartment.json
+// Generated from example definition: 2026-06-01/ExportRunHistoryGetByDepartment.json
 func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByDepartment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2187,7 +2187,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByDepartment() 
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportRunHistoryGetByEnrollmentAccount.json
+// Generated from example definition: 2026-06-01/ExportRunHistoryGetByEnrollmentAccount.json
 func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByEnrollmentAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2299,7 +2299,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByEnrollmentAcc
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportRunHistoryGetByManagementGroup.json
+// Generated from example definition: 2026-06-01/ExportRunHistoryGetByManagementGroup.json
 func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2411,7 +2411,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByManagementGro
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportRunHistoryGetByResourceGroup.json
+// Generated from example definition: 2026-06-01/ExportRunHistoryGetByResourceGroup.json
 func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2523,7 +2523,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByResourceGroup
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportRunHistoryGetBySubscription.json
+// Generated from example definition: 2026-06-01/ExportRunHistoryGetBySubscription.json
 func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2635,7 +2635,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetBySubscription(
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportsGetByBillingAccount.json
+// Generated from example definition: 2026-06-01/ExportsGetByBillingAccount.json
 func ExampleExportsClient_List_exportsGetByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2743,7 +2743,7 @@ func ExampleExportsClient_List_exportsGetByBillingAccount() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportsGetByDepartment.json
+// Generated from example definition: 2026-06-01/ExportsGetByDepartment.json
 func ExampleExportsClient_List_exportsGetByDepartment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2855,7 +2855,7 @@ func ExampleExportsClient_List_exportsGetByDepartment() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportsGetByEnrollmentAccount.json
+// Generated from example definition: 2026-06-01/ExportsGetByEnrollmentAccount.json
 func ExampleExportsClient_List_exportsGetByEnrollmentAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2967,7 +2967,7 @@ func ExampleExportsClient_List_exportsGetByEnrollmentAccount() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportsGetByManagementGroup.json
+// Generated from example definition: 2026-06-01/ExportsGetByManagementGroup.json
 func ExampleExportsClient_List_exportsGetByManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3079,7 +3079,7 @@ func ExampleExportsClient_List_exportsGetByManagementGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportsGetByResourceGroup.json
+// Generated from example definition: 2026-06-01/ExportsGetByResourceGroup.json
 func ExampleExportsClient_List_exportsGetByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3191,7 +3191,7 @@ func ExampleExportsClient_List_exportsGetByResourceGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExportsGetBySubscription.json
+// Generated from example definition: 2026-06-01/ExportsGetBySubscription.json
 func ExampleExportsClient_List_exportsGetBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

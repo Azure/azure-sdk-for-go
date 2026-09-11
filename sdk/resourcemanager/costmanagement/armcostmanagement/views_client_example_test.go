@@ -13,7 +13,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/PrivateViewCreateOrUpdate.json
+// Generated from example definition: 2026-06-01/PrivateViewCreateOrUpdate.json
 func ExampleViewsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleViewsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ViewCreateOrUpdateByResourceGroup.json
+// Generated from example definition: 2026-06-01/ViewCreateOrUpdateByResourceGroup.json
 func ExampleViewsClient_CreateOrUpdateByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,7 +281,7 @@ func ExampleViewsClient_CreateOrUpdateByScope() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/PrivateViewDelete.json
+// Generated from example definition: 2026-06-01/PrivateViewDelete.json
 func ExampleViewsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -303,7 +303,7 @@ func ExampleViewsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ViewDeleteByResourceGroup.json
+// Generated from example definition: 2026-06-01/ViewDeleteByResourceGroup.json
 func ExampleViewsClient_DeleteByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -325,7 +325,7 @@ func ExampleViewsClient_DeleteByScope() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/PrivateView.json
+// Generated from example definition: 2026-06-01/PrivateView.json
 func ExampleViewsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -406,7 +406,7 @@ func ExampleViewsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ViewByResourceGroup.json
+// Generated from example definition: 2026-06-01/ViewByResourceGroup.json
 func ExampleViewsClient_GetByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -487,7 +487,7 @@ func ExampleViewsClient_GetByScope() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/PrivateViewList.json
+// Generated from example definition: 2026-06-01/PrivateViewList.json
 func ExampleViewsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -636,7 +636,7 @@ func ExampleViewsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/ViewListByResourceGroup.json
+// Generated from example definition: 2026-06-01/ViewListByResourceGroup.json
 func ExampleViewsClient_NewListByScopePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -7,7 +7,8 @@ package armcostmanagement
 // BenefitRecommendationPropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetBenefitRecommendationProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *BenefitRecommendationProperties, *SharedScopeBenefitRecommendationProperties, *SingleScopeBenefitRecommendationProperties
+// - *BenefitRecommendationProperties, *ManagementGroupScopeBenefitRecommendationProperties, *SharedScopeBenefitRecommendationProperties,
+// - *SingleScopeBenefitRecommendationProperties
 type BenefitRecommendationPropertiesClassification interface {
 	// GetBenefitRecommendationProperties returns the BenefitRecommendationProperties content of the underlying type.
 	GetBenefitRecommendationProperties() *BenefitRecommendationProperties

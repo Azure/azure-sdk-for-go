@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-03-01/BenefitUtilizationSummaries/Async/GenerateBenefitUtilizationSummariesReportByBillingAccount.json
+// Generated from example definition: 2026-06-01/BenefitUtilizationSummaries/Async/GenerateBenefitUtilizationSummariesReportByBillingAccount.json
 func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateByBilli
 	// }
 }
 
-// Generated from example definition: 2025-03-01/BenefitUtilizationSummaries/Async/GenerateBenefitUtilizationSummariesReportByBillingProfile.json
+// Generated from example definition: 2026-06-01/BenefitUtilizationSummaries/Async/GenerateBenefitUtilizationSummariesReportByBillingProfile.json
 func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateByBillingProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateByBilli
 	// }
 }
 
-// Generated from example definition: 2025-03-01/BenefitUtilizationSummaries/Async/GenerateBenefitUtilizationSummariesReportByReservation.json
+// Generated from example definition: 2026-06-01/BenefitUtilizationSummaries/Async/GenerateBenefitUtilizationSummariesReportByReservation.json
 func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateByReservationID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,7 @@ func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateByReser
 	// }
 }
 
-// Generated from example definition: 2025-03-01/BenefitUtilizationSummaries/Async/GenerateBenefitUtilizationSummariesReportByReservationOrder.json
+// Generated from example definition: 2026-06-01/BenefitUtilizationSummaries/Async/GenerateBenefitUtilizationSummariesReportByReservationOrder.json
 func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateByReservationOrderID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,7 +197,7 @@ func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateByReser
 	// }
 }
 
-// Generated from example definition: 2025-03-01/BenefitUtilizationSummaries/Async/GenerateBenefitUtilizationSummariesReportBySavingsPlan.json
+// Generated from example definition: 2026-06-01/BenefitUtilizationSummaries/Async/GenerateBenefitUtilizationSummariesReportBySavingsPlan.json
 func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateBySavingsPlanID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,7 +243,7 @@ func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateBySavin
 	// }
 }
 
-// Generated from example definition: 2025-03-01/BenefitUtilizationSummaries/Async/GenerateBenefitUtilizationSummariesReportBySavingsPlanOrder.json
+// Generated from example definition: 2026-06-01/BenefitUtilizationSummaries/Async/GenerateBenefitUtilizationSummariesReportBySavingsPlanOrder.json
 func ExampleGenerateBenefitUtilizationSummariesReportClient_BeginGenerateBySavingsPlanOrderID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

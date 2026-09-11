@@ -19,7 +19,7 @@ import (
 // LocationClient contains the methods for the Location group.
 // Don't use this type directly, use NewLocationClient() instead.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-07-01
 type LocationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,9 +30,6 @@ type LocationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLocationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationClient, error) {
-	if subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,57 +58,43 @@ func (client *LocationClient) NewListCachedImagesPager(location string, options 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listCachedImagesCreateRequest(ctx, location, nextLink, options)
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCachedImagesCreateRequest(ctx, location, options)
+			}, nil)
 			if err != nil {
 				return LocationClientListCachedImagesResponse{}, err
 			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return LocationClientListCachedImagesResponse{}, err
-			}
-			return client.listCachedImagesHandleResponse(resp, http.StatusOK)
+			return client.listCachedImagesHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCachedImagesCreateRequest creates the ListCachedImages request.
-func (client *LocationClient) listCachedImagesCreateRequest(ctx context.Context, location string, nextLink string, _ *LocationClientListCachedImagesOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/cachedImages"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if location == "" {
-			return nil, errors.New("parameter location cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+func (client *LocationClient) listCachedImagesCreateRequest(ctx context.Context, location string, _ *LocationClientListCachedImagesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/cachedImages"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listCachedImagesHandleResponse handles the ListCachedImages response.
-func (client *LocationClient) listCachedImagesHandleResponse(resp *http.Response, successCodes ...int) (LocationClientListCachedImagesResponse, error) {
+func (client *LocationClient) listCachedImagesHandleResponse(resp *http.Response) (LocationClientListCachedImagesResponse, error) {
 	result := LocationClientListCachedImagesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CachedImagesListResult); err != nil {
 		return LocationClientListCachedImagesResponse{}, err
 	}
@@ -135,57 +118,43 @@ func (client *LocationClient) NewListCapabilitiesPager(location string, options 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listCapabilitiesCreateRequest(ctx, location, nextLink, options)
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCapabilitiesCreateRequest(ctx, location, options)
+			}, nil)
 			if err != nil {
 				return LocationClientListCapabilitiesResponse{}, err
 			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return LocationClientListCapabilitiesResponse{}, err
-			}
-			return client.listCapabilitiesHandleResponse(resp, http.StatusOK)
+			return client.listCapabilitiesHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCapabilitiesCreateRequest creates the ListCapabilities request.
-func (client *LocationClient) listCapabilitiesCreateRequest(ctx context.Context, location string, nextLink string, _ *LocationClientListCapabilitiesOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/capabilities"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if location == "" {
-			return nil, errors.New("parameter location cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+func (client *LocationClient) listCapabilitiesCreateRequest(ctx context.Context, location string, _ *LocationClientListCapabilitiesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/capabilities"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listCapabilitiesHandleResponse handles the ListCapabilities response.
-func (client *LocationClient) listCapabilitiesHandleResponse(resp *http.Response, successCodes ...int) (LocationClientListCapabilitiesResponse, error) {
+func (client *LocationClient) listCapabilitiesHandleResponse(resp *http.Response) (LocationClientListCapabilitiesResponse, error) {
 	result := LocationClientListCapabilitiesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapabilitiesListResult); err != nil {
 		return LocationClientListCapabilitiesResponse{}, err
 	}
@@ -206,57 +175,43 @@ func (client *LocationClient) NewListUsagePager(location string, options *Locati
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listUsageCreateRequest(ctx, location, nextLink, options)
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listUsageCreateRequest(ctx, location, options)
+			}, nil)
 			if err != nil {
 				return LocationClientListUsageResponse{}, err
 			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return LocationClientListUsageResponse{}, err
-			}
-			return client.listUsageHandleResponse(resp, http.StatusOK)
+			return client.listUsageHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listUsageCreateRequest creates the ListUsage request.
-func (client *LocationClient) listUsageCreateRequest(ctx context.Context, location string, nextLink string, _ *LocationClientListUsageOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/usages"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if location == "" {
-			return nil, errors.New("parameter location cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+func (client *LocationClient) listUsageCreateRequest(ctx context.Context, location string, _ *LocationClientListUsageOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/usages"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listUsageHandleResponse handles the ListUsage response.
-func (client *LocationClient) listUsageHandleResponse(resp *http.Response, successCodes ...int) (LocationClientListUsageResponse, error) {
+func (client *LocationClient) listUsageHandleResponse(resp *http.Response) (LocationClientListUsageResponse, error) {
 	result := LocationClientListUsageResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsageListResult); err != nil {
 		return LocationClientListUsageResponse{}, err
 	}

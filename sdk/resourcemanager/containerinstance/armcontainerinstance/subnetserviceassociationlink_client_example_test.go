@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/SubnetServiceAssociationLinkDelete.json
+// Generated from example definition: 2026-07-01/SubnetServiceAssociationLinkDelete.json
 func ExampleSubnetServiceAssociationLinkClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

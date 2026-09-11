@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/ContainerAttach.json
+// Generated from example definition: 2026-07-01/ContainerAttach.json
 func ExampleContainersClient_Attach() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleContainersClient_Attach() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerExec.json
+// Generated from example definition: 2026-07-01/ContainerExec.json
 func ExampleContainersClient_ExecuteCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleContainersClient_ExecuteCommand() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerListLogs.json
+// Generated from example definition: 2026-07-01/ContainerListLogs.json
 func ExampleContainersClient_ListLogs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

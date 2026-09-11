@@ -18,49 +18,49 @@ import (
 	"slices"
 )
 
-// OperationStatusServer is a fake server for instances of the armdeviceregistry.OperationStatusClient type.
-type OperationStatusServer struct {
-	// Get is the fake for method OperationStatusClient.Get
+// AsyncOperationStatusServer is a fake server for instances of the armdeviceregistry.AsyncOperationStatusClient type.
+type AsyncOperationStatusServer struct {
+	// Get is the fake for method AsyncOperationStatusClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, location string, operationID string, options *armdeviceregistry.OperationStatusClientGetOptions) (resp azfake.Responder[armdeviceregistry.OperationStatusClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, location string, operationID string, options *armdeviceregistry.AsyncOperationStatusClientGetOptions) (resp azfake.Responder[armdeviceregistry.AsyncOperationStatusClientGetResponse], errResp azfake.ErrorResponder)
 }
 
-// NewOperationStatusServerTransport creates a new instance of OperationStatusServerTransport with the provided implementation.
-// The returned OperationStatusServerTransport instance is connected to an instance of armdeviceregistry.OperationStatusClient via the
+// NewAsyncOperationStatusServerTransport creates a new instance of AsyncOperationStatusServerTransport with the provided implementation.
+// The returned AsyncOperationStatusServerTransport instance is connected to an instance of armdeviceregistry.AsyncOperationStatusClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewOperationStatusServerTransport(srv *OperationStatusServer) *OperationStatusServerTransport {
-	return &OperationStatusServerTransport{srv: srv}
+func NewAsyncOperationStatusServerTransport(srv *AsyncOperationStatusServer) *AsyncOperationStatusServerTransport {
+	return &AsyncOperationStatusServerTransport{srv: srv}
 }
 
-// OperationStatusServerTransport connects instances of armdeviceregistry.OperationStatusClient to instances of OperationStatusServer.
-// Don't use this type directly, use NewOperationStatusServerTransport instead.
-type OperationStatusServerTransport struct {
-	srv *OperationStatusServer
+// AsyncOperationStatusServerTransport connects instances of armdeviceregistry.AsyncOperationStatusClient to instances of AsyncOperationStatusServer.
+// Don't use this type directly, use NewAsyncOperationStatusServerTransport instead.
+type AsyncOperationStatusServerTransport struct {
+	srv *AsyncOperationStatusServer
 }
 
-// Do implements the policy.Transporter interface for OperationStatusServerTransport.
-func (o *OperationStatusServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for AsyncOperationStatusServerTransport.
+func (a *AsyncOperationStatusServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	return o.dispatchToMethodFake(req, method)
+	return a.dispatchToMethodFake(req, method)
 }
 
-func (o *OperationStatusServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (a *AsyncOperationStatusServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
-		if operationStatusServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = operationStatusServerTransportInterceptor.Do(req)
+		if asyncOperationStatusServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = asyncOperationStatusServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "OperationStatusClient.Get":
-				res.resp, res.err = o.dispatchGet(req)
+			case "AsyncOperationStatusClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -77,11 +77,11 @@ func (o *OperationStatusServerTransport) dispatchToMethodFake(req *http.Request,
 	}
 }
 
-func (o *OperationStatusServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if o.srv.Get == nil {
+func (a *AsyncOperationStatusServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/operationStatuses/(?P<operationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/asyncOperationStatuses/(?P<operationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -95,7 +95,7 @@ func (o *OperationStatusServerTransport) dispatchGet(req *http.Request) (*http.R
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := o.srv.Get(req.Context(), locationParam, operationIDParam, nil)
+	respr, errRespr := a.srv.Get(req.Context(), locationParam, operationIDParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -110,8 +110,8 @@ func (o *OperationStatusServerTransport) dispatchGet(req *http.Request) (*http.R
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to OperationStatusServerTransport
-var operationStatusServerTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to AsyncOperationStatusServerTransport
+var asyncOperationStatusServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

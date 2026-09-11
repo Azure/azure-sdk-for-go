@@ -16,20 +16,20 @@ import (
 	"strings"
 )
 
-// OperationStatusClient contains the methods for the OperationStatus group.
-// Don't use this type directly, use NewOperationStatusClient() instead.
+// AsyncOperationStatusClient contains the methods for the AsyncOperationStatus group.
+// Don't use this type directly, use NewAsyncOperationStatusClient() instead.
 //
 // Generated from API version 2026-11-01
-type OperationStatusClient struct {
+type AsyncOperationStatusClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewOperationStatusClient creates a new instance of OperationStatusClient with the specified values.
+// NewAsyncOperationStatusClient creates a new instance of AsyncOperationStatusClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationStatusClient, error) {
+func NewAsyncOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AsyncOperationStatusClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,7 +37,7 @@ func NewOperationStatusClient(subscriptionID string, credential azcore.TokenCred
 	if err != nil {
 		return nil, err
 	}
-	client := &OperationStatusClient{
+	client := &AsyncOperationStatusClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -48,27 +48,28 @@ func NewOperationStatusClient(subscriptionID string, credential azcore.TokenCred
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - location - The location name.
 //   - operationID - The ID of an ongoing async operation.
-//   - options - OperationStatusClientGetOptions contains the optional parameters for the OperationStatusClient.Get method.
-func (client *OperationStatusClient) Get(ctx context.Context, location string, operationID string, options *OperationStatusClientGetOptions) (OperationStatusClientGetResponse, error) {
+//   - options - AsyncOperationStatusClientGetOptions contains the optional parameters for the AsyncOperationStatusClient.Get
+//     method.
+func (client *AsyncOperationStatusClient) Get(ctx context.Context, location string, operationID string, options *AsyncOperationStatusClientGetOptions) (AsyncOperationStatusClientGetResponse, error) {
 	var err error
-	const operationName = "OperationStatusClient.Get"
+	const operationName = "AsyncOperationStatusClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, location, operationID, options)
 	if err != nil {
-		return OperationStatusClientGetResponse{}, err
+		return AsyncOperationStatusClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return OperationStatusClientGetResponse{}, err
+		return AsyncOperationStatusClientGetResponse{}, err
 	}
 	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
-func (client *OperationStatusClient) getCreateRequest(ctx context.Context, location string, operationID string, _ *OperationStatusClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DeviceRegistry/locations/{location}/operationStatuses/{operationId}"
+func (client *AsyncOperationStatusClient) getCreateRequest(ctx context.Context, location string, operationID string, _ *AsyncOperationStatusClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DeviceRegistry/locations/{location}/asyncOperationStatuses/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -93,13 +94,13 @@ func (client *OperationStatusClient) getCreateRequest(ctx context.Context, locat
 }
 
 // getHandleResponse handles the Get response.
-func (client *OperationStatusClient) getHandleResponse(resp *http.Response, successCodes ...int) (OperationStatusClientGetResponse, error) {
-	result := OperationStatusClientGetResponse{}
+func (client *AsyncOperationStatusClient) getHandleResponse(resp *http.Response, successCodes ...int) (AsyncOperationStatusClientGetResponse, error) {
+	result := AsyncOperationStatusClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatusResult); err != nil {
-		return OperationStatusClientGetResponse{}, err
+		return AsyncOperationStatusClientGetResponse{}, err
 	}
 	return result, nil
 }

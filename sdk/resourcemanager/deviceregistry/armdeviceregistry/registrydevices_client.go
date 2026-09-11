@@ -16,20 +16,20 @@ import (
 	"strings"
 )
 
-// NamespaceDiscoveredAssetsClient contains the methods for the NamespaceDiscoveredAssets group.
-// Don't use this type directly, use NewNamespaceDiscoveredAssetsClient() instead.
+// RegistryDevicesClient contains the methods for the RegistryDevices group.
+// Don't use this type directly, use NewRegistryDevicesClient() instead.
 //
 // Generated from API version 2026-11-01
-type NamespaceDiscoveredAssetsClient struct {
+type RegistryDevicesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewNamespaceDiscoveredAssetsClient creates a new instance of NamespaceDiscoveredAssetsClient with the specified values.
+// NewRegistryDevicesClient creates a new instance of RegistryDevicesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewNamespaceDiscoveredAssetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NamespaceDiscoveredAssetsClient, error) {
+func NewRegistryDevicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegistryDevicesClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,47 +37,47 @@ func NewNamespaceDiscoveredAssetsClient(subscriptionID string, credential azcore
 	if err != nil {
 		return nil, err
 	}
-	client := &NamespaceDiscoveredAssetsClient{
+	client := &RegistryDevicesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrReplace - Create a NamespaceDiscoveredAsset
+// BeginCreateOrReplace - Create a RegistryDevice
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
-//   - discoveredAssetName - The name of the discovered asset.
+//   - registryDeviceName - The name of the new device.
 //   - resource - Resource create parameters.
-//   - options - NamespaceDiscoveredAssetsClientBeginCreateOrReplaceOptions contains the optional parameters for the NamespaceDiscoveredAssetsClient.BeginCreateOrReplace
+//   - options - RegistryDevicesClientBeginCreateOrReplaceOptions contains the optional parameters for the RegistryDevicesClient.BeginCreateOrReplace
 //     method.
-func (client *NamespaceDiscoveredAssetsClient) BeginCreateOrReplace(ctx context.Context, resourceGroupName string, namespaceName string, discoveredAssetName string, resource NamespaceDiscoveredAsset, options *NamespaceDiscoveredAssetsClientBeginCreateOrReplaceOptions) (*runtime.Poller[NamespaceDiscoveredAssetsClientCreateOrReplaceResponse], error) {
+func (client *RegistryDevicesClient) BeginCreateOrReplace(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, resource RegistryDevice, options *RegistryDevicesClientBeginCreateOrReplaceOptions) (*runtime.Poller[RegistryDevicesClientCreateOrReplaceResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrReplace(ctx, resourceGroupName, namespaceName, discoveredAssetName, resource, options)
+		resp, err := client.createOrReplace(ctx, resourceGroupName, namespaceName, registryDeviceName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NamespaceDiscoveredAssetsClientCreateOrReplaceResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RegistryDevicesClientCreateOrReplaceResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NamespaceDiscoveredAssetsClientCreateOrReplaceResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RegistryDevicesClientCreateOrReplaceResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrReplace - Create a NamespaceDiscoveredAsset
+// CreateOrReplace - Create a RegistryDevice
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *NamespaceDiscoveredAssetsClient) createOrReplace(ctx context.Context, resourceGroupName string, namespaceName string, discoveredAssetName string, resource NamespaceDiscoveredAsset, options *NamespaceDiscoveredAssetsClientBeginCreateOrReplaceOptions) (*http.Response, error) {
+func (client *RegistryDevicesClient) createOrReplace(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, resource RegistryDevice, options *RegistryDevicesClientBeginCreateOrReplaceOptions) (*http.Response, error) {
 	var err error
-	const operationName = "NamespaceDiscoveredAssetsClient.BeginCreateOrReplace"
+	const operationName = "RegistryDevicesClient.BeginCreateOrReplace"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrReplaceCreateRequest(ctx, resourceGroupName, namespaceName, discoveredAssetName, resource, options)
+	req, err := client.createOrReplaceCreateRequest(ctx, resourceGroupName, namespaceName, registryDeviceName, resource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -92,8 +92,8 @@ func (client *NamespaceDiscoveredAssetsClient) createOrReplace(ctx context.Conte
 }
 
 // createOrReplaceCreateRequest creates the CreateOrReplace request.
-func (client *NamespaceDiscoveredAssetsClient) createOrReplaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, discoveredAssetName string, resource NamespaceDiscoveredAsset, _ *NamespaceDiscoveredAssetsClientBeginCreateOrReplaceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/discoveredAssets/{discoveredAssetName}"
+func (client *RegistryDevicesClient) createOrReplaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, resource RegistryDevice, _ *RegistryDevicesClientBeginCreateOrReplaceOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -106,10 +106,10 @@ func (client *NamespaceDiscoveredAssetsClient) createOrReplaceCreateRequest(ctx 
 		return nil, errors.New("parameter namespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if discoveredAssetName == "" {
-		return nil, errors.New("parameter discoveredAssetName cannot be empty")
+	if registryDeviceName == "" {
+		return nil, errors.New("parameter registryDeviceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{discoveredAssetName}", url.PathEscape(discoveredAssetName))
+	urlPath = strings.ReplaceAll(urlPath, "{registryDeviceName}", url.PathEscape(registryDeviceName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -125,39 +125,39 @@ func (client *NamespaceDiscoveredAssetsClient) createOrReplaceCreateRequest(ctx 
 	return req, nil
 }
 
-// BeginDelete - Delete a NamespaceDiscoveredAsset
+// BeginDelete - Delete a RegistryDevice
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
-//   - discoveredAssetName - The name of the discovered asset.
-//   - options - NamespaceDiscoveredAssetsClientBeginDeleteOptions contains the optional parameters for the NamespaceDiscoveredAssetsClient.BeginDelete
+//   - registryDeviceName - The name of the new device.
+//   - options - RegistryDevicesClientBeginDeleteOptions contains the optional parameters for the RegistryDevicesClient.BeginDelete
 //     method.
-func (client *NamespaceDiscoveredAssetsClient) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, discoveredAssetName string, options *NamespaceDiscoveredAssetsClientBeginDeleteOptions) (*runtime.Poller[NamespaceDiscoveredAssetsClientDeleteResponse], error) {
+func (client *RegistryDevicesClient) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, options *RegistryDevicesClientBeginDeleteOptions) (*runtime.Poller[RegistryDevicesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, namespaceName, discoveredAssetName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, namespaceName, registryDeviceName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NamespaceDiscoveredAssetsClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RegistryDevicesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NamespaceDiscoveredAssetsClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RegistryDevicesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Delete a NamespaceDiscoveredAsset
+// Delete - Delete a RegistryDevice
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *NamespaceDiscoveredAssetsClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, discoveredAssetName string, options *NamespaceDiscoveredAssetsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RegistryDevicesClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, options *RegistryDevicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "NamespaceDiscoveredAssetsClient.BeginDelete"
+	const operationName = "RegistryDevicesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, namespaceName, discoveredAssetName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, namespaceName, registryDeviceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -172,8 +172,8 @@ func (client *NamespaceDiscoveredAssetsClient) deleteOperation(ctx context.Conte
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *NamespaceDiscoveredAssetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, discoveredAssetName string, _ *NamespaceDiscoveredAssetsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/discoveredAssets/{discoveredAssetName}"
+func (client *RegistryDevicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, _ *RegistryDevicesClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -186,10 +186,10 @@ func (client *NamespaceDiscoveredAssetsClient) deleteCreateRequest(ctx context.C
 		return nil, errors.New("parameter namespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if discoveredAssetName == "" {
-		return nil, errors.New("parameter discoveredAssetName cannot be empty")
+	if registryDeviceName == "" {
+		return nil, errors.New("parameter registryDeviceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{discoveredAssetName}", url.PathEscape(discoveredAssetName))
+	urlPath = strings.ReplaceAll(urlPath, "{registryDeviceName}", url.PathEscape(registryDeviceName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -200,33 +200,32 @@ func (client *NamespaceDiscoveredAssetsClient) deleteCreateRequest(ctx context.C
 	return req, nil
 }
 
-// Get - Get a NamespaceDiscoveredAsset
+// Get - Get a RegistryDevice
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
-//   - discoveredAssetName - The name of the discovered asset.
-//   - options - NamespaceDiscoveredAssetsClientGetOptions contains the optional parameters for the NamespaceDiscoveredAssetsClient.Get
-//     method.
-func (client *NamespaceDiscoveredAssetsClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, discoveredAssetName string, options *NamespaceDiscoveredAssetsClientGetOptions) (NamespaceDiscoveredAssetsClientGetResponse, error) {
+//   - registryDeviceName - The name of the new device.
+//   - options - RegistryDevicesClientGetOptions contains the optional parameters for the RegistryDevicesClient.Get method.
+func (client *RegistryDevicesClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, options *RegistryDevicesClientGetOptions) (RegistryDevicesClientGetResponse, error) {
 	var err error
-	const operationName = "NamespaceDiscoveredAssetsClient.Get"
+	const operationName = "RegistryDevicesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, namespaceName, discoveredAssetName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, namespaceName, registryDeviceName, options)
 	if err != nil {
-		return NamespaceDiscoveredAssetsClientGetResponse{}, err
+		return RegistryDevicesClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return NamespaceDiscoveredAssetsClientGetResponse{}, err
+		return RegistryDevicesClientGetResponse{}, err
 	}
 	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
-func (client *NamespaceDiscoveredAssetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, discoveredAssetName string, _ *NamespaceDiscoveredAssetsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/discoveredAssets/{discoveredAssetName}"
+func (client *RegistryDevicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, _ *RegistryDevicesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -239,10 +238,10 @@ func (client *NamespaceDiscoveredAssetsClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter namespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if discoveredAssetName == "" {
-		return nil, errors.New("parameter discoveredAssetName cannot be empty")
+	if registryDeviceName == "" {
+		return nil, errors.New("parameter registryDeviceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{discoveredAssetName}", url.PathEscape(discoveredAssetName))
+	urlPath = strings.ReplaceAll(urlPath, "{registryDeviceName}", url.PathEscape(registryDeviceName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -255,40 +254,40 @@ func (client *NamespaceDiscoveredAssetsClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *NamespaceDiscoveredAssetsClient) getHandleResponse(resp *http.Response, successCodes ...int) (NamespaceDiscoveredAssetsClientGetResponse, error) {
-	result := NamespaceDiscoveredAssetsClientGetResponse{}
+func (client *RegistryDevicesClient) getHandleResponse(resp *http.Response, successCodes ...int) (RegistryDevicesClientGetResponse, error) {
+	result := RegistryDevicesClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceDiscoveredAsset); err != nil {
-		return NamespaceDiscoveredAssetsClientGetResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryDevice); err != nil {
+		return RegistryDevicesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByNamespacePager - List NamespaceDiscoveredAsset resources by Namespace
+// NewListByNamespacePager - List RegistryDevice resources by Namespace
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
-//   - options - NamespaceDiscoveredAssetsClientListByNamespaceOptions contains the optional parameters for the NamespaceDiscoveredAssetsClient.NewListByNamespacePager
+//   - options - RegistryDevicesClientListByNamespaceOptions contains the optional parameters for the RegistryDevicesClient.NewListByNamespacePager
 //     method.
-func (client *NamespaceDiscoveredAssetsClient) NewListByNamespacePager(resourceGroupName string, namespaceName string, options *NamespaceDiscoveredAssetsClientListByNamespaceOptions) *runtime.Pager[NamespaceDiscoveredAssetsClientListByNamespaceResponse] {
-	return runtime.NewPager(runtime.PagingHandler[NamespaceDiscoveredAssetsClientListByNamespaceResponse]{
-		More: func(page NamespaceDiscoveredAssetsClientListByNamespaceResponse) bool {
+func (client *RegistryDevicesClient) NewListByNamespacePager(resourceGroupName string, namespaceName string, options *RegistryDevicesClientListByNamespaceOptions) *runtime.Pager[RegistryDevicesClientListByNamespaceResponse] {
+	return runtime.NewPager(runtime.PagingHandler[RegistryDevicesClientListByNamespaceResponse]{
+		More: func(page RegistryDevicesClientListByNamespaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *NamespaceDiscoveredAssetsClientListByNamespaceResponse) (NamespaceDiscoveredAssetsClientListByNamespaceResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NamespaceDiscoveredAssetsClient.NewListByNamespacePager")
+		Fetcher: func(ctx context.Context, page *RegistryDevicesClientListByNamespaceResponse) (RegistryDevicesClientListByNamespaceResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RegistryDevicesClient.NewListByNamespacePager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, nextLink, options)
 			if err != nil {
-				return NamespaceDiscoveredAssetsClientListByNamespaceResponse{}, err
+				return RegistryDevicesClientListByNamespaceResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return NamespaceDiscoveredAssetsClientListByNamespaceResponse{}, err
+				return RegistryDevicesClientListByNamespaceResponse{}, err
 			}
 			return client.listByNamespaceHandleResponse(resp, http.StatusOK)
 		},
@@ -297,12 +296,12 @@ func (client *NamespaceDiscoveredAssetsClient) NewListByNamespacePager(resourceG
 }
 
 // listByNamespaceCreateRequest creates the ListByNamespace request.
-func (client *NamespaceDiscoveredAssetsClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, _ *NamespaceDiscoveredAssetsClientListByNamespaceOptions) (*policy.Request, error) {
+func (client *RegistryDevicesClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, _ *RegistryDevicesClientListByNamespaceOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/discoveredAssets"
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices"
 		if client.subscriptionID == "" {
 			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
@@ -332,51 +331,51 @@ func (client *NamespaceDiscoveredAssetsClient) listByNamespaceCreateRequest(ctx 
 }
 
 // listByNamespaceHandleResponse handles the ListByNamespace response.
-func (client *NamespaceDiscoveredAssetsClient) listByNamespaceHandleResponse(resp *http.Response, successCodes ...int) (NamespaceDiscoveredAssetsClientListByNamespaceResponse, error) {
-	result := NamespaceDiscoveredAssetsClientListByNamespaceResponse{}
+func (client *RegistryDevicesClient) listByNamespaceHandleResponse(resp *http.Response, successCodes ...int) (RegistryDevicesClientListByNamespaceResponse, error) {
+	result := RegistryDevicesClientListByNamespaceResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceDiscoveredAssetListResult); err != nil {
-		return NamespaceDiscoveredAssetsClientListByNamespaceResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryDeviceListResult); err != nil {
+		return RegistryDevicesClientListByNamespaceResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginUpdate - Update a NamespaceDiscoveredAsset
+// BeginUpdate - Update a RegistryDevice
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
-//   - discoveredAssetName - The name of the discovered asset.
+//   - registryDeviceName - The name of the new device.
 //   - properties - The resource properties to be updated.
-//   - options - NamespaceDiscoveredAssetsClientBeginUpdateOptions contains the optional parameters for the NamespaceDiscoveredAssetsClient.BeginUpdate
+//   - options - RegistryDevicesClientBeginUpdateOptions contains the optional parameters for the RegistryDevicesClient.BeginUpdate
 //     method.
-func (client *NamespaceDiscoveredAssetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, namespaceName string, discoveredAssetName string, properties NamespaceDiscoveredAssetUpdate, options *NamespaceDiscoveredAssetsClientBeginUpdateOptions) (*runtime.Poller[NamespaceDiscoveredAssetsClientUpdateResponse], error) {
+func (client *RegistryDevicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, properties RegistryDeviceUpdate, options *RegistryDevicesClientBeginUpdateOptions) (*runtime.Poller[RegistryDevicesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, namespaceName, discoveredAssetName, properties, options)
+		resp, err := client.update(ctx, resourceGroupName, namespaceName, registryDeviceName, properties, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NamespaceDiscoveredAssetsClientUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RegistryDevicesClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NamespaceDiscoveredAssetsClientUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RegistryDevicesClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Update - Update a NamespaceDiscoveredAsset
+// Update - Update a RegistryDevice
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *NamespaceDiscoveredAssetsClient) update(ctx context.Context, resourceGroupName string, namespaceName string, discoveredAssetName string, properties NamespaceDiscoveredAssetUpdate, options *NamespaceDiscoveredAssetsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *RegistryDevicesClient) update(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, properties RegistryDeviceUpdate, options *RegistryDevicesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "NamespaceDiscoveredAssetsClient.BeginUpdate"
+	const operationName = "RegistryDevicesClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, namespaceName, discoveredAssetName, properties, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, namespaceName, registryDeviceName, properties, options)
 	if err != nil {
 		return nil, err
 	}
@@ -391,8 +390,8 @@ func (client *NamespaceDiscoveredAssetsClient) update(ctx context.Context, resou
 }
 
 // updateCreateRequest creates the Update request.
-func (client *NamespaceDiscoveredAssetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, discoveredAssetName string, properties NamespaceDiscoveredAssetUpdate, _ *NamespaceDiscoveredAssetsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/discoveredAssets/{discoveredAssetName}"
+func (client *RegistryDevicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, properties RegistryDeviceUpdate, _ *RegistryDevicesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -405,10 +404,10 @@ func (client *NamespaceDiscoveredAssetsClient) updateCreateRequest(ctx context.C
 		return nil, errors.New("parameter namespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if discoveredAssetName == "" {
-		return nil, errors.New("parameter discoveredAssetName cannot be empty")
+	if registryDeviceName == "" {
+		return nil, errors.New("parameter registryDeviceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{discoveredAssetName}", url.PathEscape(discoveredAssetName))
+	urlPath = strings.ReplaceAll(urlPath, "{registryDeviceName}", url.PathEscape(registryDeviceName))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

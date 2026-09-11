@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // GroupQuotaSubscriptionAllocationRequestServer is a fake server for instances of the armquota.GroupQuotaSubscriptionAllocationRequestClient type.
@@ -64,9 +65,7 @@ func (g *GroupQuotaSubscriptionAllocationRequestServerTransport) Do(req *http.Re
 }
 
 func (g *GroupQuotaSubscriptionAllocationRequestServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -86,10 +85,7 @@ func (g *GroupQuotaSubscriptionAllocationRequestServerTransport) dispatchToMetho
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -131,7 +127,7 @@ func (g *GroupQuotaSubscriptionAllocationRequestServerTransport) dispatchGet(req
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AllocationRequestStatus, req)
@@ -166,11 +162,7 @@ func (g *GroupQuotaSubscriptionAllocationRequestServerTransport) dispatchNewList
 		if err != nil {
 			return nil, err
 		}
-		filterParam, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		resp := g.srv.NewListPager(managementGroupIDParam, groupQuotaNameParam, resourceProviderNameParam, filterParam, nil)
+		resp := g.srv.NewListPager(managementGroupIDParam, groupQuotaNameParam, resourceProviderNameParam, qp.Get("$filter"), nil)
 		newListPager = &resp
 		g.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armquota.GroupQuotaSubscriptionAllocationRequestClientListResponse, createLink func() string) {
@@ -181,7 +173,7 @@ func (g *GroupQuotaSubscriptionAllocationRequestServerTransport) dispatchNewList
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		g.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -236,7 +228,7 @@ func (g *GroupQuotaSubscriptionAllocationRequestServerTransport) dispatchBeginUp
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		g.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

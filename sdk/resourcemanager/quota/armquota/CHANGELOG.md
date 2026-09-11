@@ -1,5 +1,38 @@
 # Release History
 
+## 2.1.0-beta.1 (2026-08-24)
+### Features Added
+
+- New enum type `TransferProvisioningState` with values `TransferProvisioningStateCanceled`, `TransferProvisioningStateFailed`, `TransferProvisioningStateSucceeded`
+- New enum type `TransferStatus` with values `TransferStatusAccepted`, `TransferStatusCancelled`, `TransferStatusCompleted`, `TransferStatusExpired`, `TransferStatusFailed`, `TransferStatusPending`, `TransferStatusRejected`
+- New function `*ClientFactory.NewIncomingQuotaTransfersClient(subscriptionID string) *IncomingQuotaTransfersClient`
+- New function `*ClientFactory.NewTransfersClient(subscriptionID string) *TransfersClient`
+- New function `NewIncomingQuotaTransfersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IncomingQuotaTransfersClient, error)`
+- New function `*IncomingQuotaTransfersClient.BeginApprove(ctx context.Context, targetProvider string, region string, transferID string, ifMatch string, options *IncomingQuotaTransfersClientBeginApproveOptions) (*runtime.Poller[IncomingQuotaTransfersClientApproveResponse], error)`
+- New function `*IncomingQuotaTransfersClient.Get(ctx context.Context, targetProvider string, region string, transferID string, options *IncomingQuotaTransfersClientGetOptions) (IncomingQuotaTransfersClientGetResponse, error)`
+- New function `*IncomingQuotaTransfersClient.NewListBySubscriptionPager(options *IncomingQuotaTransfersClientListBySubscriptionOptions) *runtime.Pager[IncomingQuotaTransfersClientListBySubscriptionResponse]`
+- New function `*IncomingQuotaTransfersClient.NewListPager(targetProvider string, region string, options *IncomingQuotaTransfersClientListOptions) *runtime.Pager[IncomingQuotaTransfersClientListResponse]`
+- New function `*IncomingQuotaTransfersClient.Reject(ctx context.Context, targetProvider string, region string, transferID string, ifMatch string, options *IncomingQuotaTransfersClientRejectOptions) (IncomingQuotaTransfersClientRejectResponse, error)`
+- New function `NewTransfersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TransfersClient, error)`
+- New function `*TransfersClient.Cancel(ctx context.Context, targetProvider string, region string, transferName string, options *TransfersClientCancelOptions) (TransfersClientCancelResponse, error)`
+- New function `*TransfersClient.BeginCreateOrUpdate(ctx context.Context, targetProvider string, region string, transferName string, resource Transfer, options *TransfersClientBeginCreateOrUpdateOptions) (*runtime.Poller[TransfersClientCreateOrUpdateResponse], error)`
+- New function `*TransfersClient.Delete(ctx context.Context, targetProvider string, region string, transferName string, options *TransfersClientDeleteOptions) (TransfersClientDeleteResponse, error)`
+- New function `*TransfersClient.Get(ctx context.Context, targetProvider string, region string, transferName string, options *TransfersClientGetOptions) (TransfersClientGetResponse, error)`
+- New function `*TransfersClient.NewListPager(targetProvider string, region string, options *TransfersClientListOptions) *runtime.Pager[TransfersClientListResponse]`
+- New struct `ApprovalRecord`
+- New struct `CancellationRecord`
+- New struct `IncomingQuotaTransfer`
+- New struct `IncomingQuotaTransferApproveRequest`
+- New struct `IncomingQuotaTransferListResult`
+- New struct `IncomingQuotaTransferProperties`
+- New struct `IncomingQuotaTransferRejectRequest`
+- New struct `RejectionRecord`
+- New struct `Transfer`
+- New struct `TransferCancelRequest`
+- New struct `TransferListResult`
+- New struct `TransferProperties`
+
+
 ## 2.0.0 (2025-09-19)
 ### Breaking Changes
 

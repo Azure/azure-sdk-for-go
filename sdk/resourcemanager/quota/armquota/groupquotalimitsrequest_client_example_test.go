@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/GroupQuotaLimitsRequests/GroupQuotaLimitsRequests_Get.json
+// Generated from example definition: 2026-09-01-preview/GroupQuotaLimitsRequests/GroupQuotaLimitsRequests_Get.json
 func ExampleGroupQuotaLimitsRequestClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,14 +31,14 @@ func ExampleGroupQuotaLimitsRequestClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.GroupQuotaLimitsRequestClientGetResponse{
-	// 	SubmittedResourceRequestStatus: &armquota.SubmittedResourceRequestStatus{
+	// 	SubmittedResourceRequestStatus: armquota.SubmittedResourceRequestStatus{
 	// 		Name: to.Ptr("requestId"),
 	// 		Type: to.Ptr("Microsoft.Quota/groupQuotas/groupQuotaLimitsRequests"),
 	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/E7EC67B3-7657-4966-BFFC-41EFD36BAA09/providers/Microsoft.Quota/groupQuotas/groupquota1/resourceProviders/Microsoft.Compute/groupQuotaLimitsRequests/requestId"),
 	// 		Properties: &armquota.SubmittedResourceRequestStatusProperties{
 	// 			FaultCode: to.Ptr("ResourceNotAvailableForOffer"),
 	// 			ProvisioningState: to.Ptr(armquota.RequestStateFailed),
-	// 			RequestSubmitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-20T05:29:34.144Z"); return t}()),
+	// 			RequestSubmitTime: to.Ptr(time.Date(2024, time.March, 20, 5, 29, 34, 144000000, time.UTC)),
 	// 			RequestedResource: &armquota.GroupQuotaRequestBase{
 	// 				Properties: &armquota.GroupQuotaRequestBaseProperties{
 	// 					Name: &armquota.GroupQuotaRequestBasePropertiesName{
@@ -55,7 +55,7 @@ func ExampleGroupQuotaLimitsRequestClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/GroupQuotaLimitsRequests/GroupQuotaLimitsRequests_List.json
+// Generated from example definition: 2026-09-01-preview/GroupQuotaLimitsRequests/GroupQuotaLimitsRequests_List.json
 func ExampleGroupQuotaLimitsRequestClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleGroupQuotaLimitsRequestClient_NewListPager() {
 		// 				Properties: &armquota.SubmittedResourceRequestStatusProperties{
 		// 					FaultCode: to.Ptr("ResourceNotAvailableForOffer"),
 		// 					ProvisioningState: to.Ptr(armquota.RequestStateFailed),
-		// 					RequestSubmitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-18T00:12:34.004Z"); return t}()),
+		// 					RequestSubmitTime: to.Ptr(time.Date(2023, time.November, 18, 0, 12, 34, 4000000, time.UTC)),
 		// 					RequestedResource: &armquota.GroupQuotaRequestBase{
 		// 						Properties: &armquota.GroupQuotaRequestBaseProperties{
 		// 							Name: &armquota.GroupQuotaRequestBasePropertiesName{
@@ -109,7 +109,7 @@ func ExampleGroupQuotaLimitsRequestClient_NewListPager() {
 		// 				Properties: &armquota.SubmittedResourceRequestStatusProperties{
 		// 					FaultCode: to.Ptr(""),
 		// 					ProvisioningState: to.Ptr(armquota.RequestStateSucceeded),
-		// 					RequestSubmitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-17T00:57:43.410Z"); return t}()),
+		// 					RequestSubmitTime: to.Ptr(time.Date(2023, time.November, 17, 0, 57, 43, 410000000, time.UTC)),
 		// 					RequestedResource: &armquota.GroupQuotaRequestBase{
 		// 						Properties: &armquota.GroupQuotaRequestBaseProperties{
 		// 							Name: &armquota.GroupQuotaRequestBasePropertiesName{
@@ -129,7 +129,7 @@ func ExampleGroupQuotaLimitsRequestClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/GroupQuotaLimitsRequests/PatchGroupQuotaLimitsRequests-Compute.json
+// Generated from example definition: 2026-09-01-preview/GroupQuotaLimitsRequests/PatchGroupQuotaLimitsRequests-Compute.json
 func ExampleGroupQuotaLimitsRequestClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,13 +165,13 @@ func ExampleGroupQuotaLimitsRequestClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.GroupQuotaLimitsRequestClientUpdateResponse{
-	// 	GroupQuotaLimitList: &armquota.GroupQuotaLimitList{
+	// 	GroupQuotaLimitList: armquota.GroupQuotaLimitList{
 	// 		Name: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Quota/groupQuotas/groupQuotaLimits"),
 	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/E7EC67B3-7657-4966-BFFC-41EFD36BAA09/providers/Microsoft.Quota/groupQuotas/groupquota1/resourceProviders/Microsoft.Compute/groupQuotaLimits/westus"),

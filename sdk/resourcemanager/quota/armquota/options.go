@@ -4,6 +4,8 @@
 
 package armquota
 
+import "time"
+
 // ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
 type ClientBeginCreateOrUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -172,6 +174,52 @@ type GroupQuotasClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// IncomingQuotaTransfersClientBeginApproveOptions contains the optional parameters for the IncomingQuotaTransfersClient.BeginApprove
+// method.
+type IncomingQuotaTransfersClientBeginApproveOptions struct {
+	// The content of the action request
+	Body *IncomingQuotaTransferApproveRequest
+
+	// Specifies the date and time at which the request was first created.
+	RepeatabilityFirstSent *time.Time
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	RepeatabilityRequestID *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// IncomingQuotaTransfersClientGetOptions contains the optional parameters for the IncomingQuotaTransfersClient.Get method.
+type IncomingQuotaTransfersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IncomingQuotaTransfersClientListBySubscriptionOptions contains the optional parameters for the IncomingQuotaTransfersClient.NewListBySubscriptionPager
+// method.
+type IncomingQuotaTransfersClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IncomingQuotaTransfersClientListOptions contains the optional parameters for the IncomingQuotaTransfersClient.NewListPager
+// method.
+type IncomingQuotaTransfersClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IncomingQuotaTransfersClientRejectOptions contains the optional parameters for the IncomingQuotaTransfersClient.Reject
+// method.
+type IncomingQuotaTransfersClientRejectOptions struct {
+	// The content of the action request
+	Body *IncomingQuotaTransferRejectRequest
+
+	// Specifies the date and time at which the request was first created.
+	RepeatabilityFirstSent *time.Time
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	RepeatabilityRequestID *string
+}
+
 // OperationClientListOptions contains the optional parameters for the OperationClient.NewListPager method.
 type OperationClientListOptions struct {
 	// placeholder for future optional parameters
@@ -198,6 +246,40 @@ type RequestStatusClientListOptions struct {
 
 	// Number of records to return.
 	Top *int32
+}
+
+// TransfersClientBeginCreateOrUpdateOptions contains the optional parameters for the TransfersClient.BeginCreateOrUpdate
+// method.
+type TransfersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// TransfersClientCancelOptions contains the optional parameters for the TransfersClient.Cancel method.
+type TransfersClientCancelOptions struct {
+	// The content of the action request
+	Body *TransferCancelRequest
+
+	// Specifies the date and time at which the request was first created.
+	RepeatabilityFirstSent *time.Time
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	RepeatabilityRequestID *string
+}
+
+// TransfersClientDeleteOptions contains the optional parameters for the TransfersClient.Delete method.
+type TransfersClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TransfersClientGetOptions contains the optional parameters for the TransfersClient.Get method.
+type TransfersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TransfersClientListOptions contains the optional parameters for the TransfersClient.NewListPager method.
+type TransfersClientListOptions struct {
+	// placeholder for future optional parameters
 }
 
 // UsagesClientGetOptions contains the optional parameters for the UsagesClient.Get method.

@@ -1,5 +1,7 @@
 # Azure Template Package client library for Go
 
+<!-- This README documents the aztemplate reference package. -->
+
 Azure Template Package client library for Go (`aztemplate`)  matches necessary patterns that the development team has established to create a unified SDK written in the Go programming language. These libraries follow the Azure SDK Design Guidelines for Go.
 
 The library allows client libraries to expose common functionality in a consistent fashion.  Once you learn how to use these APIs in one client library, you will know how to use them in other client libraries.

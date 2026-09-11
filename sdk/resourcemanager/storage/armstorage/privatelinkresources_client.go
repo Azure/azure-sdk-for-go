@@ -19,7 +19,7 @@ import (
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
 //
-// Generated from API version 2026-04-01
+// Generated from API version 2026-06-01
 type PrivateLinkResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -62,12 +62,7 @@ func (client *PrivateLinkResourcesClient) ListByStorageAccount(ctx context.Conte
 	if err != nil {
 		return PrivateLinkResourcesClientListByStorageAccountResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateLinkResourcesClientListByStorageAccountResponse{}, err
-	}
-	resp, err := client.listByStorageAccountHandleResponse(httpResp)
-	return resp, err
+	return client.listByStorageAccountHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByStorageAccountCreateRequest creates the ListByStorageAccount request.
@@ -90,15 +85,18 @@ func (client *PrivateLinkResourcesClient) listByStorageAccountCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByStorageAccountHandleResponse handles the ListByStorageAccount response.
-func (client *PrivateLinkResourcesClient) listByStorageAccountHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListByStorageAccountResponse, error) {
+func (client *PrivateLinkResourcesClient) listByStorageAccountHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinkResourcesClientListByStorageAccountResponse, error) {
 	result := PrivateLinkResourcesClientListByStorageAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
 		return PrivateLinkResourcesClientListByStorageAccountResponse{}, err
 	}

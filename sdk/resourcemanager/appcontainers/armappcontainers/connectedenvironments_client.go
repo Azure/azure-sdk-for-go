@@ -19,7 +19,7 @@ import (
 // ConnectedEnvironmentsClient contains the methods for the ConnectedEnvironments group.
 // Don't use this type directly, use NewConnectedEnvironmentsClient() instead.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-07-01
 type ConnectedEnvironmentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -90,7 +90,7 @@ func (client *ConnectedEnvironmentsClient) checkNameAvailabilityCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -178,7 +178,7 @@ func (client *ConnectedEnvironmentsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -257,7 +257,7 @@ func (client *ConnectedEnvironmentsClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -305,7 +305,7 @@ func (client *ConnectedEnvironmentsClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -376,7 +376,7 @@ func (client *ConnectedEnvironmentsClient) listByResourceGroupCreateRequest(ctx 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251002Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -445,7 +445,7 @@ func (client *ConnectedEnvironmentsClient) listBySubscriptionCreateRequest(ctx c
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251002Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -510,7 +510,7 @@ func (client *ConnectedEnvironmentsClient) updateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

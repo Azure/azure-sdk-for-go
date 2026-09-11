@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/AvailableWorkloadProfiles_Get.json
+// Generated from example definition: 2026-07-01/AvailableWorkloadProfiles_Get.json
 func ExampleAvailableWorkloadProfilesClient_NewGetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

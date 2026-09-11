@@ -19,7 +19,7 @@ import (
 // ContainerAppsDiagnosticsClient contains the methods for the ContainerAppsDiagnostics group.
 // Don't use this type directly, use NewContainerAppsDiagnosticsClient() instead.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-07-01
 type ContainerAppsDiagnosticsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -94,7 +94,7 @@ func (client *ContainerAppsDiagnosticsClient) getDetectorCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -162,7 +162,7 @@ func (client *ContainerAppsDiagnosticsClient) getRevisionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -225,7 +225,7 @@ func (client *ContainerAppsDiagnosticsClient) getRootCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -303,7 +303,7 @@ func (client *ContainerAppsDiagnosticsClient) listDetectorsCreateRequest(ctx con
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251002Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -385,7 +385,7 @@ func (client *ContainerAppsDiagnosticsClient) listRevisionsCreateRequest(ctx con
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20251002Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

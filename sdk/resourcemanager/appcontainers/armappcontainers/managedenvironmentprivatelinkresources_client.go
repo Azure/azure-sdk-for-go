@@ -19,7 +19,7 @@ import (
 // ManagedEnvironmentPrivateLinkResourcesClient contains the methods for the ManagedEnvironmentPrivateLinkResources group.
 // Don't use this type directly, use NewManagedEnvironmentPrivateLinkResourcesClient() instead.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-07-01
 type ManagedEnvironmentPrivateLinkResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +42,74 @@ func NewManagedEnvironmentPrivateLinkResourcesClient(subscriptionID string, cred
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// Get - Get a private link resource for a given managed environment.
+//
+// Gets the details of a private link resource supported by a managed environment.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - environmentName - Name of the managed environment.
+//   - privateLinkResourceName - The name of the private link associated with the Azure resource.
+//   - options - ManagedEnvironmentPrivateLinkResourcesClientGetOptions contains the optional parameters for the ManagedEnvironmentPrivateLinkResourcesClient.Get
+//     method.
+func (client *ManagedEnvironmentPrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupName string, environmentName string, privateLinkResourceName string, options *ManagedEnvironmentPrivateLinkResourcesClientGetOptions) (ManagedEnvironmentPrivateLinkResourcesClientGetResponse, error) {
+	var err error
+	const operationName = "ManagedEnvironmentPrivateLinkResourcesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, environmentName, privateLinkResourceName, options)
+	if err != nil {
+		return ManagedEnvironmentPrivateLinkResourcesClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ManagedEnvironmentPrivateLinkResourcesClientGetResponse{}, err
+	}
+	return client.getHandleResponse(httpResp, http.StatusOK)
+}
+
+// getCreateRequest creates the Get request.
+func (client *ManagedEnvironmentPrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, privateLinkResourceName string, _ *ManagedEnvironmentPrivateLinkResourcesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/privateLinkResources/{privateLinkResourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if environmentName == "" {
+		return nil, errors.New("parameter environmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
+	if privateLinkResourceName == "" {
+		return nil, errors.New("parameter privateLinkResourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{privateLinkResourceName}", url.PathEscape(privateLinkResourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *ManagedEnvironmentPrivateLinkResourcesClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedEnvironmentPrivateLinkResourcesClientGetResponse, error) {
+	result := ManagedEnvironmentPrivateLinkResourcesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
+		return ManagedEnvironmentPrivateLinkResourcesClientGetResponse{}, err
+	}
+	return result, nil
 }
 
 // NewListPager - List private link resources for a given managed environment.
@@ -104,7 +172,7 @@ func (client *ManagedEnvironmentPrivateLinkResourcesClient) listCreateRequest(ct
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251002Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

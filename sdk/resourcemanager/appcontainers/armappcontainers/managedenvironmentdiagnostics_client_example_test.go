@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironmentDiagnostics_Get.json
+// Generated from example definition: 2026-07-01/ManagedEnvironmentDiagnostics_Get.json
 func ExampleManagedEnvironmentDiagnosticsClient_GetDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleManagedEnvironmentDiagnosticsClient_GetDetector() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironmentDiagnostics_List.json
+// Generated from example definition: 2026-07-01/ManagedEnvironmentDiagnostics_List.json
 func ExampleManagedEnvironmentDiagnosticsClient_ListDetectors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -32,9 +32,9 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-// NewAppResiliencyClient creates a new instance of AppResiliencyClient.
-func (c *ClientFactory) NewAppResiliencyClient() *AppResiliencyClient {
-	return &AppResiliencyClient{
+// NewAvailableEnvironmentModesClient creates a new instance of AvailableEnvironmentModesClient.
+func (c *ClientFactory) NewAvailableEnvironmentModesClient() *AvailableEnvironmentModesClient {
+	return &AvailableEnvironmentModesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -51,38 +51,6 @@ func (c *ClientFactory) NewAvailableWorkloadProfilesClient() *AvailableWorkloadP
 // NewBillingMetersClient creates a new instance of BillingMetersClient.
 func (c *ClientFactory) NewBillingMetersClient() *BillingMetersClient {
 	return &BillingMetersClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewBuildAuthTokenClient creates a new instance of BuildAuthTokenClient.
-func (c *ClientFactory) NewBuildAuthTokenClient() *BuildAuthTokenClient {
-	return &BuildAuthTokenClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewBuildersClient creates a new instance of BuildersClient.
-func (c *ClientFactory) NewBuildersClient() *BuildersClient {
-	return &BuildersClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewBuildsByBuilderResourceClient creates a new instance of BuildsByBuilderResourceClient.
-func (c *ClientFactory) NewBuildsByBuilderResourceClient() *BuildsByBuilderResourceClient {
-	return &BuildsByBuilderResourceClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewBuildsClient creates a new instance of BuildsClient.
-func (c *ClientFactory) NewBuildsClient() *BuildsClient {
-	return &BuildsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -128,6 +96,22 @@ func (c *ClientFactory) NewConnectedEnvironmentsStoragesClient() *ConnectedEnvir
 	}
 }
 
+// NewContainerAppPrivateEndpointConnectionsClient creates a new instance of ContainerAppPrivateEndpointConnectionsClient.
+func (c *ClientFactory) NewContainerAppPrivateEndpointConnectionsClient() *ContainerAppPrivateEndpointConnectionsClient {
+	return &ContainerAppPrivateEndpointConnectionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewContainerAppPrivateLinkResourcesClient creates a new instance of ContainerAppPrivateLinkResourcesClient.
+func (c *ClientFactory) NewContainerAppPrivateLinkResourcesClient() *ContainerAppPrivateLinkResourcesClient {
+	return &ContainerAppPrivateLinkResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewContainerAppsAPIClient creates a new instance of ContainerAppsAPIClient.
 func (c *ClientFactory) NewContainerAppsAPIClient() *ContainerAppsAPIClient {
 	return &ContainerAppsAPIClient{
@@ -139,22 +123,6 @@ func (c *ClientFactory) NewContainerAppsAPIClient() *ContainerAppsAPIClient {
 // NewContainerAppsAuthConfigsClient creates a new instance of ContainerAppsAuthConfigsClient.
 func (c *ClientFactory) NewContainerAppsAuthConfigsClient() *ContainerAppsAuthConfigsClient {
 	return &ContainerAppsAuthConfigsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewContainerAppsBuildsByContainerAppClient creates a new instance of ContainerAppsBuildsByContainerAppClient.
-func (c *ClientFactory) NewContainerAppsBuildsByContainerAppClient() *ContainerAppsBuildsByContainerAppClient {
-	return &ContainerAppsBuildsByContainerAppClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewContainerAppsBuildsClient creates a new instance of ContainerAppsBuildsClient.
-func (c *ClientFactory) NewContainerAppsBuildsClient() *ContainerAppsBuildsClient {
-	return &ContainerAppsBuildsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -187,14 +155,6 @@ func (c *ClientFactory) NewContainerAppsFunctionsClient() *ContainerAppsFunction
 // NewContainerAppsLabelHistoryClient creates a new instance of ContainerAppsLabelHistoryClient.
 func (c *ClientFactory) NewContainerAppsLabelHistoryClient() *ContainerAppsLabelHistoryClient {
 	return &ContainerAppsLabelHistoryClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewContainerAppsPatchesClient creates a new instance of ContainerAppsPatchesClient.
-func (c *ClientFactory) NewContainerAppsPatchesClient() *ContainerAppsPatchesClient {
-	return &ContainerAppsPatchesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -251,14 +211,6 @@ func (c *ClientFactory) NewDaprComponentResiliencyPoliciesClient() *DaprComponen
 // NewDaprComponentsClient creates a new instance of DaprComponentsClient.
 func (c *ClientFactory) NewDaprComponentsClient() *DaprComponentsClient {
 	return &DaprComponentsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewDaprSubscriptionsClient creates a new instance of DaprSubscriptionsClient.
-func (c *ClientFactory) NewDaprSubscriptionsClient() *DaprSubscriptionsClient {
-	return &DaprSubscriptionsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -407,9 +359,25 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
+// NewSandboxGroupsClient creates a new instance of SandboxGroupsClient.
+func (c *ClientFactory) NewSandboxGroupsClient() *SandboxGroupsClient {
+	return &SandboxGroupsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewUsagesClient creates a new instance of UsagesClient.
 func (c *ClientFactory) NewUsagesClient() *UsagesClient {
 	return &UsagesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewVnetConnectionsClient creates a new instance of VnetConnectionsClient.
+func (c *ClientFactory) NewVnetConnectionsClient() *VnetConnectionsClient {
+	return &VnetConnectionsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/Revisions_Activate.json
+// Generated from example definition: 2026-07-01/Revisions_Activate.json
 func ExampleContainerAppsRevisionsClient_ActivateRevision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleContainerAppsRevisionsClient_ActivateRevision() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Revisions_Deactivate.json
+// Generated from example definition: 2026-07-01/Revisions_Deactivate.json
 func ExampleContainerAppsRevisionsClient_DeactivateRevision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleContainerAppsRevisionsClient_DeactivateRevision() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Revisions_Get.json
+// Generated from example definition: 2026-07-01/Revisions_Get.json
 func ExampleContainerAppsRevisionsClient_GetRevision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,9 +82,6 @@ func ExampleContainerAppsRevisionsClient_GetRevision() {
 	// 			Active: to.Ptr(true),
 	// 			CreatedTime: to.Ptr(time.Date(2021, time.May, 24, 21, 24, 22, 0, time.UTC)),
 	// 			Fqdn: to.Ptr("testcontainerApp0-pjxhsye.politehill-ab123456.eastus.azurecontainerapps.io"),
-	// 			Labels: []*string{
-	// 				to.Ptr("production"),
-	// 			},
 	// 			LastActiveTime: to.Ptr(time.Date(2021, time.May, 24, 21, 24, 22, 0, time.UTC)),
 	// 			Replicas: to.Ptr[int32](1),
 	// 			RunningState: to.Ptr(armappcontainers.RevisionRunningStateRunning),
@@ -120,7 +117,7 @@ func ExampleContainerAppsRevisionsClient_GetRevision() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Revisions_List.json
+// Generated from example definition: 2026-07-01/Revisions_List.json
 func ExampleContainerAppsRevisionsClient_NewListRevisionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +187,7 @@ func ExampleContainerAppsRevisionsClient_NewListRevisionsPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/Revisions_Restart.json
+// Generated from example definition: 2026-07-01/Revisions_Restart.json
 func ExampleContainerAppsRevisionsClient_RestartRevision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

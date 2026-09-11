@@ -4,33 +4,10 @@
 
 package armappcontainers
 
-// AppResiliencyClientCreateOrUpdateResponse contains the response from method AppResiliencyClient.CreateOrUpdate.
-type AppResiliencyClientCreateOrUpdateResponse struct {
-	// Configuration to setup App Resiliency
-	AppResiliency
-}
-
-// AppResiliencyClientDeleteResponse contains the response from method AppResiliencyClient.Delete.
-type AppResiliencyClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// AppResiliencyClientGetResponse contains the response from method AppResiliencyClient.Get.
-type AppResiliencyClientGetResponse struct {
-	// Configuration to setup App Resiliency
-	AppResiliency
-}
-
-// AppResiliencyClientListResponse contains the response from method AppResiliencyClient.NewListPager.
-type AppResiliencyClientListResponse struct {
-	// Collection of AppResiliency policies
-	AppResiliencyCollection
-}
-
-// AppResiliencyClientUpdateResponse contains the response from method AppResiliencyClient.Update.
-type AppResiliencyClientUpdateResponse struct {
-	// Configuration to setup App Resiliency
-	AppResiliency
+// AvailableEnvironmentModesClientListResponse contains the response from method AvailableEnvironmentModesClient.NewListPager.
+type AvailableEnvironmentModesClientListResponse struct {
+	// Collection of environment modes available in the location.
+	AvailableEnvironmentModesCollection
 }
 
 // AvailableWorkloadProfilesClientGetResponse contains the response from method AvailableWorkloadProfilesClient.NewGetPager.
@@ -43,70 +20,6 @@ type AvailableWorkloadProfilesClientGetResponse struct {
 type BillingMetersClientGetResponse struct {
 	// Collection of billing meters.
 	BillingMeterCollection
-}
-
-// BuildAuthTokenClientListResponse contains the response from method BuildAuthTokenClient.List.
-type BuildAuthTokenClientListResponse struct {
-	// Build Auth Token.
-	BuildToken
-}
-
-// BuildersClientCreateOrUpdateResponse contains the response from method BuildersClient.BeginCreateOrUpdate.
-type BuildersClientCreateOrUpdateResponse struct {
-	// Information about the SourceToCloud builder resource.
-	BuilderResource
-}
-
-// BuildersClientDeleteResponse contains the response from method BuildersClient.BeginDelete.
-type BuildersClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// BuildersClientGetResponse contains the response from method BuildersClient.Get.
-type BuildersClientGetResponse struct {
-	// Information about the SourceToCloud builder resource.
-	BuilderResource
-}
-
-// BuildersClientListByResourceGroupResponse contains the response from method BuildersClient.NewListByResourceGroupPager.
-type BuildersClientListByResourceGroupResponse struct {
-	// The response of a BuilderResource list operation.
-	BuilderCollection
-}
-
-// BuildersClientListBySubscriptionResponse contains the response from method BuildersClient.NewListBySubscriptionPager.
-type BuildersClientListBySubscriptionResponse struct {
-	// The response of a BuilderResource list operation.
-	BuilderCollection
-}
-
-// BuildersClientUpdateResponse contains the response from method BuildersClient.BeginUpdate.
-type BuildersClientUpdateResponse struct {
-	// Information about the SourceToCloud builder resource.
-	BuilderResource
-}
-
-// BuildsByBuilderResourceClientListResponse contains the response from method BuildsByBuilderResourceClient.NewListPager.
-type BuildsByBuilderResourceClientListResponse struct {
-	// The response of a BuildResource list operation.
-	BuildCollection
-}
-
-// BuildsClientCreateOrUpdateResponse contains the response from method BuildsClient.BeginCreateOrUpdate.
-type BuildsClientCreateOrUpdateResponse struct {
-	// Information pertaining to an individual build.
-	BuildResource
-}
-
-// BuildsClientDeleteResponse contains the response from method BuildsClient.BeginDelete.
-type BuildsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// BuildsClientGetResponse contains the response from method BuildsClient.Get.
-type BuildsClientGetResponse struct {
-	// Information pertaining to an individual build.
-	BuildResource
 }
 
 // CertificatesClientCreateOrUpdateResponse contains the response from method CertificatesClient.CreateOrUpdate.
@@ -260,6 +173,41 @@ type ConnectedEnvironmentsStoragesClientListResponse struct {
 	ConnectedEnvironmentStoragesCollection
 }
 
+// ContainerAppPrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method ContainerAppPrivateEndpointConnectionsClient.BeginCreateOrUpdate.
+type ContainerAppPrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
+	// The Private Endpoint Connection resource.
+	PrivateEndpointConnection
+}
+
+// ContainerAppPrivateEndpointConnectionsClientDeleteResponse contains the response from method ContainerAppPrivateEndpointConnectionsClient.BeginDelete.
+type ContainerAppPrivateEndpointConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ContainerAppPrivateEndpointConnectionsClientGetResponse contains the response from method ContainerAppPrivateEndpointConnectionsClient.Get.
+type ContainerAppPrivateEndpointConnectionsClientGetResponse struct {
+	// The Private Endpoint Connection resource.
+	PrivateEndpointConnection
+}
+
+// ContainerAppPrivateEndpointConnectionsClientListResponse contains the response from method ContainerAppPrivateEndpointConnectionsClient.NewListPager.
+type ContainerAppPrivateEndpointConnectionsClientListResponse struct {
+	// The response of a PrivateEndpointConnection list operation.
+	PrivateEndpointConnectionListResult
+}
+
+// ContainerAppPrivateLinkResourcesClientGetResponse contains the response from method ContainerAppPrivateLinkResourcesClient.Get.
+type ContainerAppPrivateLinkResourcesClientGetResponse struct {
+	// A private link resource
+	PrivateLinkResource
+}
+
+// ContainerAppPrivateLinkResourcesClientListResponse contains the response from method ContainerAppPrivateLinkResourcesClient.NewListPager.
+type ContainerAppPrivateLinkResourcesClientListResponse struct {
+	// List of private link resources for a managed environment.
+	PrivateLinkResourceListResult
+}
+
 // ContainerAppsAPIClientGetCustomDomainVerificationIDResponse contains the response from method ContainerAppsAPIClient.GetCustomDomainVerificationID.
 type ContainerAppsAPIClientGetCustomDomainVerificationIDResponse struct {
 	Value *string
@@ -292,23 +240,6 @@ type ContainerAppsAuthConfigsClientGetResponse struct {
 type ContainerAppsAuthConfigsClientListByContainerAppResponse struct {
 	// AuthConfig collection ARM resource.
 	AuthConfigCollection
-}
-
-// ContainerAppsBuildsByContainerAppClientListResponse contains the response from method ContainerAppsBuildsByContainerAppClient.NewListPager.
-type ContainerAppsBuildsByContainerAppClientListResponse struct {
-	// The response of a Container Apps Build Resource list operation.
-	ContainerAppsBuildCollection
-}
-
-// ContainerAppsBuildsClientDeleteResponse contains the response from method ContainerAppsBuildsClient.BeginDelete.
-type ContainerAppsBuildsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ContainerAppsBuildsClientGetResponse contains the response from method ContainerAppsBuildsClient.Get.
-type ContainerAppsBuildsClientGetResponse struct {
-	// Information pertaining to an individual build.
-	ContainerAppsBuildResource
 }
 
 // ContainerAppsClientCreateOrUpdateResponse contains the response from method ContainerAppsClient.BeginCreateOrUpdate.
@@ -435,34 +366,6 @@ type ContainerAppsLabelHistoryClientListLabelHistoryResponse struct {
 	LabelHistoryCollection
 }
 
-// ContainerAppsPatchesClientApplyResponse contains the response from method ContainerAppsPatchesClient.BeginApply.
-type ContainerAppsPatchesClientApplyResponse struct {
-	// Container App Patch
-	ContainerAppsPatchResource
-}
-
-// ContainerAppsPatchesClientDeleteResponse contains the response from method ContainerAppsPatchesClient.BeginDelete.
-type ContainerAppsPatchesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ContainerAppsPatchesClientGetResponse contains the response from method ContainerAppsPatchesClient.Get.
-type ContainerAppsPatchesClientGetResponse struct {
-	// Container App Patch
-	ContainerAppsPatchResource
-}
-
-// ContainerAppsPatchesClientListByContainerAppResponse contains the response from method ContainerAppsPatchesClient.NewListByContainerAppPager.
-type ContainerAppsPatchesClientListByContainerAppResponse struct {
-	// Container App patch collection
-	PatchCollection
-}
-
-// ContainerAppsPatchesClientSkipConfigureResponse contains the response from method ContainerAppsPatchesClient.BeginSkipConfigure.
-type ContainerAppsPatchesClientSkipConfigureResponse struct {
-	// placeholder for future response values
-}
-
 // ContainerAppsRevisionFunctionsClientGetResponse contains the response from method ContainerAppsRevisionFunctionsClient.Get.
 type ContainerAppsRevisionFunctionsClientGetResponse struct {
 	// Container App Function.
@@ -525,12 +428,6 @@ type ContainerAppsSessionPoolsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// ContainerAppsSessionPoolsClientFetchMcpServerCredentialsResponse contains the response from method ContainerAppsSessionPoolsClient.FetchMcpServerCredentials.
-type ContainerAppsSessionPoolsClientFetchMcpServerCredentialsResponse struct {
-	// The credentials used for the MCP server endpoint authentication.
-	McpServerCredential
-}
-
 // ContainerAppsSessionPoolsClientGetResponse contains the response from method ContainerAppsSessionPoolsClient.Get.
 type ContainerAppsSessionPoolsClientGetResponse struct {
 	// Container App session pool.
@@ -547,12 +444,6 @@ type ContainerAppsSessionPoolsClientListByResourceGroupResponse struct {
 type ContainerAppsSessionPoolsClientListBySubscriptionResponse struct {
 	// Session pool collection Azure resource.
 	SessionPoolCollection
-}
-
-// ContainerAppsSessionPoolsClientRotateMcpServerCredentialsResponse contains the response from method ContainerAppsSessionPoolsClient.RotateMcpServerCredentials.
-type ContainerAppsSessionPoolsClientRotateMcpServerCredentialsResponse struct {
-	// The credentials used for the MCP server endpoint authentication.
-	McpServerCredential
 }
 
 // ContainerAppsSessionPoolsClientUpdateResponse contains the response from method ContainerAppsSessionPoolsClient.BeginUpdate.
@@ -636,29 +527,6 @@ type DaprComponentsClientListSecretsResponse struct {
 	DaprSecretsCollection
 }
 
-// DaprSubscriptionsClientCreateOrUpdateResponse contains the response from method DaprSubscriptionsClient.CreateOrUpdate.
-type DaprSubscriptionsClientCreateOrUpdateResponse struct {
-	// Dapr PubSub Event Subscription.
-	DaprSubscription
-}
-
-// DaprSubscriptionsClientDeleteResponse contains the response from method DaprSubscriptionsClient.Delete.
-type DaprSubscriptionsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// DaprSubscriptionsClientGetResponse contains the response from method DaprSubscriptionsClient.Get.
-type DaprSubscriptionsClientGetResponse struct {
-	// Dapr PubSub Event Subscription.
-	DaprSubscription
-}
-
-// DaprSubscriptionsClientListResponse contains the response from method DaprSubscriptionsClient.NewListPager.
-type DaprSubscriptionsClientListResponse struct {
-	// Dapr Subscriptions ARM resource.
-	DaprSubscriptionsCollection
-}
-
 // DotNetComponentsClientCreateOrUpdateResponse contains the response from method DotNetComponentsClient.BeginCreateOrUpdate.
 type DotNetComponentsClientCreateOrUpdateResponse struct {
 	// .NET Component.
@@ -695,7 +563,7 @@ type FunctionsExtensionClientInvokeFunctionsHostResponse struct {
 
 // HTTPRouteConfigClientCreateOrUpdateResponse contains the response from method HTTPRouteConfigClient.CreateOrUpdate.
 type HTTPRouteConfigClientCreateOrUpdateResponse struct {
-	// Advanced Ingress routing for path/header based routing for a Container App Environment
+	// A set of host names and http request routing rules for a Container App Environment
 	HTTPRouteConfig
 }
 
@@ -706,19 +574,19 @@ type HTTPRouteConfigClientDeleteResponse struct {
 
 // HTTPRouteConfigClientGetResponse contains the response from method HTTPRouteConfigClient.Get.
 type HTTPRouteConfigClientGetResponse struct {
-	// Advanced Ingress routing for path/header based routing for a Container App Environment
+	// A set of host names and http request routing rules for a Container App Environment
 	HTTPRouteConfig
 }
 
 // HTTPRouteConfigClientListResponse contains the response from method HTTPRouteConfigClient.NewListPager.
 type HTTPRouteConfigClientListResponse struct {
-	// Collection of Advanced Ingress Routing Config resources.
+	// Collection of rule based Http Route Config resources.
 	HTTPRouteConfigCollection
 }
 
 // HTTPRouteConfigClientUpdateResponse contains the response from method HTTPRouteConfigClient.Update.
 type HTTPRouteConfigClientUpdateResponse struct {
-	// Advanced Ingress routing for path/header based routing for a Container App Environment
+	// A set of host names and http request routing rules for a Container App Environment
 	HTTPRouteConfig
 }
 
@@ -856,11 +724,6 @@ type LogicAppsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// LogicAppsClientDeployWorkflowArtifactsResponse contains the response from method LogicAppsClient.DeployWorkflowArtifacts.
-type LogicAppsClientDeployWorkflowArtifactsResponse struct {
-	// placeholder for future response values
-}
-
 // LogicAppsClientGetResponse contains the response from method LogicAppsClient.Get.
 type LogicAppsClientGetResponse struct {
 	// A logic app extension resource
@@ -871,12 +734,6 @@ type LogicAppsClientGetResponse struct {
 type LogicAppsClientGetWorkflowResponse struct {
 	// Schema for the workflow object.
 	WorkflowEnvelope
-}
-
-// LogicAppsClientInvokeResponse contains the response from method LogicAppsClient.Invoke.
-type LogicAppsClientInvokeResponse struct {
-	// Logic App call response object.
-	Object
 }
 
 // LogicAppsClientListWorkflowsConnectionsResponse contains the response from method LogicAppsClient.ListWorkflowsConnections.
@@ -978,9 +835,15 @@ type ManagedEnvironmentPrivateEndpointConnectionsClientListResponse struct {
 	PrivateEndpointConnectionListResult
 }
 
+// ManagedEnvironmentPrivateLinkResourcesClientGetResponse contains the response from method ManagedEnvironmentPrivateLinkResourcesClient.Get.
+type ManagedEnvironmentPrivateLinkResourcesClientGetResponse struct {
+	// A private link resource
+	PrivateLinkResource
+}
+
 // ManagedEnvironmentPrivateLinkResourcesClientListResponse contains the response from method ManagedEnvironmentPrivateLinkResourcesClient.NewListPager.
 type ManagedEnvironmentPrivateLinkResourcesClientListResponse struct {
-	// The response of a PrivateLinkResource list operation.
+	// List of private link resources for a managed environment.
 	PrivateLinkResourceListResult
 }
 
@@ -988,6 +851,12 @@ type ManagedEnvironmentPrivateLinkResourcesClientListResponse struct {
 type ManagedEnvironmentUsagesClientListResponse struct {
 	// Paged collection of Usage items
 	ListUsagesResult
+}
+
+// ManagedEnvironmentsClientCheckMigrationEligibilityResponse contains the response from method ManagedEnvironmentsClient.CheckMigrationEligibility.
+type ManagedEnvironmentsClientCheckMigrationEligibilityResponse struct {
+	// Result of a read-only managed environment migration eligibility check.
+	CheckMigrationEligibilityResponse
 }
 
 // ManagedEnvironmentsClientCreateOrUpdateResponse contains the response from method ManagedEnvironmentsClient.BeginCreateOrUpdate.
@@ -1078,8 +947,65 @@ type OperationsClientListResponse struct {
 	AvailableOperations
 }
 
+// SandboxGroupsClientCreateOrUpdateResponse contains the response from method SandboxGroupsClient.BeginCreateOrUpdate.
+type SandboxGroupsClientCreateOrUpdateResponse struct {
+	// A SandboxGroup resource, representing a group of sandboxes that share configuration defaults and quotas.
+	SandboxGroup
+}
+
+// SandboxGroupsClientDeleteResponse contains the response from method SandboxGroupsClient.BeginDelete.
+type SandboxGroupsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// SandboxGroupsClientGetResponse contains the response from method SandboxGroupsClient.Get.
+type SandboxGroupsClientGetResponse struct {
+	// A SandboxGroup resource, representing a group of sandboxes that share configuration defaults and quotas.
+	SandboxGroup
+}
+
+// SandboxGroupsClientListByResourceGroupResponse contains the response from method SandboxGroupsClient.NewListByResourceGroupPager.
+type SandboxGroupsClientListByResourceGroupResponse struct {
+	// The response of a SandboxGroup list operation.
+	SandboxGroupListResult
+}
+
+// SandboxGroupsClientListBySubscriptionResponse contains the response from method SandboxGroupsClient.NewListBySubscriptionPager.
+type SandboxGroupsClientListBySubscriptionResponse struct {
+	// The response of a SandboxGroup list operation.
+	SandboxGroupListResult
+}
+
+// SandboxGroupsClientUpdateResponse contains the response from method SandboxGroupsClient.BeginUpdate.
+type SandboxGroupsClientUpdateResponse struct {
+	// placeholder for future response values
+}
+
 // UsagesClientListResponse contains the response from method UsagesClient.NewListPager.
 type UsagesClientListResponse struct {
 	// Paged collection of Usage items
 	ListUsagesResult
+}
+
+// VnetConnectionsClientCreateOrUpdateResponse contains the response from method VnetConnectionsClient.CreateOrUpdate.
+type VnetConnectionsClientCreateOrUpdateResponse struct {
+	// A virtual network connection associated with a SandboxGroup.
+	VnetConnection
+}
+
+// VnetConnectionsClientDeleteResponse contains the response from method VnetConnectionsClient.BeginDelete.
+type VnetConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// VnetConnectionsClientGetResponse contains the response from method VnetConnectionsClient.Get.
+type VnetConnectionsClientGetResponse struct {
+	// A virtual network connection associated with a SandboxGroup.
+	VnetConnection
+}
+
+// VnetConnectionsClientListBySandboxGroupResponse contains the response from method VnetConnectionsClient.NewListBySandboxGroupPager.
+type VnetConnectionsClientListBySandboxGroupResponse struct {
+	// The response of a VnetConnection list operation.
+	VnetConnectionListResult
 }

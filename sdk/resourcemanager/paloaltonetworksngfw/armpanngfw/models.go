@@ -210,6 +210,89 @@ type Country struct {
 	Description *string
 }
 
+// CustomCaptureConfigurationsFilter - A single packet-capture filter rule. sourcePort is OPTIONAL — when omitted, any source
+// port matches.
+type CustomCaptureConfigurationsFilter struct {
+	// REQUIRED; Destination IPv4 address in dotted format (e.g., 52.39.204.87).
+	DestinationIPAddress *string
+
+	// REQUIRED; Destination port number (1-65535). Required.
+	DestinationPort *int32
+
+	// REQUIRED; Network protocol — TCP or UDP.
+	Protocol *CustomCaptureConfigurationsProtocol
+
+	// REQUIRED; Source IPv4 address in dotted format (e.g., 10.0.0.5).
+	SourceIPAddress *string
+
+	// Source port number (1-65535). Optional — omit to match any source port.
+	SourcePort *int32
+}
+
+// CustomCaptureConfigurationsFirewallResource - Custom Capture Configuration on a firewall (singleton). Sync child resource
+// — caller polls GET to track pcapStatus until terminal (Success / Failed).
+type CustomCaptureConfigurationsFirewallResource struct {
+	// REQUIRED; The resource-specific properties for this resource.
+	Properties *CustomCaptureConfigurationsProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// CustomCaptureConfigurationsFirewallResourceListResult - The response of a CustomCaptureConfigurationsFirewallResource list
+// operation.
+type CustomCaptureConfigurationsFirewallResourceListResult struct {
+	// REQUIRED; The CustomCaptureConfigurationsFirewallResource items on this page
+	Value []*CustomCaptureConfigurationsFirewallResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// CustomCaptureConfigurationsProperties - Properties of a Custom Capture Configuration. NOTE: this is a sync proxy resource,
+// NOT an LRO — there is intentionally no provisioningState field.
+type CustomCaptureConfigurationsProperties struct {
+	// Capture duration in seconds (1-180). Required on PUT (input). May be omitted in GET responses while pcapStatus is InProgress
+	// because the backend has not finalized echo-back yet; echoed in terminal Success responses.
+	DurationInSec *int32
+
+	// List of filters to match packets against (1-4 entries). Required on PUT (input). May be omitted in GET responses while
+	// pcapStatus is InProgress because the backend has not finalized echo-back yet; echoed in terminal Success responses.
+	PcapFilter []*CustomCaptureConfigurationsFilter
+
+	// List of firewall stages where packets should be captured (1-4 entries). Required on PUT (input). May be omitted in GET
+	// responses while pcapStatus is InProgress because the backend has not finalized echo-back yet; echoed in terminal Success
+	// responses.
+	PcapStages []*CustomCaptureConfigurationsStage
+
+	// ARM resource ID of the customer's storage account where the capture file will be written. Required on PUT (input). May
+	// be omitted in GET responses while pcapStatus is InProgress because the backend has not finalized echo-back yet; echoed
+	// in terminal Success responses.
+	StorageAccountResourceID *string
+
+	// READ-ONLY; Human-readable status message for display in client UIs (Portal blade, CLI output, etc.). English only. Read-only.
+	Message *string
+
+	// READ-ONLY; Polling-cadence hint in seconds. Set on non-terminal responses (pcapStatus = InProgress) so clients know how
+	// long to wait before the next GET. Omitted on terminal responses (Success / Failed). Read-only.
+	NextCheckInSeconds *int32
+
+	// READ-ONLY; Detailed reason for the current status, populated by PAN. Typically set when pcapStatus is Failed. Read-only.
+	PcapDetailReason *string
+
+	// READ-ONLY; Current capture status. Read-only. Clients should poll GET until this is Success or Failed.
+	PcapStatus *CustomCaptureConfigurationsStatus
+}
+
 // DNSSettings - DNS Proxy settings for Firewall
 type DNSSettings struct {
 	// List of IPs associated with the Firewall
@@ -283,6 +366,9 @@ type FirewallDeploymentProperties struct {
 
 	// Associated Rulestack
 	AssociatedRulestack *RulestackDetails
+
+	// Firewall SKU type, Default will be STANDARD.
+	FirewallSKU *string
 
 	// Frontend settings for Firewall
 	FrontEndSettings []*FrontendSetting
@@ -753,6 +839,74 @@ type LogDestination struct {
 	StorageConfigurations *StorageAccount
 }
 
+// LogDestinationV2 - Log Destination for the Azure Monitor Log Ingestion (Data Collection Rule) method. Carries the DCR-based
+// `monitorConfigurationsV2`.
+type LogDestinationV2 struct {
+	// Event Hub configurations
+	EventHubConfigurations *EventHub
+
+	// Azure Monitor Log Ingestion (Data Collection Rule) configuration for this destination.
+	MonitorConfigurationsV2 *MonitorLogV2
+
+	// Storage account configurations
+	StorageConfigurations *StorageAccount
+}
+
+// LogIngestionSettingsProperties - Log Ingestion Settings for a firewall (Azure Monitor Log Ingestion / Data Collection Rule
+// based).
+type LogIngestionSettingsProperties struct {
+	// Application Insight details
+	ApplicationInsights *ApplicationInsights
+
+	// Common destination configurations
+	CommonDestination *LogDestinationV2
+
+	// Decrypt destination configurations
+	DecryptLogDestination *LogDestinationV2
+
+	// Log option SAME/INDIVIDUAL
+	LogOption *LogOption
+
+	// One of possible log type
+	LogType *LogType
+
+	// Threat destination configurations
+	ThreatLogDestination *LogDestinationV2
+
+	// Traffic destination configurations
+	TrafficLogDestination *LogDestinationV2
+}
+
+// LogIngestionSettingsResource - Log Ingestion Settings on a firewall (singleton — the name is always 'default'). This is
+// the modern Azure Monitor Log Ingestion (Data Collection Rule based) surface that supersedes the legacy getLogProfile/saveLogProfile
+// actions. Sync child resource — PUT/GET/DELETE forward to the partner synchronously; the caller does not poll a long-running
+// operation.
+type LogIngestionSettingsResource struct {
+	// REQUIRED; The resource-specific properties for this resource.
+	Properties *LogIngestionSettingsProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// LogIngestionSettingsResourceListResult - The response of a LogIngestionSettingsResource list operation.
+type LogIngestionSettingsResourceListResult struct {
+	// REQUIRED; The LogIngestionSettingsResource items on this page
+	Value []*LogIngestionSettingsResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
 // LogSettings - Log Settings for Firewall
 type LogSettings struct {
 	// Application Insight details
@@ -850,6 +1004,24 @@ type MonitorLog struct {
 
 	// MonitorLog workspace
 	Workspace *string
+}
+
+// MonitorLogV2 - Log collection using the Azure Monitor Log Ingestion API (Data Collection Rule based).
+// This supersedes the legacy HTTP Data Collector `MonitorLog` for firewalls that have migrated
+// to the modern DCR ingestion path. When this block is supplied, all four fields are required.
+type MonitorLogV2 struct {
+	// REQUIRED; ARM resource ID of the Data Collection Rule (DCR) that governs how these logs are transformed and routed.
+	DcrID *string
+
+	// REQUIRED; Immutable ID of the Data Collection Rule (the value that begins with `dcr-`).
+	DcrImmutableID *string
+
+	// REQUIRED; HTTPS logs ingestion endpoint that receives the data (the DCR's logs ingestion endpoint or its Data Collection
+	// Endpoint).
+	LogIngestionEndpoint *string
+
+	// REQUIRED; DCR input stream that receives the data. For a custom table this is typically `Custom-<TableName>`.
+	StreamName *string
 }
 
 // NameDescriptionObject - object type info

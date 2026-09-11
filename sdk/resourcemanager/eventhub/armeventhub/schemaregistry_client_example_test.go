@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/SchemaRegistry/SchemaRegistryCreate.json
+// Generated from example definition: 2026-07-01-preview/SchemaRegistry/SchemaRegistryCreate.json
 func ExampleSchemaRegistryClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleSchemaRegistryClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/SchemaRegistry/SchemaRegistryDelete.json
+// Generated from example definition: 2026-07-01-preview/SchemaRegistry/SchemaRegistryDelete.json
 func ExampleSchemaRegistryClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleSchemaRegistryClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/SchemaRegistry/SchemaRegistryGet.json
+// Generated from example definition: 2026-07-01-preview/SchemaRegistry/SchemaRegistryGet.json
 func ExampleSchemaRegistryClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleSchemaRegistryClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/SchemaRegistry/SchemaRegistryListByNamespace.json
+// Generated from example definition: 2026-07-01-preview/SchemaRegistry/SchemaRegistryListByNamespace.json
 func ExampleSchemaRegistryClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

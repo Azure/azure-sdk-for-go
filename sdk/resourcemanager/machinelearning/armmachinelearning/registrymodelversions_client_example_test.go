@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Registry/ModelVersion/createOrGetStartPendingUpload.json
+// Generated from example definition: 2026-07-01/Registry/ModelVersion/createOrGetStartPendingUpload.json
 func ExampleRegistryModelVersionsClient_CreateOrGetStartPendingUpload() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleRegistryModelVersionsClient_CreateOrGetStartPendingUpload() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ModelVersion/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Registry/ModelVersion/createOrUpdate.json
 func ExampleRegistryModelVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleRegistryModelVersionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ModelVersion/delete.json
+// Generated from example definition: 2026-07-01/Registry/ModelVersion/delete.json
 func ExampleRegistryModelVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,7 +153,7 @@ func ExampleRegistryModelVersionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ModelVersion/get.json
+// Generated from example definition: 2026-07-01/Registry/ModelVersion/get.json
 func ExampleRegistryModelVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +207,7 @@ func ExampleRegistryModelVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ModelVersion/list.json
+// Generated from example definition: 2026-07-01/Registry/ModelVersion/list.json
 func ExampleRegistryModelVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,7 +237,7 @@ func ExampleRegistryModelVersionsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.RegistryModelVersionsClientListResponse{
 		// 	ModelVersionResourceArmPaginatedResult: armmachinelearning.ModelVersionResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/registries/registries123/models/string/versions?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/registries/registries123/models/string/versions?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.ModelVersion{
 		// 			{
 		// 				Name: to.Ptr("string"),

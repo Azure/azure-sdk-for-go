@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/ManagedNetwork/provision.json
+// Generated from example definition: 2026-07-01/ManagedNetwork/provision.json
 func ExampleManagedNetworkProvisionsClient_BeginProvisionManagedNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

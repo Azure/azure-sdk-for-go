@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/MonitoredSubscriptions_CreateorUpdate.json
+// Generated from example definition: 2026-03-15-preview/MonitoredSubscriptions_CreateorUpdate.json
 func ExampleMonitoredSubscriptionsClient_BeginCreateorUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleMonitoredSubscriptionsClient_BeginCreateorUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/MonitoredSubscriptions_Delete.json
+// Generated from example definition: 2026-03-15-preview/MonitoredSubscriptions_Delete.json
 func ExampleMonitoredSubscriptionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleMonitoredSubscriptionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/MonitoredSubscriptions_Get.json
+// Generated from example definition: 2026-03-15-preview/MonitoredSubscriptions_Get.json
 func ExampleMonitoredSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +174,7 @@ func ExampleMonitoredSubscriptionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/MonitoredSubscriptions_List.json
+// Generated from example definition: 2026-03-15-preview/MonitoredSubscriptions_List.json
 func ExampleMonitoredSubscriptionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -252,7 +252,7 @@ func ExampleMonitoredSubscriptionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/MonitoredSubscriptions_Update.json
+// Generated from example definition: 2026-03-15-preview/MonitoredSubscriptions_Update.json
 func ExampleMonitoredSubscriptionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

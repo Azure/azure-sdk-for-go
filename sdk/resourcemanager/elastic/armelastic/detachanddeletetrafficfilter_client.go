@@ -19,7 +19,7 @@ import (
 // DetachAndDeleteTrafficFilterClient contains the methods for the DetachAndDeleteTrafficFilter group.
 // Don't use this type directly, use NewDetachAndDeleteTrafficFilterClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-03-15-preview
 type DetachAndDeleteTrafficFilterClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -91,7 +91,7 @@ func (client *DetachAndDeleteTrafficFilterClient) deleteCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20260315Preview)
 	if options != nil && options.RulesetID != nil {
 		reqQP.Set("rulesetId", *options.RulesetID)
 	}

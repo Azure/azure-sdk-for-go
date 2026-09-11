@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/DeploymentInfo_List.json
+// Generated from example definition: 2026-03-15-preview/DeploymentInfo_List.json
 func ExampleDeploymentInfoClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

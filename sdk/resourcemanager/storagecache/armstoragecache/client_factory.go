@@ -111,6 +111,14 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
+// NewRebalanceJobsClient creates a new instance of RebalanceJobsClient.
+func (c *ClientFactory) NewRebalanceJobsClient() *RebalanceJobsClient {
+	return &RebalanceJobsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewSKUsClient creates a new instance of SKUsClient.
 func (c *ClientFactory) NewSKUsClient() *SKUsClient {
 	return &SKUsClient{

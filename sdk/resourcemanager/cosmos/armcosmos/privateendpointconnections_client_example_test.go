@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15/CosmosDBPrivateEndpointConnectionUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBPrivateEndpointConnectionUpdate.json
 func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,8 +26,8 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginCreateOrUpdate(ctx, "rg1", "ddb1", "privateEndpointConnectionName", armcosmos.PrivateEndpointConnection{
 		Properties: &armcosmos.PrivateEndpointConnectionProperties{
 			PrivateLinkServiceConnectionState: &armcosmos.PrivateLinkServiceConnectionStateProperty{
-				Status:      to.Ptr("Approved"),
 				Description: to.Ptr("Approved by johndoe@contoso.com"),
+				Status:      to.Ptr("Approved"),
 			},
 		},
 	}, nil)
@@ -43,26 +43,26 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.PrivateEndpointConnectionsClientCreateOrUpdateResponse{
 	// 	PrivateEndpointConnection: armcosmos.PrivateEndpointConnection{
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDb/databaseAccounts/ddb1/privateEndpointConnections/privateEndpointConnectionName"),
 	// 		Name: to.Ptr("privateEndpointConnectionName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDb/databaseAccounts/privateEndpointConnections"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDb/databaseAccounts/ddb1/privateEndpointConnections/privateEndpointConnectionName"),
 	// 		Properties: &armcosmos.PrivateEndpointConnectionProperties{
+	// 			GroupID: to.Ptr("Sql"),
 	// 			PrivateEndpoint: &armcosmos.PrivateEndpointProperty{
 	// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1Network/providers/Microsoft.Network/privateEndpoints/privateEndpointName"),
 	// 			},
 	// 			PrivateLinkServiceConnectionState: &armcosmos.PrivateLinkServiceConnectionStateProperty{
-	// 				Status: to.Ptr("Approved"),
 	// 				Description: to.Ptr("Auto-approved"),
 	// 				ActionsRequired: to.Ptr("None"),
+	// 				Status: to.Ptr("Approved"),
 	// 			},
-	// 			GroupID: to.Ptr("Sql"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBPrivateEndpointConnectionDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBPrivateEndpointConnectionDelete.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBPrivateEndpointConnectionGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBPrivateEndpointConnectionGet.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,26 +103,26 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.PrivateEndpointConnectionsClientGetResponse{
 	// 	PrivateEndpointConnection: armcosmos.PrivateEndpointConnection{
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/privateEndpointConnections/privateEndpointConnectionName"),
 	// 		Name: to.Ptr("privateEndpointConnectionName"),
-	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/privateEndpointConnections"),
+	// 		Type: to.Ptr("Microsoft.DocumentDb/databaseAccounts/privateEndpointConnections"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDb/databaseAccounts/ddb1/privateEndpointConnections/privateEndpointConnectionName"),
 	// 		Properties: &armcosmos.PrivateEndpointConnectionProperties{
+	// 			GroupID: to.Ptr("Sql"),
 	// 			PrivateEndpoint: &armcosmos.PrivateEndpointProperty{
 	// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1Network/providers/Microsoft.Network/privateEndpoints/privateEndpointName"),
 	// 			},
 	// 			PrivateLinkServiceConnectionState: &armcosmos.PrivateLinkServiceConnectionStateProperty{
-	// 				Status: to.Ptr("Approved"),
 	// 				Description: to.Ptr("Auto-approved"),
 	// 				ActionsRequired: to.Ptr("None"),
+	// 				Status: to.Ptr("Approved"),
 	// 			},
-	// 			GroupID: to.Ptr("Sql"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBPrivateEndpointConnectionListGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBPrivateEndpointConnectionListGet.json
 func ExamplePrivateEndpointConnectionsClient_NewListByDatabaseAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,36 +148,36 @@ func ExamplePrivateEndpointConnectionsClient_NewListByDatabaseAccountPager() {
 		// 	PrivateEndpointConnectionListResult: armcosmos.PrivateEndpointConnectionListResult{
 		// 		Value: []*armcosmos.PrivateEndpointConnection{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDb/databaseAccounts/ddb1/privateEndpointConnections/privateEndpointConnectionName"),
 		// 				Name: to.Ptr("privateEndpointConnectionName"),
 		// 				Type: to.Ptr("Microsoft.DocumentDb/databaseAccounts/privateEndpointConnections"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDb/databaseAccounts/ddb1/privateEndpointConnections/privateEndpointConnectionName"),
 		// 				Properties: &armcosmos.PrivateEndpointConnectionProperties{
+		// 					GroupID: to.Ptr("Sql"),
 		// 					PrivateEndpoint: &armcosmos.PrivateEndpointProperty{
 		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1Network/providers/Microsoft.Network/privateEndpoints/privateEndpointName"),
 		// 					},
 		// 					PrivateLinkServiceConnectionState: &armcosmos.PrivateLinkServiceConnectionStateProperty{
-		// 						Status: to.Ptr("Approved"),
 		// 						Description: to.Ptr("Auto-approved"),
 		// 						ActionsRequired: to.Ptr("None"),
+		// 						Status: to.Ptr("Approved"),
 		// 					},
-		// 					GroupID: to.Ptr("Sql"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 				},
 		// 			},
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDb/databaseAccounts/ddb1/privateEndpointConnections/privateEndpointConnectionName2"),
 		// 				Name: to.Ptr("privateEndpointConnectionName"),
 		// 				Type: to.Ptr("Microsoft.DocumentDb/databaseAccounts/privateEndpointConnections"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDb/databaseAccounts/ddb1/privateEndpointConnections/privateEndpointConnectionName2"),
 		// 				Properties: &armcosmos.PrivateEndpointConnectionProperties{
+		// 					GroupID: to.Ptr("Sql"),
 		// 					PrivateEndpoint: &armcosmos.PrivateEndpointProperty{
 		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1Network/providers/Microsoft.Network/privateEndpoints/privateEndpointName2"),
 		// 					},
 		// 					PrivateLinkServiceConnectionState: &armcosmos.PrivateLinkServiceConnectionStateProperty{
-		// 						Status: to.Ptr("Approved"),
 		// 						Description: to.Ptr("Auto-approved"),
 		// 						ActionsRequired: to.Ptr("None"),
+		// 						Status: to.Ptr("Approved"),
 		// 					},
-		// 					GroupID: to.Ptr("Sql"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 				},
 		// 			},

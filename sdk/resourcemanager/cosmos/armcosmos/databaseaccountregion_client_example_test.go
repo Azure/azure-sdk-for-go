@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountRegionGetMetrics.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountRegionGetMetrics.json
 func ExampleDatabaseAccountRegionClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,40 +37,40 @@ func ExampleDatabaseAccountRegionClient_NewListMetricsPager() {
 		// 	MetricListResult: armcosmos.MetricListResult{
 		// 		Value: []*armcosmos.Metric{
 		// 			{
-		// 				TimeGrain: to.Ptr("PT5M"),
-		// 				StartTime: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
+		// 				Name: &armcosmos.MetricName{
+		// 					LocalizedValue: to.Ptr("Total Requests"),
+		// 					Value: to.Ptr("Total Requests"),
+		// 				},
 		// 				EndTime: to.Ptr(time.Date(2017, time.November, 20, 0, 13, 55, 278000000, time.UTC)),
-		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
 		// 				MetricValues: []*armcosmos.MetricValue{
 		// 					{
+		// 						Count: to.Ptr[int32](0),
+		// 						Average: to.Ptr[float64](0),
 		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
 		// 						Total: to.Ptr[float64](0),
-		// 						Count: to.Ptr[int32](0),
-		// 						Average: to.Ptr[float64](0),
 		// 					},
 		// 					{
+		// 						Count: to.Ptr[int32](0),
+		// 						Average: to.Ptr[float64](0),
 		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 58, 55, 278000000, time.UTC)),
 		// 						Total: to.Ptr[float64](0),
-		// 						Count: to.Ptr[int32](0),
-		// 						Average: to.Ptr[float64](0),
 		// 					},
 		// 					{
+		// 						Count: to.Ptr[int32](0),
+		// 						Average: to.Ptr[float64](0),
 		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 20, 0, 3, 55, 278000000, time.UTC)),
 		// 						Total: to.Ptr[float64](0),
-		// 						Count: to.Ptr[int32](0),
-		// 						Average: to.Ptr[float64](0),
 		// 					},
 		// 					{
-		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 20, 0, 8, 55, 278000000, time.UTC)),
-		// 						Total: to.Ptr[float64](0),
 		// 						Count: to.Ptr[int32](0),
 		// 						Average: to.Ptr[float64](0),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 20, 0, 8, 55, 278000000, time.UTC)),
+		// 						Total: to.Ptr[float64](0),
 		// 					},
 		// 				},
-		// 				Name: &armcosmos.MetricName{
-		// 					Value: to.Ptr("Total Requests"),
-		// 					LocalizedValue: to.Ptr("Total Requests"),
-		// 				},
+		// 				StartTime: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
+		// 				TimeGrain: to.Ptr("PT5M"),
+		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
 		// 			},
 		// 		},
 		// 	},

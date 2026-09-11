@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15/CosmosDBPercentileSourceTargetGetMetrics.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBPercentileSourceTargetGetMetrics.json
 func ExamplePercentileSourceTargetClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,13 +37,13 @@ func ExamplePercentileSourceTargetClient_NewListMetricsPager() {
 		// 	PercentileMetricListResult: armcosmos.PercentileMetricListResult{
 		// 		Value: []*armcosmos.PercentileMetric{
 		// 			{
-		// 				TimeGrain: to.Ptr("PT5M"),
-		// 				StartTime: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
+		// 				Name: &armcosmos.MetricName{
+		// 					LocalizedValue: to.Ptr("Probabilistic Bounded Staleness-S-West Central US-T-East US"),
+		// 					Value: to.Ptr("Probabilistic Bounded Staleness-S-West Central US-T-East US"),
+		// 				},
 		// 				EndTime: to.Ptr(time.Date(2017, time.November, 20, 0, 13, 55, 278000000, time.UTC)),
-		// 				Unit: to.Ptr(armcosmos.UnitTypeMilliseconds),
 		// 				MetricValues: []*armcosmos.PercentileMetricValue{
 		// 					{
-		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
 		// 						P10: to.Ptr[float64](1.11),
 		// 						P25: to.Ptr[float64](2.5),
 		// 						P50: to.Ptr[float64](4.34),
@@ -51,12 +51,12 @@ func ExamplePercentileSourceTargetClient_NewListMetricsPager() {
 		// 						P90: to.Ptr[float64](6.77),
 		// 						P95: to.Ptr[float64](7.1),
 		// 						P99: to.Ptr[float64](8.3),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
 		// 					},
 		// 				},
-		// 				Name: &armcosmos.MetricName{
-		// 					Value: to.Ptr("Probabilistic Bounded Staleness-S-West Central US-T-East US"),
-		// 					LocalizedValue: to.Ptr("Probabilistic Bounded Staleness-S-West Central US-T-East US"),
-		// 				},
+		// 				StartTime: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
+		// 				TimeGrain: to.Ptr("PT5M"),
+		// 				Unit: to.Ptr(armcosmos.UnitTypeMilliseconds),
 		// 			},
 		// 		},
 		// 	},

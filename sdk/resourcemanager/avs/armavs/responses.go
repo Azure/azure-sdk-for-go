@@ -189,6 +189,12 @@ type HostsClientListResponse struct {
 	HostListResult
 }
 
+// HostsClientUpdateResponse contains the response from method HostsClient.Update.
+type HostsClientUpdateResponse struct {
+	// A host resource
+	Host
+}
+
 // IscsiPathsClientCreateOrUpdateResponse contains the response from method IscsiPathsClient.BeginCreateOrUpdate.
 type IscsiPathsClientCreateOrUpdateResponse struct {
 	// An iSCSI path resource

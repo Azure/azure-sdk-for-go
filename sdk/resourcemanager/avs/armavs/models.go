@@ -556,6 +556,9 @@ type GeneralHostProperties struct {
 	// Display name of the host in VMware vCenter.
 	DisplayName *string
 
+	// The licenses assigned to the host.
+	Licenses []HostLicenseClassification
+
 	// If provided, the host is in maintenance. The value is the reason for maintenance.
 	Maintenance *HostMaintenance
 
@@ -579,6 +582,7 @@ func (g *GeneralHostProperties) GetHostProperties() *HostProperties {
 		FaultDomain:       g.FaultDomain,
 		Fqdn:              g.Fqdn,
 		Kind:              g.Kind,
+		Licenses:          g.Licenses,
 		Maintenance:       g.Maintenance,
 		MoRefID:           g.MoRefID,
 		ProvisioningState: g.ProvisioningState,
@@ -700,6 +704,15 @@ type Host struct {
 	Type *string
 }
 
+// HostLicense - A license assigned to a host.
+type HostLicense struct {
+	// REQUIRED; License kind
+	Kind *HostLicenseKind
+}
+
+// GetHostLicense implements the HostLicenseClassification interface for type HostLicense.
+func (h *HostLicense) GetHostLicense() *HostLicense { return h }
+
 // HostListResult - The response of a Host list operation.
 type HostListResult struct {
 	// REQUIRED; The Host items on this page
@@ -716,6 +729,9 @@ type HostProperties struct {
 
 	// Display name of the host in VMware vCenter.
 	DisplayName *string
+
+	// The licenses assigned to the host.
+	Licenses []HostLicenseClassification
 
 	// If provided, the host is in maintenance. The value is the reason for maintenance.
 	Maintenance *HostMaintenance
@@ -735,6 +751,18 @@ type HostProperties struct {
 
 // GetHostProperties implements the HostPropertiesClassification interface for type HostProperties.
 func (h *HostProperties) GetHostProperties() *HostProperties { return h }
+
+// HostUpdate - The properties of a host to update.
+type HostUpdate struct {
+	// The properties of a host resource that may be updated
+	Properties *HostUpdateProperties
+}
+
+// HostUpdateProperties - The properties for updating a host.
+type HostUpdateProperties struct {
+	// The licenses assigned to the host.
+	Licenses []HostLicenseClassification
+}
 
 // IdentitySource - vCenter Single Sign On Identity Source
 type IdentitySource struct {
@@ -900,12 +928,42 @@ type Maintenance struct {
 	Type *string
 }
 
+// MaintenanceActivity - Represents a maintenance activity performed as part of an operation
+type MaintenanceActivity struct {
+	// READ-ONLY; The component on which the activity is performed
+	Component *string
+
+	// READ-ONLY; The type of activity
+	Kind *MaintenanceActivityKind
+
+	// READ-ONLY; Target version of the component
+	Version *string
+
+	// READ-ONLY; Describes impact of the activity
+	Impact *string
+
+	// READ-ONLY; Optional link containing more details about the activity
+	InfoLink *string
+}
+
 // MaintenanceFailedCheck - Details about a failed maintenance check
 type MaintenanceFailedCheck struct {
 	// READ-ONLY; A list of resources impacted by the failed check
 	ImpactedResources []*ImpactedMaintenanceResource
 
 	// READ-ONLY; The name of the failed check
+	Name *string
+}
+
+// MaintenanceGroup - Represents a maintenance group
+type MaintenanceGroup struct {
+	// READ-ONLY; Unique identifier of the group
+	ID *string
+
+	// READ-ONLY; Type of the group
+	Kind *MaintenanceGroupKind
+
+	// READ-ONLY; Display name of the group
 	Name *string
 }
 
@@ -931,6 +989,9 @@ func (m *MaintenanceManagementOperation) GetMaintenanceManagementOperation() *Ma
 
 // MaintenanceProperties - properties of a maintenance
 type MaintenanceProperties struct {
+	// READ-ONLY; Activities performed as part of maintenance
+	Activities []*MaintenanceActivity
+
 	// READ-ONLY; Cluster ID for on which maintenance will be applied. Empty if maintenance is at private cloud level
 	ClusterID *int32
 
@@ -942,6 +1003,9 @@ type MaintenanceProperties struct {
 
 	// READ-ONLY; Estimated time maintenance will take in minutes
 	EstimatedDurationInMinutes *int64
+
+	// READ-ONLY; Group details if maintenance is part of a group
+	Group *MaintenanceGroup
 
 	// READ-ONLY; Impact on the resource during maintenance period
 	Impact *string
@@ -957,6 +1021,9 @@ type MaintenanceProperties struct {
 
 	// READ-ONLY; The provisioning state
 	ProvisioningState *MaintenanceProvisioningState
+
+	// READ-ONLY; Relationships with other maintenances like dependencies and prerequisites
+	Relationships *MaintenanceRelationships
 
 	// READ-ONLY; If maintenance is scheduled by Microsoft
 	ScheduledByMicrosoft *bool
@@ -1014,6 +1081,21 @@ func (m *MaintenanceReadinessRefreshOperation) GetMaintenanceManagementOperation
 	}
 }
 
+// MaintenanceRecommendation - Recommendation details for scheduling/rescheduling maintenance
+type MaintenanceRecommendation struct {
+	// READ-ONLY; List of recommended maintenance windows
+	MaintenanceWindows []*MaintenanceWindowRecommendation
+}
+
+// MaintenanceRelationships - Defines relationship details between maintenance groups
+type MaintenanceRelationships struct {
+	// READ-ONLY; List of dependent group identifiers
+	Dependencies []*string
+
+	// READ-ONLY; List of prerequisite group identifiers
+	Prerequisites []*string
+}
+
 // MaintenanceReschedule - reschedule a maintenance
 type MaintenanceReschedule struct {
 	// rescheduling reason
@@ -1045,6 +1127,15 @@ type MaintenanceState struct {
 
 	// Time when current state started
 	StartedAt *time.Time
+}
+
+// MaintenanceWindowRecommendation - Represents a recommended maintenance start window
+type MaintenanceWindowRecommendation struct {
+	// READ-ONLY; Recommended start time for maintenance
+	StartTime *time.Time
+
+	// READ-ONLY; Reason for recommending this window
+	Reason *string
 }
 
 // ManagementCluster - The properties of a management cluster
@@ -1511,6 +1602,9 @@ type RescheduleOperation struct {
 
 	// READ-ONLY; If rescheduling is disabled
 	IsDisabled *bool
+
+	// READ-ONLY; Recommendations for rescheduling maintenance
+	Recommendation *MaintenanceRecommendation
 }
 
 // GetMaintenanceManagementOperation implements the MaintenanceManagementOperationClassification interface for type RescheduleOperation.
@@ -1529,6 +1623,25 @@ type RescheduleOperationConstraint struct {
 // GetRescheduleOperationConstraint implements the RescheduleOperationConstraintClassification interface for type RescheduleOperationConstraint.
 func (r *RescheduleOperationConstraint) GetRescheduleOperationConstraint() *RescheduleOperationConstraint {
 	return r
+}
+
+// ReschedulingWindowConstraint - Constraint defining allowed time window for rescheduling
+type ReschedulingWindowConstraint struct {
+	// REQUIRED
+	Kind *RescheduleOperationConstraintKind
+
+	// READ-ONLY; End date Time
+	EndsAt *time.Time
+
+	// READ-ONLY; Start date time
+	StartsAt *time.Time
+}
+
+// GetRescheduleOperationConstraint implements the RescheduleOperationConstraintClassification interface for type ReschedulingWindowConstraint.
+func (r *ReschedulingWindowConstraint) GetRescheduleOperationConstraint() *RescheduleOperationConstraint {
+	return &RescheduleOperationConstraint{
+		Kind: r.Kind,
+	}
 }
 
 // ResourceSKU - A SKU for a resource.
@@ -1649,6 +1762,9 @@ type ScheduleOperation struct {
 
 	// READ-ONLY; If scheduling is disabled
 	IsDisabled *bool
+
+	// READ-ONLY; Recommendations for scheduling maintenance
+	Recommendation *MaintenanceRecommendation
 }
 
 // GetMaintenanceManagementOperation implements the MaintenanceManagementOperationClassification interface for type ScheduleOperation.
@@ -1937,6 +2053,9 @@ type SpecializedHostProperties struct {
 	// Display name of the host in VMware vCenter.
 	DisplayName *string
 
+	// The licenses assigned to the host.
+	Licenses []HostLicenseClassification
+
 	// If provided, the host is in maintenance. The value is the reason for maintenance.
 	Maintenance *HostMaintenance
 
@@ -1960,6 +2079,7 @@ func (s *SpecializedHostProperties) GetHostProperties() *HostProperties {
 		FaultDomain:       s.FaultDomain,
 		Fqdn:              s.Fqdn,
 		Kind:              s.Kind,
+		Licenses:          s.Licenses,
 		Maintenance:       s.Maintenance,
 		MoRefID:           s.MoRefID,
 		ProvisioningState: s.ProvisioningState,
@@ -2201,6 +2321,58 @@ func (v *VmwareFirewallLicenseProperties) GetLicenseProperties() *LicensePropert
 	return &LicenseProperties{
 		Kind:              v.Kind,
 		ProvisioningState: v.ProvisioningState,
+	}
+}
+
+// WeekendReschedulingConstraint - Constraint defining weekend rescheduling restrictions
+type WeekendReschedulingConstraint struct {
+	// REQUIRED
+	Kind *RescheduleOperationConstraintKind
+
+	// READ-ONLY; Reason why weekend rescheduling is disabled
+	DisabledReason *string
+
+	// READ-ONLY; Indicates if rescheduling is disabled on weekends
+	IsDisabled *bool
+}
+
+// GetRescheduleOperationConstraint implements the RescheduleOperationConstraintClassification interface for type WeekendReschedulingConstraint.
+func (w *WeekendReschedulingConstraint) GetRescheduleOperationConstraint() *RescheduleOperationConstraint {
+	return &RescheduleOperationConstraint{
+		Kind: w.Kind,
+	}
+}
+
+// WeekendSchedulingConstraint - Constraint defining weekend scheduling restrictions
+type WeekendSchedulingConstraint struct {
+	// REQUIRED
+	Kind *ScheduleOperationConstraintKind
+
+	// READ-ONLY; Reason why weekend scheduling is disabled
+	DisabledReason *string
+
+	// READ-ONLY; Indicates if scheduling is disabled on weekends
+	IsDisabled *bool
+}
+
+// GetScheduleOperationConstraint implements the ScheduleOperationConstraintClassification interface for type WeekendSchedulingConstraint.
+func (w *WeekendSchedulingConstraint) GetScheduleOperationConstraint() *ScheduleOperationConstraint {
+	return &ScheduleOperationConstraint{
+		Kind: w.Kind,
+	}
+}
+
+// WindowsServerLicense - The host is to be used with Azure Hybrid Benefit for Windows Server.
+type WindowsServerLicense struct {
+	// CONSTANT; License kind
+	// Field has constant value HostLicenseKindWindowsServer, any specified value is ignored.
+	Kind *HostLicenseKind
+}
+
+// GetHostLicense implements the HostLicenseClassification interface for type WindowsServerLicense.
+func (w *WindowsServerLicense) GetHostLicense() *HostLicense {
+	return &HostLicense{
+		Kind: w.Kind,
 	}
 }
 

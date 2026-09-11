@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/Licenses_CreateOrUpdate.json
+// Generated from example definition: 2026-03-01/Licenses_CreateOrUpdate.json
 func ExampleLicensesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleLicensesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Licenses_Delete.json
+// Generated from example definition: 2026-03-01/Licenses_Delete.json
 func ExampleLicensesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleLicensesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/Licenses_Get.json
+// Generated from example definition: 2026-03-01/Licenses_Get.json
 func ExampleLicensesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleLicensesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Licenses_GetProperties.json
+// Generated from example definition: 2026-03-01/Licenses_GetProperties.json
 func ExampleLicensesClient_GetProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleLicensesClient_GetProperties() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Licenses_List.json
+// Generated from example definition: 2026-03-01/Licenses_List.json
 func ExampleLicensesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

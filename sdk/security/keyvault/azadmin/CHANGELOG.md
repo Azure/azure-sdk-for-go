@@ -3,6 +3,7 @@
 ### 1.6.0-beta.2 (Unreleased)
 
 #### Features Added
+* Added the `ExpirationTime` field to `RoleAssignmentPropertiesWithScope`, exposing the expiration time of a role assignment in the get and list role assignment responses.
 
 #### Breaking Changes
 

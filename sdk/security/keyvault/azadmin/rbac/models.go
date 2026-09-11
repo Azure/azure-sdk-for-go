@@ -61,6 +61,9 @@ type RoleAssignmentProperties struct {
 
 // RoleAssignmentPropertiesWithScope - Role assignment properties with scope.
 type RoleAssignmentPropertiesWithScope struct {
+	// The expiration time of the role assignment.
+	ExpirationTime *string
+
 	// The principal ID.
 	PrincipalID *string
 

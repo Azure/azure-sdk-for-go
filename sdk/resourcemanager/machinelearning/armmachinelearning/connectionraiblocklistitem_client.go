@@ -19,7 +19,7 @@ import (
 // ConnectionRaiBlocklistItemClient contains the methods for the ConnectionRaiBlocklistItem group.
 // Don't use this type directly, use NewConnectionRaiBlocklistItemClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-07-15-preview
 type ConnectionRaiBlocklistItemClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -124,7 +124,7 @@ func (client *ConnectionRaiBlocklistItemClient) addBulkCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -218,7 +218,7 @@ func (client *ConnectionRaiBlocklistItemClient) createCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	if options != nil && options.ProxyAPIVersion != nil {
 		reqQP.Set("proxy-api-version", *options.ProxyAPIVersion)
 	}
@@ -315,7 +315,7 @@ func (client *ConnectionRaiBlocklistItemClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	if options != nil && options.ProxyAPIVersion != nil {
 		reqQP.Set("proxy-api-version", *options.ProxyAPIVersion)
 	}
@@ -403,7 +403,7 @@ func (client *ConnectionRaiBlocklistItemClient) deleteBulkCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -472,7 +472,7 @@ func (client *ConnectionRaiBlocklistItemClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

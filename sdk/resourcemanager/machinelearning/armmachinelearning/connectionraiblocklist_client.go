@@ -19,7 +19,7 @@ import (
 // ConnectionRaiBlocklistClient contains the methods for the ConnectionRaiBlocklist group.
 // Don't use this type directly, use NewConnectionRaiBlocklistClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-07-15-preview
 type ConnectionRaiBlocklistClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -123,7 +123,7 @@ func (client *ConnectionRaiBlocklistClient) createCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	if options != nil && options.ProxyAPIVersion != nil {
 		reqQP.Set("proxy-api-version", *options.ProxyAPIVersion)
 	}
@@ -215,7 +215,7 @@ func (client *ConnectionRaiBlocklistClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	if options != nil && options.ProxyAPIVersion != nil {
 		reqQP.Set("proxy-api-version", *options.ProxyAPIVersion)
 	}
@@ -278,7 +278,7 @@ func (client *ConnectionRaiBlocklistClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

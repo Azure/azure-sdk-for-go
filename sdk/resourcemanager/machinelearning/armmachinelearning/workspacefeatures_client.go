@@ -19,7 +19,7 @@ import (
 // WorkspaceFeaturesClient contains the methods for the WorkspaceFeatures group.
 // Don't use this type directly, use NewWorkspaceFeaturesClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-07-15-preview
 type WorkspaceFeaturesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -102,7 +102,7 @@ func (client *WorkspaceFeaturesClient) listCreateRequest(ctx context.Context, re
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260315Preview)
+		reqQP.Set("api-version", version20260715Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

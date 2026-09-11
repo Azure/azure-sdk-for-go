@@ -5,7 +5,7 @@
 package armnapsteromniagentapi
 
 const (
-	version20251224Preview string = "2025-12-24-preview"
+	version20260811 string = "2026-08-11"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

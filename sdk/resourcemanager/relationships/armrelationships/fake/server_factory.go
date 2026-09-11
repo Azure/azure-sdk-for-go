@@ -15,6 +15,12 @@ import (
 
 // ServerFactory is a fake server for instances of the armrelationships.ClientFactory type.
 type ServerFactory struct {
+	// ContainsRelationshipsServer contains the fakes for client ContainsRelationshipsClient
+	ContainsRelationshipsServer ContainsRelationshipsServer
+
+	// DependencyOfRelationshipsByServiceGroupServer contains the fakes for client DependencyOfRelationshipsByServiceGroupClient
+	DependencyOfRelationshipsByServiceGroupServer DependencyOfRelationshipsByServiceGroupServer
+
 	// DependencyOfRelationshipsServer contains the fakes for client DependencyOfRelationshipsClient
 	DependencyOfRelationshipsServer DependencyOfRelationshipsServer
 
@@ -37,11 +43,13 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armrelationships.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                     *ServerFactory
-	trMu                                    sync.Mutex
-	trDependencyOfRelationshipsServer       *DependencyOfRelationshipsServerTransport
-	trOperationsServer                      *OperationsServerTransport
-	trServiceGroupMemberRelationshipsServer *ServiceGroupMemberRelationshipsServerTransport
+	srv                                             *ServerFactory
+	trMu                                            sync.Mutex
+	trContainsRelationshipsServer                   *ContainsRelationshipsServerTransport
+	trDependencyOfRelationshipsByServiceGroupServer *DependencyOfRelationshipsByServiceGroupServerTransport
+	trDependencyOfRelationshipsServer               *DependencyOfRelationshipsServerTransport
+	trOperationsServer                              *OperationsServerTransport
+	trServiceGroupMemberRelationshipsServer         *ServiceGroupMemberRelationshipsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -57,6 +65,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "ContainsRelationshipsClient":
+		initServer(&s.trMu, &s.trContainsRelationshipsServer, func() *ContainsRelationshipsServerTransport {
+			return NewContainsRelationshipsServerTransport(&s.srv.ContainsRelationshipsServer)
+		})
+		resp, err = s.trContainsRelationshipsServer.Do(req)
+	case "DependencyOfRelationshipsByServiceGroupClient":
+		initServer(&s.trMu, &s.trDependencyOfRelationshipsByServiceGroupServer, func() *DependencyOfRelationshipsByServiceGroupServerTransport {
+			return NewDependencyOfRelationshipsByServiceGroupServerTransport(&s.srv.DependencyOfRelationshipsByServiceGroupServer)
+		})
+		resp, err = s.trDependencyOfRelationshipsByServiceGroupServer.Do(req)
 	case "DependencyOfRelationshipsClient":
 		initServer(&s.trMu, &s.trDependencyOfRelationshipsServer, func() *DependencyOfRelationshipsServerTransport {
 			return NewDependencyOfRelationshipsServerTransport(&s.srv.DependencyOfRelationshipsServer)

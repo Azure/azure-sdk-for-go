@@ -51,6 +51,9 @@ type AccessToken struct {
 	// RefreshOn is a suggested time to refresh the token.
 	// Clients should ignore this value when it's zero.
 	RefreshOn time.Time
+	// TokenType is the token type used in the Authorization header.
+	// Clients should treat an empty value as "Bearer".
+	TokenType string
 }
 
 // TokenRequestOptions contain specific parameter that may be used by credentials types when attempting to get a token.

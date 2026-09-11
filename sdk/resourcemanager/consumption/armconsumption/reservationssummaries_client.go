@@ -19,7 +19,7 @@ import (
 // ReservationsSummariesClient contains the methods for the ReservationsSummaries group.
 // Don't use this type directly, use NewReservationsSummariesClient() instead.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2026-06-01
 type ReservationsSummariesClient struct {
 	internal *arm.Client
 }
@@ -93,7 +93,7 @@ func (client *ReservationsSummariesClient) listCreateRequest(ctx context.Context
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20240801)
+		reqQP.Set("api-version", version20260601)
 		if options != nil && options.EndDate != nil {
 			reqQP.Set("endDate", *options.EndDate)
 		}
@@ -180,7 +180,7 @@ func (client *ReservationsSummariesClient) listByReservationOrderCreateRequest(c
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20240801)
+		reqQP.Set("api-version", version20260601)
 		reqQP.Set("grain", string(grain))
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
@@ -260,7 +260,7 @@ func (client *ReservationsSummariesClient) listByReservationOrderAndReservationC
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20240801)
+		reqQP.Set("api-version", version20260601)
 		reqQP.Set("grain", string(grain))
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}

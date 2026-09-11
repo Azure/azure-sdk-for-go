@@ -5,7 +5,7 @@
 package armconsumption
 
 const (
-	version20240801 string = "2024-08-01"
+	version20260601 string = "2026-06-01"
 )
 
 // BillingFrequency - The billing frequency.
@@ -349,13 +349,16 @@ func PossibleReservationRecommendationKindValues() []ReservationRecommendationKi
 type Scope string
 
 const (
-	ScopeShared Scope = "Shared"
-	ScopeSingle Scope = "Single"
+	// ScopeManagementGroup - Management group scoped recommendation.
+	ScopeManagementGroup Scope = "ManagementGroup"
+	ScopeShared          Scope = "Shared"
+	ScopeSingle          Scope = "Single"
 )
 
 // PossibleScopeValues returns the possible values for the Scope const type.
 func PossibleScopeValues() []Scope {
 	return []Scope{
+		ScopeManagementGroup,
 		ScopeShared,
 		ScopeSingle,
 	}

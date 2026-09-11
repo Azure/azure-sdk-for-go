@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-08-01/CreditSummaryByBillingProfile.json
+// Generated from example definition: 2026-06-01/CreditSummaryByBillingProfile.json
 func ExampleCreditsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

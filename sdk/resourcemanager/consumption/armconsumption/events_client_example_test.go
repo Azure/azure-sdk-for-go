@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-08-01/EventsGetByBillingAccount-Contributor.json
+// Generated from example definition: 2026-06-01/EventsGetByBillingAccount-Contributor.json
 func ExampleEventsClient_NewListByBillingAccountPager_eventsGetByBillingAccountContributor() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleEventsClient_NewListByBillingAccountPager_eventsGetByBillingAccountC
 	}
 }
 
-// Generated from example definition: 2024-08-01/EventsGetByBillingAccount-Primary.json
+// Generated from example definition: 2026-06-01/EventsGetByBillingAccount-Primary.json
 func ExampleEventsClient_NewListByBillingAccountPager_eventsGetByBillingAccountPrimary() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleEventsClient_NewListByBillingAccountPager_eventsGetByBillingAccountP
 	}
 }
 
-// Generated from example definition: 2024-08-01/EventsGetByBillingAccount.json
+// Generated from example definition: 2026-06-01/EventsGetByBillingAccount.json
 func ExampleEventsClient_NewListByBillingAccountPager_eventsGetByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,7 +253,7 @@ func ExampleEventsClient_NewListByBillingAccountPager_eventsGetByBillingAccount(
 	}
 }
 
-// Generated from example definition: 2024-08-01/EventsGetByBillingAccountWithFilters-Contributor.json
+// Generated from example definition: 2026-06-01/EventsGetByBillingAccountWithFilters-Contributor.json
 func ExampleEventsClient_NewListByBillingAccountPager_eventsGetByBillingAccountWithFiltersContributorJson() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -304,7 +304,7 @@ func ExampleEventsClient_NewListByBillingAccountPager_eventsGetByBillingAccountW
 	}
 }
 
-// Generated from example definition: 2024-08-01/EventsGetByBillingAccountWithFilters-Primary.json
+// Generated from example definition: 2026-06-01/EventsGetByBillingAccountWithFilters-Primary.json
 func ExampleEventsClient_NewListByBillingAccountPager_eventsGetByBillingAccountWithFiltersPrimary() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -361,7 +361,7 @@ func ExampleEventsClient_NewListByBillingAccountPager_eventsGetByBillingAccountW
 	}
 }
 
-// Generated from example definition: 2024-08-01/EventsGetByBillingAccountWithFilters.json
+// Generated from example definition: 2026-06-01/EventsGetByBillingAccountWithFilters.json
 func ExampleEventsClient_NewListByBillingAccountPager_eventsGetByBillingAccountWithFilters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -418,7 +418,7 @@ func ExampleEventsClient_NewListByBillingAccountPager_eventsGetByBillingAccountW
 	}
 }
 
-// Generated from example definition: 2024-08-01/EventsListByBillingProfile.json
+// Generated from example definition: 2026-06-01/EventsListByBillingProfile.json
 func ExampleEventsClient_NewListByBillingProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

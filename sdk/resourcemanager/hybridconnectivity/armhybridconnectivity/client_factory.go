@@ -44,6 +44,14 @@ func (c *ClientFactory) NewGenerateAwsTemplateClient(subscriptionID string) *Gen
 	}
 }
 
+// NewGenerateGcpTemplateClient creates a new instance of GenerateGcpTemplateClient.
+func (c *ClientFactory) NewGenerateGcpTemplateClient(subscriptionID string) *GenerateGcpTemplateClient {
+	return &GenerateGcpTemplateClient{
+		subscriptionID: subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewInventoryClient creates a new instance of InventoryClient.
 func (c *ClientFactory) NewInventoryClient() *InventoryClient {
 	return &InventoryClient{

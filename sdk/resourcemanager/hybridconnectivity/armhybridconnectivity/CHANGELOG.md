@@ -1,5 +1,79 @@
 # Release History
 
+## 1.2.0 (2026-08-21)
+
+### Features Added
+
+- New enum type `CloudNativeType` with values `CloudNativeTypeEc2`
+- New enum type `GcpTemplateFormat` with values `GcpTemplateFormatShellScript`, `GcpTemplateFormatTerraform`
+- New enum type `HostType` with values `HostTypeAWS`, `HostTypeGCP`
+- New enum type `ResourceProvisioningState` with values `ResourceProvisioningStateCanceled`, `ResourceProvisioningStateFailed`, `ResourceProvisioningStateSucceeded`
+- New enum type `SolutionConfigurationStatus` with values `SolutionConfigurationStatusCompleted`, `SolutionConfigurationStatusFailed`, `SolutionConfigurationStatusInProgress`, `SolutionConfigurationStatusNew`
+- New function `*ClientFactory.NewGenerateAwsTemplateClient(subscriptionID string) *GenerateAwsTemplateClient`
+- New function `*ClientFactory.NewGenerateGcpTemplateClient(subscriptionID string) *GenerateGcpTemplateClient`
+- New function `*ClientFactory.NewInventoryClient() *InventoryClient`
+- New function `*ClientFactory.NewPublicCloudConnectorsClient(subscriptionID string) *PublicCloudConnectorsClient`
+- New function `*ClientFactory.NewSolutionConfigurationsClient() *SolutionConfigurationsClient`
+- New function `*ClientFactory.NewSolutionTypesClient(subscriptionID string) *SolutionTypesClient`
+- New function `NewGenerateAwsTemplateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GenerateAwsTemplateClient, error)`
+- New function `*GenerateAwsTemplateClient.Post(ctx context.Context, generateAwsTemplateRequest GenerateAwsTemplateRequest, options *GenerateAwsTemplateClientPostOptions) (GenerateAwsTemplateClientPostResponse, error)`
+- New function `NewGenerateGcpTemplateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GenerateGcpTemplateClient, error)`
+- New function `*GenerateGcpTemplateClient.Post(ctx context.Context, generateGcpTemplateRequest GenerateGcpTemplateRequest, options *GenerateGcpTemplateClientPostOptions) (GenerateGcpTemplateClientPostResponse, error)`
+- New function `NewInventoryClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*InventoryClient, error)`
+- New function `*InventoryClient.Get(ctx context.Context, resourceURI string, solutionConfiguration string, inventoryID string, options *InventoryClientGetOptions) (InventoryClientGetResponse, error)`
+- New function `*InventoryClient.NewListBySolutionConfigurationPager(resourceURI string, solutionConfiguration string, options *InventoryClientListBySolutionConfigurationOptions) *runtime.Pager[InventoryClientListBySolutionConfigurationResponse]`
+- New function `NewPublicCloudConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PublicCloudConnectorsClient, error)`
+- New function `*PublicCloudConnectorsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, publicCloudConnector string, resource PublicCloudConnector, options *PublicCloudConnectorsClientBeginCreateOrUpdateOptions) (*runtime.Poller[PublicCloudConnectorsClientCreateOrUpdateResponse], error)`
+- New function `*PublicCloudConnectorsClient.Delete(ctx context.Context, resourceGroupName string, publicCloudConnector string, options *PublicCloudConnectorsClientDeleteOptions) (PublicCloudConnectorsClientDeleteResponse, error)`
+- New function `*PublicCloudConnectorsClient.Get(ctx context.Context, resourceGroupName string, publicCloudConnector string, options *PublicCloudConnectorsClientGetOptions) (PublicCloudConnectorsClientGetResponse, error)`
+- New function `*PublicCloudConnectorsClient.NewListByResourceGroupPager(resourceGroupName string, options *PublicCloudConnectorsClientListByResourceGroupOptions) *runtime.Pager[PublicCloudConnectorsClientListByResourceGroupResponse]`
+- New function `*PublicCloudConnectorsClient.NewListBySubscriptionPager(options *PublicCloudConnectorsClientListBySubscriptionOptions) *runtime.Pager[PublicCloudConnectorsClientListBySubscriptionResponse]`
+- New function `*PublicCloudConnectorsClient.BeginTestPermissions(ctx context.Context, resourceGroupName string, publicCloudConnector string, options *PublicCloudConnectorsClientBeginTestPermissionsOptions) (*runtime.Poller[PublicCloudConnectorsClientTestPermissionsResponse], error)`
+- New function `*PublicCloudConnectorsClient.Update(ctx context.Context, resourceGroupName string, publicCloudConnector string, properties PublicCloudConnectorUpdate, options *PublicCloudConnectorsClientUpdateOptions) (PublicCloudConnectorsClientUpdateResponse, error)`
+- New function `NewSolutionConfigurationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SolutionConfigurationsClient, error)`
+- New function `*SolutionConfigurationsClient.CreateOrUpdate(ctx context.Context, resourceURI string, solutionConfiguration string, resource SolutionConfiguration, options *SolutionConfigurationsClientCreateOrUpdateOptions) (SolutionConfigurationsClientCreateOrUpdateResponse, error)`
+- New function `*SolutionConfigurationsClient.Delete(ctx context.Context, resourceURI string, solutionConfiguration string, options *SolutionConfigurationsClientDeleteOptions) (SolutionConfigurationsClientDeleteResponse, error)`
+- New function `*SolutionConfigurationsClient.Get(ctx context.Context, resourceURI string, solutionConfiguration string, options *SolutionConfigurationsClientGetOptions) (SolutionConfigurationsClientGetResponse, error)`
+- New function `*SolutionConfigurationsClient.NewListPager(resourceURI string, options *SolutionConfigurationsClientListOptions) *runtime.Pager[SolutionConfigurationsClientListResponse]`
+- New function `*SolutionConfigurationsClient.BeginSyncNow(ctx context.Context, resourceURI string, solutionConfiguration string, options *SolutionConfigurationsClientBeginSyncNowOptions) (*runtime.Poller[SolutionConfigurationsClientSyncNowResponse], error)`
+- New function `*SolutionConfigurationsClient.Update(ctx context.Context, resourceURI string, solutionConfiguration string, properties SolutionConfigurationUpdate, options *SolutionConfigurationsClientUpdateOptions) (SolutionConfigurationsClientUpdateResponse, error)`
+- New function `NewSolutionTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SolutionTypesClient, error)`
+- New function `*SolutionTypesClient.Get(ctx context.Context, resourceGroupName string, solutionType string, options *SolutionTypesClientGetOptions) (SolutionTypesClientGetResponse, error)`
+- New function `*SolutionTypesClient.NewListByResourceGroupPager(resourceGroupName string, options *SolutionTypesClientListByResourceGroupOptions) *runtime.Pager[SolutionTypesClientListByResourceGroupResponse]`
+- New function `*SolutionTypesClient.NewListBySubscriptionPager(options *SolutionTypesClientListBySubscriptionOptions) *runtime.Pager[SolutionTypesClientListBySubscriptionResponse]`
+- New struct `AwsCloudProfile`
+- New struct `AwsCloudProfileUpdate`
+- New struct `GcpCloudProfile`
+- New struct `GcpCloudProfileUpdate`
+- New struct `GcpOrganizationProperties`
+- New struct `GcpOrganizationPropertiesUpdate`
+- New struct `GcpProjectProperties`
+- New struct `GenerateAwsTemplateRequest`
+- New struct `GenerateAwsTemplateResponse`
+- New struct `GenerateGcpTemplateRequest`
+- New struct `GenerateGcpTemplateResponse`
+- New struct `InventoryProperties`
+- New struct `InventoryResource`
+- New struct `InventoryResourceListResult`
+- New struct `OperationStatusResult`
+- New struct `PublicCloudConnector`
+- New struct `PublicCloudConnectorListResult`
+- New struct `PublicCloudConnectorProperties`
+- New struct `PublicCloudConnectorPropertiesUpdate`
+- New struct `PublicCloudConnectorUpdate`
+- New struct `SolutionConfiguration`
+- New struct `SolutionConfigurationListResult`
+- New struct `SolutionConfigurationProperties`
+- New struct `SolutionConfigurationPropertiesUpdate`
+- New struct `SolutionConfigurationUpdate`
+- New struct `SolutionSettings`
+- New struct `SolutionTypeProperties`
+- New struct `SolutionTypeResource`
+- New struct `SolutionTypeResourceListResult`
+- New struct `SolutionTypeSettings`
+- New struct `SolutionTypeSettingsProperties`
+
+
 ## 1.2.0-beta.1 (2025-02-27)
 
 ### Features Added

@@ -57,6 +57,12 @@ type GenerateAwsTemplateClientPostResponse struct {
 	GenerateAwsTemplateResponse
 }
 
+// GenerateGcpTemplateClientPostResponse contains the response from method GenerateGcpTemplateClient.Post.
+type GenerateGcpTemplateClientPostResponse struct {
+	// The HybridConnectivity post operation response
+	GenerateGcpTemplateResponse
+}
+
 // InventoryClientGetResponse contains the response from method InventoryClient.Get.
 type InventoryClientGetResponse struct {
 	// Concrete proxy resource types can be created by aliasing this type using a specific property type.

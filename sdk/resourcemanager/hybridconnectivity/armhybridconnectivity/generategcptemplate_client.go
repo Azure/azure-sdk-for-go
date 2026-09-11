@@ -16,61 +16,58 @@ import (
 	"strings"
 )
 
-// GenerateAwsTemplateClient contains the methods for the GenerateAwsTemplate group.
-// Don't use this type directly, use NewGenerateAwsTemplateClient() instead.
+// GenerateGcpTemplateClient contains the methods for the GenerateGcpTemplate group.
+// Don't use this type directly, use NewGenerateGcpTemplateClient() instead.
 //
 // Generated from API version 2027-01-01
-type GenerateAwsTemplateClient struct {
+type GenerateGcpTemplateClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewGenerateAwsTemplateClient creates a new instance of GenerateAwsTemplateClient with the specified values.
+// NewGenerateGcpTemplateClient creates a new instance of GenerateGcpTemplateClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewGenerateAwsTemplateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GenerateAwsTemplateClient, error) {
-	if subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
+func NewGenerateGcpTemplateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GenerateGcpTemplateClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &GenerateAwsTemplateClient{
+	client := &GenerateGcpTemplateClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// Post - Retrieve AWS Cloud Formation template
+// Post - Retrieve GCP Access Control template
 // If the operation fails it returns an *azcore.ResponseError type.
-//   - generateAwsTemplateRequest - ConnectorId and SolutionTypes and their properties to Generate AWS CFT Template.
-//   - options - GenerateAwsTemplateClientPostOptions contains the optional parameters for the GenerateAwsTemplateClient.Post
+//   - generateGcpTemplateRequest - ConnectorId and SolutionTypes and their properties to Generate GCP Access Control Template.
+//   - options - GenerateGcpTemplateClientPostOptions contains the optional parameters for the GenerateGcpTemplateClient.Post
 //     method.
-func (client *GenerateAwsTemplateClient) Post(ctx context.Context, generateAwsTemplateRequest GenerateAwsTemplateRequest, options *GenerateAwsTemplateClientPostOptions) (GenerateAwsTemplateClientPostResponse, error) {
+func (client *GenerateGcpTemplateClient) Post(ctx context.Context, generateGcpTemplateRequest GenerateGcpTemplateRequest, options *GenerateGcpTemplateClientPostOptions) (GenerateGcpTemplateClientPostResponse, error) {
 	var err error
-	const operationName = "GenerateAwsTemplateClient.Post"
+	const operationName = "GenerateGcpTemplateClient.Post"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.postCreateRequest(ctx, generateAwsTemplateRequest, options)
+	req, err := client.postCreateRequest(ctx, generateGcpTemplateRequest, options)
 	if err != nil {
-		return GenerateAwsTemplateClientPostResponse{}, err
+		return GenerateGcpTemplateClientPostResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return GenerateAwsTemplateClientPostResponse{}, err
+		return GenerateGcpTemplateClientPostResponse{}, err
 	}
 	return client.postHandleResponse(httpResp, http.StatusOK)
 }
 
 // postCreateRequest creates the Post request.
-func (client *GenerateAwsTemplateClient) postCreateRequest(ctx context.Context, generateAwsTemplateRequest GenerateAwsTemplateRequest, _ *GenerateAwsTemplateClientPostOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridConnectivity/generateAwsTemplate"
+func (client *GenerateGcpTemplateClient) postCreateRequest(ctx context.Context, generateGcpTemplateRequest GenerateGcpTemplateRequest, _ *GenerateGcpTemplateClientPostOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridConnectivity/generateGcpTemplate"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -82,20 +79,20 @@ func (client *GenerateAwsTemplateClient) postCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, generateAwsTemplateRequest); err != nil {
+	if err := runtime.MarshalAsJSON(req, generateGcpTemplateRequest); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
 // postHandleResponse handles the Post response.
-func (client *GenerateAwsTemplateClient) postHandleResponse(resp *http.Response, successCodes ...int) (GenerateAwsTemplateClientPostResponse, error) {
-	result := GenerateAwsTemplateClientPostResponse{}
+func (client *GenerateGcpTemplateClient) postHandleResponse(resp *http.Response, successCodes ...int) (GenerateGcpTemplateClientPostResponse, error) {
+	result := GenerateGcpTemplateClientPostResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.GenerateAwsTemplateResponse); err != nil {
-		return GenerateAwsTemplateClientPostResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.GenerateGcpTemplateResponse); err != nil {
+		return GenerateGcpTemplateClientPostResponse{}, err
 	}
 	return result, nil
 }

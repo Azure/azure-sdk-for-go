@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/onboardingStates/CreateSentinelOnboardingState.json
+// Generated from example definition: 2025-10-01-preview/onboardingStates/CreateSentinelOnboardingState.json
 func ExampleSentinelOnboardingStatesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleSentinelOnboardingStatesClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/onboardingStates/DeleteSentinelOnboardingState.json
+// Generated from example definition: 2025-10-01-preview/onboardingStates/DeleteSentinelOnboardingState.json
 func ExampleSentinelOnboardingStatesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleSentinelOnboardingStatesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/onboardingStates/GetSentinelOnboardingState.json
+// Generated from example definition: 2025-10-01-preview/onboardingStates/GetSentinelOnboardingState.json
 func ExampleSentinelOnboardingStatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleSentinelOnboardingStatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/onboardingStates/GetAllSentinelOnboardingStates.json
+// Generated from example definition: 2025-10-01-preview/onboardingStates/GetAllSentinelOnboardingStates.json
 func ExampleSentinelOnboardingStatesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

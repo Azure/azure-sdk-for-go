@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.SecurityInsights": "2025-07-01-preview"
+    "Microsoft.SecurityInsights": "2025-10-01-preview"
   },
   "emitterVersion": "0.17.3"
 }

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/hunts/CreateHunt.json
+// Generated from example definition: 2025-10-01-preview/hunts/CreateHunt.json
 func ExampleHuntsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleHuntsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/hunts/DeleteHunt.json
+// Generated from example definition: 2025-10-01-preview/hunts/DeleteHunt.json
 func ExampleHuntsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleHuntsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/hunts/GetHuntById.json
+// Generated from example definition: 2025-10-01-preview/hunts/GetHuntById.json
 func ExampleHuntsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleHuntsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/hunts/GetHunts.json
+// Generated from example definition: 2025-10-01-preview/hunts/GetHunts.json
 func ExampleHuntsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/bookmarks/relations/CreateBookmarkRelation.json
+// Generated from example definition: 2025-10-01-preview/bookmarks/relations/CreateBookmarkRelation.json
 func ExampleBookmarkRelationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleBookmarkRelationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/bookmarks/relations/DeleteBookmarkRelation.json
+// Generated from example definition: 2025-10-01-preview/bookmarks/relations/DeleteBookmarkRelation.json
 func ExampleBookmarkRelationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleBookmarkRelationsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/bookmarks/relations/GetBookmarkRelationByName.json
+// Generated from example definition: 2025-10-01-preview/bookmarks/relations/GetBookmarkRelationByName.json
 func ExampleBookmarkRelationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleBookmarkRelationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/bookmarks/relations/GetAllBookmarkRelations.json
+// Generated from example definition: 2025-10-01-preview/bookmarks/relations/GetAllBookmarkRelations.json
 func ExampleBookmarkRelationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

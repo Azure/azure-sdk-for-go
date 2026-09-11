@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-07-01-preview/bookmarks/CreateBookmark.json
+// Generated from example definition: 2025-10-01-preview/bookmarks/CreateBookmark.json
 func ExampleBookmarksClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleBookmarksClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/bookmarks/DeleteBookmark.json
+// Generated from example definition: 2025-10-01-preview/bookmarks/DeleteBookmark.json
 func ExampleBookmarksClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleBookmarksClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/bookmarks/GetBookmarkById.json
+// Generated from example definition: 2025-10-01-preview/bookmarks/GetBookmarkById.json
 func ExampleBookmarksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +212,7 @@ func ExampleBookmarksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/bookmarks/GetBookmarks.json
+// Generated from example definition: 2025-10-01-preview/bookmarks/GetBookmarks.json
 func ExampleBookmarksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

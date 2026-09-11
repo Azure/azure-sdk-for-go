@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/workspaceManagerMembers/CreateOrUpdateWorkspaceManagerMember.json
+// Generated from example definition: 2025-10-01-preview/workspaceManagerMembers/CreateOrUpdateWorkspaceManagerMember.json
 func ExampleWorkspaceManagerMembersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleWorkspaceManagerMembersClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/workspaceManagerMembers/DeleteWorkspaceManagerMember.json
+// Generated from example definition: 2025-10-01-preview/workspaceManagerMembers/DeleteWorkspaceManagerMember.json
 func ExampleWorkspaceManagerMembersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleWorkspaceManagerMembersClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/workspaceManagerMembers/GetWorkspaceManagerMember.json
+// Generated from example definition: 2025-10-01-preview/workspaceManagerMembers/GetWorkspaceManagerMember.json
 func ExampleWorkspaceManagerMembersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleWorkspaceManagerMembersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/workspaceManagerMembers/GetAllWorkspaceManagerMembers.json
+// Generated from example definition: 2025-10-01-preview/workspaceManagerMembers/GetAllWorkspaceManagerMembers.json
 func ExampleWorkspaceManagerMembersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

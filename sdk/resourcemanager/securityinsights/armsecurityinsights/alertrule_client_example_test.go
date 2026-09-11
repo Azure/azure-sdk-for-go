@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-07-01-preview/triggeredAnalyticsRuleRuns/triggerRuleRun_Post.json
+// Generated from example definition: 2025-10-01-preview/triggeredAnalyticsRuleRuns/triggerRuleRun_Post.json
 func ExampleAlertRuleClient_BeginTriggerRuleRun() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

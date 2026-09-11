@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Rules_Create.json
+// Generated from example definition: 2026-07-01/Rules_Create.json
 func ExampleRulesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleRulesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Rules_Delete.json
+// Generated from example definition: 2026-07-01/Rules_Delete.json
 func ExampleRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleRulesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Rules_Get.json
+// Generated from example definition: 2026-07-01/Rules_Get.json
 func ExampleRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,7 +188,7 @@ func ExampleRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Rules_ListByRuleSet.json
+// Generated from example definition: 2026-07-01/Rules_ListByRuleSet.json
 func ExampleRulesClient_NewListByRuleSetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -256,7 +256,7 @@ func ExampleRulesClient_NewListByRuleSetPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Rules_Update.json
+// Generated from example definition: 2026-07-01/Rules_Update.json
 func ExampleRulesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

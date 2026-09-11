@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Origins_Create.json
+// Generated from example definition: 2026-07-01/Origins_Create.json
 func ExampleOriginsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleOriginsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Origins_Delete.json
+// Generated from example definition: 2026-07-01/Origins_Delete.json
 func ExampleOriginsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleOriginsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Origins_Get.json
+// Generated from example definition: 2026-07-01/Origins_Get.json
 func ExampleOriginsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleOriginsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Origins_ListByEndpoint.json
+// Generated from example definition: 2026-07-01/Origins_ListByEndpoint.json
 func ExampleOriginsClient_NewListByEndpointPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +184,7 @@ func ExampleOriginsClient_NewListByEndpointPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Origins_Update.json
+// Generated from example definition: 2026-07-01/Origins_Update.json
 func ExampleOriginsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

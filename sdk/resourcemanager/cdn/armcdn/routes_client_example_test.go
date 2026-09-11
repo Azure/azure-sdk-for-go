@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Routes_Create.json
+// Generated from example definition: 2026-07-01/Routes_Create.json
 func ExampleRoutesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleRoutesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Routes_Delete.json
+// Generated from example definition: 2026-07-01/Routes_Delete.json
 func ExampleRoutesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleRoutesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Routes_Get.json
+// Generated from example definition: 2026-07-01/Routes_Get.json
 func ExampleRoutesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +211,7 @@ func ExampleRoutesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Routes_ListByEndpoint.json
+// Generated from example definition: 2026-07-01/Routes_ListByEndpoint.json
 func ExampleRoutesClient_NewListByEndpointPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,7 +285,7 @@ func ExampleRoutesClient_NewListByEndpointPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Routes_Update.json
+// Generated from example definition: 2026-07-01/Routes_Update.json
 func ExampleRoutesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

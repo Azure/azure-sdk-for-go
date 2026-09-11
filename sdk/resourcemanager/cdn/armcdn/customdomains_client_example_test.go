@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/CustomDomains_Create.json
+// Generated from example definition: 2026-07-01/CustomDomains_Create.json
 func ExampleCustomDomainsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleCustomDomainsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/CustomDomains_Delete.json
+// Generated from example definition: 2026-07-01/CustomDomains_Delete.json
 func ExampleCustomDomainsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleCustomDomainsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/CustomDomains_DisableCustomHttps.json
+// Generated from example definition: 2026-07-01/CustomDomains_DisableCustomHttps.json
 func ExampleCustomDomainsClient_BeginDisableCustomHTTPS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleCustomDomainsClient_BeginDisableCustomHTTPS() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/CustomDomains_EnableCustomHttpsUsingBYOC.json
+// Generated from example definition: 2026-07-01/CustomDomains_EnableCustomHttpsUsingBYOC.json
 func ExampleCustomDomainsClient_BeginEnableCustomHTTPS_customDomainsEnableCustomHttpsUsingYourOwnCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleCustomDomainsClient_BeginEnableCustomHTTPS_customDomainsEnableCustom
 	// }
 }
 
-// Generated from example definition: 2025-06-01/CustomDomains_EnableCustomHttpsUsingCDNManagedCertificate.json
+// Generated from example definition: 2026-07-01/CustomDomains_EnableCustomHttpsUsingCDNManagedCertificate.json
 func ExampleCustomDomainsClient_BeginEnableCustomHTTPS_customDomainsEnableCustomHttpsUsingCdnManagedCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +196,7 @@ func ExampleCustomDomainsClient_BeginEnableCustomHTTPS_customDomainsEnableCustom
 	// }
 }
 
-// Generated from example definition: 2025-06-01/CustomDomains_Get.json
+// Generated from example definition: 2026-07-01/CustomDomains_Get.json
 func ExampleCustomDomainsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExampleCustomDomainsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/CustomDomains_ListByEndpoint.json
+// Generated from example definition: 2026-07-01/CustomDomains_ListByEndpoint.json
 func ExampleCustomDomainsClient_NewListByEndpointPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

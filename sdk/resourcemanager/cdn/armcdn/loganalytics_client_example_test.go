@@ -7,12 +7,12 @@ package armcdn_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"log"
 	"time"
 )
 
-// Generated from example definition: 2025-06-01/LogAnalytics_GetLogAnalyticsLocations.json
+// Generated from example definition: 2026-07-01/LogAnalytics_GetLogAnalyticsLocations.json
 func ExampleLogAnalyticsClient_GetLogAnalyticsLocations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsLocations() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/LogAnalytics_GetLogAnalyticsMetrics.json
+// Generated from example definition: 2026-07-01/LogAnalytics_GetLogAnalyticsMetrics.json
 func ExampleLogAnalyticsClient_GetLogAnalyticsMetrics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsMetrics() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/LogAnalytics_GetLogAnalyticsRankings.json
+// Generated from example definition: 2026-07-01/LogAnalytics_GetLogAnalyticsRankings.json
 func ExampleLogAnalyticsClient_GetLogAnalyticsRankings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +239,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsRankings() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/LogAnalytics_GetLogAnalyticsResources.json
+// Generated from example definition: 2026-07-01/LogAnalytics_GetLogAnalyticsResources.json
 func ExampleLogAnalyticsClient_GetLogAnalyticsResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -300,7 +300,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsResources() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/LogAnalytics_GetWafLogAnalyticsMetrics.json
+// Generated from example definition: 2026-07-01/LogAnalytics_GetWafLogAnalyticsMetrics.json
 func ExampleLogAnalyticsClient_GetWafLogAnalyticsMetrics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -439,7 +439,7 @@ func ExampleLogAnalyticsClient_GetWafLogAnalyticsMetrics() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/LogAnalytics_GetWafLogAnalyticsRankings.json
+// Generated from example definition: 2026-07-01/LogAnalytics_GetWafLogAnalyticsRankings.json
 func ExampleLogAnalyticsClient_GetWafLogAnalyticsRankings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

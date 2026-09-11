@@ -19,7 +19,7 @@ import (
 // AvailableServiceTiersClient contains the methods for the AvailableServiceTiers group.
 // Don't use this type directly, use NewAvailableServiceTiersClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 type AvailableServiceTiersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -87,7 +87,7 @@ func (client *AvailableServiceTiersClient) listByWorkspaceCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

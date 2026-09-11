@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/TablesSearchCancel.json
+// Generated from example definition: 2026-03-01/TablesSearchCancel.json
 func ExampleTablesClient_CancelSearch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleTablesClient_CancelSearch() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/TablesUpsertForTable.json
+// Generated from example definition: 2026-03-01/TablesUpsertForTable.json
 func ExampleTablesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func ExampleTablesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/TablesDelete.json
+// Generated from example definition: 2026-03-01/TablesDelete.json
 func ExampleTablesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +221,7 @@ func ExampleTablesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/TablesGet.json
+// Generated from example definition: 2026-03-01/TablesGet.json
 func ExampleTablesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -327,7 +327,7 @@ func ExampleTablesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/TablesList.json
+// Generated from example definition: 2026-03-01/TablesList.json
 func ExampleTablesClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -524,7 +524,7 @@ func ExampleTablesClient_NewListByWorkspacePager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/TablesMigrate.json
+// Generated from example definition: 2026-03-01/TablesMigrate.json
 func ExampleTablesClient_Migrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -546,7 +546,7 @@ func ExampleTablesClient_Migrate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/TablesUpsert.json
+// Generated from example definition: 2026-03-01/TablesUpsert.json
 func ExampleTablesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

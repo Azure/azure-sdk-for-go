@@ -19,7 +19,7 @@ import (
 // WorkspacePurgeClient contains the methods for the WorkspacePurge group.
 // Don't use this type directly, use NewWorkspacePurgeClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 type WorkspacePurgeClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -92,7 +92,7 @@ func (client *WorkspacePurgeClient) getPurgeStatusCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -160,7 +160,7 @@ func (client *WorkspacePurgeClient) purgeCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -183,4 +183,85 @@ func (client *WorkspacePurgeClient) purgeHandleResponse(resp *http.Response, suc
 		return WorkspacePurgeClientPurgeResponse{}, err
 	}
 	return result, nil
+}
+
+// BeginPurgeLakeData - Purges data lake data in a Log Analytics workspace for a table over a specified time range.
+// This operation deletes data lake data (Auxiliary tables, or Analytics tables mirrored to the data lake) for the specified
+// table within the given time range. The operation is long-running; poll the URL returned in the Azure-AsyncOperation response
+// header to track its status.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - body - Describes the body of a request to purge data lake data in a single table of an Log Analytics Workspace
+//   - options - WorkspacePurgeClientBeginPurgeLakeDataOptions contains the optional parameters for the WorkspacePurgeClient.BeginPurgeLakeData
+//     method.
+func (client *WorkspacePurgeClient) BeginPurgeLakeData(ctx context.Context, resourceGroupName string, workspaceName string, body WorkspacePurgeLakeDataBody, options *WorkspacePurgeClientBeginPurgeLakeDataOptions) (*runtime.Poller[WorkspacePurgeClientPurgeLakeDataResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.purgeLakeData(ctx, resourceGroupName, workspaceName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkspacePurgeClientPurgeLakeDataResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkspacePurgeClientPurgeLakeDataResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// PurgeLakeData - Purges data lake data in a Log Analytics workspace for a table over a specified time range.
+// This operation deletes data lake data (Auxiliary tables, or Analytics tables mirrored to the data lake) for the specified
+// table within the given time range. The operation is long-running; poll the URL returned in the Azure-AsyncOperation response
+// header to track its status.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkspacePurgeClient) purgeLakeData(ctx context.Context, resourceGroupName string, workspaceName string, body WorkspacePurgeLakeDataBody, options *WorkspacePurgeClientBeginPurgeLakeDataOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WorkspacePurgeClient.BeginPurgeLakeData"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.purgeLakeDataCreateRequest(ctx, resourceGroupName, workspaceName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// purgeLakeDataCreateRequest creates the PurgeLakeData request.
+func (client *WorkspacePurgeClient) purgeLakeDataCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, body WorkspacePurgeLakeDataBody, _ *WorkspacePurgeClientBeginPurgeLakeDataOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/purgeLakeData"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
 }

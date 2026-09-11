@@ -83,10 +83,10 @@ func unmarshalResourcePredictionsProfileClassification(rawMsg json.RawMessage) (
 	}
 	var b ResourcePredictionsProfileClassification
 	switch m["kind"] {
-	case string(ResourcePredictionsProfileTypeManual):
-		b = &ManualResourcePredictionsProfile{}
 	case string(ResourcePredictionsProfileTypeAutomatic):
 		b = &AutomaticResourcePredictionsProfile{}
+	case string(ResourcePredictionsProfileTypeManual):
+		b = &ManualResourcePredictionsProfile{}
 	default:
 		b = &ResourcePredictionsProfile{}
 	}

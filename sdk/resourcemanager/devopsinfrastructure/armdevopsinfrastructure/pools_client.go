@@ -18,6 +18,8 @@ import (
 
 // PoolsClient contains the methods for the Pools group.
 // Don't use this type directly, use NewPoolsClient() instead.
+//
+// Generated from API version 2026-07-03-preview
 type PoolsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -26,8 +28,11 @@ type PoolsClient struct {
 // NewPoolsClient creates a new instance of PoolsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PoolsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -39,10 +44,64 @@ func NewPoolsClient(subscriptionID string, credential azcore.TokenCredential, op
 	return client, nil
 }
 
+// CheckNameAvailability - Checks that the pool name is valid and is not already in use.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - body - The CheckAvailability request
+//   - options - PoolsClientCheckNameAvailabilityOptions contains the optional parameters for the PoolsClient.CheckNameAvailability
+//     method.
+func (client *PoolsClient) CheckNameAvailability(ctx context.Context, body CheckNameAvailability, options *PoolsClientCheckNameAvailabilityOptions) (PoolsClientCheckNameAvailabilityResponse, error) {
+	var err error
+	const operationName = "PoolsClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.checkNameAvailabilityCreateRequest(ctx, body, options)
+	if err != nil {
+		return PoolsClientCheckNameAvailabilityResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PoolsClientCheckNameAvailabilityResponse{}, err
+	}
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+}
+
+// checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
+func (client *PoolsClient) checkNameAvailabilityCreateRequest(ctx context.Context, body CheckNameAvailability, _ *PoolsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevOpsInfrastructure/checkNameAvailability"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260703Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
+func (client *PoolsClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (PoolsClientCheckNameAvailabilityResponse, error) {
+	result := PoolsClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
+		return PoolsClientCheckNameAvailabilityResponse{}, err
+	}
+	return result, nil
+}
+
 // BeginCreateOrUpdate - Create a Pool
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-10-19
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - poolName - Name of the pool. It needs to be globally unique.
 //   - resource - Resource create parameters.
@@ -68,8 +127,6 @@ func (client *PoolsClient) BeginCreateOrUpdate(ctx context.Context, resourceGrou
 
 // CreateOrUpdate - Create a Pool
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-10-19
 func (client *PoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, poolName string, resource Pool, options *PoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PoolsClient.BeginCreateOrUpdate"
@@ -85,8 +142,7 @@ func (client *PoolsClient) createOrUpdate(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -95,7 +151,7 @@ func (client *PoolsClient) createOrUpdate(ctx context.Context, resourceGroupName
 func (client *PoolsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, poolName string, resource Pool, _ *PoolsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/pools/{poolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -111,8 +167,8 @@ func (client *PoolsClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-19")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260703Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -123,8 +179,6 @@ func (client *PoolsClient) createOrUpdateCreateRequest(ctx context.Context, reso
 
 // BeginDelete - Delete a Pool
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-10-19
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - poolName - Name of the pool. It needs to be globally unique.
 //   - options - PoolsClientBeginDeleteOptions contains the optional parameters for the PoolsClient.BeginDelete method.
@@ -147,8 +201,6 @@ func (client *PoolsClient) BeginDelete(ctx context.Context, resourceGroupName st
 
 // Delete - Delete a Pool
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-10-19
 func (client *PoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, poolName string, options *PoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PoolsClient.BeginDelete"
@@ -164,8 +216,7 @@ func (client *PoolsClient) deleteOperation(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -174,7 +225,7 @@ func (client *PoolsClient) deleteOperation(ctx context.Context, resourceGroupNam
 func (client *PoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, poolName string, _ *PoolsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/pools/{poolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -190,16 +241,68 @@ func (client *PoolsClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-19")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	reqQP.Set("api-version", version20260703Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// DeleteResources - A synchronous resource action.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - poolName - Name of the pool. It needs to be globally unique.
+//   - body - The content of the action request
+//   - options - PoolsClientDeleteResourcesOptions contains the optional parameters for the PoolsClient.DeleteResources method.
+func (client *PoolsClient) DeleteResources(ctx context.Context, resourceGroupName string, poolName string, body DeleteResourcesDetails, options *PoolsClientDeleteResourcesOptions) (PoolsClientDeleteResourcesResponse, error) {
+	var err error
+	const operationName = "PoolsClient.DeleteResources"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteResourcesCreateRequest(ctx, resourceGroupName, poolName, body, options)
+	if err != nil {
+		return PoolsClientDeleteResourcesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PoolsClientDeleteResourcesResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		return PoolsClientDeleteResourcesResponse{}, runtime.NewResponseError(httpResp)
+	}
+	return PoolsClientDeleteResourcesResponse{}, nil
+}
+
+// deleteResourcesCreateRequest creates the DeleteResources request.
+func (client *PoolsClient) deleteResourcesCreateRequest(ctx context.Context, resourceGroupName string, poolName string, body DeleteResourcesDetails, _ *PoolsClientDeleteResourcesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/pools/{poolName}/resources"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260703Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
 // Get - Get a Pool
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-10-19
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - poolName - Name of the pool. It needs to be globally unique.
 //   - options - PoolsClientGetOptions contains the optional parameters for the PoolsClient.Get method.
@@ -217,19 +320,14 @@ func (client *PoolsClient) Get(ctx context.Context, resourceGroupName string, po
 	if err != nil {
 		return PoolsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PoolsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *PoolsClient) getCreateRequest(ctx context.Context, resourceGroupName string, poolName string, _ *PoolsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/pools/{poolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -245,15 +343,18 @@ func (client *PoolsClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-19")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260703Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PoolsClient) getHandleResponse(resp *http.Response) (PoolsClientGetResponse, error) {
+func (client *PoolsClient) getHandleResponse(resp *http.Response, successCodes ...int) (PoolsClientGetResponse, error) {
 	result := PoolsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
 		return PoolsClientGetResponse{}, err
 	}
@@ -261,8 +362,6 @@ func (client *PoolsClient) getHandleResponse(resp *http.Response) (PoolsClientGe
 }
 
 // NewListByResourceGroupPager - List Pool resources by resource group
-//
-// Generated from API version 2024-10-19
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - PoolsClientListByResourceGroupOptions contains the optional parameters for the PoolsClient.NewListByResourceGroupPager
 //     method.
@@ -277,43 +376,57 @@ func (client *PoolsClient) NewListByResourceGroupPager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return PoolsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PoolsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *PoolsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *PoolsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/pools"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PoolsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *PoolsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/pools"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-19")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260703Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *PoolsClient) listByResourceGroupHandleResponse(resp *http.Response) (PoolsClientListByResourceGroupResponse, error) {
+func (client *PoolsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (PoolsClientListByResourceGroupResponse, error) {
 	result := PoolsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PoolListResult); err != nil {
 		return PoolsClientListByResourceGroupResponse{}, err
 	}
@@ -321,8 +434,6 @@ func (client *PoolsClient) listByResourceGroupHandleResponse(resp *http.Response
 }
 
 // NewListBySubscriptionPager - List Pool resources by subscription ID
-//
-// Generated from API version 2024-10-19
 //   - options - PoolsClientListBySubscriptionOptions contains the optional parameters for the PoolsClient.NewListBySubscriptionPager
 //     method.
 func (client *PoolsClient) NewListBySubscriptionPager(options *PoolsClientListBySubscriptionOptions) *runtime.Pager[PoolsClientListBySubscriptionResponse] {
@@ -336,39 +447,53 @@ func (client *PoolsClient) NewListBySubscriptionPager(options *PoolsClientListBy
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return PoolsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PoolsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *PoolsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *PoolsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevOpsInfrastructure/pools"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PoolsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *PoolsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevOpsInfrastructure/pools"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-19")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260703Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *PoolsClient) listBySubscriptionHandleResponse(resp *http.Response) (PoolsClientListBySubscriptionResponse, error) {
+func (client *PoolsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (PoolsClientListBySubscriptionResponse, error) {
 	result := PoolsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PoolListResult); err != nil {
 		return PoolsClientListBySubscriptionResponse{}, err
 	}
@@ -377,8 +502,6 @@ func (client *PoolsClient) listBySubscriptionHandleResponse(resp *http.Response)
 
 // BeginUpdate - Update a Pool
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-10-19
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - poolName - Name of the pool. It needs to be globally unique.
 //   - properties - The resource properties to be updated.
@@ -402,8 +525,6 @@ func (client *PoolsClient) BeginUpdate(ctx context.Context, resourceGroupName st
 
 // Update - Update a Pool
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-10-19
 func (client *PoolsClient) update(ctx context.Context, resourceGroupName string, poolName string, properties PoolUpdate, options *PoolsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PoolsClient.BeginUpdate"
@@ -419,8 +540,7 @@ func (client *PoolsClient) update(ctx context.Context, resourceGroupName string,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -429,7 +549,7 @@ func (client *PoolsClient) update(ctx context.Context, resourceGroupName string,
 func (client *PoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, poolName string, properties PoolUpdate, _ *PoolsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/pools/{poolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -445,8 +565,8 @@ func (client *PoolsClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-19")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260703Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

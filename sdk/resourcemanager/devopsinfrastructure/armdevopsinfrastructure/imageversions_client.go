@@ -18,6 +18,8 @@ import (
 
 // ImageVersionsClient contains the methods for the ImageVersions group.
 // Don't use this type directly, use NewImageVersionsClient() instead.
+//
+// Generated from API version 2026-07-03-preview
 type ImageVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -26,8 +28,11 @@ type ImageVersionsClient struct {
 // NewImageVersionsClient creates a new instance of ImageVersionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewImageVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ImageVersionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -40,8 +45,6 @@ func NewImageVersionsClient(subscriptionID string, credential azcore.TokenCreden
 }
 
 // NewListByImagePager - List ImageVersion resources by Image
-//
-// Generated from API version 2024-10-19
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - imageName - Name of the image.
 //   - options - ImageVersionsClientListByImageOptions contains the optional parameters for the ImageVersionsClient.NewListByImagePager
@@ -57,47 +60,61 @@ func (client *ImageVersionsClient) NewListByImagePager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByImageCreateRequest(ctx, resourceGroupName, imageName, options)
-			}, nil)
+			req, err := client.listByImageCreateRequest(ctx, resourceGroupName, imageName, nextLink, options)
 			if err != nil {
 				return ImageVersionsClientListByImageResponse{}, err
 			}
-			return client.listByImageHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ImageVersionsClientListByImageResponse{}, err
+			}
+			return client.listByImageHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByImageCreateRequest creates the ListByImage request.
-func (client *ImageVersionsClient) listByImageCreateRequest(ctx context.Context, resourceGroupName string, imageName string, _ *ImageVersionsClientListByImageOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/images/{imageName}/versions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ImageVersionsClient) listByImageCreateRequest(ctx context.Context, resourceGroupName string, imageName string, nextLink string, _ *ImageVersionsClientListByImageOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/images/{imageName}/versions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if imageName == "" {
+			return nil, errors.New("parameter imageName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if imageName == "" {
-		return nil, errors.New("parameter imageName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-19")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260703Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByImageHandleResponse handles the ListByImage response.
-func (client *ImageVersionsClient) listByImageHandleResponse(resp *http.Response) (ImageVersionsClientListByImageResponse, error) {
+func (client *ImageVersionsClient) listByImageHandleResponse(resp *http.Response, successCodes ...int) (ImageVersionsClientListByImageResponse, error) {
 	result := ImageVersionsClientListByImageResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageVersionListResult); err != nil {
 		return ImageVersionsClientListByImageResponse{}, err
 	}

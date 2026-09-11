@@ -1,5 +1,16 @@
 # Release History
 
+## 2.1.0-beta.1 (2026-08-21)
+### Features Added
+
+- New value `JSONWebKeyTypeOctHSM` added to enum type `JSONWebKeyType`
+- New enum type `TokenBindingMode` with values `TokenBindingModeEnforced`, `TokenBindingModeNotEnforced`
+- New enum type `TokenBindingStrength` with values `TokenBindingStrengthAttestedConfidential`, `TokenBindingStrengthAttestedTrustedLaunch`, `TokenBindingStrengthNoValidation`, `TokenBindingStrengthUnattested`
+- New struct `TokenBindingParameters`
+- New field `TokenBindingParameters` in struct `VaultPatchProperties`
+- New field `TokenBindingParameters` in struct `VaultProperties`
+
+
 ## 2.0.2 (2026-03-17)
 ### Other Changes
 

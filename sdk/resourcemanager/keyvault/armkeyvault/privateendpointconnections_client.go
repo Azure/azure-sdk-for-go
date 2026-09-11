@@ -20,7 +20,7 @@ import (
 // PrivateEndpointConnectionsClient contains the methods for the PrivateEndpointConnections group.
 // Don't use this type directly, use NewPrivateEndpointConnectionsClient() instead.
 //
-// Generated from API version 2026-02-01
+// Generated from API version 2026-03-01-preview
 type PrivateEndpointConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -115,7 +115,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -169,7 +169,7 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -246,7 +246,7 @@ func (client *PrivateEndpointConnectionsClient) listByResourceCreateRequest(ctx 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260201)
+		reqQP.Set("api-version", version20260301Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -314,7 +314,7 @@ func (client *PrivateEndpointConnectionsClient) putCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

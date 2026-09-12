@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armbulkactions"
 	"net/http"
-	"net/url"
 	"regexp"
 	"slices"
 )
@@ -93,10 +92,7 @@ func (s *ScheduledActionExtensionServerTransport) dispatchNewListByVMsPager(req 
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		resp := s.srv.NewListByVMsPager(resourceURIParam, nil)
 		newListByVMsPager = &resp
 		s.newListByVMsPager.add(req, newListByVMsPager)

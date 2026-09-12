@@ -5,47 +5,8 @@
 package armbulkactions
 
 const (
-	version20260806Preview string = "2026-08-06-preview"
+	version20260906Preview string = "2026-09-06-preview"
 )
-
-// AcceleratorManufacturer - Accelerator manufacturers supported by Azure VMs.
-type AcceleratorManufacturer string
-
-const (
-	// AcceleratorManufacturerAMD - AMD GpuType
-	AcceleratorManufacturerAMD AcceleratorManufacturer = "AMD"
-	// AcceleratorManufacturerNvidia - Nvidia GpuType
-	AcceleratorManufacturerNvidia AcceleratorManufacturer = "Nvidia"
-	// AcceleratorManufacturerXilinx - Xilinx GpuType
-	AcceleratorManufacturerXilinx AcceleratorManufacturer = "Xilinx"
-)
-
-// PossibleAcceleratorManufacturerValues returns the possible values for the AcceleratorManufacturer const type.
-func PossibleAcceleratorManufacturerValues() []AcceleratorManufacturer {
-	return []AcceleratorManufacturer{
-		AcceleratorManufacturerAMD,
-		AcceleratorManufacturerNvidia,
-		AcceleratorManufacturerXilinx,
-	}
-}
-
-// AcceleratorType - Accelerator types supported by Azure VMs.
-type AcceleratorType string
-
-const (
-	// AcceleratorTypeFPGA - FPGA Accelerator
-	AcceleratorTypeFPGA AcceleratorType = "FPGA"
-	// AcceleratorTypeGPU - GPU Accelerator
-	AcceleratorTypeGPU AcceleratorType = "GPU"
-)
-
-// PossibleAcceleratorTypeValues returns the possible values for the AcceleratorType const type.
-func PossibleAcceleratorTypeValues() []AcceleratorType {
-	return []AcceleratorType{
-		AcceleratorTypeFPGA,
-		AcceleratorTypeGPU,
-	}
-}
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
@@ -80,24 +41,6 @@ func PossibleAllocationStrategyValues() []AllocationStrategy {
 		AllocationStrategyCapacityOptimized,
 		AllocationStrategyLowestPrice,
 		AllocationStrategyPrioritized,
-	}
-}
-
-// ArchitectureType - Architecture types supported by Azure VMs.
-type ArchitectureType string
-
-const (
-	// ArchitectureTypeARM64 - ARM64 Architecture
-	ArchitectureTypeARM64 ArchitectureType = "ARM64"
-	// ArchitectureTypeX64 - X64 Architecture
-	ArchitectureTypeX64 ArchitectureType = "X64"
-)
-
-// PossibleArchitectureTypeValues returns the possible values for the ArchitectureType const type.
-func PossibleArchitectureTypeValues() []ArchitectureType {
-	return []ArchitectureType{
-		ArchitectureTypeARM64,
-		ArchitectureTypeX64,
 	}
 }
 
@@ -140,30 +83,6 @@ func PossibleBulkCreateCustomDistributionStrategyValues() []BulkCreateCustomDist
 		BulkCreateCustomDistributionStrategyBestEffortBalanced,
 		BulkCreateCustomDistributionStrategyBestEffortSingleZone,
 		BulkCreateCustomDistributionStrategyPrioritized,
-	}
-}
-
-// CPUManufacturer - Cpu Manufacturers supported by Azure VMs.
-type CPUManufacturer string
-
-const (
-	// CPUManufacturerAMD - AMD CPU.
-	CPUManufacturerAMD CPUManufacturer = "AMD"
-	// CPUManufacturerAmpere - Ampere CPU.
-	CPUManufacturerAmpere CPUManufacturer = "Ampere"
-	// CPUManufacturerIntel - Intel CPU.
-	CPUManufacturerIntel CPUManufacturer = "Intel"
-	// CPUManufacturerMicrosoft - Microsoft CPU.
-	CPUManufacturerMicrosoft CPUManufacturer = "Microsoft"
-)
-
-// PossibleCPUManufacturerValues returns the possible values for the CPUManufacturer const type.
-func PossibleCPUManufacturerValues() []CPUManufacturer {
-	return []CPUManufacturer{
-		CPUManufacturerAMD,
-		CPUManufacturerAmpere,
-		CPUManufacturerIntel,
-		CPUManufacturerMicrosoft,
 	}
 }
 
@@ -266,8 +185,6 @@ const (
 	DeadlineTypeCompleteBy DeadlineType = "CompleteBy"
 	// DeadlineTypeInitiateAt - Initiate the operation at the given deadline.
 	DeadlineTypeInitiateAt DeadlineType = "InitiateAt"
-	// DeadlineTypeUnknown - Default value of Unknown.
-	DeadlineTypeUnknown DeadlineType = "Unknown"
 )
 
 // PossibleDeadlineTypeValues returns the possible values for the DeadlineType const type.
@@ -275,7 +192,6 @@ func PossibleDeadlineTypeValues() []DeadlineType {
 	return []DeadlineType{
 		DeadlineTypeCompleteBy,
 		DeadlineTypeInitiateAt,
-		DeadlineTypeUnknown,
 	}
 }
 
@@ -504,24 +420,6 @@ func PossibleEvictionPolicyValues() []EvictionPolicy {
 	}
 }
 
-// HyperVGeneration - HyperVGenerations supported by Azure VMs.
-type HyperVGeneration string
-
-const (
-	// HyperVGenerationGen1 - Gen1 hyperV.
-	HyperVGenerationGen1 HyperVGeneration = "Gen1"
-	// HyperVGenerationGen2 - Gen2 hyperV.
-	HyperVGenerationGen2 HyperVGeneration = "Gen2"
-)
-
-// PossibleHyperVGenerationValues returns the possible values for the HyperVGeneration const type.
-func PossibleHyperVGenerationValues() []HyperVGeneration {
-	return []HyperVGeneration{
-		HyperVGenerationGen1,
-		HyperVGenerationGen2,
-	}
-}
-
 // IPVersions - Available from compute Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration
 // is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
 type IPVersions string
@@ -541,11 +439,11 @@ func PossibleIPVersionsValues() []IPVersions {
 	}
 }
 
-// Language - The notification languages currently supported
+// Language - The language used for scheduled action notifications.
 type Language string
 
 const (
-	// LanguageEnUs - American english language
+	// LanguageEnUs - English (United States).
 	LanguageEnUs Language = "en-us"
 )
 
@@ -623,24 +521,6 @@ func PossibleLinuxVMGuestPatchModeValues() []LinuxVMGuestPatchMode {
 	}
 }
 
-// LocalStorageDiskType - Local storage disk types supported by Azure VMs.
-type LocalStorageDiskType string
-
-const (
-	// LocalStorageDiskTypeHDD - HDD DiskType.
-	LocalStorageDiskTypeHDD LocalStorageDiskType = "HDD"
-	// LocalStorageDiskTypeSSD - SSD DiskType.
-	LocalStorageDiskTypeSSD LocalStorageDiskType = "SSD"
-)
-
-// PossibleLocalStorageDiskTypeValues returns the possible values for the LocalStorageDiskType const type.
-func PossibleLocalStorageDiskTypeValues() []LocalStorageDiskType {
-	return []LocalStorageDiskType{
-		LocalStorageDiskTypeHDD,
-		LocalStorageDiskTypeSSD,
-	}
-}
-
 // ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
 type ManagedServiceIdentityType string
 
@@ -708,35 +588,35 @@ func PossibleModesValues() []Modes {
 	}
 }
 
-// Month - Representation of the months available selection in a gregorian calendar
+// Month - A month in which the scheduled action can run.
 type Month string
 
 const (
-	// MonthAll - All months
+	// MonthAll - Every month.
 	MonthAll Month = "All"
-	// MonthApril - The April month.
+	// MonthApril - The scheduled action can run in April.
 	MonthApril Month = "April"
-	// MonthAugust - The August month.
+	// MonthAugust - The scheduled action can run in August.
 	MonthAugust Month = "August"
-	// MonthDecember - The December month.
+	// MonthDecember - The scheduled action can run in December.
 	MonthDecember Month = "December"
-	// MonthFebruary - The February month.
+	// MonthFebruary - The scheduled action can run in February.
 	MonthFebruary Month = "February"
-	// MonthJanuary - The January month.
+	// MonthJanuary - The scheduled action can run in January.
 	MonthJanuary Month = "January"
-	// MonthJuly - The July month.
+	// MonthJuly - The scheduled action can run in July.
 	MonthJuly Month = "July"
-	// MonthJune - The June month.
+	// MonthJune - The scheduled action can run in June.
 	MonthJune Month = "June"
-	// MonthMarch - The March month.
+	// MonthMarch - The scheduled action can run in March.
 	MonthMarch Month = "March"
-	// MonthMay - The May month.
+	// MonthMay - The scheduled action can run in May.
 	MonthMay Month = "May"
-	// MonthNovember - The November month.
+	// MonthNovember - The scheduled action can run in November.
 	MonthNovember Month = "November"
-	// MonthOctober - The October month.
+	// MonthOctober - The scheduled action can run in October.
 	MonthOctober Month = "October"
-	// MonthSeptember - The September month.
+	// MonthSeptember - The scheduled action can run in September.
 	MonthSeptember Month = "September"
 )
 
@@ -826,11 +706,11 @@ func PossibleNetworkInterfaceAuxiliarySKUValues() []NetworkInterfaceAuxiliarySKU
 	}
 }
 
-// NotificationType - The type of notification supported
+// NotificationType - The delivery method for scheduled action notifications.
 type NotificationType string
 
 const (
-	// NotificationTypeEmail - Notify through e-mail
+	// NotificationTypeEmail - Sends notifications by email.
 	NotificationTypeEmail NotificationType = "Email"
 )
 
@@ -877,23 +757,23 @@ func PossibleOccurrenceResourceProvisioningStateValues() []OccurrenceResourcePro
 	}
 }
 
-// OccurrenceState - The state the occurrence is at a given time
+// OccurrenceState - The current state of a scheduled action occurrence.
 type OccurrenceState string
 
 const (
-	// OccurrenceStateCanceled - The occurrence has been canceled
+	// OccurrenceStateCanceled - The occurrence was canceled.
 	OccurrenceStateCanceled OccurrenceState = "Canceled"
-	// OccurrenceStateCancelling - The occurrence is going through cancellation
+	// OccurrenceStateCancelling - Cancellation of the occurrence is in progress.
 	OccurrenceStateCancelling OccurrenceState = "Cancelling"
-	// OccurrenceStateCreated - The occurrence was created
+	// OccurrenceStateCreated - The occurrence has been created.
 	OccurrenceStateCreated OccurrenceState = "Created"
-	// OccurrenceStateFailed - The occurrence has failed during its scheduling
+	// OccurrenceStateFailed - One or more of the occurrence operations failed.
 	OccurrenceStateFailed OccurrenceState = "Failed"
-	// OccurrenceStateRescheduling - The occurrence is being rescheduled
+	// OccurrenceStateRescheduling - The scheduled time for the occurrence is being updated.
 	OccurrenceStateRescheduling OccurrenceState = "Rescheduling"
-	// OccurrenceStateScheduled - The occurrence has been scheduled
+	// OccurrenceStateScheduled - The occurrence has been scheduled.
 	OccurrenceStateScheduled OccurrenceState = "Scheduled"
-	// OccurrenceStateSucceeded - The occurrence has successfully ran
+	// OccurrenceStateSucceeded - The occurrence operations completed successfully.
 	OccurrenceStateSucceeded OccurrenceState = "Succeeded"
 )
 
@@ -941,16 +821,10 @@ const (
 	OperationStateExecuting OperationState = "Executing"
 	// OperationStateFailed - Operations that have failed
 	OperationStateFailed OperationState = "Failed"
-	// OperationStatePendingExecution - Operations that are waiting to be executed
-	OperationStatePendingExecution OperationState = "PendingExecution"
-	// OperationStatePendingScheduling - Operations that are pending scheduling
-	OperationStatePendingScheduling OperationState = "PendingScheduling"
 	// OperationStateScheduled - Operations that have been scheduled
 	OperationStateScheduled OperationState = "Scheduled"
 	// OperationStateSucceeded - Operations that succeeded
 	OperationStateSucceeded OperationState = "Succeeded"
-	// OperationStateUnknown - The default value for the operation state enum
-	OperationStateUnknown OperationState = "Unknown"
 )
 
 // PossibleOperationStateValues returns the possible values for the OperationState const type.
@@ -960,32 +834,8 @@ func PossibleOperationStateValues() []OperationState {
 		OperationStateCancelled,
 		OperationStateExecuting,
 		OperationStateFailed,
-		OperationStatePendingExecution,
-		OperationStatePendingScheduling,
 		OperationStateScheduled,
 		OperationStateSucceeded,
-		OperationStateUnknown,
-	}
-}
-
-// OptimizationPreference - The preferences customers can select to optimize their requests to ScheduledActions
-type OptimizationPreference string
-
-const (
-	// OptimizationPreferenceAvailability - Optimize while considering availability of resources
-	OptimizationPreferenceAvailability OptimizationPreference = "Availability"
-	// OptimizationPreferenceCost - Optimize while considering cost savings
-	OptimizationPreferenceCost OptimizationPreference = "Cost"
-	// OptimizationPreferenceCostAvailabilityBalanced - Optimize while considering a balance of cost and availability
-	OptimizationPreferenceCostAvailabilityBalanced OptimizationPreference = "CostAvailabilityBalanced"
-)
-
-// PossibleOptimizationPreferenceValues returns the possible values for the OptimizationPreference const type.
-func PossibleOptimizationPreferenceValues() []OptimizationPreference {
-	return []OptimizationPreference{
-		OptimizationPreferenceAvailability,
-		OptimizationPreferenceCost,
-		OptimizationPreferenceCostAvailabilityBalanced,
 	}
 }
 
@@ -1008,24 +858,6 @@ func PossibleOriginValues() []Origin {
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
-	}
-}
-
-// OsType - The supported operating system types for flex VM creation
-type OsType string
-
-const (
-	// OsTypeLinux - Linux operating system
-	OsTypeLinux OsType = "Linux"
-	// OsTypeWindows - Windows operating system
-	OsTypeWindows OsType = "Windows"
-)
-
-// PossibleOsTypeValues returns the possible values for the OsType const type.
-func PossibleOsTypeValues() []OsType {
-	return []OsType{
-		OsTypeLinux,
-		OsTypeWindows,
 	}
 }
 
@@ -1210,13 +1042,13 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
-// ResourceOperationStatus - The state the resource is on after the resource operation is applied
+// ResourceOperationStatus - Current status of an operation for the specific occurrence and resource
 type ResourceOperationStatus string
 
 const (
-	// ResourceOperationStatusFailed - The resource operation has failed.
+	// ResourceOperationStatusFailed - The operation failed for the resource.
 	ResourceOperationStatusFailed ResourceOperationStatus = "Failed"
-	// ResourceOperationStatusSucceeded - The resource operation was successful
+	// ResourceOperationStatusSucceeded - The operation completed successfully for the resource.
 	ResourceOperationStatusSucceeded ResourceOperationStatus = "Succeeded"
 )
 
@@ -1238,15 +1070,10 @@ const (
 	ResourceOperationTypeDeallocate ResourceOperationType = "Deallocate"
 	// ResourceOperationTypeDelete - Delete operations on the resources
 	ResourceOperationTypeDelete ResourceOperationType = "Delete"
-	// ResourceOperationTypeGetInstanceView - Post-Start VM agent health-check sub-operation; surfaced when the customer opts
-	// into verifyVmAgentHealth on a Start request
-	ResourceOperationTypeGetInstanceView ResourceOperationType = "GetInstanceView"
 	// ResourceOperationTypeHibernate - Hibernate operations on the resources
 	ResourceOperationTypeHibernate ResourceOperationType = "Hibernate"
 	// ResourceOperationTypeStart - Start operations on the resources
 	ResourceOperationTypeStart ResourceOperationType = "Start"
-	// ResourceOperationTypeUnknown - The default value for this enum type
-	ResourceOperationTypeUnknown ResourceOperationType = "Unknown"
 )
 
 // PossibleResourceOperationTypeValues returns the possible values for the ResourceOperationType const type.
@@ -1255,20 +1082,18 @@ func PossibleResourceOperationTypeValues() []ResourceOperationType {
 		ResourceOperationTypeCreate,
 		ResourceOperationTypeDeallocate,
 		ResourceOperationTypeDelete,
-		ResourceOperationTypeGetInstanceView,
 		ResourceOperationTypeHibernate,
 		ResourceOperationTypeStart,
-		ResourceOperationTypeUnknown,
 	}
 }
 
-// ResourceType - The type of resource being targeted
+// ResourceType - The type of compute resource targeted by the scheduled action.
 type ResourceType string
 
 const (
-	// ResourceTypeVirtualMachine - Resources defined are Virtual Machines
+	// ResourceTypeVirtualMachine - Azure virtual machines.
 	ResourceTypeVirtualMachine ResourceType = "VirtualMachine"
-	// ResourceTypeVirtualMachineScaleSet - Resources defined are Virtual Machines Scale Sets
+	// ResourceTypeVirtualMachineScaleSet - Azure Virtual Machine Scale Sets.
 	ResourceTypeVirtualMachineScaleSet ResourceType = "VirtualMachineScaleSet"
 )
 
@@ -1280,15 +1105,15 @@ func PossibleResourceTypeValues() []ResourceType {
 	}
 }
 
-// ScheduledActionType - Specify which action user wants to be performed on the resources
+// ScheduledActionType - The operation performed by the scheduled action.
 type ScheduledActionType string
 
 const (
-	// ScheduledActionTypeDeallocate - Perform a deallocate action on the specified resources
+	// ScheduledActionTypeDeallocate - Deallocates the targeted resources.
 	ScheduledActionTypeDeallocate ScheduledActionType = "Deallocate"
-	// ScheduledActionTypeHibernate - Perform hibernate and deallocate on the specified resources
+	// ScheduledActionTypeHibernate - Hibernates the targeted resources.
 	ScheduledActionTypeHibernate ScheduledActionType = "Hibernate"
-	// ScheduledActionTypeStart - Perform a start action on the specified resources
+	// ScheduledActionTypeStart - Starts the targeted resources.
 	ScheduledActionTypeStart ScheduledActionType = "Start"
 )
 
@@ -1301,16 +1126,14 @@ func PossibleScheduledActionTypeValues() []ScheduledActionType {
 	}
 }
 
-// ScheduledActionsDeadlineType - The type of deadline the scheduled action follows for its schedule.
+// ScheduledActionsDeadlineType - How the scheduled time is interpreted for the resource operation.
 type ScheduledActionsDeadlineType string
 
 const (
-	// ScheduledActionsDeadlineTypeCompleteBy - Complete the operation by the given deadline.
+	// ScheduledActionsDeadlineTypeCompleteBy - Completes the operation by the scheduled time.
 	ScheduledActionsDeadlineTypeCompleteBy ScheduledActionsDeadlineType = "CompleteBy"
-	// ScheduledActionsDeadlineTypeInitiateAt - Initiate the operation at the given deadline.
+	// ScheduledActionsDeadlineTypeInitiateAt - Starts the operation at the scheduled time.
 	ScheduledActionsDeadlineTypeInitiateAt ScheduledActionsDeadlineType = "InitiateAt"
-	// ScheduledActionsDeadlineTypeUnknown - Default value of Unknown.
-	ScheduledActionsDeadlineTypeUnknown ScheduledActionsDeadlineType = "Unknown"
 )
 
 // PossibleScheduledActionsDeadlineTypeValues returns the possible values for the ScheduledActionsDeadlineType const type.
@@ -1318,22 +1141,23 @@ func PossibleScheduledActionsDeadlineTypeValues() []ScheduledActionsDeadlineType
 	return []ScheduledActionsDeadlineType{
 		ScheduledActionsDeadlineTypeCompleteBy,
 		ScheduledActionsDeadlineTypeInitiateAt,
-		ScheduledActionsDeadlineTypeUnknown,
 	}
 }
 
-// ScheduledActionsProvisioningState - Provisioning state of the scheduled action resource.
+// ScheduledActionsProvisioningState - The provisioning state of the scheduled action.
 type ScheduledActionsProvisioningState string
 
 const (
 	// ScheduledActionsProvisioningStateCanceled - Resource creation was canceled.
 	ScheduledActionsProvisioningStateCanceled ScheduledActionsProvisioningState = "Canceled"
-	// ScheduledActionsProvisioningStateDeleting - Resource is being deleted.
+	// ScheduledActionsProvisioningStateDeleting - The scheduled action is being deleted.
 	ScheduledActionsProvisioningStateDeleting ScheduledActionsProvisioningState = "Deleting"
 	// ScheduledActionsProvisioningStateFailed - Resource creation failed.
 	ScheduledActionsProvisioningStateFailed ScheduledActionsProvisioningState = "Failed"
 	// ScheduledActionsProvisioningStateSucceeded - Resource has been created.
 	ScheduledActionsProvisioningStateSucceeded ScheduledActionsProvisioningState = "Succeeded"
+	// ScheduledActionsProvisioningStateUpdating - The scheduled action is being updated.
+	ScheduledActionsProvisioningStateUpdating ScheduledActionsProvisioningState = "Updating"
 )
 
 // PossibleScheduledActionsProvisioningStateValues returns the possible values for the ScheduledActionsProvisioningState const type.
@@ -1343,25 +1167,24 @@ func PossibleScheduledActionsProvisioningStateValues() []ScheduledActionsProvisi
 		ScheduledActionsProvisioningStateDeleting,
 		ScheduledActionsProvisioningStateFailed,
 		ScheduledActionsProvisioningStateSucceeded,
+		ScheduledActionsProvisioningStateUpdating,
 	}
 }
 
-// ScheduledActionsResourceOperationType - The resource operation to take on a scheduled-action failure.
+// ScheduledActionsResourceOperationType - The operation to retry when a scheduled action fails.
 type ScheduledActionsResourceOperationType string
 
 const (
-	// ScheduledActionsResourceOperationTypeCreate - Create operations on the resources
+	// ScheduledActionsResourceOperationTypeCreate - Creates the resources.
 	ScheduledActionsResourceOperationTypeCreate ScheduledActionsResourceOperationType = "Create"
-	// ScheduledActionsResourceOperationTypeDeallocate - Deallocate operations on the resources
+	// ScheduledActionsResourceOperationTypeDeallocate - Deallocates the resources.
 	ScheduledActionsResourceOperationTypeDeallocate ScheduledActionsResourceOperationType = "Deallocate"
-	// ScheduledActionsResourceOperationTypeDelete - Delete operations on the resources
+	// ScheduledActionsResourceOperationTypeDelete - Deletes the resources.
 	ScheduledActionsResourceOperationTypeDelete ScheduledActionsResourceOperationType = "Delete"
-	// ScheduledActionsResourceOperationTypeHibernate - Hibernate operations on the resources
+	// ScheduledActionsResourceOperationTypeHibernate - Hibernates the resources.
 	ScheduledActionsResourceOperationTypeHibernate ScheduledActionsResourceOperationType = "Hibernate"
-	// ScheduledActionsResourceOperationTypeStart - Start operations on the resources
+	// ScheduledActionsResourceOperationTypeStart - Starts the resources.
 	ScheduledActionsResourceOperationTypeStart ScheduledActionsResourceOperationType = "Start"
-	// ScheduledActionsResourceOperationTypeUnknown - The default value for this enum type
-	ScheduledActionsResourceOperationTypeUnknown ScheduledActionsResourceOperationType = "Unknown"
 )
 
 // PossibleScheduledActionsResourceOperationTypeValues returns the possible values for the ScheduledActionsResourceOperationType const type.
@@ -1372,7 +1195,6 @@ func PossibleScheduledActionsResourceOperationTypeValues() []ScheduledActionsRes
 		ScheduledActionsResourceOperationTypeDelete,
 		ScheduledActionsResourceOperationTypeHibernate,
 		ScheduledActionsResourceOperationTypeStart,
-		ScheduledActionsResourceOperationTypeUnknown,
 	}
 }
 
@@ -1475,123 +1297,25 @@ func PossibleStorageAccountTypesValues() []StorageAccountTypes {
 	}
 }
 
-// VMAttributeSupport - VMSizes supported by Azure VMs. Included is a union of Excluded and Required.
-type VMAttributeSupport string
-
-const (
-	// VMAttributeSupportExcluded - All VMSizes having the feature support will be excluded.
-	VMAttributeSupportExcluded VMAttributeSupport = "Excluded"
-	// VMAttributeSupportIncluded - VMSizes that have the feature support and that do not have the feature support will be used.
-	// Included is a union of Excluded and Required.
-	VMAttributeSupportIncluded VMAttributeSupport = "Included"
-	// VMAttributeSupportRequired - Only the VMSizes having the feature support will be used.
-	VMAttributeSupportRequired VMAttributeSupport = "Required"
-)
-
-// PossibleVMAttributeSupportValues returns the possible values for the VMAttributeSupport const type.
-func PossibleVMAttributeSupportValues() []VMAttributeSupport {
-	return []VMAttributeSupport{
-		VMAttributeSupportExcluded,
-		VMAttributeSupportIncluded,
-		VMAttributeSupportRequired,
-	}
-}
-
-// VMCategory - VMCategories defined for Azure VMs.
-type VMCategory string
-
-const (
-	// VMCategoryComputeOptimized - Compute optimized VM sizes have a high CPU-to-memory ratio. These sizes are good for medium
-	// traffic web servers, network appliances, batch processes, and application servers.
-	VMCategoryComputeOptimized VMCategory = "ComputeOptimized"
-	// VMCategoryFpgaAccelerated - FPGA optimized VM sizes are specialized virtual machines available with single or multiple
-	// FPGA.
-	VMCategoryFpgaAccelerated VMCategory = "FpgaAccelerated"
-	// VMCategoryGeneralPurpose - General purpose VM sizes provide balanced CPU-to-memory ratio. Ideal for testing and development,
-	// small to medium databases, and low to medium traffic web servers.
-	VMCategoryGeneralPurpose VMCategory = "GeneralPurpose"
-	// VMCategoryGpuAccelerated - GPU optimized VM sizes are specialized virtual machines available with single, multiple, or
-	// fractional GPUs.
-	VMCategoryGpuAccelerated VMCategory = "GpuAccelerated"
-	// VMCategoryHighPerformanceCompute - Azure High Performance Compute VMs are optimized for various HPC workloads such as CFD,
-	// FEA, EDA, rendering, molecular dynamics, weather simulation, and financial risk analysis.
-	VMCategoryHighPerformanceCompute VMCategory = "HighPerformanceCompute"
-	// VMCategoryMemoryOptimized - Memory optimized VM sizes offer a high memory-to-CPU ratio that is great for relational database
-	// servers, medium to large caches, and in-memory analytics.
-	VMCategoryMemoryOptimized VMCategory = "MemoryOptimized"
-	// VMCategoryStorageOptimized - Storage optimized virtual machine (VM) sizes offer high disk throughput and IO, and are ideal
-	// for Big Data, SQL, NoSQL databases, data warehousing, and large transactional databases.
-	VMCategoryStorageOptimized VMCategory = "StorageOptimized"
-)
-
-// PossibleVMCategoryValues returns the possible values for the VMCategory const type.
-func PossibleVMCategoryValues() []VMCategory {
-	return []VMCategory{
-		VMCategoryComputeOptimized,
-		VMCategoryFpgaAccelerated,
-		VMCategoryGeneralPurpose,
-		VMCategoryGpuAccelerated,
-		VMCategoryHighPerformanceCompute,
-		VMCategoryMemoryOptimized,
-		VMCategoryStorageOptimized,
-	}
-}
-
-// VMOperationStatus - Virtual Machine operation status values.
-type VMOperationStatus string
-
-const (
-	// VMOperationStatusCancelFailedStatusUnknown - Indicates that the cancellation request could not be applied because the virtual
-	// machine had already been created.
-	VMOperationStatusCancelFailedStatusUnknown VMOperationStatus = "CancelFailedStatusUnknown"
-	// VMOperationStatusCanceled - Indicates that the cancellation request was successful because the virtual machine had not
-	// been created yet.
-	VMOperationStatusCanceled VMOperationStatus = "Canceled"
-	// VMOperationStatusCancelling - Indicates that the virtual machine operation is being cancelled.
-	VMOperationStatusCancelling VMOperationStatus = "Cancelling"
-	// VMOperationStatusCreating - Indicates that the virtual machine is either in the process of being created or is scheduled
-	// to be created.
-	VMOperationStatusCreating VMOperationStatus = "Creating"
-	// VMOperationStatusDeleting - Indicates that the virtual machine is being deleted.
-	VMOperationStatusDeleting VMOperationStatus = "Deleting"
-	// VMOperationStatusFailed - Indicates that the virtual machine operation failed.
-	VMOperationStatusFailed VMOperationStatus = "Failed"
-	// VMOperationStatusSucceeded - Indicates that the virtual machine operation completed successfully.
-	VMOperationStatusSucceeded VMOperationStatus = "Succeeded"
-)
-
-// PossibleVMOperationStatusValues returns the possible values for the VMOperationStatus const type.
-func PossibleVMOperationStatusValues() []VMOperationStatus {
-	return []VMOperationStatus{
-		VMOperationStatusCancelFailedStatusUnknown,
-		VMOperationStatusCanceled,
-		VMOperationStatusCancelling,
-		VMOperationStatusCreating,
-		VMOperationStatusDeleting,
-		VMOperationStatusFailed,
-		VMOperationStatusSucceeded,
-	}
-}
-
-// WeekDay - Representation of the possible selection of days in a week in a gregorian calendar
+// WeekDay - A day of the week on which the scheduled action can run.
 type WeekDay string
 
 const (
-	// WeekDayAll - All week days
+	// WeekDayAll - Every day of the week.
 	WeekDayAll WeekDay = "All"
-	// WeekDayFriday - Friday weekday.
+	// WeekDayFriday - The scheduled action can run on Friday.
 	WeekDayFriday WeekDay = "Friday"
-	// WeekDayMonday - Monday weekday.
+	// WeekDayMonday - The scheduled action can run on Monday.
 	WeekDayMonday WeekDay = "Monday"
-	// WeekDaySaturday - Saturday weekday.
+	// WeekDaySaturday - The scheduled action can run on Saturday.
 	WeekDaySaturday WeekDay = "Saturday"
-	// WeekDaySunday - Sunday weekday.
+	// WeekDaySunday - The scheduled action can run on Sunday.
 	WeekDaySunday WeekDay = "Sunday"
-	// WeekDayThursday - Thursday weekday.
+	// WeekDayThursday - The scheduled action can run on Thursday.
 	WeekDayThursday WeekDay = "Thursday"
-	// WeekDayTuesday - Tuesday weekday.
+	// WeekDayTuesday - The scheduled action can run on Tuesday.
 	WeekDayTuesday WeekDay = "Tuesday"
-	// WeekDayWednesday - Wednesday weekday.
+	// WeekDayWednesday - The scheduled action can run on Wednesday.
 	WeekDayWednesday WeekDay = "Wednesday"
 )
 

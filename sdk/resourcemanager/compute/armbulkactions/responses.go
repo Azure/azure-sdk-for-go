@@ -4,6 +4,52 @@
 
 package armbulkactions
 
+// BulkCreateClientCancelResponse contains the response from method BulkCreateClient.BeginCancel.
+type BulkCreateClientCancelResponse struct {
+	// placeholder for future response values
+}
+
+// BulkCreateClientCreateOrUpdateResponse contains the response from method BulkCreateClient.BeginCreateOrUpdate.
+type BulkCreateClientCreateOrUpdateResponse struct {
+	// Location based BulkCreate resource. The location is part of the resource path.
+	LocationBasedBulkCreate
+}
+
+// BulkCreateClientDeleteResponse contains the response from method BulkCreateClient.BeginDelete.
+type BulkCreateClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// BulkCreateClientGetAsyncOperationStatusResponse contains the response from method BulkCreateClient.GetAsyncOperationStatus.
+type BulkCreateClientGetAsyncOperationStatusResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
+// BulkCreateClientGetResponse contains the response from method BulkCreateClient.Get.
+type BulkCreateClientGetResponse struct {
+	// Location based BulkCreate resource. The location is part of the resource path.
+	LocationBasedBulkCreate
+}
+
+// BulkCreateClientListByResourceGroupResponse contains the response from method BulkCreateClient.NewListByResourceGroupPager.
+type BulkCreateClientListByResourceGroupResponse struct {
+	// List of BulkCreate resources.
+	BulkCreateListResult
+}
+
+// BulkCreateClientListBySubscriptionResponse contains the response from method BulkCreateClient.NewListBySubscriptionPager.
+type BulkCreateClientListBySubscriptionResponse struct {
+	// List of BulkCreate resources.
+	BulkCreateListResult
+}
+
+// BulkCreateClientVirtualMachinesGetOperationStatusResponse contains the response from method BulkCreateClient.NewVirtualMachinesGetOperationStatusPager.
+type BulkCreateClientVirtualMachinesGetOperationStatusResponse struct {
+	// The paged response for virtual machine operation statuses in a BulkCreate operation.
+	BulkCreateOperationStatusListResult
+}
+
 // BulkCreateCustomClientCancelResponse contains the response from method BulkCreateCustomClient.BeginCancel.
 type BulkCreateCustomClientCancelResponse struct {
 	// placeholder for future response values
@@ -50,52 +96,6 @@ type BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse struct {
 	BulkCreateCustomOperationStatusListResult
 }
 
-// LaunchBulkInstancesOperationClientCancelResponse contains the response from method LaunchBulkInstancesOperationClient.BeginCancel.
-type LaunchBulkInstancesOperationClientCancelResponse struct {
-	// placeholder for future response values
-}
-
-// LaunchBulkInstancesOperationClientCreateOrUpdateResponse contains the response from method LaunchBulkInstancesOperationClient.BeginCreateOrUpdate.
-type LaunchBulkInstancesOperationClientCreateOrUpdateResponse struct {
-	// Location based LaunchBulkInstancesOperation resource. The location is part of the resource path.
-	LocationBasedLaunchBulkInstancesOperation
-}
-
-// LaunchBulkInstancesOperationClientDeleteResponse contains the response from method LaunchBulkInstancesOperationClient.BeginDelete.
-type LaunchBulkInstancesOperationClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// LaunchBulkInstancesOperationClientGetOperationStatusResponse contains the response from method LaunchBulkInstancesOperationClient.GetOperationStatus.
-type LaunchBulkInstancesOperationClientGetOperationStatusResponse struct {
-	// The current status of an async operation.
-	OperationStatusResult
-}
-
-// LaunchBulkInstancesOperationClientGetResponse contains the response from method LaunchBulkInstancesOperationClient.Get.
-type LaunchBulkInstancesOperationClientGetResponse struct {
-	// Location based LaunchBulkInstancesOperation resource. The location is part of the resource path.
-	LocationBasedLaunchBulkInstancesOperation
-}
-
-// LaunchBulkInstancesOperationClientListByResourceGroupResponse contains the response from method LaunchBulkInstancesOperationClient.NewListByResourceGroupPager.
-type LaunchBulkInstancesOperationClientListByResourceGroupResponse struct {
-	// List of LaunchBulkInstancesOperation resources.
-	LaunchBulkInstancesOperationListResult
-}
-
-// LaunchBulkInstancesOperationClientListBySubscriptionResponse contains the response from method LaunchBulkInstancesOperationClient.NewListBySubscriptionPager.
-type LaunchBulkInstancesOperationClientListBySubscriptionResponse struct {
-	// List of LaunchBulkInstancesOperation resources.
-	LaunchBulkInstancesOperationListResult
-}
-
-// LaunchBulkInstancesOperationClientListVirtualMachinesResponse contains the response from method LaunchBulkInstancesOperationClient.NewListVirtualMachinesPager.
-type LaunchBulkInstancesOperationClientListVirtualMachinesResponse struct {
-	// The response of a virtual machine list operation.
-	VirtualMachineListResult
-}
-
 // OccurrenceExtensionClientListOccurrenceByVMsResponse contains the response from method OccurrenceExtensionClient.NewListOccurrenceByVMsPager.
 type OccurrenceExtensionClientListOccurrenceByVMsResponse struct {
 	// The response of a OccurrenceExtensionResource list operation.
@@ -104,19 +104,19 @@ type OccurrenceExtensionClientListOccurrenceByVMsResponse struct {
 
 // OccurrencesClientCancelResponse contains the response from method OccurrencesClient.BeginCancel.
 type OccurrencesClientCancelResponse struct {
-	// The response from scheduled action resource requests, which contains the status of each resource
+	// Results of a scheduled action operation for targeted resources.
 	ResourceOperationResponse
 }
 
 // OccurrencesClientDelayResponse contains the response from method OccurrencesClient.BeginDelay.
 type OccurrencesClientDelayResponse struct {
-	// The response from scheduled action resource requests, which contains the status of each resource
+	// Results of a scheduled action operation for targeted resources.
 	ResourceOperationResponse
 }
 
 // OccurrencesClientGetResponse contains the response from method OccurrencesClient.Get.
 type OccurrencesClientGetResponse struct {
-	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
+	// One scheduled execution of a scheduled action.
 	Occurrence
 }
 
@@ -128,7 +128,7 @@ type OccurrencesClientListByScheduledActionResponse struct {
 
 // OccurrencesClientListResourcesResponse contains the response from method OccurrencesClient.NewListResourcesPager.
 type OccurrencesClientListResourcesResponse struct {
-	// Paged collection of OccurrenceResource items
+	// Paged list of resources included in a scheduled action occurrence.
 	OccurrenceResourceListResponse
 }
 
@@ -152,19 +152,19 @@ type ScheduledActionOperationStatusClientGetResponse struct {
 
 // ScheduledActionsClientAttachResourcesResponse contains the response from method ScheduledActionsClient.BeginAttachResources.
 type ScheduledActionsClientAttachResourcesResponse struct {
-	// The response from scheduled action resource requests, which contains the status of each resource
+	// Results of a scheduled action operation for targeted resources.
 	ResourceOperationResponse
 }
 
 // ScheduledActionsClientCancelNextOccurrenceResponse contains the response from method ScheduledActionsClient.BeginCancelNextOccurrence.
 type ScheduledActionsClientCancelNextOccurrenceResponse struct {
-	// The response from scheduled action resource requests, which contains the status of each resource
+	// Results of a scheduled action operation for targeted resources.
 	ResourceOperationResponse
 }
 
 // ScheduledActionsClientCreateOrUpdateResponse contains the response from method ScheduledActionsClient.BeginCreateOrUpdate.
 type ScheduledActionsClientCreateOrUpdateResponse struct {
-	// The scheduled action resource
+	// A recurring action that operates on specified compute resources.
 	ScheduledAction
 }
 
@@ -175,7 +175,7 @@ type ScheduledActionsClientDeleteResponse struct {
 
 // ScheduledActionsClientDetachResourcesResponse contains the response from method ScheduledActionsClient.BeginDetachResources.
 type ScheduledActionsClientDetachResourcesResponse struct {
-	// The response from scheduled action resource requests, which contains the status of each resource
+	// Results of a scheduled action operation for targeted resources.
 	ResourceOperationResponse
 }
 
@@ -191,7 +191,7 @@ type ScheduledActionsClientEnableResponse struct {
 
 // ScheduledActionsClientGetResponse contains the response from method ScheduledActionsClient.Get.
 type ScheduledActionsClientGetResponse struct {
-	// The scheduled action resource
+	// A recurring action that operates on specified compute resources.
 	ScheduledAction
 }
 
@@ -209,19 +209,19 @@ type ScheduledActionsClientListBySubscriptionResponse struct {
 
 // ScheduledActionsClientListResourcesResponse contains the response from method ScheduledActionsClient.NewListResourcesPager.
 type ScheduledActionsClientListResourcesResponse struct {
-	// Paged collection of ScheduledActionResource items
+	// A paged list of compute resources associated with a scheduled action.
 	ResourceListResponse
 }
 
 // ScheduledActionsClientPatchResourcesResponse contains the response from method ScheduledActionsClient.PatchResources.
 type ScheduledActionsClientPatchResourcesResponse struct {
-	// The response from scheduled action resource requests, which contains the status of each resource
+	// Results of a scheduled action operation for targeted resources.
 	ResourceOperationResponse
 }
 
 // ScheduledActionsClientTriggerManualOccurrenceResponse contains the response from method ScheduledActionsClient.BeginTriggerManualOccurrence.
 type ScheduledActionsClientTriggerManualOccurrenceResponse struct {
-	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
+	// One scheduled execution of a scheduled action.
 	Occurrence
 }
 
@@ -230,22 +230,10 @@ type ScheduledActionsClientUpdateResponse struct {
 	// placeholder for future response values
 }
 
-// VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse contains the response from method VirtualMachineBulkOperationsClient.BulkAcknowledgeOperationErrors.
-type VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse struct {
-	// The response from acknowledging bulk operation errors
-	AcknowledgeBulkOperationErrorsResponse
-}
-
 // VirtualMachineBulkOperationsClientBulkCancelOperationsResponse contains the response from method VirtualMachineBulkOperationsClient.BulkCancelOperations.
 type VirtualMachineBulkOperationsClientBulkCancelOperationsResponse struct {
 	// This is the response from a cancel operations request
 	CancelOperationsResponse
-}
-
-// VirtualMachineBulkOperationsClientBulkCreateOperationResponse contains the response from method VirtualMachineBulkOperationsClient.BulkCreateOperation.
-type VirtualMachineBulkOperationsClientBulkCreateOperationResponse struct {
-	// The response from a create request
-	CreateResourceOperationResponse
 }
 
 // VirtualMachineBulkOperationsClientBulkDeallocateOperationResponse contains the response from method VirtualMachineBulkOperationsClient.BulkDeallocateOperation.
@@ -272,12 +260,6 @@ type VirtualMachineBulkOperationsClientBulkHibernateOperationResponse struct {
 	HibernateResourceOperationResponse
 }
 
-// VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse contains the response from method VirtualMachineBulkOperationsClient.NewBulkListOperationErrorsPager.
-type VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse struct {
-	// The response from listing bulk operation errors
-	ListBulkOperationErrorsResponse
-}
-
 // VirtualMachineBulkOperationsClientBulkReimageOperationResponse contains the response from method VirtualMachineBulkOperationsClient.BulkReimageOperation.
 type VirtualMachineBulkOperationsClientBulkReimageOperationResponse struct {
 	// The response from a reimage request
@@ -288,10 +270,4 @@ type VirtualMachineBulkOperationsClientBulkReimageOperationResponse struct {
 type VirtualMachineBulkOperationsClientBulkStartOperationResponse struct {
 	// The response from a start request
 	StartResourceOperationResponse
-}
-
-// VirtualMachineBulkOperationsClientBulkVdiFlexCreateOperationResponse contains the response from method VirtualMachineBulkOperationsClient.BulkVdiFlexCreateOperation.
-type VirtualMachineBulkOperationsClientBulkVdiFlexCreateOperationResponse struct {
-	// The response from a create request
-	CreateResourceOperationResponse
 }

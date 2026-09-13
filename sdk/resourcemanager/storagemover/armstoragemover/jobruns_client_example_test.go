@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-12-01/JobRuns_Get.json
+// Generated from example definition: 2026-05-01/JobRuns_Get.json
 func ExampleJobRunsClient_Get_jobRunsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleJobRunsClient_Get_jobRunsGet() {
 	// }
 }
 
-// Generated from example definition: 2025-12-01/JobRuns_Get_With_Schedule.json
+// Generated from example definition: 2026-05-01/JobRuns_Get_With_Schedule.json
 func ExampleJobRunsClient_Get_jobRunsGetWithSchedule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,13 +121,13 @@ func ExampleJobRunsClient_Get_jobRunsGetWithSchedule() {
 	// 			},
 	// 			TargetResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/targetEndpoint"),
 	// 			TriggerType: to.Ptr(armstoragemover.TriggerTypeScheduled),
-	// 			ScheduledExecutionTime: to.Ptr(time.Date(2025, time.December, 1, 10, 0, 0, 0, time.UTC)),
+	// 			ScheduledExecutionTime: to.Ptr(time.Date(2026, time.May, 1, 10, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-12-01/JobRuns_List.json
+// Generated from example definition: 2026-05-01/JobRuns_List.json
 func ExampleJobRunsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -2286,9 +2286,6 @@ type LdapConfiguration struct {
 	// This specifies the group DN (Distinguished Name), which overrides the base DN for group lookups.
 	GroupDN *string
 
-	// Specifies whether or not the LDAP traffic needs to be secured via TLS.
-	LdapOverTLS *bool
-
 	// Port number for LDAP communication. Default is 389 for LDAP.
 	LdapPort *int32
 
@@ -2297,6 +2294,9 @@ type LdapConfiguration struct {
 
 	// This specifies the netgroup DN (Distinguished Name), which overrides the base DN for netgroup lookups.
 	NetGroupDN *string
+
+	// Indicates the secure LDAP mode for encrypting communication between ANF storage and customer LDAP servers.
+	SecureLdapType *SecureLdapType
 
 	// When LDAP over SSL/TLS is enabled, the LDAP client is required to have base64 encoded ldap servers CA certificate.
 	ServerCACertificate *string
@@ -2328,9 +2328,6 @@ type LdapConfigurationPatch struct {
 	// This specifies the group DN (Distinguished Name), which overrides the base DN for group lookups.
 	GroupDN *string
 
-	// Specifies whether or not the LDAP traffic needs to be secured via TLS.
-	LdapOverTLS *bool
-
 	// Port number for LDAP communication. Default is 389 for LDAP.
 	LdapPort *int32
 
@@ -2339,6 +2336,9 @@ type LdapConfigurationPatch struct {
 
 	// This specifies the netgroup DN (Distinguished Name), which overrides the base DN for netgroup lookups.
 	NetGroupDN *string
+
+	// Indicates the secure LDAP mode for encrypting communication between ANF storage and customer LDAP servers.
+	SecureLdapType *SecureLdapType
 
 	// When LDAP over SSL/TLS is enabled, the LDAP client is required to have base64 encoded ldap servers CA certificate.
 	ServerCACertificate *string
@@ -3717,7 +3717,8 @@ type VolumePatchProperties struct {
 	// Specifies if default quota is enabled for the volume.
 	IsDefaultQuotaEnabled *bool
 
-	// Set of protocol types, default NFSv3, CIFS for SMB protocol
+	// Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1, and CIFS. For SMB volumes, specify CIFS.
+	// The value SMB isn't supported in the protocolTypes property. Default: NFSv3
 	ProtocolTypes []*string
 
 	// The service level of the file system
@@ -3878,7 +3879,8 @@ type VolumeProperties struct {
 	// Application specific placement rules for the particular volume
 	PlacementRules []*PlacementKeyValuePairs
 
-	// Set of protocol types, default NFSv3, CIFS for SMB protocol
+	// Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1, and CIFS. For SMB volumes, specify CIFS.
+	// The value SMB isn't supported in the protocolTypes property. Default: NFSv3
 	ProtocolTypes []*string
 
 	// Proximity placement group associated with the volume

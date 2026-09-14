@@ -19,7 +19,7 @@ import (
 // ReplicasClient contains the methods for the Replicas group.
 // Don't use this type directly, use NewReplicasClient() instead.
 //
-// Generated from API version 2026-01-20-preview
+// Generated from API version 2026-05-01-preview
 type ReplicasClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ReplicasClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewReplicasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicasClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,12 +44,12 @@ func NewReplicasClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Creates a new HorizonDb replica or updates an existing replica.
+// BeginCreateOrUpdate - Creates a new HorizonDB replica or updates an existing replica.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the HorizonDb cluster.
-//   - poolName - The name of the HorizonDb pool.
-//   - replicaName - The name of the HorizonDb replica.
+//   - clusterName - The name of the HorizonDB cluster.
+//   - poolName - The name of the HorizonDB pool.
+//   - replicaName - The name of the HorizonDB replica.
 //   - resource - Resource create parameters.
 //   - options - ReplicasClientBeginCreateOrUpdateOptions contains the optional parameters for the ReplicasClient.BeginCreateOrUpdate
 //     method.
@@ -68,7 +71,7 @@ func (client *ReplicasClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Creates a new HorizonDb replica or updates an existing replica.
+// CreateOrUpdate - Creates a new HorizonDB replica or updates an existing replica.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ReplicasClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, poolName string, replicaName string, resource Replica, options *ReplicasClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -94,7 +97,7 @@ func (client *ReplicasClient) createOrUpdate(ctx context.Context, resourceGroupN
 func (client *ReplicasClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, poolName string, replicaName string, resource Replica, _ *ReplicasClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/pools/{poolName}/replicas/{replicaName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -118,7 +121,7 @@ func (client *ReplicasClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,12 +131,12 @@ func (client *ReplicasClient) createOrUpdateCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// BeginDelete - Deletes a HorizonDb replica.
+// BeginDelete - Deletes a HorizonDB replica.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the HorizonDb cluster.
-//   - poolName - The name of the HorizonDb pool.
-//   - replicaName - The name of the HorizonDb replica.
+//   - clusterName - The name of the HorizonDB cluster.
+//   - poolName - The name of the HorizonDB pool.
+//   - replicaName - The name of the HorizonDB replica.
 //   - options - ReplicasClientBeginDeleteOptions contains the optional parameters for the ReplicasClient.BeginDelete method.
 func (client *ReplicasClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, poolName string, replicaName string, options *ReplicasClientBeginDeleteOptions) (*runtime.Poller[ReplicasClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -152,7 +155,7 @@ func (client *ReplicasClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Deletes a HorizonDb replica.
+// Delete - Deletes a HorizonDB replica.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ReplicasClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, poolName string, replicaName string, options *ReplicasClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -178,7 +181,7 @@ func (client *ReplicasClient) deleteOperation(ctx context.Context, resourceGroup
 func (client *ReplicasClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, poolName string, replicaName string, _ *ReplicasClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/pools/{poolName}/replicas/{replicaName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -202,17 +205,17 @@ func (client *ReplicasClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// Get - Gets information about a HorizonDb replica.
+// Get - Gets information about a HorizonDB replica.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the HorizonDb cluster.
-//   - poolName - The name of the HorizonDb pool.
-//   - replicaName - The name of the HorizonDb replica.
+//   - clusterName - The name of the HorizonDB cluster.
+//   - poolName - The name of the HorizonDB pool.
+//   - replicaName - The name of the HorizonDB replica.
 //   - options - ReplicasClientGetOptions contains the optional parameters for the ReplicasClient.Get method.
 func (client *ReplicasClient) Get(ctx context.Context, resourceGroupName string, clusterName string, poolName string, replicaName string, options *ReplicasClientGetOptions) (ReplicasClientGetResponse, error) {
 	var err error
@@ -235,7 +238,7 @@ func (client *ReplicasClient) Get(ctx context.Context, resourceGroupName string,
 func (client *ReplicasClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, poolName string, replicaName string, _ *ReplicasClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/pools/{poolName}/replicas/{replicaName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -259,7 +262,7 @@ func (client *ReplicasClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,10 +280,10 @@ func (client *ReplicasClient) getHandleResponse(resp *http.Response, successCode
 	return result, nil
 }
 
-// NewListPager - Lists all HorizonDb replicas in a pool.
+// NewListPager - Lists all HorizonDB replicas in a pool.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the HorizonDb cluster.
-//   - poolName - The name of the HorizonDb pool.
+//   - clusterName - The name of the HorizonDB cluster.
+//   - poolName - The name of the HorizonDB pool.
 //   - options - ReplicasClientListOptions contains the optional parameters for the ReplicasClient.NewListPager method.
 func (client *ReplicasClient) NewListPager(resourceGroupName string, clusterName string, poolName string, options *ReplicasClientListOptions) *runtime.Pager[ReplicasClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ReplicasClientListResponse]{
@@ -315,7 +318,7 @@ func (client *ReplicasClient) listCreateRequest(ctx context.Context, resourceGro
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/pools/{poolName}/replicas"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -339,7 +342,7 @@ func (client *ReplicasClient) listCreateRequest(ctx context.Context, resourceGro
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260120Preview)
+		reqQP.Set("api-version", version20260501Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -358,12 +361,12 @@ func (client *ReplicasClient) listHandleResponse(resp *http.Response, successCod
 	return result, nil
 }
 
-// BeginUpdate - Updates an existing HorizonDb replica (e.g., role).
+// BeginUpdate - Updates an existing HorizonDB replica (e.g., role).
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the HorizonDb cluster.
-//   - poolName - The name of the HorizonDb pool.
-//   - replicaName - The name of the HorizonDb replica.
+//   - clusterName - The name of the HorizonDB cluster.
+//   - poolName - The name of the HorizonDB pool.
+//   - replicaName - The name of the HorizonDB replica.
 //   - properties - The resource properties to be updated.
 //   - options - ReplicasClientBeginUpdateOptions contains the optional parameters for the ReplicasClient.BeginUpdate method.
 func (client *ReplicasClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, poolName string, replicaName string, properties ReplicaForPatchUpdate, options *ReplicasClientBeginUpdateOptions) (*runtime.Poller[ReplicasClientUpdateResponse], error) {
@@ -383,7 +386,7 @@ func (client *ReplicasClient) BeginUpdate(ctx context.Context, resourceGroupName
 	}
 }
 
-// Update - Updates an existing HorizonDb replica (e.g., role).
+// Update - Updates an existing HorizonDB replica (e.g., role).
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ReplicasClient) update(ctx context.Context, resourceGroupName string, clusterName string, poolName string, replicaName string, properties ReplicaForPatchUpdate, options *ReplicasClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
@@ -409,7 +412,7 @@ func (client *ReplicasClient) update(ctx context.Context, resourceGroupName stri
 func (client *ReplicasClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, poolName string, replicaName string, properties ReplicaForPatchUpdate, _ *ReplicasClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/pools/{poolName}/replicas/{replicaName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -433,7 +436,7 @@ func (client *ReplicasClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

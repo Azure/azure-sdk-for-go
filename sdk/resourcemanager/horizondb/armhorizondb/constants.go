@@ -5,7 +5,7 @@
 package armhorizondb
 
 const (
-	version20260120Preview string = "2026-01-20-preview"
+	version20260501Preview string = "2026-05-01-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -23,7 +23,43 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
-// CreateModeCluster - The mode to create a new HorizonDb cluster.
+// AuthenticationState - Indicates if authentication state is enabled or not.
+type AuthenticationState string
+
+const (
+	// AuthenticationStateDisabled - Is disabled
+	AuthenticationStateDisabled AuthenticationState = "Disabled"
+	// AuthenticationStateEnabled - Is enabled
+	AuthenticationStateEnabled AuthenticationState = "Enabled"
+)
+
+// PossibleAuthenticationStateValues returns the possible values for the AuthenticationState const type.
+func PossibleAuthenticationStateValues() []AuthenticationState {
+	return []AuthenticationState{
+		AuthenticationStateDisabled,
+		AuthenticationStateEnabled,
+	}
+}
+
+// ComputeModelType - The compute model type.
+type ComputeModelType string
+
+const (
+	// ComputeModelTypeProvisioned - Provisioned compute.
+	ComputeModelTypeProvisioned ComputeModelType = "Provisioned"
+	// ComputeModelTypeServerless - Serverless compute.
+	ComputeModelTypeServerless ComputeModelType = "Serverless"
+)
+
+// PossibleComputeModelTypeValues returns the possible values for the ComputeModelType const type.
+func PossibleComputeModelTypeValues() []ComputeModelType {
+	return []ComputeModelType{
+		ComputeModelTypeProvisioned,
+		ComputeModelTypeServerless,
+	}
+}
+
+// CreateModeCluster - The mode to create a new HorizonDB cluster.
 type CreateModeCluster string
 
 const (
@@ -44,7 +80,7 @@ func PossibleCreateModeClusterValues() []CreateModeCluster {
 	}
 }
 
-// CreateModePool - The mode to create a new HorizonDb cluster.
+// CreateModePool - The mode to create a new HorizonDB cluster.
 type CreateModePool string
 
 const (
@@ -86,6 +122,30 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	// ManagedServiceIdentityTypeNone - No managed identity.
+	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
+	// ManagedServiceIdentityTypeSystemAssigned - System assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
+	// ManagedServiceIdentityTypeSystemAssignedUserAssigned - System and user assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	// ManagedServiceIdentityTypeUserAssigned - User assigned managed identity.
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 // value is "user,system"
 type Origin string
@@ -105,6 +165,30 @@ func PossibleOriginValues() []Origin {
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
+	}
+}
+
+// PrincipalTypes - The type of the Entra ID principal.
+type PrincipalTypes string
+
+const (
+	// PrincipalTypesGroup - An Entra ID security group. All members of the group inherit admin privileges.
+	PrincipalTypesGroup PrincipalTypes = "Group"
+	// PrincipalTypesServicePrincipal - An Entra ID application / service principal (used for automated workloads).
+	PrincipalTypesServicePrincipal PrincipalTypes = "ServicePrincipal"
+	// PrincipalTypesUnknown - Unknown or unrecognized type (internal only, not accepted in requests).
+	PrincipalTypesUnknown PrincipalTypes = "Unknown"
+	// PrincipalTypesUser - An Entra ID user account (UPN-based principal).
+	PrincipalTypesUser PrincipalTypes = "User"
+)
+
+// PossiblePrincipalTypesValues returns the possible values for the PrincipalTypes const type.
+func PossiblePrincipalTypesValues() []PrincipalTypes {
+	return []PrincipalTypes{
+		PrincipalTypesGroup,
+		PrincipalTypesServicePrincipal,
+		PrincipalTypesUnknown,
+		PrincipalTypesUser,
 	}
 }
 
@@ -234,8 +318,12 @@ const (
 	StateStopped State = "Stopped"
 	// StateStopping - Is stopping
 	StateStopping State = "Stopping"
+	// StateSucceeded - Is succeeded
+	StateSucceeded State = "Succeeded"
 	// StateUpdating - Is being updated
 	StateUpdating State = "Updating"
+	// StateUpgrading - Is upgrading
+	StateUpgrading State = "Upgrading"
 )
 
 // PossibleStateValues returns the possible values for the State const type.
@@ -248,7 +336,9 @@ func PossibleStateValues() []State {
 		StateStarting,
 		StateStopped,
 		StateStopping,
+		StateSucceeded,
 		StateUpdating,
+		StateUpgrading,
 	}
 }
 

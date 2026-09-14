@@ -92,7 +92,7 @@ func (v *VPNSiteLinksServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	if v.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/vpnSites/(?P<vpnSiteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnSiteLinks/(?P<vpnSiteLinkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/vpnSites/(?P<vpnSiteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpnSiteLinks/(?P<vpnSiteLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -131,7 +131,7 @@ func (v *VPNSiteLinksServerTransport) dispatchNewListByVPNSitePager(req *http.Re
 	}
 	newListByVPNSitePager := v.newListByVPNSitePager.get(req)
 	if newListByVPNSitePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/vpnSites/(?P<vpnSiteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnSiteLinks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/vpnSites/(?P<vpnSiteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpnSiteLinks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

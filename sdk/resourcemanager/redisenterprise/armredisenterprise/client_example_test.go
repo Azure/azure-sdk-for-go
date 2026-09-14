@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseCreate.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseCreate.json
 func ExampleClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDelete.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDelete.json
 func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -189,7 +189,7 @@ func ExampleClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseGet.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseGet.json
 func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -280,7 +280,7 @@ func ExampleClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseList.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseList.json
 func ExampleClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -332,7 +332,7 @@ func ExampleClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseListByResourceGroup.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseListByResourceGroup.json
 func ExampleClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,7 +389,7 @@ func ExampleClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseListSkusForScaling.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseListSkusForScaling.json
 func ExampleClient_ListSKUsForScaling() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -427,7 +427,7 @@ func ExampleClient_ListSKUsForScaling() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseUpdate.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseUpdate.json
 func ExampleClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

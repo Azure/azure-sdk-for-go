@@ -269,7 +269,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchBeginChangeAccessTier(
 	}
 	beginChangeAccessTier := l.beginChangeAccessTier.get(req)
 	if beginChangeAccessTier == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/changeAccessTier`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/changeAccessTier`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -325,7 +325,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchBeginChangeAccessTierB
 	}
 	beginChangeAccessTierByResourceGroup := l.beginChangeAccessTierByResourceGroup.get(req)
 	if beginChangeAccessTierByResourceGroup == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/changeAccessTier`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/changeAccessTier`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -385,7 +385,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchBeginCopy(req *http.Re
 	}
 	beginCopy := l.beginCopy.get(req)
 	if beginCopy == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/copy`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/copy`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -441,7 +441,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchBeginCopyByResourceGro
 	}
 	beginCopyByResourceGroup := l.beginCopyByResourceGroup.get(req)
 	if beginCopyByResourceGroup == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/copy`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/copy`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -501,7 +501,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchBeginDelete(req *http.
 	}
 	beginDelete := l.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -553,7 +553,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchBeginDeleteByResourceG
 	}
 	beginDeleteByResourceGroup := l.beginDeleteByResourceGroup.get(req)
 	if beginDeleteByResourceGroup == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -607,7 +607,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchGet(req *http.Request)
 	if l.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -648,7 +648,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchGetByResourceGroup(req
 	if l.srv.GetByResourceGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByResourceGroup not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -695,7 +695,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByDatabasePager
 	}
 	newListByDatabasePager := l.newListByDatabasePager.get(req)
 	if newListByDatabasePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -753,7 +753,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByLocationPager
 	}
 	newListByLocationPager := l.newListByLocationPager.get(req)
 	if newListByLocationPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -803,7 +803,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByResourceGroup
 	}
 	newListByResourceGroupDatabasePager := l.newListByResourceGroupDatabasePager.get(req)
 	if newListByResourceGroupDatabasePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -865,7 +865,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByResourceGroup
 	}
 	newListByResourceGroupLocationPager := l.newListByResourceGroupLocationPager.get(req)
 	if newListByResourceGroupLocationPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -919,7 +919,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByResourceGroup
 	}
 	newListByResourceGroupServerPager := l.newListByResourceGroupServerPager.get(req)
 	if newListByResourceGroupServerPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -977,7 +977,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByServerPager(r
 	}
 	newListByServerPager := l.newListByServerPager.get(req)
 	if newListByServerPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1031,7 +1031,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchBeginLockTimeBasedImmu
 	}
 	beginLockTimeBasedImmutability := l.beginLockTimeBasedImmutability.get(req)
 	if beginLockTimeBasedImmutability == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/lockTimeBasedImmutability`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/lockTimeBasedImmutability`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -1083,7 +1083,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchBeginLockTimeBasedImmu
 	}
 	beginLockTimeBasedImmutabilityByResourceGroup := l.beginLockTimeBasedImmutabilityByResourceGroup.get(req)
 	if beginLockTimeBasedImmutabilityByResourceGroup == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/lockTimeBasedImmutability`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/lockTimeBasedImmutability`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -1139,7 +1139,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchBeginRemoveLegalHoldIm
 	}
 	beginRemoveLegalHoldImmutability := l.beginRemoveLegalHoldImmutability.get(req)
 	if beginRemoveLegalHoldImmutability == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/removeLegalHoldImmutability`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/removeLegalHoldImmutability`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -1191,7 +1191,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchBeginRemoveLegalHoldIm
 	}
 	beginRemoveLegalHoldImmutabilityByResourceGroup := l.beginRemoveLegalHoldImmutabilityByResourceGroup.get(req)
 	if beginRemoveLegalHoldImmutabilityByResourceGroup == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/removeLegalHoldImmutability`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/removeLegalHoldImmutability`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -1247,7 +1247,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchBeginRemoveTimeBasedIm
 	}
 	beginRemoveTimeBasedImmutability := l.beginRemoveTimeBasedImmutability.get(req)
 	if beginRemoveTimeBasedImmutability == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/removeTimeBasedImmutability`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/removeTimeBasedImmutability`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -1299,7 +1299,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchBeginRemoveTimeBasedIm
 	}
 	beginRemoveTimeBasedImmutabilityByResourceGroup := l.beginRemoveTimeBasedImmutabilityByResourceGroup.get(req)
 	if beginRemoveTimeBasedImmutabilityByResourceGroup == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/removeTimeBasedImmutability`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/removeTimeBasedImmutability`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -1355,7 +1355,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchBeginSetLegalHoldImmut
 	}
 	beginSetLegalHoldImmutability := l.beginSetLegalHoldImmutability.get(req)
 	if beginSetLegalHoldImmutability == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/setLegalHoldImmutability`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/setLegalHoldImmutability`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -1407,7 +1407,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchBeginSetLegalHoldImmut
 	}
 	beginSetLegalHoldImmutabilityByResourceGroup := l.beginSetLegalHoldImmutabilityByResourceGroup.get(req)
 	if beginSetLegalHoldImmutabilityByResourceGroup == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/setLegalHoldImmutability`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/setLegalHoldImmutability`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -1463,7 +1463,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchBeginUpdate(req *http.
 	}
 	beginUpdate := l.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/update`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/update`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -1519,7 +1519,7 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchBeginUpdateByResourceG
 	}
 	beginUpdateByResourceGroup := l.beginUpdateByResourceGroup.get(req)
 	if beginUpdateByResourceGroup == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/update`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/update`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {

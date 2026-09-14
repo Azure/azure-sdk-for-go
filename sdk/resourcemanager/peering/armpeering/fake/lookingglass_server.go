@@ -80,7 +80,7 @@ func (l *LookingGlassServerTransport) dispatchInvoke(req *http.Request) (*http.R
 	if l.srv.Invoke == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Invoke not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Peering/lookingGlass`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Peering/lookingGlass`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

@@ -1,26 +1,24 @@
 # Release History
 
-## 9.5.0-beta.1 (2026-07-24)
+## 9.6.0-beta.1 (2026-09-01)
 ### Features Added
 
 - New value `AgentPoolModeMachines`, `AgentPoolModeManagedSystem` added to enum type `AgentPoolMode`
-- New value `AgentPoolSSHAccessEntraID` added to enum type `AgentPoolSSHAccess`
 - New value `AgentPoolTypeFlexNodes` added to enum type `AgentPoolType`
 - New value `BackendPoolTypePodIP` added to enum type `BackendPoolType`
 - New value `LoadBalancerSKUService` added to enum type `LoadBalancerSKU`
-- New value `OSSKUFlatcar`, `OSSKUMariner`, `OSSKUWindowsAnnual` added to enum type `OSSKU`
-- New value `OutboundTypeManagedNATGatewayV2` added to enum type `OutboundType`
+- New value `OSSKUFlatcar`, `OSSKUMariner`, `OSSKUUbuntu2604`, `OSSKUWindowsAnnual` added to enum type `OSSKU`
 - New value `PublicNetworkAccessSecuredByPerimeter` added to enum type `PublicNetworkAccess`
 - New value `SnapshotTypeManagedCluster` added to enum type `SnapshotType`
 - New value `TransitEncryptionTypeMTLS` added to enum type `TransitEncryptionType`
 - New value `WorkloadRuntimeKataMshvVMIsolation` added to enum type `WorkloadRuntime`
 - New enum type `AddonAutoscaling` with values `AddonAutoscalingDisabled`, `AddonAutoscalingEnabled`
+- New enum type `AgentPoolNICPublicIPAddressVersion` with values `AgentPoolNICPublicIPAddressVersionIPv4`
 - New enum type `AgentPoolNetworkInterfaceType` with values `AgentPoolNetworkInterfaceTypeDynamic`, `AgentPoolNetworkInterfaceTypeStandard`
 - New enum type `AlertConfigurationMode` with values `AlertConfigurationModeDisabled`, `AlertConfigurationModeManaged`
 - New enum type `AlertConfigurationProvisioningState` with values `AlertConfigurationProvisioningStateCanceled`, `AlertConfigurationProvisioningStateCreating`, `AlertConfigurationProvisioningStateDeleting`, `AlertConfigurationProvisioningStateFailed`, `AlertConfigurationProvisioningStateSucceeded`, `AlertConfigurationProvisioningStateUpdating`
 - New enum type `BastionSKU` with values `BastionSKUPremium`, `BastionSKUStandard`
 - New enum type `ClusterServiceLoadBalancerHealthProbeMode` with values `ClusterServiceLoadBalancerHealthProbeModeServiceNodePort`, `ClusterServiceLoadBalancerHealthProbeModeShared`
-- New enum type `ContainerNetworkLogs` with values `ContainerNetworkLogsDisabled`, `ContainerNetworkLogsEnabled`
 - New enum type `ControlPlaneScalingSize` with values `ControlPlaneScalingSizeH2`, `ControlPlaneScalingSizeH4`, `ControlPlaneScalingSizeH8`
 - New enum type `DriftAction` with values `DriftActionRecreate`, `DriftActionSynced`
 - New enum type `DriverType` with values `DriverTypeCUDA`, `DriverTypeGRID`
@@ -33,6 +31,7 @@
 - New enum type `MigStrategy` with values `MigStrategyMixed`, `MigStrategyNone`, `MigStrategySingle`
 - New enum type `Mode` with values `ModeIPTABLES`, `ModeIPVS`, `ModeNFTABLES`
 - New enum type `NodeDisruptionPolicy` with values `NodeDisruptionPolicyAllow`, `NodeDisruptionPolicyAllowDuringMaintenanceWindow`, `NodeDisruptionPolicyBlock`
+- New enum type `NvidiaDriverMode` with values `NvidiaDriverModeDRA`, `NvidiaDriverModeDevicePlugin`
 - New enum type `Operator` with values `OperatorDoesNotExist`, `OperatorExists`, `OperatorIn`, `OperatorNotIn`
 - New enum type `PodLinkLocalAccess` with values `PodLinkLocalAccessIMDS`, `PodLinkLocalAccessNone`
 - New enum type `ResourceProvisioningState` with values `ResourceProvisioningStateCanceled`, `ResourceProvisioningStateFailed`, `ResourceProvisioningStateSucceeded`
@@ -45,6 +44,7 @@
 - New enum type `VMState` with values `VMStateDeleted`, `VMStateRunning`
 - New function `*AgentPoolsClient.BeginCompleteUpgrade(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsClientBeginCompleteUpgradeOptions) (*runtime.Poller[AgentPoolsClientCompleteUpgradeResponse], error)`
 - New function `*AgentPoolsClient.ListBootstrapData(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, body ListBootstrapDataRequest, options *AgentPoolsClientListBootstrapDataOptions) (AgentPoolsClientListBootstrapDataResponse, error)`
+- New function `*AgentPoolsClient.BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, parameters AgentPoolUpdate, options *AgentPoolsClientBeginUpdateOptions) (*runtime.Poller[AgentPoolsClientUpdateResponse], error)`
 - New function `NewAlertConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertConfigurationsClient, error)`
 - New function `*AlertConfigurationsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, configurationName string, resource AlertConfiguration, options *AlertConfigurationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AlertConfigurationsClientCreateOrUpdateResponse], error)`
 - New function `*AlertConfigurationsClient.BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, configurationName string, options *AlertConfigurationsClientBeginDeleteOptions) (*runtime.Poller[AlertConfigurationsClientDeleteResponse], error)`
@@ -99,11 +99,18 @@
 - New function `NewOperationStatusResultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationStatusResultClient, error)`
 - New function `*OperationStatusResultClient.Get(ctx context.Context, resourceGroupName string, resourceName string, operationID string, options *OperationStatusResultClientGetOptions) (OperationStatusResultClientGetResponse, error)`
 - New function `*OperationStatusResultClient.GetByAgentPool(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, operationID string, options *OperationStatusResultClientGetByAgentPoolOptions) (OperationStatusResultClientGetByAgentPoolResponse, error)`
+- New function `*OperationStatusResultClient.NewListByAgentPoolPager(resourceGroupName string, resourceName string, agentPoolName string, options *OperationStatusResultClientListByAgentPoolOptions) *runtime.Pager[OperationStatusResultClientListByAgentPoolResponse]`
 - New function `*OperationStatusResultClient.NewListPager(resourceGroupName string, resourceName string, options *OperationStatusResultClientListOptions) *runtime.Pager[OperationStatusResultClientListResponse]`
 - New function `NewVMSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VMSKUsClient, error)`
 - New function `*VMSKUsClient.NewListPager(location string, options *VMSKUsClientListOptions) *runtime.Pager[VMSKUsClientListResponse]`
 - New struct `AgentPoolBlueGreenUpgradeSettings`
+- New struct `AgentPoolNICPublicIPAddressConfiguration`
 - New struct `AgentPoolNetworkInterface`
+- New struct `AgentPoolUpdate`
+- New struct `AgentPoolUpdateManualScaleProfile`
+- New struct `AgentPoolUpdateProperties`
+- New struct `AgentPoolUpdateScaleProfile`
+- New struct `AgentPoolUpdateVirtualMachinesProfile`
 - New struct `AlertConfiguration`
 - New struct `AlertConfigurationListResult`
 - New struct `AlertConfigurationProperties`
@@ -117,6 +124,8 @@
 - New struct `BootstrapNodeConfig`
 - New struct `BootstrapTargetCluster`
 - New struct `BootstrapTokenInfo`
+- New struct `CapacityReservation`
+- New struct `CapacityReservationGroup`
 - New struct `Component`
 - New struct `ComponentsByRelease`
 - New struct `GuardrailsAvailableVersion`
@@ -149,15 +158,10 @@
 - New struct `MaintenanceWindowResource`
 - New struct `MaintenanceWindowResourceListResult`
 - New struct `MaintenanceWindowResourceProperties`
-- New struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces`
-- New struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics`
-- New struct `ManagedClusterAzureMonitorProfileContainerInsights`
 - New struct `ManagedClusterControlPlaneScalingProfile`
 - New struct `ManagedClusterHealthMonitorProfile`
 - New struct `ManagedClusterIngressDefaultDomainProfile`
 - New struct `ManagedClusterIngressProfileApplicationLoadBalancer`
-- New struct `ManagedClusterNATGatewayProfileOutboundIPPrefixes`
-- New struct `ManagedClusterNATGatewayProfileOutboundIPs`
 - New struct `ManagedClusterPropertiesForSnapshot`
 - New struct `ManagedClusterSecurityProfileImageIntegrity`
 - New struct `ManagedClusterSecurityProfileNodeRestriction`
@@ -192,6 +196,8 @@
 - New struct `SafeguardsAvailableVersionsList`
 - New struct `SafeguardsAvailableVersionsProperties`
 - New struct `ServiceAccountImagePullProfile`
+- New struct `SoftEvictionGracePeriod`
+- New struct `SoftEvictionThreshold`
 - New struct `VMSKUsListResult`
 - New field `NodePublicIPPrefixIDs`, `SecondaryNetworkInterfaces` in struct `AgentPoolNetworkProfile`
 - New field `ComponentsByReleases` in struct `AgentPoolUpgradeProfileProperties`
@@ -199,27 +205,43 @@
 - New field `MaxBlockedNodes` in struct `AgentPoolUpgradeSettings`
 - New field `DriverType`, `Nvidia` in struct `GPUProfile`
 - New field `AllowedSubjects` in struct `IdentityBindingProperties`
-- New field `HardEvictionThreshold`, `KubeReserved`, `SeccompDefault` in struct `KubeletConfig`
+- New field `EvictionMaxPodGracePeriodInSeconds`, `HardEvictionThreshold`, `KubeReserved`, `SeccompDefault`, `SoftEvictionGracePeriod`, `SoftEvictionThreshold` in struct `KubeletConfig`
 - New field `EnableNodePublicIP`, `NodePublicIPPrefixID`, `NodePublicIPTags`, `PodSubnetID`, `VnetSubnetID` in struct `MachineNetworkProperties`
-- New field `Billing`, `ETag`, `EvictionPolicy`, `Hardware`, `Kubernetes`, `LocalDNSProfile`, `Mode`, `NodeImageVersion`, `OperatingSystem`, `Priority`, `ProvisioningState`, `Security`, `Status`, `Tags` in struct `MachineProperties`
+- New field `Billing`, `CapacityReservation`, `ETag`, `EvictionPolicy`, `Hardware`, `Kubernetes`, `LocalDNSProfile`, `Mode`, `NodeImageVersion`, `OperatingSystem`, `Priority`, `ProvisioningState`, `Security`, `Status`, `Tags` in struct `MachineProperties`
 - New field `MaintenanceWindowID` in struct `MaintenanceConfigurationProperties`
 - New field `EnableOSDiskFullCaching`, `NodeInitializationTaints`, `PreparedImageSpecificationProfile`, `UpgradeSettingsBlueGreen`, `UpgradeStrategy` in struct `ManagedClusterAgentPoolProfile`
 - New field `EnableOSDiskFullCaching`, `NodeInitializationTaints`, `PreparedImageSpecificationProfile`, `UpgradeSettingsBlueGreen`, `UpgradeStrategy` in struct `ManagedClusterAgentPoolProfileProperties`
-- New field `ContainerInsights` in struct `ManagedClusterAzureMonitorProfile`
-- New field `OpenTelemetryLogsAndTraces`, `OpenTelemetryMetrics` in struct `ManagedClusterAzureMonitorProfileAppMonitoring`
 - New field `EffectiveNoProxy` in struct `ManagedClusterHTTPProxyConfig`
 - New field `ApplicationLoadBalancer` in struct `ManagedClusterIngressProfile`
 - New field `DefaultDomain` in struct `ManagedClusterIngressProfileWebAppRouting`
 - New field `ClusterServiceLoadBalancerHealthProbeMode` in struct `ManagedClusterLoadBalancerProfile`
-- New field `CountIPv6` in struct `ManagedClusterManagedOutboundIPProfile`
-- New field `OutboundIPPrefixes`, `OutboundIPs` in struct `ManagedClusterNATGatewayProfile`
 - New field `ComponentsByReleases` in struct `ManagedClusterPoolUpgradeProfile`
 - New field `IsOutOfSupport` in struct `ManagedClusterPoolUpgradeProfileUpgradesItem`
-- New field `ControlPlaneScalingProfile`, `CreationData`, `EnableFIPS`, `EnableNamespaceResources`, `HealthMonitorProfile`, `NodeDisruptionProfile` in struct `ManagedClusterProperties`
+- New field `ControlPlaneScalingProfile`, `CreationData`, `EnableFIPS`, `EnableNamespaceResources`, `EnableNodeHardening`, `HealthMonitorProfile`, `NodeDisruptionProfile` in struct `ManagedClusterProperties`
 - New field `ImageIntegrity`, `KubernetesResourceObjectEncryptionProfile`, `NodeRestriction`, `ServiceAccountImagePullProfile` in struct `ManagedClusterSecurityProfile`
 - New field `AddonAutoscaling` in struct `ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler`
 - New field `IgnorePodDisruptionBudget` in struct `ManagedClustersClientBeginDeleteOptions`
 - New field `BastionProfile`, `KubeProxyConfig`, `NatGatewayID`, `PodLinkLocalAccess` in struct `NetworkProfile`
+
+
+## 9.5.0 (2026-08-25)
+### Features Added
+
+- New value `AgentPoolSSHAccessEntraID` added to enum type `AgentPoolSSHAccess`
+- New enum type `ContainerNetworkLogs` with values `ContainerNetworkLogsDisabled`, `ContainerNetworkLogsEnabled`
+- New enum type `DRANETMode` with values `DRANETModeManaged`, `DRANETModeUnmanaged`
+- New enum type `ManagedClusterNATGatewaySKU` with values `ManagedClusterNATGatewaySKUStandard`, `ManagedClusterNATGatewaySKUStandardV2`
+- New struct `DRANETProfile`
+- New struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces`
+- New struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics`
+- New struct `ManagedClusterAzureMonitorProfileContainerInsights`
+- New struct `ManagedClusterNATGatewayProfileOutboundIPPrefixes`
+- New struct `ManagedClusterNATGatewayProfileOutboundIPs`
+- New field `Dranet` in struct `AgentPoolNetworkProfile`
+- New field `ContainerInsights` in struct `ManagedClusterAzureMonitorProfile`
+- New field `OpenTelemetryLogsAndTraces`, `OpenTelemetryMetrics` in struct `ManagedClusterAzureMonitorProfileAppMonitoring`
+- New field `CountIPv6` in struct `ManagedClusterManagedOutboundIPProfile`
+- New field `OutboundIPPrefixes`, `OutboundIPs`, `SKU` in struct `ManagedClusterNATGatewayProfile`
 
 
 ## 9.4.0 (2026-07-22)

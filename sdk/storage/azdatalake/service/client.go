@@ -291,10 +291,7 @@ func (s *Client) NewListFileSystemsPager(o *ListFileSystemsOptions) *runtime.Pag
 			if err != nil {
 				return ListFileSystemsResponse{}, exported.ConvertToDFSError(err)
 			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ListFileSystemsResponse{}, exported.ConvertToDFSError(runtime.NewResponseError(resp))
-			}
-			resp1, err := s.generatedServiceClientWithBlob().ListContainersSegmentHandleResponse(resp)
+			resp1, err := s.generatedServiceClientWithBlob().ListContainersSegmentHandleResponse(resp, http.StatusOK)
 			return resp1, exported.ConvertToDFSError(err)
 		},
 	})

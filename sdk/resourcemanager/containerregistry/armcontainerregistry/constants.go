@@ -5,7 +5,7 @@
 package armcontainerregistry
 
 const (
-	version20260301Preview string = "2026-03-01-preview"
+	version20260901Preview string = "2026-09-01-preview"
 )
 
 // Action - The action of IP ACL rule.
@@ -83,6 +83,24 @@ func PossibleAuditLogStatusValues() []AuditLogStatus {
 	return []AuditLogStatus{
 		AuditLogStatusDisabled,
 		AuditLogStatusEnabled,
+	}
+}
+
+// AuthType - The authentication type used for the connected registry to sync with its parent.
+type AuthType string
+
+const (
+	// AuthTypeManagedIdentity - Sync authentication is done using managed identity
+	AuthTypeManagedIdentity AuthType = "ManagedIdentity"
+	// AuthTypeSyncToken - Sync authentication is done using ACR tokens
+	AuthTypeSyncToken AuthType = "SyncToken"
+)
+
+// PossibleAuthTypeValues returns the possible values for the AuthType const type.
+func PossibleAuthTypeValues() []AuthType {
+	return []AuthType{
+		AuthTypeManagedIdentity,
+		AuthTypeSyncToken,
 	}
 }
 
@@ -355,6 +373,30 @@ func PossibleLogLevelValues() []LogLevel {
 		LogLevelInformation,
 		LogLevelNone,
 		LogLevelWarning,
+	}
+}
+
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	// ManagedServiceIdentityTypeNone - No managed identity.
+	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
+	// ManagedServiceIdentityTypeSystemAssigned - System assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
+	// ManagedServiceIdentityTypeSystemAssignedUserAssigned - System and user assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	// ManagedServiceIdentityTypeUserAssigned - User assigned managed identity.
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
 	}
 }
 

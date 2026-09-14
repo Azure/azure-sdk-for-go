@@ -93,7 +93,7 @@ func (s *ServerTransport) dispatchGetScope(req *http.Request) (*http.Response, e
 	if s.srv.GetScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetScope not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/dataBoundaries/(?P<default>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Resources/dataBoundaries/(?P<default>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -132,7 +132,7 @@ func (s *ServerTransport) dispatchGetTenant(req *http.Request) (*http.Response, 
 	if s.srv.GetTenant == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetTenant not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Resources/dataBoundaries/(?P<default>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Resources/dataBoundaries/(?P<default>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -167,7 +167,7 @@ func (s *ServerTransport) dispatchPut(req *http.Request) (*http.Response, error)
 	if s.srv.Put == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Put not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Resources/dataBoundaries/(?P<default>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Resources/dataBoundaries/(?P<default>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

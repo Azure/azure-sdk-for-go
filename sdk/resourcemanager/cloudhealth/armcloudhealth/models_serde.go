@@ -973,6 +973,7 @@ func (e EntityProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "icon", e.Icon)
 	populate(objectMap, "impact", e.Impact)
 	populate(objectMap, "provisioningState", e.ProvisioningState)
+	populate(objectMap, "signalAggregationGroups", e.SignalAggregationGroups)
 	populate(objectMap, "signalGroups", e.SignalGroups)
 	populate(objectMap, "tags", e.Tags)
 	return json.Marshal(objectMap)
@@ -1013,6 +1014,9 @@ func (e *EntityProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &e.ProvisioningState)
+			delete(rawMsg, key)
+		case "signalAggregationGroups":
+			err = unpopulate(val, "SignalAggregationGroups", &e.SignalAggregationGroups)
 			delete(rawMsg, key)
 		case "signalGroups":
 			err = unpopulate(val, "SignalGroups", &e.SignalGroups)
@@ -2227,6 +2231,69 @@ func (r *ResourceMetricSignalDefinitionProperties) UnmarshalJSON(data []byte) er
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type SignalAggregationGroup.
+func (s SignalAggregationGroup) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "aggregatedHealthState", s.AggregatedHealthState)
+	populate(objectMap, "aggregationType", s.AggregationType)
+	populate(objectMap, "degradedThreshold", s.DegradedThreshold)
+	populate(objectMap, "displayName", s.DisplayName)
+	populate(objectMap, "ignoreUnknown", s.IgnoreUnknown)
+	populate(objectMap, "members", s.Members)
+	populate(objectMap, "name", s.Name)
+	populate(objectMap, "unhealthyThreshold", s.UnhealthyThreshold)
+	populate(objectMap, "unit", s.Unit)
+	populate(objectMap, "unresolvedMembers", s.UnresolvedMembers)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SignalAggregationGroup.
+func (s *SignalAggregationGroup) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "aggregatedHealthState":
+			err = unpopulate(val, "AggregatedHealthState", &s.AggregatedHealthState)
+			delete(rawMsg, key)
+		case "aggregationType":
+			err = unpopulate(val, "AggregationType", &s.AggregationType)
+			delete(rawMsg, key)
+		case "degradedThreshold":
+			err = unpopulate(val, "DegradedThreshold", &s.DegradedThreshold)
+			delete(rawMsg, key)
+		case "displayName":
+			err = unpopulate(val, "DisplayName", &s.DisplayName)
+			delete(rawMsg, key)
+		case "ignoreUnknown":
+			err = unpopulate(val, "IgnoreUnknown", &s.IgnoreUnknown)
+			delete(rawMsg, key)
+		case "members":
+			err = unpopulate(val, "Members", &s.Members)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &s.Name)
+			delete(rawMsg, key)
+		case "unhealthyThreshold":
+			err = unpopulate(val, "UnhealthyThreshold", &s.UnhealthyThreshold)
+			delete(rawMsg, key)
+		case "unit":
+			err = unpopulate(val, "Unit", &s.Unit)
+			delete(rawMsg, key)
+		case "unresolvedMembers":
+			err = unpopulate(val, "UnresolvedMembers", &s.UnresolvedMembers)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type SignalConfiguration.
 func (s SignalConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -2703,7 +2770,6 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ThresholdRuleV2.
 func (t ThresholdRuleV2) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "lookBackWindow", t.LookBackWindow)
 	populate(objectMap, "operator", t.Operator)
 	populate(objectMap, "sensitivity", t.Sensitivity)
 	populate(objectMap, "threshold", t.Threshold)
@@ -2719,9 +2785,6 @@ func (t *ThresholdRuleV2) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "lookBackWindow":
-			err = unpopulate(val, "LookBackWindow", &t.LookBackWindow)
-			delete(rawMsg, key)
 		case "operator":
 			err = unpopulate(val, "Operator", &t.Operator)
 			delete(rawMsg, key)

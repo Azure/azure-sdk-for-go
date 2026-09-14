@@ -30,6 +30,9 @@ type FunctionsExtensionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFunctionsExtensionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FunctionsExtensionClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -72,7 +75,7 @@ func (client *FunctionsExtensionClient) InvokeFunctionsHost(ctx context.Context,
 func (client *FunctionsExtensionClient) invokeFunctionsHostCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, revisionName string, functionAppName string, _ *FunctionsExtensionClientInvokeFunctionsHostOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/revisions/{revisionName}/providers/Microsoft.App/functions/{functionAppName}/invoke"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

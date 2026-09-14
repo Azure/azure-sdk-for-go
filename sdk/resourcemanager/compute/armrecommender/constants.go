@@ -5,7 +5,7 @@
 package armrecommender
 
 const (
-	version20260505Preview string = "2026-05-05-preview"
+	version20260905Preview string = "2026-09-05-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -87,6 +87,31 @@ func PossibleSKUMixPlacementAllocationStrategyValues() []SKUMixPlacementAllocati
 		SKUMixPlacementAllocationStrategyEvictionOptimized,
 		SKUMixPlacementAllocationStrategyLowestPrice,
 		SKUMixPlacementAllocationStrategyPrioritized,
+	}
+}
+
+// SKUMixPlacementCapacityLimitReason - Reason the capacity limit for a (VM size, zone) is below the requested capacity.
+type SKUMixPlacementCapacityLimitReason string
+
+const (
+	// SKUMixPlacementCapacityLimitReasonInsufficientCapacity - Allocable capacity bounded the limit below the requested capacity.
+	SKUMixPlacementCapacityLimitReasonInsufficientCapacity SKUMixPlacementCapacityLimitReason = "InsufficientCapacity"
+	// SKUMixPlacementCapacityLimitReasonInsufficientQuota - Quota bounded the limit below the requested capacity. Takes precedence
+	// when both capacity and quota are insufficient.
+	SKUMixPlacementCapacityLimitReasonInsufficientQuota SKUMixPlacementCapacityLimitReason = "InsufficientQuota"
+	// SKUMixPlacementCapacityLimitReasonNone - The full requested capacity is available for this (VM size, zone).
+	SKUMixPlacementCapacityLimitReasonNone SKUMixPlacementCapacityLimitReason = "None"
+	// SKUMixPlacementCapacityLimitReasonSKUNotAvailable - This VM size is not available in this zone for the subscription.
+	SKUMixPlacementCapacityLimitReasonSKUNotAvailable SKUMixPlacementCapacityLimitReason = "SkuNotAvailable"
+)
+
+// PossibleSKUMixPlacementCapacityLimitReasonValues returns the possible values for the SKUMixPlacementCapacityLimitReason const type.
+func PossibleSKUMixPlacementCapacityLimitReasonValues() []SKUMixPlacementCapacityLimitReason {
+	return []SKUMixPlacementCapacityLimitReason{
+		SKUMixPlacementCapacityLimitReasonInsufficientCapacity,
+		SKUMixPlacementCapacityLimitReasonInsufficientQuota,
+		SKUMixPlacementCapacityLimitReasonNone,
+		SKUMixPlacementCapacityLimitReasonSKUNotAvailable,
 	}
 }
 

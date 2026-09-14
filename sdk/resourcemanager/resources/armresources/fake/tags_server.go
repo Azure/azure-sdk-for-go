@@ -140,7 +140,7 @@ func (t *TagsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.R
 	if t.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tagNames/(?P<tagName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tagNames/(?P<tagName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -171,7 +171,7 @@ func (t *TagsServerTransport) dispatchBeginCreateOrUpdateAtScope(req *http.Reque
 	}
 	beginCreateOrUpdateAtScope := t.beginCreateOrUpdateAtScope.get(req)
 	if beginCreateOrUpdateAtScope == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/tags/default`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Resources/tags/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -213,7 +213,7 @@ func (t *TagsServerTransport) dispatchCreateOrUpdateValue(req *http.Request) (*h
 	if t.srv.CreateOrUpdateValue == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateValue not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tagNames/(?P<tagName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tagValues/(?P<tagValue>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tagNames/(?P<tagName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tagValues/(?P<tagValue>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -246,7 +246,7 @@ func (t *TagsServerTransport) dispatchDelete(req *http.Request) (*http.Response,
 	if t.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tagNames/(?P<tagName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tagNames/(?P<tagName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -277,7 +277,7 @@ func (t *TagsServerTransport) dispatchBeginDeleteAtScope(req *http.Request) (*ht
 	}
 	beginDeleteAtScope := t.beginDeleteAtScope.get(req)
 	if beginDeleteAtScope == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/tags/default`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Resources/tags/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -315,7 +315,7 @@ func (t *TagsServerTransport) dispatchDeleteValue(req *http.Request) (*http.Resp
 	if t.srv.DeleteValue == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteValue not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tagNames/(?P<tagName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tagValues/(?P<tagValue>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tagNames/(?P<tagName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tagValues/(?P<tagValue>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -348,7 +348,7 @@ func (t *TagsServerTransport) dispatchGetAtScope(req *http.Request) (*http.Respo
 	if t.srv.GetAtScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAtScope not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/tags/default`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Resources/tags/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -379,7 +379,7 @@ func (t *TagsServerTransport) dispatchNewListPager(req *http.Request) (*http.Res
 	}
 	newListPager := t.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tagNames`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tagNames`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -412,7 +412,7 @@ func (t *TagsServerTransport) dispatchBeginUpdateAtScope(req *http.Request) (*ht
 	}
 	beginUpdateAtScope := t.beginUpdateAtScope.get(req)
 	if beginUpdateAtScope == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/tags/default`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Resources/tags/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

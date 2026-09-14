@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/CreateProject.json
+// Generated from example definition: 2026-07-15-preview/CreateProject.json
 func ExampleProjectsClient_BeginCreate_createProject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,6 +31,10 @@ func ExampleProjectsClient_BeginCreate_createProject() {
 		Properties: &armcognitiveservices.ProjectProperties{
 			Description: to.Ptr("Description of this project"),
 			DisplayName: to.Ptr("p1"),
+			CapabilitySettings: &armcognitiveservices.CapabilitySettings{
+				DocumentStore: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.DocumentDB/databaseAccounts/myProjectCosmosAccount"),
+				VectorStore:   to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Search/searchServices/myProjectSearchService"),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -65,12 +69,17 @@ func ExampleProjectsClient_BeginCreate_createProject() {
 	// 			},
 	// 			IsDefault: to.Ptr(true),
 	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
+	// 			CapabilitySettings: &armcognitiveservices.CapabilitySettings{
+	// 				DocumentStore: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.DocumentDB/databaseAccounts/myProjectCosmosAccount"),
+	// 				VectorStore: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Search/searchServices/myProjectSearchService"),
+	// 				BlobStore: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount"),
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/CreateProjectMin.json
+// Generated from example definition: 2026-07-15-preview/CreateProjectMin.json
 func ExampleProjectsClient_BeginCreate_createProjectMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +132,7 @@ func ExampleProjectsClient_BeginCreate_createProjectMin() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/DeleteProject.json
+// Generated from example definition: 2026-07-15-preview/DeleteProject.json
 func ExampleProjectsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +158,7 @@ func ExampleProjectsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/GetProject.json
+// Generated from example definition: 2026-07-15-preview/GetProject.json
 func ExampleProjectsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,7 +201,7 @@ func ExampleProjectsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ListProjects.json
+// Generated from example definition: 2026-07-15-preview/ListProjects.json
 func ExampleProjectsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -263,7 +272,7 @@ func ExampleProjectsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/UpdateProjects.json
+// Generated from example definition: 2026-07-15-preview/UpdateProjects.json
 func ExampleProjectsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

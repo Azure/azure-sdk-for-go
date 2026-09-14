@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/ElasticBackupVaults_Create.json
+// Generated from example definition: 2026-06-15-preview/ElasticBackupVaults_Create.json
 func ExampleElasticBackupVaultsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleElasticBackupVaultsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ElasticBackupVaults_Delete.json
+// Generated from example definition: 2026-06-15-preview/ElasticBackupVaults_Delete.json
 func ExampleElasticBackupVaultsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleElasticBackupVaultsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/ElasticBackupVaults_Get.json
+// Generated from example definition: 2026-06-15-preview/ElasticBackupVaults_Get.json
 func ExampleElasticBackupVaultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleElasticBackupVaultsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ElasticBackupVaults_ListByElasticAccount.json
+// Generated from example definition: 2026-06-15-preview/ElasticBackupVaults_ListByElasticAccount.json
 func ExampleElasticBackupVaultsClient_NewListByElasticAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleElasticBackupVaultsClient_NewListByElasticAccountPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/ElasticBackupVaults_Update.json
+// Generated from example definition: 2026-06-15-preview/ElasticBackupVaults_Update.json
 func ExampleElasticBackupVaultsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

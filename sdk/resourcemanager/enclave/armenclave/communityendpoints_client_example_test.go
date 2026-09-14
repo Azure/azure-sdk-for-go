@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/CommunityEndpoints_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/CommunityEndpoints_CreateOrUpdate.json
 func ExampleCommunityEndpointsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleCommunityEndpointsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/CommunityEndpoints_Delete.json
+// Generated from example definition: 2026-04-01/CommunityEndpoints_Delete.json
 func ExampleCommunityEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleCommunityEndpointsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/CommunityEndpoints_Get.json
+// Generated from example definition: 2026-04-01/CommunityEndpoints_Get.json
 func ExampleCommunityEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,7 +164,7 @@ func ExampleCommunityEndpointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/CommunityEndpoints_HandleApprovalCreation.json
+// Generated from example definition: 2026-04-01/CommunityEndpoints_HandleApprovalCreation.json
 func ExampleCommunityEndpointsClient_BeginHandleApprovalCreation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +196,7 @@ func ExampleCommunityEndpointsClient_BeginHandleApprovalCreation() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/CommunityEndpoints_HandleApprovalDeletion.json
+// Generated from example definition: 2026-04-01/CommunityEndpoints_HandleApprovalDeletion.json
 func ExampleCommunityEndpointsClient_BeginHandleApprovalDeletion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExampleCommunityEndpointsClient_BeginHandleApprovalDeletion() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/CommunityEndpoints_ListByCommunityResource.json
+// Generated from example definition: 2026-04-01/CommunityEndpoints_ListByCommunityResource.json
 func ExampleCommunityEndpointsClient_NewListByCommunityResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +291,7 @@ func ExampleCommunityEndpointsClient_NewListByCommunityResourcePager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/CommunityEndpoints_ListBySubscription.json
+// Generated from example definition: 2026-04-01/CommunityEndpoints_ListBySubscription.json
 func ExampleCommunityEndpointsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -355,7 +355,7 @@ func ExampleCommunityEndpointsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/CommunityEndpoints_Update.json
+// Generated from example definition: 2026-04-01/CommunityEndpoints_Update.json
 func ExampleCommunityEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

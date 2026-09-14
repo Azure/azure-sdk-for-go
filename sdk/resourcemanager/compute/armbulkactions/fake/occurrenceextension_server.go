@@ -87,7 +87,7 @@ func (o *OccurrenceExtensionServerTransport) dispatchNewListOccurrenceByVMsPager
 	}
 	newListOccurrenceByVMsPager := o.newListOccurrenceByVMsPager.get(req)
 	if newListOccurrenceByVMsPager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/associatedOccurrences`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Compute/associatedOccurrences`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

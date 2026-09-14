@@ -12,7 +12,41 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/Provision_Ilr.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/ListInstantItemRecoveryOperationResult.json
+func ExampleItemLevelRecoveryConnectionsClient_ListInstantItemRecoveryOperationResult() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewItemLevelRecoveryConnectionsClient().ListInstantItemRecoveryOperationResult(ctx, "PythonSDKBackupTestRg", "PySDKBackupTestRsVault", "Azure", "iaasvmcontainer;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1", "vm;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1", "38823086363464", armrecoveryservicesbackup.InstantItemRecoveryOperationResultRequest{
+		ProvisionInstantItemRecoveryOperationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicesbackup.ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultResponse{
+	// 	InstantItemRecoveryTarget: armrecoveryservicesbackup.InstantItemRecoveryTarget{
+	// 		ClientScripts: []*armrecoveryservicesbackup.ClientScriptForConnect{
+	// 			{
+	// 				ScriptContent: to.Ptr("# iSCSI mount script for Instant Item Recovery\nStart-Service -Name MSiSCSI\nConnect-IscsiTarget -NodeAddress '<target-iqn>' -TargetPortalAddress '<portal-ip>'"),
+	// 				ScriptExtension: to.Ptr(".ps1"),
+	// 				OSType: to.Ptr("Windows"),
+	// 				ScriptNameSuffix: to.Ptr("38823086363464"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01/AzureIaasVm/Provision_Ilr.json
 func ExampleItemLevelRecoveryConnectionsClient_Provision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +71,7 @@ func ExampleItemLevelRecoveryConnectionsClient_Provision() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/Revoke_Ilr.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/Revoke_Ilr.json
 func ExampleItemLevelRecoveryConnectionsClient_Revoke() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

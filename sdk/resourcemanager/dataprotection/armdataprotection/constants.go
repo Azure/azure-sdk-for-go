@@ -5,7 +5,7 @@
 package armdataprotection
 
 const (
-	version20260301 string = "2026-03-01"
+	version20260601 string = "2026-06-01"
 )
 
 type AKSVolumeTypes string
@@ -338,6 +338,23 @@ func PossibleFeatureTypeValues() []FeatureType {
 	return []FeatureType{
 		FeatureTypeDataSourceType,
 		FeatureTypeInvalid,
+	}
+}
+
+type GranularityLevel string
+
+const (
+	GranularityLevelProtectedItemLevel         GranularityLevel = "ProtectedItemLevel"
+	GranularityLevelProtectedItemWithParentTag GranularityLevel = "ProtectedItemWithParentTag"
+	GranularityLevelVaultLevel                 GranularityLevel = "VaultLevel"
+)
+
+// PossibleGranularityLevelValues returns the possible values for the GranularityLevel const type.
+func PossibleGranularityLevelValues() []GranularityLevel {
+	return []GranularityLevel{
+		GranularityLevelProtectedItemLevel,
+		GranularityLevelProtectedItemWithParentTag,
+		GranularityLevelVaultLevel,
 	}
 }
 

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-05-02-preview/MaintenanceConfigurationsCreate_LinkedMaintenanceWindow.json
+// Generated from example definition: 2026-06-02-preview/MaintenanceConfigurationsCreate_LinkedMaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_CreateOrUpdate_createALinkedMaintenanceConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate_createALinkedMaintena
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
+// Generated from example definition: 2026-06-02-preview/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_CreateOrUpdate_createUpdateMaintenanceConfigurationWithMaintenanceWindow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate_createUpdateMaintenan
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/MaintenanceConfigurationsDelete_MaintenanceWindow.json
+// Generated from example definition: 2026-06-02-preview/MaintenanceConfigurationsDelete_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,7 +179,7 @@ func ExampleMaintenanceConfigurationsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/MaintenanceConfigurationsGet_LinkedMaintenanceWindow.json
+// Generated from example definition: 2026-06-02-preview/MaintenanceConfigurationsGet_LinkedMaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_Get_getALinkedMaintenanceConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -234,7 +234,7 @@ func ExampleMaintenanceConfigurationsClient_Get_getALinkedMaintenanceConfigurati
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/MaintenanceConfigurationsGet_MaintenanceWindow.json
+// Generated from example definition: 2026-06-02-preview/MaintenanceConfigurationsGet_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_Get_getMaintenanceConfigurationConfiguredWithMaintenanceWindow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +291,7 @@ func ExampleMaintenanceConfigurationsClient_Get_getMaintenanceConfigurationConfi
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/MaintenanceConfigurationsList_MaintenanceWindow.json
+// Generated from example definition: 2026-06-02-preview/MaintenanceConfigurationsList_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

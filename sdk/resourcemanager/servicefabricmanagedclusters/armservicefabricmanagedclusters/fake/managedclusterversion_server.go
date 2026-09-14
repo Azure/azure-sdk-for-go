@@ -99,7 +99,7 @@ func (m *ManagedClusterVersionServerTransport) dispatchGet(req *http.Request) (*
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managedClusterVersions/(?P<clusterVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ServiceFabric/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedClusterVersions/(?P<clusterVersion>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -132,7 +132,7 @@ func (m *ManagedClusterVersionServerTransport) dispatchGetByEnvironment(req *htt
 	if m.srv.GetByEnvironment == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByEnvironment not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/environments/(?P<environment>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managedClusterVersions/(?P<clusterVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ServiceFabric/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/environments/(?P<environment>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedClusterVersions/(?P<clusterVersion>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -175,7 +175,7 @@ func (m *ManagedClusterVersionServerTransport) dispatchList(req *http.Request) (
 	if m.srv.List == nil {
 		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managedClusterVersions`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ServiceFabric/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedClusterVersions`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -204,7 +204,7 @@ func (m *ManagedClusterVersionServerTransport) dispatchListByEnvironment(req *ht
 	if m.srv.ListByEnvironment == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListByEnvironment not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/environments/(?P<environment>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managedClusterVersions`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ServiceFabric/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/environments/(?P<environment>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedClusterVersions`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

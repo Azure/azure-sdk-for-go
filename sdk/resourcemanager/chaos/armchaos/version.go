@@ -6,5 +6,5 @@ package armchaos
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos"
-	moduleVersion = "v2.1.0-beta.1"
+	moduleVersion = "v3.0.0-beta.1"
 )

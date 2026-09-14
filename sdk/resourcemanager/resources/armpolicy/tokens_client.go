@@ -189,7 +189,7 @@ func (client *TokensClient) AcquireAtResourceGroup(ctx context.Context, resource
 func (client *TokensClient) acquireAtResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, parameters TokenRequest, _ *TokensClientAcquireAtResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/acquirePolicyToken"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

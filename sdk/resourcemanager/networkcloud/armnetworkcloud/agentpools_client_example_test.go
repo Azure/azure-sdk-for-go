@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/AgentPools_Create.json
+// Generated from example definition: 2026-08-01-preview/AgentPools_Create.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AgentPools_Delete.json
+// Generated from example definition: 2026-08-01-preview/AgentPools_Delete.json
 func ExampleAgentPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +211,7 @@ func ExampleAgentPoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/AgentPools_Get.json
+// Generated from example definition: 2026-08-01-preview/AgentPools_Get.json
 func ExampleAgentPoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -317,7 +317,7 @@ func ExampleAgentPoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AgentPools_ListByKubernetesCluster.json
+// Generated from example definition: 2026-08-01-preview/AgentPools_ListByKubernetesCluster.json
 func ExampleAgentPoolsClient_NewListByKubernetesClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -433,7 +433,7 @@ func ExampleAgentPoolsClient_NewListByKubernetesClusterPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/AgentPools_Patch.json
+// Generated from example definition: 2026-08-01-preview/AgentPools_Patch.json
 func ExampleAgentPoolsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

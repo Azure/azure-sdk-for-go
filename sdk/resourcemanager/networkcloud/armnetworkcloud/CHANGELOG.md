@@ -1,5 +1,27 @@
 # Release History
 
+## 2.1.0-beta.1 (2026-09-14)
+### Features Added
+
+- New value `AccessBridgeAllowedNameEdgeManagement` added to enum type `AccessBridgeAllowedName`
+- New enum type `KeyValueVersion` with values `KeyValueVersionV1`, `KeyValueVersionV2`
+- New enum type `SecretArchiveProviderType` with values `SecretArchiveProviderTypeCyberArk`, `SecretArchiveProviderTypeHashiCorpVault`, `SecretArchiveProviderTypeOpenBao`
+- New enum type `VaultAuthenticationMethod` with values `VaultAuthenticationMethodAppRole`, `VaultAuthenticationMethodClientCertificate`
+- New function `*CyberArkSecretArchiveProviderConfiguration.GetSecretArchiveProviderConfiguration() *SecretArchiveProviderConfiguration`
+- New function `*HashiCorpVaultSecretArchiveProviderConfiguration.GetSecretArchiveProviderConfiguration() *SecretArchiveProviderConfiguration`
+- New function `*OpenBaoSecretArchiveProviderConfiguration.GetSecretArchiveProviderConfiguration() *SecretArchiveProviderConfiguration`
+- New function `*SecretArchiveProviderConfiguration.GetSecretArchiveProviderConfiguration() *SecretArchiveProviderConfiguration`
+- New struct `ClusterManagerPatchProperties`
+- New struct `CyberArkSecretArchiveProviderConfiguration`
+- New struct `HashiCorpVaultSecretArchiveProviderConfiguration`
+- New struct `OpenBaoSecretArchiveProviderConfiguration`
+- New field `Properties` in struct `ClusterManagerPatchParameters`
+- New field `RolloutRing` in struct `ClusterManagerProperties`
+- New field `EdgeManagementServiceCaCertificate` in struct `ClusterProperties`
+- New field `EncryptionPublicKey` in struct `SecretArchiveReference`
+- New field `EncryptionPublicKey`, `ProviderConfiguration` in struct `SecretArchiveSettings`
+
+
 ## 2.0.0 (2026-08-18)
 ### Breaking Changes
 

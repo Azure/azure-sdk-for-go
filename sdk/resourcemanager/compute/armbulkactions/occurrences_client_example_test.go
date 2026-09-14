@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-08-06-preview/Occurrences_Cancel_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/Occurrences_Cancel_MaximumSet_Gen.json
 func ExampleOccurrencesClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -24,9 +24,10 @@ func ExampleOccurrencesClient_BeginCancel() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewOccurrencesClient().BeginCancel(ctx, "rgcompute", "myScheduledAction", "CB26D7CB-3E27-465F-99C8-EAF7A4118245", armbulkactions.CancelOccurrenceRequest{
+	poller, err := clientFactory.NewOccurrencesClient().BeginCancel(ctx, "rgcompute", "myScheduledAction", "67b5bada-4772-43fc-8dbb-402476d98a45", armbulkactions.CancelOccurrenceRequest{
 		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+			to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm"),
+			to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2"),
 		},
 	}, nil)
 	if err != nil {
@@ -41,11 +42,15 @@ func ExampleOccurrencesClient_BeginCancel() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbulkactions.OccurrencesClientCancelResponse{
 	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
-	// 		TotalResources: to.Ptr[int32](11),
+	// 		TotalResources: to.Ptr[int32](2),
 	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
 	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+	// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusFailed),
 	// 				Error: &armbulkactions.Error{
 	// 					Code: to.Ptr("InternalServerError"),
 	// 					Message: to.Ptr("An internal error occurred."),
@@ -62,7 +67,7 @@ func ExampleOccurrencesClient_BeginCancel() {
 	// }
 }
 
-// Generated from example definition: 2026-08-06-preview/Occurrences_Delay_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/Occurrences_Delay_MaximumSet_Gen.json
 func ExampleOccurrencesClient_BeginDelay() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,10 +78,11 @@ func ExampleOccurrencesClient_BeginDelay() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewOccurrencesClient().BeginDelay(ctx, "rgcompute", "myScheduledAction", "CB26D7CB-3E27-465F-99C8-EAF7A4118245", armbulkactions.DelayRequest{
-		Delay: to.Ptr(time.Date(2025, time.May, 22, 17, 0, 0, 0, time.FixedZone("", -25200))),
+	poller, err := clientFactory.NewOccurrencesClient().BeginDelay(ctx, "rgcompute", "myScheduledAction", "67b5bada-4772-43fc-8dbb-402476d98a45", armbulkactions.DelayRequest{
+		Delay: to.Ptr(time.Date(2026, time.August, 5, 17, 0, 0, 0, time.FixedZone("", -25200))),
 		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+			to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm"),
+			to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2"),
 		},
 	}, nil)
 	if err != nil {
@@ -91,11 +97,15 @@ func ExampleOccurrencesClient_BeginDelay() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbulkactions.OccurrencesClientDelayResponse{
 	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
-	// 		TotalResources: to.Ptr[int32](11),
+	// 		TotalResources: to.Ptr[int32](2),
 	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
 	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+	// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusFailed),
 	// 				Error: &armbulkactions.Error{
 	// 					Code: to.Ptr("InternalServerError"),
 	// 					Message: to.Ptr("An internal error occurred."),
@@ -112,7 +122,7 @@ func ExampleOccurrencesClient_BeginDelay() {
 	// }
 }
 
-// Generated from example definition: 2026-08-06-preview/Occurrences_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/Occurrences_Get_MaximumSet_Gen.json
 func ExampleOccurrencesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,13 +143,17 @@ func ExampleOccurrencesClient_Get() {
 	// res = armbulkactions.OccurrencesClientGetResponse{
 	// 	Occurrence: armbulkactions.Occurrence{
 	// 		Properties: &armbulkactions.OccurrenceProperties{
-	// 			ScheduledTime: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 59, 243000000, time.UTC)),
+	// 			ScheduledTime: to.Ptr(time.Date(2026, time.August, 5, 0, 30, 0, 0, time.UTC)),
 	// 			ResultSummary: &armbulkactions.OccurrenceResultSummary{
 	// 				Total: to.Ptr[int32](25),
 	// 				Statuses: []*armbulkactions.ResourceResultSummary{
 	// 					{
 	// 						Code: to.Ptr("Succeeded"),
-	// 						Count: to.Ptr[int32](4),
+	// 						Count: to.Ptr[int32](24),
+	// 					},
+	// 					{
+	// 						Code: to.Ptr("Failed"),
+	// 						Count: to.Ptr[int32](1),
 	// 						ErrorDetails: &armbulkactions.Error{
 	// 							Code: to.Ptr("InternalServerError"),
 	// 							Message: to.Ptr("An internal error occurred."),
@@ -153,24 +167,24 @@ func ExampleOccurrencesClient_Get() {
 	// 					},
 	// 				},
 	// 			},
-	// 			ProvisioningState: to.Ptr(armbulkactions.OccurrenceStateCreated),
+	// 			ProvisioningState: to.Ptr(armbulkactions.OccurrenceStateFailed),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.Compute/scheduledActions/myScheduledAction/occurrences/83C27AB3-A7B9-498B-B165-D9440661474F"),
+	// 		ID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/scheduledActions/myScheduledAction/occurrences/67b5bada-4772-43fc-8dbb-402476d98a45"),
 	// 		Name: to.Ptr("67b5bada-4772-43fc-8dbb-402476d98a45"),
 	// 		Type: to.Ptr("Microsoft.Compute/scheduledActions/occurrences"),
 	// 		SystemData: &armbulkactions.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.August, 1, 12, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.August, 5, 0, 31, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-08-06-preview/Occurrences_ListByScheduledAction_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/Occurrences_ListByScheduledAction_MaximumSet_Gen.json
 func ExampleOccurrencesClient_NewListByScheduledActionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,13 +211,17 @@ func ExampleOccurrencesClient_NewListByScheduledActionPager() {
 		// 		Value: []*armbulkactions.Occurrence{
 		// 			{
 		// 				Properties: &armbulkactions.OccurrenceProperties{
-		// 					ScheduledTime: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 59, 243000000, time.UTC)),
+		// 					ScheduledTime: to.Ptr(time.Date(2026, time.August, 5, 0, 30, 0, 0, time.UTC)),
 		// 					ResultSummary: &armbulkactions.OccurrenceResultSummary{
 		// 						Total: to.Ptr[int32](25),
 		// 						Statuses: []*armbulkactions.ResourceResultSummary{
 		// 							{
 		// 								Code: to.Ptr("Succeeded"),
-		// 								Count: to.Ptr[int32](4),
+		// 								Count: to.Ptr[int32](24),
+		// 							},
+		// 							{
+		// 								Code: to.Ptr("Failed"),
+		// 								Count: to.Ptr[int32](1),
 		// 								ErrorDetails: &armbulkactions.Error{
 		// 									Code: to.Ptr("InternalServerError"),
 		// 									Message: to.Ptr("An internal error occurred."),
@@ -217,28 +235,28 @@ func ExampleOccurrencesClient_NewListByScheduledActionPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					ProvisioningState: to.Ptr(armbulkactions.OccurrenceStateCreated),
+		// 					ProvisioningState: to.Ptr(armbulkactions.OccurrenceStateFailed),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.Compute/scheduledActions/myScheduledAction/occurrences/83C27AB3-A7B9-498B-B165-D9440661474F"),
+		// 				ID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/scheduledActions/myScheduledAction/occurrences/67b5bada-4772-43fc-8dbb-402476d98a45"),
 		// 				Name: to.Ptr("67b5bada-4772-43fc-8dbb-402476d98a45"),
 		// 				Type: to.Ptr("Microsoft.Compute/scheduledActions/occurrences"),
 		// 				SystemData: &armbulkactions.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.August, 1, 12, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.August, 5, 0, 31, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/scheduledActions/myScheduledAction/occurrences?api-version=2026-09-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-08-06-preview/Occurrences_ListResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/Occurrences_ListResources_MaximumSet_Gen.json
 func ExampleOccurrencesClient_NewListResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -249,7 +267,7 @@ func ExampleOccurrencesClient_NewListResourcesPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewOccurrencesClient().NewListResourcesPager("rgcompute", "myScheduledAction", "CB26D7CB-3E27-465F-99C8-EAF7A4118245", nil)
+	pager := clientFactory.NewOccurrencesClient().NewListResourcesPager("rgcompute", "myScheduledAction", "67b5bada-4772-43fc-8dbb-402476d98a45", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -264,7 +282,7 @@ func ExampleOccurrencesClient_NewListResourcesPager() {
 		// 	OccurrenceResourceListResponse: armbulkactions.OccurrenceResourceListResponse{
 		// 		Value: []*armbulkactions.OccurrenceResource{
 		// 			{
-		// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+		// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm"),
 		// 				NotificationSettings: []*armbulkactions.NotificationProperties{
 		// 					{
 		// 						Destination: to.Ptr("admin@contoso.com"),
@@ -273,8 +291,8 @@ func ExampleOccurrencesClient_NewListResourcesPager() {
 		// 						Disabled: to.Ptr(true),
 		// 					},
 		// 				},
-		// 				ScheduledTime: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 59, 751000000, time.UTC)),
-		// 				ProvisioningState: to.Ptr(armbulkactions.OccurrenceResourceProvisioningStateSucceeded),
+		// 				ScheduledTime: to.Ptr(time.Date(2026, time.August, 5, 0, 30, 0, 0, time.UTC)),
+		// 				ProvisioningState: to.Ptr(armbulkactions.OccurrenceResourceProvisioningStateFailed),
 		// 				ErrorDetails: &armbulkactions.Error{
 		// 					Code: to.Ptr("InternalServerError"),
 		// 					Message: to.Ptr("An internal error occurred."),
@@ -285,12 +303,12 @@ func ExampleOccurrencesClient_NewListResourcesPager() {
 		// 						Code: to.Ptr("InnerErrorCode"),
 		// 					},
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+		// 				ID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm"),
 		// 				Name: to.Ptr("myVm"),
 		// 				Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/as"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/scheduledActions/myScheduledAction/occurrences/67b5bada-4772-43fc-8dbb-402476d98a45/resources?api-version=2026-09-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}

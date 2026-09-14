@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-06-preview/OccurrenceExtension_ListOccurrenceByVms_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/OccurrenceExtension_ListOccurrenceByVms_MaximumSet_Gen.json
 func ExampleOccurrenceExtensionClient_NewListOccurrenceByVMsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleOccurrenceExtensionClient_NewListOccurrenceByVMsPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm/providers/Microsoft.Compute/associatedOccurrences?api-version=2026-09-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}

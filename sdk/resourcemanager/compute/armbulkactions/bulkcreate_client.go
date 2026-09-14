@@ -17,20 +17,20 @@ import (
 	"strings"
 )
 
-// LaunchBulkInstancesOperationClient contains the methods for the LaunchBulkInstancesOperation group.
-// Don't use this type directly, use NewLaunchBulkInstancesOperationClient() instead.
+// BulkCreateClient contains the methods for the BulkCreate group.
+// Don't use this type directly, use NewBulkCreateClient() instead.
 //
-// Generated from API version 2026-08-06-preview
-type LaunchBulkInstancesOperationClient struct {
+// Generated from API version 2026-09-06-preview
+type BulkCreateClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewLaunchBulkInstancesOperationClient creates a new instance of LaunchBulkInstancesOperationClient with the specified values.
+// NewBulkCreateClient creates a new instance of BulkCreateClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewLaunchBulkInstancesOperationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LaunchBulkInstancesOperationClient, error) {
+func NewBulkCreateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BulkCreateClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -38,42 +38,41 @@ func NewLaunchBulkInstancesOperationClient(subscriptionID string, credential azc
 	if err != nil {
 		return nil, err
 	}
-	client := &LaunchBulkInstancesOperationClient{
+	client := &BulkCreateClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCancel - Cancels LaunchBulkInstancesOperation instances that have not yet launched.
+// BeginCancel - Cancels BulkCreate instances that have not yet launched.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
-//   - name - The name of the LaunchBulkInstancesOperation.
-//   - options - LaunchBulkInstancesOperationClientBeginCancelOptions contains the optional parameters for the LaunchBulkInstancesOperationClient.BeginCancel
-//     method.
-func (client *LaunchBulkInstancesOperationClient) BeginCancel(ctx context.Context, resourceGroupName string, location string, name string, options *LaunchBulkInstancesOperationClientBeginCancelOptions) (*runtime.Poller[LaunchBulkInstancesOperationClientCancelResponse], error) {
+//   - name - The name of the BulkCreate. The value must be an UUID.
+//   - options - BulkCreateClientBeginCancelOptions contains the optional parameters for the BulkCreateClient.BeginCancel method.
+func (client *BulkCreateClient) BeginCancel(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateClientBeginCancelOptions) (*runtime.Poller[BulkCreateClientCancelResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.cancel(ctx, resourceGroupName, location, name, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LaunchBulkInstancesOperationClientCancelResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BulkCreateClientCancelResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LaunchBulkInstancesOperationClientCancelResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BulkCreateClientCancelResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Cancel - Cancels LaunchBulkInstancesOperation instances that have not yet launched.
+// Cancel - Cancels BulkCreate instances that have not yet launched.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *LaunchBulkInstancesOperationClient) cancel(ctx context.Context, resourceGroupName string, location string, name string, options *LaunchBulkInstancesOperationClientBeginCancelOptions) (*http.Response, error) {
+func (client *BulkCreateClient) cancel(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateClientBeginCancelOptions) (*http.Response, error) {
 	var err error
-	const operationName = "LaunchBulkInstancesOperationClient.BeginCancel"
+	const operationName = "BulkCreateClient.BeginCancel"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -92,8 +91,8 @@ func (client *LaunchBulkInstancesOperationClient) cancel(ctx context.Context, re
 }
 
 // cancelCreateRequest creates the Cancel request.
-func (client *LaunchBulkInstancesOperationClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, _ *LaunchBulkInstancesOperationClientBeginCancelOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/launchBulkInstancesOperations/{name}/cancel"
+func (client *BulkCreateClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, _ *BulkCreateClientBeginCancelOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}/cancel"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -115,41 +114,41 @@ func (client *LaunchBulkInstancesOperationClient) cancelCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20260906Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// BeginCreateOrUpdate - Creates or updates LaunchBulkInstancesOperations.
+// BeginCreateOrUpdate - Creates or updates BulkCreates.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
-//   - name - The name of the LaunchBulkInstancesOperation.
+//   - name - The name of the BulkCreate. The value must be an UUID.
 //   - resource - Resource create parameters.
-//   - options - LaunchBulkInstancesOperationClientBeginCreateOrUpdateOptions contains the optional parameters for the LaunchBulkInstancesOperationClient.BeginCreateOrUpdate
+//   - options - BulkCreateClientBeginCreateOrUpdateOptions contains the optional parameters for the BulkCreateClient.BeginCreateOrUpdate
 //     method.
-func (client *LaunchBulkInstancesOperationClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedLaunchBulkInstancesOperation, options *LaunchBulkInstancesOperationClientBeginCreateOrUpdateOptions) (*runtime.Poller[LaunchBulkInstancesOperationClientCreateOrUpdateResponse], error) {
+func (client *BulkCreateClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedBulkCreate, options *BulkCreateClientBeginCreateOrUpdateOptions) (*runtime.Poller[BulkCreateClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, location, name, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LaunchBulkInstancesOperationClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BulkCreateClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LaunchBulkInstancesOperationClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BulkCreateClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrUpdate - Creates or updates LaunchBulkInstancesOperations.
+// CreateOrUpdate - Creates or updates BulkCreates.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *LaunchBulkInstancesOperationClient) createOrUpdate(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedLaunchBulkInstancesOperation, options *LaunchBulkInstancesOperationClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *BulkCreateClient) createOrUpdate(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedBulkCreate, options *BulkCreateClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "LaunchBulkInstancesOperationClient.BeginCreateOrUpdate"
+	const operationName = "BulkCreateClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -168,8 +167,8 @@ func (client *LaunchBulkInstancesOperationClient) createOrUpdate(ctx context.Con
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *LaunchBulkInstancesOperationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedLaunchBulkInstancesOperation, _ *LaunchBulkInstancesOperationClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/launchBulkInstancesOperations/{name}"
+func (client *BulkCreateClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedBulkCreate, _ *BulkCreateClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -191,7 +190,7 @@ func (client *LaunchBulkInstancesOperationClient) createOrUpdateCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20260906Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -201,35 +200,34 @@ func (client *LaunchBulkInstancesOperationClient) createOrUpdateCreateRequest(ct
 	return req, nil
 }
 
-// BeginDelete - Deletes LaunchBulkInstancesOperations.
+// BeginDelete - Deletes BulkCreates.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
-//   - name - The name of the LaunchBulkInstancesOperation.
-//   - options - LaunchBulkInstancesOperationClientBeginDeleteOptions contains the optional parameters for the LaunchBulkInstancesOperationClient.BeginDelete
-//     method.
-func (client *LaunchBulkInstancesOperationClient) BeginDelete(ctx context.Context, resourceGroupName string, location string, name string, options *LaunchBulkInstancesOperationClientBeginDeleteOptions) (*runtime.Poller[LaunchBulkInstancesOperationClientDeleteResponse], error) {
+//   - name - The name of the BulkCreate. The value must be an UUID.
+//   - options - BulkCreateClientBeginDeleteOptions contains the optional parameters for the BulkCreateClient.BeginDelete method.
+func (client *BulkCreateClient) BeginDelete(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateClientBeginDeleteOptions) (*runtime.Poller[BulkCreateClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, location, name, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LaunchBulkInstancesOperationClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BulkCreateClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LaunchBulkInstancesOperationClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BulkCreateClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Deletes LaunchBulkInstancesOperations.
+// Delete - Deletes BulkCreates.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *LaunchBulkInstancesOperationClient) deleteOperation(ctx context.Context, resourceGroupName string, location string, name string, options *LaunchBulkInstancesOperationClientBeginDeleteOptions) (*http.Response, error) {
+func (client *BulkCreateClient) deleteOperation(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "LaunchBulkInstancesOperationClient.BeginDelete"
+	const operationName = "BulkCreateClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -248,8 +246,8 @@ func (client *LaunchBulkInstancesOperationClient) deleteOperation(ctx context.Co
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *LaunchBulkInstancesOperationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, options *LaunchBulkInstancesOperationClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/launchBulkInstancesOperations/{name}"
+func (client *BulkCreateClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -271,7 +269,7 @@ func (client *LaunchBulkInstancesOperationClient) deleteCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20260906Preview)
 	if options != nil && options.DeleteInstances != nil {
 		reqQP.Set("deleteInstances", strconv.FormatBool(*options.DeleteInstances))
 	}
@@ -279,33 +277,32 @@ func (client *LaunchBulkInstancesOperationClient) deleteCreateRequest(ctx contex
 	return req, nil
 }
 
-// Get - Gets an instance of LaunchBulkInstancesOperations.
+// Get - Gets an instance of BulkCreates.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
-//   - name - The name of the LaunchBulkInstancesOperation.
-//   - options - LaunchBulkInstancesOperationClientGetOptions contains the optional parameters for the LaunchBulkInstancesOperationClient.Get
-//     method.
-func (client *LaunchBulkInstancesOperationClient) Get(ctx context.Context, resourceGroupName string, location string, name string, options *LaunchBulkInstancesOperationClientGetOptions) (LaunchBulkInstancesOperationClientGetResponse, error) {
+//   - name - The name of the BulkCreate. The value must be an UUID.
+//   - options - BulkCreateClientGetOptions contains the optional parameters for the BulkCreateClient.Get method.
+func (client *BulkCreateClient) Get(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateClientGetOptions) (BulkCreateClientGetResponse, error) {
 	var err error
-	const operationName = "LaunchBulkInstancesOperationClient.Get"
+	const operationName = "BulkCreateClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, location, name, options)
 	if err != nil {
-		return LaunchBulkInstancesOperationClientGetResponse{}, err
+		return BulkCreateClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return LaunchBulkInstancesOperationClientGetResponse{}, err
+		return BulkCreateClientGetResponse{}, err
 	}
 	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LaunchBulkInstancesOperationClient) getCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, _ *LaunchBulkInstancesOperationClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/launchBulkInstancesOperations/{name}"
+func (client *BulkCreateClient) getCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, _ *BulkCreateClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -327,50 +324,50 @@ func (client *LaunchBulkInstancesOperationClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20260906Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *LaunchBulkInstancesOperationClient) getHandleResponse(resp *http.Response, successCodes ...int) (LaunchBulkInstancesOperationClientGetResponse, error) {
-	result := LaunchBulkInstancesOperationClientGetResponse{}
+func (client *BulkCreateClient) getHandleResponse(resp *http.Response, successCodes ...int) (BulkCreateClientGetResponse, error) {
+	result := BulkCreateClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.LocationBasedLaunchBulkInstancesOperation); err != nil {
-		return LaunchBulkInstancesOperationClientGetResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.LocationBasedBulkCreate); err != nil {
+		return BulkCreateClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// GetOperationStatus - Get the status of a LaunchBulkInstancesOperation.
+// GetAsyncOperationStatus - Get the status of an async operation of a BulkCreate.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - location - The location name.
 //   - asyncOperationID - The async operation id.
-//   - options - LaunchBulkInstancesOperationClientGetOperationStatusOptions contains the optional parameters for the LaunchBulkInstancesOperationClient.GetOperationStatus
+//   - options - BulkCreateClientGetAsyncOperationStatusOptions contains the optional parameters for the BulkCreateClient.GetAsyncOperationStatus
 //     method.
-func (client *LaunchBulkInstancesOperationClient) GetOperationStatus(ctx context.Context, location string, asyncOperationID string, options *LaunchBulkInstancesOperationClientGetOperationStatusOptions) (LaunchBulkInstancesOperationClientGetOperationStatusResponse, error) {
+func (client *BulkCreateClient) GetAsyncOperationStatus(ctx context.Context, location string, asyncOperationID string, options *BulkCreateClientGetAsyncOperationStatusOptions) (BulkCreateClientGetAsyncOperationStatusResponse, error) {
 	var err error
-	const operationName = "LaunchBulkInstancesOperationClient.GetOperationStatus"
+	const operationName = "BulkCreateClient.GetAsyncOperationStatus"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getOperationStatusCreateRequest(ctx, location, asyncOperationID, options)
+	req, err := client.getAsyncOperationStatusCreateRequest(ctx, location, asyncOperationID, options)
 	if err != nil {
-		return LaunchBulkInstancesOperationClientGetOperationStatusResponse{}, err
+		return BulkCreateClientGetAsyncOperationStatusResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return LaunchBulkInstancesOperationClientGetOperationStatusResponse{}, err
+		return BulkCreateClientGetAsyncOperationStatusResponse{}, err
 	}
-	return client.getOperationStatusHandleResponse(httpResp, http.StatusOK)
+	return client.getAsyncOperationStatusHandleResponse(httpResp, http.StatusOK)
 }
 
-// getOperationStatusCreateRequest creates the GetOperationStatus request.
-func (client *LaunchBulkInstancesOperationClient) getOperationStatusCreateRequest(ctx context.Context, location string, asyncOperationID string, _ *LaunchBulkInstancesOperationClientGetOperationStatusOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/launchBulkInstancesOperations/asyncOperations/{asyncOperationId}"
+// getAsyncOperationStatusCreateRequest creates the GetAsyncOperationStatus request.
+func (client *BulkCreateClient) getAsyncOperationStatusCreateRequest(ctx context.Context, location string, asyncOperationID string, _ *BulkCreateClientGetAsyncOperationStatusOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/bulkCreate/asyncOperations/{asyncOperationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -388,47 +385,47 @@ func (client *LaunchBulkInstancesOperationClient) getOperationStatusCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260806Preview)
+	reqQP.Set("api-version", version20260906Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// getOperationStatusHandleResponse handles the GetOperationStatus response.
-func (client *LaunchBulkInstancesOperationClient) getOperationStatusHandleResponse(resp *http.Response, successCodes ...int) (LaunchBulkInstancesOperationClientGetOperationStatusResponse, error) {
-	result := LaunchBulkInstancesOperationClientGetOperationStatusResponse{}
+// getAsyncOperationStatusHandleResponse handles the GetAsyncOperationStatus response.
+func (client *BulkCreateClient) getAsyncOperationStatusHandleResponse(resp *http.Response, successCodes ...int) (BulkCreateClientGetAsyncOperationStatusResponse, error) {
+	result := BulkCreateClientGetAsyncOperationStatusResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatusResult); err != nil {
-		return LaunchBulkInstancesOperationClientGetOperationStatusResponse{}, err
+		return BulkCreateClientGetAsyncOperationStatusResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByResourceGroupPager - List LaunchBulkInstancesOperation resources by resource group.
+// NewListByResourceGroupPager - List BulkCreate resources by resource group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
-//   - options - LaunchBulkInstancesOperationClientListByResourceGroupOptions contains the optional parameters for the LaunchBulkInstancesOperationClient.NewListByResourceGroupPager
+//   - options - BulkCreateClientListByResourceGroupOptions contains the optional parameters for the BulkCreateClient.NewListByResourceGroupPager
 //     method.
-func (client *LaunchBulkInstancesOperationClient) NewListByResourceGroupPager(resourceGroupName string, location string, options *LaunchBulkInstancesOperationClientListByResourceGroupOptions) *runtime.Pager[LaunchBulkInstancesOperationClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[LaunchBulkInstancesOperationClientListByResourceGroupResponse]{
-		More: func(page LaunchBulkInstancesOperationClientListByResourceGroupResponse) bool {
+func (client *BulkCreateClient) NewListByResourceGroupPager(resourceGroupName string, location string, options *BulkCreateClientListByResourceGroupOptions) *runtime.Pager[BulkCreateClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[BulkCreateClientListByResourceGroupResponse]{
+		More: func(page BulkCreateClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *LaunchBulkInstancesOperationClientListByResourceGroupResponse) (LaunchBulkInstancesOperationClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LaunchBulkInstancesOperationClient.NewListByResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *BulkCreateClientListByResourceGroupResponse) (BulkCreateClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BulkCreateClient.NewListByResourceGroupPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, location, nextLink, options)
 			if err != nil {
-				return LaunchBulkInstancesOperationClientListByResourceGroupResponse{}, err
+				return BulkCreateClientListByResourceGroupResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return LaunchBulkInstancesOperationClientListByResourceGroupResponse{}, err
+				return BulkCreateClientListByResourceGroupResponse{}, err
 			}
 			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
@@ -437,12 +434,12 @@ func (client *LaunchBulkInstancesOperationClient) NewListByResourceGroupPager(re
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *LaunchBulkInstancesOperationClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, location string, nextLink string, _ *LaunchBulkInstancesOperationClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *BulkCreateClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, location string, nextLink string, _ *BulkCreateClientListByResourceGroupOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/launchBulkInstancesOperations"
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate"
 		if client.subscriptionID == "" {
 			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
@@ -464,7 +461,7 @@ func (client *LaunchBulkInstancesOperationClient) listByResourceGroupCreateReque
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260806Preview)
+		reqQP.Set("api-version", version20260906Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -472,39 +469,39 @@ func (client *LaunchBulkInstancesOperationClient) listByResourceGroupCreateReque
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *LaunchBulkInstancesOperationClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (LaunchBulkInstancesOperationClientListByResourceGroupResponse, error) {
-	result := LaunchBulkInstancesOperationClientListByResourceGroupResponse{}
+func (client *BulkCreateClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (BulkCreateClientListByResourceGroupResponse, error) {
+	result := BulkCreateClientListByResourceGroupResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.LaunchBulkInstancesOperationListResult); err != nil {
-		return LaunchBulkInstancesOperationClientListByResourceGroupResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.BulkCreateListResult); err != nil {
+		return BulkCreateClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListBySubscriptionPager - List LaunchBulkInstancesOperation resources by subscriptionId.
+// NewListBySubscriptionPager - List BulkCreate resources by subscriptionId.
 //   - location - The location name.
-//   - options - LaunchBulkInstancesOperationClientListBySubscriptionOptions contains the optional parameters for the LaunchBulkInstancesOperationClient.NewListBySubscriptionPager
+//   - options - BulkCreateClientListBySubscriptionOptions contains the optional parameters for the BulkCreateClient.NewListBySubscriptionPager
 //     method.
-func (client *LaunchBulkInstancesOperationClient) NewListBySubscriptionPager(location string, options *LaunchBulkInstancesOperationClientListBySubscriptionOptions) *runtime.Pager[LaunchBulkInstancesOperationClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[LaunchBulkInstancesOperationClientListBySubscriptionResponse]{
-		More: func(page LaunchBulkInstancesOperationClientListBySubscriptionResponse) bool {
+func (client *BulkCreateClient) NewListBySubscriptionPager(location string, options *BulkCreateClientListBySubscriptionOptions) *runtime.Pager[BulkCreateClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[BulkCreateClientListBySubscriptionResponse]{
+		More: func(page BulkCreateClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *LaunchBulkInstancesOperationClientListBySubscriptionResponse) (LaunchBulkInstancesOperationClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LaunchBulkInstancesOperationClient.NewListBySubscriptionPager")
+		Fetcher: func(ctx context.Context, page *BulkCreateClientListBySubscriptionResponse) (BulkCreateClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BulkCreateClient.NewListBySubscriptionPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listBySubscriptionCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
-				return LaunchBulkInstancesOperationClientListBySubscriptionResponse{}, err
+				return BulkCreateClientListBySubscriptionResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return LaunchBulkInstancesOperationClientListBySubscriptionResponse{}, err
+				return BulkCreateClientListBySubscriptionResponse{}, err
 			}
 			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
@@ -513,12 +510,12 @@ func (client *LaunchBulkInstancesOperationClient) NewListBySubscriptionPager(loc
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *LaunchBulkInstancesOperationClient) listBySubscriptionCreateRequest(ctx context.Context, location string, nextLink string, _ *LaunchBulkInstancesOperationClientListBySubscriptionOptions) (*policy.Request, error) {
+func (client *BulkCreateClient) listBySubscriptionCreateRequest(ctx context.Context, location string, nextLink string, _ *BulkCreateClientListBySubscriptionOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/launchBulkInstancesOperations"
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/bulkCreate"
 		if client.subscriptionID == "" {
 			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
@@ -536,7 +533,7 @@ func (client *LaunchBulkInstancesOperationClient) listBySubscriptionCreateReques
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260806Preview)
+		reqQP.Set("api-version", version20260906Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -544,55 +541,55 @@ func (client *LaunchBulkInstancesOperationClient) listBySubscriptionCreateReques
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *LaunchBulkInstancesOperationClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (LaunchBulkInstancesOperationClientListBySubscriptionResponse, error) {
-	result := LaunchBulkInstancesOperationClientListBySubscriptionResponse{}
+func (client *BulkCreateClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (BulkCreateClientListBySubscriptionResponse, error) {
+	result := BulkCreateClientListBySubscriptionResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.LaunchBulkInstancesOperationListResult); err != nil {
-		return LaunchBulkInstancesOperationClientListBySubscriptionResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.BulkCreateListResult); err != nil {
+		return BulkCreateClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListVirtualMachinesPager - List VirtualMachine resources of a LaunchBulkInstancesOperation.
+// NewVirtualMachinesGetOperationStatusPager - Gets the operation status for virtual machines in a BulkCreate operation.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
-//   - name - The name of the LaunchBulkInstancesOperation.
-//   - options - LaunchBulkInstancesOperationClientListVirtualMachinesOptions contains the optional parameters for the LaunchBulkInstancesOperationClient.NewListVirtualMachinesPager
+//   - name - The name of the BulkCreate. The value must be an UUID.
+//   - options - BulkCreateClientVirtualMachinesGetOperationStatusOptions contains the optional parameters for the BulkCreateClient.NewVirtualMachinesGetOperationStatusPager
 //     method.
-func (client *LaunchBulkInstancesOperationClient) NewListVirtualMachinesPager(resourceGroupName string, location string, name string, options *LaunchBulkInstancesOperationClientListVirtualMachinesOptions) *runtime.Pager[LaunchBulkInstancesOperationClientListVirtualMachinesResponse] {
-	return runtime.NewPager(runtime.PagingHandler[LaunchBulkInstancesOperationClientListVirtualMachinesResponse]{
-		More: func(page LaunchBulkInstancesOperationClientListVirtualMachinesResponse) bool {
+func (client *BulkCreateClient) NewVirtualMachinesGetOperationStatusPager(resourceGroupName string, location string, name string, options *BulkCreateClientVirtualMachinesGetOperationStatusOptions) *runtime.Pager[BulkCreateClientVirtualMachinesGetOperationStatusResponse] {
+	return runtime.NewPager(runtime.PagingHandler[BulkCreateClientVirtualMachinesGetOperationStatusResponse]{
+		More: func(page BulkCreateClientVirtualMachinesGetOperationStatusResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *LaunchBulkInstancesOperationClientListVirtualMachinesResponse) (LaunchBulkInstancesOperationClientListVirtualMachinesResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LaunchBulkInstancesOperationClient.NewListVirtualMachinesPager")
+		Fetcher: func(ctx context.Context, page *BulkCreateClientVirtualMachinesGetOperationStatusResponse) (BulkCreateClientVirtualMachinesGetOperationStatusResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BulkCreateClient.NewVirtualMachinesGetOperationStatusPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listVirtualMachinesCreateRequest(ctx, resourceGroupName, location, name, nextLink, options)
+			req, err := client.virtualMachinesGetOperationStatusCreateRequest(ctx, resourceGroupName, location, name, nextLink, options)
 			if err != nil {
-				return LaunchBulkInstancesOperationClientListVirtualMachinesResponse{}, err
+				return BulkCreateClientVirtualMachinesGetOperationStatusResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return LaunchBulkInstancesOperationClientListVirtualMachinesResponse{}, err
+				return BulkCreateClientVirtualMachinesGetOperationStatusResponse{}, err
 			}
-			return client.listVirtualMachinesHandleResponse(resp, http.StatusOK)
+			return client.virtualMachinesGetOperationStatusHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// listVirtualMachinesCreateRequest creates the ListVirtualMachines request.
-func (client *LaunchBulkInstancesOperationClient) listVirtualMachinesCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, nextLink string, options *LaunchBulkInstancesOperationClientListVirtualMachinesOptions) (*policy.Request, error) {
+// virtualMachinesGetOperationStatusCreateRequest creates the VirtualMachinesGetOperationStatus request.
+func (client *BulkCreateClient) virtualMachinesGetOperationStatusCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, nextLink string, _ *BulkCreateClientVirtualMachinesGetOperationStatusOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/launchBulkInstancesOperations/{name}/virtualMachines"
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}/virtualMachinesGetOperationStatus"
 		if client.subscriptionID == "" {
 			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
@@ -609,7 +606,7 @@ func (client *LaunchBulkInstancesOperationClient) listVirtualMachinesCreateReque
 			return nil, errors.New("parameter name cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
 		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
@@ -618,27 +615,21 @@ func (client *LaunchBulkInstancesOperationClient) listVirtualMachinesCreateReque
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Filter != nil {
-			reqQP.Set("$filter", *options.Filter)
-		}
-		if options != nil && options.Skiptoken != nil {
-			reqQP.Set("$skiptoken", *options.Skiptoken)
-		}
-		reqQP.Set("api-version", version20260806Preview)
+		reqQP.Set("api-version", version20260906Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
 	return req, nil
 }
 
-// listVirtualMachinesHandleResponse handles the ListVirtualMachines response.
-func (client *LaunchBulkInstancesOperationClient) listVirtualMachinesHandleResponse(resp *http.Response, successCodes ...int) (LaunchBulkInstancesOperationClientListVirtualMachinesResponse, error) {
-	result := LaunchBulkInstancesOperationClientListVirtualMachinesResponse{}
+// virtualMachinesGetOperationStatusHandleResponse handles the VirtualMachinesGetOperationStatus response.
+func (client *BulkCreateClient) virtualMachinesGetOperationStatusHandleResponse(resp *http.Response, successCodes ...int) (BulkCreateClientVirtualMachinesGetOperationStatusResponse, error) {
+	result := BulkCreateClientVirtualMachinesGetOperationStatusResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineListResult); err != nil {
-		return LaunchBulkInstancesOperationClientListVirtualMachinesResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.BulkCreateOperationStatusListResult); err != nil {
+		return BulkCreateClientVirtualMachinesGetOperationStatusResponse{}, err
 	}
 	return result, nil
 }

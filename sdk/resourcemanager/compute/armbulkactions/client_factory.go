@@ -32,17 +32,17 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-// NewBulkCreateCustomClient creates a new instance of BulkCreateCustomClient.
-func (c *ClientFactory) NewBulkCreateCustomClient() *BulkCreateCustomClient {
-	return &BulkCreateCustomClient{
+// NewBulkCreateClient creates a new instance of BulkCreateClient.
+func (c *ClientFactory) NewBulkCreateClient() *BulkCreateClient {
+	return &BulkCreateClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
 }
 
-// NewLaunchBulkInstancesOperationClient creates a new instance of LaunchBulkInstancesOperationClient.
-func (c *ClientFactory) NewLaunchBulkInstancesOperationClient() *LaunchBulkInstancesOperationClient {
-	return &LaunchBulkInstancesOperationClient{
+// NewBulkCreateCustomClient creates a new instance of BulkCreateCustomClient.
+func (c *ClientFactory) NewBulkCreateCustomClient() *BulkCreateCustomClient {
+	return &BulkCreateCustomClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

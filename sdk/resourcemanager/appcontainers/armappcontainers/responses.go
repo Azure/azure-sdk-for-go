@@ -978,7 +978,8 @@ type SandboxGroupsClientListBySubscriptionResponse struct {
 
 // SandboxGroupsClientUpdateResponse contains the response from method SandboxGroupsClient.BeginUpdate.
 type SandboxGroupsClientUpdateResponse struct {
-	// placeholder for future response values
+	// A SandboxGroup resource, representing a group of sandboxes that share configuration defaults and quotas.
+	SandboxGroup
 }
 
 // UsagesClientListResponse contains the response from method UsagesClient.NewListPager.

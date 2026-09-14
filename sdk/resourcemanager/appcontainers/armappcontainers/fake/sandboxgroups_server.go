@@ -42,7 +42,7 @@ type SandboxGroupsServer struct {
 	NewListBySubscriptionPager func(options *armappcontainers.SandboxGroupsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armappcontainers.SandboxGroupsClientListBySubscriptionResponse])
 
 	// BeginUpdate is the fake for method SandboxGroupsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, sandboxGroupName string, properties armappcontainers.SandboxGroupPatch, options *armappcontainers.SandboxGroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armappcontainers.SandboxGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
@@ -352,9 +352,9 @@ func (s *SandboxGroupsServerTransport) dispatchBeginUpdate(req *http.Request) (*
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginUpdate) {
 		s.beginUpdate.remove(req)

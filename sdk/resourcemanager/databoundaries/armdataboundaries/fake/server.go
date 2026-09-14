@@ -99,10 +99,7 @@ func (s *ServerTransport) dispatchGetScope(req *http.Request) (*http.Response, e
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	defaultParamParam, err := parseWithCast(matches[regex.SubexpIndex("default")], func(v string) (armdataboundaries.DefaultName, error) {
 		p, unescapeErr := url.PathUnescape(v)
 		if unescapeErr != nil {

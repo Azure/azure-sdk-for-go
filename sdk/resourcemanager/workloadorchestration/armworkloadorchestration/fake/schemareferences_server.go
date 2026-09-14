@@ -126,10 +126,7 @@ func (s *SchemaReferencesServerTransport) dispatchBeginCreateOrUpdate(req *http.
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		schemaReferenceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schemaReferenceName")])
 		if err != nil {
 			return nil, err
@@ -170,10 +167,7 @@ func (s *SchemaReferencesServerTransport) dispatchBeginDelete(req *http.Request)
 		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		schemaReferenceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schemaReferenceName")])
 		if err != nil {
 			return nil, err
@@ -212,10 +206,7 @@ func (s *SchemaReferencesServerTransport) dispatchGet(req *http.Request) (*http.
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	schemaReferenceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schemaReferenceName")])
 	if err != nil {
 		return nil, err
@@ -247,10 +238,7 @@ func (s *SchemaReferencesServerTransport) dispatchNewListByResourceGroupPager(re
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		resp := s.srv.NewListByResourceGroupPager(resourceURIParam, nil)
 		newListByResourceGroupPager = &resp
 		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
@@ -286,10 +274,7 @@ func (s *SchemaReferencesServerTransport) dispatchUpdate(req *http.Request) (*ht
 	if err != nil {
 		return nil, err
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	schemaReferenceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schemaReferenceName")])
 	if err != nil {
 		return nil, err

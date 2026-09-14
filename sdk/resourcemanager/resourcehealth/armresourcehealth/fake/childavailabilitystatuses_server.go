@@ -14,7 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth"
 	"net/http"
-	"net/url"
 	"regexp"
 	"slices"
 )
@@ -99,10 +98,7 @@ func (c *ChildAvailabilityStatusesServerTransport) dispatchGetByResource(req *ht
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	filterParam := getOptional(qp.Get("$filter"))
 	expandParam := getOptional(qp.Get("$expand"))
 	var options *armresourcehealth.ChildAvailabilityStatusesClientGetByResourceOptions
@@ -140,10 +136,7 @@ func (c *ChildAvailabilityStatusesServerTransport) dispatchNewListPager(req *htt
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		filterParam := getOptional(qp.Get("$filter"))
 		expandParam := getOptional(qp.Get("$expand"))
 		var options *armresourcehealth.ChildAvailabilityStatusesClientListOptions

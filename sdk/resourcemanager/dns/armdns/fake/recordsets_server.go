@@ -145,10 +145,7 @@ func (r *RecordSetsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*
 	if err != nil {
 		return nil, err
 	}
-	relativeRecordSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("relativeRecordSetName")])
-	if err != nil {
-		return nil, err
-	}
+	relativeRecordSetNameParam := matches[regex.SubexpIndex("relativeRecordSetName")]
 	recordTypeParam, err := parseWithCast(matches[regex.SubexpIndex("recordType")], func(v string) (armdns.RecordType, error) {
 		p, unescapeErr := url.PathUnescape(v)
 		if unescapeErr != nil {
@@ -204,10 +201,7 @@ func (r *RecordSetsServerTransport) dispatchDelete(req *http.Request) (*http.Res
 	if err != nil {
 		return nil, err
 	}
-	relativeRecordSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("relativeRecordSetName")])
-	if err != nil {
-		return nil, err
-	}
+	relativeRecordSetNameParam := matches[regex.SubexpIndex("relativeRecordSetName")]
 	recordTypeParam, err := parseWithCast(matches[regex.SubexpIndex("recordType")], func(v string) (armdns.RecordType, error) {
 		p, unescapeErr := url.PathUnescape(v)
 		if unescapeErr != nil {
@@ -258,10 +252,7 @@ func (r *RecordSetsServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	if err != nil {
 		return nil, err
 	}
-	relativeRecordSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("relativeRecordSetName")])
-	if err != nil {
-		return nil, err
-	}
+	relativeRecordSetNameParam := matches[regex.SubexpIndex("relativeRecordSetName")]
 	recordTypeParam, err := parseWithCast(matches[regex.SubexpIndex("recordType")], func(v string) (armdns.RecordType, error) {
 		p, unescapeErr := url.PathUnescape(v)
 		if unescapeErr != nil {
@@ -499,10 +490,7 @@ func (r *RecordSetsServerTransport) dispatchUpdate(req *http.Request) (*http.Res
 	if err != nil {
 		return nil, err
 	}
-	relativeRecordSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("relativeRecordSetName")])
-	if err != nil {
-		return nil, err
-	}
+	relativeRecordSetNameParam := matches[regex.SubexpIndex("relativeRecordSetName")]
 	recordTypeParam, err := parseWithCast(matches[regex.SubexpIndex("recordType")], func(v string) (armdns.RecordType, error) {
 		p, unescapeErr := url.PathUnescape(v)
 		if unescapeErr != nil {

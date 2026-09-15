@@ -144,10 +144,7 @@ func (e *ExemptionsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*
 	if err != nil {
 		return nil, err
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	policyExemptionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyExemptionName")])
 	if err != nil {
 		return nil, err
@@ -177,10 +174,7 @@ func (e *ExemptionsServerTransport) dispatchDelete(req *http.Request) (*http.Res
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	policyExemptionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyExemptionName")])
 	if err != nil {
 		return nil, err
@@ -210,10 +204,7 @@ func (e *ExemptionsServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	policyExemptionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyExemptionName")])
 	if err != nil {
 		return nil, err
@@ -340,14 +331,8 @@ func (e *ExemptionsServerTransport) dispatchNewListForResourcePager(req *http.Re
 		if err != nil {
 			return nil, err
 		}
-		parentResourcePathParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResourcePath")])
-		if err != nil {
-			return nil, err
-		}
-		resourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceType")])
-		if err != nil {
-			return nil, err
-		}
+		parentResourcePathParam := matches[regex.SubexpIndex("parentResourcePath")]
+		resourceTypeParam := matches[regex.SubexpIndex("resourceType")]
 		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
 		if err != nil {
 			return nil, err
@@ -439,10 +424,7 @@ func (e *ExemptionsServerTransport) dispatchUpdate(req *http.Request) (*http.Res
 	if err != nil {
 		return nil, err
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	policyExemptionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyExemptionName")])
 	if err != nil {
 		return nil, err

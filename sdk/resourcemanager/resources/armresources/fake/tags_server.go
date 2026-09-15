@@ -181,10 +181,7 @@ func (t *TagsServerTransport) dispatchBeginCreateOrUpdateAtScope(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		respr, errRespr := t.srv.BeginCreateOrUpdateAtScope(req.Context(), scopeParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
@@ -283,10 +280,7 @@ func (t *TagsServerTransport) dispatchBeginDeleteAtScope(req *http.Request) (*ht
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		respr, errRespr := t.srv.BeginDeleteAtScope(req.Context(), scopeParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
@@ -354,10 +348,7 @@ func (t *TagsServerTransport) dispatchGetAtScope(req *http.Request) (*http.Respo
 	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	respr, errRespr := t.srv.GetAtScope(req.Context(), scopeParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
@@ -422,10 +413,7 @@ func (t *TagsServerTransport) dispatchBeginUpdateAtScope(req *http.Request) (*ht
 		if err != nil {
 			return nil, err
 		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		respr, errRespr := t.srv.BeginUpdateAtScope(req.Context(), scopeParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr

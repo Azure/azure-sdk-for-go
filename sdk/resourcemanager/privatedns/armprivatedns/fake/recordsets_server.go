@@ -147,10 +147,7 @@ func (r *RecordSetsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*
 	if err != nil {
 		return nil, err
 	}
-	relativeRecordSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("relativeRecordSetName")])
-	if err != nil {
-		return nil, err
-	}
+	relativeRecordSetNameParam := matches[regex.SubexpIndex("relativeRecordSetName")]
 	ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
 	ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
 	var options *armprivatedns.RecordSetsClientCreateOrUpdateOptions
@@ -203,10 +200,7 @@ func (r *RecordSetsServerTransport) dispatchDelete(req *http.Request) (*http.Res
 	if err != nil {
 		return nil, err
 	}
-	relativeRecordSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("relativeRecordSetName")])
-	if err != nil {
-		return nil, err
-	}
+	relativeRecordSetNameParam := matches[regex.SubexpIndex("relativeRecordSetName")]
 	ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
 	var options *armprivatedns.RecordSetsClientDeleteOptions
 	if ifMatchParam != nil {
@@ -257,10 +251,7 @@ func (r *RecordSetsServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	if err != nil {
 		return nil, err
 	}
-	relativeRecordSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("relativeRecordSetName")])
-	if err != nil {
-		return nil, err
-	}
+	relativeRecordSetNameParam := matches[regex.SubexpIndex("relativeRecordSetName")]
 	respr, errRespr := r.srv.Get(req.Context(), resourceGroupNameParam, privateZoneNameParam, recordTypeParam, relativeRecordSetNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
@@ -438,10 +429,7 @@ func (r *RecordSetsServerTransport) dispatchUpdate(req *http.Request) (*http.Res
 	if err != nil {
 		return nil, err
 	}
-	relativeRecordSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("relativeRecordSetName")])
-	if err != nil {
-		return nil, err
-	}
+	relativeRecordSetNameParam := matches[regex.SubexpIndex("relativeRecordSetName")]
 	ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
 	var options *armprivatedns.RecordSetsClientUpdateOptions
 	if ifMatchParam != nil {

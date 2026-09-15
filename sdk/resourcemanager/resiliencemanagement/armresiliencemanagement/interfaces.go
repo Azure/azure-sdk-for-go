@@ -43,8 +43,10 @@ type RecoveryGroupBaseActionClassification interface {
 // ResourceBaseProtectionSolutionSettingClassification provides polymorphic access to related types.
 // Call the interface's GetResourceBaseProtectionSolutionSetting() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *ResourceBaseProtectionSolutionSetting, *ResourceCrossZoneVMRecoveryProtectionSetting, *ResourceCustomProtectionSetting,
-// - *ResourceNativeProtectionSolutionSetting, *ResourceSiteRecoveryProtectionSetting
+// - *ResourceAzureTemplateProtectionSetting, *ResourceBaseProtectionSolutionSetting, *ResourceCosmosDBProtectionSetting,
+// - *ResourceCrossZoneVMRecoveryProtectionSetting, *ResourceCustomProtectionSetting, *ResourceNativeProtectionSolutionSetting,
+// - *ResourceNetAppFilesProtectionSetting, *ResourceServiceBusProtectionSetting, *ResourceSiteRecoveryProtectionSetting,
+// - *ResourceStorageAccountProtectionSetting
 type ResourceBaseProtectionSolutionSettingClassification interface {
 	// GetResourceBaseProtectionSolutionSetting returns the ResourceBaseProtectionSolutionSetting content of the underlying type.
 	GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting

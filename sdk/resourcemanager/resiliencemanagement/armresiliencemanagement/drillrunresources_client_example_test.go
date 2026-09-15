@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-31-preview/DrillRunResources_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/DrillRunResources_Get_MaximumSet_Gen.json
 func ExampleDrillRunResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExampleDrillRunResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/DrillRunResources_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/DrillRunResources_List_MaximumSet_Gen.json
 func ExampleDrillRunResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,7 +302,7 @@ func ExampleDrillRunResourcesClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/drills/drill1/drillRuns/ca92602e-53bf-43d2-ae62-d3fc940474b3/drillRunResources?api-version=2026-09-30-preview&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
 		// 	},
 		// }
 	}

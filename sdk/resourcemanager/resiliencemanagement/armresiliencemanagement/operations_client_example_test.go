@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-31-preview/Operations_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/Operations_List_MaximumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,13 +49,13 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSet() {
 		// 				ActionType: to.Ptr(armresiliencemanagement.ActionTypeInternal),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/am"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.AzureResilienceManagement/operations?api-version=2026-09-30-preview&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-08-31-preview/Operations_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/Operations_List_MinimumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

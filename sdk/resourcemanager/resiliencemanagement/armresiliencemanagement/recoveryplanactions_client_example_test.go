@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_CheckReadiness_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryPlanActions_CheckReadiness_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginCheckReadiness() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleRecoveryPlanActionsClient_BeginCheckReadiness() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_Failover_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryPlanActions_Failover_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleRecoveryPlanActionsClient_BeginFailover() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_FailoverCommit_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryPlanActions_FailoverCommit_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginFailoverCommit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleRecoveryPlanActionsClient_BeginFailoverCommit() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_Finalize_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryPlanActions_Finalize_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginFinalize() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleRecoveryPlanActionsClient_BeginFinalize() {
 	}
 }
 
-// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_Reprotect_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryPlanActions_Reprotect_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginReprotect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleRecoveryPlanActionsClient_BeginReprotect() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_TestFailover_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryPlanActions_TestFailover_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginTestFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleRecoveryPlanActionsClient_BeginTestFailover() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_TestFailoverCleanup_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryPlanActions_TestFailoverCleanup_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginTestFailoverCleanup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +239,7 @@ func ExampleRecoveryPlanActionsClient_BeginTestFailoverCleanup() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_UpdateResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryPlanActions_UpdateResources_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginUpdateResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -368,7 +368,7 @@ func ExampleRecoveryPlanActionsClient_BeginUpdateResources() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_ValidateForFailover_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryPlanActions_ValidateForFailover_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginValidateForFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -514,7 +514,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForFailover() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_ValidateForFailoverCommit_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryPlanActions_ValidateForFailoverCommit_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginValidateForFailoverCommit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -628,7 +628,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForFailoverCommit() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_ValidateForOperation_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryPlanActions_ValidateForOperation_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginValidateForOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -651,7 +651,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForOperation() {
 	}
 }
 
-// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_ValidateForReprotect_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryPlanActions_ValidateForReprotect_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginValidateForReprotect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -772,7 +772,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForReprotect() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_ValidateForTestFailover_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryPlanActions_ValidateForTestFailover_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginValidateForTestFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -893,7 +893,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForTestFailover() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_ValidateForTestFailoverCleanup_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryPlanActions_ValidateForTestFailoverCleanup_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginValidateForTestFailoverCleanup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

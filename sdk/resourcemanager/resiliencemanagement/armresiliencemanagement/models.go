@@ -66,6 +66,9 @@ type AttentionReason struct {
 	// Drill object does not have the necessary RBAC to run the chaos resource.
 	DrillRbacOnChaosResource *RBACState
 
+	// Drill object does not have the necessary RBAC on Goal Assignment.
+	DrillRbacOnGoalAssignment *RBACState
+
 	// Whether the Drill identity has the necessary RBAC (Reader) to read the selected Azure Health Model.
 	DrillRbacOnHealthModel *RBACState
 
@@ -80,6 +83,9 @@ type AttentionReason struct {
 
 	// User MSI associated with Drill object is deleted.
 	DrillUserMsi *ExtensionObjectState
+
+	// Goal Assignment not present.
+	GoalAssignment *ExtensionObjectState
 
 	// Whether the selected Azure Health Model still exists.
 	HealthModelExists *ExtensionObjectState
@@ -106,6 +112,9 @@ type AttentionReason struct {
 	// Permissions needed by the Drill MSI to read health metrics data for resources in service group.
 	RbacNeededForDrillOnDrillResources []*string
 
+	// Permissions needed by the Drill MSI on Goal Assignment.
+	RbacNeededForDrillOnGoalAssignment []*string
+
 	// Permissions needed by the Drill identity to read the selected Azure Health Model.
 	RbacNeededForDrillOnHealthModel []*string
 
@@ -114,6 +123,9 @@ type AttentionReason struct {
 
 	// RBAC required by Chaos Resource MSI not setup on the target resources.
 	RbacOnTargetResources *RBACState
+
+	// Recovery plan not present.
+	RecoveryPlan *ExtensionObjectState
 
 	// Resources associated in Recovery Plan and Drill are out of sync.
 	RecoveryPlanAndDrillResourcesState *RelativeResourceCompositionState
@@ -216,6 +228,9 @@ type DrillProperties struct {
 
 	// Properties for internal resources that are created for the Drill.
 	DrillAssetProperties *AssetPropertiesOfDrill
+
+	// Goal Assignment properties.
+	GoalAssignmentProperties *GoalAssignmentPropertiesOfDrill
 
 	// Azure Health Model monitoring properties of the Drill.
 	HealthModelMonitoringProperties *HealthModelMonitoringProperties
@@ -488,6 +503,9 @@ type DrillRunProperties struct {
 	// READ-ONLY; The operation that this job is intended to perform.
 	Operation *string
 
+	// READ-ONLY; Recovery time objective for the drill run.
+	RecoveryTimeObjective *IsoDuration
+
 	// READ-ONLY; Summary of report generation for this Drill Run.
 	Report *DrillReportSummary
 
@@ -654,6 +672,9 @@ type DrillUpdateProperties struct {
 
 	// Properties for internal resources that are created for the Drill.
 	DrillAssetProperties *AssetPropertiesOfDrill
+
+	// Goal Assignment properties.
+	GoalAssignmentProperties *GoalAssignmentPropertiesOfDrill
 
 	// Azure Health Model monitoring properties of the Drill. Send null to clear the selection.
 	HealthModelMonitoringProperties *HealthModelMonitoringProperties
@@ -842,14 +863,14 @@ type GoalAssignmentListResult struct {
 
 // GoalAssignmentProperties - Definition of goal assignment property.
 type GoalAssignmentProperties struct {
-	// The type of goal assignment.
-	GoalAssignmentType *GoalAssignmentType
-
-	// Arm id of the goal template.
-	GoalTemplateID *string
-
-	// Whether zonal resiliency is required for this goal assignment.
+	// REQUIRED; Whether zonal resiliency is required for this goal assignment.
 	RequireZonalResiliency *bool
+
+	// Recovery objectives targeted for regional resiliency.
+	RegionalObjectives *RegionalObjectives
+
+	// Whether regional resiliency is required for this goal assignment.
+	RequireRegionalResiliency *bool
 
 	// List of service level resources.
 	ServiceLevelResources []*ServiceLevelResource
@@ -859,6 +880,15 @@ type GoalAssignmentProperties struct {
 
 	// READ-ONLY; Provisioning state
 	ProvisioningState *ProvisioningState
+}
+
+// GoalAssignmentPropertiesOfDrill - Goal assignment properties.
+type GoalAssignmentPropertiesOfDrill struct {
+	// REQUIRED; Identity to use for goal assignment operations.
+	Identity *AssociatedIdentity
+
+	// READ-ONLY; Goal assignment id.
+	GoalAssignmentID *string
 }
 
 // GoalResource - Goal Resource a AzureResilienceProviderHub resource
@@ -893,83 +923,11 @@ type GoalResourceProperties struct {
 	// REQUIRED; Arm Id of resource under the SG for which the extension resource is maintained.
 	ResourceArmID *string
 
-	// Flag which depicts whether the Arm resource is manually attested for disaster recovery recommendation.
-	DisasterRecoveryAttestationStatus *AttestationState
-
-	// Flag which depicts whether the Arm resource is excluded for disaster recovery recommendation.
-	DisasterRecoveryGoalParticipation *ExclusionState
-
-	// Flag which depicts whether the Arm resource is manually attested for high availability recommendation.
-	HighAvailabilityAttestationStatus *AttestationState
-
-	// Flag which depicts whether the Arm resource is excluded for high availability recommendation.
-	HighAvailabilityGoalParticipation *ExclusionState
-
-	// List of user confirmations for high availability solutions.
-	UserConfirmationForHighAvailability []*UserConfirmationItem
+	// Regional resiliency posture (participation, attestation, exclusion reason, and user confirmations) for the Azure resource.
+	RegionalResiliency *ResiliencyProperties
 
 	// Zonal resiliency posture (participation, attestation, exclusion reason, and user confirmations) for the Arm resource.
 	ZonalResiliency *ResiliencyProperties
-
-	// READ-ONLY; Reason for exclusion from disaster recovery goals.
-	ExclusionReasonForDisasterRecoveryGoals *ExclusionReason
-
-	// READ-ONLY; Reason for exclusion from high availability goals.
-	ExclusionReasonForHighAvailabilityGoals *ExclusionReason
-
-	// READ-ONLY; Provisioning state
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; List of service groups of which this resource is memberof.
-	ServiceGroupMemberships []*ServiceGroupMembership
-}
-
-// GoalTemplate - Goal template a AzureResilienceProviderHub resource
-type GoalTemplate struct {
-	// The resource-specific properties for this resource.
-	Properties *GoalTemplateProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// GoalTemplateListResult - The response of a GoalTemplate list operation.
-type GoalTemplateListResult struct {
-	// REQUIRED; The GoalTemplate items on this page
-	Value []*GoalTemplate
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// GoalTemplateProperties - Definition of goal template property.
-type GoalTemplateProperties struct {
-	// REQUIRED; Type of Goal Template created by customer
-	GoalType *GoalType
-
-	// Regional recovery point objective specified by customer. eg, PT15M for 15 minutes
-	RegionalRecoveryPointObjective *string
-
-	// Regional recovery time objective specified by customer. eg, PT15M for 15 minutes
-	RegionalRecoveryTimeObjective *string
-
-	// Option specified by customer under disaster recovery section of goal template
-	RequireDisasterRecovery *RequirementSelected
-
-	// Option specified by customer under high availability section of goal template
-	RequireHighAvailability *RequirementSelected
-
-	// READ-ONLY; Details of any errors encountered during the operation.
-	ErrorDetails *ErrorDetail
 
 	// READ-ONLY; Provisioning state
 	ProvisioningState *ProvisioningState
@@ -1224,6 +1182,9 @@ type LastRunProperties struct {
 
 	// READ-ONLY; Timespan of the last run of this Drill.
 	LastRunDuration *string
+
+	// READ-ONLY; Actual recovery time of the last run of this Drill.
+	LastRunRecoveryTimeActual *string
 
 	// READ-ONLY; Status of the last run of this Drill.
 	LastRunState *JobStatus
@@ -1916,6 +1877,9 @@ type RecoveryResourceProperties struct {
 	// READ-ONLY; Error details associated with the resource.
 	ErrorDetails *ErrorDetail
 
+	// READ-ONLY; Reasons why inclusion of the resource in a recovery plan is disabled.
+	InclusionDisabledReasons []*ResourceInclusionDisabledReason
+
 	// READ-ONLY; Indicating if resource needs user attention and action, details will be found in attentionReasons
 	NeedsAttention *bool
 
@@ -1961,6 +1925,9 @@ type RegionalDrillProperties struct {
 
 	// Properties for internal resources that are created for the Drill.
 	DrillAssetProperties *AssetPropertiesOfDrill
+
+	// Goal Assignment properties.
+	GoalAssignmentProperties *GoalAssignmentPropertiesOfDrill
 
 	// Azure Health Model monitoring properties of the Drill.
 	HealthModelMonitoringProperties *HealthModelMonitoringProperties
@@ -2018,6 +1985,7 @@ func (r *RegionalDrillProperties) GetDrillProperties() *DrillProperties {
 		ErrorDetails:                    r.ErrorDetails,
 		ExecutionReadinessState:         r.ExecutionReadinessState,
 		ExecutionState:                  r.ExecutionState,
+		GoalAssignmentProperties:        r.GoalAssignmentProperties,
 		HealthModelMonitoringProperties: r.HealthModelMonitoringProperties,
 		LastResyncReadinessCheckTime:    r.LastResyncReadinessCheckTime,
 		LastRunProperties:               r.LastRunProperties,
@@ -2030,6 +1998,15 @@ func (r *RegionalDrillProperties) GetDrillProperties() *DrillProperties {
 		SliMonitoringProperties:         r.SliMonitoringProperties,
 		SystemMetadata:                  r.SystemMetadata,
 	}
+}
+
+// RegionalObjectives - Recovery objectives targeted by a goal assignment for regional resiliency.
+type RegionalObjectives struct {
+	// REQUIRED; Target regional recovery point objective. eg, PT15M for 15 minutes.
+	TargetRecoveryPointObjective *IsoDuration
+
+	// REQUIRED; Target regional recovery time objective. eg, PT1H for 1 hour.
+	TargetRecoveryTimeObjective *IsoDuration
 }
 
 // ReportStageStatus - Report generation status for a single Drill Run stage.
@@ -2074,6 +2051,33 @@ type ResiliencyProperties struct {
 	ExclusionReason *ExclusionReason
 }
 
+// ResourceAzureTemplateProtectionSetting - Definition of recovery orchestration resource protection using an Azure Resource
+// Manager template.
+type ResourceAzureTemplateProtectionSetting struct {
+	// REQUIRED; The Azure Resource Manager scope at which the recovery template is deployed. Must be the
+	// subscription containing the protected resource, or a resource group within it; deployments
+	// above subscription scope are not supported.
+	DeploymentScope *string
+
+	// CONSTANT; A setting that indicates Azure Resource Manager template-based recovery.
+	// Field has constant value ResourceProtectionSolutionTypeAzureTemplate, any specified value is ignored.
+	ProtectionSolutionType *ResourceProtectionSolutionType
+
+	// REQUIRED; The Azure resource ID of the Template Spec version to deploy.
+	TemplateSpecVersionID *string
+
+	// The location used to store deployment metadata. Required when deploymentScope is a subscription.
+	DeploymentLocation *string
+}
+
+// GetResourceBaseProtectionSolutionSetting implements the ResourceBaseProtectionSolutionSettingClassification interface for
+// type ResourceAzureTemplateProtectionSetting.
+func (r *ResourceAzureTemplateProtectionSetting) GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting {
+	return &ResourceBaseProtectionSolutionSetting{
+		ProtectionSolutionType: r.ProtectionSolutionType,
+	}
+}
+
 // ResourceBaseProtectionSolutionSetting - Definition of recovery orchestration resource protection solution setting with
 // recovery orchestration plan.
 type ResourceBaseProtectionSolutionSetting struct {
@@ -2085,6 +2089,21 @@ type ResourceBaseProtectionSolutionSetting struct {
 // type ResourceBaseProtectionSolutionSetting.
 func (r *ResourceBaseProtectionSolutionSetting) GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting {
 	return r
+}
+
+// ResourceCosmosDBProtectionSetting - Definition of recovery orchestration resource protection using Azure Cosmos DB.
+type ResourceCosmosDBProtectionSetting struct {
+	// CONSTANT; A setting that indicates Azure Cosmos DB protection.
+	// Field has constant value ResourceProtectionSolutionTypeAzureCosmosDB, any specified value is ignored.
+	ProtectionSolutionType *ResourceProtectionSolutionType
+}
+
+// GetResourceBaseProtectionSolutionSetting implements the ResourceBaseProtectionSolutionSettingClassification interface for
+// type ResourceCosmosDBProtectionSetting.
+func (r *ResourceCosmosDBProtectionSetting) GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting {
+	return &ResourceBaseProtectionSolutionSetting{
+		ProtectionSolutionType: r.ProtectionSolutionType,
+	}
 }
 
 // ResourceCrossZoneVMRecoveryProtectionSetting - Definition of recovery orchestration resource protection with cross-zone
@@ -2196,8 +2215,26 @@ func (r *ResourceNativeProtectionSolutionSetting) GetResourceBaseProtectionSolut
 	}
 }
 
+// ResourceNetAppFilesProtectionSetting - Definition of recovery orchestration resource protection using Azure NetApp Files.
+type ResourceNetAppFilesProtectionSetting struct {
+	// CONSTANT; A setting that indicates Azure NetApp Files protection.
+	// Field has constant value ResourceProtectionSolutionTypeAzureNetAppFiles, any specified value is ignored.
+	ProtectionSolutionType *ResourceProtectionSolutionType
+}
+
+// GetResourceBaseProtectionSolutionSetting implements the ResourceBaseProtectionSolutionSettingClassification interface for
+// type ResourceNetAppFilesProtectionSetting.
+func (r *ResourceNetAppFilesProtectionSetting) GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting {
+	return &ResourceBaseProtectionSolutionSetting{
+		ProtectionSolutionType: r.ProtectionSolutionType,
+	}
+}
+
 // ResourceProtectionSolutionSettings - Definition of recovery resource resource protection solution settings.
 type ResourceProtectionSolutionSettings struct {
+	// Replication mode configured for the protected resource.
+	ReplicationMode *ReplicationMode
+
 	// READ-ONLY; Is AutoFailover configured for the resource replication.
 	IsAutoFailover *bool
 
@@ -2242,6 +2279,21 @@ type ResourceProtectionSolutionSettings struct {
 	TestFailoverState *TestFailoverState
 }
 
+// ResourceServiceBusProtectionSetting - Definition of recovery orchestration resource protection using Azure Service Bus.
+type ResourceServiceBusProtectionSetting struct {
+	// CONSTANT; A setting that indicates Azure Service Bus protection.
+	// Field has constant value ResourceProtectionSolutionTypeAzureServiceBus, any specified value is ignored.
+	ProtectionSolutionType *ResourceProtectionSolutionType
+}
+
+// GetResourceBaseProtectionSolutionSetting implements the ResourceBaseProtectionSolutionSettingClassification interface for
+// type ResourceServiceBusProtectionSetting.
+func (r *ResourceServiceBusProtectionSetting) GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting {
+	return &ResourceBaseProtectionSolutionSetting{
+		ProtectionSolutionType: r.ProtectionSolutionType,
+	}
+}
+
 // ResourceSiteRecoveryProtectionSetting - Definition of recovery orchestration resource protection with azure site recovery.
 type ResourceSiteRecoveryProtectionSetting struct {
 	// CONSTANT; Field has constant value ResourceProtectionSolutionTypeAzureSiteRecovery, any specified value is ignored.
@@ -2283,6 +2335,22 @@ type ResourceSiteRecoveryTestFailoverParams struct {
 	NetworkResourceID *string
 }
 
+// ResourceStorageAccountProtectionSetting - Definition of recovery orchestration resource protection using an Azure Storage
+// account.
+type ResourceStorageAccountProtectionSetting struct {
+	// CONSTANT; A setting that indicates Azure Storage account protection.
+	// Field has constant value ResourceProtectionSolutionTypeAzureStorageAccount, any specified value is ignored.
+	ProtectionSolutionType *ResourceProtectionSolutionType
+}
+
+// GetResourceBaseProtectionSolutionSetting implements the ResourceBaseProtectionSolutionSettingClassification interface for
+// type ResourceStorageAccountProtectionSetting.
+func (r *ResourceStorageAccountProtectionSetting) GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting {
+	return &ResourceBaseProtectionSolutionSetting{
+		ProtectionSolutionType: r.ProtectionSolutionType,
+	}
+}
+
 // SKUDetails - SKU details for a resource feasibility review, used for both the current target SKU and the recommended alternate
 // SKUs.
 type SKUDetails struct {
@@ -2305,22 +2373,10 @@ type SKUDetails struct {
 	VCPU *int32
 }
 
-// ServiceGroupMembership - Model for service group membership.
-type ServiceGroupMembership struct {
-	// REQUIRED; Membership type of the service group to resource.
-	MembershipType *MembershipType
-
-	// REQUIRED; Arm Id of the service group.
-	ServiceGroupID *string
-}
-
 // ServiceLevelResource - The Service level resource model
 type ServiceLevelResource struct {
 	// REQUIRED; The arm id of the service level indicator resource
 	ServiceLevelIndicatorResourceID *string
-
-	// The arm id of the service level object resource
-	ServiceLevelObjectiveResourceID *string
 }
 
 // SliAttentionStatus - Per-SLI attention status of a Drill.
@@ -2587,6 +2643,9 @@ type ZonalDrillProperties struct {
 	// Properties for internal resources that are created for the Drill.
 	DrillAssetProperties *AssetPropertiesOfDrill
 
+	// Goal Assignment properties.
+	GoalAssignmentProperties *GoalAssignmentPropertiesOfDrill
+
 	// Azure Health Model monitoring properties of the Drill.
 	HealthModelMonitoringProperties *HealthModelMonitoringProperties
 
@@ -2646,6 +2705,7 @@ func (z *ZonalDrillProperties) GetDrillProperties() *DrillProperties {
 		ErrorDetails:                    z.ErrorDetails,
 		ExecutionReadinessState:         z.ExecutionReadinessState,
 		ExecutionState:                  z.ExecutionState,
+		GoalAssignmentProperties:        z.GoalAssignmentProperties,
 		HealthModelMonitoringProperties: z.HealthModelMonitoringProperties,
 		LastResyncReadinessCheckTime:    z.LastResyncReadinessCheckTime,
 		LastRunProperties:               z.LastRunProperties,

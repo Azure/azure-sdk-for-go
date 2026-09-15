@@ -19,7 +19,7 @@ import (
 // DrillRunsClient contains the methods for the DrillRuns group.
 // Don't use this type directly, use NewDrillRunsClient() instead.
 //
-// Generated from API version 2026-08-31-preview
+// Generated from API version 2026-09-30-preview
 type DrillRunsClient struct {
 	internal *arm.Client
 }
@@ -105,7 +105,7 @@ func (client *DrillRunsClient) addNotesCreateRequest(ctx context.Context, servic
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831Preview)
+	reqQP.Set("api-version", version20260930Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
@@ -182,7 +182,7 @@ func (client *DrillRunsClient) failOverCreateRequest(ctx context.Context, servic
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831Preview)
+	reqQP.Set("api-version", version20260930Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
@@ -267,7 +267,7 @@ func (client *DrillRunsClient) generateReportCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831Preview)
+	reqQP.Set("api-version", version20260930Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
@@ -317,7 +317,7 @@ func (client *DrillRunsClient) getCreateRequest(ctx context.Context, serviceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831Preview)
+	reqQP.Set("api-version", version20260930Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -388,7 +388,7 @@ func (client *DrillRunsClient) listCreateRequest(ctx context.Context, serviceGro
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260831Preview)
+		reqQP.Set("api-version", version20260930Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -477,7 +477,7 @@ func (client *DrillRunsClient) listReportDownloadURLCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831Preview)
+	reqQP.Set("api-version", version20260930Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
@@ -556,7 +556,7 @@ func (client *DrillRunsClient) markAsCompleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831Preview)
+	reqQP.Set("api-version", version20260930Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
@@ -634,7 +634,7 @@ func (client *DrillRunsClient) reprotectCreateRequest(ctx context.Context, servi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831Preview)
+	reqQP.Set("api-version", version20260930Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
@@ -714,7 +714,7 @@ func (client *DrillRunsClient) resumeCreateRequest(ctx context.Context, serviceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831Preview)
+	reqQP.Set("api-version", version20260930Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}

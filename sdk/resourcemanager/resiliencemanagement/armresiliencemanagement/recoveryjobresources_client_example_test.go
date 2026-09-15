@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-31-preview/RecoveryJobResources_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryJobResources_Get_MaximumSet_Gen.json
 func ExampleRecoveryJobResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExampleRecoveryJobResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/RecoveryJobResources_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryJobResources_List_MaximumSet_Gen.json
 func ExampleRecoveryJobResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -263,7 +263,7 @@ func ExampleRecoveryJobResourcesClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/nextLink"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/samplePlanName/recoveryJobs/c56888ef-9ced-4001-a6d4-7145a0309bdb/recoveryJobResources?api-version=2026-09-30-preview&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
 		// 	},
 		// }
 	}

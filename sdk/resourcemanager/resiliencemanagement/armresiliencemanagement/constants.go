@@ -5,7 +5,7 @@
 package armresiliencemanagement
 
 const (
-	version20260831Preview string = "2026-08-31-preview"
+	version20260930Preview string = "2026-09-30-preview"
 )
 
 // ActionTask - An action task type indicates the type of action task.
@@ -566,36 +566,6 @@ func PossibleForceInclusionAndUpdateValues() []ForceInclusionAndUpdate {
 	}
 }
 
-// GoalAssignmentType - Supported type of goal assignment.
-type GoalAssignmentType string
-
-const (
-	// GoalAssignmentTypeResiliency - Resiliency goal assignment type.
-	GoalAssignmentTypeResiliency GoalAssignmentType = "Resiliency"
-)
-
-// PossibleGoalAssignmentTypeValues returns the possible values for the GoalAssignmentType const type.
-func PossibleGoalAssignmentTypeValues() []GoalAssignmentType {
-	return []GoalAssignmentType{
-		GoalAssignmentTypeResiliency,
-	}
-}
-
-// GoalType - Supported type of goal.
-type GoalType string
-
-const (
-	// GoalTypeResiliency - Resiliency goal type.
-	GoalTypeResiliency GoalType = "Resiliency"
-)
-
-// PossibleGoalTypeValues returns the possible values for the GoalType const type.
-func PossibleGoalTypeValues() []GoalType {
-	return []GoalType{
-		GoalTypeResiliency,
-	}
-}
-
 // HAStatus - HA Status
 type HAStatus string
 
@@ -782,27 +752,6 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
-	}
-}
-
-// MembershipType - Membership type of the service group to resource.
-type MembershipType string
-
-const (
-	// MembershipTypeDirect - Resource is direct member of service group.
-	MembershipTypeDirect MembershipType = "Direct"
-	// MembershipTypeThroughResourceGroup - Resource is member of service group through resource group.
-	MembershipTypeThroughResourceGroup MembershipType = "ThroughResourceGroup"
-	// MembershipTypeThroughSubscription - Resource is member of service group through subscription.
-	MembershipTypeThroughSubscription MembershipType = "ThroughSubscription"
-)
-
-// PossibleMembershipTypeValues returns the possible values for the MembershipType const type.
-func PossibleMembershipTypeValues() []MembershipType {
-	return []MembershipType{
-		MembershipTypeDirect,
-		MembershipTypeThroughResourceGroup,
-		MembershipTypeThroughSubscription,
 	}
 }
 
@@ -1104,21 +1053,24 @@ func PossibleRelativeResourceCompositionStateValues() []RelativeResourceComposit
 	}
 }
 
-// RequirementSelected - Enum for the requirement status of the resource in the goal.
-type RequirementSelected string
+// ReplicationMode - Replication mode configured for a protected resource.
+type ReplicationMode string
 
 const (
-	// RequirementSelectedNotRequired - The resource is not required for the specified goal.
-	RequirementSelectedNotRequired RequirementSelected = "NotRequired"
-	// RequirementSelectedRequired - The resource is required for the specified goal.
-	RequirementSelectedRequired RequirementSelected = "Required"
+	// ReplicationModeActiveActive - The resource is active in multiple locations at the same time.
+	ReplicationModeActiveActive ReplicationMode = "ActiveActive"
+	// ReplicationModeActivePassive - The resource has one active location and one or more passive recovery locations.
+	ReplicationModeActivePassive ReplicationMode = "ActivePassive"
+	// ReplicationModeNone - No replication mode is configured for the protected resource.
+	ReplicationModeNone ReplicationMode = "None"
 )
 
-// PossibleRequirementSelectedValues returns the possible values for the RequirementSelected const type.
-func PossibleRequirementSelectedValues() []RequirementSelected {
-	return []RequirementSelected{
-		RequirementSelectedNotRequired,
-		RequirementSelectedRequired,
+// PossibleReplicationModeValues returns the possible values for the ReplicationMode const type.
+func PossibleReplicationModeValues() []ReplicationMode {
+	return []ReplicationMode{
+		ReplicationModeActiveActive,
+		ReplicationModeActivePassive,
+		ReplicationModeNone,
 	}
 }
 
@@ -1182,6 +1134,25 @@ func PossibleResourceFeasibilityReviewTypeValues() []ResourceFeasibilityReviewTy
 	}
 }
 
+// ResourceInclusionDisabledReason - Reason why a recovery resource cannot be included in a recovery plan.
+type ResourceInclusionDisabledReason string
+
+const (
+	// ResourceInclusionDisabledReasonResourceActiveActiveProtection - The resource uses active-active protection.
+	ResourceInclusionDisabledReasonResourceActiveActiveProtection ResourceInclusionDisabledReason = "ResourceActiveActiveProtection"
+	// ResourceInclusionDisabledReasonResourceHighlyAvailable - The resource is highly available and does not require recovery-plan
+	// inclusion.
+	ResourceInclusionDisabledReasonResourceHighlyAvailable ResourceInclusionDisabledReason = "ResourceHighlyAvailable"
+)
+
+// PossibleResourceInclusionDisabledReasonValues returns the possible values for the ResourceInclusionDisabledReason const type.
+func PossibleResourceInclusionDisabledReasonValues() []ResourceInclusionDisabledReason {
+	return []ResourceInclusionDisabledReason{
+		ResourceInclusionDisabledReasonResourceActiveActiveProtection,
+		ResourceInclusionDisabledReasonResourceHighlyAvailable,
+	}
+}
+
 // ResourceInclusionState - A state type that indicates inclusion of the resource with respect to the resiliency support.
 type ResourceInclusionState string
 
@@ -1204,12 +1175,26 @@ func PossibleResourceInclusionStateValues() []ResourceInclusionState {
 type ResourceProtectionSolutionType string
 
 const (
+	// ResourceProtectionSolutionTypeAzureCosmosDB - Resource is protected with Azure Cosmos DB multiregion replication using
+	// customer-managed failover, where recovery promotes a secondary region to the write region.
+	ResourceProtectionSolutionTypeAzureCosmosDB ResourceProtectionSolutionType = "AzureCosmosDB"
 	// ResourceProtectionSolutionTypeAzureNative - Resource is protected with the Azure native solution provided by the native
 	// Azure service.
 	ResourceProtectionSolutionTypeAzureNative ResourceProtectionSolutionType = "AzureNative"
+	// ResourceProtectionSolutionTypeAzureNetAppFiles - Resource is protected with Azure NetApp Files cross-region replication,
+	// where recovery fails over to the destination volume.
+	ResourceProtectionSolutionTypeAzureNetAppFiles ResourceProtectionSolutionType = "AzureNetAppFiles"
+	// ResourceProtectionSolutionTypeAzureServiceBus - Resource is protected with Azure Service Bus geo-replication, where a premium
+	// namespace replicates data to a secondary region and recovery promotes that secondary in place.
+	ResourceProtectionSolutionTypeAzureServiceBus ResourceProtectionSolutionType = "AzureServiceBus"
 	// ResourceProtectionSolutionTypeAzureSiteRecovery - Resource protected with the Azure solution provided by the native Azure
 	// Site Service for Azure VMs.
 	ResourceProtectionSolutionTypeAzureSiteRecovery ResourceProtectionSolutionType = "AzureSiteRecovery"
+	// ResourceProtectionSolutionTypeAzureStorageAccount - Resource is protected with Azure Storage account customer-managed failover.
+	ResourceProtectionSolutionTypeAzureStorageAccount ResourceProtectionSolutionType = "AzureStorageAccount"
+	// ResourceProtectionSolutionTypeAzureTemplate - Resource recovery is orchestrated by deploying an Azure Resource Manager
+	// template.
+	ResourceProtectionSolutionTypeAzureTemplate ResourceProtectionSolutionType = "AzureTemplate"
 	// ResourceProtectionSolutionTypeCrossZoneVMRecovery - Cross zone recovery enabled Azure VMs.
 	ResourceProtectionSolutionTypeCrossZoneVMRecovery ResourceProtectionSolutionType = "CrossZoneVMRecovery"
 	// ResourceProtectionSolutionTypeCustomRunbook - Resource is not protected with native solution and using custom runbook automation
@@ -1222,8 +1207,13 @@ const (
 // PossibleResourceProtectionSolutionTypeValues returns the possible values for the ResourceProtectionSolutionType const type.
 func PossibleResourceProtectionSolutionTypeValues() []ResourceProtectionSolutionType {
 	return []ResourceProtectionSolutionType{
+		ResourceProtectionSolutionTypeAzureCosmosDB,
 		ResourceProtectionSolutionTypeAzureNative,
+		ResourceProtectionSolutionTypeAzureNetAppFiles,
+		ResourceProtectionSolutionTypeAzureServiceBus,
 		ResourceProtectionSolutionTypeAzureSiteRecovery,
+		ResourceProtectionSolutionTypeAzureStorageAccount,
+		ResourceProtectionSolutionTypeAzureTemplate,
 		ResourceProtectionSolutionTypeCrossZoneVMRecovery,
 		ResourceProtectionSolutionTypeCustomRunbook,
 		ResourceProtectionSolutionTypeNone,
@@ -1391,8 +1381,6 @@ func PossibleUnifiedResilienceItemRequirementSelectedValues() []UnifiedResilienc
 type UsagePlanType string
 
 const (
-	// UsagePlanTypeBasic - Basic usage plan with restricted functionality without any charges.
-	UsagePlanTypeBasic UsagePlanType = "Basic"
 	// UsagePlanTypeStandard - Standard usage plan with comprehensive functionality and usage based charges.
 	UsagePlanTypeStandard UsagePlanType = "Standard"
 )
@@ -1400,7 +1388,6 @@ const (
 // PossibleUsagePlanTypeValues returns the possible values for the UsagePlanType const type.
 func PossibleUsagePlanTypeValues() []UsagePlanType {
 	return []UsagePlanType{
-		UsagePlanTypeBasic,
 		UsagePlanTypeStandard,
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-31-preview/DrillRuns_AddNotes_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/DrillRuns_AddNotes_MaximumSet_Gen.json
 func ExampleDrillRunsClient_BeginAddNotes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleDrillRunsClient_BeginAddNotes() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/DrillRuns_FailOver_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/DrillRuns_FailOver_MaximumSet_Gen.json
 func ExampleDrillRunsClient_BeginFailOver() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleDrillRunsClient_BeginFailOver() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/DrillRuns_GenerateReport_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/DrillRuns_GenerateReport_MaximumSet_Gen.json
 func ExampleDrillRunsClient_BeginGenerateReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleDrillRunsClient_BeginGenerateReport() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/DrillRuns_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/DrillRuns_Get_MaximumSet_Gen.json
 func ExampleDrillRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,6 +281,7 @@ func ExampleDrillRunsClient_Get() {
 	// 				},
 	// 			},
 	// 			DrillID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/drills/drill1"),
+	// 			RecoveryTimeObjective: to.Ptr(armresiliencemanagement.IsoDurationPT1H),
 	// 		},
 	// 		ID: to.Ptr("/providers/Microsoft.AzureResilienceManagement/drills/drill1/drillRuns/run1"),
 	// 		Name: to.Ptr("ca92602e-53bf-43d2-ae62-d3fc940474b3"),
@@ -297,7 +298,7 @@ func ExampleDrillRunsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/DrillRuns_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/DrillRuns_List_MaximumSet_Gen.json
 func ExampleDrillRunsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -442,6 +443,7 @@ func ExampleDrillRunsClient_NewListPager() {
 		// 						},
 		// 					},
 		// 					DrillID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/drills/drill1"),
+		// 					RecoveryTimeObjective: to.Ptr(armresiliencemanagement.IsoDurationPT1H),
 		// 				},
 		// 				ID: to.Ptr("/providers/Microsoft.AzureResilienceManagement/drills/drill1/drillRuns/run1"),
 		// 				Name: to.Ptr("ca92602e-53bf-43d2-ae62-d3fc940474b3"),
@@ -456,13 +458,13 @@ func ExampleDrillRunsClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/drills/drill1/drillRuns?api-version=2026-09-30-preview&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-08-31-preview/DrillRuns_ListReportDownloadUrl_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/DrillRuns_ListReportDownloadUrl_MaximumSet_Gen.json
 func ExampleDrillRunsClient_BeginListReportDownloadURL() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -495,7 +497,7 @@ func ExampleDrillRunsClient_BeginListReportDownloadURL() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/DrillRuns_MarkAsComplete_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/DrillRuns_MarkAsComplete_MaximumSet_Gen.json
 func ExampleDrillRunsClient_BeginMarkAsComplete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -523,7 +525,7 @@ func ExampleDrillRunsClient_BeginMarkAsComplete() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/DrillRuns_Reprotect_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/DrillRuns_Reprotect_MaximumSet_Gen.json
 func ExampleDrillRunsClient_BeginReprotect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -549,7 +551,7 @@ func ExampleDrillRunsClient_BeginReprotect() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/DrillRuns_Resume_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/DrillRuns_Resume_MaximumSet_Gen.json
 func ExampleDrillRunsClient_BeginResume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

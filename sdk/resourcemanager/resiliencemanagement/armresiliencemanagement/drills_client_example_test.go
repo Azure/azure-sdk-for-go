@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-31-preview/Drills_AddOrUpdateResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/Drills_AddOrUpdateResources_MaximumSet_Gen.json
 func ExampleDrillsClient_BeginAddOrUpdateResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleDrillsClient_BeginAddOrUpdateResources() {
 	}
 }
 
-// Generated from example definition: 2026-08-31-preview/Drills_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/Drills_Create_MaximumSet_Gen.json
 func ExampleDrillsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,6 +155,12 @@ func ExampleDrillsClient_BeginCreate() {
 						SliID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.Monitor/slis/checkout-latency"),
 						Type:  to.Ptr(armresiliencemanagement.SliTypeLatency),
 					},
+				},
+			},
+			GoalAssignmentProperties: &armresiliencemanagement.GoalAssignmentPropertiesOfDrill{
+				Identity: &armresiliencemanagement.AssociatedIdentity{
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 				},
 			},
 		},
@@ -245,6 +251,12 @@ func ExampleDrillsClient_BeginCreate() {
 	// 						},
 	// 					},
 	// 				},
+	// 				DrillRbacOnGoalAssignment: to.Ptr(armresiliencemanagement.RBACStateSet),
+	// 				RbacNeededForDrillOnGoalAssignment: []*string{
+	// 					to.Ptr("Microsoft.AzureResilienceManagement/goalAssignments/read"),
+	// 				},
+	// 				GoalAssignment: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
+	// 				RecoveryPlan: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
 	// 			},
 	// 			SystemMetadata: &armresiliencemanagement.SystemMetadata{
 	// 				InitialConfig: to.Ptr(armresiliencemanagement.InitialConfigPending),
@@ -258,6 +270,7 @@ func ExampleDrillsClient_BeginCreate() {
 	// 				LastRunAttestation: to.Ptr(armresiliencemanagement.DrillAttestationAttestedSuccess),
 	// 				LastRunTime: to.Ptr(time.Date(2025, time.May, 5, 5, 36, 37, 151000000, time.UTC)),
 	// 				LastRunDuration: to.Ptr("PT6M"),
+	// 				LastRunRecoveryTimeActual: to.Ptr("PT5M"),
 	// 			},
 	// 			ExecutionReadinessState: to.Ptr(armresiliencemanagement.ExecutionReadinessStateReady),
 	// 			RecoveryPlanProperties: &armresiliencemanagement.RecoveryPlanPropertiesOfDrill{
@@ -322,6 +335,13 @@ func ExampleDrillsClient_BeginCreate() {
 	// 					},
 	// 				},
 	// 			},
+	// 			GoalAssignmentProperties: &armresiliencemanagement.GoalAssignmentPropertiesOfDrill{
+	// 				Identity: &armresiliencemanagement.AssociatedIdentity{
+	// 					Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+	// 					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+	// 				},
+	// 				GoalAssignmentID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/goalAssignments/goalAssignment1"),
+	// 			},
 	// 		},
 	// 		Identity: &armresiliencemanagement.ManagedServiceIdentity{
 	// 			Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeNone),
@@ -345,7 +365,7 @@ func ExampleDrillsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/Drills_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/Drills_Delete_MaximumSet_Gen.json
 func ExampleDrillsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -366,7 +386,7 @@ func ExampleDrillsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-08-31-preview/Drills_End_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/Drills_End_MaximumSet_Gen.json
 func ExampleDrillsClient_BeginEnd() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -395,7 +415,7 @@ func ExampleDrillsClient_BeginEnd() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/Drills_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/Drills_Get_MaximumSet_Gen.json
 func ExampleDrillsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -485,6 +505,12 @@ func ExampleDrillsClient_Get() {
 	// 						},
 	// 					},
 	// 				},
+	// 				DrillRbacOnGoalAssignment: to.Ptr(armresiliencemanagement.RBACStateSet),
+	// 				RbacNeededForDrillOnGoalAssignment: []*string{
+	// 					to.Ptr("Microsoft.AzureResilienceManagement/goalAssignments/read"),
+	// 				},
+	// 				GoalAssignment: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
+	// 				RecoveryPlan: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
 	// 			},
 	// 			SystemMetadata: &armresiliencemanagement.SystemMetadata{
 	// 				InitialConfig: to.Ptr(armresiliencemanagement.InitialConfigPending),
@@ -498,6 +524,7 @@ func ExampleDrillsClient_Get() {
 	// 				LastRunAttestation: to.Ptr(armresiliencemanagement.DrillAttestationAttestedSuccess),
 	// 				LastRunTime: to.Ptr(time.Date(2025, time.May, 5, 5, 36, 37, 151000000, time.UTC)),
 	// 				LastRunDuration: to.Ptr("PT6M"),
+	// 				LastRunRecoveryTimeActual: to.Ptr("PT5M"),
 	// 			},
 	// 			ExecutionReadinessState: to.Ptr(armresiliencemanagement.ExecutionReadinessStateReady),
 	// 			RecoveryPlanProperties: &armresiliencemanagement.RecoveryPlanPropertiesOfDrill{
@@ -562,6 +589,13 @@ func ExampleDrillsClient_Get() {
 	// 					},
 	// 				},
 	// 			},
+	// 			GoalAssignmentProperties: &armresiliencemanagement.GoalAssignmentPropertiesOfDrill{
+	// 				Identity: &armresiliencemanagement.AssociatedIdentity{
+	// 					Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+	// 					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+	// 				},
+	// 				GoalAssignmentID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/goalAssignments/goalAssignment1"),
+	// 			},
 	// 		},
 	// 		Identity: &armresiliencemanagement.ManagedServiceIdentity{
 	// 			Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeNone),
@@ -585,7 +619,7 @@ func ExampleDrillsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/Drills_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/Drills_List_MaximumSet_Gen.json
 func ExampleDrillsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -684,6 +718,12 @@ func ExampleDrillsClient_NewListPager() {
 		// 								},
 		// 							},
 		// 						},
+		// 						DrillRbacOnGoalAssignment: to.Ptr(armresiliencemanagement.RBACStateSet),
+		// 						RbacNeededForDrillOnGoalAssignment: []*string{
+		// 							to.Ptr("Microsoft.AzureResilienceManagement/goalAssignments/read"),
+		// 						},
+		// 						GoalAssignment: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
+		// 						RecoveryPlan: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
 		// 					},
 		// 					SystemMetadata: &armresiliencemanagement.SystemMetadata{
 		// 						InitialConfig: to.Ptr(armresiliencemanagement.InitialConfigPending),
@@ -697,6 +737,7 @@ func ExampleDrillsClient_NewListPager() {
 		// 						LastRunState: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
 		// 						LastRunDuration: to.Ptr("PT6M"),
 		// 						LastRunAttestation: to.Ptr(armresiliencemanagement.DrillAttestationAttestedSuccess),
+		// 						LastRunRecoveryTimeActual: to.Ptr("PT5M"),
 		// 					},
 		// 					ExecutionReadinessState: to.Ptr(armresiliencemanagement.ExecutionReadinessStateReady),
 		// 					ServiceGroupID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName"),
@@ -760,6 +801,13 @@ func ExampleDrillsClient_NewListPager() {
 		// 							},
 		// 						},
 		// 					},
+		// 					GoalAssignmentProperties: &armresiliencemanagement.GoalAssignmentPropertiesOfDrill{
+		// 						Identity: &armresiliencemanagement.AssociatedIdentity{
+		// 							Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+		// 							UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+		// 						},
+		// 						GoalAssignmentID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/goalAssignments/goalAssignment1"),
+		// 					},
 		// 				},
 		// 				Identity: &armresiliencemanagement.ManagedServiceIdentity{
 		// 					Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeNone),
@@ -781,13 +829,13 @@ func ExampleDrillsClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/drills?api-version=2026-09-30-preview&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-08-31-preview/Drills_ResyncReadinessCheck_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/Drills_ResyncReadinessCheck_MaximumSet_Gen.json
 func ExampleDrillsClient_BeginResyncReadinessCheck() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -808,7 +856,7 @@ func ExampleDrillsClient_BeginResyncReadinessCheck() {
 	}
 }
 
-// Generated from example definition: 2026-08-31-preview/Drills_Start_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/Drills_Start_MaximumSet_Gen.json
 func ExampleDrillsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -836,7 +884,7 @@ func ExampleDrillsClient_BeginStart() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/Drills_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/Drills_Update_MaximumSet_Gen.json
 func ExampleDrillsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -851,6 +899,12 @@ func ExampleDrillsClient_BeginUpdate() {
 		Properties: &armresiliencemanagement.DrillUpdateProperties{
 			RbacSetupMode: to.Ptr(armresiliencemanagement.RBACSetupModeAutomatedCustomRole),
 			RecoveryPlanProperties: &armresiliencemanagement.RecoveryPlanPropertiesOfDrill{
+				Identity: &armresiliencemanagement.AssociatedIdentity{
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+				},
+			},
+			GoalAssignmentProperties: &armresiliencemanagement.GoalAssignmentPropertiesOfDrill{
 				Identity: &armresiliencemanagement.AssociatedIdentity{
 					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
@@ -915,7 +969,7 @@ func ExampleDrillsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/Drills_ValidateForExecution_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/Drills_ValidateForExecution_MaximumSet_Gen.json
 func ExampleDrillsClient_BeginValidateForExecution() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

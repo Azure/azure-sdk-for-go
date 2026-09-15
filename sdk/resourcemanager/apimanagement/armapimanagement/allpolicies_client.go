@@ -30,6 +30,9 @@ type AllPoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAllPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AllPoliciesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -57,47 +60,61 @@ func (client *AllPoliciesClient) NewListByServicePager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			}, nil)
+			req, err := client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, nextLink, options)
 			if err != nil {
 				return AllPoliciesClientListByServiceResponse{}, err
 			}
-			return client.listByServiceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AllPoliciesClientListByServiceResponse{}, err
+			}
+			return client.listByServiceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *AllPoliciesClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, _ *AllPoliciesClientListByServiceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/allPolicies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AllPoliciesClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, nextLink string, _ *AllPoliciesClientListByServiceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/allPolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serviceName == "" {
+			return nil, errors.New("parameter serviceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serviceName == "" {
-		return nil, errors.New("parameter serviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *AllPoliciesClient) listByServiceHandleResponse(resp *http.Response) (AllPoliciesClientListByServiceResponse, error) {
+func (client *AllPoliciesClient) listByServiceHandleResponse(resp *http.Response, successCodes ...int) (AllPoliciesClientListByServiceResponse, error) {
 	result := AllPoliciesClientListByServiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AllPoliciesCollection); err != nil {
 		return AllPoliciesClientListByServiceResponse{}, err
 	}

@@ -105,7 +105,7 @@ func (g *GroupUserServerTransport) dispatchCheckEntityExists(req *http.Request) 
 	if g.srv.CheckEntityExists == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckEntityExists not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/groups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/users/(?P<userId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/groups/(?P<groupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/users/(?P<userId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -146,7 +146,7 @@ func (g *GroupUserServerTransport) dispatchCreate(req *http.Request) (*http.Resp
 	if g.srv.Create == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/groups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/users/(?P<userId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/groups/(?P<groupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/users/(?P<userId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -187,7 +187,7 @@ func (g *GroupUserServerTransport) dispatchDelete(req *http.Request) (*http.Resp
 	if g.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/groups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/users/(?P<userId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/groups/(?P<groupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/users/(?P<userId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -230,7 +230,7 @@ func (g *GroupUserServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	}
 	newListPager := g.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/groups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/users`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/groups/(?P<groupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/users`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

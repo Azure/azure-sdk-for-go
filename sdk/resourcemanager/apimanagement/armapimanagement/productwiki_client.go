@@ -31,6 +31,9 @@ type ProductWikiClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProductWikiClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProductWikiClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,19 +67,14 @@ func (client *ProductWikiClient) CreateOrUpdate(ctx context.Context, resourceGro
 	if err != nil {
 		return ProductWikiClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ProductWikiClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ProductWikiClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, parameters WikiContract, options *ProductWikiClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/wikis/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -110,9 +108,12 @@ func (client *ProductWikiClient) createOrUpdateCreateRequest(ctx context.Context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ProductWikiClient) createOrUpdateHandleResponse(resp *http.Response) (ProductWikiClientCreateOrUpdateResponse, error) {
+func (client *ProductWikiClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ProductWikiClientCreateOrUpdateResponse, error) {
 	result := ProductWikiClientCreateOrUpdateResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Retry-After"); val != "" {
@@ -152,8 +153,7 @@ func (client *ProductWikiClient) Delete(ctx context.Context, resourceGroupName s
 		return ProductWikiClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ProductWikiClientDeleteResponse{}, err
+		return ProductWikiClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ProductWikiClientDeleteResponse{}, nil
 }
@@ -162,7 +162,7 @@ func (client *ProductWikiClient) Delete(ctx context.Context, resourceGroupName s
 func (client *ProductWikiClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string, _ *ProductWikiClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/wikis/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -208,19 +208,14 @@ func (client *ProductWikiClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ProductWikiClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProductWikiClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ProductWikiClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, _ *ProductWikiClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/wikis/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -247,9 +242,12 @@ func (client *ProductWikiClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProductWikiClient) getHandleResponse(resp *http.Response) (ProductWikiClientGetResponse, error) {
+func (client *ProductWikiClient) getHandleResponse(resp *http.Response, successCodes ...int) (ProductWikiClientGetResponse, error) {
 	result := ProductWikiClientGetResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WikiContract); err != nil {
@@ -278,19 +276,14 @@ func (client *ProductWikiClient) GetEntityTag(ctx context.Context, resourceGroup
 	if err != nil {
 		return ProductWikiClientGetEntityTagResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProductWikiClientGetEntityTagResponse{}, err
-	}
-	resp, err := client.getEntityTagHandleResponse(httpResp)
-	return resp, err
+	return client.getEntityTagHandleResponse(httpResp, http.StatusOK)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
 func (client *ProductWikiClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, _ *ProductWikiClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/wikis/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -316,11 +309,15 @@ func (client *ProductWikiClient) getEntityTagCreateRequest(ctx context.Context, 
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *ProductWikiClient) getEntityTagHandleResponse(resp *http.Response) (ProductWikiClientGetEntityTagResponse, error) {
-	result := ProductWikiClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
-	if val := resp.Header.Get("ETag"); val != "" {
+func (client *ProductWikiClient) getEntityTagHandleResponse(resp *http.Response, successCodes ...int) (ProductWikiClientGetEntityTagResponse, error) {
+	result := ProductWikiClientGetEntityTagResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -347,19 +344,14 @@ func (client *ProductWikiClient) Update(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ProductWikiClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProductWikiClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *ProductWikiClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string, parameters WikiUpdateContract, _ *ProductWikiClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/wikis/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -391,9 +383,12 @@ func (client *ProductWikiClient) updateCreateRequest(ctx context.Context, resour
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ProductWikiClient) updateHandleResponse(resp *http.Response) (ProductWikiClientUpdateResponse, error) {
+func (client *ProductWikiClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ProductWikiClientUpdateResponse, error) {
 	result := ProductWikiClientUpdateResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WikiContract); err != nil {

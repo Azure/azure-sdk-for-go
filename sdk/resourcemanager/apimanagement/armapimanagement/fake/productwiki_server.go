@@ -106,7 +106,7 @@ func (p *ProductWikiServerTransport) dispatchCreateOrUpdate(req *http.Request) (
 	if p.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/products/(?P<productId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/wikis/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/products/(?P<productId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/wikis/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -148,7 +148,7 @@ func (p *ProductWikiServerTransport) dispatchCreateOrUpdate(req *http.Request) (
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	if val := server.GetResponse(respr).RetryAfter; val != nil {
 		resp.Header.Set("Retry-After", strconv.FormatInt(int64(*val), 10))
@@ -160,7 +160,7 @@ func (p *ProductWikiServerTransport) dispatchDelete(req *http.Request) (*http.Re
 	if p.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/products/(?P<productId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/wikis/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/products/(?P<productId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/wikis/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -197,7 +197,7 @@ func (p *ProductWikiServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/products/(?P<productId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/wikis/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/products/(?P<productId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/wikis/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -228,7 +228,7 @@ func (p *ProductWikiServerTransport) dispatchGet(req *http.Request) (*http.Respo
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }
@@ -237,7 +237,7 @@ func (p *ProductWikiServerTransport) dispatchGetEntityTag(req *http.Request) (*h
 	if p.srv.GetEntityTag == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetEntityTag not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/products/(?P<productId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/wikis/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/products/(?P<productId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/wikis/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -268,7 +268,7 @@ func (p *ProductWikiServerTransport) dispatchGetEntityTag(req *http.Request) (*h
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }
@@ -277,7 +277,7 @@ func (p *ProductWikiServerTransport) dispatchUpdate(req *http.Request) (*http.Re
 	if p.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/products/(?P<productId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/wikis/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/products/(?P<productId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/wikis/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -312,7 +312,7 @@ func (p *ProductWikiServerTransport) dispatchUpdate(req *http.Request) (*http.Re
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }

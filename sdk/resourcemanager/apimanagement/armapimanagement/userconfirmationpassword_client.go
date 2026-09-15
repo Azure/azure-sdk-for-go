@@ -30,6 +30,9 @@ type UserConfirmationPasswordClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewUserConfirmationPasswordClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UserConfirmationPasswordClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,8 +66,7 @@ func (client *UserConfirmationPasswordClient) Send(ctx context.Context, resource
 		return UserConfirmationPasswordClientSendResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return UserConfirmationPasswordClientSendResponse{}, err
+		return UserConfirmationPasswordClientSendResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return UserConfirmationPasswordClientSendResponse{}, nil
 }
@@ -73,7 +75,7 @@ func (client *UserConfirmationPasswordClient) Send(ctx context.Context, resource
 func (client *UserConfirmationPasswordClient) sendCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserConfirmationPasswordClientSendOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}/confirmations/password/send"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

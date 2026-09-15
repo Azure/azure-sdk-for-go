@@ -87,7 +87,7 @@ func (t *TenantAccessGitServerTransport) dispatchRegeneratePrimaryKey(req *http.
 	if t.srv.RegeneratePrimaryKey == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RegeneratePrimaryKey not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tenant/(?P<accessName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/git/regeneratePrimaryKey`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tenant/(?P<accessName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/git/regeneratePrimaryKey`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -130,7 +130,7 @@ func (t *TenantAccessGitServerTransport) dispatchRegenerateSecondaryKey(req *htt
 	if t.srv.RegenerateSecondaryKey == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RegenerateSecondaryKey not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tenant/(?P<accessName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/git/regenerateSecondaryKey`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tenant/(?P<accessName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/git/regenerateSecondaryKey`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

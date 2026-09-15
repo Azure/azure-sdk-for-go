@@ -225,7 +225,7 @@ func ExampleClientApplicationClient_ListSecrets() {
 	// 	ClientApplicationSecretsContract: armapimanagement.ClientApplicationSecretsContract{
 	// 		Entra: &armapimanagement.ClientApplicationSecretsContractEntra{
 	// 			ClientSecret: to.Ptr("entraidapplicationsecret"),
-	// 			ExpiresAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-17T09:51:58.9472187Z"); return t}()),
+	// 			ExpiresAt: to.Ptr(time.Date(2026, time.April, 17, 9, 51, 58, 947218700, time.UTC)),
 	// 		},
 	// 	},
 	// }

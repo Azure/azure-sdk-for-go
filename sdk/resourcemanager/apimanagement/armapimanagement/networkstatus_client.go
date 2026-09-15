@@ -30,6 +30,9 @@ type NetworkStatusClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNetworkStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkStatusClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,19 +67,14 @@ func (client *NetworkStatusClient) ListByLocation(ctx context.Context, resourceG
 	if err != nil {
 		return NetworkStatusClientListByLocationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NetworkStatusClientListByLocationResponse{}, err
-	}
-	resp, err := client.listByLocationHandleResponse(httpResp)
-	return resp, err
+	return client.listByLocationHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
 func (client *NetworkStatusClient) listByLocationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, locationName string, _ *NetworkStatusClientListByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/locations/{locationName}/networkstatus"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -103,8 +101,11 @@ func (client *NetworkStatusClient) listByLocationCreateRequest(ctx context.Conte
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *NetworkStatusClient) listByLocationHandleResponse(resp *http.Response) (NetworkStatusClientListByLocationResponse, error) {
+func (client *NetworkStatusClient) listByLocationHandleResponse(resp *http.Response, successCodes ...int) (NetworkStatusClientListByLocationResponse, error) {
 	result := NetworkStatusClientListByLocationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkStatusContract); err != nil {
 		return NetworkStatusClientListByLocationResponse{}, err
 	}
@@ -132,19 +133,14 @@ func (client *NetworkStatusClient) ListByService(ctx context.Context, resourceGr
 	if err != nil {
 		return NetworkStatusClientListByServiceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NetworkStatusClientListByServiceResponse{}, err
-	}
-	resp, err := client.listByServiceHandleResponse(httpResp)
-	return resp, err
+	return client.listByServiceHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByServiceCreateRequest creates the ListByService request.
 func (client *NetworkStatusClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, _ *NetworkStatusClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/networkstatus"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -167,8 +163,11 @@ func (client *NetworkStatusClient) listByServiceCreateRequest(ctx context.Contex
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *NetworkStatusClient) listByServiceHandleResponse(resp *http.Response) (NetworkStatusClientListByServiceResponse, error) {
+func (client *NetworkStatusClient) listByServiceHandleResponse(resp *http.Response, successCodes ...int) (NetworkStatusClientListByServiceResponse, error) {
 	result := NetworkStatusClientListByServiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkStatusContractByLocationArray); err != nil {
 		return NetworkStatusClientListByServiceResponse{}, err
 	}

@@ -92,7 +92,7 @@ func (t *TenantSettingsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if t.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/settings/(?P<settingsType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/settings/(?P<settingsType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -129,7 +129,7 @@ func (t *TenantSettingsServerTransport) dispatchGet(req *http.Request) (*http.Re
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }
@@ -140,7 +140,7 @@ func (t *TenantSettingsServerTransport) dispatchNewListByServicePager(req *http.
 	}
 	newListByServicePager := t.newListByServicePager.get(req)
 	if newListByServicePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/settings`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/settings`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

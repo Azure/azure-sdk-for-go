@@ -30,6 +30,9 @@ type SignInSettingsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSignInSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SignInSettingsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *SignInSettingsClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return SignInSettingsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SignInSettingsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *SignInSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalSigninSettings, options *SignInSettingsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/signin"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -104,8 +102,11 @@ func (client *SignInSettingsClient) createOrUpdateCreateRequest(ctx context.Cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SignInSettingsClient) createOrUpdateHandleResponse(resp *http.Response) (SignInSettingsClientCreateOrUpdateResponse, error) {
+func (client *SignInSettingsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (SignInSettingsClientCreateOrUpdateResponse, error) {
 	result := SignInSettingsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PortalSigninSettings); err != nil {
 		return SignInSettingsClientCreateOrUpdateResponse{}, err
 	}
@@ -131,19 +132,14 @@ func (client *SignInSettingsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return SignInSettingsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SignInSettingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *SignInSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, _ *SignInSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/signin"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -166,9 +162,12 @@ func (client *SignInSettingsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *SignInSettingsClient) getHandleResponse(resp *http.Response) (SignInSettingsClientGetResponse, error) {
+func (client *SignInSettingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SignInSettingsClientGetResponse, error) {
 	result := SignInSettingsClientGetResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PortalSigninSettings); err != nil {
@@ -196,19 +195,14 @@ func (client *SignInSettingsClient) GetEntityTag(ctx context.Context, resourceGr
 	if err != nil {
 		return SignInSettingsClientGetEntityTagResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SignInSettingsClientGetEntityTagResponse{}, err
-	}
-	resp, err := client.getEntityTagHandleResponse(httpResp)
-	return resp, err
+	return client.getEntityTagHandleResponse(httpResp, http.StatusOK)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
 func (client *SignInSettingsClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, _ *SignInSettingsClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/signin"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -230,11 +224,15 @@ func (client *SignInSettingsClient) getEntityTagCreateRequest(ctx context.Contex
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *SignInSettingsClient) getEntityTagHandleResponse(resp *http.Response) (SignInSettingsClientGetEntityTagResponse, error) {
-	result := SignInSettingsClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
-	if val := resp.Header.Get("ETag"); val != "" {
+func (client *SignInSettingsClient) getEntityTagHandleResponse(resp *http.Response, successCodes ...int) (SignInSettingsClientGetEntityTagResponse, error) {
+	result := SignInSettingsClientGetEntityTagResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -261,8 +259,7 @@ func (client *SignInSettingsClient) Update(ctx context.Context, resourceGroupNam
 		return SignInSettingsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SignInSettingsClientUpdateResponse{}, err
+		return SignInSettingsClientUpdateResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SignInSettingsClientUpdateResponse{}, nil
 }
@@ -271,7 +268,7 @@ func (client *SignInSettingsClient) Update(ctx context.Context, resourceGroupNam
 func (client *SignInSettingsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, ifMatch string, parameters PortalSigninSettings, _ *SignInSettingsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/signin"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

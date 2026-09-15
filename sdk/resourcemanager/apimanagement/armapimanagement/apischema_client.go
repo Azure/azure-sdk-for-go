@@ -31,6 +31,9 @@ type APISchemaClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAPISchemaClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APISchemaClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -86,8 +89,7 @@ func (client *APISchemaClient) createOrUpdate(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -96,7 +98,7 @@ func (client *APISchemaClient) createOrUpdate(ctx context.Context, resourceGroup
 func (client *APISchemaClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, parameters SchemaContract, options *APISchemaClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -158,8 +160,7 @@ func (client *APISchemaClient) Delete(ctx context.Context, resourceGroupName str
 		return APISchemaClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return APISchemaClientDeleteResponse{}, err
+		return APISchemaClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return APISchemaClientDeleteResponse{}, nil
 }
@@ -168,7 +169,7 @@ func (client *APISchemaClient) Delete(ctx context.Context, resourceGroupName str
 func (client *APISchemaClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, ifMatch string, options *APISchemaClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -223,19 +224,14 @@ func (client *APISchemaClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return APISchemaClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return APISchemaClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *APISchemaClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, _ *APISchemaClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -266,9 +262,12 @@ func (client *APISchemaClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *APISchemaClient) getHandleResponse(resp *http.Response) (APISchemaClientGetResponse, error) {
+func (client *APISchemaClient) getHandleResponse(resp *http.Response, successCodes ...int) (APISchemaClientGetResponse, error) {
 	result := APISchemaClientGetResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SchemaContract); err != nil {
@@ -298,19 +297,14 @@ func (client *APISchemaClient) GetEntityTag(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return APISchemaClientGetEntityTagResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return APISchemaClientGetEntityTagResponse{}, err
-	}
-	resp, err := client.getEntityTagHandleResponse(httpResp)
-	return resp, err
+	return client.getEntityTagHandleResponse(httpResp, http.StatusOK)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
 func (client *APISchemaClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, _ *APISchemaClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -340,11 +334,15 @@ func (client *APISchemaClient) getEntityTagCreateRequest(ctx context.Context, re
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *APISchemaClient) getEntityTagHandleResponse(resp *http.Response) (APISchemaClientGetEntityTagResponse, error) {
-	result := APISchemaClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
-	if val := resp.Header.Get("ETag"); val != "" {
+func (client *APISchemaClient) getEntityTagHandleResponse(resp *http.Response, successCodes ...int) (APISchemaClientGetEntityTagResponse, error) {
+	result := APISchemaClientGetEntityTagResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -365,60 +363,74 @@ func (client *APISchemaClient) NewListByAPIPager(resourceGroupName string, servi
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
-			}, nil)
+			req, err := client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, nextLink, options)
 			if err != nil {
 				return APISchemaClientListByAPIResponse{}, err
 			}
-			return client.listByAPIHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return APISchemaClientListByAPIResponse{}, err
+			}
+			return client.listByAPIHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByAPICreateRequest creates the ListByAPI request.
-func (client *APISchemaClient) listByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APISchemaClientListByAPIOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *APISchemaClient) listByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, nextLink string, options *APISchemaClientListByAPIOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serviceName == "" {
+			return nil, errors.New("parameter serviceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+		if apiID == "" {
+			return nil, errors.New("parameter apiID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{apiId}", url.PathEscape(apiID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serviceName == "" {
-		return nil, errors.New("parameter serviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if apiID == "" {
-		return nil, errors.New("parameter apiID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{apiId}", url.PathEscape(apiID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByAPIHandleResponse handles the ListByAPI response.
-func (client *APISchemaClient) listByAPIHandleResponse(resp *http.Response) (APISchemaClientListByAPIResponse, error) {
+func (client *APISchemaClient) listByAPIHandleResponse(resp *http.Response, successCodes ...int) (APISchemaClientListByAPIResponse, error) {
 	result := APISchemaClientListByAPIResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SchemaCollection); err != nil {
 		return APISchemaClientListByAPIResponse{}, err
 	}

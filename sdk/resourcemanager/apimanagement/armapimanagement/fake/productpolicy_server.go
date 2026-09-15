@@ -110,7 +110,7 @@ func (p *ProductPolicyServerTransport) dispatchCreateOrUpdate(req *http.Request)
 	if p.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/products/(?P<productId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/(?P<policyId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/products/(?P<productId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/policies/(?P<policyId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -162,7 +162,7 @@ func (p *ProductPolicyServerTransport) dispatchCreateOrUpdate(req *http.Request)
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }
@@ -171,7 +171,7 @@ func (p *ProductPolicyServerTransport) dispatchDelete(req *http.Request) (*http.
 	if p.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/products/(?P<productId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/(?P<policyId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/products/(?P<productId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/policies/(?P<policyId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -218,7 +218,7 @@ func (p *ProductPolicyServerTransport) dispatchGet(req *http.Request) (*http.Res
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/products/(?P<productId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/(?P<policyId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/products/(?P<productId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/policies/(?P<policyId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -267,7 +267,7 @@ func (p *ProductPolicyServerTransport) dispatchGet(req *http.Request) (*http.Res
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }
@@ -276,7 +276,7 @@ func (p *ProductPolicyServerTransport) dispatchGetEntityTag(req *http.Request) (
 	if p.srv.GetEntityTag == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetEntityTag not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/products/(?P<productId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/(?P<policyId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/products/(?P<productId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/policies/(?P<policyId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -317,7 +317,7 @@ func (p *ProductPolicyServerTransport) dispatchGetEntityTag(req *http.Request) (
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }
@@ -328,7 +328,7 @@ func (p *ProductPolicyServerTransport) dispatchNewListByProductPager(req *http.R
 	}
 	newListByProductPager := p.newListByProductPager.get(req)
 	if newListByProductPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/products/(?P<productId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/products/(?P<productId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/policies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

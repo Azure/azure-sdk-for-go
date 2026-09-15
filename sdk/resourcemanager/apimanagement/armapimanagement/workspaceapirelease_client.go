@@ -31,6 +31,9 @@ type WorkspaceAPIReleaseClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkspaceAPIReleaseClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceAPIReleaseClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,19 +69,14 @@ func (client *WorkspaceAPIReleaseClient) CreateOrUpdate(ctx context.Context, res
 	if err != nil {
 		return WorkspaceAPIReleaseClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceAPIReleaseClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *WorkspaceAPIReleaseClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, apiID string, releaseID string, parameters APIReleaseContract, options *WorkspaceAPIReleaseClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/apis/{apiId}/releases/{releaseId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -120,9 +118,12 @@ func (client *WorkspaceAPIReleaseClient) createOrUpdateCreateRequest(ctx context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *WorkspaceAPIReleaseClient) createOrUpdateHandleResponse(resp *http.Response) (WorkspaceAPIReleaseClientCreateOrUpdateResponse, error) {
+func (client *WorkspaceAPIReleaseClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceAPIReleaseClientCreateOrUpdateResponse, error) {
 	result := WorkspaceAPIReleaseClientCreateOrUpdateResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Retry-After"); val != "" {
@@ -165,8 +166,7 @@ func (client *WorkspaceAPIReleaseClient) Delete(ctx context.Context, resourceGro
 		return WorkspaceAPIReleaseClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceAPIReleaseClientDeleteResponse{}, err
+		return WorkspaceAPIReleaseClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WorkspaceAPIReleaseClientDeleteResponse{}, nil
 }
@@ -175,7 +175,7 @@ func (client *WorkspaceAPIReleaseClient) Delete(ctx context.Context, resourceGro
 func (client *WorkspaceAPIReleaseClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, apiID string, releaseID string, ifMatch string, _ *WorkspaceAPIReleaseClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/apis/{apiId}/releases/{releaseId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -231,19 +231,14 @@ func (client *WorkspaceAPIReleaseClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return WorkspaceAPIReleaseClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceAPIReleaseClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *WorkspaceAPIReleaseClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, apiID string, releaseID string, _ *WorkspaceAPIReleaseClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/apis/{apiId}/releases/{releaseId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -278,9 +273,12 @@ func (client *WorkspaceAPIReleaseClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkspaceAPIReleaseClient) getHandleResponse(resp *http.Response) (WorkspaceAPIReleaseClientGetResponse, error) {
+func (client *WorkspaceAPIReleaseClient) getHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceAPIReleaseClientGetResponse, error) {
 	result := WorkspaceAPIReleaseClientGetResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIReleaseContract); err != nil {
@@ -311,19 +309,14 @@ func (client *WorkspaceAPIReleaseClient) GetEntityTag(ctx context.Context, resou
 	if err != nil {
 		return WorkspaceAPIReleaseClientGetEntityTagResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceAPIReleaseClientGetEntityTagResponse{}, err
-	}
-	resp, err := client.getEntityTagHandleResponse(httpResp)
-	return resp, err
+	return client.getEntityTagHandleResponse(httpResp, http.StatusOK)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
 func (client *WorkspaceAPIReleaseClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, apiID string, releaseID string, _ *WorkspaceAPIReleaseClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/apis/{apiId}/releases/{releaseId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -357,11 +350,15 @@ func (client *WorkspaceAPIReleaseClient) getEntityTagCreateRequest(ctx context.C
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *WorkspaceAPIReleaseClient) getEntityTagHandleResponse(resp *http.Response) (WorkspaceAPIReleaseClientGetEntityTagResponse, error) {
-	result := WorkspaceAPIReleaseClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
-	if val := resp.Header.Get("ETag"); val != "" {
+func (client *WorkspaceAPIReleaseClient) getEntityTagHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceAPIReleaseClientGetEntityTagResponse, error) {
+	result := WorkspaceAPIReleaseClientGetEntityTagResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -384,64 +381,78 @@ func (client *WorkspaceAPIReleaseClient) NewListByServicePager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, workspaceID, apiID, options)
-			}, nil)
+			req, err := client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, workspaceID, apiID, nextLink, options)
 			if err != nil {
 				return WorkspaceAPIReleaseClientListByServiceResponse{}, err
 			}
-			return client.listByServiceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkspaceAPIReleaseClientListByServiceResponse{}, err
+			}
+			return client.listByServiceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *WorkspaceAPIReleaseClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, apiID string, options *WorkspaceAPIReleaseClientListByServiceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/apis/{apiId}/releases"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WorkspaceAPIReleaseClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, apiID string, nextLink string, options *WorkspaceAPIReleaseClientListByServiceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/apis/{apiId}/releases"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serviceName == "" {
+			return nil, errors.New("parameter serviceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+		if workspaceID == "" {
+			return nil, errors.New("parameter workspaceID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceId}", url.PathEscape(workspaceID))
+		if apiID == "" {
+			return nil, errors.New("parameter apiID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{apiId}", url.PathEscape(apiID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serviceName == "" {
-		return nil, errors.New("parameter serviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if workspaceID == "" {
-		return nil, errors.New("parameter workspaceID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceId}", url.PathEscape(workspaceID))
-	if apiID == "" {
-		return nil, errors.New("parameter apiID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{apiId}", url.PathEscape(apiID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *WorkspaceAPIReleaseClient) listByServiceHandleResponse(resp *http.Response) (WorkspaceAPIReleaseClientListByServiceResponse, error) {
+func (client *WorkspaceAPIReleaseClient) listByServiceHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceAPIReleaseClientListByServiceResponse, error) {
 	result := WorkspaceAPIReleaseClientListByServiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIReleaseCollection); err != nil {
 		return WorkspaceAPIReleaseClientListByServiceResponse{}, err
 	}
@@ -474,19 +485,14 @@ func (client *WorkspaceAPIReleaseClient) Update(ctx context.Context, resourceGro
 	if err != nil {
 		return WorkspaceAPIReleaseClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceAPIReleaseClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *WorkspaceAPIReleaseClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, apiID string, releaseID string, ifMatch string, parameters APIReleaseContract, _ *WorkspaceAPIReleaseClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/apis/{apiId}/releases/{releaseId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -526,9 +532,12 @@ func (client *WorkspaceAPIReleaseClient) updateCreateRequest(ctx context.Context
 }
 
 // updateHandleResponse handles the Update response.
-func (client *WorkspaceAPIReleaseClient) updateHandleResponse(resp *http.Response) (WorkspaceAPIReleaseClientUpdateResponse, error) {
+func (client *WorkspaceAPIReleaseClient) updateHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceAPIReleaseClientUpdateResponse, error) {
 	result := WorkspaceAPIReleaseClientUpdateResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIReleaseContract); err != nil {

@@ -31,6 +31,9 @@ type APIDiagnosticClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAPIDiagnosticClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIDiagnosticClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,19 +68,14 @@ func (client *APIDiagnosticClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return APIDiagnosticClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return APIDiagnosticClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *APIDiagnosticClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, parameters DiagnosticContract, options *APIDiagnosticClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/diagnostics/{diagnosticId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -115,9 +113,12 @@ func (client *APIDiagnosticClient) createOrUpdateCreateRequest(ctx context.Conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *APIDiagnosticClient) createOrUpdateHandleResponse(resp *http.Response) (APIDiagnosticClientCreateOrUpdateResponse, error) {
+func (client *APIDiagnosticClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (APIDiagnosticClientCreateOrUpdateResponse, error) {
 	result := APIDiagnosticClientCreateOrUpdateResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticContract); err != nil {
@@ -150,8 +151,7 @@ func (client *APIDiagnosticClient) Delete(ctx context.Context, resourceGroupName
 		return APIDiagnosticClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return APIDiagnosticClientDeleteResponse{}, err
+		return APIDiagnosticClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return APIDiagnosticClientDeleteResponse{}, nil
 }
@@ -160,7 +160,7 @@ func (client *APIDiagnosticClient) Delete(ctx context.Context, resourceGroupName
 func (client *APIDiagnosticClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, ifMatch string, _ *APIDiagnosticClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/diagnostics/{diagnosticId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -211,19 +211,14 @@ func (client *APIDiagnosticClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return APIDiagnosticClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return APIDiagnosticClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *APIDiagnosticClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, _ *APIDiagnosticClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/diagnostics/{diagnosticId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -254,9 +249,12 @@ func (client *APIDiagnosticClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *APIDiagnosticClient) getHandleResponse(resp *http.Response) (APIDiagnosticClientGetResponse, error) {
+func (client *APIDiagnosticClient) getHandleResponse(resp *http.Response, successCodes ...int) (APIDiagnosticClientGetResponse, error) {
 	result := APIDiagnosticClientGetResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticContract); err != nil {
@@ -286,19 +284,14 @@ func (client *APIDiagnosticClient) GetEntityTag(ctx context.Context, resourceGro
 	if err != nil {
 		return APIDiagnosticClientGetEntityTagResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return APIDiagnosticClientGetEntityTagResponse{}, err
-	}
-	resp, err := client.getEntityTagHandleResponse(httpResp)
-	return resp, err
+	return client.getEntityTagHandleResponse(httpResp, http.StatusOK)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
 func (client *APIDiagnosticClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, _ *APIDiagnosticClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/diagnostics/{diagnosticId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -328,11 +321,15 @@ func (client *APIDiagnosticClient) getEntityTagCreateRequest(ctx context.Context
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *APIDiagnosticClient) getEntityTagHandleResponse(resp *http.Response) (APIDiagnosticClientGetEntityTagResponse, error) {
-	result := APIDiagnosticClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
-	if val := resp.Header.Get("ETag"); val != "" {
+func (client *APIDiagnosticClient) getEntityTagHandleResponse(resp *http.Response, successCodes ...int) (APIDiagnosticClientGetEntityTagResponse, error) {
+	result := APIDiagnosticClientGetEntityTagResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -353,60 +350,74 @@ func (client *APIDiagnosticClient) NewListByServicePager(resourceGroupName strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
-			}, nil)
+			req, err := client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, nextLink, options)
 			if err != nil {
 				return APIDiagnosticClientListByServiceResponse{}, err
 			}
-			return client.listByServiceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return APIDiagnosticClientListByServiceResponse{}, err
+			}
+			return client.listByServiceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *APIDiagnosticClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APIDiagnosticClientListByServiceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/diagnostics"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *APIDiagnosticClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, nextLink string, options *APIDiagnosticClientListByServiceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/diagnostics"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serviceName == "" {
+			return nil, errors.New("parameter serviceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+		if apiID == "" {
+			return nil, errors.New("parameter apiID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{apiId}", url.PathEscape(apiID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serviceName == "" {
-		return nil, errors.New("parameter serviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if apiID == "" {
-		return nil, errors.New("parameter apiID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{apiId}", url.PathEscape(apiID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *APIDiagnosticClient) listByServiceHandleResponse(resp *http.Response) (APIDiagnosticClientListByServiceResponse, error) {
+func (client *APIDiagnosticClient) listByServiceHandleResponse(resp *http.Response, successCodes ...int) (APIDiagnosticClientListByServiceResponse, error) {
 	result := APIDiagnosticClientListByServiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticCollection); err != nil {
 		return APIDiagnosticClientListByServiceResponse{}, err
 	}
@@ -437,19 +448,14 @@ func (client *APIDiagnosticClient) Update(ctx context.Context, resourceGroupName
 	if err != nil {
 		return APIDiagnosticClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return APIDiagnosticClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *APIDiagnosticClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, ifMatch string, parameters DiagnosticContract, _ *APIDiagnosticClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/diagnostics/{diagnosticId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -485,9 +491,12 @@ func (client *APIDiagnosticClient) updateCreateRequest(ctx context.Context, reso
 }
 
 // updateHandleResponse handles the Update response.
-func (client *APIDiagnosticClient) updateHandleResponse(resp *http.Response) (APIDiagnosticClientUpdateResponse, error) {
+func (client *APIDiagnosticClient) updateHandleResponse(resp *http.Response, successCodes ...int) (APIDiagnosticClientUpdateResponse, error) {
 	result := APIDiagnosticClientUpdateResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticContract); err != nil {

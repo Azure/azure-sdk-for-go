@@ -26,7 +26,7 @@ func ExampleAPIIssueCommentClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewAPIIssueCommentClient().CreateOrUpdate(ctx, "rg1", "apimService1", "57d1f7558aa04f15146d9d8a", "57d2ef278aa04f0ad01d6cdc", "599e29ab193c3c0bd0b3e2fb", armapimanagement.IssueCommentContract{
 		Properties: &armapimanagement.IssueCommentContractProperties{
-			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T22:21:20.467Z"); return t }()),
+			CreatedDate: to.Ptr(time.Date(2018, time.February, 1, 22, 21, 20, 467000000, time.UTC)),
 			Text:        to.Ptr("Issue comment."),
 			UserID:      to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1"),
 		},
@@ -43,7 +43,7 @@ func ExampleAPIIssueCommentClient_CreateOrUpdate() {
 	// 		Type: to.Ptr("Microsoft.ApiManagement/service/apis/issues/comments"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d1f7558aa04f15146d9d8a/issues/57d2ef278aa04f0ad01d6cdc/comments/599e29ab193c3c0bd0b3e2fb"),
 	// 		Properties: &armapimanagement.IssueCommentContractProperties{
-	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T22:21:20.467Z"); return t}()),
+	// 			CreatedDate: to.Ptr(time.Date(2018, time.February, 1, 22, 21, 20, 467000000, time.UTC)),
 	// 			Text: to.Ptr("Issue comment."),
 	// 			UserID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1"),
 	// 		},
@@ -97,7 +97,7 @@ func ExampleAPIIssueCommentClient_Get() {
 	// 		Type: to.Ptr("Microsoft.ApiManagement/service/apis/issues/comments"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d1f7558aa04f15146d9d8a/issues/57d2ef278aa04f0ad01d6cdc/comments/599e29ab193c3c0bd0b3e2fb"),
 	// 		Properties: &armapimanagement.IssueCommentContractProperties{
-	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T22:21:20.467Z"); return t}()),
+	// 			CreatedDate: to.Ptr(time.Date(2018, time.February, 1, 22, 21, 20, 467000000, time.UTC)),
 	// 			Text: to.Ptr("Issue comment."),
 	// 			UserID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1"),
 	// 		},
@@ -159,7 +159,7 @@ func ExampleAPIIssueCommentClient_NewListByServicePager() {
 		// 				Type: to.Ptr("Microsoft.ApiManagement/service/apis/issues/comments"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d1f7558aa04f15146d9d8a/issues/57d2ef278aa04f0ad01d6cdc/comments/599e29ab193c3c0bd0b3e2fb"),
 		// 				Properties: &armapimanagement.IssueCommentContractProperties{
-		// 					CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T22:21:20.467Z"); return t}()),
+		// 					CreatedDate: to.Ptr(time.Date(2018, time.February, 1, 22, 21, 20, 467000000, time.UTC)),
 		// 					Text: to.Ptr("Issue comment."),
 		// 					UserID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1"),
 		// 				},

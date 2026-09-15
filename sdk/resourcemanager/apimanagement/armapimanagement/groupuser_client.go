@@ -31,6 +31,9 @@ type GroupUserClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGroupUserClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GroupUserClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,8 +67,7 @@ func (client *GroupUserClient) CheckEntityExists(ctx context.Context, resourceGr
 		return GroupUserClientCheckEntityExistsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent, http.StatusNotFound) {
-		err = runtime.NewResponseError(httpResp)
-		return GroupUserClientCheckEntityExistsResponse{}, err
+		return GroupUserClientCheckEntityExistsResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return GroupUserClientCheckEntityExistsResponse{Success: httpResp.StatusCode >= 200 && httpResp.StatusCode < 300}, nil
 }
@@ -74,7 +76,7 @@ func (client *GroupUserClient) CheckEntityExists(ctx context.Context, resourceGr
 func (client *GroupUserClient) checkEntityExistsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, _ *GroupUserClientCheckEntityExistsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups/{groupId}/users/{userId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -124,19 +126,14 @@ func (client *GroupUserClient) Create(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return GroupUserClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return GroupUserClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
 func (client *GroupUserClient) createCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, _ *GroupUserClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups/{groupId}/users/{userId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -167,8 +164,11 @@ func (client *GroupUserClient) createCreateRequest(ctx context.Context, resource
 }
 
 // createHandleResponse handles the Create response.
-func (client *GroupUserClient) createHandleResponse(resp *http.Response) (GroupUserClientCreateResponse, error) {
+func (client *GroupUserClient) createHandleResponse(resp *http.Response, successCodes ...int) (GroupUserClientCreateResponse, error) {
 	result := GroupUserClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserContract); err != nil {
 		return GroupUserClientCreateResponse{}, err
 	}
@@ -197,8 +197,7 @@ func (client *GroupUserClient) Delete(ctx context.Context, resourceGroupName str
 		return GroupUserClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return GroupUserClientDeleteResponse{}, err
+		return GroupUserClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return GroupUserClientDeleteResponse{}, nil
 }
@@ -207,7 +206,7 @@ func (client *GroupUserClient) Delete(ctx context.Context, resourceGroupName str
 func (client *GroupUserClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, _ *GroupUserClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups/{groupId}/users/{userId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -252,60 +251,74 @@ func (client *GroupUserClient) NewListPager(resourceGroupName string, serviceNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, serviceName, groupID, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, serviceName, groupID, nextLink, options)
 			if err != nil {
 				return GroupUserClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GroupUserClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *GroupUserClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, options *GroupUserClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups/{groupId}/users"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *GroupUserClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, nextLink string, options *GroupUserClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups/{groupId}/users"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serviceName == "" {
+			return nil, errors.New("parameter serviceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+		if groupID == "" {
+			return nil, errors.New("parameter groupID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serviceName == "" {
-		return nil, errors.New("parameter serviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if groupID == "" {
-		return nil, errors.New("parameter groupID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *GroupUserClient) listHandleResponse(resp *http.Response) (GroupUserClientListResponse, error) {
+func (client *GroupUserClient) listHandleResponse(resp *http.Response, successCodes ...int) (GroupUserClientListResponse, error) {
 	result := GroupUserClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserCollection); err != nil {
 		return GroupUserClientListResponse{}, err
 	}

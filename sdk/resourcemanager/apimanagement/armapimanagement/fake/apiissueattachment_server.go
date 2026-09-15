@@ -111,7 +111,7 @@ func (a *APIIssueAttachmentServerTransport) dispatchCreateOrUpdate(req *http.Req
 	if a.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/apis/(?P<apiId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/issues/(?P<issueId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/attachments/(?P<attachmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/apis/(?P<apiId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/issues/(?P<issueId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/attachments/(?P<attachmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -161,7 +161,7 @@ func (a *APIIssueAttachmentServerTransport) dispatchCreateOrUpdate(req *http.Req
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	if val := server.GetResponse(respr).RetryAfter; val != nil {
 		resp.Header.Set("Retry-After", strconv.FormatInt(int64(*val), 10))
@@ -173,7 +173,7 @@ func (a *APIIssueAttachmentServerTransport) dispatchDelete(req *http.Request) (*
 	if a.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/apis/(?P<apiId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/issues/(?P<issueId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/attachments/(?P<attachmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/apis/(?P<apiId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/issues/(?P<issueId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/attachments/(?P<attachmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -218,7 +218,7 @@ func (a *APIIssueAttachmentServerTransport) dispatchGet(req *http.Request) (*htt
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/apis/(?P<apiId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/issues/(?P<issueId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/attachments/(?P<attachmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/apis/(?P<apiId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/issues/(?P<issueId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/attachments/(?P<attachmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -257,7 +257,7 @@ func (a *APIIssueAttachmentServerTransport) dispatchGet(req *http.Request) (*htt
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }
@@ -266,7 +266,7 @@ func (a *APIIssueAttachmentServerTransport) dispatchGetEntityTag(req *http.Reque
 	if a.srv.GetEntityTag == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetEntityTag not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/apis/(?P<apiId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/issues/(?P<issueId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/attachments/(?P<attachmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/apis/(?P<apiId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/issues/(?P<issueId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/attachments/(?P<attachmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -305,7 +305,7 @@ func (a *APIIssueAttachmentServerTransport) dispatchGetEntityTag(req *http.Reque
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }
@@ -316,7 +316,7 @@ func (a *APIIssueAttachmentServerTransport) dispatchNewListByServicePager(req *h
 	}
 	newListByServicePager := a.newListByServicePager.get(req)
 	if newListByServicePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/apis/(?P<apiId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/issues/(?P<issueId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/attachments`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/apis/(?P<apiId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/issues/(?P<issueId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/attachments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {

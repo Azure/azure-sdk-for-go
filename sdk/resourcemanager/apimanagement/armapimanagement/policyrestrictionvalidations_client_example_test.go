@@ -42,9 +42,9 @@ func ExamplePolicyRestrictionValidationsClient_BeginByService() {
 	// 			ActionLog: []*armapimanagement.OperationResultLogItemContract{
 	// 			},
 	// 			ResultInfo: to.Ptr("All the policies were validated"),
-	// 			Started: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-13T00:31:14.94Z"); return t}()),
+	// 			Started: to.Ptr(time.Date(2023, time.April, 13, 0, 31, 14, 940000000, time.UTC)),
 	// 			Status: to.Ptr(armapimanagement.AsyncOperationStatusSucceeded),
-	// 			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-13T00:31:27.59Z"); return t}()),
+	// 			Updated: to.Ptr(time.Date(2023, time.April, 13, 0, 31, 27, 590000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

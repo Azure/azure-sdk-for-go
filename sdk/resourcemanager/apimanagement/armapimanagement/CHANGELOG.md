@@ -1,5 +1,12 @@
 # Release History
 
+## 4.0.0-beta.2 (2026-09-15)
+### Breaking Changes
+
+- Field `DeletedServiceContract` of struct `DeletedServicesClientPurgeResponse` has been removed
+- Field `ServiceResource` of struct `ServiceClientDeleteResponse` has been removed
+
+
 ## 4.0.0-beta.1 (2026-05-26)
 ### Breaking Changes
 

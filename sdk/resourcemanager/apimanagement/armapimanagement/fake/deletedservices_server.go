@@ -100,7 +100,7 @@ func (d *DeletedServicesServerTransport) dispatchGetByName(req *http.Request) (*
 	if d.srv.GetByName == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByName not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deletedservices/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedservices/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -135,7 +135,7 @@ func (d *DeletedServicesServerTransport) dispatchNewListBySubscriptionPager(req 
 	}
 	newListBySubscriptionPager := d.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/deletedservices`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/deletedservices`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -168,7 +168,7 @@ func (d *DeletedServicesServerTransport) dispatchBeginPurge(req *http.Request) (
 	}
 	beginPurge := d.beginPurge.get(req)
 	if beginPurge == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deletedservices/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedservices/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

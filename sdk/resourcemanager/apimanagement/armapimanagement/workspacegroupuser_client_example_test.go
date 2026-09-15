@@ -59,7 +59,7 @@ func ExampleWorkspaceGroupUserClient_Create() {
 	// 			Identities: []*armapimanagement.UserIdentityContract{
 	// 			},
 	// 			LastName: to.Ptr("user"),
-	// 			RegistrationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T20:46:45.437Z"); return t}()),
+	// 			RegistrationDate: to.Ptr(time.Date(2017, time.June, 1, 20, 46, 45, 437000000, time.UTC)),
 	// 			State: to.Ptr(armapimanagement.UserStateActive),
 	// 		},
 	// 	},
@@ -130,7 +130,7 @@ func ExampleWorkspaceGroupUserClient_NewListPager() {
 		// 					},
 		// 					LastName: to.Ptr("lastname1"),
 		// 					Note: to.Ptr("note for user 1"),
-		// 					RegistrationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-31T18:54:41.447Z"); return t}()),
+		// 					RegistrationDate: to.Ptr(time.Date(2017, time.May, 31, 18, 54, 41, 447000000, time.UTC)),
 		// 					State: to.Ptr(armapimanagement.UserStateActive),
 		// 				},
 		// 			},

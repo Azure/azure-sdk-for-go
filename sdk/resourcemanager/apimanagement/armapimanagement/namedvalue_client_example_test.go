@@ -109,7 +109,7 @@ func ExampleNamedValueClient_BeginCreateOrUpdate_apiManagementCreateNamedValueWi
 	// 				IdentityClientID: to.Ptr("ceaa6b06-c00f-43ef-99ac-f53d1fe876a0"),
 	// 				LastStatus: &armapimanagement.KeyVaultLastAccessStatusContractProperties{
 	// 					Code: to.Ptr("Success"),
-	// 					TimeStampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-11T00:54:31.8024882Z"); return t}()),
+	// 					TimeStampUTC: to.Ptr(time.Date(2020, time.September, 11, 0, 54, 31, 802488200, time.UTC)),
 	// 				},
 	// 				SecretIdentifier: to.Ptr("https://contoso.vault.azure.net/secrets/aadSecret"),
 	// 			},
@@ -211,7 +211,7 @@ func ExampleNamedValueClient_Get_apiManagementGetNamedValueWithKeyVault() {
 	// 				IdentityClientID: to.Ptr("2d2df842-44d8-4885-8dec-77cc1a984a31"),
 	// 				LastStatus: &armapimanagement.KeyVaultLastAccessStatusContractProperties{
 	// 					Code: to.Ptr("Success"),
-	// 					TimeStampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-11T00:54:31.8024882Z"); return t}()),
+	// 					TimeStampUTC: to.Ptr(time.Date(2020, time.September, 11, 0, 54, 31, 802488200, time.UTC)),
 	// 				},
 	// 				SecretIdentifier: to.Ptr("https://rpbvtkeyvaultintegration.vault-int.azure-int.net/secrets/msitestingCert"),
 	// 			},
@@ -294,7 +294,7 @@ func ExampleNamedValueClient_NewListByServicePager() {
 		// 						IdentityClientID: to.Ptr("2d2df842-44d8-4885-8dec-77cc1a984a31"),
 		// 						LastStatus: &armapimanagement.KeyVaultLastAccessStatusContractProperties{
 		// 							Code: to.Ptr("Success"),
-		// 							TimeStampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-11T00:54:31.8024882Z"); return t}()),
+		// 							TimeStampUTC: to.Ptr(time.Date(2020, time.September, 11, 0, 54, 31, 802488200, time.UTC)),
 		// 						},
 		// 						SecretIdentifier: to.Ptr("https://contoso.vault.azure.net/secrets/aadSecret"),
 		// 					},
@@ -369,7 +369,7 @@ func ExampleNamedValueClient_BeginRefreshSecret() {
 	// 				IdentityClientID: to.Ptr("2d2df842-44d8-4885-8dec-77cc1a984a31"),
 	// 				LastStatus: &armapimanagement.KeyVaultLastAccessStatusContractProperties{
 	// 					Code: to.Ptr("Success"),
-	// 					TimeStampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-11T00:54:31.8024882Z"); return t}()),
+	// 					TimeStampUTC: to.Ptr(time.Date(2020, time.September, 11, 0, 54, 31, 802488200, time.UTC)),
 	// 				},
 	// 				SecretIdentifier: to.Ptr("https://rpbvtkeyvaultintegration.vault.azure.net/secrets/msitestingCert"),
 	// 			},

@@ -87,7 +87,7 @@ func ExampleGatewayClient_GenerateToken() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewGatewayClient().GenerateToken(ctx, "rg1", "apimService1", "gw1", armapimanagement.GatewayTokenRequestContract{
-		Expiry:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-21T00:44:24.2845269Z"); return t }()),
+		Expiry:  to.Ptr(time.Date(2020, time.April, 21, 0, 44, 24, 284526900, time.UTC)),
 		KeyType: to.Ptr(armapimanagement.KeyTypePrimary),
 	}, nil)
 	if err != nil {

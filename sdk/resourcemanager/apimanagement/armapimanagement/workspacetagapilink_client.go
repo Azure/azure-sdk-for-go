@@ -31,6 +31,9 @@ type WorkspaceTagAPILinkClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkspaceTagAPILinkClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceTagAPILinkClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,19 +69,14 @@ func (client *WorkspaceTagAPILinkClient) CreateOrUpdate(ctx context.Context, res
 	if err != nil {
 		return WorkspaceTagAPILinkClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceTagAPILinkClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *WorkspaceTagAPILinkClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, tagID string, apiLinkID string, parameters TagAPILinkContract, _ *WorkspaceTagAPILinkClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/tags/{tagId}/apiLinks/{apiLinkId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -117,8 +115,11 @@ func (client *WorkspaceTagAPILinkClient) createOrUpdateCreateRequest(ctx context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *WorkspaceTagAPILinkClient) createOrUpdateHandleResponse(resp *http.Response) (WorkspaceTagAPILinkClientCreateOrUpdateResponse, error) {
+func (client *WorkspaceTagAPILinkClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceTagAPILinkClientCreateOrUpdateResponse, error) {
 	result := WorkspaceTagAPILinkClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagAPILinkContract); err != nil {
 		return WorkspaceTagAPILinkClientCreateOrUpdateResponse{}, err
 	}
@@ -149,8 +150,7 @@ func (client *WorkspaceTagAPILinkClient) Delete(ctx context.Context, resourceGro
 		return WorkspaceTagAPILinkClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceTagAPILinkClientDeleteResponse{}, err
+		return WorkspaceTagAPILinkClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WorkspaceTagAPILinkClientDeleteResponse{}, nil
 }
@@ -159,7 +159,7 @@ func (client *WorkspaceTagAPILinkClient) Delete(ctx context.Context, resourceGro
 func (client *WorkspaceTagAPILinkClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, tagID string, apiLinkID string, _ *WorkspaceTagAPILinkClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/tags/{tagId}/apiLinks/{apiLinkId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -214,19 +214,14 @@ func (client *WorkspaceTagAPILinkClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return WorkspaceTagAPILinkClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceTagAPILinkClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *WorkspaceTagAPILinkClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, tagID string, apiLinkID string, _ *WorkspaceTagAPILinkClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/tags/{tagId}/apiLinks/{apiLinkId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -261,9 +256,12 @@ func (client *WorkspaceTagAPILinkClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkspaceTagAPILinkClient) getHandleResponse(resp *http.Response) (WorkspaceTagAPILinkClientGetResponse, error) {
+func (client *WorkspaceTagAPILinkClient) getHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceTagAPILinkClientGetResponse, error) {
 	result := WorkspaceTagAPILinkClientGetResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagAPILinkContract); err != nil {
@@ -290,64 +288,78 @@ func (client *WorkspaceTagAPILinkClient) NewListByProductPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, workspaceID, tagID, options)
-			}, nil)
+			req, err := client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, workspaceID, tagID, nextLink, options)
 			if err != nil {
 				return WorkspaceTagAPILinkClientListByProductResponse{}, err
 			}
-			return client.listByProductHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkspaceTagAPILinkClientListByProductResponse{}, err
+			}
+			return client.listByProductHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByProductCreateRequest creates the ListByProduct request.
-func (client *WorkspaceTagAPILinkClient) listByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, tagID string, options *WorkspaceTagAPILinkClientListByProductOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/tags/{tagId}/apiLinks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WorkspaceTagAPILinkClient) listByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, tagID string, nextLink string, options *WorkspaceTagAPILinkClientListByProductOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/tags/{tagId}/apiLinks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serviceName == "" {
+			return nil, errors.New("parameter serviceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+		if workspaceID == "" {
+			return nil, errors.New("parameter workspaceID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceId}", url.PathEscape(workspaceID))
+		if tagID == "" {
+			return nil, errors.New("parameter tagID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{tagId}", url.PathEscape(tagID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serviceName == "" {
-		return nil, errors.New("parameter serviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if workspaceID == "" {
-		return nil, errors.New("parameter workspaceID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceId}", url.PathEscape(workspaceID))
-	if tagID == "" {
-		return nil, errors.New("parameter tagID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{tagId}", url.PathEscape(tagID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByProductHandleResponse handles the ListByProduct response.
-func (client *WorkspaceTagAPILinkClient) listByProductHandleResponse(resp *http.Response) (WorkspaceTagAPILinkClientListByProductResponse, error) {
+func (client *WorkspaceTagAPILinkClient) listByProductHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceTagAPILinkClientListByProductResponse, error) {
 	result := WorkspaceTagAPILinkClientListByProductResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagAPILinkCollection); err != nil {
 		return WorkspaceTagAPILinkClientListByProductResponse{}, err
 	}

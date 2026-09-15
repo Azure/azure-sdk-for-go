@@ -42,9 +42,9 @@ func ExampleAPIReleaseClient_CreateOrUpdate() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1/releases/testrev"),
 	// 		Properties: &armapimanagement.APIReleaseContractProperties{
 	// 			APIID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1"),
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-08T20:52:00.65Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2018, time.February, 8, 20, 52, 0, 650000000, time.UTC)),
 	// 			Notes: to.Ptr("yahooagain"),
-	// 			UpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-08T20:52:00.65Z"); return t}()),
+	// 			UpdatedDateTime: to.Ptr(time.Date(2018, time.February, 8, 20, 52, 0, 650000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -97,9 +97,9 @@ func ExampleAPIReleaseClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1/releases/5a7cb545298324c53224a799"),
 	// 		Properties: &armapimanagement.APIReleaseContractProperties{
 	// 			APIID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1"),
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-08T20:38:29.173Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2018, time.February, 8, 20, 38, 29, 173000000, time.UTC)),
 	// 			Notes: to.Ptr("yahoo"),
-	// 			UpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-08T20:38:29.173Z"); return t}()),
+	// 			UpdatedDateTime: to.Ptr(time.Date(2018, time.February, 8, 20, 38, 29, 173000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -159,9 +159,9 @@ func ExampleAPIReleaseClient_NewListByServicePager() {
 		// 				Type: to.Ptr("Microsoft.ApiManagement/service/apis/releases"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1/releases/5a7cb545298324c53224a799"),
 		// 				Properties: &armapimanagement.APIReleaseContractProperties{
-		// 					CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-08T20:38:29.173Z"); return t}()),
+		// 					CreatedDateTime: to.Ptr(time.Date(2018, time.February, 8, 20, 38, 29, 173000000, time.UTC)),
 		// 					Notes: to.Ptr("yahoo"),
-		// 					UpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-08T20:38:29.173Z"); return t}()),
+		// 					UpdatedDateTime: to.Ptr(time.Date(2018, time.February, 8, 20, 38, 29, 173000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -200,9 +200,9 @@ func ExampleAPIReleaseClient_Update() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1/releases/testrev"),
 	// 		Properties: &armapimanagement.APIReleaseContractProperties{
 	// 			APIID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1"),
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-08T20:38:29.173Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2018, time.February, 8, 20, 38, 29, 173000000, time.UTC)),
 	// 			Notes: to.Ptr("yahoo"),
-	// 			UpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-08T20:38:29.173Z"); return t}()),
+	// 			UpdatedDateTime: to.Ptr(time.Date(2018, time.February, 8, 20, 38, 29, 173000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

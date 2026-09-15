@@ -111,7 +111,7 @@ func (a *AuthorizationServerTransport) dispatchConfirmConsentCode(req *http.Requ
 	if a.srv.ConfirmConsentCode == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ConfirmConsentCode not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationProviders/(?P<authorizationProviderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizations/(?P<authorizationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/confirmConsentCode`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationProviders/(?P<authorizationProviderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizations/(?P<authorizationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/confirmConsentCode`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -150,7 +150,7 @@ func (a *AuthorizationServerTransport) dispatchConfirmConsentCode(req *http.Requ
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }
@@ -159,7 +159,7 @@ func (a *AuthorizationServerTransport) dispatchCreateOrUpdate(req *http.Request)
 	if a.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationProviders/(?P<authorizationProviderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizations/(?P<authorizationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationProviders/(?P<authorizationProviderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizations/(?P<authorizationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -205,7 +205,7 @@ func (a *AuthorizationServerTransport) dispatchCreateOrUpdate(req *http.Request)
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }
@@ -214,7 +214,7 @@ func (a *AuthorizationServerTransport) dispatchDelete(req *http.Request) (*http.
 	if a.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationProviders/(?P<authorizationProviderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizations/(?P<authorizationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationProviders/(?P<authorizationProviderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizations/(?P<authorizationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -255,7 +255,7 @@ func (a *AuthorizationServerTransport) dispatchGet(req *http.Request) (*http.Res
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationProviders/(?P<authorizationProviderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizations/(?P<authorizationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationProviders/(?P<authorizationProviderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizations/(?P<authorizationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -290,7 +290,7 @@ func (a *AuthorizationServerTransport) dispatchGet(req *http.Request) (*http.Res
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }
@@ -301,7 +301,7 @@ func (a *AuthorizationServerTransport) dispatchNewListByAuthorizationProviderPag
 	}
 	newListByAuthorizationProviderPager := a.newListByAuthorizationProviderPager.get(req)
 	if newListByAuthorizationProviderPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationProviders/(?P<authorizationProviderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationProviders/(?P<authorizationProviderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

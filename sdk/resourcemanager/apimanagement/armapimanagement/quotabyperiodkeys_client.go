@@ -30,6 +30,9 @@ type QuotaByPeriodKeysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewQuotaByPeriodKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QuotaByPeriodKeysClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,19 +68,14 @@ func (client *QuotaByPeriodKeysClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return QuotaByPeriodKeysClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return QuotaByPeriodKeysClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *QuotaByPeriodKeysClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, quotaPeriodKey string, _ *QuotaByPeriodKeysClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/quotas/{quotaCounterKey}/periods/{quotaPeriodKey}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -108,8 +106,11 @@ func (client *QuotaByPeriodKeysClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *QuotaByPeriodKeysClient) getHandleResponse(resp *http.Response) (QuotaByPeriodKeysClientGetResponse, error) {
+func (client *QuotaByPeriodKeysClient) getHandleResponse(resp *http.Response, successCodes ...int) (QuotaByPeriodKeysClientGetResponse, error) {
 	result := QuotaByPeriodKeysClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaCounterContract); err != nil {
 		return QuotaByPeriodKeysClientGetResponse{}, err
 	}
@@ -141,19 +142,14 @@ func (client *QuotaByPeriodKeysClient) Update(ctx context.Context, resourceGroup
 	if err != nil {
 		return QuotaByPeriodKeysClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return QuotaByPeriodKeysClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *QuotaByPeriodKeysClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, quotaPeriodKey string, parameters QuotaCounterValueUpdateContract, _ *QuotaByPeriodKeysClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/quotas/{quotaCounterKey}/periods/{quotaPeriodKey}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -188,8 +184,11 @@ func (client *QuotaByPeriodKeysClient) updateCreateRequest(ctx context.Context, 
 }
 
 // updateHandleResponse handles the Update response.
-func (client *QuotaByPeriodKeysClient) updateHandleResponse(resp *http.Response) (QuotaByPeriodKeysClientUpdateResponse, error) {
+func (client *QuotaByPeriodKeysClient) updateHandleResponse(resp *http.Response, successCodes ...int) (QuotaByPeriodKeysClientUpdateResponse, error) {
 	result := QuotaByPeriodKeysClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaCounterContract); err != nil {
 		return QuotaByPeriodKeysClientUpdateResponse{}, err
 	}

@@ -31,6 +31,9 @@ type WorkspaceProductAPILinkClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkspaceProductAPILinkClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceProductAPILinkClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,19 +69,14 @@ func (client *WorkspaceProductAPILinkClient) CreateOrUpdate(ctx context.Context,
 	if err != nil {
 		return WorkspaceProductAPILinkClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceProductAPILinkClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *WorkspaceProductAPILinkClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, productID string, apiLinkID string, parameters ProductAPILinkContract, _ *WorkspaceProductAPILinkClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/products/{productId}/apiLinks/{apiLinkId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -117,8 +115,11 @@ func (client *WorkspaceProductAPILinkClient) createOrUpdateCreateRequest(ctx con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *WorkspaceProductAPILinkClient) createOrUpdateHandleResponse(resp *http.Response) (WorkspaceProductAPILinkClientCreateOrUpdateResponse, error) {
+func (client *WorkspaceProductAPILinkClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceProductAPILinkClientCreateOrUpdateResponse, error) {
 	result := WorkspaceProductAPILinkClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductAPILinkContract); err != nil {
 		return WorkspaceProductAPILinkClientCreateOrUpdateResponse{}, err
 	}
@@ -149,8 +150,7 @@ func (client *WorkspaceProductAPILinkClient) Delete(ctx context.Context, resourc
 		return WorkspaceProductAPILinkClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceProductAPILinkClientDeleteResponse{}, err
+		return WorkspaceProductAPILinkClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WorkspaceProductAPILinkClientDeleteResponse{}, nil
 }
@@ -159,7 +159,7 @@ func (client *WorkspaceProductAPILinkClient) Delete(ctx context.Context, resourc
 func (client *WorkspaceProductAPILinkClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, productID string, apiLinkID string, _ *WorkspaceProductAPILinkClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/products/{productId}/apiLinks/{apiLinkId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -215,19 +215,14 @@ func (client *WorkspaceProductAPILinkClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return WorkspaceProductAPILinkClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceProductAPILinkClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *WorkspaceProductAPILinkClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, productID string, apiLinkID string, _ *WorkspaceProductAPILinkClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/products/{productId}/apiLinks/{apiLinkId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -262,9 +257,12 @@ func (client *WorkspaceProductAPILinkClient) getCreateRequest(ctx context.Contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkspaceProductAPILinkClient) getHandleResponse(resp *http.Response) (WorkspaceProductAPILinkClientGetResponse, error) {
+func (client *WorkspaceProductAPILinkClient) getHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceProductAPILinkClientGetResponse, error) {
 	result := WorkspaceProductAPILinkClientGetResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductAPILinkContract); err != nil {
@@ -291,64 +289,78 @@ func (client *WorkspaceProductAPILinkClient) NewListByProductPager(resourceGroup
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, workspaceID, productID, options)
-			}, nil)
+			req, err := client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, workspaceID, productID, nextLink, options)
 			if err != nil {
 				return WorkspaceProductAPILinkClientListByProductResponse{}, err
 			}
-			return client.listByProductHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkspaceProductAPILinkClientListByProductResponse{}, err
+			}
+			return client.listByProductHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByProductCreateRequest creates the ListByProduct request.
-func (client *WorkspaceProductAPILinkClient) listByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, productID string, options *WorkspaceProductAPILinkClientListByProductOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/products/{productId}/apiLinks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WorkspaceProductAPILinkClient) listByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, productID string, nextLink string, options *WorkspaceProductAPILinkClientListByProductOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/products/{productId}/apiLinks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serviceName == "" {
+			return nil, errors.New("parameter serviceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+		if workspaceID == "" {
+			return nil, errors.New("parameter workspaceID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceId}", url.PathEscape(workspaceID))
+		if productID == "" {
+			return nil, errors.New("parameter productID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{productId}", url.PathEscape(productID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serviceName == "" {
-		return nil, errors.New("parameter serviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if workspaceID == "" {
-		return nil, errors.New("parameter workspaceID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceId}", url.PathEscape(workspaceID))
-	if productID == "" {
-		return nil, errors.New("parameter productID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{productId}", url.PathEscape(productID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByProductHandleResponse handles the ListByProduct response.
-func (client *WorkspaceProductAPILinkClient) listByProductHandleResponse(resp *http.Response) (WorkspaceProductAPILinkClientListByProductResponse, error) {
+func (client *WorkspaceProductAPILinkClient) listByProductHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceProductAPILinkClientListByProductResponse, error) {
 	result := WorkspaceProductAPILinkClientListByProductResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductAPILinkCollection); err != nil {
 		return WorkspaceProductAPILinkClientListByProductResponse{}, err
 	}

@@ -50,7 +50,7 @@ func ExampleAPIGatewayHostnameBindingClient_BeginCreateOrUpdate() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/gateways/standard-gw-1/hostnameBindings/hb-1"),
 	// 		Properties: &armapimanagement.GatewayHostnameBindingBaseProperties{
 	// 			Certificate: &armapimanagement.GatewayHostnameBindingCertificate{
-	// 				Expiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 				Expiry: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 				Subject: to.Ptr("CN=primary.cotoso.com"),
 	// 				Thumbprint: to.Ptr("3F2504E0-4F89-11D3-9A0C-0305E82C3301"),
 	// 			},
@@ -59,7 +59,7 @@ func ExampleAPIGatewayHostnameBindingClient_BeginCreateOrUpdate() {
 	// 				IdentityClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 				LastStatus: &armapimanagement.GatewayHostnameBindingKeyVaultLastStatus{
 	// 					Code: to.Ptr(armapimanagement.KeyVaultFetchCodeSuccess),
-	// 					TimeStampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-02T12:00:00Z"); return t}()),
+	// 					TimeStampUTC: to.Ptr(time.Date(2024, time.January, 2, 12, 0, 0, 0, time.UTC)),
 	// 				},
 	// 				SecretID: to.Ptr("https://myvault.keyvault.azure.net/secrets/contosoprimarycert"),
 	// 			},
@@ -116,7 +116,7 @@ func ExampleAPIGatewayHostnameBindingClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/gateways/standard-gw-1/hostnameBindings/hb-1"),
 	// 		Properties: &armapimanagement.GatewayHostnameBindingBaseProperties{
 	// 			Certificate: &armapimanagement.GatewayHostnameBindingCertificate{
-	// 				Expiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 				Expiry: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 				Subject: to.Ptr("CN=primary.cotoso.com"),
 	// 				Thumbprint: to.Ptr("3F2504E0-4F89-11D3-9A0C-0305E82C3301"),
 	// 			},
@@ -125,7 +125,7 @@ func ExampleAPIGatewayHostnameBindingClient_Get() {
 	// 				IdentityClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 				LastStatus: &armapimanagement.GatewayHostnameBindingKeyVaultLastStatus{
 	// 					Code: to.Ptr(armapimanagement.KeyVaultFetchCodeSuccess),
-	// 					TimeStampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-02T12:00:00Z"); return t}()),
+	// 					TimeStampUTC: to.Ptr(time.Date(2024, time.January, 2, 12, 0, 0, 0, time.UTC)),
 	// 				},
 	// 				SecretID: to.Ptr("https://myvault.keyvault.azure.net/secrets/contosoprimarycert"),
 	// 			},
@@ -167,7 +167,7 @@ func ExampleAPIGatewayHostnameBindingClient_NewListByGatewayPager() {
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/gateways/standard-gw-1/hostnameBindings/hb-1"),
 		// 				Properties: &armapimanagement.GatewayHostnameBindingBaseProperties{
 		// 					Certificate: &armapimanagement.GatewayHostnameBindingCertificate{
-		// 						Expiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 						Expiry: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 						Subject: to.Ptr("CN=primary.cotoso.com"),
 		// 						Thumbprint: to.Ptr("3F2504E0-4F89-11D3-9A0C-0305E82C3301"),
 		// 					},
@@ -176,7 +176,7 @@ func ExampleAPIGatewayHostnameBindingClient_NewListByGatewayPager() {
 		// 						IdentityClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 						LastStatus: &armapimanagement.GatewayHostnameBindingKeyVaultLastStatus{
 		// 							Code: to.Ptr(armapimanagement.KeyVaultFetchCodeSuccess),
-		// 							TimeStampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-02T12:00:00Z"); return t}()),
+		// 							TimeStampUTC: to.Ptr(time.Date(2024, time.January, 2, 12, 0, 0, 0, time.UTC)),
 		// 						},
 		// 						SecretID: to.Ptr("https://myvault.keyvault.azure.net/secrets/contosoprimarycert"),
 		// 					},
@@ -190,7 +190,7 @@ func ExampleAPIGatewayHostnameBindingClient_NewListByGatewayPager() {
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/gateways/standard-gw-1/hostnameBindings/hb-2"),
 		// 				Properties: &armapimanagement.GatewayHostnameBindingBaseProperties{
 		// 					Certificate: &armapimanagement.GatewayHostnameBindingCertificate{
-		// 						Expiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 						Expiry: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 						Subject: to.Ptr("CN=backup.cotoso.com"),
 		// 						Thumbprint: to.Ptr("3F2504E0-4F89-11D3-9A0C-0305E82C3301"),
 		// 					},
@@ -199,8 +199,8 @@ func ExampleAPIGatewayHostnameBindingClient_NewListByGatewayPager() {
 		// 						IdentityClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 						LastStatus: &armapimanagement.GatewayHostnameBindingKeyVaultLastStatus{
 		// 							Code: to.Ptr(armapimanagement.KeyVaultFetchCodeFailed),
-		// 							LastSuccessTimeStampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T12:00:00Z"); return t}()),
-		// 							TimeStampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-02T12:00:00Z"); return t}()),
+		// 							LastSuccessTimeStampUTC: to.Ptr(time.Date(2024, time.January, 1, 12, 0, 0, 0, time.UTC)),
+		// 							TimeStampUTC: to.Ptr(time.Date(2024, time.January, 2, 12, 0, 0, 0, time.UTC)),
 		// 						},
 		// 						SecretID: to.Ptr("https://myvault.keyvault.azure.net/secrets/contosobackupcert"),
 		// 					},

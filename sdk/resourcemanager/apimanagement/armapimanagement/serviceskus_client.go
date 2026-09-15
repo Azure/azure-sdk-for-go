@@ -30,6 +30,9 @@ type ServiceSKUsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewServiceSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceSKUsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -57,47 +60,61 @@ func (client *ServiceSKUsClient) NewListAvailableServiceSKUsPager(resourceGroupN
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAvailableServiceSKUsCreateRequest(ctx, resourceGroupName, serviceName, options)
-			}, nil)
+			req, err := client.listAvailableServiceSKUsCreateRequest(ctx, resourceGroupName, serviceName, nextLink, options)
 			if err != nil {
 				return ServiceSKUsClientListAvailableServiceSKUsResponse{}, err
 			}
-			return client.listAvailableServiceSKUsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ServiceSKUsClientListAvailableServiceSKUsResponse{}, err
+			}
+			return client.listAvailableServiceSKUsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAvailableServiceSKUsCreateRequest creates the ListAvailableServiceSKUs request.
-func (client *ServiceSKUsClient) listAvailableServiceSKUsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, _ *ServiceSKUsClientListAvailableServiceSKUsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/skus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ServiceSKUsClient) listAvailableServiceSKUsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, nextLink string, _ *ServiceSKUsClientListAvailableServiceSKUsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/skus"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serviceName == "" {
+			return nil, errors.New("parameter serviceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serviceName == "" {
-		return nil, errors.New("parameter serviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAvailableServiceSKUsHandleResponse handles the ListAvailableServiceSKUs response.
-func (client *ServiceSKUsClient) listAvailableServiceSKUsHandleResponse(resp *http.Response) (ServiceSKUsClientListAvailableServiceSKUsResponse, error) {
+func (client *ServiceSKUsClient) listAvailableServiceSKUsHandleResponse(resp *http.Response, successCodes ...int) (ServiceSKUsClientListAvailableServiceSKUsResponse, error) {
 	result := ServiceSKUsClientListAvailableServiceSKUsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceSKUResults); err != nil {
 		return ServiceSKUsClientListAvailableServiceSKUsResponse{}, err
 	}

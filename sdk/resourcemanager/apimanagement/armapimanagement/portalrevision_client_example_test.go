@@ -63,10 +63,10 @@ func ExamplePortalRevisionClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/portalRevisions/20201112101010"),
 	// 		Properties: &armapimanagement.PortalRevisionContractProperties{
 	// 			Description: to.Ptr("portal revision 1"),
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-12T22:51:36.47Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2020, time.November, 12, 22, 51, 36, 470000000, time.UTC)),
 	// 			IsCurrent: to.Ptr(true),
 	// 			Status: to.Ptr(armapimanagement.PortalRevisionStatusCompleted),
-	// 			UpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-12T22:52:00.097Z"); return t}()),
+	// 			UpdatedDateTime: to.Ptr(time.Date(2020, time.November, 12, 22, 52, 0, 97000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -125,10 +125,10 @@ func ExamplePortalRevisionClient_NewListByServicePager() {
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/portalRevisions/20201112000000"),
 		// 				Properties: &armapimanagement.PortalRevisionContractProperties{
 		// 					Description: to.Ptr("portal revision"),
-		// 					CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-12T22:10:09.673Z"); return t}()),
+		// 					CreatedDateTime: to.Ptr(time.Date(2020, time.November, 12, 22, 10, 9, 673000000, time.UTC)),
 		// 					IsCurrent: to.Ptr(false),
 		// 					Status: to.Ptr(armapimanagement.PortalRevisionStatusCompleted),
-		// 					UpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-12T22:12:41.46Z"); return t}()),
+		// 					UpdatedDateTime: to.Ptr(time.Date(2020, time.November, 12, 22, 12, 41, 460000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -137,10 +137,10 @@ func ExamplePortalRevisionClient_NewListByServicePager() {
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/portalRevisions/20201112101010"),
 		// 				Properties: &armapimanagement.PortalRevisionContractProperties{
 		// 					Description: to.Ptr("portal revision 1"),
-		// 					CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-12T22:51:36.47Z"); return t}()),
+		// 					CreatedDateTime: to.Ptr(time.Date(2020, time.November, 12, 22, 51, 36, 470000000, time.UTC)),
 		// 					IsCurrent: to.Ptr(true),
 		// 					Status: to.Ptr(armapimanagement.PortalRevisionStatusCompleted),
-		// 					UpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-12T22:52:00.097Z"); return t}()),
+		// 					UpdatedDateTime: to.Ptr(time.Date(2020, time.November, 12, 22, 52, 0, 97000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -183,10 +183,10 @@ func ExamplePortalRevisionClient_BeginUpdate() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/namedValues/testprop2"),
 	// 		Properties: &armapimanagement.PortalRevisionContractProperties{
 	// 			Description: to.Ptr("portal revision update"),
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-13T22:47:13.397Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2020, time.November, 13, 22, 47, 13, 397000000, time.UTC)),
 	// 			IsCurrent: to.Ptr(true),
 	// 			Status: to.Ptr(armapimanagement.PortalRevisionStatusCompleted),
-	// 			UpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-13T23:29:25.34Z"); return t}()),
+	// 			UpdatedDateTime: to.Ptr(time.Date(2020, time.November, 13, 23, 29, 25, 340000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

@@ -30,6 +30,9 @@ type PrivateEndpointConnectionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPrivateEndpointConnectionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -83,8 +86,7 @@ func (client *PrivateEndpointConnectionClient) createOrUpdate(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -93,7 +95,7 @@ func (client *PrivateEndpointConnectionClient) createOrUpdate(ctx context.Contex
 func (client *PrivateEndpointConnectionClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, privateEndpointConnectionName string, privateEndpointConnectionRequest PrivateEndpointConnectionRequest, _ *PrivateEndpointConnectionClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -164,8 +166,7 @@ func (client *PrivateEndpointConnectionClient) deleteOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -174,7 +175,7 @@ func (client *PrivateEndpointConnectionClient) deleteOperation(ctx context.Conte
 func (client *PrivateEndpointConnectionClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, privateEndpointConnectionName string, _ *PrivateEndpointConnectionClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -220,19 +221,14 @@ func (client *PrivateEndpointConnectionClient) GetByName(ctx context.Context, re
 	if err != nil {
 		return PrivateEndpointConnectionClientGetByNameResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateEndpointConnectionClientGetByNameResponse{}, err
-	}
-	resp, err := client.getByNameHandleResponse(httpResp)
-	return resp, err
+	return client.getByNameHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByNameCreateRequest creates the GetByName request.
 func (client *PrivateEndpointConnectionClient) getByNameCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, privateEndpointConnectionName string, _ *PrivateEndpointConnectionClientGetByNameOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -259,8 +255,11 @@ func (client *PrivateEndpointConnectionClient) getByNameCreateRequest(ctx contex
 }
 
 // getByNameHandleResponse handles the GetByName response.
-func (client *PrivateEndpointConnectionClient) getByNameHandleResponse(resp *http.Response) (PrivateEndpointConnectionClientGetByNameResponse, error) {
+func (client *PrivateEndpointConnectionClient) getByNameHandleResponse(resp *http.Response, successCodes ...int) (PrivateEndpointConnectionClientGetByNameResponse, error) {
 	result := PrivateEndpointConnectionClientGetByNameResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
 		return PrivateEndpointConnectionClientGetByNameResponse{}, err
 	}
@@ -288,19 +287,14 @@ func (client *PrivateEndpointConnectionClient) GetPrivateLinkResource(ctx contex
 	if err != nil {
 		return PrivateEndpointConnectionClientGetPrivateLinkResourceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateEndpointConnectionClientGetPrivateLinkResourceResponse{}, err
-	}
-	resp, err := client.getPrivateLinkResourceHandleResponse(httpResp)
-	return resp, err
+	return client.getPrivateLinkResourceHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPrivateLinkResourceCreateRequest creates the GetPrivateLinkResource request.
 func (client *PrivateEndpointConnectionClient) getPrivateLinkResourceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, privateLinkSubResourceName string, _ *PrivateEndpointConnectionClientGetPrivateLinkResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/privateLinkResources/{privateLinkSubResourceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -327,8 +321,11 @@ func (client *PrivateEndpointConnectionClient) getPrivateLinkResourceCreateReque
 }
 
 // getPrivateLinkResourceHandleResponse handles the GetPrivateLinkResource response.
-func (client *PrivateEndpointConnectionClient) getPrivateLinkResourceHandleResponse(resp *http.Response) (PrivateEndpointConnectionClientGetPrivateLinkResourceResponse, error) {
+func (client *PrivateEndpointConnectionClient) getPrivateLinkResourceHandleResponse(resp *http.Response, successCodes ...int) (PrivateEndpointConnectionClientGetPrivateLinkResourceResponse, error) {
 	result := PrivateEndpointConnectionClientGetPrivateLinkResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
 		return PrivateEndpointConnectionClientGetPrivateLinkResourceResponse{}, err
 	}
@@ -351,47 +348,61 @@ func (client *PrivateEndpointConnectionClient) NewListByServicePager(resourceGro
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			}, nil)
+			req, err := client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, nextLink, options)
 			if err != nil {
 				return PrivateEndpointConnectionClientListByServiceResponse{}, err
 			}
-			return client.listByServiceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PrivateEndpointConnectionClientListByServiceResponse{}, err
+			}
+			return client.listByServiceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *PrivateEndpointConnectionClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, _ *PrivateEndpointConnectionClientListByServiceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/privateEndpointConnections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PrivateEndpointConnectionClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, nextLink string, _ *PrivateEndpointConnectionClientListByServiceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/privateEndpointConnections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serviceName == "" {
+			return nil, errors.New("parameter serviceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serviceName == "" {
-		return nil, errors.New("parameter serviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *PrivateEndpointConnectionClient) listByServiceHandleResponse(resp *http.Response) (PrivateEndpointConnectionClientListByServiceResponse, error) {
+func (client *PrivateEndpointConnectionClient) listByServiceHandleResponse(resp *http.Response, successCodes ...int) (PrivateEndpointConnectionClientListByServiceResponse, error) {
 	result := PrivateEndpointConnectionClientListByServiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionListResult); err != nil {
 		return PrivateEndpointConnectionClientListByServiceResponse{}, err
 	}
@@ -418,19 +429,14 @@ func (client *PrivateEndpointConnectionClient) ListPrivateLinkResources(ctx cont
 	if err != nil {
 		return PrivateEndpointConnectionClientListPrivateLinkResourcesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateEndpointConnectionClientListPrivateLinkResourcesResponse{}, err
-	}
-	resp, err := client.listPrivateLinkResourcesHandleResponse(httpResp)
-	return resp, err
+	return client.listPrivateLinkResourcesHandleResponse(httpResp, http.StatusOK)
 }
 
 // listPrivateLinkResourcesCreateRequest creates the ListPrivateLinkResources request.
 func (client *PrivateEndpointConnectionClient) listPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, _ *PrivateEndpointConnectionClientListPrivateLinkResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/privateLinkResources"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -453,8 +459,11 @@ func (client *PrivateEndpointConnectionClient) listPrivateLinkResourcesCreateReq
 }
 
 // listPrivateLinkResourcesHandleResponse handles the ListPrivateLinkResources response.
-func (client *PrivateEndpointConnectionClient) listPrivateLinkResourcesHandleResponse(resp *http.Response) (PrivateEndpointConnectionClientListPrivateLinkResourcesResponse, error) {
+func (client *PrivateEndpointConnectionClient) listPrivateLinkResourcesHandleResponse(resp *http.Response, successCodes ...int) (PrivateEndpointConnectionClientListPrivateLinkResourcesResponse, error) {
 	result := PrivateEndpointConnectionClientListPrivateLinkResourcesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
 		return PrivateEndpointConnectionClientListPrivateLinkResourcesResponse{}, err
 	}

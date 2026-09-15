@@ -99,7 +99,7 @@ func (w *WorkspaceNotificationRecipientEmailServerTransport) dispatchCheckEntity
 	if w.srv.CheckEntityExists == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckEntityExists not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workspaces/(?P<workspaceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/notifications/(?P<notificationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recipientEmails/(?P<email>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workspaces/(?P<workspaceId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/notifications/(?P<notificationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recipientEmails/(?P<email>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -150,7 +150,7 @@ func (w *WorkspaceNotificationRecipientEmailServerTransport) dispatchCreateOrUpd
 	if w.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workspaces/(?P<workspaceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/notifications/(?P<notificationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recipientEmails/(?P<email>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workspaces/(?P<workspaceId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/notifications/(?P<notificationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recipientEmails/(?P<email>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -201,7 +201,7 @@ func (w *WorkspaceNotificationRecipientEmailServerTransport) dispatchDelete(req 
 	if w.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workspaces/(?P<workspaceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/notifications/(?P<notificationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recipientEmails/(?P<email>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workspaces/(?P<workspaceId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/notifications/(?P<notificationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recipientEmails/(?P<email>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -252,7 +252,7 @@ func (w *WorkspaceNotificationRecipientEmailServerTransport) dispatchListByNotif
 	if w.srv.ListByNotification == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListByNotification not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workspaces/(?P<workspaceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/notifications/(?P<notificationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recipientEmails`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workspaces/(?P<workspaceId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/notifications/(?P<notificationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recipientEmails`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {

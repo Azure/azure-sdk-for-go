@@ -67,7 +67,7 @@ func ExampleAPIGatewayClient_BeginCreateOrUpdate_apiManagementCreateStandardGate
 	// 			ConfigurationAPI: &armapimanagement.GatewayConfigurationAPI{
 	// 				Hostname: to.Ptr("apimGateway1.eastus.configuration.gateway.azure-api.net"),
 	// 			},
-	// 			CreatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-11T18:41:01.2506031Z"); return t}()),
+	// 			CreatedAtUTC: to.Ptr(time.Date(2022, time.July, 11, 18, 41, 1, 250603100, time.UTC)),
 	// 			Frontend: &armapimanagement.FrontendConfiguration{
 	// 				DefaultHostname: to.Ptr("apimGateway1.eastus.gateway.azure-api.net"),
 	// 			},
@@ -79,10 +79,10 @@ func ExampleAPIGatewayClient_BeginCreateOrUpdate_apiManagementCreateStandardGate
 	// 			Capacity: to.Ptr[int32](1),
 	// 		},
 	// 		SystemData: &armapimanagement.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-11T18:41:00.9390609Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.July, 11, 18, 41, 0, 939060900, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armapimanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-11T18:41:00.9390609Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.July, 11, 18, 41, 0, 939060900, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armapimanagement.CreatedByTypeUser),
 	// 		},
@@ -146,7 +146,7 @@ func ExampleAPIGatewayClient_BeginCreateOrUpdate_apiManagementCreateWorkspacePre
 	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vn1/subnets/sn1"),
 	// 				},
 	// 			},
-	// 			CreatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-11T18:41:01.2506031Z"); return t}()),
+	// 			CreatedAtUTC: to.Ptr(time.Date(2022, time.July, 11, 18, 41, 1, 250603100, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			TargetProvisioningState: to.Ptr(""),
 	// 			VirtualNetworkType: to.Ptr(armapimanagement.VirtualNetworkTypeExternal),
@@ -156,10 +156,10 @@ func ExampleAPIGatewayClient_BeginCreateOrUpdate_apiManagementCreateWorkspacePre
 	// 			Capacity: to.Ptr[int32](1),
 	// 		},
 	// 		SystemData: &armapimanagement.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-11T18:41:00.9390609Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.July, 11, 18, 41, 0, 939060900, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armapimanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-11T18:41:00.9390609Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.July, 11, 18, 41, 0, 939060900, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armapimanagement.CreatedByTypeUser),
 	// 		},
@@ -225,7 +225,7 @@ func ExampleAPIGatewayClient_Get() {
 	// 			ConfigurationAPI: &armapimanagement.GatewayConfigurationAPI{
 	// 				Hostname: to.Ptr("example-gateway.eastus.configuration.gateway.azure-api.net"),
 	// 			},
-	// 			CreatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T09:40:00.9453556Z"); return t}()),
+	// 			CreatedAtUTC: to.Ptr(time.Date(2021, time.June, 16, 9, 40, 0, 945355600, time.UTC)),
 	// 			Frontend: &armapimanagement.FrontendConfiguration{
 	// 				DefaultHostname: to.Ptr("example-gateway.eastus.gateway.azure-api.net"),
 	// 			},
@@ -237,10 +237,10 @@ func ExampleAPIGatewayClient_Get() {
 	// 			Capacity: to.Ptr[int32](1),
 	// 		},
 	// 		SystemData: &armapimanagement.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T09:40:00.7106733Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.June, 16, 9, 40, 0, 710673300, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armapimanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-20T06:33:09.6159006Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.June, 20, 6, 33, 9, 615900600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("foo@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armapimanagement.CreatedByTypeUser),
 	// 		},
@@ -292,7 +292,7 @@ func ExampleAPIGatewayClient_NewListPager() {
 		// 					ConfigurationAPI: &armapimanagement.GatewayConfigurationAPI{
 		// 						Hostname: to.Ptr("standard-gw-1.westus.configuration.gateway.azure-api.net"),
 		// 					},
-		// 					CreatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T09:40:00.9453556Z"); return t}()),
+		// 					CreatedAtUTC: to.Ptr(time.Date(2021, time.June, 16, 9, 40, 0, 945355600, time.UTC)),
 		// 					Frontend: &armapimanagement.FrontendConfiguration{
 		// 						DefaultHostname: to.Ptr("standard-gw-1.westus.gateway.azure-api.net"),
 		// 					},
@@ -304,10 +304,10 @@ func ExampleAPIGatewayClient_NewListPager() {
 		// 					Capacity: to.Ptr[int32](1),
 		// 				},
 		// 				SystemData: &armapimanagement.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T09:40:00.7106733Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.June, 16, 9, 40, 0, 710673300, time.UTC)),
 		// 					CreatedBy: to.Ptr("bar@contoso.com"),
 		// 					CreatedByType: to.Ptr(armapimanagement.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-20T06:33:09.6159006Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.June, 20, 6, 33, 9, 615900600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("foo@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armapimanagement.CreatedByTypeUser),
 		// 				},
@@ -323,7 +323,7 @@ func ExampleAPIGatewayClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.ApiManagement/gateways/workspace-gw-2"),
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armapimanagement.GatewayProperties{
-		// 					CreatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T09:40:00.9453556Z"); return t}()),
+		// 					CreatedAtUTC: to.Ptr(time.Date(2021, time.June, 16, 9, 40, 0, 945355600, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					TargetProvisioningState: to.Ptr(""),
 		// 				},
@@ -381,7 +381,7 @@ func ExampleAPIGatewayClient_NewListByResourceGroupPager() {
 		// 					ConfigurationAPI: &armapimanagement.GatewayConfigurationAPI{
 		// 						Hostname: to.Ptr("standard-gw-1.westus.configuration.gateway.azure-api.net"),
 		// 					},
-		// 					CreatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T09:40:00.9453556Z"); return t}()),
+		// 					CreatedAtUTC: to.Ptr(time.Date(2021, time.June, 16, 9, 40, 0, 945355600, time.UTC)),
 		// 					Frontend: &armapimanagement.FrontendConfiguration{
 		// 						DefaultHostname: to.Ptr("standard-gw-1.westus.gateway.azure-api.net"),
 		// 					},
@@ -393,10 +393,10 @@ func ExampleAPIGatewayClient_NewListByResourceGroupPager() {
 		// 					Capacity: to.Ptr[int32](1),
 		// 				},
 		// 				SystemData: &armapimanagement.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T09:40:00.7106733Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.June, 16, 9, 40, 0, 710673300, time.UTC)),
 		// 					CreatedBy: to.Ptr("bar@contoso.com"),
 		// 					CreatedByType: to.Ptr(armapimanagement.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-20T06:33:09.6159006Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.June, 20, 6, 33, 9, 615900600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("foo@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armapimanagement.CreatedByTypeUser),
 		// 				},
@@ -420,7 +420,7 @@ func ExampleAPIGatewayClient_NewListByResourceGroupPager() {
 		// 					ConfigurationAPI: &armapimanagement.GatewayConfigurationAPI{
 		// 						Hostname: to.Ptr("standard-gw-2.eastus.configuration.gateway.azure-api.net"),
 		// 					},
-		// 					CreatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T09:40:00.9453556Z"); return t}()),
+		// 					CreatedAtUTC: to.Ptr(time.Date(2021, time.June, 16, 9, 40, 0, 945355600, time.UTC)),
 		// 					Frontend: &armapimanagement.FrontendConfiguration{
 		// 						DefaultHostname: to.Ptr("standard-gw-2.eastus.gateway.azure-api.net"),
 		// 					},
@@ -489,7 +489,7 @@ func ExampleAPIGatewayClient_BeginUpdate() {
 	// 			ConfigurationAPI: &armapimanagement.GatewayConfigurationAPI{
 	// 				Hostname: to.Ptr("apimGateway1.eastus.configuration.gateway.azure-api.net"),
 	// 			},
-	// 			CreatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-11T18:41:01.2506031Z"); return t}()),
+	// 			CreatedAtUTC: to.Ptr(time.Date(2022, time.July, 11, 18, 41, 1, 250603100, time.UTC)),
 	// 			Frontend: &armapimanagement.FrontendConfiguration{
 	// 				DefaultHostname: to.Ptr("apimGateway1.eastus.gateway.azure-api.net"),
 	// 			},
@@ -501,10 +501,10 @@ func ExampleAPIGatewayClient_BeginUpdate() {
 	// 			Capacity: to.Ptr[int32](1),
 	// 		},
 	// 		SystemData: &armapimanagement.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-11T18:41:00.9390609Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.July, 11, 18, 41, 0, 939060900, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armapimanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-11T18:41:00.9390609Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.July, 11, 18, 41, 0, 939060900, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armapimanagement.CreatedByTypeUser),
 	// 		},

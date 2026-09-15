@@ -2804,8 +2804,9 @@ type SubscriptionClientCreateOrUpdateOptions struct {
 	IfMatch *string
 
 	// Notify change in Subscription State.
-	// - If false, do not send any email notification for change of state of subscription
-	// - If true, send email notification of change of state of subscription
+	//
+	//   - If false, do not send any email notification for change of state of subscription
+	//   - If true, send email notification of change of state of subscription
 	Notify *bool
 }
 
@@ -2866,8 +2867,9 @@ type SubscriptionClientUpdateOptions struct {
 	AppType *AppType
 
 	// Notify change in Subscription State.
-	// - If false, do not send any email notification for change of state of subscription
-	// - If true, send email notification of change of state of subscription
+	//
+	//   - If false, do not send any email notification for change of state of subscription
+	//   - If true, send email notification of change of state of subscription
 	Notify *bool
 }
 
@@ -4420,8 +4422,9 @@ type WorkspaceSubscriptionClientCreateOrUpdateOptions struct {
 	IfMatch *string
 
 	// Notify change in Subscription State.
-	// - If false, do not send any email notification for change of state of subscription
-	// - If true, send email notification of change of state of subscription
+	//
+	//   - If false, do not send any email notification for change of state of subscription
+	//   - If true, send email notification of change of state of subscription
 	Notify *bool
 }
 
@@ -4485,8 +4488,9 @@ type WorkspaceSubscriptionClientUpdateOptions struct {
 	AppType *AppType
 
 	// Notify change in Subscription State.
-	// - If false, do not send any email notification for change of state of subscription
-	// - If true, send email notification of change of state of subscription
+	//
+	//   - If false, do not send any email notification for change of state of subscription
+	//   - If true, send email notification of change of state of subscription
 	Notify *bool
 }
 

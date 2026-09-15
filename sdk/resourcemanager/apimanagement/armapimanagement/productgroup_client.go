@@ -31,6 +31,9 @@ type ProductGroupClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProductGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProductGroupClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,8 +67,7 @@ func (client *ProductGroupClient) CheckEntityExists(ctx context.Context, resourc
 		return ProductGroupClientCheckEntityExistsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ProductGroupClientCheckEntityExistsResponse{}, err
+		return ProductGroupClientCheckEntityExistsResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ProductGroupClientCheckEntityExistsResponse{Success: httpResp.StatusCode >= 200 && httpResp.StatusCode < 300}, nil
 }
@@ -74,7 +76,7 @@ func (client *ProductGroupClient) CheckEntityExists(ctx context.Context, resourc
 func (client *ProductGroupClient) checkEntityExistsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, groupID string, _ *ProductGroupClientCheckEntityExistsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/groups/{groupId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -125,19 +127,14 @@ func (client *ProductGroupClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return ProductGroupClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ProductGroupClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ProductGroupClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, groupID string, _ *ProductGroupClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/groups/{groupId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -168,8 +165,11 @@ func (client *ProductGroupClient) createOrUpdateCreateRequest(ctx context.Contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ProductGroupClient) createOrUpdateHandleResponse(resp *http.Response) (ProductGroupClientCreateOrUpdateResponse, error) {
+func (client *ProductGroupClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ProductGroupClientCreateOrUpdateResponse, error) {
 	result := ProductGroupClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GroupContract); err != nil {
 		return ProductGroupClientCreateOrUpdateResponse{}, err
 	}
@@ -198,8 +198,7 @@ func (client *ProductGroupClient) Delete(ctx context.Context, resourceGroupName 
 		return ProductGroupClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ProductGroupClientDeleteResponse{}, err
+		return ProductGroupClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ProductGroupClientDeleteResponse{}, nil
 }
@@ -208,7 +207,7 @@ func (client *ProductGroupClient) Delete(ctx context.Context, resourceGroupName 
 func (client *ProductGroupClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, groupID string, _ *ProductGroupClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/groups/{groupId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -254,60 +253,74 @@ func (client *ProductGroupClient) NewListByProductPager(resourceGroupName string
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, productID, options)
-			}, nil)
+			req, err := client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, productID, nextLink, options)
 			if err != nil {
 				return ProductGroupClientListByProductResponse{}, err
 			}
-			return client.listByProductHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProductGroupClientListByProductResponse{}, err
+			}
+			return client.listByProductHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByProductCreateRequest creates the ListByProduct request.
-func (client *ProductGroupClient) listByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *ProductGroupClientListByProductOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/groups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ProductGroupClient) listByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, nextLink string, options *ProductGroupClientListByProductOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/groups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serviceName == "" {
+			return nil, errors.New("parameter serviceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+		if productID == "" {
+			return nil, errors.New("parameter productID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{productId}", url.PathEscape(productID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serviceName == "" {
-		return nil, errors.New("parameter serviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if productID == "" {
-		return nil, errors.New("parameter productID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{productId}", url.PathEscape(productID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByProductHandleResponse handles the ListByProduct response.
-func (client *ProductGroupClient) listByProductHandleResponse(resp *http.Response) (ProductGroupClientListByProductResponse, error) {
+func (client *ProductGroupClient) listByProductHandleResponse(resp *http.Response, successCodes ...int) (ProductGroupClientListByProductResponse, error) {
 	result := ProductGroupClientListByProductResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GroupCollection); err != nil {
 		return ProductGroupClientListByProductResponse{}, err
 	}

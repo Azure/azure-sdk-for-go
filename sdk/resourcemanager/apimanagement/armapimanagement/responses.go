@@ -1251,8 +1251,7 @@ type DeletedServicesClientListBySubscriptionResponse struct {
 
 // DeletedServicesClientPurgeResponse contains the response from method DeletedServicesClient.BeginPurge.
 type DeletedServicesClientPurgeResponse struct {
-	// Deleted API Management Service information.
-	DeletedServiceContract
+	// placeholder for future response values
 }
 
 // DiagnosticClientCreateOrUpdateResponse contains the response from method DiagnosticClient.CreateOrUpdate.
@@ -2731,8 +2730,7 @@ type ServiceClientCreateOrUpdateResponse struct {
 
 // ServiceClientDeleteResponse contains the response from method ServiceClient.BeginDelete.
 type ServiceClientDeleteResponse struct {
-	// A single API Management service resource in List or Get response.
-	ServiceResource
+	// placeholder for future response values
 }
 
 // ServiceClientGetDomainOwnershipIdentifierResponse contains the response from method ServiceClient.GetDomainOwnershipIdentifier.

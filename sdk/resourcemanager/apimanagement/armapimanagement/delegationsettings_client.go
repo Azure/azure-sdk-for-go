@@ -30,6 +30,9 @@ type DelegationSettingsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDelegationSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DelegationSettingsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *DelegationSettingsClient) CreateOrUpdate(ctx context.Context, reso
 	if err != nil {
 		return DelegationSettingsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DelegationSettingsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *DelegationSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalDelegationSettings, options *DelegationSettingsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/delegation"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -104,8 +102,11 @@ func (client *DelegationSettingsClient) createOrUpdateCreateRequest(ctx context.
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DelegationSettingsClient) createOrUpdateHandleResponse(resp *http.Response) (DelegationSettingsClientCreateOrUpdateResponse, error) {
+func (client *DelegationSettingsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (DelegationSettingsClientCreateOrUpdateResponse, error) {
 	result := DelegationSettingsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PortalDelegationSettings); err != nil {
 		return DelegationSettingsClientCreateOrUpdateResponse{}, err
 	}
@@ -131,19 +132,14 @@ func (client *DelegationSettingsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return DelegationSettingsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DelegationSettingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *DelegationSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, _ *DelegationSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/delegation"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -166,9 +162,12 @@ func (client *DelegationSettingsClient) getCreateRequest(ctx context.Context, re
 }
 
 // getHandleResponse handles the Get response.
-func (client *DelegationSettingsClient) getHandleResponse(resp *http.Response) (DelegationSettingsClientGetResponse, error) {
+func (client *DelegationSettingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DelegationSettingsClientGetResponse, error) {
 	result := DelegationSettingsClientGetResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PortalDelegationSettings); err != nil {
@@ -196,19 +195,14 @@ func (client *DelegationSettingsClient) GetEntityTag(ctx context.Context, resour
 	if err != nil {
 		return DelegationSettingsClientGetEntityTagResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DelegationSettingsClientGetEntityTagResponse{}, err
-	}
-	resp, err := client.getEntityTagHandleResponse(httpResp)
-	return resp, err
+	return client.getEntityTagHandleResponse(httpResp, http.StatusOK)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
 func (client *DelegationSettingsClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, _ *DelegationSettingsClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/delegation"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -230,11 +224,15 @@ func (client *DelegationSettingsClient) getEntityTagCreateRequest(ctx context.Co
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *DelegationSettingsClient) getEntityTagHandleResponse(resp *http.Response) (DelegationSettingsClientGetEntityTagResponse, error) {
-	result := DelegationSettingsClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
-	if val := resp.Header.Get("ETag"); val != "" {
+func (client *DelegationSettingsClient) getEntityTagHandleResponse(resp *http.Response, successCodes ...int) (DelegationSettingsClientGetEntityTagResponse, error) {
+	result := DelegationSettingsClientGetEntityTagResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -258,19 +256,14 @@ func (client *DelegationSettingsClient) ListSecrets(ctx context.Context, resourc
 	if err != nil {
 		return DelegationSettingsClientListSecretsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DelegationSettingsClientListSecretsResponse{}, err
-	}
-	resp, err := client.listSecretsHandleResponse(httpResp)
-	return resp, err
+	return client.listSecretsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listSecretsCreateRequest creates the ListSecrets request.
 func (client *DelegationSettingsClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, _ *DelegationSettingsClientListSecretsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/delegation/listSecrets"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -293,8 +286,11 @@ func (client *DelegationSettingsClient) listSecretsCreateRequest(ctx context.Con
 }
 
 // listSecretsHandleResponse handles the ListSecrets response.
-func (client *DelegationSettingsClient) listSecretsHandleResponse(resp *http.Response) (DelegationSettingsClientListSecretsResponse, error) {
+func (client *DelegationSettingsClient) listSecretsHandleResponse(resp *http.Response, successCodes ...int) (DelegationSettingsClientListSecretsResponse, error) {
 	result := DelegationSettingsClientListSecretsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PortalSettingValidationKeyContract); err != nil {
 		return DelegationSettingsClientListSecretsResponse{}, err
 	}
@@ -325,8 +321,7 @@ func (client *DelegationSettingsClient) Update(ctx context.Context, resourceGrou
 		return DelegationSettingsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return DelegationSettingsClientUpdateResponse{}, err
+		return DelegationSettingsClientUpdateResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DelegationSettingsClientUpdateResponse{}, nil
 }
@@ -335,7 +330,7 @@ func (client *DelegationSettingsClient) Update(ctx context.Context, resourceGrou
 func (client *DelegationSettingsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, ifMatch string, parameters PortalDelegationSettings, _ *DelegationSettingsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/delegation"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

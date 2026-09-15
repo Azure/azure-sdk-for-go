@@ -30,6 +30,9 @@ type TenantAccessGitClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTenantAccessGitClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TenantAccessGitClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,8 +66,7 @@ func (client *TenantAccessGitClient) RegeneratePrimaryKey(ctx context.Context, r
 		return TenantAccessGitClientRegeneratePrimaryKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return TenantAccessGitClientRegeneratePrimaryKeyResponse{}, err
+		return TenantAccessGitClientRegeneratePrimaryKeyResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TenantAccessGitClientRegeneratePrimaryKeyResponse{}, nil
 }
@@ -73,7 +75,7 @@ func (client *TenantAccessGitClient) RegeneratePrimaryKey(ctx context.Context, r
 func (client *TenantAccessGitClient) regeneratePrimaryKeyCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, _ *TenantAccessGitClientRegeneratePrimaryKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}/git/regeneratePrimaryKey"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -120,8 +122,7 @@ func (client *TenantAccessGitClient) RegenerateSecondaryKey(ctx context.Context,
 		return TenantAccessGitClientRegenerateSecondaryKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return TenantAccessGitClientRegenerateSecondaryKeyResponse{}, err
+		return TenantAccessGitClientRegenerateSecondaryKeyResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TenantAccessGitClientRegenerateSecondaryKeyResponse{}, nil
 }
@@ -130,7 +131,7 @@ func (client *TenantAccessGitClient) RegenerateSecondaryKey(ctx context.Context,
 func (client *TenantAccessGitClient) regenerateSecondaryKeyCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, _ *TenantAccessGitClientRegenerateSecondaryKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}/git/regenerateSecondaryKey"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

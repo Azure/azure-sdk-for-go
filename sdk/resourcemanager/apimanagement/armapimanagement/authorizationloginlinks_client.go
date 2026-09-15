@@ -30,6 +30,9 @@ type AuthorizationLoginLinksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAuthorizationLoginLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AuthorizationLoginLinksClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,19 +67,14 @@ func (client *AuthorizationLoginLinksClient) Post(ctx context.Context, resourceG
 	if err != nil {
 		return AuthorizationLoginLinksClientPostResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AuthorizationLoginLinksClientPostResponse{}, err
-	}
-	resp, err := client.postHandleResponse(httpResp)
-	return resp, err
+	return client.postHandleResponse(httpResp, http.StatusOK)
 }
 
 // postCreateRequest creates the Post request.
 func (client *AuthorizationLoginLinksClient) postCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, authorizationProviderID string, authorizationID string, parameters AuthorizationLoginRequestContract, _ *AuthorizationLoginLinksClientPostOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationProviders/{authorizationProviderId}/authorizations/{authorizationId}/getLoginLinks"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -111,9 +109,12 @@ func (client *AuthorizationLoginLinksClient) postCreateRequest(ctx context.Conte
 }
 
 // postHandleResponse handles the Post response.
-func (client *AuthorizationLoginLinksClient) postHandleResponse(resp *http.Response) (AuthorizationLoginLinksClientPostResponse, error) {
+func (client *AuthorizationLoginLinksClient) postHandleResponse(resp *http.Response, successCodes ...int) (AuthorizationLoginLinksClientPostResponse, error) {
 	result := AuthorizationLoginLinksClientPostResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationLoginResponseContract); err != nil {

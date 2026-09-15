@@ -11,6 +11,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relationships/armrelationships"
 	"net/http"
 	"net/url"
@@ -31,6 +32,10 @@ type DependencyOfRelationshipsServer struct {
 	// Get is the fake for method DependencyOfRelationshipsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceURI string, name string, options *armrelationships.DependencyOfRelationshipsClientGetOptions) (resp azfake.Responder[armrelationships.DependencyOfRelationshipsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByParentPager is the fake for method DependencyOfRelationshipsClient.NewListByParentPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByParentPager func(resourceURI string, options *armrelationships.DependencyOfRelationshipsClientListByParentOptions) (resp azfake.PagerResponder[armrelationships.DependencyOfRelationshipsClientListByParentResponse])
 }
 
 // NewDependencyOfRelationshipsServerTransport creates a new instance of DependencyOfRelationshipsServerTransport with the provided implementation.
@@ -38,18 +43,20 @@ type DependencyOfRelationshipsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDependencyOfRelationshipsServerTransport(srv *DependencyOfRelationshipsServer) *DependencyOfRelationshipsServerTransport {
 	return &DependencyOfRelationshipsServerTransport{
-		srv:                 srv,
-		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armrelationships.DependencyOfRelationshipsClientCreateOrUpdateResponse]](),
-		beginDelete:         newTracker[azfake.PollerResponder[armrelationships.DependencyOfRelationshipsClientDeleteResponse]](),
+		srv:                  srv,
+		beginCreateOrUpdate:  newTracker[azfake.PollerResponder[armrelationships.DependencyOfRelationshipsClientCreateOrUpdateResponse]](),
+		beginDelete:          newTracker[azfake.PollerResponder[armrelationships.DependencyOfRelationshipsClientDeleteResponse]](),
+		newListByParentPager: newTracker[azfake.PagerResponder[armrelationships.DependencyOfRelationshipsClientListByParentResponse]](),
 	}
 }
 
 // DependencyOfRelationshipsServerTransport connects instances of armrelationships.DependencyOfRelationshipsClient to instances of DependencyOfRelationshipsServer.
 // Don't use this type directly, use NewDependencyOfRelationshipsServerTransport instead.
 type DependencyOfRelationshipsServerTransport struct {
-	srv                 *DependencyOfRelationshipsServer
-	beginCreateOrUpdate *tracker[azfake.PollerResponder[armrelationships.DependencyOfRelationshipsClientCreateOrUpdateResponse]]
-	beginDelete         *tracker[azfake.PollerResponder[armrelationships.DependencyOfRelationshipsClientDeleteResponse]]
+	srv                  *DependencyOfRelationshipsServer
+	beginCreateOrUpdate  *tracker[azfake.PollerResponder[armrelationships.DependencyOfRelationshipsClientCreateOrUpdateResponse]]
+	beginDelete          *tracker[azfake.PollerResponder[armrelationships.DependencyOfRelationshipsClientDeleteResponse]]
+	newListByParentPager *tracker[azfake.PagerResponder[armrelationships.DependencyOfRelationshipsClientListByParentResponse]]
 }
 
 // Do implements the policy.Transporter interface for DependencyOfRelationshipsServerTransport.
@@ -79,6 +86,8 @@ func (d *DependencyOfRelationshipsServerTransport) dispatchToMethodFake(req *htt
 				res.resp, res.err = d.dispatchBeginDelete(req)
 			case "DependencyOfRelationshipsClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
+			case "DependencyOfRelationshipsClient.NewListByParentPager":
+				res.resp, res.err = d.dispatchNewListByParentPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -216,6 +225,43 @@ func (d *DependencyOfRelationshipsServerTransport) dispatchGet(req *http.Request
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DependencyOfRelationship, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DependencyOfRelationshipsServerTransport) dispatchNewListByParentPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListByParentPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByParentPager not implemented")}
+	}
+	newListByParentPager := d.newListByParentPager.get(req)
+	if newListByParentPager == nil {
+		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Relationships/dependencyOf`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+		if err != nil {
+			return nil, err
+		}
+		resp := d.srv.NewListByParentPager(resourceURIParam, nil)
+		newListByParentPager = &resp
+		d.newListByParentPager.add(req, newListByParentPager)
+		server.PagerResponderInjectNextLinks(newListByParentPager, req, func(page *armrelationships.DependencyOfRelationshipsClientListByParentResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByParentPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListByParentPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByParentPager) {
+		d.newListByParentPager.remove(req)
 	}
 	return resp, nil
 }

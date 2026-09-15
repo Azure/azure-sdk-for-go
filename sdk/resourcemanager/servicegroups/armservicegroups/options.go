@@ -9,11 +9,6 @@ type ClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListAncestorsOptions contains the optional parameters for the Client.ListAncestors method.
-type ClientListAncestorsOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ManagementClientBeginCreateOrUpdateServiceGroupOptions contains the optional parameters for the ManagementClient.BeginCreateOrUpdateServiceGroup
 // method.
 type ManagementClientBeginCreateOrUpdateServiceGroupOptions struct {
@@ -33,4 +28,9 @@ type ManagementClientBeginDeleteServiceGroupOptions struct {
 type ManagementClientBeginUpdateServiceGroupOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
+}
+
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
+type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
 }

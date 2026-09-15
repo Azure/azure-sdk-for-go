@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironmentsDaprComponents_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsDaprComponents_CreateOrUpdate.json
 func ExampleConnectedEnvironmentsDaprComponentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,16 +54,6 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_BeginCreateOrUpdate() {
 				{
 					Name:  to.Ptr("masterkey"),
 					Value: to.Ptr("keyvalue"),
-				},
-			},
-			ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
-				{
-					Name: to.Ptr("statestore"),
-					Metadata: &armappcontainers.DaprServiceBindMetadata{
-						Name:  to.Ptr("daprcomponentBind"),
-						Value: to.Ptr("redis-bind"),
-					},
-					ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
 				},
 			},
 			Version: to.Ptr("v1"),
@@ -116,23 +106,13 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_BeginCreateOrUpdate() {
 	// 					Name: to.Ptr("masterkey"),
 	// 				},
 	// 			},
-	// 			ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
-	// 				{
-	// 					Name: to.Ptr("statestore"),
-	// 					Metadata: &armappcontainers.DaprServiceBindMetadata{
-	// 						Name: to.Ptr("daprcomponentBind"),
-	// 						Value: to.Ptr("redis-bind"),
-	// 					},
-	// 					ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
-	// 				},
-	// 			},
 	// 			Version: to.Ptr("v1"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironmentsDaprComponents_Delete.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsDaprComponents_Delete.json
 func ExampleConnectedEnvironmentsDaprComponentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,7 +133,7 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironmentsDaprComponents_Get.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsDaprComponents_Get.json
 func ExampleConnectedEnvironmentsDaprComponentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,23 +188,13 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_Get() {
 	// 					Name: to.Ptr("masterkey"),
 	// 				},
 	// 			},
-	// 			ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
-	// 				{
-	// 					Name: to.Ptr("statestore"),
-	// 					Metadata: &armappcontainers.DaprServiceBindMetadata{
-	// 						Name: to.Ptr("daprcomponentBind"),
-	// 						Value: to.Ptr("redis-bind"),
-	// 					},
-	// 					ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
-	// 				},
-	// 			},
 	// 			Version: to.Ptr("v1"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironmentsDaprComponents_List.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsDaprComponents_List.json
 func ExampleConnectedEnvironmentsDaprComponentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,16 +255,6 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_NewListPager() {
 		// 							Name: to.Ptr("masterkey"),
 		// 						},
 		// 					},
-		// 					ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
-		// 						{
-		// 							Name: to.Ptr("statestore"),
-		// 							Metadata: &armappcontainers.DaprServiceBindMetadata{
-		// 								Name: to.Ptr("daprcomponentBind"),
-		// 								Value: to.Ptr("redis-bind"),
-		// 							},
-		// 							ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
-		// 						},
-		// 					},
 		// 					Version: to.Ptr("v1"),
 		// 				},
 		// 			},
@@ -304,7 +264,7 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironmentsDaprComponents_ListSecrets.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsDaprComponents_ListSecrets.json
 func ExampleConnectedEnvironmentsDaprComponentsClient_ListSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

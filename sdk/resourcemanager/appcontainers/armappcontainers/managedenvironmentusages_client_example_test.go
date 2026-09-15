@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironmentUsages_List.json
+// Generated from example definition: 2026-07-01/ManagedEnvironmentUsages_List.json
 func ExampleManagedEnvironmentUsagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

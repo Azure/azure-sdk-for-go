@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/NetworkSecurityPerimeterPut.json
+// Generated from example definition: 2026-01-01/NetworkSecurityPerimeterPut.json
 func ExampleSecurityPerimetersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleSecurityPerimetersClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkSecurityPerimeterDelete.json
+// Generated from example definition: 2026-01-01/NetworkSecurityPerimeterDelete.json
 func ExampleSecurityPerimetersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleSecurityPerimetersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkSecurityPerimeterGet.json
+// Generated from example definition: 2026-01-01/NetworkSecurityPerimeterGet.json
 func ExampleSecurityPerimetersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleSecurityPerimetersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkSecurityPerimeterList.json
+// Generated from example definition: 2026-01-01/NetworkSecurityPerimeterList.json
 func ExampleSecurityPerimetersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,7 +197,7 @@ func ExampleSecurityPerimetersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NetworkSecurityPerimeterListAll.json
+// Generated from example definition: 2026-01-01/NetworkSecurityPerimeterListAll.json
 func ExampleSecurityPerimetersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -269,7 +269,7 @@ func ExampleSecurityPerimetersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NetworkSecurityPerimeterPatch.json
+// Generated from example definition: 2026-01-01/NetworkSecurityPerimeterPatch.json
 func ExampleSecurityPerimetersClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

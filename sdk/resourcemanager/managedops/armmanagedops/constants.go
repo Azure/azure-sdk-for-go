@@ -5,7 +5,7 @@
 package armmanagedops
 
 const (
-	version20250728Preview string = "2025-07-28-preview"
+	version20260106Preview string = "2026-01-06-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -115,6 +115,8 @@ func PossibleOriginValues() []Origin {
 type ProvisioningState string
 
 const (
+	// ProvisioningStateAccepted - The resource has been accepted for provisioning.
+	ProvisioningStateAccepted ProvisioningState = "Accepted"
 	// ProvisioningStateCanceled - Resource creation was canceled.
 	ProvisioningStateCanceled ProvisioningState = "Canceled"
 	// ProvisioningStateDeleting - The resource is being deleted.
@@ -130,10 +132,41 @@ const (
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{
+		ProvisioningStateAccepted,
 		ProvisioningStateCanceled,
 		ProvisioningStateDeleting,
 		ProvisioningStateFailed,
 		ProvisioningStateProvisioning,
 		ProvisioningStateSucceeded,
+	}
+}
+
+// SKUName - The name of the SKU.
+type SKUName string
+
+const (
+	// SKUNameManagedOps - ManagedOps SKU.
+	SKUNameManagedOps SKUName = "ManagedOps"
+)
+
+// PossibleSKUNameValues returns the possible values for the SKUName const type.
+func PossibleSKUNameValues() []SKUName {
+	return []SKUName{
+		SKUNameManagedOps,
+	}
+}
+
+// SKUTier - The pricing tier of the SKU.
+type SKUTier string
+
+const (
+	// SKUTierEssential - Essential tier.
+	SKUTierEssential SKUTier = "Essential"
+)
+
+// PossibleSKUTierValues returns the possible values for the SKUTier const type.
+func PossibleSKUTierValues() []SKUTier {
+	return []SKUTier{
+		SKUTierEssential,
 	}
 }

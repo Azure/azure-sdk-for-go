@@ -19,7 +19,7 @@ import (
 // OccurrencesClient contains the methods for the Occurrences group.
 // Don't use this type directly, use NewOccurrencesClient() instead.
 //
-// Generated from API version 2026-07-06-preview
+// Generated from API version 2026-09-06-preview
 type OccurrencesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type OccurrencesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOccurrencesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OccurrencesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,12 +44,13 @@ func NewOccurrencesClient(subscriptionID string, credential azcore.TokenCredenti
 	return client, nil
 }
 
-// BeginCancel - Cancel the occurrence so its pending operations do not run.
+// BeginCancel - Cancels the specified occurrence for the specified resource IDs.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - occurrenceID - The name of the Occurrence
-//   - body - The content of the action request
+//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
+//     and hyphens.
+//   - occurrenceID - The occurrence ID in UUID format.
+//   - body - The resources to cancel in the occurrence. If no resource IDs are provided, the occurrence is canceled for all resources.
 //   - options - OccurrencesClientBeginCancelOptions contains the optional parameters for the OccurrencesClient.BeginCancel method.
 func (client *OccurrencesClient) BeginCancel(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body CancelOccurrenceRequest, options *OccurrencesClientBeginCancelOptions) (*runtime.Poller[OccurrencesClientCancelResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -65,7 +69,7 @@ func (client *OccurrencesClient) BeginCancel(ctx context.Context, resourceGroupN
 	}
 }
 
-// Cancel - Cancel the occurrence so its pending operations do not run.
+// Cancel - Cancels the specified occurrence for the specified resource IDs.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OccurrencesClient) cancel(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body CancelOccurrenceRequest, options *OccurrencesClientBeginCancelOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +95,7 @@ func (client *OccurrencesClient) cancel(ctx context.Context, resourceGroupName s
 func (client *OccurrencesClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body CancelOccurrenceRequest, _ *OccurrencesClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}/occurrences/{occurrenceId}/cancel"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -111,7 +115,7 @@ func (client *OccurrencesClient) cancelCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260906Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -121,12 +125,14 @@ func (client *OccurrencesClient) cancelCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// BeginDelay - Delay the occurrence to a later time.
+// BeginDelay - Delays the specified occurrence for the specified resource IDs.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - occurrenceID - The name of the Occurrence
-//   - body - The content of the action request
+//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
+//     and hyphens.
+//   - occurrenceID - The occurrence ID in UUID format.
+//   - body - The new scheduled time and resources to delay in the occurrence. If no resource IDs are provided, all resources
+//     are delayed.
 //   - options - OccurrencesClientBeginDelayOptions contains the optional parameters for the OccurrencesClient.BeginDelay method.
 func (client *OccurrencesClient) BeginDelay(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body DelayRequest, options *OccurrencesClientBeginDelayOptions) (*runtime.Poller[OccurrencesClientDelayResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -145,7 +151,7 @@ func (client *OccurrencesClient) BeginDelay(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delay - Delay the occurrence to a later time.
+// Delay - Delays the specified occurrence for the specified resource IDs.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OccurrencesClient) delay(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body DelayRequest, options *OccurrencesClientBeginDelayOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +177,7 @@ func (client *OccurrencesClient) delay(ctx context.Context, resourceGroupName st
 func (client *OccurrencesClient) delayCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body DelayRequest, _ *OccurrencesClientBeginDelayOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}/occurrences/{occurrenceId}/delay"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -191,7 +197,7 @@ func (client *OccurrencesClient) delayCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260906Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -201,11 +207,12 @@ func (client *OccurrencesClient) delayCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// Get - Get a Occurrence
+// Get - Gets the specified occurrence.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - occurrenceID - The name of the Occurrence
+//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
+//     and hyphens.
+//   - occurrenceID - The occurrence ID in UUID format.
 //   - options - OccurrencesClientGetOptions contains the optional parameters for the OccurrencesClient.Get method.
 func (client *OccurrencesClient) Get(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, options *OccurrencesClientGetOptions) (OccurrencesClientGetResponse, error) {
 	var err error
@@ -228,7 +235,7 @@ func (client *OccurrencesClient) Get(ctx context.Context, resourceGroupName stri
 func (client *OccurrencesClient) getCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, _ *OccurrencesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}/occurrences/{occurrenceId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -248,7 +255,7 @@ func (client *OccurrencesClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260906Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -266,9 +273,10 @@ func (client *OccurrencesClient) getHandleResponse(resp *http.Response, successC
 	return result, nil
 }
 
-// NewListByScheduledActionPager - List Occurrence resources by ScheduledAction
+// NewListByScheduledActionPager - Lists occurrences for the specified scheduled action.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
+//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
+//     and hyphens.
 //   - options - OccurrencesClientListByScheduledActionOptions contains the optional parameters for the OccurrencesClient.NewListByScheduledActionPager
 //     method.
 func (client *OccurrencesClient) NewListByScheduledActionPager(resourceGroupName string, scheduledActionName string, options *OccurrencesClientListByScheduledActionOptions) *runtime.Pager[OccurrencesClientListByScheduledActionResponse] {
@@ -304,7 +312,7 @@ func (client *OccurrencesClient) listByScheduledActionCreateRequest(ctx context.
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}/occurrences"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -324,7 +332,7 @@ func (client *OccurrencesClient) listByScheduledActionCreateRequest(ctx context.
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260706Preview)
+		reqQP.Set("api-version", version20260906Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -343,10 +351,11 @@ func (client *OccurrencesClient) listByScheduledActionHandleResponse(resp *http.
 	return result, nil
 }
 
-// NewListResourcesPager - List resources attached to Scheduled Actions for the given occurrence
+// NewListResourcesPager - Lists resources for the specified occurrence.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - occurrenceID - The name of the Occurrence
+//   - scheduledActionName - The name of the scheduled action. It must be 3 to 24 characters and can contain only letters, numbers,
+//     and hyphens.
+//   - occurrenceID - The occurrence ID in UUID format.
 //   - options - OccurrencesClientListResourcesOptions contains the optional parameters for the OccurrencesClient.NewListResourcesPager
 //     method.
 func (client *OccurrencesClient) NewListResourcesPager(resourceGroupName string, scheduledActionName string, occurrenceID string, options *OccurrencesClientListResourcesOptions) *runtime.Pager[OccurrencesClientListResourcesResponse] {
@@ -382,7 +391,7 @@ func (client *OccurrencesClient) listResourcesCreateRequest(ctx context.Context,
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}/occurrences/{occurrenceId}/resources"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -406,7 +415,7 @@ func (client *OccurrencesClient) listResourcesCreateRequest(ctx context.Context,
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260706Preview)
+		reqQP.Set("api-version", version20260906Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

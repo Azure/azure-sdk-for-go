@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.ProviderHub": "2024-09-01"
+    "Microsoft.ProviderHub": "2025-10-01"
   },
-  "emitterVersion": "0.16.0"
+  "emitterVersion": "0.17.3"
 }

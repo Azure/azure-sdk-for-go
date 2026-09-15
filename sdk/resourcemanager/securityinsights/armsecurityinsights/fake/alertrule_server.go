@@ -87,7 +87,7 @@ func (a *AlertRuleServerTransport) dispatchBeginTriggerRuleRun(req *http.Request
 	}
 	beginTriggerRuleRun := a.beginTriggerRuleRun.get(req)
 	if beginTriggerRuleRun == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/alertRules/(?P<ruleId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/triggerRuleRun`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SecurityInsights/alertRules/(?P<ruleId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggerRuleRun`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

@@ -98,7 +98,7 @@ func (a *AIModelsServerTransport) dispatchCalculateCost(req *http.Request) (*htt
 	if a.srv.CalculateCost == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CalculateCost not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/aiModels/(?P<aiModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/calculateCost`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/aiModels/(?P<aiModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/calculateCost`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -135,7 +135,7 @@ func (a *AIModelsServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/aiModels/(?P<aiModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/aiModels/(?P<aiModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -170,7 +170,7 @@ func (a *AIModelsServerTransport) dispatchNewListPager(req *http.Request) (*http
 	}
 	newListPager := a.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/aiModels`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/aiModels`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

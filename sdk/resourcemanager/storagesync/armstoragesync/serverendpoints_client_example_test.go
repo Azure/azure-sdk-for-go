@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2022-09-01/ServerEndpoints_Create.json
+// Generated from example definition: 2025-12-01/ServerEndpoints_Create.json
 func ExampleServerEndpointsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleServerEndpointsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/ServerEndpoints_Delete.json
+// Generated from example definition: 2025-12-01/ServerEndpoints_Delete.json
 func ExampleServerEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleServerEndpointsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/ServerEndpoints_Get.json
+// Generated from example definition: 2025-12-01/ServerEndpoints_Get.json
 func ExampleServerEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,7 +278,15 @@ func ExampleServerEndpointsClient_Get() {
 	// 					PerItemErrorCount: to.Ptr[int64](0),
 	// 					Timestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
 	// 					TotalBytes: to.Ptr[int64](19583674),
-	// 					TotalItemCount: to.Ptr[int64](300),
+	// 					TotalItemCount: to.Ptr[int64](305),
+	// 					RemainingFileCount: to.Ptr[int64](200),
+	// 					RemainingDirectoryCount: to.Ptr[int64](5),
+	// 					RemainingDeleteCount: to.Ptr[int64](0),
+	// 					RemainingLogicalSizeBytes: to.Ptr[int64](19583674),
+	// 					IsRemainingFinal: to.Ptr(true),
+	// 					RecentItemsPerSecond: to.Ptr[float64](12.5),
+	// 					RecentMegabytesPerSecond: to.Ptr[float64](1.2),
+	// 					Warning: to.Ptr(armstoragesync.ServerEndpointSyncSessionWarningTypeNoWarning),
 	// 				},
 	// 				DownloadHealth: to.Ptr(armstoragesync.ServerEndpointHealthStateHealthy),
 	// 				DownloadStatus: &armstoragesync.ServerEndpointSyncSessionStatus{
@@ -296,7 +304,18 @@ func ExampleServerEndpointsClient_Get() {
 	// 					PerItemErrorCount: to.Ptr[int64](300),
 	// 					Timestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
 	// 					TotalBytes: to.Ptr[int64](1958367412),
-	// 					TotalItemCount: to.Ptr[int64](2300),
+	// 					TotalItemCount: to.Ptr[int64](2310),
+	// 					RemainingFileCount: to.Ptr[int64](1290),
+	// 					RemainingDirectoryCount: to.Ptr[int64](10),
+	// 					RemainingDeleteCount: to.Ptr[int64](0),
+	// 					RemainingLogicalSizeBytes: to.Ptr[int64](1901018429),
+	// 					IsRemainingFinal: to.Ptr(true),
+	// 					RecentItemsPerSecond: to.Ptr[float64](125.3),
+	// 					RecentMegabytesPerSecond: to.Ptr[float64](5.8),
+	// 					InProgressLargeFilePath: to.Ptr("dir/largefile.zip"),
+	// 					InProgressLargeFileSizeBytes: to.Ptr[int64](1073741824),
+	// 					InProgressLargeFilePercentComplete: to.Ptr[int32](42),
+	// 					Warning: to.Ptr(armstoragesync.ServerEndpointSyncSessionWarningTypeNoWarning),
 	// 				},
 	// 				UploadHealth: to.Ptr(armstoragesync.ServerEndpointHealthStateError),
 	// 				UploadStatus: &armstoragesync.ServerEndpointSyncSessionStatus{
@@ -312,7 +331,7 @@ func ExampleServerEndpointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/ServerEndpoints_ListBySyncGroup.json
+// Generated from example definition: 2025-12-01/ServerEndpoints_ListBySyncGroup.json
 func ExampleServerEndpointsClient_NewListBySyncGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -604,6 +623,14 @@ func ExampleServerEndpointsClient_NewListBySyncGroupPager() {
 		// 							Timestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
 		// 							TotalBytes: to.Ptr[int64](1958367412),
 		// 							TotalItemCount: to.Ptr[int64](2300),
+		// 							RemainingFileCount: to.Ptr[int64](1290),
+		// 							RemainingDirectoryCount: to.Ptr[int64](10),
+		// 							RemainingDeleteCount: to.Ptr[int64](0),
+		// 							RemainingLogicalSizeBytes: to.Ptr[int64](1901018429),
+		// 							IsRemainingFinal: to.Ptr(true),
+		// 							RecentItemsPerSecond: to.Ptr[float64](250.3),
+		// 							RecentMegabytesPerSecond: to.Ptr[float64](5.8),
+		// 							Warning: to.Ptr(armstoragesync.ServerEndpointSyncSessionWarningTypeNoWarning),
 		// 						},
 		// 						UploadHealth: to.Ptr(armstoragesync.ServerEndpointHealthStateHealthy),
 		// 						UploadStatus: &armstoragesync.ServerEndpointSyncSessionStatus{
@@ -623,7 +650,7 @@ func ExampleServerEndpointsClient_NewListBySyncGroupPager() {
 	}
 }
 
-// Generated from example definition: 2022-09-01/ServerEndpoints_Recall.json
+// Generated from example definition: 2025-12-01/ServerEndpoints_Recall.json
 func ExampleServerEndpointsClient_BeginRecallAction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -652,7 +679,7 @@ func ExampleServerEndpointsClient_BeginRecallAction() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/ServerEndpoints_Update.json
+// Generated from example definition: 2025-12-01/ServerEndpoints_Update.json
 func ExampleServerEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -170,8 +170,9 @@ type AutoscaleProfile struct {
 type CalculateCostPlan struct {
 	// READ-ONLY; Whether the caller can actually deploy this plan today (region availability, GPU quota, model fit, etc.). This
 	// field gates the mutually exclusive properties on this model:
-	// - When `feasible` is `true`: `totalHourlyPrice` is set and `infeasibilityReason` is omitted.
-	// - When `feasible` is `false`: `infeasibilityReason` is set and `totalHourlyPrice` is omitted.
+	//
+	//   - When `feasible` is `true`: `totalHourlyPrice` is set and `infeasibilityReason` is omitted.
+	//   - When `feasible` is `false`: `infeasibilityReason` is set and `totalHourlyPrice` is omitted.
 	Feasible *bool
 
 	// READ-ONLY; Maximum number of replicas the caller's subscription can deploy on this SKU today, computed from the available
@@ -526,12 +527,16 @@ type OperationListResult struct {
 // and `autoscale`, or sets neither, is rejected with HTTP 400 (Bad Request)
 // and an `InvalidScalingProfile` error code;
 // Scale-to-zero semantics differ between the two modes:
-// - `manual` permits `replicas: 0`. This is an explicit operator action to
+//
+//   - `manual` permits `replicas: 0`. This is an explicit operator action to
+//
 // stop serving traffic while keeping the `ModelDeployment` resource (and
 // its configuration) in place. While at zero replicas the endpoint
 // returns errors for inference requests, and the deployment releases its
 // GPU capacity.
-// - `autoscale` does not permit `minReplicas: 0`. Autoscaling decisions are
+//
+//   - `autoscale` does not permit `minReplicas: 0`. Autoscaling decisions are
+//
 // driven by serving-server runtime metrics (request rate, queue depth,
 // GPU utilization); at zero replicas there is no signal for the
 // autoscaler to scale back up from. Combined with GPU cold-start time

@@ -30,6 +30,9 @@ type EntitiesGetTimelineClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEntitiesGetTimelineClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EntitiesGetTimelineClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -70,7 +73,7 @@ func (client *EntitiesGetTimelineClient) List(ctx context.Context, resourceGroup
 func (client *EntitiesGetTimelineClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, entityID string, parameters EntityTimelineParameters, _ *EntitiesGetTimelineClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/entities/{entityId}/getTimeline"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

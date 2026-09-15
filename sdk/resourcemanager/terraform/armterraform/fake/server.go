@@ -86,7 +86,7 @@ func (s *ServerTransport) dispatchBeginExportTerraform(req *http.Request) (*http
 	}
 	beginExportTerraform := s.beginExportTerraform.get(req)
 	if beginExportTerraform == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureTerraform/exportTerraform`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureTerraform/exportTerraform`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

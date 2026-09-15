@@ -81,7 +81,7 @@ func (s *SystemAssignedIdentitiesServerTransport) dispatchGetByScope(req *http.R
 	if s.srv.GetByScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByScope not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedIdentity/identities/default`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.ManagedIdentity/identities/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

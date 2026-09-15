@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/Experiments_Cancel.json
+// Generated from example definition: 2026-08-01-preview/Experiments_Cancel.json
 func ExampleExperimentsClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleExperimentsClient_BeginCancel() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Experiments_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01-preview/Experiments_CreateOrUpdate.json
 func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,7 +176,7 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Experiments_Delete.json
+// Generated from example definition: 2026-08-01-preview/Experiments_Delete.json
 func ExampleExperimentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,7 +197,7 @@ func ExampleExperimentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Experiments_ExecutionDetails.json
+// Generated from example definition: 2026-08-01-preview/Experiments_ExecutionDetails.json
 func ExampleExperimentsClient_ExecutionDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -270,7 +270,7 @@ func ExampleExperimentsClient_ExecutionDetails() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Experiments_Get.json
+// Generated from example definition: 2026-08-01-preview/Experiments_Get.json
 func ExampleExperimentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,7 +353,7 @@ func ExampleExperimentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Experiments_GetExecution.json
+// Generated from example definition: 2026-08-01-preview/Experiments_GetExecution.json
 func ExampleExperimentsClient_GetExecution() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -385,7 +385,7 @@ func ExampleExperimentsClient_GetExecution() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Experiments_List.json
+// Generated from example definition: 2026-08-01-preview/Experiments_List.json
 func ExampleExperimentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -409,7 +409,7 @@ func ExampleExperimentsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armchaos.ExperimentsClientListResponse{
 		// 	ExperimentListResult: armchaos.ExperimentListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments?continuationToken=&api-version=2026-05-01-preview"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments?continuationToken=&api-version=2026-08-01-preview"),
 		// 		Value: []*armchaos.Experiment{
 		// 			{
 		// 				Name: to.Ptr("exampleExperiment"),
@@ -478,7 +478,7 @@ func ExampleExperimentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Experiments_ListAll.json
+// Generated from example definition: 2026-08-01-preview/Experiments_ListAll.json
 func ExampleExperimentsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -502,7 +502,7 @@ func ExampleExperimentsClient_NewListAllPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armchaos.ExperimentsClientListAllResponse{
 		// 	ExperimentListResult: armchaos.ExperimentListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/experiments?continuationToken=&api-version=2026-05-01-preview"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/experiments?continuationToken=&api-version=2026-08-01-preview"),
 		// 		Value: []*armchaos.Experiment{
 		// 			{
 		// 				Name: to.Ptr("exampleExperiment"),
@@ -571,7 +571,7 @@ func ExampleExperimentsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Experiments_ListAllExecutions.json
+// Generated from example definition: 2026-08-01-preview/Experiments_ListAllExecutions.json
 func ExampleExperimentsClient_NewListAllExecutionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -623,7 +623,7 @@ func ExampleExperimentsClient_NewListAllExecutionsPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Experiments_Start.json
+// Generated from example definition: 2026-08-01-preview/Experiments_Start.json
 func ExampleExperimentsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -644,7 +644,7 @@ func ExampleExperimentsClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Experiments_Update.json
+// Generated from example definition: 2026-08-01-preview/Experiments_Update.json
 func ExampleExperimentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

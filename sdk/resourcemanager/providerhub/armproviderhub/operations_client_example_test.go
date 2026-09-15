@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v4"
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/Operations_CreateOrUpdate.json
+// Generated from example definition: 2025-10-01/Operations_CreateOrUpdate.json
 func ExampleOperationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,36 +27,36 @@ func ExampleOperationsClient_CreateOrUpdate() {
 		Properties: &armproviderhub.OperationsPutContentProperties{
 			Contents: []*armproviderhub.LocalizedOperationDefinition{
 				{
-					Name:       to.Ptr("RP.69C09791/register/action"),
-					ActionType: to.Ptr(armproviderhub.OperationActionTypeInternal),
+					Name:         to.Ptr("RP.69C09791/register/action"),
+					IsDataAction: to.Ptr(true),
 					Display: &armproviderhub.LocalizedOperationDefinitionDisplay{
 						Default: &armproviderhub.LocalizedOperationDisplayDefinitionDefault{
-							Description: to.Ptr("Registers the subscription for the RP.69C09791 resource provider and enables the creation of RP.69C09791."),
-							Operation:   to.Ptr("Registers the RP.69C09791 Resource Provider"),
 							Provider:    to.Ptr("RP.69C09791"),
 							Resource:    to.Ptr("Register"),
+							Operation:   to.Ptr("Registers the RP.69C09791 Resource Provider"),
+							Description: to.Ptr("Registers the subscription for the RP.69C09791 resource provider and enables the creation of RP.69C09791."),
 						},
 					},
-					IsDataAction: to.Ptr(true),
+					ActionType: to.Ptr(armproviderhub.OperationActionTypeInternal),
 				},
 				{
-					Name: to.Ptr("RP.69C09791/unregister/action"),
-					Display: &armproviderhub.LocalizedOperationDefinitionDisplay{
-						Default: &armproviderhub.LocalizedOperationDisplayDefinitionDefault{
-							Description: to.Ptr("Unregisters the subscription for the RP.69C09791 resource provider and enables the creation of RP.69C09791."),
-							Operation:   to.Ptr("Unregisters the RP.69C09791 Resource Provider"),
-							Provider:    to.Ptr("RP.69C09791"),
-							Resource:    to.Ptr("Unregister"),
-						},
-						En: &armproviderhub.LocalizedOperationDisplayDefinitionEn{
-							Description: to.Ptr("ece249f5-b5b9-492d-ac68-b4e1be1677bc"),
-							Operation:   to.Ptr("d31623d6-8765-42fb-aca2-5a58303e52dd"),
-							Provider:    to.Ptr("RP.69C09791"),
-							Resource:    to.Ptr("2e1803d4-417f-492c-b305-148da38b211e"),
-						},
-					},
+					Name:         to.Ptr("RP.69C09791/unregister/action"),
 					IsDataAction: to.Ptr(false),
 					Origin:       to.Ptr(armproviderhub.OperationOriginsSystem),
+					Display: &armproviderhub.LocalizedOperationDefinitionDisplay{
+						Default: &armproviderhub.LocalizedOperationDisplayDefinitionDefault{
+							Provider:    to.Ptr("RP.69C09791"),
+							Resource:    to.Ptr("Unregister"),
+							Operation:   to.Ptr("Unregisters the RP.69C09791 Resource Provider"),
+							Description: to.Ptr("Unregisters the subscription for the RP.69C09791 resource provider and enables the creation of RP.69C09791."),
+						},
+						En: &armproviderhub.LocalizedOperationDisplayDefinitionEn{
+							Provider:    to.Ptr("RP.69C09791"),
+							Resource:    to.Ptr("2e1803d4-417f-492c-b305-148da38b211e"),
+							Operation:   to.Ptr("d31623d6-8765-42fb-aca2-5a58303e52dd"),
+							Description: to.Ptr("ece249f5-b5b9-492d-ac68-b4e1be1677bc"),
+						},
+					},
 				},
 			},
 		},
@@ -69,58 +69,58 @@ func ExampleOperationsClient_CreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.OperationsClientCreateOrUpdateResponse{
 	// 	OperationsPutContent: armproviderhub.OperationsPutContent{
-	// 		Name: to.Ptr("operationTest"),
-	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/operations"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/operations/default"),
+	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/operations"),
+	// 		Name: to.Ptr("operationTest"),
 	// 		Properties: &armproviderhub.OperationsPutContentProperties{
 	// 			Contents: []*armproviderhub.LocalizedOperationDefinition{
 	// 				{
 	// 					Name: to.Ptr("RP.69C09791/register/action"),
-	// 					ActionType: to.Ptr(armproviderhub.OperationActionTypeInternal),
+	// 					IsDataAction: to.Ptr(true),
 	// 					Display: &armproviderhub.LocalizedOperationDefinitionDisplay{
 	// 						Default: &armproviderhub.LocalizedOperationDisplayDefinitionDefault{
-	// 							Description: to.Ptr("Registers the subscription for the RP.69C09791 resource provider and enables the creation of RP.69C09791."),
-	// 							Operation: to.Ptr("Registers the RP.69C09791 Resource Provider"),
 	// 							Provider: to.Ptr("RP.69C09791"),
 	// 							Resource: to.Ptr("Register"),
+	// 							Operation: to.Ptr("Registers the RP.69C09791 Resource Provider"),
+	// 							Description: to.Ptr("Registers the subscription for the RP.69C09791 resource provider and enables the creation of RP.69C09791."),
 	// 						},
 	// 					},
-	// 					IsDataAction: to.Ptr(true),
+	// 					ActionType: to.Ptr(armproviderhub.OperationActionTypeInternal),
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("RP.69C09791/unregister/action"),
-	// 					Display: &armproviderhub.LocalizedOperationDefinitionDisplay{
-	// 						Default: &armproviderhub.LocalizedOperationDisplayDefinitionDefault{
-	// 							Description: to.Ptr("Unregisters the subscription for the RP.69C09791 resource provider and enables the creation of RP.69C09791."),
-	// 							Operation: to.Ptr("Unregisters the RP.69C09791 Resource Provider"),
-	// 							Provider: to.Ptr("RP.69C09791"),
-	// 							Resource: to.Ptr("Unregister"),
-	// 						},
-	// 						En: &armproviderhub.LocalizedOperationDisplayDefinitionEn{
-	// 							Description: to.Ptr("ece249f5-b5b9-492d-ac68-b4e1be1677bc"),
-	// 							Operation: to.Ptr("d31623d6-8765-42fb-aca2-5a58303e52dd"),
-	// 							Provider: to.Ptr("RP.69C09791"),
-	// 							Resource: to.Ptr("2e1803d4-417f-492c-b305-148da38b211e"),
-	// 						},
-	// 					},
 	// 					IsDataAction: to.Ptr(false),
 	// 					Origin: to.Ptr(armproviderhub.OperationOriginsSystem),
+	// 					Display: &armproviderhub.LocalizedOperationDefinitionDisplay{
+	// 						Default: &armproviderhub.LocalizedOperationDisplayDefinitionDefault{
+	// 							Provider: to.Ptr("RP.69C09791"),
+	// 							Resource: to.Ptr("Unregister"),
+	// 							Operation: to.Ptr("Unregisters the RP.69C09791 Resource Provider"),
+	// 							Description: to.Ptr("Unregisters the subscription for the RP.69C09791 resource provider and enables the creation of RP.69C09791."),
+	// 						},
+	// 						En: &armproviderhub.LocalizedOperationDisplayDefinitionEn{
+	// 							Provider: to.Ptr("RP.69C09791"),
+	// 							Resource: to.Ptr("2e1803d4-417f-492c-b305-148da38b211e"),
+	// 							Operation: to.Ptr("d31623d6-8765-42fb-aca2-5a58303e52dd"),
+	// 							Description: to.Ptr("ece249f5-b5b9-492d-ac68-b4e1be1677bc"),
+	// 						},
+	// 					},
 	// 				},
 	// 			},
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Operations_Delete.json
+// Generated from example definition: 2025-10-01/Operations_Delete.json
 func ExampleOperationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,18 +131,13 @@ func ExampleOperationsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewOperationsClient().Delete(ctx, "Microsoft.Contoso", nil)
+	_, err = clientFactory.NewOperationsClient().Delete(ctx, "Microsoft.Contoso", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armproviderhub.OperationsClientDeleteResponse{
-	// }
 }
 
-// Generated from example definition: 2024-09-01/Operations_List.json
+// Generated from example definition: 2025-10-01/Operations_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -169,73 +164,73 @@ func ExampleOperationsClient_NewListPager() {
 		// 		Value: []*armproviderhub.OperationsDefinition{
 		// 			{
 		// 				Name: to.Ptr("Microsoft.ProviderHub/register/action"),
+		// 				IsDataAction: to.Ptr(false),
 		// 				Display: &armproviderhub.OperationsDefinitionDisplay{
-		// 					Description: to.Ptr("Registers the specified subscription with Microsoft.ProviderHub resource provider"),
-		// 					Operation: to.Ptr("Register for Microsoft.ProviderHub"),
 		// 					Provider: to.Ptr("Microsoft ProviderHub"),
 		// 					Resource: to.Ptr("register"),
+		// 					Operation: to.Ptr("Register for Microsoft.ProviderHub"),
+		// 					Description: to.Ptr("Registers the specified subscription with Microsoft.ProviderHub resource provider"),
 		// 				},
-		// 				IsDataAction: to.Ptr(false),
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("Microsoft.ProviderHub/defaultRollouts/write"),
+		// 				IsDataAction: to.Ptr(false),
 		// 				Display: &armproviderhub.OperationsDefinitionDisplay{
-		// 					Description: to.Ptr("Creates or Updates any rollout"),
-		// 					Operation: to.Ptr("Create or Update rollout"),
 		// 					Provider: to.Ptr("Microsoft ProviderHub"),
 		// 					Resource: to.Ptr("defaultRollouts"),
+		// 					Operation: to.Ptr("Create or Update rollout"),
+		// 					Description: to.Ptr("Creates or Updates any rollout"),
 		// 				},
-		// 				IsDataAction: to.Ptr(false),
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("Microsoft.ProviderHub/defaultRollouts/read"),
+		// 				IsDataAction: to.Ptr(false),
 		// 				Display: &armproviderhub.OperationsDefinitionDisplay{
-		// 					Description: to.Ptr("Reads any rollout"),
-		// 					Operation: to.Ptr("Read rollout"),
 		// 					Provider: to.Ptr("Microsoft ProviderHub"),
 		// 					Resource: to.Ptr("defaultRollouts"),
+		// 					Operation: to.Ptr("Read rollout"),
+		// 					Description: to.Ptr("Reads any rollout"),
 		// 				},
-		// 				IsDataAction: to.Ptr(false),
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("Microsoft.ProviderHub/defaultRollouts/delete"),
+		// 				IsDataAction: to.Ptr(false),
 		// 				Display: &armproviderhub.OperationsDefinitionDisplay{
-		// 					Description: to.Ptr("Deletes any rollout"),
-		// 					Operation: to.Ptr("Delete rollout"),
 		// 					Provider: to.Ptr("Microsoft ProviderHub"),
 		// 					Resource: to.Ptr("defaultRollouts"),
+		// 					Operation: to.Ptr("Delete rollout"),
+		// 					Description: to.Ptr("Deletes any rollout"),
 		// 				},
-		// 				IsDataAction: to.Ptr(false),
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("Microsoft.ProviderHub/defaultRollouts/stop/action"),
+		// 				IsDataAction: to.Ptr(false),
 		// 				Display: &armproviderhub.OperationsDefinitionDisplay{
-		// 					Description: to.Ptr("Deletes any rollout"),
-		// 					Operation: to.Ptr("Delete rollout"),
 		// 					Provider: to.Ptr("Microsoft ProviderHub"),
 		// 					Resource: to.Ptr("defaultRollouts"),
+		// 					Operation: to.Ptr("Delete rollout"),
+		// 					Description: to.Ptr("Deletes any rollout"),
 		// 				},
-		// 				IsDataAction: to.Ptr(false),
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("Microsoft.ProviderHub/customRollouts/write"),
+		// 				IsDataAction: to.Ptr(false),
 		// 				Display: &armproviderhub.OperationsDefinitionDisplay{
-		// 					Description: to.Ptr("Creates or Updates any rollout"),
-		// 					Operation: to.Ptr("Create or Update rollout"),
 		// 					Provider: to.Ptr("Microsoft ProviderHub"),
 		// 					Resource: to.Ptr("customRollouts"),
+		// 					Operation: to.Ptr("Create or Update rollout"),
+		// 					Description: to.Ptr("Creates or Updates any rollout"),
 		// 				},
-		// 				IsDataAction: to.Ptr(false),
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("Microsoft.ProviderHub/customRollouts/read"),
+		// 				IsDataAction: to.Ptr(false),
 		// 				Display: &armproviderhub.OperationsDefinitionDisplay{
-		// 					Description: to.Ptr("Reads any rollout"),
-		// 					Operation: to.Ptr("Read rollout"),
 		// 					Provider: to.Ptr("Microsoft ProviderHub"),
 		// 					Resource: to.Ptr("customRollouts"),
+		// 					Operation: to.Ptr("Read rollout"),
+		// 					Description: to.Ptr("Reads any rollout"),
 		// 				},
-		// 				IsDataAction: to.Ptr(false),
 		// 			},
 		// 		},
 		// 	},
@@ -243,7 +238,7 @@ func ExampleOperationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2024-09-01/Operations_ListByProviderRegistration.json
+// Generated from example definition: 2025-10-01/Operations_ListByProviderRegistration.json
 func ExampleOperationsClient_ListByProviderRegistration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,48 +257,63 @@ func ExampleOperationsClient_ListByProviderRegistration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.OperationsClientListByProviderRegistrationResponse{
-	// 	OperationsDefinitionArray: []*armproviderhub.OperationsDefinition{
-	// 		{
-	// 			Name: to.Ptr("Microsoft.Contoso/Employees/Read"),
-	// 			Display: &armproviderhub.OperationsDefinitionDisplay{
-	// 				Description: to.Ptr("Read employees"),
-	// 				Operation: to.Ptr("Gets/List employee resources"),
-	// 				Provider: to.Ptr("Microsoft.Contoso"),
-	// 				Resource: to.Ptr("Employees"),
+	// 	OperationsPutContent: armproviderhub.OperationsPutContent{
+	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/operations/default"),
+	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/operations"),
+	// 		Name: to.Ptr("default"),
+	// 		Properties: &armproviderhub.OperationsPutContentProperties{
+	// 			Contents: []*armproviderhub.LocalizedOperationDefinition{
+	// 				{
+	// 					Name: to.Ptr("Microsoft.Contoso/Employees/Read"),
+	// 					IsDataAction: to.Ptr(false),
+	// 					Display: &armproviderhub.LocalizedOperationDefinitionDisplay{
+	// 						Default: &armproviderhub.LocalizedOperationDisplayDefinitionDefault{
+	// 							Provider: to.Ptr("Microsoft.Contoso"),
+	// 							Resource: to.Ptr("Employees"),
+	// 							Operation: to.Ptr("Gets/List employee resources"),
+	// 							Description: to.Ptr("Read employees"),
+	// 						},
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("Microsoft.Contoso/Employees/Write"),
+	// 					IsDataAction: to.Ptr(false),
+	// 					Display: &armproviderhub.LocalizedOperationDefinitionDisplay{
+	// 						Default: &armproviderhub.LocalizedOperationDisplayDefinitionDefault{
+	// 							Provider: to.Ptr("Microsoft.Contoso"),
+	// 							Resource: to.Ptr("Employees"),
+	// 							Operation: to.Ptr("Create/update employee resources"),
+	// 							Description: to.Ptr("Writes employees"),
+	// 						},
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("Microsoft.Contoso/Employees/Delete"),
+	// 					IsDataAction: to.Ptr(false),
+	// 					Origin: to.Ptr(armproviderhub.OperationOriginsUser),
+	// 					Display: &armproviderhub.LocalizedOperationDefinitionDisplay{
+	// 						Default: &armproviderhub.LocalizedOperationDisplayDefinitionDefault{
+	// 							Provider: to.Ptr("Microsoft.Contoso"),
+	// 							Resource: to.Ptr("Employees"),
+	// 							Operation: to.Ptr("Deletes employee resource"),
+	// 							Description: to.Ptr("Deletes employees"),
+	// 						},
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("Microsoft.Contoso/Employees/Action"),
+	// 					IsDataAction: to.Ptr(true),
+	// 					Origin: to.Ptr(armproviderhub.OperationOriginsSystem),
+	// 					Display: &armproviderhub.LocalizedOperationDefinitionDisplay{
+	// 						Default: &armproviderhub.LocalizedOperationDisplayDefinitionDefault{
+	// 							Provider: to.Ptr("Microsoft.Contoso"),
+	// 							Resource: to.Ptr("Employees"),
+	// 							Operation: to.Ptr("Create/update employee resources"),
+	// 							Description: to.Ptr("Writes employees"),
+	// 						},
+	// 					},
+	// 				},
 	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.Contoso/Employees/Write"),
-	// 			Display: &armproviderhub.OperationsDefinitionDisplay{
-	// 				Description: to.Ptr("Writes employees"),
-	// 				Operation: to.Ptr("Create/update employee resources"),
-	// 				Provider: to.Ptr("Microsoft.Contoso"),
-	// 				Resource: to.Ptr("Employees"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.Contoso/Employees/Delete"),
-	// 			Display: &armproviderhub.OperationsDefinitionDisplay{
-	// 				Description: to.Ptr("Deletes employees"),
-	// 				Operation: to.Ptr("Deletes employee resource"),
-	// 				Provider: to.Ptr("Microsoft.Contoso"),
-	// 				Resource: to.Ptr("Employees"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 			Origin: to.Ptr(armproviderhub.OperationOriginsUser),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.Contoso/Employees/Action"),
-	// 			Display: &armproviderhub.OperationsDefinitionDisplay{
-	// 				Description: to.Ptr("Writes employees"),
-	// 				Operation: to.Ptr("Create/update employee resources"),
-	// 				Provider: to.Ptr("Microsoft.Contoso"),
-	// 				Resource: to.Ptr("Employees"),
-	// 			},
-	// 			IsDataAction: to.Ptr(true),
-	// 			Origin: to.Ptr(armproviderhub.OperationOriginsSystem),
 	// 		},
 	// 	},
 	// }

@@ -18,7 +18,7 @@ import (
 // BackupInstancesExtensionRoutingClient contains the methods for the BackupInstancesExtensionRouting group.
 // Don't use this type directly, use NewBackupInstancesExtensionRoutingClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-06-01
 type BackupInstancesExtensionRoutingClient struct {
 	internal *arm.Client
 }
@@ -86,7 +86,7 @@ func (client *BackupInstancesExtensionRoutingClient) listCreateRequest(ctx conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260601)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2022-09-01/RegisteredServers_Create.json
+// Generated from example definition: 2025-12-01/RegisteredServers_Create.json
 func ExampleRegisteredServersClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleRegisteredServersClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/RegisteredServers_Delete.json
+// Generated from example definition: 2025-12-01/RegisteredServers_Delete.json
 func ExampleRegisteredServersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleRegisteredServersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/RegisteredServers_Get.json
+// Generated from example definition: 2025-12-01/RegisteredServers_Get.json
 func ExampleRegisteredServersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleRegisteredServersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/RegisteredServers_ListByStorageSyncService.json
+// Generated from example definition: 2025-12-01/RegisteredServers_ListByStorageSyncService.json
 func ExampleRegisteredServersClient_NewListByStorageSyncServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,7 +228,7 @@ func ExampleRegisteredServersClient_NewListByStorageSyncServicePager() {
 	}
 }
 
-// Generated from example definition: 2022-09-01/RegisteredServers_TriggerRollover.json
+// Generated from example definition: 2025-12-01/RegisteredServers_TriggerRollover.json
 func ExampleRegisteredServersClient_BeginTriggerRollover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -256,7 +256,7 @@ func ExampleRegisteredServersClient_BeginTriggerRollover() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/RegisteredServers_Update.json
+// Generated from example definition: 2025-12-01/RegisteredServers_Update.json
 func ExampleRegisteredServersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -111,7 +111,7 @@ func (s *StorageTargetServerTransport) dispatchBeginFlush(req *http.Request) (*h
 	}
 	beginFlush := s.beginFlush.get(req)
 	if beginFlush == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageCache/caches/(?P<cacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storageTargets/(?P<storageTargetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/flush`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/caches/(?P<cacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageTargets/(?P<storageTargetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/flush`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -159,7 +159,7 @@ func (s *StorageTargetServerTransport) dispatchBeginInvalidate(req *http.Request
 	}
 	beginInvalidate := s.beginInvalidate.get(req)
 	if beginInvalidate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageCache/caches/(?P<cacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storageTargets/(?P<storageTargetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invalidate`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/caches/(?P<cacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageTargets/(?P<storageTargetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invalidate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -207,7 +207,7 @@ func (s *StorageTargetServerTransport) dispatchBeginResume(req *http.Request) (*
 	}
 	beginResume := s.beginResume.get(req)
 	if beginResume == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageCache/caches/(?P<cacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storageTargets/(?P<storageTargetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resume`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/caches/(?P<cacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageTargets/(?P<storageTargetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resume`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -255,7 +255,7 @@ func (s *StorageTargetServerTransport) dispatchBeginSuspend(req *http.Request) (
 	}
 	beginSuspend := s.beginSuspend.get(req)
 	if beginSuspend == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageCache/caches/(?P<cacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storageTargets/(?P<storageTargetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/suspend`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/caches/(?P<cacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageTargets/(?P<storageTargetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/suspend`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

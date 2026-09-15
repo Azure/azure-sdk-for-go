@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/Dpm/BackupEngines_Get.json
+// Generated from example definition: 2026-08-01/Dpm/BackupEngines_Get.json
 func ExampleBackupEnginesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleBackupEnginesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/Dpm/BackupEngines_List.json
+// Generated from example definition: 2026-08-01/Dpm/BackupEngines_List.json
 func ExampleBackupEnginesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

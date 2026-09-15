@@ -115,7 +115,7 @@ func (r *ResourceServerTransport) dispatchCheckFilePathAvailability(req *http.Re
 	if r.srv.CheckFilePathAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckFilePathAvailability not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkFilePathAvailability`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkFilePathAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -148,7 +148,7 @@ func (r *ResourceServerTransport) dispatchCheckNameAvailability(req *http.Reques
 	if r.srv.CheckNameAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkNameAvailability`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -181,7 +181,7 @@ func (r *ResourceServerTransport) dispatchCheckQuotaAvailability(req *http.Reque
 	if r.srv.CheckQuotaAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckQuotaAvailability not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkQuotaAvailability`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkQuotaAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -214,7 +214,7 @@ func (r *ResourceServerTransport) dispatchQueryNetworkSiblingSet(req *http.Reque
 	if r.srv.QueryNetworkSiblingSet == nil {
 		return nil, &nonRetriableError{errors.New("fake for method QueryNetworkSiblingSet not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryNetworkSiblingSet`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/queryNetworkSiblingSet`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -247,7 +247,7 @@ func (r *ResourceServerTransport) dispatchQueryRegionInfo(req *http.Request) (*h
 	if r.srv.QueryRegionInfo == nil {
 		return nil, &nonRetriableError{errors.New("fake for method QueryRegionInfo not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regionInfo`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/regionInfo`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -278,7 +278,7 @@ func (r *ResourceServerTransport) dispatchBeginUpdateNetworkSiblingSet(req *http
 	}
 	beginUpdateNetworkSiblingSet := r.beginUpdateNetworkSiblingSet.get(req)
 	if beginUpdateNetworkSiblingSet == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateNetworkSiblingSet`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateNetworkSiblingSet`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

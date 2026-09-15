@@ -19,7 +19,7 @@ import (
 // it.
 // Don't use this type directly, use NewOfferingsClient() instead.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-09-01-preview
 type OfferingsClient struct {
 	internal *arm.Client
 }
@@ -38,50 +38,49 @@ func NewOfferingsClient(credential azcore.TokenCredential, options *arm.ClientOp
 	return client, nil
 }
 
-// List - Lists all of the features and SKUs offered by the Azure AI Search service in each region. Note: This API returns
-// a non-ARM resource collection and is not RPC-compliant. It will be replaced with an action-style API in the next preview
-// as a breaking change. Customers should avoid taking new dependencies on the current shape.
+// Fetch - Fetches the features and SKUs offered by the Azure AI Search service in each region, along with the recommended
+// default region for creating new services.
 // If the operation fails it returns an *azcore.ResponseError type.
-//   - options - OfferingsClientListOptions contains the optional parameters for the OfferingsClient.List method.
-func (client *OfferingsClient) List(ctx context.Context, options *OfferingsClientListOptions) (OfferingsClientListResponse, error) {
+//   - options - OfferingsClientFetchOptions contains the optional parameters for the OfferingsClient.Fetch method.
+func (client *OfferingsClient) Fetch(ctx context.Context, options *OfferingsClientFetchOptions) (OfferingsClientFetchResponse, error) {
 	var err error
-	const operationName = "OfferingsClient.List"
+	const operationName = "OfferingsClient.Fetch"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.listCreateRequest(ctx, options)
+	req, err := client.fetchCreateRequest(ctx, options)
 	if err != nil {
-		return OfferingsClientListResponse{}, err
+		return OfferingsClientFetchResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return OfferingsClientListResponse{}, err
+		return OfferingsClientFetchResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	return client.fetchHandleResponse(httpResp, http.StatusOK)
 }
 
-// listCreateRequest creates the List request.
-func (client *OfferingsClient) listCreateRequest(ctx context.Context, _ *OfferingsClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Search/offerings"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+// fetchCreateRequest creates the Fetch request.
+func (client *OfferingsClient) fetchCreateRequest(ctx context.Context, _ *OfferingsClientFetchOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Search/fetchOfferings"
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// listHandleResponse handles the List response.
-func (client *OfferingsClient) listHandleResponse(resp *http.Response, successCodes ...int) (OfferingsClientListResponse, error) {
-	result := OfferingsClientListResponse{}
+// fetchHandleResponse handles the Fetch response.
+func (client *OfferingsClient) fetchHandleResponse(resp *http.Response, successCodes ...int) (OfferingsClientFetchResponse, error) {
+	result := OfferingsClientFetchResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OfferingsListResult); err != nil {
-		return OfferingsClientListResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.OfferingsResult); err != nil {
+		return OfferingsClientFetchResponse{}, err
 	}
 	return result, nil
 }

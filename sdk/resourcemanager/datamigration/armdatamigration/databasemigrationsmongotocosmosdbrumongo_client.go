@@ -31,6 +31,9 @@ type DatabaseMigrationsMongoToCosmosDbRUMongoClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDatabaseMigrationsMongoToCosmosDbRUMongoClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseMigrationsMongoToCosmosDbRUMongoClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -93,7 +96,7 @@ func (client *DatabaseMigrationsMongoToCosmosDbRUMongoClient) create(ctx context
 func (client *DatabaseMigrationsMongoToCosmosDbRUMongoClient) createCreateRequest(ctx context.Context, resourceGroupName string, targetResourceName string, migrationName string, parameters DatabaseMigrationCosmosDbMongo, _ *DatabaseMigrationsMongoToCosmosDbRUMongoClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{targetResourceName}/providers/Microsoft.DataMigration/databaseMigrations/{migrationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -173,7 +176,7 @@ func (client *DatabaseMigrationsMongoToCosmosDbRUMongoClient) deleteOperation(ct
 func (client *DatabaseMigrationsMongoToCosmosDbRUMongoClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, targetResourceName string, migrationName string, options *DatabaseMigrationsMongoToCosmosDbRUMongoClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{targetResourceName}/providers/Microsoft.DataMigration/databaseMigrations/{migrationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -229,7 +232,7 @@ func (client *DatabaseMigrationsMongoToCosmosDbRUMongoClient) Get(ctx context.Co
 func (client *DatabaseMigrationsMongoToCosmosDbRUMongoClient) getCreateRequest(ctx context.Context, resourceGroupName string, targetResourceName string, migrationName string, _ *DatabaseMigrationsMongoToCosmosDbRUMongoClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{targetResourceName}/providers/Microsoft.DataMigration/databaseMigrations/{migrationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -305,7 +308,7 @@ func (client *DatabaseMigrationsMongoToCosmosDbRUMongoClient) getForScopeCreateR
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{targetResourceName}/providers/Microsoft.DataMigration/databaseMigrations"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {

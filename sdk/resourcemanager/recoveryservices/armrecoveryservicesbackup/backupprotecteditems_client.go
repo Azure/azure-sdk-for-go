@@ -19,7 +19,7 @@ import (
 // BackupProtectedItemsClient contains the methods for the BackupProtectedItems group.
 // Don't use this type directly, use NewBackupProtectedItemsClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-08-01
 type BackupProtectedItemsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type BackupProtectedItemsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBackupProtectedItemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupProtectedItemsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -79,7 +82,7 @@ func (client *BackupProtectedItemsClient) listCreateRequest(ctx context.Context,
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupProtectedItems"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if vaultName == "" {
@@ -105,7 +108,7 @@ func (client *BackupProtectedItemsClient) listCreateRequest(ctx context.Context,
 		if options != nil && options.SkipToken != nil {
 			reqQP.Set("$skipToken", *options.SkipToken)
 		}
-		reqQP.Set("api-version", version20260701)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

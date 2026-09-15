@@ -231,7 +231,7 @@ func (p *PrivateStoreServerTransport) dispatchAcknowledgeOfferNotification(req *
 	if p.srv.AcknowledgeOfferNotification == nil {
 		return nil, &nonRetriableError{errors.New("fake for method AcknowledgeOfferNotification not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/offers/(?P<offerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/acknowledgeNotification`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/offers/(?P<offerId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/acknowledgeNotification`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -274,7 +274,7 @@ func (p *PrivateStoreServerTransport) dispatchAdminRequestApprovalsList(req *htt
 	if p.srv.AdminRequestApprovalsList == nil {
 		return nil, &nonRetriableError{errors.New("fake for method AdminRequestApprovalsList not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/adminRequestApprovals`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/adminRequestApprovals`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -303,7 +303,7 @@ func (p *PrivateStoreServerTransport) dispatchAnyExistingOffersInTheCollections(
 	if p.srv.AnyExistingOffersInTheCollections == nil {
 		return nil, &nonRetriableError{errors.New("fake for method AnyExistingOffersInTheCollections not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/anyExistingOffersInTheCollections`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/anyExistingOffersInTheCollections`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -332,7 +332,7 @@ func (p *PrivateStoreServerTransport) dispatchBillingAccounts(req *http.Request)
 	if p.srv.BillingAccounts == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BillingAccounts not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingAccounts`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingAccounts`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -361,7 +361,7 @@ func (p *PrivateStoreServerTransport) dispatchBulkCollectionsAction(req *http.Re
 	if p.srv.BulkCollectionsAction == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BulkCollectionsAction not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bulkCollectionsAction`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/bulkCollectionsAction`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -400,7 +400,7 @@ func (p *PrivateStoreServerTransport) dispatchCollectionsToSubscriptionsMapping(
 	if p.srv.CollectionsToSubscriptionsMapping == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CollectionsToSubscriptionsMapping not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/collectionsToSubscriptionsMapping`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collectionsToSubscriptionsMapping`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -439,7 +439,7 @@ func (p *PrivateStoreServerTransport) dispatchCreateApprovalRequest(req *http.Re
 	if p.srv.CreateApprovalRequest == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateApprovalRequest not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/requestApprovals/(?P<requestApprovalId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/requestApprovals/(?P<requestApprovalId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -476,7 +476,7 @@ func (p *PrivateStoreServerTransport) dispatchCreateOrUpdate(req *http.Request) 
 	if p.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -509,7 +509,7 @@ func (p *PrivateStoreServerTransport) dispatchDelete(req *http.Request) (*http.R
 	if p.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -538,7 +538,7 @@ func (p *PrivateStoreServerTransport) dispatchFetchAllSubscriptionsInTenant(req 
 	if p.srv.FetchAllSubscriptionsInTenant == nil {
 		return nil, &nonRetriableError{errors.New("fake for method FetchAllSubscriptionsInTenant not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fetchAllSubscriptionsInTenant`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fetchAllSubscriptionsInTenant`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -574,7 +574,7 @@ func (p *PrivateStoreServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -603,7 +603,7 @@ func (p *PrivateStoreServerTransport) dispatchGetAdminRequestApproval(req *http.
 	if p.srv.GetAdminRequestApproval == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAdminRequestApproval not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/adminRequestApprovals/(?P<adminRequestApprovalId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/adminRequestApprovals/(?P<adminRequestApprovalId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -637,7 +637,7 @@ func (p *PrivateStoreServerTransport) dispatchGetApprovalRequestsList(req *http.
 	if p.srv.GetApprovalRequestsList == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetApprovalRequestsList not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/requestApprovals`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/requestApprovals`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -666,7 +666,7 @@ func (p *PrivateStoreServerTransport) dispatchGetRequestApproval(req *http.Reque
 	if p.srv.GetRequestApproval == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetRequestApproval not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/requestApprovals/(?P<requestApprovalId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/requestApprovals/(?P<requestApprovalId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -734,7 +734,7 @@ func (p *PrivateStoreServerTransport) dispatchListNewPlansNotifications(req *htt
 	if p.srv.ListNewPlansNotifications == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListNewPlansNotifications not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listNewPlansNotifications`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listNewPlansNotifications`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -763,7 +763,7 @@ func (p *PrivateStoreServerTransport) dispatchListStopSellOffersPlansNotificatio
 	if p.srv.ListStopSellOffersPlansNotifications == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListStopSellOffersPlansNotifications not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listStopSellOffersPlansNotifications`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listStopSellOffersPlansNotifications`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -802,7 +802,7 @@ func (p *PrivateStoreServerTransport) dispatchListSubscriptionsContext(req *http
 	if p.srv.ListSubscriptionsContext == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListSubscriptionsContext not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listSubscriptionsContext`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSubscriptionsContext`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -831,7 +831,7 @@ func (p *PrivateStoreServerTransport) dispatchQueryApprovedPlans(req *http.Reque
 	if p.srv.QueryApprovedPlans == nil {
 		return nil, &nonRetriableError{errors.New("fake for method QueryApprovedPlans not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryApprovedPlans`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/queryApprovedPlans`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -870,7 +870,7 @@ func (p *PrivateStoreServerTransport) dispatchQueryNotificationsState(req *http.
 	if p.srv.QueryNotificationsState == nil {
 		return nil, &nonRetriableError{errors.New("fake for method QueryNotificationsState not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryNotificationsState`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/queryNotificationsState`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -899,7 +899,7 @@ func (p *PrivateStoreServerTransport) dispatchQueryOffers(req *http.Request) (*h
 	if p.srv.QueryOffers == nil {
 		return nil, &nonRetriableError{errors.New("fake for method QueryOffers not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryOffers`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/queryOffers`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -928,7 +928,7 @@ func (p *PrivateStoreServerTransport) dispatchQueryRequestApproval(req *http.Req
 	if p.srv.QueryRequestApproval == nil {
 		return nil, &nonRetriableError{errors.New("fake for method QueryRequestApproval not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/requestApprovals/(?P<requestApprovalId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/query`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/requestApprovals/(?P<requestApprovalId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/query`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -971,7 +971,7 @@ func (p *PrivateStoreServerTransport) dispatchQueryUserOffers(req *http.Request)
 	if p.srv.QueryUserOffers == nil {
 		return nil, &nonRetriableError{errors.New("fake for method QueryUserOffers not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryUserOffers`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/queryUserOffers`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -1010,7 +1010,7 @@ func (p *PrivateStoreServerTransport) dispatchUpdateAdminRequestApproval(req *ht
 	if p.srv.UpdateAdminRequestApproval == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateAdminRequestApproval not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/adminRequestApprovals/(?P<adminRequestApprovalId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/adminRequestApprovals/(?P<adminRequestApprovalId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -1047,7 +1047,7 @@ func (p *PrivateStoreServerTransport) dispatchWithdrawPlan(req *http.Request) (*
 	if p.srv.WithdrawPlan == nil {
 		return nil, &nonRetriableError{errors.New("fake for method WithdrawPlan not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/requestApprovals/(?P<requestApprovalId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/withdrawPlan`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/requestApprovals/(?P<requestApprovalId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/withdrawPlan`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

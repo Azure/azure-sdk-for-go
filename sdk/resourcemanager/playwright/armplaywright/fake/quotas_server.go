@@ -92,7 +92,7 @@ func (q *QuotasServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 	if q.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.LoadTestService/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/playwrightQuotas/(?P<playwrightQuotaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.LoadTestService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/playwrightQuotas/(?P<playwrightQuotaName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -133,7 +133,7 @@ func (q *QuotasServerTransport) dispatchNewListBySubscriptionPager(req *http.Req
 	}
 	newListBySubscriptionPager := q.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.LoadTestService/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/playwrightQuotas`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.LoadTestService/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/playwrightQuotas`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

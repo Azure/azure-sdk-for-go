@@ -19,7 +19,7 @@ import (
 // StoragePoolsClient contains the methods for the StoragePools group.
 // Don't use this type directly, use NewStoragePoolsClient() instead.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-05-01-preview
 type StoragePoolsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type StoragePoolsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewStoragePoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StoragePoolsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -39,6 +42,72 @@ func NewStoragePoolsClient(subscriptionID string, credential azcore.TokenCredent
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// ConfigurePlatformConsoleAuth - Configure authentication settings for platform console access to the storage pool
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - storagePoolName - Name of the storage pool
+//   - config - Platform console authentication configuration
+//   - options - StoragePoolsClientConfigurePlatformConsoleAuthOptions contains the optional parameters for the StoragePoolsClient.ConfigurePlatformConsoleAuth
+//     method.
+func (client *StoragePoolsClient) ConfigurePlatformConsoleAuth(ctx context.Context, resourceGroupName string, storagePoolName string, config PlatformConsoleAuthConfigClassification, options *StoragePoolsClientConfigurePlatformConsoleAuthOptions) (StoragePoolsClientConfigurePlatformConsoleAuthResponse, error) {
+	var err error
+	const operationName = "StoragePoolsClient.ConfigurePlatformConsoleAuth"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.configurePlatformConsoleAuthCreateRequest(ctx, resourceGroupName, storagePoolName, config, options)
+	if err != nil {
+		return StoragePoolsClientConfigurePlatformConsoleAuthResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return StoragePoolsClientConfigurePlatformConsoleAuthResponse{}, err
+	}
+	return client.configurePlatformConsoleAuthHandleResponse(httpResp, http.StatusOK)
+}
+
+// configurePlatformConsoleAuthCreateRequest creates the ConfigurePlatformConsoleAuth request.
+func (client *StoragePoolsClient) configurePlatformConsoleAuthCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, config PlatformConsoleAuthConfigClassification, _ *StoragePoolsClientConfigurePlatformConsoleAuthOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/configurePlatformConsoleAuth"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if storagePoolName == "" {
+		return nil, errors.New("parameter storagePoolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, config); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// configurePlatformConsoleAuthHandleResponse handles the ConfigurePlatformConsoleAuth response.
+func (client *StoragePoolsClient) configurePlatformConsoleAuthHandleResponse(resp *http.Response, successCodes ...int) (StoragePoolsClientConfigurePlatformConsoleAuthResponse, error) {
+	result := StoragePoolsClientConfigurePlatformConsoleAuthResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
+		return StoragePoolsClientConfigurePlatformConsoleAuthResponse{}, err
+	}
+	return result, nil
 }
 
 // BeginCreate - Create a storage pool
@@ -91,7 +160,7 @@ func (client *StoragePoolsClient) create(ctx context.Context, resourceGroupName 
 func (client *StoragePoolsClient) createCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, resource StoragePool, _ *StoragePoolsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -107,7 +176,7 @@ func (client *StoragePoolsClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -166,7 +235,7 @@ func (client *StoragePoolsClient) deleteOperation(ctx context.Context, resourceG
 func (client *StoragePoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -182,7 +251,7 @@ func (client *StoragePoolsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -236,7 +305,7 @@ func (client *StoragePoolsClient) disableAvsConnection(ctx context.Context, reso
 func (client *StoragePoolsClient) disableAvsConnectionCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientBeginDisableAvsConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/disableAvsConnection"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -252,7 +321,7 @@ func (client *StoragePoolsClient) disableAvsConnectionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -307,7 +376,7 @@ func (client *StoragePoolsClient) enableAvsConnection(ctx context.Context, resou
 func (client *StoragePoolsClient) enableAvsConnectionCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, properties StoragePoolEnableAvsConnectionPost, _ *StoragePoolsClientBeginEnableAvsConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/enableAvsConnection"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -323,7 +392,7 @@ func (client *StoragePoolsClient) enableAvsConnectionCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -382,7 +451,7 @@ func (client *StoragePoolsClient) finalizeAvsConnection(ctx context.Context, res
 func (client *StoragePoolsClient) finalizeAvsConnectionCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, properties StoragePoolFinalizeAvsConnectionPost, _ *StoragePoolsClientBeginFinalizeAvsConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/finalizeAvsConnection"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -398,7 +467,7 @@ func (client *StoragePoolsClient) finalizeAvsConnectionCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -433,7 +502,7 @@ func (client *StoragePoolsClient) Get(ctx context.Context, resourceGroupName str
 func (client *StoragePoolsClient) getCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -449,7 +518,7 @@ func (client *StoragePoolsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -494,7 +563,7 @@ func (client *StoragePoolsClient) GetAvsConnection(ctx context.Context, resource
 func (client *StoragePoolsClient) getAvsConnectionCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientGetAvsConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/getAvsConnection"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -510,7 +579,7 @@ func (client *StoragePoolsClient) getAvsConnectionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -555,7 +624,7 @@ func (client *StoragePoolsClient) GetAvsStatus(ctx context.Context, resourceGrou
 func (client *StoragePoolsClient) getAvsStatusCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientGetAvsStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/getAvsStatus"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -571,7 +640,7 @@ func (client *StoragePoolsClient) getAvsStatusCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -616,7 +685,7 @@ func (client *StoragePoolsClient) GetHealthStatus(ctx context.Context, resourceG
 func (client *StoragePoolsClient) getHealthStatusCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientGetHealthStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/getHealthStatus"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -632,7 +701,7 @@ func (client *StoragePoolsClient) getHealthStatusCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -687,7 +756,7 @@ func (client *StoragePoolsClient) listByResourceGroupCreateRequest(ctx context.C
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -703,7 +772,7 @@ func (client *StoragePoolsClient) listByResourceGroupCreateRequest(ctx context.C
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101Preview)
+		reqQP.Set("api-version", version20260501Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -758,7 +827,7 @@ func (client *StoragePoolsClient) listBySubscriptionCreateRequest(ctx context.Co
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/PureStorage.Block/storagePools"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -770,7 +839,7 @@ func (client *StoragePoolsClient) listBySubscriptionCreateRequest(ctx context.Co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101Preview)
+		reqQP.Set("api-version", version20260501Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -785,6 +854,67 @@ func (client *StoragePoolsClient) listBySubscriptionHandleResponse(resp *http.Re
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StoragePoolListResult); err != nil {
 		return StoragePoolsClientListBySubscriptionResponse{}, err
+	}
+	return result, nil
+}
+
+// ListPlatformConsoleActivationCode - Returns a one-time activation code for platform console access to the storage pool
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - storagePoolName - Name of the storage pool
+//   - options - StoragePoolsClientListPlatformConsoleActivationCodeOptions contains the optional parameters for the StoragePoolsClient.ListPlatformConsoleActivationCode
+//     method.
+func (client *StoragePoolsClient) ListPlatformConsoleActivationCode(ctx context.Context, resourceGroupName string, storagePoolName string, options *StoragePoolsClientListPlatformConsoleActivationCodeOptions) (StoragePoolsClientListPlatformConsoleActivationCodeResponse, error) {
+	var err error
+	const operationName = "StoragePoolsClient.ListPlatformConsoleActivationCode"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listPlatformConsoleActivationCodeCreateRequest(ctx, resourceGroupName, storagePoolName, options)
+	if err != nil {
+		return StoragePoolsClientListPlatformConsoleActivationCodeResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return StoragePoolsClientListPlatformConsoleActivationCodeResponse{}, err
+	}
+	return client.listPlatformConsoleActivationCodeHandleResponse(httpResp, http.StatusOK)
+}
+
+// listPlatformConsoleActivationCodeCreateRequest creates the ListPlatformConsoleActivationCode request.
+func (client *StoragePoolsClient) listPlatformConsoleActivationCodeCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientListPlatformConsoleActivationCodeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/listPlatformConsoleActivationCode"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if storagePoolName == "" {
+		return nil, errors.New("parameter storagePoolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listPlatformConsoleActivationCodeHandleResponse handles the ListPlatformConsoleActivationCode response.
+func (client *StoragePoolsClient) listPlatformConsoleActivationCodeHandleResponse(resp *http.Response, successCodes ...int) (StoragePoolsClientListPlatformConsoleActivationCodeResponse, error) {
+	result := StoragePoolsClientListPlatformConsoleActivationCodeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PlatformConsoleActivationCode); err != nil {
+		return StoragePoolsClientListPlatformConsoleActivationCodeResponse{}, err
 	}
 	return result, nil
 }
@@ -840,7 +970,7 @@ func (client *StoragePoolsClient) repairAvsConnection(ctx context.Context, resou
 func (client *StoragePoolsClient) repairAvsConnectionCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientBeginRepairAvsConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/repairAvsConnection"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -856,7 +986,7 @@ func (client *StoragePoolsClient) repairAvsConnectionCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -911,7 +1041,7 @@ func (client *StoragePoolsClient) update(ctx context.Context, resourceGroupName 
 func (client *StoragePoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, properties StoragePoolUpdate, _ *StoragePoolsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -927,7 +1057,7 @@ func (client *StoragePoolsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

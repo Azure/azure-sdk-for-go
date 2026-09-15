@@ -30,6 +30,9 @@ type DeviceCapacityCheckClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDeviceCapacityCheckClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeviceCapacityCheckClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -89,7 +92,7 @@ func (client *DeviceCapacityCheckClient) checkResourceCreationFeasibility(ctx co
 func (client *DeviceCapacityCheckClient) checkResourceCreationFeasibilityCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, deviceCapacityRequestInfo DeviceCapacityRequestInfo, options *DeviceCapacityCheckClientBeginCheckResourceCreationFeasibilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/deviceCapacityCheck"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

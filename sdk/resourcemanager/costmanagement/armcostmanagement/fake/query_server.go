@@ -87,7 +87,7 @@ func (q *QueryServerTransport) dispatchUsage(req *http.Request) (*http.Response,
 	if q.srv.Usage == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Usage not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/query`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.CostManagement/query`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -120,7 +120,7 @@ func (q *QueryServerTransport) dispatchUsageByExternalCloudProviderType(req *htt
 	if q.srv.UsageByExternalCloudProviderType == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UsageByExternalCloudProviderType not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.CostManagement/(?P<externalCloudProviderType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<externalCloudProviderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/query`
+	const regexStr = `/providers/Microsoft\.CostManagement/(?P<externalCloudProviderType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<externalCloudProviderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/query`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

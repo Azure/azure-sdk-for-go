@@ -1,5 +1,13 @@
 # Release History
 
+## 2.0.0-beta.2 (2026-08-31)
+### Features Added
+
+- New enum type `ExemptionManagementMode` with values `ExemptionManagementModeAdmin`, `ExemptionManagementModeUserSelfServe`
+- New field `ExemptionManagementMode` in struct `ExemptionProperties`
+- New field `ExemptionManagementMode` in struct `ExemptionUpdateProperties`
+
+
 ## 2.0.0-beta.1 (2026-06-03)
 ### Breaking Changes
 

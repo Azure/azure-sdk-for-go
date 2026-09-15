@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-20-preview/ParameterGroups_CreateOrUpdate.json
+// Generated from example definition: 2026-05-01-preview/ParameterGroups_CreateOrUpdate.json
 func ExampleParameterGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleParameterGroupsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-20-preview/ParameterGroups_Delete.json
+// Generated from example definition: 2026-05-01-preview/ParameterGroups_Delete.json
 func ExampleParameterGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExampleParameterGroupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-20-preview/ParameterGroups_Get.json
+// Generated from example definition: 2026-05-01-preview/ParameterGroups_Get.json
 func ExampleParameterGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleParameterGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-20-preview/ParameterGroups_ListByResourceGroup.json
+// Generated from example definition: 2026-05-01-preview/ParameterGroups_ListByResourceGroup.json
 func ExampleParameterGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -309,7 +309,7 @@ func ExampleParameterGroupsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-20-preview/ParameterGroups_ListBySubscription.json
+// Generated from example definition: 2026-05-01-preview/ParameterGroups_ListBySubscription.json
 func ExampleParameterGroupsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -408,7 +408,7 @@ func ExampleParameterGroupsClient_NewListBySubscriptionPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testResourceGroup/providers/Microsoft.HorizonDb/parameterGroups/exampleparametergrouptest"),
 		// 				Name: to.Ptr("exampleparametergrouptest"),
 		// 				Type: to.Ptr("Microsoft.HorizonDb/parameterGroups"),
-		// 				Location: to.Ptr("centralus"),
+		// 				Location: to.Ptr("westus2"),
 		// 				Tags: map[string]*string{
 		// 					"env": to.Ptr("test"),
 		// 				},
@@ -439,7 +439,7 @@ func ExampleParameterGroupsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-20-preview/ParameterGroups_ListConnections.json
+// Generated from example definition: 2026-05-01-preview/ParameterGroups_ListConnections.json
 func ExampleParameterGroupsClient_NewListConnectionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -485,7 +485,7 @@ func ExampleParameterGroupsClient_NewListConnectionsPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-20-preview/ParameterGroups_ListVersions.json
+// Generated from example definition: 2026-05-01-preview/ParameterGroups_ListVersions.json
 func ExampleParameterGroupsClient_NewListVersionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -576,7 +576,7 @@ func ExampleParameterGroupsClient_NewListVersionsPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-20-preview/ParameterGroups_Update.json
+// Generated from example definition: 2026-05-01-preview/ParameterGroups_Update.json
 func ExampleParameterGroupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

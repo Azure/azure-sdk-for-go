@@ -1,5 +1,128 @@
 # Release History
 
+## 0.4.0 (2026-09-11)
+### Breaking Changes
+
+- `DeadlineTypeUnknown` from enum `DeadlineType` has been removed
+- `OperationStatePendingExecution`, `OperationStatePendingScheduling`, `OperationStateUnknown` from enum `OperationState` has been removed
+- `ResourceOperationTypeGetInstanceView`, `ResourceOperationTypeUnknown` from enum `ResourceOperationType` has been removed
+- `ScheduledActionsDeadlineTypeUnknown` from enum `ScheduledActionsDeadlineType` has been removed
+- `ScheduledActionsResourceOperationTypeUnknown` from enum `ScheduledActionsResourceOperationType` has been removed
+- Enum `AcceleratorManufacturer` has been removed
+- Enum `AcceleratorType` has been removed
+- Enum `ArchitectureType` has been removed
+- Enum `CPUManufacturer` has been removed
+- Enum `HyperVGeneration` has been removed
+- Enum `LocalStorageDiskType` has been removed
+- Enum `OptimizationPreference` has been removed
+- Enum `OsType` has been removed
+- Enum `VMAttributeSupport` has been removed
+- Enum `VMCategory` has been removed
+- Enum `VMOperationStatus` has been removed
+- Function `*ClientFactory.NewLaunchBulkInstancesOperationClient` has been removed
+- Function `NewLaunchBulkInstancesOperationClient` has been removed
+- Function `*LaunchBulkInstancesOperationClient.BeginCancel` has been removed
+- Function `*LaunchBulkInstancesOperationClient.BeginCreateOrUpdate` has been removed
+- Function `*LaunchBulkInstancesOperationClient.BeginDelete` has been removed
+- Function `*LaunchBulkInstancesOperationClient.Get` has been removed
+- Function `*LaunchBulkInstancesOperationClient.GetOperationStatus` has been removed
+- Function `*LaunchBulkInstancesOperationClient.NewListByResourceGroupPager` has been removed
+- Function `*LaunchBulkInstancesOperationClient.NewListBySubscriptionPager` has been removed
+- Function `*LaunchBulkInstancesOperationClient.NewListVirtualMachinesPager` has been removed
+- Function `*VirtualMachineBulkOperationsClient.BulkAcknowledgeOperationErrors` has been removed
+- Function `*VirtualMachineBulkOperationsClient.BulkCreateOperation` has been removed
+- Function `*VirtualMachineBulkOperationsClient.NewBulkListOperationErrorsPager` has been removed
+- Function `*VirtualMachineBulkOperationsClient.BulkVdiFlexCreateOperation` has been removed
+- Struct `APIError` has been removed
+- Struct `APIErrorBase` has been removed
+- Struct `AcknowledgeBulkOperationErrorsRequest` has been removed
+- Struct `AcknowledgeBulkOperationErrorsResponse` has been removed
+- Struct `BulkInstancesInnerError` has been removed
+- Struct `CreateResourceOperationResponse` has been removed
+- Struct `ExecuteCreateContent` has been removed
+- Struct `ExecuteVdiCreateRequest` has been removed
+- Struct `FlexProperties` has been removed
+- Struct `LaunchBulkInstancesOperationListResult` has been removed
+- Struct `LaunchBulkInstancesOperationProperties` has been removed
+- Struct `ListBulkOperationErrorsResponse` has been removed
+- Struct `LocationBasedLaunchBulkInstancesOperation` has been removed
+- Struct `ResourceProvisionPayload` has been removed
+- Struct `ResourceProvisionVdiPayload` has been removed
+- Struct `VMAttributeMinMaxDouble` has been removed
+- Struct `VMAttributeMinMaxInteger` has been removed
+- Struct `VMAttributes` has been removed
+- Struct `VMSizeProfile` has been removed
+- Struct `VirtualMachine` has been removed
+- Struct `VirtualMachineListResult` has been removed
+- Field `OptimizationPreference` of struct `ExecutionParameters` has been removed
+- Field `OptimizationPreference` of struct `ScheduledActionsExecutionParameters` has been removed
+
+### Features Added
+
+- New value `ScheduledActionsProvisioningStateUpdating` added to enum type `ScheduledActionsProvisioningState`
+- New function `NewBulkCreateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BulkCreateClient, error)`
+- New function `*BulkCreateClient.BeginCancel(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateClientBeginCancelOptions) (*runtime.Poller[BulkCreateClientCancelResponse], error)`
+- New function `*BulkCreateClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedBulkCreate, options *BulkCreateClientBeginCreateOrUpdateOptions) (*runtime.Poller[BulkCreateClientCreateOrUpdateResponse], error)`
+- New function `*BulkCreateClient.BeginDelete(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateClientBeginDeleteOptions) (*runtime.Poller[BulkCreateClientDeleteResponse], error)`
+- New function `*BulkCreateClient.Get(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateClientGetOptions) (BulkCreateClientGetResponse, error)`
+- New function `*BulkCreateClient.GetAsyncOperationStatus(ctx context.Context, location string, asyncOperationID string, options *BulkCreateClientGetAsyncOperationStatusOptions) (BulkCreateClientGetAsyncOperationStatusResponse, error)`
+- New function `*BulkCreateClient.NewListByResourceGroupPager(resourceGroupName string, location string, options *BulkCreateClientListByResourceGroupOptions) *runtime.Pager[BulkCreateClientListByResourceGroupResponse]`
+- New function `*BulkCreateClient.NewListBySubscriptionPager(location string, options *BulkCreateClientListBySubscriptionOptions) *runtime.Pager[BulkCreateClientListBySubscriptionResponse]`
+- New function `*BulkCreateClient.NewVirtualMachinesGetOperationStatusPager(resourceGroupName string, location string, name string, options *BulkCreateClientVirtualMachinesGetOperationStatusOptions) *runtime.Pager[BulkCreateClientVirtualMachinesGetOperationStatusResponse]`
+- New function `*ClientFactory.NewBulkCreateClient() *BulkCreateClient`
+- New struct `BulkCreateListResult`
+- New struct `BulkCreateOperationStatusListResult`
+- New struct `BulkCreateProperties`
+- New struct `BulkCreateVMSizeProfile`
+- New struct `LocationBasedBulkCreate`
+- New field `Name` in struct `VirtualMachineInfo`
+- New field `TargetMaxCapacity` in struct `ZonePreference`
+
+
+## 0.3.0 (2026-08-21)
+### Breaking Changes
+
+- Type of `OccurrenceExtensionProperties.ProvisioningState` has been changed from `*ResourceProvisioningState` to `*OccurrenceResourceProvisioningState`
+- Type of `OccurrenceResource.ProvisioningState` has been changed from `*ResourceProvisioningState` to `*OccurrenceResourceProvisioningState`
+- Type of `ScheduledActionProperties.ProvisioningState` has been changed from `*RecurringScheduledActionsProvisioningState` to `*ScheduledActionsProvisioningState`
+- Type of `ScheduledActionsExtensionProperties.ProvisioningState` has been changed from `*RecurringScheduledActionsProvisioningState` to `*ScheduledActionsProvisioningState`
+- Type of `ScheduledActionsSchedule.DeadlineType` has been changed from `*RecurringScheduledActionsDeadlineType` to `*ScheduledActionsDeadlineType`
+- Type of `ScheduledActionsSchedule.ExecutionParameters` has been changed from `*RecurringScheduledActionsExecutionParameters` to `*ScheduledActionsExecutionParameters`
+- Type of `ScheduledActionsScheduleUpdate.DeadlineType` has been changed from `*RecurringScheduledActionsDeadlineType` to `*ScheduledActionsDeadlineType`
+- Type of `ScheduledActionsScheduleUpdate.ExecutionParameters` has been changed from `*RecurringScheduledActionsExecutionParameters` to `*ScheduledActionsExecutionParameters`
+- Enum `RecurringScheduledActionsDeadlineType` has been removed
+- Enum `RecurringScheduledActionsProvisioningState` has been removed
+- Enum `RecurringScheduledActionsResourceOperationType` has been removed
+- Enum `ResourceProvisioningState` has been removed
+- Struct `RecurringScheduledActionsExecutionParameters` has been removed
+- Struct `RecurringScheduledActionsRetryPolicy` has been removed
+
+### Features Added
+
+- New enum type `CapacityRecommendationStatus` with values `CapacityRecommendationStatusFailed`, `CapacityRecommendationStatusNotInitiated`, `CapacityRecommendationStatusSkipped`, `CapacityRecommendationStatusSucceeded`
+- New enum type `OccurrenceResourceProvisioningState` with values `OccurrenceResourceProvisioningStateCanceled`, `OccurrenceResourceProvisioningStateCancelling`, `OccurrenceResourceProvisioningStateCreated`, `OccurrenceResourceProvisioningStateFailed`, `OccurrenceResourceProvisioningStateInvalidState`, `OccurrenceResourceProvisioningStateRescheduling`, `OccurrenceResourceProvisioningStateScheduled`, `OccurrenceResourceProvisioningStateSucceeded`
+- New enum type `PartialFulfillmentMode` with values `PartialFulfillmentModeDisabled`, `PartialFulfillmentModeEnabled`
+- New enum type `PartialFulfillmentReason` with values `PartialFulfillmentReasonInsufficientCapacity`, `PartialFulfillmentReasonInsufficientQuota`, `PartialFulfillmentReasonNone`
+- New enum type `ScheduledActionsDeadlineType` with values `ScheduledActionsDeadlineTypeCompleteBy`, `ScheduledActionsDeadlineTypeInitiateAt`, `ScheduledActionsDeadlineTypeUnknown`
+- New enum type `ScheduledActionsProvisioningState` with values `ScheduledActionsProvisioningStateCanceled`, `ScheduledActionsProvisioningStateDeleting`, `ScheduledActionsProvisioningStateFailed`, `ScheduledActionsProvisioningStateSucceeded`
+- New enum type `ScheduledActionsResourceOperationType` with values `ScheduledActionsResourceOperationTypeCreate`, `ScheduledActionsResourceOperationTypeDeallocate`, `ScheduledActionsResourceOperationTypeDelete`, `ScheduledActionsResourceOperationTypeHibernate`, `ScheduledActionsResourceOperationTypeStart`, `ScheduledActionsResourceOperationTypeUnknown`
+- New function `*BulkCreateCustomClient.NewVirtualMachinesGetOperationStatusPager(resourceGroupName string, location string, name string, options *BulkCreateCustomClientVirtualMachinesGetOperationStatusOptions) *runtime.Pager[BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse]`
+- New struct `BulkCreateCustomOperationStatusListResult`
+- New struct `BulkCreateCustomResource`
+- New struct `BulkCreateCustomVirtualMachineInfo`
+- New struct `CapacityRecommendation`
+- New struct `CapacityRecommendationDetails`
+- New struct `CapacityRecommendationParameters`
+- New struct `CapacityRecommendationPlacementScore`
+- New struct `CapacityRecommendationSize`
+- New struct `PartialFulfillmentPolicy`
+- New struct `ScheduledActionsExecutionParameters`
+- New struct `ScheduledActionsRetryPolicy`
+- New field `MinCapacity`, `PartialFulfillmentPolicy`, `Resources` in struct `BulkCreateCustomProperties`
+- New field `CapacityRecommendationParameters` in struct `ExecutionParameters`
+- New field `CapacityRecommendation` in struct `ResourceOperationDetails`
+
+
 ## 0.2.0 (2026-07-30)
 ### Features Added
 

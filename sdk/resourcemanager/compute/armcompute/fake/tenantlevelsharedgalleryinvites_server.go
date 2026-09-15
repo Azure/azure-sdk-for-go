@@ -95,7 +95,7 @@ func (t *TenantLevelSharedGalleryInvitesServerTransport) dispatchBeginTenantLeve
 	}
 	beginTenantLevelGallerySharingAccept := t.beginTenantLevelGallerySharingAccept.get(req)
 	if beginTenantLevelGallerySharingAccept == nil {
-		const regexStr = `/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tenantLevelSharedGallerySubscriptions/(?P<sharedGallerySubscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedGalleries/(?P<sharedGalleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/accept`
+		const regexStr = `/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tenantLevelSharedGallerySubscriptions/(?P<sharedGallerySubscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedGalleries/(?P<sharedGalleryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/accept`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -143,7 +143,7 @@ func (t *TenantLevelSharedGalleryInvitesServerTransport) dispatchBeginTenantLeve
 	}
 	beginTenantLevelGallerySharingReject := t.beginTenantLevelGallerySharingReject.get(req)
 	if beginTenantLevelGallerySharingReject == nil {
-		const regexStr = `/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tenantLevelSharedGallerySubscriptions/(?P<sharedGallerySubscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedGalleries/(?P<sharedGalleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reject`
+		const regexStr = `/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tenantLevelSharedGallerySubscriptions/(?P<sharedGallerySubscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedGalleries/(?P<sharedGalleryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reject`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

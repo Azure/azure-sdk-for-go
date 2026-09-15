@@ -8,12 +8,12 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud/v2"
 	"log"
 	"time"
 )
 
-// Generated from example definition: 2026-05-01-preview/BmcKeySets_Create.json
+// Generated from example definition: 2026-07-01/BmcKeySets_Create.json
 func ExampleBmcKeySetsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func ExampleBmcKeySetsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/BmcKeySets_Delete.json
+// Generated from example definition: 2026-07-01/BmcKeySets_Delete.json
 func ExampleBmcKeySetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleBmcKeySetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BmcKeySets_Get.json
+// Generated from example definition: 2026-07-01/BmcKeySets_Get.json
 func ExampleBmcKeySetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,7 +237,7 @@ func ExampleBmcKeySetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/BmcKeySets_ListByCluster.json
+// Generated from example definition: 2026-07-01/BmcKeySets_ListByCluster.json
 func ExampleBmcKeySetsClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -330,7 +330,7 @@ func ExampleBmcKeySetsClient_NewListByClusterPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BmcKeySets_Patch.json
+// Generated from example definition: 2026-07-01/BmcKeySets_Patch.json
 func ExampleBmcKeySetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -549,6 +549,9 @@ type ExemptionProperties struct {
 	// The display name of the policy exemption.
 	DisplayName *string
 
+	// The mode indicating how the policy exemption is managed.
+	ExemptionManagementMode *ExemptionManagementMode
+
 	// The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption.
 	ExpiresOn *time.Time
 
@@ -572,6 +575,9 @@ type ExemptionUpdate struct {
 type ExemptionUpdateProperties struct {
 	// The option whether validate the exemption is at or under the assignment scope.
 	AssignmentScopeValidation *AssignmentScopeValidation
+
+	// The mode indicating how the policy exemption is managed.
+	ExemptionManagementMode *ExemptionManagementMode
 
 	// The resource selector list to filter policies by resource properties.
 	ResourceSelectors []*ResourceSelector

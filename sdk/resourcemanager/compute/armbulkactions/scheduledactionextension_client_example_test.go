@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActionExtension_ListByVms_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/ScheduledActionExtension_ListByVms_MaximumSet_Gen.json
 func ExampleScheduledActionExtensionClient_NewListByVMsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,14 +54,13 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager() {
 		// 						RequestedDaysOfTheMonth: []*int32{
 		// 							to.Ptr[int32](15),
 		// 						},
-		// 						ExecutionParameters: &armbulkactions.RecurringScheduledActionsExecutionParameters{
-		// 							OptimizationPreference: to.Ptr(armbulkactions.OptimizationPreferenceCost),
-		// 							RetryPolicy: &armbulkactions.RecurringScheduledActionsRetryPolicy{
+		// 						ExecutionParameters: &armbulkactions.ScheduledActionsExecutionParameters{
+		// 							RetryPolicy: &armbulkactions.ScheduledActionsRetryPolicy{
 		// 								RetryCount: to.Ptr[int32](17),
 		// 								RetryWindowInMinutes: to.Ptr[int32](29),
 		// 							},
 		// 						},
-		// 						DeadlineType: to.Ptr(armbulkactions.RecurringScheduledActionsDeadlineTypeUnknown),
+		// 						DeadlineType: to.Ptr(armbulkactions.ScheduledActionsDeadlineTypeInitiateAt),
 		// 					},
 		// 					NotificationSettings: []*armbulkactions.NotificationProperties{
 		// 						{
@@ -72,7 +71,7 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager() {
 		// 						},
 		// 					},
 		// 					Disabled: to.Ptr(true),
-		// 					ProvisioningState: to.Ptr(armbulkactions.RecurringScheduledActionsProvisioningStateSucceeded),
+		// 					ProvisioningState: to.Ptr(armbulkactions.ScheduledActionsProvisioningStateSucceeded),
 		// 					ResourceNotificationSettings: []*armbulkactions.NotificationProperties{
 		// 						{
 		// 							Destination: to.Ptr("admin@contoso.com"),
@@ -95,7 +94,7 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm/providers/Microsoft.Compute/associatedScheduledActions?api-version=2026-09-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}

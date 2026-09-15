@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2022-09-01/PrivateLinkResources_List.json
+// Generated from example definition: 2025-12-01/PrivateLinkResources_List.json
 func ExamplePrivateLinkResourcesClient_ListByStorageSyncService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/TrunkedNetworks_Create.json
+// Generated from example definition: 2026-07-01/TrunkedNetworks_Create.json
 func ExampleTrunkedNetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleTrunkedNetworksClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/TrunkedNetworks_Delete.json
+// Generated from example definition: 2026-07-01/TrunkedNetworks_Delete.json
 func ExampleTrunkedNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleTrunkedNetworksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/TrunkedNetworks_Get.json
+// Generated from example definition: 2026-07-01/TrunkedNetworks_Get.json
 func ExampleTrunkedNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,7 +182,7 @@ func ExampleTrunkedNetworksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/TrunkedNetworks_ListByResourceGroup.json
+// Generated from example definition: 2026-07-01/TrunkedNetworks_ListByResourceGroup.json
 func ExampleTrunkedNetworksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +254,7 @@ func ExampleTrunkedNetworksClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/TrunkedNetworks_ListBySubscription.json
+// Generated from example definition: 2026-07-01/TrunkedNetworks_ListBySubscription.json
 func ExampleTrunkedNetworksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -326,7 +326,7 @@ func ExampleTrunkedNetworksClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/TrunkedNetworks_Patch.json
+// Generated from example definition: 2026-07-01/TrunkedNetworks_Patch.json
 func ExampleTrunkedNetworksClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

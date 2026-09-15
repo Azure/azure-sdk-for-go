@@ -1,5 +1,18 @@
 # Release History
 
+## 0.3.0 (2026-08-28)
+### Breaking Changes
+
+- Field `ID` of struct `SKUMixPlacementDeploymentChoice` has been removed
+- Field `CapacityMax` of struct `SKUMixPlacementItem` has been removed
+
+### Features Added
+
+- New enum type `SKUMixPlacementCapacityLimitReason` with values `SKUMixPlacementCapacityLimitReasonInsufficientCapacity`, `SKUMixPlacementCapacityLimitReasonInsufficientQuota`, `SKUMixPlacementCapacityLimitReasonNone`, `SKUMixPlacementCapacityLimitReasonSKUNotAvailable`
+- New struct `SKUMixPlacementCapacityLimit`
+- New field `CapacityLimits`, `ID` in struct `SKUMixPlacementResponse`
+
+
 ## 0.2.0 (2026-08-03)
 ### Features Added
 

@@ -58,13 +58,14 @@ func TestGetMessageSessions_SessionStateUpdatedAfterMode(t *testing.T) {
 	require.Equal(t, []string{"session-a", "session-b", "session-c"}, result)
 }
 
-func TestGetMessageSessions_ActiveSessionsMode(t *testing.T) {
+func TestGetMessageSessions_DefaultListingMode(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	// The sentinel for "active messages" mode: 10000-01-01T00:00:00Z.
+	// The sentinel for default listing mode: 10000-01-01T00:00:00Z.
 	// On the AMQP wire this becomes 253402300800000 ms, which the service's .NET
-	// AMQP decoder clamps to DateTime.MaxValue, triggering active-messages mode.
+	// AMQP decoder clamps to DateTime.MaxValue. This mode lists sessions with active
+	// messages or stored session state.
 	sentinel := time.Date(10000, 1, 1, 0, 0, 0, 0, time.UTC)
 
 	rpcLink := mock.NewMockRPCLink(ctrl)

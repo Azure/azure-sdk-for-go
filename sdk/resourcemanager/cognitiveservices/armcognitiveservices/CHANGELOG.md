@@ -1,5 +1,53 @@
 # Release History
 
+## 4.0.0-beta.4 (2026-08-27)
+### Breaking Changes
+
+- `VMPriorityLowPriority` from enum `VMPriority` has been removed
+- Function `*ComputesClient.BeginUpdate` has been removed
+- Field `Location` of struct `Compute` has been removed
+
+### Features Added
+
+- New value `ProvisioningStateExtensionUnreachable` added to enum type `ProvisioningState`
+- New value `VMPrioritySpot` added to enum type `VMPriority`
+- New enum type `AgentHostingType` with values `AgentHostingTypeManagedCluster`
+- New enum type `ArcDeploymentComputeType` with values `ArcDeploymentComputeTypeCPU`, `ArcDeploymentComputeTypeGpu`
+- New enum type `ArcDeploymentRuntime` with values `ArcDeploymentRuntimeOnnx`, `ArcDeploymentRuntimeVllm`
+- New enum type `ArcDeploymentSKUName` with values `ArcDeploymentSKUNameArc`
+- New function `*AgentHostingConfiguration.GetAgentHostingConfiguration() *AgentHostingConfiguration`
+- New function `NewArcDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ArcDeploymentsClient, error)`
+- New function `*ArcDeploymentsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, resource ArcDeployment, options *ArcDeploymentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ArcDeploymentsClientCreateOrUpdateResponse], error)`
+- New function `*ArcDeploymentsClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ArcDeploymentsClientBeginDeleteOptions) (*runtime.Poller[ArcDeploymentsClientDeleteResponse], error)`
+- New function `*ArcDeploymentsClient.Get(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ArcDeploymentsClientGetOptions) (ArcDeploymentsClientGetResponse, error)`
+- New function `*ArcDeploymentsClient.NewListPager(resourceGroupName string, accountName string, options *ArcDeploymentsClientListOptions) *runtime.Pager[ArcDeploymentsClientListResponse]`
+- New function `*ArcDeploymentsClient.BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, properties ArcDeploymentUpdate, options *ArcDeploymentsClientBeginUpdateOptions) (*runtime.Poller[ArcDeploymentsClientUpdateResponse], error)`
+- New function `*ClientFactory.NewArcDeploymentsClient() *ArcDeploymentsClient`
+- New function `*ManagedClusterAgentHostingConfiguration.GetAgentHostingConfiguration() *AgentHostingConfiguration`
+- New struct `ArcDeployment`
+- New struct `ArcDeploymentCPUMemoryResourceRequirements`
+- New struct `ArcDeploymentKubernetesResources`
+- New struct `ArcDeploymentListResult`
+- New struct `ArcDeploymentModel`
+- New struct `ArcDeploymentPatchCPUMemoryResourceRequirements`
+- New struct `ArcDeploymentPatchKubernetesResources`
+- New struct `ArcDeploymentProperties`
+- New struct `ArcDeploymentProvisioningDetails`
+- New struct `ArcDeploymentResourceRequirements`
+- New struct `ArcDeploymentSKU`
+- New struct `ArcDeploymentUpdate`
+- New struct `ArcDeploymentUpdateProperties`
+- New struct `ArcDeploymentVllmParameters`
+- New struct `CapabilitySettings`
+- New struct `ManagedClusterAgentHostingConfiguration`
+- New field `A365LoggingEnabled`, `AgentHostingConfigurations`, `CapabilitySettings` in struct `AccountProperties`
+- New field `Location` in struct `ClusterComputeProperties`
+- New field `Location` in struct `ComputeProperties`
+- New field `Location` in struct `ContainerInstanceComputeProperties`
+- New field `ContextCacheContainerID` in struct `DeploymentProperties`
+- New field `CapabilitySettings` in struct `ProjectProperties`
+
+
 ## 4.0.0-beta.3 (2026-06-26)
 ### Breaking Changes
 

@@ -93,7 +93,7 @@ func (r *ReservationOrderAliasServerTransport) dispatchBeginCreate(req *http.Req
 	}
 	beginCreate := r.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/providers/Microsoft\.BillingBenefits/reservationOrderAliases/(?P<reservationOrderAliasName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.BillingBenefits/reservationOrderAliases/(?P<reservationOrderAliasName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -135,7 +135,7 @@ func (r *ReservationOrderAliasServerTransport) dispatchGet(req *http.Request) (*
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.BillingBenefits/reservationOrderAliases/(?P<reservationOrderAliasName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.BillingBenefits/reservationOrderAliases/(?P<reservationOrderAliasName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

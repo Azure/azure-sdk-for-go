@@ -87,7 +87,7 @@ func (f *FileWorkspacesNoSubscriptionServerTransport) dispatchCreate(req *http.R
 	if f.srv.Create == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Support/fileWorkspaces/(?P<fileWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Support/fileWorkspaces/(?P<fileWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -116,7 +116,7 @@ func (f *FileWorkspacesNoSubscriptionServerTransport) dispatchGet(req *http.Requ
 	if f.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Support/fileWorkspaces/(?P<fileWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Support/fileWorkspaces/(?P<fileWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

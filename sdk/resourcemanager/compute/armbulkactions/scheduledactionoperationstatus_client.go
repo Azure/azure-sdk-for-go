@@ -19,7 +19,7 @@ import (
 // ScheduledActionOperationStatusClient contains the methods for the ScheduledActionOperationStatus group.
 // Don't use this type directly, use NewScheduledActionOperationStatusClient() instead.
 //
-// Generated from API version 2026-07-06-preview
+// Generated from API version 2026-09-06-preview
 type ScheduledActionOperationStatusClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ScheduledActionOperationStatusClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScheduledActionOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScheduledActionOperationStatusClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,11 +44,10 @@ func NewScheduledActionOperationStatusClient(subscriptionID string, credential a
 	return client, nil
 }
 
-// Get - Get the status of a ScheduledActions asynchronous operation. Both the `Azure-AsyncOperation` and `Location` headers
-// returned by long-running operations point at this endpoint.
+// Get - Gets the status of the specified scheduled action operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//   - location - The location name.
-//   - operationID - The operation id.
+//   - location - The Azure region where the operation is running.
+//   - operationID - The operation ID in UUID format.
 //   - options - ScheduledActionOperationStatusClientGetOptions contains the optional parameters for the ScheduledActionOperationStatusClient.Get
 //     method.
 func (client *ScheduledActionOperationStatusClient) Get(ctx context.Context, location string, operationID string, options *ScheduledActionOperationStatusClientGetOptions) (ScheduledActionOperationStatusClientGetResponse, error) {
@@ -69,7 +71,7 @@ func (client *ScheduledActionOperationStatusClient) Get(ctx context.Context, loc
 func (client *ScheduledActionOperationStatusClient) getCreateRequest(ctx context.Context, location string, operationID string, _ *ScheduledActionOperationStatusClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/scheduledActionsOperationStatuses/{operationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -85,7 +87,7 @@ func (client *ScheduledActionOperationStatusClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260906Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

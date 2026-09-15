@@ -57,6 +57,12 @@ type CloudEndpointsClientBeginTriggerChangeDetectionOptions struct {
 	ResumeToken string
 }
 
+// CloudEndpointsClientBeginUpdateOptions contains the optional parameters for the CloudEndpointsClient.BeginUpdate method.
+type CloudEndpointsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // CloudEndpointsClientGetOptions contains the optional parameters for the CloudEndpointsClient.Get method.
 type CloudEndpointsClientGetOptions struct {
 	// placeholder for future optional parameters

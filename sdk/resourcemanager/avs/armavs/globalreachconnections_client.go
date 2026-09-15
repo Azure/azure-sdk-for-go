@@ -19,7 +19,7 @@ import (
 // GlobalReachConnectionsClient contains the methods for the GlobalReachConnections group.
 // Don't use this type directly, use NewGlobalReachConnectionsClient() instead.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-03-01
 type GlobalReachConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -116,7 +116,7 @@ func (client *GlobalReachConnectionsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -196,7 +196,7 @@ func (client *GlobalReachConnectionsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -249,7 +249,7 @@ func (client *GlobalReachConnectionsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -325,7 +325,7 @@ func (client *GlobalReachConnectionsClient) listCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

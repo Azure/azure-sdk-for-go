@@ -13,6 +13,15 @@ type AddonPropertiesClassification interface {
 	GetAddonProperties() *AddonProperties
 }
 
+// HostLicenseClassification provides polymorphic access to related types.
+// Call the interface's GetHostLicense() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *HostLicense, *WindowsServerLicense
+type HostLicenseClassification interface {
+	// GetHostLicense returns the HostLicense content of the underlying type.
+	GetHostLicense() *HostLicense
+}
+
 // HostPropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetHostProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -52,7 +61,8 @@ type PlacementPolicyPropertiesClassification interface {
 // RescheduleOperationConstraintClassification provides polymorphic access to related types.
 // Call the interface's GetRescheduleOperationConstraint() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AvailableWindowForMaintenanceWhileRescheduleOperation, *BlockedWhileRescheduleOperation, *RescheduleOperationConstraint
+// - *AvailableWindowForMaintenanceWhileRescheduleOperation, *BlockedWhileRescheduleOperation, *RescheduleOperationConstraint,
+// - *ReschedulingWindowConstraint, *WeekendReschedulingConstraint
 type RescheduleOperationConstraintClassification interface {
 	// GetRescheduleOperationConstraint returns the RescheduleOperationConstraint content of the underlying type.
 	GetRescheduleOperationConstraint() *RescheduleOperationConstraint
@@ -61,7 +71,8 @@ type RescheduleOperationConstraintClassification interface {
 // ScheduleOperationConstraintClassification provides polymorphic access to related types.
 // Call the interface's GetScheduleOperationConstraint() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AvailableWindowForMaintenanceWhileScheduleOperation, *BlockedWhileScheduleOperation, *ScheduleOperationConstraint, *SchedulingWindow
+// - *AvailableWindowForMaintenanceWhileScheduleOperation, *BlockedWhileScheduleOperation, *ScheduleOperationConstraint, *SchedulingWindow,
+// - *WeekendSchedulingConstraint
 type ScheduleOperationConstraintClassification interface {
 	// GetScheduleOperationConstraint returns the ScheduleOperationConstraint content of the underlying type.
 	GetScheduleOperationConstraint() *ScheduleOperationConstraint

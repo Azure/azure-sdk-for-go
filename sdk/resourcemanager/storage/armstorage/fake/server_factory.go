@@ -33,6 +33,12 @@ type ServerFactory struct {
 	// ConnectorsServer contains the fakes for client ConnectorsClient
 	ConnectorsServer ConnectorsServer
 
+	// ContextCacheContainersServer contains the fakes for client ContextCacheContainersClient
+	ContextCacheContainersServer ContextCacheContainersServer
+
+	// ContextCachesServer contains the fakes for client ContextCachesClient
+	ContextCachesServer ContextCachesServer
+
 	// DataSharesServer contains the fakes for client DataSharesClient
 	DataSharesServer DataSharesServer
 
@@ -117,6 +123,8 @@ type ServerFactoryTransport struct {
 	trBlobInventoryPoliciesServer                  *BlobInventoryPoliciesServerTransport
 	trBlobServicesServer                           *BlobServicesServerTransport
 	trConnectorsServer                             *ConnectorsServerTransport
+	trContextCacheContainersServer                 *ContextCacheContainersServerTransport
+	trContextCachesServer                          *ContextCachesServerTransport
 	trDataSharesServer                             *DataSharesServerTransport
 	trDeletedAccountsServer                        *DeletedAccountsServerTransport
 	trEncryptionScopesServer                       *EncryptionScopesServerTransport
@@ -177,6 +185,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ConnectorsClient":
 		initServer(&s.trMu, &s.trConnectorsServer, func() *ConnectorsServerTransport { return NewConnectorsServerTransport(&s.srv.ConnectorsServer) })
 		resp, err = s.trConnectorsServer.Do(req)
+	case "ContextCacheContainersClient":
+		initServer(&s.trMu, &s.trContextCacheContainersServer, func() *ContextCacheContainersServerTransport {
+			return NewContextCacheContainersServerTransport(&s.srv.ContextCacheContainersServer)
+		})
+		resp, err = s.trContextCacheContainersServer.Do(req)
+	case "ContextCachesClient":
+		initServer(&s.trMu, &s.trContextCachesServer, func() *ContextCachesServerTransport {
+			return NewContextCachesServerTransport(&s.srv.ContextCachesServer)
+		})
+		resp, err = s.trContextCachesServer.Do(req)
 	case "DataSharesClient":
 		initServer(&s.trMu, &s.trDataSharesServer, func() *DataSharesServerTransport { return NewDataSharesServerTransport(&s.srv.DataSharesServer) })
 		resp, err = s.trDataSharesServer.Do(req)

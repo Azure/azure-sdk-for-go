@@ -273,6 +273,10 @@ type AccountProperties struct {
 	// for this property.
 	AllowBlobPublicAccess *bool
 
+	// Allow or disallow cross AAD tenant user delegation SAS (shared access signature). The default interpretation is false for
+	// this property.
+	AllowCrossTenantDelegationSas *bool
+
 	// Allow or disallow cross AAD tenant object replication. Set this property to true for new or existing accounts only if object
 	// replication policies will involve storage accounts in different AAD tenants. The default interpretation is false for new
 	// accounts to follow best security practices by default.
@@ -433,6 +437,10 @@ type AccountPropertiesCreateParameters struct {
 	// for this property.
 	AllowBlobPublicAccess *bool
 
+	// Allow or disallow cross AAD tenant user delegation SAS (shared access signature). The default interpretation is false for
+	// this property.
+	AllowCrossTenantDelegationSas *bool
+
 	// Allow or disallow cross AAD tenant object replication. Set this property to true for new or existing accounts only if object
 	// replication policies will involve storage accounts in different AAD tenants. The default interpretation is false for new
 	// accounts to follow best security practices by default.
@@ -532,6 +540,10 @@ type AccountPropertiesUpdateParameters struct {
 	// Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is false
 	// for this property.
 	AllowBlobPublicAccess *bool
+
+	// Allow or disallow cross AAD tenant user delegation SAS (shared access signature). The default interpretation is false for
+	// this property.
+	AllowCrossTenantDelegationSas *bool
 
 	// Allow or disallow cross AAD tenant object replication. Set this property to true for new or existing accounts only if object
 	// replication policies will involve storage accounts in different AAD tenants. The default interpretation is false for new
@@ -835,6 +847,16 @@ type AdvancedPlatformMetricsRuleProperties struct {
 
 	// READ-ONLY; Indicates the type of the advanced platform metrics rule. Possible values include: ContainerLevelCapacityMetrics.
 	RuleType *AdvancedPlatformMetricsRuleType
+}
+
+// ArmEncryption - (Optional) Discouraged to include in resource definition. Only needed where it is possible to disable platform
+// (AKA infrastructure) encryption. Azure SQL TDE is an example of this. Values are enabled and disabled.
+type ArmEncryption struct {
+	// All Customer-managed key encryption properties for the resource.
+	CustomerManagedKeyEncryption *CustomerManagedKeyEncryption
+
+	// Values are enabled and disabled.
+	InfrastructureEncryption *InfrastructureEncryption
 }
 
 // AzureFilesIdentityBasedAuthentication - Settings for Azure Files identity based authentication.
@@ -1352,6 +1374,140 @@ type ContainerProperties struct {
 	Version *string
 }
 
+// ContextCache - A Context Cache resource
+type ContextCache struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; The resource-specific properties for this resource.
+	Properties *ContextCacheProperties
+
+	// The managed service identities assigned to this resource.
+	Identity *SystemAssignedServiceIdentity
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ContextCacheContainer - A container resource within a Context Cache
+type ContextCacheContainer struct {
+	// REQUIRED; The resource-specific properties for this resource.
+	Properties *ContextCacheContainerProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ContextCacheContainerListResult - The response of a ContextCacheContainer list operation.
+type ContextCacheContainerListResult struct {
+	// REQUIRED; The ContextCacheContainer items on this page
+	Value []*ContextCacheContainer
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ContextCacheContainerProperties - Details of a container within a Context Cache.
+type ContextCacheContainerProperties struct {
+	// REQUIRED; The model name associated with this container (e.g., gpt-4, claude-3).
+	ModelName *string
+
+	// REQUIRED; The AI provider associated with this container.
+	Provider *AiProvider
+
+	// Container description.
+	Description *string
+
+	// The Time to Live (TTL) in days (1–30) for this container. Blobs in the container that have not been accessed within this
+	// number of days will be automatically deleted. If not specified at creation time, it defaults to 1 day.
+	TimeToLive *int32
+
+	// READ-ONLY; The status of the last operation.
+	ProvisioningState *ContextCacheProvisioningState
+}
+
+// ContextCacheContainerPropertiesUpdate - Updatable properties of a container within a Context Cache.
+type ContextCacheContainerPropertiesUpdate struct {
+	// Container description.
+	Description *string
+
+	// The Time to Live (TTL) in days (1–30) for this container. Blobs in the container that have not been accessed within this
+	// number of days will be automatically deleted.
+	TimeToLive *int32
+}
+
+// ContextCacheContainerUpdate - The type used for update operations of the Context Cache Container.
+type ContextCacheContainerUpdate struct {
+	// The updatable properties of the Context Cache Container.
+	Properties *ContextCacheContainerPropertiesUpdate
+}
+
+// ContextCacheListResult - The response of a ContextCache list operation.
+type ContextCacheListResult struct {
+	// REQUIRED; The ContextCache items on this page
+	Value []*ContextCache
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ContextCacheProperties - Details of the Context Cache.
+type ContextCacheProperties struct {
+	// REQUIRED; The kind of account determining storage topology.
+	AccountKind *ContextCacheAccountKind
+
+	// Account description.
+	Description *string
+
+	// Encryption settings for the account.
+	Encryption *ArmEncryption
+
+	// READ-ONLY; The status of the last operation.
+	ProvisioningState *ContextCacheProvisioningState
+}
+
+// ContextCachePropertiesUpdate - Updatable properties of the Context Cache.
+type ContextCachePropertiesUpdate struct {
+	// Account description.
+	Description *string
+
+	// Encryption settings for the account.
+	Encryption *ArmEncryption
+}
+
+// ContextCacheUpdate - The type used for update operations of the Context Cache.
+type ContextCacheUpdate struct {
+	// The managed service identity.
+	Identity *SystemAssignedServiceIdentity
+
+	// The updatable properties of the Context Cache.
+	Properties *ContextCachePropertiesUpdate
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
 // CorsRule - Specifies a CORS rule for the Blob service.
 type CorsRule struct {
 	// REQUIRED; Required if CorsRule element is present. A list of headers allowed to be part of the cross-origin request.
@@ -1385,6 +1541,16 @@ type CustomDomain struct {
 
 	// Indicates whether indirect CName validation is enabled. Default value is false. This should only be set on updates.
 	UseSubDomainName *bool
+}
+
+// CustomerManagedKeyEncryption - Customer-managed key encryption properties for the resource.
+type CustomerManagedKeyEncryption struct {
+	// All identity configuration for Customer-managed key settings defining which identity should be used to auth to Key Vault.
+	KeyEncryptionKeyIdentity *KeyEncryptionKeyIdentity
+
+	// key encryption key Url, versioned or non-versioned. Ex: https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78
+	// or https://contosovault.vault.azure.net/keys/contosokek.
+	KeyEncryptionKeyURL *string
 }
 
 // DataCollaborationPolicyProperties - Defines Data Collaboration Policy for a storage account.
@@ -2324,6 +2490,25 @@ type ImmutableStorageWithVersioning struct {
 type KeyCreationTime struct {
 	Key1 *time.Time
 	Key2 *time.Time
+}
+
+// KeyEncryptionKeyIdentity - All identity configuration for Customer-managed key settings defining which identity should
+// be used to auth to Key Vault.
+type KeyEncryptionKeyIdentity struct {
+	// delegated identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/<resource
+	// group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType systemAssignedIdentity
+	// and userAssignedIdentity - internal use only.
+	DelegatedIdentityClientID *string
+
+	// application client identity to use for accessing key encryption key Url in a different tenant. Ex: f83c6b1b-4d34-47e4-bb34-9d83df58b540
+	FederatedClientID *string
+
+	// The type of identity to use. Values can be systemAssignedIdentity, userAssignedIdentity, or delegatedResourceIdentity.
+	IdentityType *KeyEncryptionKeyIdentityType
+
+	// User assigned identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/<resource
+	// group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType systemAssignedIdentity.
+	UserAssignedIdentityResourceID *string
 }
 
 // KeyPolicy assigned to the storage account.
@@ -3476,6 +3661,14 @@ type SasPolicy struct {
 
 	// REQUIRED; The SAS expiration period, DD.HH:MM:SS.
 	SasExpirationPeriod *string
+
+	// Indicates whether user delegation SAS (shared access signature) tokens are required to be bound to a specific user. The
+	// default interpretation is false for this property.
+	RequireUserBoundUserDelegationSas *bool
+
+	// The action to perform when a user delegation SAS (shared access signature) token is not bound to a user as required by
+	// requireUserBoundUserDelegationSas.
+	RequireUserBoundUserDelegationSasAction *PolicyViolationAction
 }
 
 // ServiceSasParameters - The parameters to list service SAS credentials of a specific resource.
@@ -3605,6 +3798,19 @@ type StaticWebsite struct {
 	// The webpage that Azure Storage serves for requests to the root of a website or any subfolder (for example, index.html).
 	// The value is case-sensitive.
 	IndexDocument *string
+}
+
+// SystemAssignedServiceIdentity - Managed service identity (either system assigned, or none)
+type SystemAssignedServiceIdentity struct {
+	// REQUIRED; The type of managed identity assigned to this resource.
+	Type *SystemAssignedServiceIdentityType
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

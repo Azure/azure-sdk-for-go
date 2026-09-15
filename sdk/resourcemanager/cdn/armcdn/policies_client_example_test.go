@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/WafPolicyCreateOrUpdate.json
+// Generated from example definition: 2026-07-01/WafPolicyCreateOrUpdate.json
 func ExamplePoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -271,7 +271,7 @@ func ExamplePoliciesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/WafPolicyDelete.json
+// Generated from example definition: 2026-07-01/WafPolicyDelete.json
 func ExamplePoliciesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -293,7 +293,7 @@ func ExamplePoliciesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/WafPolicyGet.json
+// Generated from example definition: 2026-07-01/WafPolicyGet.json
 func ExamplePoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -443,7 +443,7 @@ func ExamplePoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/WafListPolicies.json
+// Generated from example definition: 2026-07-01/WafListPolicies.json
 func ExamplePoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -725,7 +725,7 @@ func ExamplePoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/WafPatchPolicy.json
+// Generated from example definition: 2026-07-01/WafPatchPolicy.json
 func ExamplePoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -5,7 +5,7 @@
 package armcdn
 
 const (
-	version20250601 string = "2025-06-01"
+	version20260701 string = "2026-07-01"
 )
 
 // AFDEndpointProtocols - Supported protocols for the customer's endpoint.
@@ -181,6 +181,61 @@ func PossibleAfdQueryStringCachingBehaviorValues() []AfdQueryStringCachingBehavi
 	}
 }
 
+// AfdServerTLSGroup - Supported key-exchange groups and curves. The ML-KEM groups are hybrid post-quantum groups.
+type AfdServerTLSGroup string
+
+const (
+	// AfdServerTLSGroupPrime256V1 - The prime256v1 elliptic curve group.
+	AfdServerTLSGroupPrime256V1 AfdServerTLSGroup = "prime256v1"
+	// AfdServerTLSGroupSecP256R1MLKEM768 - Hybrid post-quantum group combining secp256r1 with ML-KEM-768.
+	AfdServerTLSGroupSecP256R1MLKEM768 AfdServerTLSGroup = "SecP256r1MLKEM768"
+	// AfdServerTLSGroupSecP384R1MLKEM1024 - Hybrid post-quantum group combining secp384r1 with ML-KEM-1024.
+	AfdServerTLSGroupSecP384R1MLKEM1024 AfdServerTLSGroup = "SecP384r1MLKEM1024"
+	// AfdServerTLSGroupSecp384R1 - The secp384r1 elliptic curve group.
+	AfdServerTLSGroupSecp384R1 AfdServerTLSGroup = "secp384r1"
+	// AfdServerTLSGroupSecp521R1 - The secp521r1 elliptic curve group.
+	AfdServerTLSGroupSecp521R1 AfdServerTLSGroup = "secp521r1"
+	// AfdServerTLSGroupX25519 - The X25519 elliptic curve group.
+	AfdServerTLSGroupX25519 AfdServerTLSGroup = "X25519"
+	// AfdServerTLSGroupX25519MLKEM768 - Hybrid post-quantum group combining X25519 with ML-KEM-768.
+	AfdServerTLSGroupX25519MLKEM768 AfdServerTLSGroup = "X25519MLKEM768"
+)
+
+// PossibleAfdServerTLSGroupValues returns the possible values for the AfdServerTLSGroup const type.
+func PossibleAfdServerTLSGroupValues() []AfdServerTLSGroup {
+	return []AfdServerTLSGroup{
+		AfdServerTLSGroupPrime256V1,
+		AfdServerTLSGroupSecP256R1MLKEM768,
+		AfdServerTLSGroupSecP384R1MLKEM1024,
+		AfdServerTLSGroupSecp384R1,
+		AfdServerTLSGroupSecp521R1,
+		AfdServerTLSGroupX25519,
+		AfdServerTLSGroupX25519MLKEM768,
+	}
+}
+
+// AfdServerTLSGroupPolicy - Server TLS group policy that will be used for Https. Standard and Enhanced are service-managed
+// sets; Custom allows specifying serverTlsGroups explicitly.
+type AfdServerTLSGroupPolicy string
+
+const (
+	// AfdServerTLSGroupPolicyCustom - Uses the server TLS groups specified by serverTlsGroups.
+	AfdServerTLSGroupPolicyCustom AfdServerTLSGroupPolicy = "Custom"
+	// AfdServerTLSGroupPolicyEnhanced - Uses the enhanced service-managed set of server TLS groups.
+	AfdServerTLSGroupPolicyEnhanced AfdServerTLSGroupPolicy = "Enhanced"
+	// AfdServerTLSGroupPolicyStandard - Uses the standard service-managed set of server TLS groups.
+	AfdServerTLSGroupPolicyStandard AfdServerTLSGroupPolicy = "Standard"
+)
+
+// PossibleAfdServerTLSGroupPolicyValues returns the possible values for the AfdServerTLSGroupPolicy const type.
+func PossibleAfdServerTLSGroupPolicyValues() []AfdServerTLSGroupPolicy {
+	return []AfdServerTLSGroupPolicy{
+		AfdServerTLSGroupPolicyCustom,
+		AfdServerTLSGroupPolicyEnhanced,
+		AfdServerTLSGroupPolicyStandard,
+	}
+}
+
 // Algorithm - Algorithm to use for URL signing
 type Algorithm string
 
@@ -260,6 +315,45 @@ func PossibleCanMigrateDefaultSKUValues() []CanMigrateDefaultSKU {
 	return []CanMigrateDefaultSKU{
 		CanMigrateDefaultSKUPremiumAzureFrontDoor,
 		CanMigrateDefaultSKUStandardAzureFrontDoor,
+	}
+}
+
+// CertificateNameCheckValidationMode - The validation mode for certificate name check at origin level. Only applicable when
+// enforceCertificateNameCheck is true.
+type CertificateNameCheckValidationMode string
+
+const (
+	// CertificateNameCheckValidationModeCustomCertificateSubject - Validate the certificate against custom certificate subjects.
+	CertificateNameCheckValidationModeCustomCertificateSubject CertificateNameCheckValidationMode = "CustomCertificateSubject"
+	// CertificateNameCheckValidationModeIncomingHostHeader - Validate the certificate against the incoming host header.
+	CertificateNameCheckValidationModeIncomingHostHeader CertificateNameCheckValidationMode = "IncomingHostHeader"
+	// CertificateNameCheckValidationModeOriginHostname - Validate the certificate against the origin hostname.
+	CertificateNameCheckValidationModeOriginHostname CertificateNameCheckValidationMode = "OriginHostname"
+)
+
+// PossibleCertificateNameCheckValidationModeValues returns the possible values for the CertificateNameCheckValidationMode const type.
+func PossibleCertificateNameCheckValidationModeValues() []CertificateNameCheckValidationMode {
+	return []CertificateNameCheckValidationMode{
+		CertificateNameCheckValidationModeCustomCertificateSubject,
+		CertificateNameCheckValidationModeIncomingHostHeader,
+		CertificateNameCheckValidationModeOriginHostname,
+	}
+}
+
+// CertificateRevocationCheckEnabledState - Set to Enabled by default. If set to Disabled, revocation status of client certificate
+// chain will be checked before establishing mutual TLS connection.
+type CertificateRevocationCheckEnabledState string
+
+const (
+	CertificateRevocationCheckEnabledStateDisabled CertificateRevocationCheckEnabledState = "Disabled"
+	CertificateRevocationCheckEnabledStateEnabled  CertificateRevocationCheckEnabledState = "Enabled"
+)
+
+// PossibleCertificateRevocationCheckEnabledStateValues returns the possible values for the CertificateRevocationCheckEnabledState const type.
+func PossibleCertificateRevocationCheckEnabledStateValues() []CertificateRevocationCheckEnabledState {
+	return []CertificateRevocationCheckEnabledState{
+		CertificateRevocationCheckEnabledStateDisabled,
+		CertificateRevocationCheckEnabledStateEnabled,
 	}
 }
 
@@ -505,8 +599,10 @@ func PossibleDeleteRuleValues() []DeleteRule {
 type DeliveryRuleActionName string
 
 const (
+	DeliveryRuleActionNameAfdURLSigning              DeliveryRuleActionName = "AfdUrlSigning"
 	DeliveryRuleActionNameCacheExpiration            DeliveryRuleActionName = "CacheExpiration"
 	DeliveryRuleActionNameCacheKeyQueryString        DeliveryRuleActionName = "CacheKeyQueryString"
+	DeliveryRuleActionNameEdgeAction                 DeliveryRuleActionName = "EdgeAction"
 	DeliveryRuleActionNameModifyRequestHeader        DeliveryRuleActionName = "ModifyRequestHeader"
 	DeliveryRuleActionNameModifyResponseHeader       DeliveryRuleActionName = "ModifyResponseHeader"
 	DeliveryRuleActionNameOriginGroupOverride        DeliveryRuleActionName = "OriginGroupOverride"
@@ -519,8 +615,10 @@ const (
 // PossibleDeliveryRuleActionNameValues returns the possible values for the DeliveryRuleActionName const type.
 func PossibleDeliveryRuleActionNameValues() []DeliveryRuleActionName {
 	return []DeliveryRuleActionName{
+		DeliveryRuleActionNameAfdURLSigning,
 		DeliveryRuleActionNameCacheExpiration,
 		DeliveryRuleActionNameCacheKeyQueryString,
+		DeliveryRuleActionNameEdgeAction,
 		DeliveryRuleActionNameModifyRequestHeader,
 		DeliveryRuleActionNameModifyResponseHeader,
 		DeliveryRuleActionNameOriginGroupOverride,
@@ -536,6 +634,7 @@ type DeliveryRuleActionParametersType string
 const (
 	DeliveryRuleActionParametersTypeDeliveryRuleCacheExpirationActionParameters             DeliveryRuleActionParametersType = "DeliveryRuleCacheExpirationActionParameters"
 	DeliveryRuleActionParametersTypeDeliveryRuleCacheKeyQueryStringBehaviorActionParameters DeliveryRuleActionParametersType = "DeliveryRuleCacheKeyQueryStringBehaviorActionParameters"
+	DeliveryRuleActionParametersTypeDeliveryRuleEdgeActionParameters                        DeliveryRuleActionParametersType = "DeliveryRuleEdgeActionParameters"
 	DeliveryRuleActionParametersTypeDeliveryRuleHeaderActionParameters                      DeliveryRuleActionParametersType = "DeliveryRuleHeaderActionParameters"
 	DeliveryRuleActionParametersTypeDeliveryRuleOriginGroupOverrideActionParameters         DeliveryRuleActionParametersType = "DeliveryRuleOriginGroupOverrideActionParameters"
 	DeliveryRuleActionParametersTypeDeliveryRuleRouteConfigurationOverrideActionParameters  DeliveryRuleActionParametersType = "DeliveryRuleRouteConfigurationOverrideActionParameters"
@@ -549,6 +648,7 @@ func PossibleDeliveryRuleActionParametersTypeValues() []DeliveryRuleActionParame
 	return []DeliveryRuleActionParametersType{
 		DeliveryRuleActionParametersTypeDeliveryRuleCacheExpirationActionParameters,
 		DeliveryRuleActionParametersTypeDeliveryRuleCacheKeyQueryStringBehaviorActionParameters,
+		DeliveryRuleActionParametersTypeDeliveryRuleEdgeActionParameters,
 		DeliveryRuleActionParametersTypeDeliveryRuleHeaderActionParameters,
 		DeliveryRuleActionParametersTypeDeliveryRuleOriginGroupOverrideActionParameters,
 		DeliveryRuleActionParametersTypeDeliveryRuleRouteConfigurationOverrideActionParameters,
@@ -737,6 +837,23 @@ func PossibleEndpointResourceStateValues() []EndpointResourceState {
 	}
 }
 
+// EnforceMtlsEnabledState - Set to Disabled by default. If set to Enabled, only custom domains with mTLS enabled can be added
+// to child Route resources.
+type EnforceMtlsEnabledState string
+
+const (
+	EnforceMtlsEnabledStateDisabled EnforceMtlsEnabledState = "Disabled"
+	EnforceMtlsEnabledStateEnabled  EnforceMtlsEnabledState = "Enabled"
+)
+
+// PossibleEnforceMtlsEnabledStateValues returns the possible values for the EnforceMtlsEnabledState const type.
+func PossibleEnforceMtlsEnabledStateValues() []EnforceMtlsEnabledState {
+	return []EnforceMtlsEnabledState{
+		EnforceMtlsEnabledStateDisabled,
+		EnforceMtlsEnabledStateEnabled,
+	}
+}
+
 // ForwardingProtocol - Protocol this rule will use when forwarding traffic to backends.
 type ForwardingProtocol string
 
@@ -867,6 +984,22 @@ func PossibleHostNameOperatorValues() []HostNameOperator {
 		HostNameOperatorLessThan,
 		HostNameOperatorLessThanOrEqual,
 		HostNameOperatorRegEx,
+	}
+}
+
+// InvocationPoint - Defines at which point in the request processing pipeline the edge action will be invoked.
+type InvocationPoint string
+
+const (
+	InvocationPointClientRequest InvocationPoint = "ClientRequest"
+	InvocationPointOriginRequest InvocationPoint = "OriginRequest"
+)
+
+// PossibleInvocationPointValues returns the possible values for the InvocationPoint const type.
+func PossibleInvocationPointValues() []InvocationPoint {
+	return []InvocationPoint{
+		InvocationPointClientRequest,
+		InvocationPointOriginRequest,
 	}
 }
 
@@ -1194,6 +1327,26 @@ func PossibleMinimumTLSVersionValues() []MinimumTLSVersion {
 	}
 }
 
+// MtlsScenarioType - Supported scenarios for establishing mTLS connection.
+type MtlsScenarioType string
+
+const (
+	MtlsScenarioTypeClientCertificateRequiredAndOriginValidates MtlsScenarioType = "ClientCertificateRequiredAndOriginValidates"
+	MtlsScenarioTypeClientCertificateRequiredAndValidated       MtlsScenarioType = "ClientCertificateRequiredAndValidated"
+	MtlsScenarioTypeClientCertificateValidatedIfPresented       MtlsScenarioType = "ClientCertificateValidatedIfPresented"
+	MtlsScenarioTypeCompleteMtlsPassthroughToOrigin             MtlsScenarioType = "CompleteMtlsPassthroughToOrigin"
+)
+
+// PossibleMtlsScenarioTypeValues returns the possible values for the MtlsScenarioType const type.
+func PossibleMtlsScenarioTypeValues() []MtlsScenarioType {
+	return []MtlsScenarioType{
+		MtlsScenarioTypeClientCertificateRequiredAndOriginValidates,
+		MtlsScenarioTypeClientCertificateRequiredAndValidated,
+		MtlsScenarioTypeClientCertificateValidatedIfPresented,
+		MtlsScenarioTypeCompleteMtlsPassthroughToOrigin,
+	}
+}
+
 // Operator - Describes operator to be matched
 type Operator string
 
@@ -1250,6 +1403,27 @@ func PossibleOptimizationTypeValues() []OptimizationType {
 		OptimizationTypeGeneralWebDelivery,
 		OptimizationTypeLargeFileDownload,
 		OptimizationTypeVideoOnDemandMediaStreaming,
+	}
+}
+
+// OriginAuthenticationTokenDestinationHeader - The HTTP request header where the origin authentication token is placed when
+// forwarding the request to the origin.
+type OriginAuthenticationTokenDestinationHeader string
+
+const (
+	// OriginAuthenticationTokenDestinationHeaderAuthorization - Place the token in the standard `Authorization` request header
+	// (default behavior).
+	OriginAuthenticationTokenDestinationHeaderAuthorization OriginAuthenticationTokenDestinationHeader = "Authorization"
+	// OriginAuthenticationTokenDestinationHeaderXAzureAuthorization - Place the token in the `X-Azure-Authorization` request
+	// header to avoid conflicts with an existing `Authorization` header set by the client.
+	OriginAuthenticationTokenDestinationHeaderXAzureAuthorization OriginAuthenticationTokenDestinationHeader = "X-Azure-Authorization"
+)
+
+// PossibleOriginAuthenticationTokenDestinationHeaderValues returns the possible values for the OriginAuthenticationTokenDestinationHeader const type.
+func PossibleOriginAuthenticationTokenDestinationHeaderValues() []OriginAuthenticationTokenDestinationHeader {
+	return []OriginAuthenticationTokenDestinationHeader{
+		OriginAuthenticationTokenDestinationHeaderAuthorization,
+		OriginAuthenticationTokenDestinationHeaderXAzureAuthorization,
 	}
 }
 
@@ -2127,6 +2301,7 @@ const (
 	SecretTypeAzureFirstPartyManagedCertificate SecretType = "AzureFirstPartyManagedCertificate"
 	SecretTypeCustomerCertificate               SecretType = "CustomerCertificate"
 	SecretTypeManagedCertificate                SecretType = "ManagedCertificate"
+	SecretTypeMtlsCertificateChain              SecretType = "MtlsCertificateChain"
 	SecretTypeURLSigningKey                     SecretType = "UrlSigningKey"
 )
 
@@ -2136,6 +2311,7 @@ func PossibleSecretTypeValues() []SecretType {
 		SecretTypeAzureFirstPartyManagedCertificate,
 		SecretTypeCustomerCertificate,
 		SecretTypeManagedCertificate,
+		SecretTypeMtlsCertificateChain,
 		SecretTypeURLSigningKey,
 	}
 }
@@ -2290,6 +2466,19 @@ func PossibleTransformTypeValues() []TransformType {
 		TransformTypeURLDecode,
 		TransformTypeURLEncode,
 		TransformTypeUppercase,
+	}
+}
+
+type TypeName string
+
+const (
+	TypeNameDeliveryRuleAfdURLSigningActionParameters TypeName = "DeliveryRuleAfdUrlSigningActionParameters"
+)
+
+// PossibleTypeNameValues returns the possible values for the TypeName const type.
+func PossibleTypeNameValues() []TypeName {
+	return []TypeName{
+		TypeNameDeliveryRuleAfdURLSigningActionParameters,
 	}
 }
 

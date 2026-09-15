@@ -6,27 +6,24 @@ package armworkloadorchestration_test
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadorchestration/armworkloadorchestration"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/SchemaVersions_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/SchemaVersions_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleSchemaVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewSchemaVersionsClient().BeginCreateOrUpdate(ctx, "rgconfigurationmanager", "testname", "1.0.0", armworkloadorchestration.SchemaVersion{
-		Properties: &armworkloadorchestration.SchemaVersionProperties{
-			Value: to.Ptr("uiaqdwsi"),
-		},
+		Properties: &armworkloadorchestration.SchemaVersionProperties{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -41,33 +38,32 @@ func ExampleSchemaVersionsClient_BeginCreateOrUpdate() {
 	// res = armworkloadorchestration.SchemaVersionsClientCreateOrUpdateResponse{
 	// 	SchemaVersion: armworkloadorchestration.SchemaVersion{
 	// 		Properties: &armworkloadorchestration.SchemaVersionProperties{
-	// 			Value: to.Ptr("uiaqdwsi"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 		},
-	// 		ETag: to.Ptr("oenhsnuovivoekswlmjfgilwm"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("elshkjfnkjyyrexkhe"),
-	// 		Type: to.Ptr("lqqtkbsryevmwkcrg"),
+	// 		ETag: to.Ptr("jibjdzhpumzoailbkq"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/schemas/testname/versions/1.0.0"),
+	// 		Name: to.Ptr("1.0.0"),
+	// 		Type: to.Ptr("Microsoft.Edge/schemas/versions"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/SchemaVersions_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/SchemaVersions_Delete_MaximumSet_Gen.json
 func ExampleSchemaVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -81,14 +77,14 @@ func ExampleSchemaVersionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/SchemaVersions_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/SchemaVersions_Get_MaximumSet_Gen.json
 func ExampleSchemaVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -102,33 +98,32 @@ func ExampleSchemaVersionsClient_Get() {
 	// res = armworkloadorchestration.SchemaVersionsClientGetResponse{
 	// 	SchemaVersion: armworkloadorchestration.SchemaVersion{
 	// 		Properties: &armworkloadorchestration.SchemaVersionProperties{
-	// 			Value: to.Ptr("uiaqdwsi"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 		},
-	// 		ETag: to.Ptr("oenhsnuovivoekswlmjfgilwm"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("elshkjfnkjyyrexkhe"),
-	// 		Type: to.Ptr("lqqtkbsryevmwkcrg"),
+	// 		ETag: to.Ptr("jibjdzhpumzoailbkq"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/schemas/testname/versions/1.0.0"),
+	// 		Name: to.Ptr("1.0.0"),
+	// 		Type: to.Ptr("Microsoft.Edge/schemas/versions"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/SchemaVersions_ListBySchema_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/SchemaVersions_ListBySchema_MaximumSet_Gen.json
 func ExampleSchemaVersionsClient_NewListBySchemaPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -148,20 +143,19 @@ func ExampleSchemaVersionsClient_NewListBySchemaPager() {
 		// 		Value: []*armworkloadorchestration.SchemaVersion{
 		// 			{
 		// 				Properties: &armworkloadorchestration.SchemaVersionProperties{
-		// 					Value: to.Ptr("uiaqdwsi"),
 		// 					ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 		// 				},
-		// 				ETag: to.Ptr("oenhsnuovivoekswlmjfgilwm"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-		// 				Name: to.Ptr("elshkjfnkjyyrexkhe"),
-		// 				Type: to.Ptr("lqqtkbsryevmwkcrg"),
+		// 				ETag: to.Ptr("jibjdzhpumzoailbkq"),
+		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/schemas/testname/versions/testVersion"),
+		// 				Name: to.Ptr("testVersion"),
+		// 				Type: to.Ptr("Microsoft.Edge/schemas/versions"),
 		// 				SystemData: &armworkloadorchestration.SystemData{
-		// 					CreatedBy: to.Ptr("nvjczgdguyvllp"),
+		// 					CreatedBy: to.Ptr("qbgzyk"),
 		// 					CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 		// 					LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -171,21 +165,19 @@ func ExampleSchemaVersionsClient_NewListBySchemaPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/SchemaVersions_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/SchemaVersions_Update_MaximumSet_Gen.json
 func ExampleSchemaVersionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewSchemaVersionsClient().Update(ctx, "rgconfigurationmanager", "testname", "1.0.0", armworkloadorchestration.SchemaVersion{
-		Properties: &armworkloadorchestration.SchemaVersionProperties{
-			Value: to.Ptr("muezi"),
-		},
+		Properties: &armworkloadorchestration.SchemaVersionProperties{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -196,20 +188,19 @@ func ExampleSchemaVersionsClient_Update() {
 	// res = armworkloadorchestration.SchemaVersionsClientUpdateResponse{
 	// 	SchemaVersion: armworkloadorchestration.SchemaVersion{
 	// 		Properties: &armworkloadorchestration.SchemaVersionProperties{
-	// 			Value: to.Ptr("uiaqdwsi"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 		},
-	// 		ETag: to.Ptr("oenhsnuovivoekswlmjfgilwm"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("elshkjfnkjyyrexkhe"),
-	// 		Type: to.Ptr("lqqtkbsryevmwkcrg"),
+	// 		ETag: to.Ptr("jibjdzhpumzoailbkq"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/schemas/testname/versions/1.0.0"),
+	// 		Name: to.Ptr("1.0.0"),
+	// 		Type: to.Ptr("Microsoft.Edge/schemas/versions"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

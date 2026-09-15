@@ -6,13 +6,14 @@ package armhybridconnectivity_test
 
 import (
 	"context"
+	"log"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity"
-	"log"
 )
 
-// Generated from example definition: 2024-12-01/SolutionConfigurations_CreateOrUpdate.json
+// Generated from example definition: 2027-01-01/SolutionConfigurations_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleSolutionConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -23,10 +24,11 @@ func ExampleSolutionConfigurationsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSolutionConfigurationsClient().CreateOrUpdate(ctx, "ymuj", "keebwujt", armhybridconnectivity.SolutionConfiguration{
+	res, err := clientFactory.NewSolutionConfigurationsClient().CreateOrUpdate(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "abc", armhybridconnectivity.SolutionConfiguration{
 		Properties: &armhybridconnectivity.SolutionConfigurationProperties{
 			SolutionType:     to.Ptr("nmtqllkyohwtsthxaimsye"),
 			SolutionSettings: &armhybridconnectivity.SolutionSettings{},
+			Status:           to.Ptr(armhybridconnectivity.SolutionConfigurationStatus("AuthorizationPending")),
 		},
 	}, nil)
 	if err != nil {
@@ -42,13 +44,13 @@ func ExampleSolutionConfigurationsClient_CreateOrUpdate() {
 	// 			SolutionSettings: &armhybridconnectivity.SolutionSettings{
 	// 			},
 	// 			ProvisioningState: to.Ptr(armhybridconnectivity.ResourceProvisioningStateSucceeded),
-	// 			Status: to.Ptr(armhybridconnectivity.SolutionConfigurationStatusNew),
-	// 			StatusDetails: to.Ptr("rqbrzildwecankrpukkbjjqrczxboz"),
+	// 			Status: to.Ptr(armhybridconnectivity.SolutionConfigurationStatus("AuthorizationPending")),
+	// 			StatusDetails: to.Ptr("Aws authorization validation pending in Aws account"),
 	// 			LastSyncTime: to.Ptr(time.Date(2024, time.January, 20, 3, 24, 15, 820000000, time.UTC)),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/testSubcrptions/resourceGroups/testResourceGroup/providers/Microsoft.HybridConnectivity/SolutionConfigurations/qpwubemzmootxmtlxaerir"),
-	// 		Name: to.Ptr("qpwubemzmootxmtlxaerir"),
-	// 		Type: to.Ptr("uknrk"),
+	// 		ID: to.Ptr("/subscriptions/testSubcrptions/resourceGroups/testResourceGroup/providers/Microsoft.HybridConnectivity/SolutionConfigurations/solutionconfigurationtest"),
+	// 		Name: to.Ptr("solutionconfigurationtest"),
+	// 		Type: to.Ptr("microsoft.hybridconnectivity/solutionconfigurations"),
 	// 		SystemData: &armhybridconnectivity.SystemData{
 	// 			CreatedBy: to.Ptr("rpxzkcrobprrdvuoqxz"),
 	// 			CreatedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
@@ -61,7 +63,7 @@ func ExampleSolutionConfigurationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01/SolutionConfigurations_Delete.json
+// Generated from example definition: 2027-01-01/SolutionConfigurations_Delete_MaximumSet_Gen.json
 func ExampleSolutionConfigurationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +74,7 @@ func ExampleSolutionConfigurationsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSolutionConfigurationsClient().Delete(ctx, "ymuj", "stu", nil)
+	res, err := clientFactory.NewSolutionConfigurationsClient().Delete(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "abc", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -83,7 +85,7 @@ func ExampleSolutionConfigurationsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01/SolutionConfigurations_Get.json
+// Generated from example definition: 2027-01-01/SolutionConfigurations_Get_MaximumSet_Gen.json
 func ExampleSolutionConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +96,7 @@ func ExampleSolutionConfigurationsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSolutionConfigurationsClient().Get(ctx, "ymuj", "tks", nil)
+	res, err := clientFactory.NewSolutionConfigurationsClient().Get(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "abc", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -108,13 +110,13 @@ func ExampleSolutionConfigurationsClient_Get() {
 	// 			SolutionSettings: &armhybridconnectivity.SolutionSettings{
 	// 			},
 	// 			ProvisioningState: to.Ptr(armhybridconnectivity.ResourceProvisioningStateSucceeded),
-	// 			Status: to.Ptr(armhybridconnectivity.SolutionConfigurationStatusNew),
-	// 			StatusDetails: to.Ptr("rqbrzildwecankrpukkbjjqrczxboz"),
+	// 			Status: to.Ptr(armhybridconnectivity.SolutionConfigurationStatus("AuthorizationPending")),
+	// 			StatusDetails: to.Ptr("Aws authorization validation pending in Aws account"),
 	// 			LastSyncTime: to.Ptr(time.Date(2024, time.January, 20, 3, 24, 15, 820000000, time.UTC)),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/testSubcrptions/resourceGroups/testResourceGroup/providers/Microsoft.HybridConnectivity/SolutionConfigurations/qpwubemzmootxmtlxaerir"),
-	// 		Name: to.Ptr("qpwubemzmootxmtlxaerir"),
-	// 		Type: to.Ptr("uknrk"),
+	// 		ID: to.Ptr("/subscriptions/testSubcrptions/resourceGroups/testResourceGroup/providers/Microsoft.HybridConnectivity/SolutionConfigurations/solutionconfigurationtest"),
+	// 		Name: to.Ptr("solutionconfigurationtest"),
+	// 		Type: to.Ptr("microsoft.hybridconnectivity/solutionconfigurations"),
 	// 		SystemData: &armhybridconnectivity.SystemData{
 	// 			CreatedBy: to.Ptr("rpxzkcrobprrdvuoqxz"),
 	// 			CreatedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
@@ -127,8 +129,8 @@ func ExampleSolutionConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01/SolutionConfigurations_List.json
-func ExampleSolutionConfigurationsClient_NewListPager() {
+// Generated from example definition: 2027-01-01/SolutionConfigurations_List_MaximumSet_Gen.json
+func ExampleSolutionConfigurationsClient_NewListPager_solutionConfigurationsListGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -138,7 +140,7 @@ func ExampleSolutionConfigurationsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSolutionConfigurationsClient().NewListPager("ymuj", nil)
+	pager := clientFactory.NewSolutionConfigurationsClient().NewListPager("subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -203,7 +205,44 @@ func ExampleSolutionConfigurationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2024-12-01/SolutionConfigurations_SyncNow.json
+// Generated from example definition: 2027-01-01/SolutionConfigurations_List_MinimumSet_Gen.json
+func ExampleSolutionConfigurationsClient_NewListPager_solutionConfigurationsListGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridconnectivity.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewSolutionConfigurationsClient().NewListPager("subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armhybridconnectivity.SolutionConfigurationsClientListResponse{
+		// 	SolutionConfigurationListResult: armhybridconnectivity.SolutionConfigurationListResult{
+		// 		Value: []*armhybridconnectivity.SolutionConfiguration{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/testSubcrptions/resourceGroups/testResourceGroup/providers/Microsoft.HybridConnectivity/SolutionConfigurations/solutionconfigurationtest"),
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/testSubcrptions/resourceGroups/testResourceGroup/providers/Microsoft.HybridConnectivity/SolutionConfigurations/solutionconfigurationtest"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2027-01-01/SolutionConfigurations_SyncNow_MaximumSet_Gen.json
 func ExampleSolutionConfigurationsClient_BeginSyncNow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +253,7 @@ func ExampleSolutionConfigurationsClient_BeginSyncNow() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSolutionConfigurationsClient().BeginSyncNow(ctx, "ymuj", "tks", nil)
+	poller, err := clientFactory.NewSolutionConfigurationsClient().BeginSyncNow(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "abc", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -254,7 +293,7 @@ func ExampleSolutionConfigurationsClient_BeginSyncNow() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01/SolutionConfigurations_Update.json
+// Generated from example definition: 2027-01-01/SolutionConfigurations_Update_MaximumSet_Gen.json
 func ExampleSolutionConfigurationsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -265,7 +304,7 @@ func ExampleSolutionConfigurationsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSolutionConfigurationsClient().Update(ctx, "ymuj", "dxt", armhybridconnectivity.SolutionConfigurationUpdate{
+	res, err := clientFactory.NewSolutionConfigurationsClient().Update(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "abc", armhybridconnectivity.SolutionConfigurationUpdate{
 		Properties: &armhybridconnectivity.SolutionConfigurationPropertiesUpdate{
 			SolutionType:     to.Ptr("myzljlstvmgkp"),
 			SolutionSettings: &armhybridconnectivity.SolutionSettings{},
@@ -284,13 +323,13 @@ func ExampleSolutionConfigurationsClient_Update() {
 	// 			SolutionSettings: &armhybridconnectivity.SolutionSettings{
 	// 			},
 	// 			ProvisioningState: to.Ptr(armhybridconnectivity.ResourceProvisioningStateSucceeded),
-	// 			Status: to.Ptr(armhybridconnectivity.SolutionConfigurationStatusNew),
-	// 			StatusDetails: to.Ptr("rqbrzildwecankrpukkbjjqrczxboz"),
+	// 			Status: to.Ptr(armhybridconnectivity.SolutionConfigurationStatus("AuthorizationPending")),
+	// 			StatusDetails: to.Ptr("Aws authorization validation pending in Aws account"),
 	// 			LastSyncTime: to.Ptr(time.Date(2024, time.January, 20, 3, 24, 15, 820000000, time.UTC)),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/testSubcrptions/resourceGroups/testResourceGroup/providers/Microsoft.HybridConnectivity/SolutionConfigurations/qpwubemzmootxmtlxaerir"),
-	// 		Name: to.Ptr("qpwubemzmootxmtlxaerir"),
-	// 		Type: to.Ptr("uknrk"),
+	// 		ID: to.Ptr("/subscriptions/testSubcrptions/resourceGroups/testResourceGroup/providers/Microsoft.HybridConnectivity/SolutionConfigurations/solutionconfigurationtest"),
+	// 		Name: to.Ptr("solutionconfigurationtest"),
+	// 		Type: to.Ptr("microsoft.hybridconnectivity/solutionconfigurations"),
 	// 		SystemData: &armhybridconnectivity.SystemData{
 	// 			CreatedBy: to.Ptr("rpxzkcrobprrdvuoqxz"),
 	// 			CreatedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),

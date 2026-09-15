@@ -106,6 +106,57 @@ type ErrorDetail struct {
 	Target *string
 }
 
+// GcpCloudProfile - cloud profile for GCP.
+type GcpCloudProfile struct {
+	// The organization properties of the GCP organization.
+	OrganizationProperties *GcpOrganizationProperties
+
+	// The project properties of the GCP project.
+	ProjectProperties *GcpProjectProperties
+}
+
+// GcpCloudProfileUpdate - cloud profile for GCP.
+type GcpCloudProfileUpdate struct {
+	// The organization properties of the GCP organization.
+	OrganizationProperties *GcpOrganizationPropertiesUpdate
+}
+
+// GcpOrganizationProperties - GCP organization properties.
+type GcpOrganizationProperties struct {
+	// REQUIRED; The project Id of the management project under the GCP organization.
+	ManagementProjectID *string
+
+	// REQUIRED; The project number of the management project under the GCP organization.
+	ManagementProjectNumber *string
+
+	// REQUIRED; The organization id of the GCP organization.
+	OrganizationID *string
+
+	// List of GCP folders which need to be excluded.
+	ExcludedFolderIDs []*string
+
+	// List of GCP projects which need to be excluded.
+	ExcludedProjectNumbers []*string
+}
+
+// GcpOrganizationPropertiesUpdate - GCP organization properties for update.
+type GcpOrganizationPropertiesUpdate struct {
+	// List of GCP folders which need to be excluded.
+	ExcludedFolderIDs []*string
+
+	// List of GCP projects which need to be excluded.
+	ExcludedProjectNumbers []*string
+}
+
+// GcpProjectProperties - GCP project properties.
+type GcpProjectProperties struct {
+	// REQUIRED; The project id of the GCP project.
+	ProjectID *string
+
+	// REQUIRED; The project number of the GCP project.
+	ProjectNumber *string
+}
+
 // GenerateAwsTemplateRequest - ConnectorId and SolutionTypes and their properties to Generate AWS CFT Template.
 type GenerateAwsTemplateRequest struct {
 	// REQUIRED; The name of public cloud connector
@@ -117,6 +168,25 @@ type GenerateAwsTemplateRequest struct {
 
 // GenerateAwsTemplateResponse - The HybridConnectivity post operation response
 type GenerateAwsTemplateResponse struct {
+}
+
+// GenerateGcpTemplateRequest - ConnectorId and SolutionTypes and their properties to Generate GCP Access Control Template.
+type GenerateGcpTemplateRequest struct {
+	// REQUIRED; The name of public cloud connector
+	ConnectorID *string
+
+	// The GCP cloud profile.
+	GcpCloudProfile *GcpCloudProfile
+
+	// Optional template output format. Defaults to 'terraform' if not provided
+	GcpTemplateFormat *GcpTemplateFormat
+
+	// The list of solution types and their settings
+	SolutionTypes []*SolutionTypeSettings
+}
+
+// GenerateGcpTemplateResponse - The HybridConnectivity post operation response
+type GenerateGcpTemplateResponse struct {
 }
 
 // IngressGatewayResource - The ingress gateway access credentials
@@ -314,6 +384,9 @@ type PublicCloudConnector struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
+	// READ-ONLY; The kind of the public cloud connector.
+	Kind *HostType
+
 	// READ-ONLY; The name of the resource
 	Name *string
 
@@ -335,11 +408,14 @@ type PublicCloudConnectorListResult struct {
 
 // PublicCloudConnectorProperties - Properties of public cloud connectors.
 type PublicCloudConnectorProperties struct {
-	// REQUIRED; Cloud profile for AWS.
-	AwsCloudProfile *AwsCloudProfile
-
 	// REQUIRED; Host cloud the public cloud connector.
 	HostType *HostType
+
+	// Cloud profile for AWS.
+	AwsCloudProfile *AwsCloudProfile
+
+	// Cloud profile for GCP.
+	GcpCloudProfile *GcpCloudProfile
 
 	// READ-ONLY; Connector primary identifier.
 	ConnectorPrimaryIdentifier *string
@@ -352,6 +428,9 @@ type PublicCloudConnectorProperties struct {
 type PublicCloudConnectorPropertiesUpdate struct {
 	// Cloud profile for AWS.
 	AwsCloudProfile *AwsCloudProfileUpdate
+
+	// Cloud profile for GCP.
+	GcpCloudProfile *GcpCloudProfileUpdate
 }
 
 // PublicCloudConnectorUpdate - Public Cloud Connector
@@ -535,6 +614,9 @@ type SolutionTypeProperties struct {
 	// Short description of solution type.
 	Description *string
 
+	// The supported host types for the current solution type.
+	HostTypes []*HostType
+
 	// Array of solution settings and its description.
 	SolutionSettings []*SolutionTypeSettingsProperties
 
@@ -594,6 +676,9 @@ type SolutionTypeSettingsProperties struct {
 
 	// REQUIRED; The UI friendly name of the solution setting property.
 	DisplayName *string
+
+	// REQUIRED; The supported host types for the current solution setting
+	HostTypes []*HostType
 
 	// REQUIRED; The name of the solution setting property.
 	Name *string

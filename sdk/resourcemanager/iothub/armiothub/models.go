@@ -76,11 +76,11 @@ type CertificateProperties struct {
 	// The certificate content
 	Certificate *string
 
+	// Full certificate authority resource ID for ADR linked standard SKU hubs.
+	CertificateAuthorityResourceID *string
+
 	// Determines whether certificate has been verified.
 	IsVerified *bool
-
-	// The reference to policy stored in Azure Device Registry (ADR).
-	PolicyResourceID *string
 
 	// READ-ONLY; The certificate's create date and time.
 	Created *time.Time
@@ -101,8 +101,8 @@ type CertificateProperties struct {
 // CertificatePropertiesWithNonce - The description of an X509 CA Certificate including the challenge nonce issued for the
 // Proof-Of-Possession flow.
 type CertificatePropertiesWithNonce struct {
-	// The reference to policy stored in Azure Device Registry (ADR).
-	PolicyResourceID *string
+	// Full certificate authority resource ID for ADR linked standard SKU hubs.
+	CertificateAuthorityResourceID *string
 
 	// READ-ONLY; The certificate content
 	Certificate *string
@@ -216,11 +216,38 @@ type Details struct {
 
 // DeviceRegistry - Represents properties related to the Azure Device Registry (ADR).
 type DeviceRegistry struct {
+	// The host name for the data plane endpoint of the associated Azure Device Registry.
+	DataPlaneHostName *string
+
 	// The identity used to manage the ADR namespace from the data plane.
-	IdentityResourceID *string
+	Identity *DeviceRegistryIdentity
 
 	// The identifier of the Azure Device Registry namespace
 	NamespaceResourceID *string
+
+	// The UUID of the associated Azure Device Registry namespace.
+	NamespaceUUID *string
+
+	// READ-ONLY; The properties related to linking the IoT Hub with the Azure Device Registry.
+	LinkingProperties *DeviceRegistryLinkingProperties
+}
+
+// DeviceRegistryIdentity - The identity used to manage the ADR namespace from the data plane.
+type DeviceRegistryIdentity struct {
+	// The type of the identity.
+	Type *DeviceRegistryIdentityType
+
+	// The user assigned identity if the identity type is 'UserAssigned'.
+	UserAssignedIdentity *string
+}
+
+// DeviceRegistryLinkingProperties - The properties related to linking the IoT Hub with the Azure Device Registry.
+type DeviceRegistryLinkingProperties struct {
+	// READ-ONLY; The last error encountered when linking the IoT Hub with an Azure Device Registry.
+	Error *ErrorDetails
+
+	// READ-ONLY; Indicates whether the IoT Hub is linked with an Azure Device Registry.
+	State *DeviceRegistryLinkingState
 }
 
 // EncryptionPropertiesDescription - The encryption properties for the IoT hub.
@@ -278,6 +305,21 @@ type EnrichmentProperties struct {
 
 	// REQUIRED; The value for the enrichment property.
 	Value *string
+}
+
+// ErrorDetails - Error details.
+type ErrorDetails struct {
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details *string
+
+	// READ-ONLY; The HTTP status code.
+	HTTPStatusCode *string
+
+	// READ-ONLY; The error message.
+	Message *string
 }
 
 // EventHubConsumerGroupBodyDescription - The EventHub consumer group.
@@ -552,6 +594,12 @@ type MessagingEndpointProperties struct {
 	TTLAsIso8601 *string
 }
 
+// MqttV5Settings - Settings for an Event Grid-backed MQTT v5 IoT hub.
+type MqttV5Settings struct {
+	// The customer-defined groups of topic templates that devices publish to.
+	TopicGroups []*TopicGroup
+}
+
 // Name of Iot Hub type
 type Name struct {
 	// Localized value of name
@@ -702,8 +750,8 @@ type Properties struct {
 	// IoT hub comments.
 	Comments *string
 
-	// Represents properties related to the Azure Device Registry (ADR).
-	DeviceRegistry *DeviceRegistry
+	// The connection profile that the IoT hub uses for device connections. Defaults to 'Classic'.
+	ConnectionProfile *ConnectionProfile
 
 	// The device streams properties of iothub.
 	DeviceStreams *PropertiesDeviceStreams
@@ -746,6 +794,10 @@ type Properties struct {
 	// 1.2 to be rejected.
 	MinTLSVersion *string
 
+	// The custom topic configuration for an Event Grid-backed MQTT v5 IoT hub. This property is valid only when connectionProfile
+	// is 'MqttV5'.
+	MqttV5Settings *MqttV5Settings
+
 	// Network Rule Set Properties of IotHub
 	NetworkRuleSets *NetworkRuleSetProperties
 
@@ -771,6 +823,9 @@ type Properties struct {
 
 	// READ-ONLY; The name of the device host. Supports secure connections over TLS 1.3.
 	DeviceHostName *string
+
+	// READ-ONLY; Represents properties related to the Azure Device Registry (ADR).
+	DeviceRegistry *DeviceRegistry
 
 	// READ-ONLY; The name of the host.
 	HostName *string
@@ -888,6 +943,9 @@ type RouteProperties struct {
 	// The condition that is evaluated to apply the routing rule. If no condition is provided, it evaluates to true by default.
 	// For grammar, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language
 	Condition *string
+
+	// The data schema reference that is used to interpret the message body.
+	DataSchema *string
 }
 
 // RoutingCosmosDBSQLAPIProperties - The properties related to a cosmos DB sql container endpoint.
@@ -911,6 +969,9 @@ type RoutingCosmosDBSQLAPIProperties struct {
 
 	// Managed identity properties of routing cosmos DB container endpoint.
 	Identity *ManagedIdentity
+
+	// The format of the message payload delivered to this endpoint.
+	MessagePayloadFormat *MessagePayloadFormat
 
 	// The name of the partition key associated with this cosmos DB sql container if one exists. This is an optional parameter.
 	PartitionKeyName *string
@@ -986,6 +1047,9 @@ type RoutingEventHubProperties struct {
 	// Managed identity properties of routing event hub endpoint.
 	Identity *ManagedIdentity
 
+	// The format of the message payload delivered to this endpoint.
+	MessagePayloadFormat *MessagePayloadFormat
+
 	// The name of the resource group of the event hub endpoint.
 	ResourceGroup *string
 
@@ -1014,6 +1078,9 @@ type RoutingEventStreamProperties struct {
 
 	// Managed identity properties of routing event stream endpoint.
 	Identity *ManagedIdentity
+
+	// The format of the message payload delivered to this endpoint.
+	MessagePayloadFormat *MessagePayloadFormat
 
 	// The unique GUID of the custom source for the event stream.
 	SourceID *string
@@ -1083,6 +1150,9 @@ type RoutingServiceBusQueueEndpointProperties struct {
 	// Managed identity properties of routing service bus queue endpoint.
 	Identity *ManagedIdentity
 
+	// The format of the message payload delivered to this endpoint.
+	MessagePayloadFormat *MessagePayloadFormat
+
 	// The name of the resource group of the service bus queue endpoint.
 	ResourceGroup *string
 
@@ -1114,6 +1184,9 @@ type RoutingServiceBusTopicEndpointProperties struct {
 
 	// Managed identity properties of routing service bus topic endpoint.
 	Identity *ManagedIdentity
+
+	// The format of the message payload delivered to this endpoint.
+	MessagePayloadFormat *MessagePayloadFormat
 
 	// The name of the resource group of the service bus topic endpoint.
 	ResourceGroup *string
@@ -1161,6 +1234,9 @@ type RoutingStorageContainerProperties struct {
 	// Maximum number of bytes for each blob written to storage. Value should be between 10485760(10MB) and 524288000(500MB).
 	// Default value is 314572800(300MB).
 	MaxChunkSizeInBytes *int32
+
+	// The format of the message payload delivered to this endpoint.
+	MessagePayloadFormat *MessagePayloadFormat
 
 	// The name of the resource group of the storage account.
 	ResourceGroup *string
@@ -1331,6 +1407,15 @@ type TestRouteResult struct {
 type TestRouteResultDetails struct {
 	// JSON-serialized list of route compilation errors
 	CompilationErrors []*RouteCompilationError
+}
+
+// TopicGroup - A named set of topic templates for an Event Grid-backed MQTT v5 IoT hub.
+type TopicGroup struct {
+	// The customer-supplied identifier used to reconcile the topic group during updates.
+	TopicGroupID *string
+
+	// The topic templates in this group.
+	TopicTemplates []*string
 }
 
 // UserSubscriptionQuota - User subscription quota response

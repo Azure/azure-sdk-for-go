@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/NetworkManagerAdminRulePut.json
+// Generated from example definition: 2026-01-01/NetworkManagerAdminRulePut.json
 func ExampleAdminRulesClient_CreateOrUpdate_createAnAdminRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleAdminRulesClient_CreateOrUpdate_createAnAdminRule() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerAdminRulePut_NetworkGroupSource.json
+// Generated from example definition: 2026-01-01/NetworkManagerAdminRulePut_NetworkGroupSource.json
 func ExampleAdminRulesClient_CreateOrUpdate_createAAdminRuleWithNetworkGroupAsSourceOrDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,7 +191,7 @@ func ExampleAdminRulesClient_CreateOrUpdate_createAAdminRuleWithNetworkGroupAsSo
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerAdminRuleDelete.json
+// Generated from example definition: 2026-01-01/NetworkManagerAdminRuleDelete.json
 func ExampleAdminRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,7 +218,7 @@ func ExampleAdminRulesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerAdminRuleGet.json
+// Generated from example definition: 2026-01-01/NetworkManagerAdminRuleGet.json
 func ExampleAdminRulesClient_Get_getsSecurityAdminRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,7 +281,7 @@ func ExampleAdminRulesClient_Get_getsSecurityAdminRule() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerDefaultAdminRuleGet.json
+// Generated from example definition: 2026-01-01/NetworkManagerDefaultAdminRuleGet.json
 func ExampleAdminRulesClient_Get_getsSecurityDefaultAdminRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,7 +345,7 @@ func ExampleAdminRulesClient_Get_getsSecurityDefaultAdminRule() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerAdminRuleList.json
+// Generated from example definition: 2026-01-01/NetworkManagerAdminRuleList.json
 func ExampleAdminRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/FirewallPolicyPut.json
+// Generated from example definition: 2026-01-01/FirewallPolicyPut.json
 func ExampleFirewallPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -255,7 +255,7 @@ func ExampleFirewallPoliciesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/FirewallPolicyDelete.json
+// Generated from example definition: 2026-01-01/FirewallPolicyDelete.json
 func ExampleFirewallPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,7 +281,7 @@ func ExampleFirewallPoliciesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/FirewallPolicyGet.json
+// Generated from example definition: 2026-01-01/FirewallPolicyGet.json
 func ExampleFirewallPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -416,7 +416,7 @@ func ExampleFirewallPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/FirewallPolicyListByResourceGroup.json
+// Generated from example definition: 2026-01-01/FirewallPolicyListByResourceGroup.json
 func ExampleFirewallPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -487,7 +487,7 @@ func ExampleFirewallPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/FirewallPolicyListBySubscription.json
+// Generated from example definition: 2026-01-01/FirewallPolicyListBySubscription.json
 func ExampleFirewallPoliciesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -558,7 +558,7 @@ func ExampleFirewallPoliciesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/FirewallPolicyPatch.json
+// Generated from example definition: 2026-01-01/FirewallPolicyPatch.json
 func ExampleFirewallPoliciesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

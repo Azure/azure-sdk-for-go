@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/NetworkManagerSecurityUserConfigurationPut.json
+// Generated from example definition: 2026-01-01/NetworkManagerSecurityUserConfigurationPut.json
 func ExampleSecurityUserConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleSecurityUserConfigurationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerSecurityUserConfigurationDelete.json
+// Generated from example definition: 2026-01-01/NetworkManagerSecurityUserConfigurationDelete.json
 func ExampleSecurityUserConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleSecurityUserConfigurationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerSecurityUserConfigurationGet.json
+// Generated from example definition: 2026-01-01/NetworkManagerSecurityUserConfigurationGet.json
 func ExampleSecurityUserConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleSecurityUserConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerSecurityUserConfigurationList.json
+// Generated from example definition: 2026-01-01/NetworkManagerSecurityUserConfigurationList.json
 func ExampleSecurityUserConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

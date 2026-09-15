@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceAbortMigration.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceAbortMigration.json
 func ExampleVirtualAppliancesClient_BeginAbortMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleVirtualAppliancesClient_BeginAbortMigration() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceCommitMigration.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceCommitMigration.json
 func ExampleVirtualAppliancesClient_BeginCommitMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleVirtualAppliancesClient_BeginCommitMigration() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualAppliancePut.json
+// Generated from example definition: 2026-01-01/NetworkVirtualAppliancePut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNetworkVirtualAppliance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -301,7 +301,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNetworkVirtualAppl
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceSaaSPut.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceSaaSPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createSaaSNetworkVirtualAppliance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -366,7 +366,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createSaaSNetworkVirtual
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceVhubDualStackPut.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVhubDualStackPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVirtualHubForIPv4AndIpv6() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -505,7 +505,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVirtualHubFor
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceVhubIPv4Put.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVhubIPv4Put.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVirtualHubForIPv4() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -754,7 +754,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVirtualHubFor
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceVnetAdditionalPrivatePut.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVnetAdditionalPrivatePut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPrivateNicPublicNicAdditionalPrivateNic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -946,7 +946,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPriva
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceVnetAdditionalPublicPut.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVnetAdditionalPublicPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPrivateNicPublicNicAdditionalPublicNic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1138,7 +1138,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPriva
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceVnetBasicPut.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVnetBasicPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPrivateNicPublicNic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1298,7 +1298,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPriva
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceVnetDualStackPut.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVnetDualStackPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetForIpv4AndIpv6() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1471,7 +1471,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetForIpv4An
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceVnetIPv4Put.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVnetIPv4Put.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetForIpv4() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1637,7 +1637,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetForIpv4()
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceVnetIngressPut.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVnetIngressPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPrivateNicPublicNicIncludingInternetIngress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1807,7 +1807,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPriva
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceVnetNetworkProfilePut.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVnetNetworkProfilePut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPrivateNicPublicNicIncludingNetworkProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2079,7 +2079,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPriva
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceDelete.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceDelete.json
 func ExampleVirtualAppliancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2105,7 +2105,7 @@ func ExampleVirtualAppliancesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceExecuteMigration.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceExecuteMigration.json
 func ExampleVirtualAppliancesClient_BeginExecuteMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2130,7 +2130,7 @@ func ExampleVirtualAppliancesClient_BeginExecuteMigration() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceGet.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceGet.json
 func ExampleVirtualAppliancesClient_Get_getNetworkVirtualAppliance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2329,7 +2329,7 @@ func ExampleVirtualAppliancesClient_Get_getNetworkVirtualAppliance() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceVhubDualStackGet.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVhubDualStackGet.json
 func ExampleVirtualAppliancesClient_Get_getNetworkVirtualApplianceInVirtualHubWithDualStack() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2432,7 +2432,7 @@ func ExampleVirtualAppliancesClient_Get_getNetworkVirtualApplianceInVirtualHubWi
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceVnetDualStackGet.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVnetDualStackGet.json
 func ExampleVirtualAppliancesClient_Get_getNetworkVirtualApplianceInVNetWithDualStack() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2552,7 +2552,7 @@ func ExampleVirtualAppliancesClient_Get_getNetworkVirtualApplianceInVNetWithDual
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceBootDiagnostics.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceBootDiagnostics.json
 func ExampleVirtualAppliancesClient_BeginGetBootDiagnosticLogs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2585,7 +2585,7 @@ func ExampleVirtualAppliancesClient_BeginGetBootDiagnosticLogs() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceListBySubscription.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceListBySubscription.json
 func ExampleVirtualAppliancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2752,7 +2752,7 @@ func ExampleVirtualAppliancesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceListByResourceGroup.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceListByResourceGroup.json
 func ExampleVirtualAppliancesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2919,7 +2919,7 @@ func ExampleVirtualAppliancesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualAppliancePrepareMigration.json
+// Generated from example definition: 2026-01-01/NetworkVirtualAppliancePrepareMigration.json
 func ExampleVirtualAppliancesClient_BeginPrepareMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2944,7 +2944,7 @@ func ExampleVirtualAppliancesClient_BeginPrepareMigration() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceSpecificReimage.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceSpecificReimage.json
 func ExampleVirtualAppliancesClient_BeginReimage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2975,7 +2975,7 @@ func ExampleVirtualAppliancesClient_BeginReimage() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceEmptyRestart.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceEmptyRestart.json
 func ExampleVirtualAppliancesClient_BeginRestart_restartAllNetworkVirtualApplianceVMSInVMScaleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3005,7 +3005,7 @@ func ExampleVirtualAppliancesClient_BeginRestart_restartAllNetworkVirtualApplian
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceSpecificRestart.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceSpecificRestart.json
 func ExampleVirtualAppliancesClient_BeginRestart_restartSpecificNetworkVirtualApplianceVMSInVMScaleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3037,7 +3037,7 @@ func ExampleVirtualAppliancesClient_BeginRestart_restartSpecificNetworkVirtualAp
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkVirtualApplianceUpdateTags.json
+// Generated from example definition: 2026-01-01/NetworkVirtualApplianceUpdateTags.json
 func ExampleVirtualAppliancesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

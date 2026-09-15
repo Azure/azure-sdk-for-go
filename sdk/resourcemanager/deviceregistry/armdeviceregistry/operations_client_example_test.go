@@ -7,11 +7,11 @@ package armdeviceregistry_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/List_Operations.json
+// Generated from example definition: 2026-11-01/List_Operations.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

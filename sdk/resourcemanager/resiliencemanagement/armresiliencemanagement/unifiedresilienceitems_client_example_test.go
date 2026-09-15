@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/UnifiedResilienceItems_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/UnifiedResilienceItems_Get_MaximumSet_Gen.json
 func ExampleUnifiedResilienceItemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleUnifiedResilienceItemsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/UnifiedResilienceItems_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/UnifiedResilienceItems_List_MaximumSet_Gen.json
 func ExampleUnifiedResilienceItemsClient_NewListPager_unifiedResilienceItemsListMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,13 +136,13 @@ func ExampleUnifiedResilienceItemsClient_NewListPager_unifiedResilienceItemsList
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/aoswipdy"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Management/serviceGroups/zldmpkvqzifygkqau/providers/Microsoft.AzureResilienceManagement/unifiedResilienceItems?api-version=2026-09-30-preview&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/UnifiedResilienceItems_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/UnifiedResilienceItems_List_MinimumSet_Gen.json
 func ExampleUnifiedResilienceItemsClient_NewListPager_unifiedResilienceItemsListMaximumSetGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

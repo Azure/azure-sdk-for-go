@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/UsagePlans_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/UsagePlans_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleUsagePlansClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleUsagePlansClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/UsagePlans_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/UsagePlans_Delete_MaximumSet_Gen.json
 func ExampleUsagePlansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleUsagePlansClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/UsagePlans_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/UsagePlans_Get_MaximumSet_Gen.json
 func ExampleUsagePlansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleUsagePlansClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/UsagePlans_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/UsagePlans_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleUsagePlansClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,13 +178,13 @@ func ExampleUsagePlansClient_NewListByResourceGroupPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.AzureResilienceManagement/usagePlans?api-version=2026-04-01-preview&$skipToken=abc"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.AzureResilienceManagement/usagePlans?api-version=2026-09-30-preview&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/UsagePlans_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/UsagePlans_ListBySubscription_MaximumSet_Gen.json
 func ExampleUsagePlansClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -231,13 +231,13 @@ func ExampleUsagePlansClient_NewListBySubscriptionPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/12345678-1234-1234-1234-123456789012/providers/Microsoft.AzureResilienceManagement/usagePlans?api-version=2026-04-01-preview&$skipToken=abc"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/12345678-1234-1234-1234-123456789012/providers/Microsoft.AzureResilienceManagement/usagePlans?api-version=2026-09-30-preview&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/UsagePlans_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/UsagePlans_Update_MaximumSet_Gen.json
 func ExampleUsagePlansClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

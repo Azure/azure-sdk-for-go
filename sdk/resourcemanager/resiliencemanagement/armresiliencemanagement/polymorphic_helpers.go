@@ -81,10 +81,22 @@ func unmarshalResourceBaseProtectionSolutionSettingClassification(rawMsg json.Ra
 	}
 	var b ResourceBaseProtectionSolutionSettingClassification
 	switch m["protectionSolutionType"] {
+	case string(ResourceProtectionSolutionTypeAzureCosmosDB):
+		b = &ResourceCosmosDBProtectionSetting{}
 	case string(ResourceProtectionSolutionTypeAzureNative):
 		b = &ResourceNativeProtectionSolutionSetting{}
+	case string(ResourceProtectionSolutionTypeAzureNetAppFiles):
+		b = &ResourceNetAppFilesProtectionSetting{}
+	case string(ResourceProtectionSolutionTypeAzureServiceBus):
+		b = &ResourceServiceBusProtectionSetting{}
 	case string(ResourceProtectionSolutionTypeAzureSiteRecovery):
 		b = &ResourceSiteRecoveryProtectionSetting{}
+	case string(ResourceProtectionSolutionTypeAzureStorageAccount):
+		b = &ResourceStorageAccountProtectionSetting{}
+	case string(ResourceProtectionSolutionTypeAzureTemplate):
+		b = &ResourceAzureTemplateProtectionSetting{}
+	case string(ResourceProtectionSolutionTypeCrossZoneVMRecovery):
+		b = &ResourceCrossZoneVMRecoveryProtectionSetting{}
 	case string(ResourceProtectionSolutionTypeCustomRunbook):
 		b = &ResourceCustomProtectionSetting{}
 	default:

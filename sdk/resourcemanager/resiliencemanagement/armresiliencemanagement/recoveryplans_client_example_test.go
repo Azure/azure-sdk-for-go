@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/RecoveryPlans_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryPlans_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleRecoveryPlansClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1299,7 +1299,7 @@ func ExampleRecoveryPlansClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryPlans_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryPlans_Delete_MaximumSet_Gen.json
 func ExampleRecoveryPlansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1320,7 +1320,7 @@ func ExampleRecoveryPlansClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryPlans_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryPlans_Get_MaximumSet_Gen.json
 func ExampleRecoveryPlansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2022,7 +2022,7 @@ func ExampleRecoveryPlansClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryPlans_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryPlans_List_MaximumSet_Gen.json
 func ExampleRecoveryPlansClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2730,13 +2730,13 @@ func ExampleRecoveryPlansClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans?api-version=2026-09-30-preview&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryPlans_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryPlans_Update_MaximumSet_Gen.json
 func ExampleRecoveryPlansClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

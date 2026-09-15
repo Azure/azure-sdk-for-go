@@ -11,8 +11,85 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/RecoveryResources_Get_MaximumSet_Gen.json
-func ExampleRecoveryResourcesClient_Get() {
+// Generated from example definition: 2026-09-30-preview/RecoveryResources_Get_CrossZoneVMRecovery.json
+func ExampleRecoveryResourcesClient_Get_recoveryResourcesGetCrossZoneVMRecovery() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRecoveryResourcesClient().Get(ctx, "sampleServiceGroupName", "samplePlanName", "12345678-9012-3456-7890-123456789012", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armresiliencemanagement.RecoveryResourcesClientGetResponse{
+	// 	RecoveryResource: armresiliencemanagement.RecoveryResource{
+	// 		Properties: &armresiliencemanagement.RecoveryResourceProperties{
+	// 			RecoveryResourceUniqueID: to.Ptr("e2a7b8d1-4c3f-4e2b-9a1c-7f6e2d8b5c4a"),
+	// 			ProtectionStatus: to.Ptr(armresiliencemanagement.ResourceProtectionStatusProtected),
+	// 			SelectedProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeCrossZoneVMRecovery),
+	// 			SelectedProtectionSolutionSetting: &armresiliencemanagement.ResourceCrossZoneVMRecoveryProtectionSetting{
+	// 				ProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeCrossZoneVMRecovery),
+	// 				TargetZone: to.Ptr("2"),
+	// 				CapacityReservationGroupID: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/sampleResourceGroupName/providers/Microsoft.Compute/capacityReservationGroups/sampleCrg"),
+	// 			},
+	// 			RecoveryGroupID: to.Ptr("11111111-1111-1111-1111-123456789012"),
+	// 			AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
+	// 				Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+	// 				UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
+	// 			ResourceID: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/sampleResourceGroupName/providers/Microsoft.Compute/virtualMachines/iaasvm-1"),
+	// 			ResourceLocation: to.Ptr("eastus2"),
+	// 			ResourcePhysicalZones: []*string{
+	// 				to.Ptr("eastus-az1"),
+	// 				to.Ptr("eastus-az2"),
+	// 			},
+	// 			InclusionState: to.Ptr(armresiliencemanagement.ResourceInclusionStateIncluded),
+	// 			NeedsAttention: to.Ptr(false),
+	// 			ResourceProtectionSolutions: []*armresiliencemanagement.ResourceProtectionSolutionSettings{
+	// 				{
+	// 					ProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeCrossZoneVMRecovery),
+	// 					ProtectionStatus: to.Ptr(armresiliencemanagement.ResourceProtectionStatusProtected),
+	// 					ResourceID: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/sampleResourceGroupName/providers/Microsoft.Compute/virtualMachines/iaasvm-1"),
+	// 					ActiveLocation: to.Ptr("eastus-zone1"),
+	// 					RecoveryLocations: []*string{
+	// 						to.Ptr("eastus-zone2"),
+	// 					},
+	// 					ReplicationRole: to.Ptr(armresiliencemanagement.ResourceReplicationRolePrimary),
+	// 					IsAutoFailover: to.Ptr(true),
+	// 					FailoverState: to.Ptr(armresiliencemanagement.FailoverStateNone),
+	// 					TestFailoverState: to.Ptr(armresiliencemanagement.TestFailoverStateNone),
+	// 					ActivePhysicalZones: []*string{
+	// 						to.Ptr("eastus-az1"),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/samplePlanName/recoveryResources/12345678-9012-3456-7890-123456789012"),
+	// 		Name: to.Ptr("12345678-9012-3456-7890-123456789012"),
+	// 		Type: to.Ptr("Microsoft.AzureResilienceManagement/recoveryPlans/recoveryResources"),
+	// 		SystemData: &armresiliencemanagement.SystemData{
+	// 			CreatedBy: to.Ptr("wmfonl"),
+	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.February, 15, 9, 19, 54, 175000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("paiugykk"),
+	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.February, 15, 9, 19, 54, 176000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-30-preview/RecoveryResources_Get_MaximumSet_Gen.json
+func ExampleRecoveryResourcesClient_Get_recoveryResourcesGetMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -34,9 +111,12 @@ func ExampleRecoveryResourcesClient_Get() {
 	// 		Properties: &armresiliencemanagement.RecoveryResourceProperties{
 	// 			RecoveryResourceUniqueID: to.Ptr("e2a7b8d1-4c3f-4e2b-9a1c-7f6e2d8b5c4a"),
 	// 			ProtectionStatus: to.Ptr(armresiliencemanagement.ResourceProtectionStatusUnknown),
-	// 			SelectedProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeAzureNative),
-	// 			SelectedProtectionSolutionSetting: &armresiliencemanagement.ResourceNativeProtectionSolutionSetting{
-	// 				ProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeAzureNative),
+	// 			SelectedProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeAzureTemplate),
+	// 			SelectedProtectionSolutionSetting: &armresiliencemanagement.ResourceAzureTemplateProtectionSetting{
+	// 				ProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeAzureTemplate),
+	// 				TemplateSpecVersionID: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/templateSpecs-rg/providers/Microsoft.Resources/templateSpecs/regionalRecovery/versions/1.0"),
+	// 				DeploymentScope: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544"),
+	// 				DeploymentLocation: to.Ptr("eastus2"),
 	// 			},
 	// 			RecoveryGroupID: to.Ptr("11111111-1111-1111-1111-123456789012"),
 	// 			AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
@@ -79,13 +159,16 @@ func ExampleRecoveryResourcesClient_Get() {
 	// 				to.Ptr("eastus-az2"),
 	// 			},
 	// 			InclusionState: to.Ptr(armresiliencemanagement.ResourceInclusionStateIncluded),
+	// 			InclusionDisabledReasons: []*armresiliencemanagement.ResourceInclusionDisabledReason{
+	// 			},
 	// 			NeedsAttention: to.Ptr(true),
 	// 			AttentionReasons: []*string{
 	// 				to.Ptr("ResourceInNotProtectedState"),
 	// 			},
 	// 			ResourceProtectionSolutions: []*armresiliencemanagement.ResourceProtectionSolutionSettings{
 	// 				{
-	// 					ProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeAzureNative),
+	// 					ProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeAzureTemplate),
+	// 					ReplicationMode: to.Ptr(armresiliencemanagement.ReplicationModeActivePassive),
 	// 					ProtectionStatus: to.Ptr(armresiliencemanagement.ResourceProtectionStatusUnknown),
 	// 					ResourceID: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/sampleResourceGroupName/providers/Microsoft.Compute/virtualMachines/iaasvm-1"),
 	// 					ActiveLocation: to.Ptr("eastus-zone1"),
@@ -124,7 +207,7 @@ func ExampleRecoveryResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryResources_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/RecoveryResources_List_MaximumSet_Gen.json
 func ExampleRecoveryResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,28 +235,31 @@ func ExampleRecoveryResourcesClient_NewListPager() {
 		// 			{
 		// 				Properties: &armresiliencemanagement.RecoveryResourceProperties{
 		// 					ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
-		// 					ResourceID: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/sampleResourceGroupName/providers/Microsoft.Compute/virtualMachines/iaasvm-1"),
-		// 					RecoveryResourceUniqueID: to.Ptr("e2a7b8d1-4c3f-4e2b-9a1c-7f6e2d8b5c4a"),
-		// 					ProtectionStatus: to.Ptr(armresiliencemanagement.ResourceProtectionStatusUnknown),
-		// 					InclusionState: to.Ptr(armresiliencemanagement.ResourceInclusionStateIncluded),
+		// 					ResourceID: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/cosmos-rg/providers/Microsoft.DocumentDB/databaseAccounts/cosmos-account-1"),
+		// 					RecoveryResourceUniqueID: to.Ptr("11111111-1111-4111-8111-111111111111"),
+		// 					ProtectionStatus: to.Ptr(armresiliencemanagement.ResourceProtectionStatusProtected),
+		// 					InclusionState: to.Ptr(armresiliencemanagement.ResourceInclusionState("NotIncluded")),
+		// 					InclusionDisabledReasons: []*armresiliencemanagement.ResourceInclusionDisabledReason{
+		// 						to.Ptr(armresiliencemanagement.ResourceInclusionDisabledReasonResourceActiveActiveProtection),
+		// 					},
 		// 					NeedsAttention: to.Ptr(true),
 		// 					AttentionReasons: []*string{
-		// 						to.Ptr("ResourceInNotProtectedState"),
+		// 						to.Ptr("ResourceActiveActiveProtection"),
 		// 					},
-		// 					RecoveryGroupID: to.Ptr("11111111-1111-1111-1111-123456789012"),
+		// 					RecoveryGroupID: to.Ptr("aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"),
 		// 					AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
 		// 						Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 		// 						UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 		// 					},
 		// 					ErrorDetails: &armresiliencemanagement.ErrorDetail{
-		// 						Code: to.Ptr("ResourceInNotProtectedState"),
-		// 						Message: to.Ptr("Resource in not protected with any recovery solution."),
-		// 						Target: to.Ptr("Please make sure resource is protected with any recovery solution."),
+		// 						Code: to.Ptr("ResourceActiveActiveProtection"),
+		// 						Message: to.Ptr("The Cosmos DB account is active in multiple regions."),
+		// 						Target: to.Ptr("resourceId"),
 		// 						Details: []*armresiliencemanagement.ErrorDetail{
 		// 						},
 		// 						AdditionalInfo: []*armresiliencemanagement.ErrorAdditionalInfo{
 		// 							{
-		// 								Type: to.Ptr("Unable to detect resource protections with any recovery solution."),
+		// 								Type: to.Ptr("ResourceInclusionDisabled"),
 		// 								Info: map[string]any{
 		// 								},
 		// 							},
@@ -181,40 +267,259 @@ func ExampleRecoveryResourcesClient_NewListPager() {
 		// 					},
 		// 					ResourceProtectionSolutions: []*armresiliencemanagement.ResourceProtectionSolutionSettings{
 		// 						{
-		// 							ProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeAzureNative),
-		// 							ProtectionStatus: to.Ptr(armresiliencemanagement.ResourceProtectionStatusUnknown),
-		// 							ResourceID: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/sampleResourceGroupName/providers/Microsoft.Compute/virtualMachines/iaasvm-1"),
-		// 							ActiveLocation: to.Ptr("westus"),
+		// 							ProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeAzureCosmosDB),
+		// 							ReplicationMode: to.Ptr(armresiliencemanagement.ReplicationModeActiveActive),
+		// 							ProtectionStatus: to.Ptr(armresiliencemanagement.ResourceProtectionStatusProtected),
+		// 							ResourceID: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/cosmos-rg/providers/Microsoft.DocumentDB/databaseAccounts/cosmos-account-1"),
+		// 							ActiveLocation: to.Ptr("eastus2"),
 		// 							RecoveryLocations: []*string{
-		// 								to.Ptr("eastus"),
+		// 								to.Ptr("westus2"),
 		// 							},
-		// 							ReplicationRole: to.Ptr(armresiliencemanagement.ResourceReplicationRoleUnknown),
-		// 							PrimaryResource: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/sampleResourceGroupName/providers/Microsoft.Compute/virtualMachines/iaasvm-1"),
+		// 							ReplicationRole: to.Ptr(armresiliencemanagement.ResourceReplicationRolePrimary),
+		// 							PrimaryResource: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/cosmos-rg/providers/Microsoft.DocumentDB/databaseAccounts/cosmos-account-1"),
 		// 							ReplicaResources: []*string{
-		// 								to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/sampleResourceGroupName/providers/Microsoft.Compute/virtualMachines/iaasvm-2"),
+		// 								to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/cosmos-rg/providers/Microsoft.DocumentDB/databaseAccounts/cosmos-account-1"),
 		// 							},
 		// 							IsAutoFailover: to.Ptr(true),
 		// 							FailoverState: to.Ptr(armresiliencemanagement.FailoverStateNone),
 		// 							TestFailoverState: to.Ptr(armresiliencemanagement.TestFailoverStateNone),
 		// 							ActiveLocations: []*string{
-		// 								to.Ptr("westus-zone1"),
+		// 								to.Ptr("eastus2"),
+		// 								to.Ptr("westus2"),
 		// 							},
 		// 							ActivePhysicalZones: []*string{
-		// 								to.Ptr("westus-az1"),
+		// 								to.Ptr("eastus2-az1"),
+		// 								to.Ptr("westus2-az1"),
 		// 							},
 		// 						},
 		// 					},
-		// 					SelectedProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeAzureNative),
-		// 					SelectedProtectionSolutionSetting: &armresiliencemanagement.ResourceBaseProtectionSolutionSetting{
-		// 						ProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionType("ResourceBaseProtectionSolutionSetting")),
-		// 					},
-		// 					ResourceLocation: to.Ptr("eastus"),
+		// 					SelectedProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeAzureCosmosDB),
+		// 					ResourceLocation: to.Ptr("eastus2"),
 		// 					ResourcePhysicalZones: []*string{
-		// 						to.Ptr("eastus2-zone1"),
+		// 						to.Ptr("eastus2-az1"),
 		// 					},
 		// 				},
-		// 				ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/samplePlanName/recoveryResources/12345678-9012-3456-7890-123456789012"),
-		// 				Name: to.Ptr("12345678-9012-3456-7890-123456789012"),
+		// 				ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/plan1/recoveryResources/11111111-1111-4111-8111-111111111111"),
+		// 				Name: to.Ptr("11111111-1111-4111-8111-111111111111"),
+		// 				Type: to.Ptr("Microsoft.AzureResilienceManagement/recoveryPlans/recoveryResources"),
+		// 				SystemData: &armresiliencemanagement.SystemData{
+		// 					CreatedBy: to.Ptr("wmfonl"),
+		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.February, 15, 9, 19, 54, 175000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("paiugykk"),
+		// 					LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.February, 15, 9, 19, 54, 176000000, time.UTC)),
+		// 				},
+		// 			},
+		// 			{
+		// 				Properties: &armresiliencemanagement.RecoveryResourceProperties{
+		// 					ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
+		// 					ResourceID: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/storage-rg/providers/Microsoft.Storage/storageAccounts/recoverystorage1"),
+		// 					RecoveryResourceUniqueID: to.Ptr("22222222-2222-4222-8222-222222222222"),
+		// 					ProtectionStatus: to.Ptr(armresiliencemanagement.ResourceProtectionStatusProtected),
+		// 					InclusionState: to.Ptr(armresiliencemanagement.ResourceInclusionState("NotIncluded")),
+		// 					InclusionDisabledReasons: []*armresiliencemanagement.ResourceInclusionDisabledReason{
+		// 						to.Ptr(armresiliencemanagement.ResourceInclusionDisabledReasonResourceHighlyAvailable),
+		// 					},
+		// 					NeedsAttention: to.Ptr(true),
+		// 					AttentionReasons: []*string{
+		// 						to.Ptr("ResourceHighlyAvailable"),
+		// 					},
+		// 					RecoveryGroupID: to.Ptr("bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"),
+		// 					AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
+		// 						Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+		// 						UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+		// 					},
+		// 					ErrorDetails: &armresiliencemanagement.ErrorDetail{
+		// 						Code: to.Ptr("ResourceHighlyAvailable"),
+		// 						Message: to.Ptr("The storage account is highly available and does not require recovery-plan inclusion."),
+		// 						Target: to.Ptr("resourceId"),
+		// 						Details: []*armresiliencemanagement.ErrorDetail{
+		// 						},
+		// 						AdditionalInfo: []*armresiliencemanagement.ErrorAdditionalInfo{
+		// 							{
+		// 								Type: to.Ptr("ResourceInclusionDisabled"),
+		// 								Info: map[string]any{
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					ResourceProtectionSolutions: []*armresiliencemanagement.ResourceProtectionSolutionSettings{
+		// 						{
+		// 							ProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeAzureStorageAccount),
+		// 							ReplicationMode: to.Ptr(armresiliencemanagement.ReplicationModeActivePassive),
+		// 							ProtectionStatus: to.Ptr(armresiliencemanagement.ResourceProtectionStatusProtected),
+		// 							ResourceID: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/storage-rg/providers/Microsoft.Storage/storageAccounts/recoverystorage1"),
+		// 							ActiveLocation: to.Ptr("eastus2"),
+		// 							RecoveryLocations: []*string{
+		// 								to.Ptr("centralus"),
+		// 							},
+		// 							ReplicationRole: to.Ptr(armresiliencemanagement.ResourceReplicationRolePrimary),
+		// 							PrimaryResource: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/storage-rg/providers/Microsoft.Storage/storageAccounts/recoverystorage1"),
+		// 							ReplicaResources: []*string{
+		// 								to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/storage-rg/providers/Microsoft.Storage/storageAccounts/recoverystorage1"),
+		// 							},
+		// 							IsAutoFailover: to.Ptr(false),
+		// 							FailoverState: to.Ptr(armresiliencemanagement.FailoverStateNone),
+		// 							TestFailoverState: to.Ptr(armresiliencemanagement.TestFailoverStateNone),
+		// 							ActiveLocations: []*string{
+		// 								to.Ptr("eastus2"),
+		// 							},
+		// 							ActivePhysicalZones: []*string{
+		// 								to.Ptr("eastus2-az1"),
+		// 							},
+		// 						},
+		// 					},
+		// 					SelectedProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeAzureStorageAccount),
+		// 					ResourceLocation: to.Ptr("eastus2"),
+		// 					ResourcePhysicalZones: []*string{
+		// 						to.Ptr("eastus2-az1"),
+		// 					},
+		// 				},
+		// 				ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/plan1/recoveryResources/22222222-2222-4222-8222-222222222222"),
+		// 				Name: to.Ptr("22222222-2222-4222-8222-222222222222"),
+		// 				Type: to.Ptr("Microsoft.AzureResilienceManagement/recoveryPlans/recoveryResources"),
+		// 				SystemData: &armresiliencemanagement.SystemData{
+		// 					CreatedBy: to.Ptr("wmfonl"),
+		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.February, 15, 9, 19, 54, 175000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("paiugykk"),
+		// 					LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.February, 15, 9, 19, 54, 176000000, time.UTC)),
+		// 				},
+		// 			},
+		// 			{
+		// 				Properties: &armresiliencemanagement.RecoveryResourceProperties{
+		// 					ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
+		// 					ResourceID: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/servicebus-rg/providers/Microsoft.ServiceBus/namespaces/recovery-servicebus-1"),
+		// 					RecoveryResourceUniqueID: to.Ptr("33333333-3333-4333-8333-333333333333"),
+		// 					ProtectionStatus: to.Ptr(armresiliencemanagement.ResourceProtectionStatusProtected),
+		// 					InclusionState: to.Ptr(armresiliencemanagement.ResourceInclusionStateIncluded),
+		// 					InclusionDisabledReasons: []*armresiliencemanagement.ResourceInclusionDisabledReason{
+		// 					},
+		// 					NeedsAttention: to.Ptr(false),
+		// 					AttentionReasons: []*string{
+		// 					},
+		// 					RecoveryGroupID: to.Ptr("cccccccc-cccc-4ccc-8ccc-cccccccccccc"),
+		// 					AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
+		// 						Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+		// 						UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+		// 					},
+		// 					ErrorDetails: &armresiliencemanagement.ErrorDetail{
+		// 						Code: to.Ptr("None"),
+		// 						Message: to.Ptr("The Service Bus namespace is ready for recovery orchestration."),
+		// 						Target: to.Ptr("resourceId"),
+		// 						Details: []*armresiliencemanagement.ErrorDetail{
+		// 						},
+		// 						AdditionalInfo: []*armresiliencemanagement.ErrorAdditionalInfo{
+		// 						},
+		// 					},
+		// 					ResourceProtectionSolutions: []*armresiliencemanagement.ResourceProtectionSolutionSettings{
+		// 						{
+		// 							ProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeAzureServiceBus),
+		// 							ReplicationMode: to.Ptr(armresiliencemanagement.ReplicationModeActiveActive),
+		// 							ProtectionStatus: to.Ptr(armresiliencemanagement.ResourceProtectionStatusProtected),
+		// 							ResourceID: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/servicebus-rg/providers/Microsoft.ServiceBus/namespaces/recovery-servicebus-1"),
+		// 							ActiveLocation: to.Ptr("eastus2"),
+		// 							RecoveryLocations: []*string{
+		// 								to.Ptr("westus2"),
+		// 							},
+		// 							ReplicationRole: to.Ptr(armresiliencemanagement.ResourceReplicationRolePrimary),
+		// 							PrimaryResource: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/servicebus-rg/providers/Microsoft.ServiceBus/namespaces/recovery-servicebus-1"),
+		// 							ReplicaResources: []*string{
+		// 								to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/servicebus-rg/providers/Microsoft.ServiceBus/namespaces/recovery-servicebus-1"),
+		// 							},
+		// 							IsAutoFailover: to.Ptr(true),
+		// 							FailoverState: to.Ptr(armresiliencemanagement.FailoverStateNone),
+		// 							TestFailoverState: to.Ptr(armresiliencemanagement.TestFailoverStateNone),
+		// 							ActiveLocations: []*string{
+		// 								to.Ptr("eastus2"),
+		// 								to.Ptr("westus2"),
+		// 							},
+		// 							ActivePhysicalZones: []*string{
+		// 								to.Ptr("eastus2-az1"),
+		// 								to.Ptr("westus2-az1"),
+		// 							},
+		// 						},
+		// 					},
+		// 					SelectedProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeAzureServiceBus),
+		// 					ResourceLocation: to.Ptr("eastus2"),
+		// 					ResourcePhysicalZones: []*string{
+		// 						to.Ptr("eastus2-az1"),
+		// 					},
+		// 				},
+		// 				ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/plan1/recoveryResources/33333333-3333-4333-8333-333333333333"),
+		// 				Name: to.Ptr("33333333-3333-4333-8333-333333333333"),
+		// 				Type: to.Ptr("Microsoft.AzureResilienceManagement/recoveryPlans/recoveryResources"),
+		// 				SystemData: &armresiliencemanagement.SystemData{
+		// 					CreatedBy: to.Ptr("wmfonl"),
+		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.February, 15, 9, 19, 54, 175000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("paiugykk"),
+		// 					LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.February, 15, 9, 19, 54, 176000000, time.UTC)),
+		// 				},
+		// 			},
+		// 			{
+		// 				Properties: &armresiliencemanagement.RecoveryResourceProperties{
+		// 					ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
+		// 					ResourceID: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/netapp-rg/providers/Microsoft.NetApp/netAppAccounts/recovery-netapp/capacityPools/recovery-pool/volumes/recovery-volume"),
+		// 					RecoveryResourceUniqueID: to.Ptr("44444444-4444-4444-8444-444444444444"),
+		// 					ProtectionStatus: to.Ptr(armresiliencemanagement.ResourceProtectionStatusProtected),
+		// 					InclusionState: to.Ptr(armresiliencemanagement.ResourceInclusionStateIncluded),
+		// 					InclusionDisabledReasons: []*armresiliencemanagement.ResourceInclusionDisabledReason{
+		// 					},
+		// 					NeedsAttention: to.Ptr(false),
+		// 					AttentionReasons: []*string{
+		// 					},
+		// 					RecoveryGroupID: to.Ptr("dddddddd-dddd-4ddd-8ddd-dddddddddddd"),
+		// 					AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
+		// 						Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+		// 						UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+		// 					},
+		// 					ErrorDetails: &armresiliencemanagement.ErrorDetail{
+		// 						Code: to.Ptr("None"),
+		// 						Message: to.Ptr("The Azure NetApp Files volume is ready for recovery orchestration."),
+		// 						Target: to.Ptr("resourceId"),
+		// 						Details: []*armresiliencemanagement.ErrorDetail{
+		// 						},
+		// 						AdditionalInfo: []*armresiliencemanagement.ErrorAdditionalInfo{
+		// 						},
+		// 					},
+		// 					ResourceProtectionSolutions: []*armresiliencemanagement.ResourceProtectionSolutionSettings{
+		// 						{
+		// 							ProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeAzureNetAppFiles),
+		// 							ReplicationMode: to.Ptr(armresiliencemanagement.ReplicationModeActivePassive),
+		// 							ProtectionStatus: to.Ptr(armresiliencemanagement.ResourceProtectionStatusProtected),
+		// 							ResourceID: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/netapp-rg/providers/Microsoft.NetApp/netAppAccounts/recovery-netapp/capacityPools/recovery-pool/volumes/recovery-volume"),
+		// 							ActiveLocation: to.Ptr("eastus2"),
+		// 							RecoveryLocations: []*string{
+		// 								to.Ptr("centralus"),
+		// 							},
+		// 							ReplicationRole: to.Ptr(armresiliencemanagement.ResourceReplicationRolePrimary),
+		// 							PrimaryResource: to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/netapp-rg/providers/Microsoft.NetApp/netAppAccounts/recovery-netapp/capacityPools/recovery-pool/volumes/recovery-volume"),
+		// 							ReplicaResources: []*string{
+		// 								to.Ptr("/subscriptions/ad261018-e582-488a-815d-c2ebe28ca544/resourceGroups/netapp-recovery-rg/providers/Microsoft.NetApp/netAppAccounts/recovery-netapp-secondary/capacityPools/recovery-pool/volumes/recovery-volume-secondary"),
+		// 							},
+		// 							IsAutoFailover: to.Ptr(false),
+		// 							FailoverState: to.Ptr(armresiliencemanagement.FailoverStateNone),
+		// 							TestFailoverState: to.Ptr(armresiliencemanagement.TestFailoverStateNone),
+		// 							ActiveLocations: []*string{
+		// 								to.Ptr("eastus2"),
+		// 							},
+		// 							ActivePhysicalZones: []*string{
+		// 								to.Ptr("eastus2-az1"),
+		// 							},
+		// 						},
+		// 					},
+		// 					SelectedProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeAzureNetAppFiles),
+		// 					ResourceLocation: to.Ptr("eastus2"),
+		// 					ResourcePhysicalZones: []*string{
+		// 						to.Ptr("eastus2-az1"),
+		// 					},
+		// 				},
+		// 				ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/plan1/recoveryResources/44444444-4444-4444-8444-444444444444"),
+		// 				Name: to.Ptr("44444444-4444-4444-8444-444444444444"),
 		// 				Type: to.Ptr("Microsoft.AzureResilienceManagement/recoveryPlans/recoveryResources"),
 		// 				SystemData: &armresiliencemanagement.SystemData{
 		// 					CreatedBy: to.Ptr("wmfonl"),
@@ -226,7 +531,7 @@ func ExampleRecoveryResourcesClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/aalhs"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/plan1/recoveryResources?api-version=2026-09-30-preview&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
 		// 	},
 		// }
 	}

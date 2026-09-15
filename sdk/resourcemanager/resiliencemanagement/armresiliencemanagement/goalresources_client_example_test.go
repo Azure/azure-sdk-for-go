@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/GoalResources_Get_Complete_Example.json
+// Generated from example definition: 2026-09-30-preview/GoalResources_Get_Complete_Example.json
 func ExampleGoalResourcesClient_Get_goalResourcesGetCompleteExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,26 +34,20 @@ func ExampleGoalResourcesClient_Get_goalResourcesGetCompleteExample() {
 	// 	GoalResource: armresiliencemanagement.GoalResource{
 	// 		Properties: &armresiliencemanagement.GoalResourceProperties{
 	// 			ResourceArmID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/ProductionRG/providers/Microsoft.Web/sites/MyWebApp"),
-	// 			HighAvailabilityGoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateIncluded),
-	// 			HighAvailabilityAttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateManuallyAttested),
-	// 			DisasterRecoveryGoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateIncluded),
-	// 			DisasterRecoveryAttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateNotAttested),
-	// 			UserConfirmationForHighAvailability: []*armresiliencemanagement.UserConfirmationForHighAvailabilityItem{
-	// 				{
-	// 					SolutionDisplayName: to.Ptr(armresiliencemanagement.SolutionDisplayNameZonePinnedVMWithZrsDisk),
-	// 					ConfirmationStatus: to.Ptr(armresiliencemanagement.ConfirmationStatusApprovedByUser),
-	// 					ReasonForRequestingConfirmation: to.Ptr(armresiliencemanagement.ReasonForRequestingConfirmationZonePinnedZrsDataDisksConditional),
+	// 			ZonalResiliency: &armresiliencemanagement.ResiliencyProperties{
+	// 				UserConfirmation: []*armresiliencemanagement.UserConfirmationItem{
+	// 					{
+	// 						SolutionDisplayName: to.Ptr(armresiliencemanagement.SolutionDisplayNameZonePinnedVMWithZrsDisk),
+	// 						ConfirmationStatus: to.Ptr(armresiliencemanagement.ConfirmationStatusApprovedByUser),
+	// 						ReasonForRequestingConfirmation: to.Ptr(armresiliencemanagement.ReasonForRequestingConfirmationZonePinnedZrsDataDisksConditional),
+	// 					},
 	// 				},
+	// 				GoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateIncluded),
+	// 				AttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateManuallyAttested),
 	// 			},
-	// 			ServiceGroupMemberships: []*armresiliencemanagement.ServiceGroupMembership{
-	// 				{
-	// 					ServiceGroupID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/ProductionRG/providers/Microsoft.AzureResilienceManagement/serviceGroups/production-sg"),
-	// 					MembershipType: to.Ptr(armresiliencemanagement.MembershipTypeDirect),
-	// 				},
-	// 				{
-	// 					ServiceGroupID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/ProductionRG/providers/Microsoft.AzureResilienceManagement/serviceGroups/subscription-level-sg"),
-	// 					MembershipType: to.Ptr(armresiliencemanagement.MembershipTypeThroughSubscription),
-	// 				},
+	// 			RegionalResiliency: &armresiliencemanagement.ResiliencyProperties{
+	// 				GoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateIncluded),
+	// 				AttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateNotAttested),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
 	// 		},
@@ -72,7 +66,7 @@ func ExampleGoalResourcesClient_Get_goalResourcesGetCompleteExample() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/GoalResources_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/GoalResources_Get_MaximumSet_Gen.json
 func ExampleGoalResourcesClient_Get_goalResourcesGetMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,29 +88,27 @@ func ExampleGoalResourcesClient_Get_goalResourcesGetMaximumSet() {
 	// 	GoalResource: armresiliencemanagement.GoalResource{
 	// 		Properties: &armresiliencemanagement.GoalResourceProperties{
 	// 			ResourceArmID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine"),
-	// 			HighAvailabilityGoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateExcluded),
-	// 			HighAvailabilityAttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateManuallyAttested),
-	// 			DisasterRecoveryGoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateExcluded),
-	// 			DisasterRecoveryAttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateManuallyAttested),
-	// 			ExclusionReasonForHighAvailabilityGoals: to.Ptr(armresiliencemanagement.ExclusionReasonUserSelectedExclusion),
-	// 			ExclusionReasonForDisasterRecoveryGoals: to.Ptr(armresiliencemanagement.ExclusionReasonUnsupportedResource),
-	// 			UserConfirmationForHighAvailability: []*armresiliencemanagement.UserConfirmationForHighAvailabilityItem{
-	// 				{
-	// 					SolutionDisplayName: to.Ptr(armresiliencemanagement.SolutionDisplayNameZonePinnedVMWithZrsDisk),
-	// 					ConfirmationStatus: to.Ptr(armresiliencemanagement.ConfirmationStatusApprovedByUser),
-	// 					ReasonForRequestingConfirmation: to.Ptr(armresiliencemanagement.ReasonForRequestingConfirmationZonePinnedZrsDataDisksConditional),
+	// 			ZonalResiliency: &armresiliencemanagement.ResiliencyProperties{
+	// 				UserConfirmation: []*armresiliencemanagement.UserConfirmationItem{
+	// 					{
+	// 						SolutionDisplayName: to.Ptr(armresiliencemanagement.SolutionDisplayNameZonePinnedVMWithZrsDisk),
+	// 						ConfirmationStatus: to.Ptr(armresiliencemanagement.ConfirmationStatusApprovedByUser),
+	// 						ReasonForRequestingConfirmation: to.Ptr(armresiliencemanagement.ReasonForRequestingConfirmationZonePinnedZrsDataDisksConditional),
+	// 					},
+	// 					{
+	// 						SolutionDisplayName: to.Ptr(armresiliencemanagement.SolutionDisplayNameVMInMultiZoneVmss),
+	// 						ConfirmationStatus: to.Ptr(armresiliencemanagement.ConfirmationStatusApprovalPending),
+	// 						ReasonForRequestingConfirmation: to.Ptr(armresiliencemanagement.ReasonForRequestingConfirmationVMInMultiZoneScaleSetStatelessOnly),
+	// 					},
 	// 				},
-	// 				{
-	// 					SolutionDisplayName: to.Ptr(armresiliencemanagement.SolutionDisplayNameVMInMultiZoneVmss),
-	// 					ConfirmationStatus: to.Ptr(armresiliencemanagement.ConfirmationStatusApprovalPending),
-	// 					ReasonForRequestingConfirmation: to.Ptr(armresiliencemanagement.ReasonForRequestingConfirmationVMInMultiZoneScaleSetStatelessOnly),
-	// 				},
+	// 				GoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateExcluded),
+	// 				AttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateManuallyAttested),
+	// 				ExclusionReason: to.Ptr(armresiliencemanagement.ExclusionReasonUserSelectedExclusion),
 	// 			},
-	// 			ServiceGroupMemberships: []*armresiliencemanagement.ServiceGroupMembership{
-	// 				{
-	// 					ServiceGroupID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sg1"),
-	// 					MembershipType: to.Ptr(armresiliencemanagement.MembershipTypeThroughResourceGroup),
-	// 				},
+	// 			RegionalResiliency: &armresiliencemanagement.ResiliencyProperties{
+	// 				GoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateExcluded),
+	// 				AttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateNotAttested),
+	// 				ExclusionReason: to.Ptr(armresiliencemanagement.ExclusionReasonFailedOverResource),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
 	// 		},
@@ -135,7 +127,7 @@ func ExampleGoalResourcesClient_Get_goalResourcesGetMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/GoalResources_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/GoalResources_Get_MinimumSet_Gen.json
 func ExampleGoalResourcesClient_Get_goalResourcesGetMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,9 +149,11 @@ func ExampleGoalResourcesClient_Get_goalResourcesGetMinimumSet() {
 	// 	GoalResource: armresiliencemanagement.GoalResource{
 	// 		Properties: &armresiliencemanagement.GoalResourceProperties{
 	// 			ResourceArmID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine"),
-	// 			HighAvailabilityGoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateIncluded),
-	// 			HighAvailabilityAttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateNotAttested),
 	// 			ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
+	// 			ZonalResiliency: &armresiliencemanagement.ResiliencyProperties{
+	// 				GoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateIncluded),
+	// 				AttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateNotAttested),
+	// 			},
 	// 		},
 	// 		ID: to.Ptr("/providers/Microsoft.AzureResilienceManagement/goalAssignments/ga1/goalResources/gr1"),
 	// 		Name: to.Ptr("gr1"),
@@ -176,7 +170,7 @@ func ExampleGoalResourcesClient_Get_goalResourcesGetMinimumSet() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/GoalResources_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30-preview/GoalResources_List_MaximumSet_Gen.json
 func ExampleGoalResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,29 +200,27 @@ func ExampleGoalResourcesClient_NewListPager() {
 		// 			{
 		// 				Properties: &armresiliencemanagement.GoalResourceProperties{
 		// 					ResourceArmID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine"),
-		// 					HighAvailabilityGoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateExcluded),
-		// 					HighAvailabilityAttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateManuallyAttested),
-		// 					DisasterRecoveryGoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateExcluded),
-		// 					DisasterRecoveryAttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateManuallyAttested),
-		// 					ExclusionReasonForHighAvailabilityGoals: to.Ptr(armresiliencemanagement.ExclusionReasonUserSelectedExclusion),
-		// 					ExclusionReasonForDisasterRecoveryGoals: to.Ptr(armresiliencemanagement.ExclusionReasonUnsupportedResource),
-		// 					UserConfirmationForHighAvailability: []*armresiliencemanagement.UserConfirmationForHighAvailabilityItem{
-		// 						{
-		// 							SolutionDisplayName: to.Ptr(armresiliencemanagement.SolutionDisplayNameZonePinnedVMWithZrsDisk),
-		// 							ConfirmationStatus: to.Ptr(armresiliencemanagement.ConfirmationStatusApprovedByUser),
-		// 							ReasonForRequestingConfirmation: to.Ptr(armresiliencemanagement.ReasonForRequestingConfirmationZonePinnedZrsDataDisksConditional),
+		// 					ZonalResiliency: &armresiliencemanagement.ResiliencyProperties{
+		// 						UserConfirmation: []*armresiliencemanagement.UserConfirmationItem{
+		// 							{
+		// 								SolutionDisplayName: to.Ptr(armresiliencemanagement.SolutionDisplayNameZonePinnedVMWithZrsDisk),
+		// 								ConfirmationStatus: to.Ptr(armresiliencemanagement.ConfirmationStatusApprovedByUser),
+		// 								ReasonForRequestingConfirmation: to.Ptr(armresiliencemanagement.ReasonForRequestingConfirmationZonePinnedZrsDataDisksConditional),
+		// 							},
+		// 							{
+		// 								SolutionDisplayName: to.Ptr(armresiliencemanagement.SolutionDisplayNameVMInMultiZoneVmss),
+		// 								ConfirmationStatus: to.Ptr(armresiliencemanagement.ConfirmationStatusApprovalPending),
+		// 								ReasonForRequestingConfirmation: to.Ptr(armresiliencemanagement.ReasonForRequestingConfirmationVMInMultiZoneScaleSetStatelessOnly),
+		// 							},
 		// 						},
-		// 						{
-		// 							SolutionDisplayName: to.Ptr(armresiliencemanagement.SolutionDisplayNameVMInMultiZoneVmss),
-		// 							ConfirmationStatus: to.Ptr(armresiliencemanagement.ConfirmationStatusApprovalPending),
-		// 							ReasonForRequestingConfirmation: to.Ptr(armresiliencemanagement.ReasonForRequestingConfirmationVMInMultiZoneScaleSetStatelessOnly),
-		// 						},
+		// 						GoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateExcluded),
+		// 						AttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateManuallyAttested),
+		// 						ExclusionReason: to.Ptr(armresiliencemanagement.ExclusionReasonUserSelectedExclusion),
 		// 					},
-		// 					ServiceGroupMemberships: []*armresiliencemanagement.ServiceGroupMembership{
-		// 						{
-		// 							ServiceGroupID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sg1"),
-		// 							MembershipType: to.Ptr(armresiliencemanagement.MembershipTypeThroughResourceGroup),
-		// 						},
+		// 					RegionalResiliency: &armresiliencemanagement.ResiliencyProperties{
+		// 						GoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateExcluded),
+		// 						AttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateNotAttested),
+		// 						ExclusionReason: to.Ptr(armresiliencemanagement.ExclusionReasonFailedOverResource),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
 		// 				},
@@ -245,7 +237,7 @@ func ExampleGoalResourcesClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Management/serviceGroups/sg1/providers/Microsoft.AzureResilienceManagement/goalAssignments/ga1/goalResources?api-version=2026-09-30-preview&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
 		// 	},
 		// }
 	}

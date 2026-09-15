@@ -6,15 +6,18 @@ package azservicebus
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"sync/atomic"
 	"testing"
 	"time"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
@@ -102,6 +105,265 @@ func TestReceiverCancellationUnitTests(t *testing.T) {
 		require.Empty(t, msgs)
 		require.ErrorIs(t, err, context.Canceled)
 	})
+}
+
+type batchDeleteRPCLink struct {
+	responses []int32
+	sent      []*amqp.Message
+	err       error
+}
+
+func (l *batchDeleteRPCLink) Close(ctx context.Context) error { return nil }
+
+func (l *batchDeleteRPCLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResponse, error) {
+	l.sent = append(l.sent, msg)
+	if l.err != nil {
+		return nil, l.err
+	}
+	responseIndex := len(l.sent) - 1
+	if responseIndex >= len(l.responses) {
+		return nil, fmt.Errorf("unexpected batch delete call %d", responseIndex+1)
+	}
+
+	return &amqpwrap.RPCResponse{
+		Code: 200,
+		Message: &amqp.Message{Value: map[string]any{
+			"message-count": l.responses[responseIndex],
+		}},
+	}, nil
+}
+
+type countingBatchDeleteLinks struct {
+	*internal.FakeAMQPLinks
+	getCalls   int
+	retryCalls int
+	onGet      func()
+}
+
+func (l *countingBatchDeleteLinks) Get(ctx context.Context) (*internal.LinksWithID, error) {
+	l.getCalls++
+	if l.onGet != nil {
+		l.onGet()
+	}
+	return l.FakeAMQPLinks.Get(ctx)
+}
+
+func (l *countingBatchDeleteLinks) Retry(ctx context.Context, eventName azlog.Event, operation string, fn internal.RetryWithLinksFn, options exported.RetryOptions) error {
+	l.retryCalls++
+	links, err := l.Get(ctx)
+	if err != nil {
+		return err
+	}
+	return fn(ctx, links, &utils.RetryFnArgs{})
+}
+
+func newBatchDeleteReceiver(responses ...int32) (*Receiver, *batchDeleteRPCLink, *countingBatchDeleteLinks) {
+	rpcLink := &batchDeleteRPCLink{responses: responses}
+	links := &countingBatchDeleteLinks{FakeAMQPLinks: &internal.FakeAMQPLinks{
+		Receiver: &internal.FakeAMQPReceiver{},
+		RPC:      rpcLink,
+	}}
+	receiver := &Receiver{
+		amqpLinks: links,
+	}
+	return receiver, rpcLink, links
+}
+
+func TestReceiverDeleteMessages(t *testing.T) {
+	invalidCounts := []int{0, -1}
+	if strconv.IntSize > 32 {
+		tooLarge := maxDirectDeleteMessageCount
+		tooLarge++
+		invalidCounts = append(invalidCounts, tooLarge)
+	}
+	for _, invalidCount := range invalidCounts {
+		receiver, rpcLink, links := newBatchDeleteReceiver()
+
+		result, err := receiver.DeleteMessages(context.Background(), invalidCount, nil)
+		require.Error(t, err)
+		require.Nil(t, result)
+		require.Empty(t, rpcLink.sent)
+		require.Zero(t, links.getCalls)
+	}
+
+	cutoff := time.Date(2026, time.August, 21, 12, 30, 0, 0, time.UTC)
+	receiver, rpcLink, links := newBatchDeleteReceiver(37)
+
+	result, err := receiver.DeleteMessages(context.Background(), 50, &DeleteMessagesOptions{
+		BeforeEnqueueTime: &cutoff,
+	})
+	require.NoError(t, err)
+	require.EqualValues(t, 37, result.DeletedCount)
+	require.Len(t, rpcLink.sent, 1)
+	require.Equal(t, 1, links.getCalls)
+	require.Equal(t, 1, links.retryCalls)
+
+	premiumReceiver, premiumRPC, _ := newBatchDeleteReceiver(4000)
+	premiumResult, err := premiumReceiver.DeleteMessages(context.Background(), 4000, nil)
+	require.NoError(t, err)
+	require.EqualValues(t, 4000, premiumResult.DeletedCount)
+	premiumBody := premiumRPC.sent[0].Value.(map[string]any)
+	require.Equal(t, int32(4000), premiumBody["message-count"])
+}
+
+func TestReceiverDeleteMessagesDoesNotRedispatchAfterRPCError(t *testing.T) {
+	receiver, rpcLink, links := newBatchDeleteReceiver()
+	rpcLink.err = &amqp.LinkError{}
+
+	result, err := receiver.DeleteMessages(context.Background(), 50, nil)
+	require.Error(t, err)
+	require.Nil(t, result)
+	require.Len(t, rpcLink.sent, 1)
+	require.Equal(t, 1, links.getCalls)
+	require.Equal(t, 1, links.retryCalls)
+	require.Equal(t, 1, links.CloseIfNeededCalled)
+}
+
+func TestReceiverPurgeMessagesUsesFixedCutoffAndStopsOnZero(t *testing.T) {
+	cutoff := time.Date(2026, time.August, 21, 12, 30, 0, 0, time.UTC)
+	receiver, rpcLink, links := newBatchDeleteReceiver(500, 2, 0)
+
+	result, err := receiver.PurgeMessages(context.Background(), &PurgeMessagesOptions{
+		BeforeEnqueueTime: &cutoff,
+	})
+	require.NoError(t, err)
+	require.EqualValues(t, 502, result.DeletedCount)
+	require.Len(t, rpcLink.sent, 3)
+	require.Equal(t, 1, links.getCalls)
+	require.Equal(t, 1, links.retryCalls)
+
+	for _, sent := range rpcLink.sent {
+		body := sent.Value.(map[string]any)
+		require.Equal(t, int32(500), body["message-count"])
+		require.Equal(t, cutoff, body["enqueued-time-utc"])
+	}
+}
+
+func TestReceiverPurgeMessagesSupportsPremiumBatchSize(t *testing.T) {
+	maxMessageCountPerBatch := 4000
+	receiver, rpcLink, links := newBatchDeleteReceiver(4000, 2, 0)
+
+	result, err := receiver.PurgeMessages(context.Background(), &PurgeMessagesOptions{
+		MaxMessageCountPerBatch: &maxMessageCountPerBatch,
+	})
+	require.NoError(t, err)
+	require.EqualValues(t, 4002, result.DeletedCount)
+	require.Len(t, rpcLink.sent, 3)
+	require.Equal(t, 1, links.getCalls)
+
+	for _, sent := range rpcLink.sent {
+		body := sent.Value.(map[string]any)
+		require.Equal(t, int32(4000), body["message-count"])
+	}
+}
+
+func TestReceiverPurgeMessagesAllowsServiceToEnforceBatchSizeLimit(t *testing.T) {
+	maxMessageCountPerBatch := 4001
+	receiver, rpcLink, links := newBatchDeleteReceiver(0)
+
+	result, err := receiver.PurgeMessages(context.Background(), &PurgeMessagesOptions{
+		MaxMessageCountPerBatch: &maxMessageCountPerBatch,
+	})
+	require.NoError(t, err)
+	require.Zero(t, result.DeletedCount)
+	require.Len(t, rpcLink.sent, 1)
+	require.Equal(t, 1, links.getCalls)
+	require.Equal(t, int32(4001), rpcLink.sent[0].Value.(map[string]any)["message-count"])
+}
+
+func TestReceiverPurgeMessagesRejectsInvalidBatchSizeBeforeLinkSetup(t *testing.T) {
+	invalidCounts := []int{0, -1}
+	if strconv.IntSize > 32 {
+		tooLarge := maxDirectDeleteMessageCount
+		tooLarge++
+		invalidCounts = append(invalidCounts, tooLarge)
+	}
+	for _, invalidCount := range invalidCounts {
+		receiver, rpcLink, links := newBatchDeleteReceiver()
+
+		result, err := receiver.PurgeMessages(context.Background(), &PurgeMessagesOptions{
+			MaxMessageCountPerBatch: &invalidCount,
+		})
+		require.Error(t, err)
+		require.Nil(t, result)
+		require.Empty(t, rpcLink.sent)
+		require.Zero(t, links.getCalls)
+	}
+}
+
+func TestReceiverPurgeMessagesDoesNotRedispatchAfterRPCError(t *testing.T) {
+	receiver, rpcLink, links := newBatchDeleteReceiver()
+	rpcLink.err = &amqp.LinkError{}
+
+	result, err := receiver.PurgeMessages(context.Background(), nil)
+	require.Error(t, err)
+	require.Nil(t, result)
+	require.Len(t, rpcLink.sent, 1)
+	require.Equal(t, 1, links.getCalls)
+	require.Equal(t, 1, links.retryCalls)
+	require.Equal(t, 1, links.CloseIfNeededCalled)
+}
+
+func TestSessionReceiverDeleteMessagesIncludesSessionID(t *testing.T) {
+	receiver, rpcLink, _ := newBatchDeleteReceiver(1)
+	sessionID := "session-1"
+	sessionReceiver := &SessionReceiver{inner: receiver, sessionID: &sessionID}
+
+	result, err := sessionReceiver.DeleteMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.EqualValues(t, 1, result.DeletedCount)
+
+	body := rpcLink.sent[0].Value.(map[string]any)
+	require.Equal(t, sessionID, body["session-id"])
+}
+
+func TestSessionReceiverDeleteMessagesUsesSessionIDResolvedDuringSetup(t *testing.T) {
+	receiver, rpcLink, links := newBatchDeleteReceiver(1)
+	sessionReceiver := &SessionReceiver{inner: receiver}
+	resolvedSessionID := "session-1"
+	links.onGet = func() {
+		sessionReceiver.sessionID = &resolvedSessionID
+	}
+
+	result, err := sessionReceiver.DeleteMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.EqualValues(t, 1, result.DeletedCount)
+
+	body := rpcLink.sent[0].Value.(map[string]any)
+	require.Equal(t, resolvedSessionID, body["session-id"])
+}
+
+func TestSessionReceiverPurgeMessagesIncludesSessionID(t *testing.T) {
+	receiver, rpcLink, _ := newBatchDeleteReceiver(2, 0)
+	sessionID := "session-1"
+	sessionReceiver := &SessionReceiver{inner: receiver, sessionID: &sessionID}
+
+	result, err := sessionReceiver.PurgeMessages(context.Background(), nil)
+	require.NoError(t, err)
+	require.EqualValues(t, 2, result.DeletedCount)
+	require.Len(t, rpcLink.sent, 2)
+	for _, request := range rpcLink.sent {
+		body := request.Value.(map[string]any)
+		require.Equal(t, sessionID, body["session-id"])
+	}
+}
+
+func TestSessionReceiverPurgeMessagesUsesSessionIDResolvedDuringSetup(t *testing.T) {
+	receiver, rpcLink, links := newBatchDeleteReceiver(2, 0)
+	sessionReceiver := &SessionReceiver{inner: receiver}
+	resolvedSessionID := "session-1"
+	links.onGet = func() {
+		sessionReceiver.sessionID = &resolvedSessionID
+	}
+
+	result, err := sessionReceiver.PurgeMessages(context.Background(), nil)
+	require.NoError(t, err)
+	require.EqualValues(t, 2, result.DeletedCount)
+
+	for _, request := range rpcLink.sent {
+		body := request.Value.(map[string]any)
+		require.Equal(t, resolvedSessionID, body["session-id"])
+	}
 }
 
 func TestReceiverOptions(t *testing.T) {

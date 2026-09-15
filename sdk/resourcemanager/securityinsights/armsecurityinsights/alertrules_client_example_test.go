@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/alertRules/CreateFusionAlertRule.json
+// Generated from example definition: 2025-10-01-preview/alertRules/CreateFusionAlertRule.json
 func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAFusionAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -559,7 +559,7 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAFusionAlertRule() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/alertRules/CreateFusionAlertRuleWithFusionScenarioExclusion.json
+// Generated from example definition: 2025-10-01-preview/alertRules/CreateFusionAlertRuleWithFusionScenarioExclusion.json
 func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAFusionAlertRuleWithScenarioExclusionPattern() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1106,7 +1106,7 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAFusionAlertRuleWith
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/alertRules/CreateMicrosoftSecurityIncidentCreationAlertRule.json
+// Generated from example definition: 2025-10-01-preview/alertRules/CreateMicrosoftSecurityIncidentCreationAlertRule.json
 func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAMicrosoftSecurityIncidentCreationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1149,7 +1149,7 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAMicrosoftSecurityIn
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/alertRules/CreateNrtAlertRule.json
+// Generated from example definition: 2025-10-01-preview/alertRules/CreateNrtAlertRule.json
 func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesANrtAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1248,7 +1248,7 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesANrtAlertRule() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/alertRules/CreateScheduledAlertRule.json
+// Generated from example definition: 2025-10-01-preview/alertRules/CreateScheduledAlertRule.json
 func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAScheduledAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1442,7 +1442,7 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAScheduledAlertRule(
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/alertRules/DeleteAlertRule.json
+// Generated from example definition: 2025-10-01-preview/alertRules/DeleteAlertRule.json
 func ExampleAlertRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1464,7 +1464,7 @@ func ExampleAlertRulesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/alertRules/GetFusionAlertRule.json
+// Generated from example definition: 2025-10-01-preview/alertRules/GetFusionAlertRule.json
 func ExampleAlertRulesClient_Get_getAFusionAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1775,7 +1775,7 @@ func ExampleAlertRulesClient_Get_getAFusionAlertRule() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/alertRules/GetMicrosoftSecurityIncidentCreationAlertRule.json
+// Generated from example definition: 2025-10-01-preview/alertRules/GetMicrosoftSecurityIncidentCreationAlertRule.json
 func ExampleAlertRulesClient_Get_getAMicrosoftSecurityIncidentCreationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1810,7 +1810,7 @@ func ExampleAlertRulesClient_Get_getAMicrosoftSecurityIncidentCreationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/alertRules/GetNrtAlertRule.json
+// Generated from example definition: 2025-10-01-preview/alertRules/GetNrtAlertRule.json
 func ExampleAlertRulesClient_Get_getAnNrtAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1873,7 +1873,7 @@ func ExampleAlertRulesClient_Get_getAnNrtAlertRule() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/alertRules/GetScheduledAlertRule.json
+// Generated from example definition: 2025-10-01-preview/alertRules/GetScheduledAlertRule.json
 func ExampleAlertRulesClient_Get_getAScheduledAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1974,7 +1974,7 @@ func ExampleAlertRulesClient_Get_getAScheduledAlertRule() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/alertRules/GetAllAlertRules.json
+// Generated from example definition: 2025-10-01-preview/alertRules/GetAllAlertRules.json
 func ExampleAlertRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

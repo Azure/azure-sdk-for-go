@@ -416,6 +416,11 @@ type WorkspacePurgeClientGetPurgeStatusResponse struct {
 	WorkspacePurgeStatusResponse
 }
 
+// WorkspacePurgeClientPurgeLakeDataResponse contains the response from method WorkspacePurgeClient.BeginPurgeLakeData.
+type WorkspacePurgeClientPurgeLakeDataResponse struct {
+	// placeholder for future response values
+}
+
 // WorkspacePurgeClientPurgeResponse contains the response from method WorkspacePurgeClient.Purge.
 type WorkspacePurgeClientPurgeResponse struct {
 	// Response containing operationId for a specific purge action.

@@ -37,6 +37,10 @@ type ConfigTemplatesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, configTemplateName string, options *armworkloadorchestration.ConfigTemplatesClientGetOptions) (resp azfake.Responder[armworkloadorchestration.ConfigTemplatesClientGetResponse], errResp azfake.ErrorResponder)
 
+	// BeginLinkToHierarchies is the fake for method ConfigTemplatesClient.BeginLinkToHierarchies
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginLinkToHierarchies func(ctx context.Context, resourceGroupName string, configTemplateName string, body armworkloadorchestration.HierarchySelector, options *armworkloadorchestration.ConfigTemplatesClientBeginLinkToHierarchiesOptions) (resp azfake.PollerResponder[armworkloadorchestration.ConfigTemplatesClientLinkToHierarchiesResponse], errResp azfake.ErrorResponder)
+
 	// NewListByResourceGroupPager is the fake for method ConfigTemplatesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armworkloadorchestration.ConfigTemplatesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armworkloadorchestration.ConfigTemplatesClientListByResourceGroupResponse])
@@ -48,6 +52,10 @@ type ConfigTemplatesServer struct {
 	// RemoveVersion is the fake for method ConfigTemplatesClient.RemoveVersion
 	// HTTP status codes to indicate success: http.StatusOK
 	RemoveVersion func(ctx context.Context, resourceGroupName string, configTemplateName string, body armworkloadorchestration.VersionParameter, options *armworkloadorchestration.ConfigTemplatesClientRemoveVersionOptions) (resp azfake.Responder[armworkloadorchestration.ConfigTemplatesClientRemoveVersionResponse], errResp azfake.ErrorResponder)
+
+	// BeginUnLinkFromHierarchies is the fake for method ConfigTemplatesClient.BeginUnLinkFromHierarchies
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginUnLinkFromHierarchies func(ctx context.Context, resourceGroupName string, configTemplateName string, body armworkloadorchestration.HierarchySelector, options *armworkloadorchestration.ConfigTemplatesClientBeginUnLinkFromHierarchiesOptions) (resp azfake.PollerResponder[armworkloadorchestration.ConfigTemplatesClientUnLinkFromHierarchiesResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method ConfigTemplatesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -63,8 +71,10 @@ func NewConfigTemplatesServerTransport(srv *ConfigTemplatesServer) *ConfigTempla
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armworkloadorchestration.ConfigTemplatesClientCreateOrUpdateResponse]](),
 		beginCreateVersion:          newTracker[azfake.PollerResponder[armworkloadorchestration.ConfigTemplatesClientCreateVersionResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armworkloadorchestration.ConfigTemplatesClientDeleteResponse]](),
+		beginLinkToHierarchies:      newTracker[azfake.PollerResponder[armworkloadorchestration.ConfigTemplatesClientLinkToHierarchiesResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armworkloadorchestration.ConfigTemplatesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armworkloadorchestration.ConfigTemplatesClientListBySubscriptionResponse]](),
+		beginUnLinkFromHierarchies:  newTracker[azfake.PollerResponder[armworkloadorchestration.ConfigTemplatesClientUnLinkFromHierarchiesResponse]](),
 	}
 }
 
@@ -75,8 +85,10 @@ type ConfigTemplatesServerTransport struct {
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armworkloadorchestration.ConfigTemplatesClientCreateOrUpdateResponse]]
 	beginCreateVersion          *tracker[azfake.PollerResponder[armworkloadorchestration.ConfigTemplatesClientCreateVersionResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armworkloadorchestration.ConfigTemplatesClientDeleteResponse]]
+	beginLinkToHierarchies      *tracker[azfake.PollerResponder[armworkloadorchestration.ConfigTemplatesClientLinkToHierarchiesResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armworkloadorchestration.ConfigTemplatesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armworkloadorchestration.ConfigTemplatesClientListBySubscriptionResponse]]
+	beginUnLinkFromHierarchies  *tracker[azfake.PollerResponder[armworkloadorchestration.ConfigTemplatesClientUnLinkFromHierarchiesResponse]]
 }
 
 // Do implements the policy.Transporter interface for ConfigTemplatesServerTransport.
@@ -108,12 +120,16 @@ func (c *ConfigTemplatesServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = c.dispatchBeginDelete(req)
 			case "ConfigTemplatesClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
+			case "ConfigTemplatesClient.BeginLinkToHierarchies":
+				res.resp, res.err = c.dispatchBeginLinkToHierarchies(req)
 			case "ConfigTemplatesClient.NewListByResourceGroupPager":
 				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			case "ConfigTemplatesClient.NewListBySubscriptionPager":
 				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
 			case "ConfigTemplatesClient.RemoveVersion":
 				res.resp, res.err = c.dispatchRemoveVersion(req)
+			case "ConfigTemplatesClient.BeginUnLinkFromHierarchies":
+				res.resp, res.err = c.dispatchBeginUnLinkFromHierarchies(req)
 			case "ConfigTemplatesClient.Update":
 				res.resp, res.err = c.dispatchUpdate(req)
 			default:
@@ -305,6 +321,54 @@ func (c *ConfigTemplatesServerTransport) dispatchGet(req *http.Request) (*http.R
 	return resp, nil
 }
 
+func (c *ConfigTemplatesServerTransport) dispatchBeginLinkToHierarchies(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginLinkToHierarchies == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginLinkToHierarchies not implemented")}
+	}
+	beginLinkToHierarchies := c.beginLinkToHierarchies.get(req)
+	if beginLinkToHierarchies == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/configTemplates/(?P<configTemplateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkToHierarchies`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.HierarchySelector](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		configTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configTemplateName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginLinkToHierarchies(req.Context(), resourceGroupNameParam, configTemplateNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginLinkToHierarchies = &respr
+		c.beginLinkToHierarchies.add(req, beginLinkToHierarchies)
+	}
+
+	resp, err := server.PollerResponderNext(beginLinkToHierarchies, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		c.beginLinkToHierarchies.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginLinkToHierarchies) {
+		c.beginLinkToHierarchies.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (c *ConfigTemplatesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if c.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -409,6 +473,54 @@ func (c *ConfigTemplatesServerTransport) dispatchRemoveVersion(req *http.Request
 	if err != nil {
 		return nil, err
 	}
+	return resp, nil
+}
+
+func (c *ConfigTemplatesServerTransport) dispatchBeginUnLinkFromHierarchies(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUnLinkFromHierarchies == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUnLinkFromHierarchies not implemented")}
+	}
+	beginUnLinkFromHierarchies := c.beginUnLinkFromHierarchies.get(req)
+	if beginUnLinkFromHierarchies == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/configTemplates/(?P<configTemplateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/unLinkFromHierarchies`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.HierarchySelector](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		configTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configTemplateName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUnLinkFromHierarchies(req.Context(), resourceGroupNameParam, configTemplateNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUnLinkFromHierarchies = &respr
+		c.beginUnLinkFromHierarchies.add(req, beginUnLinkFromHierarchies)
+	}
+
+	resp, err := server.PollerResponderNext(beginUnLinkFromHierarchies, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		c.beginUnLinkFromHierarchies.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUnLinkFromHierarchies) {
+		c.beginUnLinkFromHierarchies.remove(req)
+	}
+
 	return resp, nil
 }
 

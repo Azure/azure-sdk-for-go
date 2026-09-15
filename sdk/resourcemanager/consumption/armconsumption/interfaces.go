@@ -16,7 +16,8 @@ type ChargeSummaryClassification interface {
 // LegacyReservationRecommendationPropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetLegacyReservationRecommendationProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *LegacyReservationRecommendationProperties, *LegacySharedScopeReservationRecommendationProperties, *LegacySingleScopeReservationRecommendationProperties
+// - *LegacyManagementGroupScopeReservationRecommendationProperties, *LegacyReservationRecommendationProperties, *LegacySharedScopeReservationRecommendationProperties,
+// - *LegacySingleScopeReservationRecommendationProperties
 type LegacyReservationRecommendationPropertiesClassification interface {
 	// GetLegacyReservationRecommendationProperties returns the LegacyReservationRecommendationProperties content of the underlying type.
 	GetLegacyReservationRecommendationProperties() *LegacyReservationRecommendationProperties
@@ -25,7 +26,8 @@ type LegacyReservationRecommendationPropertiesClassification interface {
 // ModernReservationRecommendationPropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetModernReservationRecommendationProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *ModernReservationRecommendationProperties, *ModernSharedScopeReservationRecommendationProperties, *ModernSingleScopeReservationRecommendationProperties
+// - *ModernManagementGroupScopeReservationRecommendationProperties, *ModernReservationRecommendationProperties, *ModernSharedScopeReservationRecommendationProperties,
+// - *ModernSingleScopeReservationRecommendationProperties
 type ModernReservationRecommendationPropertiesClassification interface {
 	// GetModernReservationRecommendationProperties returns the ModernReservationRecommendationProperties content of the underlying type.
 	GetModernReservationRecommendationProperties() *ModernReservationRecommendationProperties

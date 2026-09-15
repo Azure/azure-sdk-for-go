@@ -93,10 +93,12 @@ func (r *ReservationRecommendationDetailsServerTransport) dispatchGet(req *http.
 		return nil, err
 	}
 	filterParam := getOptional(qp.Get("$filter"))
+	managementGroupIDParam := getOptional(qp.Get("managementGroupId"))
 	var options *armconsumption.ReservationRecommendationDetailsClientGetOptions
-	if filterParam != nil {
+	if filterParam != nil || managementGroupIDParam != nil {
 		options = &armconsumption.ReservationRecommendationDetailsClientGetOptions{
-			Filter: filterParam,
+			Filter:            filterParam,
+			ManagementGroupID: managementGroupIDParam,
 		}
 	}
 	respr, errRespr := r.srv.Get(req.Context(), resourceScopeParam, armconsumption.Scope(qp.Get("scope")), qp.Get("region"), armconsumption.Term(qp.Get("term")), armconsumption.LookBackPeriod(qp.Get("lookBackPeriod")), qp.Get("product"), options)

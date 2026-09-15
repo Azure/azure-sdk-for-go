@@ -31,6 +31,9 @@ type ClientApplicationProductLinkClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewClientApplicationProductLinkClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientApplicationProductLinkClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,19 +69,14 @@ func (client *ClientApplicationProductLinkClient) Create(ctx context.Context, re
 	if err != nil {
 		return ClientApplicationProductLinkClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientApplicationProductLinkClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
 func (client *ClientApplicationProductLinkClient) createCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, clientApplicationProductLinkID string, parameters ClientApplicationProductLinkContract, _ *ClientApplicationProductLinkClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/clientApplications/{clientApplicationId}/productLinks/{clientApplicationProductLinkId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -113,8 +111,11 @@ func (client *ClientApplicationProductLinkClient) createCreateRequest(ctx contex
 }
 
 // createHandleResponse handles the Create response.
-func (client *ClientApplicationProductLinkClient) createHandleResponse(resp *http.Response) (ClientApplicationProductLinkClientCreateResponse, error) {
+func (client *ClientApplicationProductLinkClient) createHandleResponse(resp *http.Response, successCodes ...int) (ClientApplicationProductLinkClientCreateResponse, error) {
 	result := ClientApplicationProductLinkClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClientApplicationProductLinkContract); err != nil {
 		return ClientApplicationProductLinkClientCreateResponse{}, err
 	}
@@ -145,8 +146,7 @@ func (client *ClientApplicationProductLinkClient) Delete(ctx context.Context, re
 		return ClientApplicationProductLinkClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientApplicationProductLinkClientDeleteResponse{}, err
+		return ClientApplicationProductLinkClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ClientApplicationProductLinkClientDeleteResponse{}, nil
 }
@@ -155,7 +155,7 @@ func (client *ClientApplicationProductLinkClient) Delete(ctx context.Context, re
 func (client *ClientApplicationProductLinkClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, clientApplicationProductLinkID string, _ *ClientApplicationProductLinkClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/clientApplications/{clientApplicationId}/productLinks/{clientApplicationProductLinkId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -207,19 +207,14 @@ func (client *ClientApplicationProductLinkClient) Get(ctx context.Context, resou
 	if err != nil {
 		return ClientApplicationProductLinkClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientApplicationProductLinkClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ClientApplicationProductLinkClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, clientApplicationProductLinkID string, _ *ClientApplicationProductLinkClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/clientApplications/{clientApplicationId}/productLinks/{clientApplicationProductLinkId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -250,9 +245,12 @@ func (client *ClientApplicationProductLinkClient) getCreateRequest(ctx context.C
 }
 
 // getHandleResponse handles the Get response.
-func (client *ClientApplicationProductLinkClient) getHandleResponse(resp *http.Response) (ClientApplicationProductLinkClientGetResponse, error) {
+func (client *ClientApplicationProductLinkClient) getHandleResponse(resp *http.Response, successCodes ...int) (ClientApplicationProductLinkClientGetResponse, error) {
 	result := ClientApplicationProductLinkClientGetResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClientApplicationProductLinkContract); err != nil {
@@ -278,57 +276,71 @@ func (client *ClientApplicationProductLinkClient) NewListByClientApplicationsPag
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByClientApplicationsCreateRequest(ctx, resourceGroupName, serviceName, clientApplicationID, options)
-			}, nil)
+			req, err := client.listByClientApplicationsCreateRequest(ctx, resourceGroupName, serviceName, clientApplicationID, nextLink, options)
 			if err != nil {
 				return ClientApplicationProductLinkClientListByClientApplicationsResponse{}, err
 			}
-			return client.listByClientApplicationsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ClientApplicationProductLinkClientListByClientApplicationsResponse{}, err
+			}
+			return client.listByClientApplicationsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByClientApplicationsCreateRequest creates the ListByClientApplications request.
-func (client *ClientApplicationProductLinkClient) listByClientApplicationsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, options *ClientApplicationProductLinkClientListByClientApplicationsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/clientApplications/{clientApplicationId}/productLinks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ClientApplicationProductLinkClient) listByClientApplicationsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, nextLink string, options *ClientApplicationProductLinkClientListByClientApplicationsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/clientApplications/{clientApplicationId}/productLinks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serviceName == "" {
+			return nil, errors.New("parameter serviceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+		if clientApplicationID == "" {
+			return nil, errors.New("parameter clientApplicationID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{clientApplicationId}", url.PathEscape(clientApplicationID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serviceName == "" {
-		return nil, errors.New("parameter serviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if clientApplicationID == "" {
-		return nil, errors.New("parameter clientApplicationID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clientApplicationId}", url.PathEscape(clientApplicationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByClientApplicationsHandleResponse handles the ListByClientApplications response.
-func (client *ClientApplicationProductLinkClient) listByClientApplicationsHandleResponse(resp *http.Response) (ClientApplicationProductLinkClientListByClientApplicationsResponse, error) {
+func (client *ClientApplicationProductLinkClient) listByClientApplicationsHandleResponse(resp *http.Response, successCodes ...int) (ClientApplicationProductLinkClientListByClientApplicationsResponse, error) {
 	result := ClientApplicationProductLinkClientListByClientApplicationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClientApplicationProductLinkCollection); err != nil {
 		return ClientApplicationProductLinkClientListByClientApplicationsResponse{}, err
 	}

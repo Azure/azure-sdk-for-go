@@ -81,7 +81,7 @@ func (a *AuthorizationLoginLinksServerTransport) dispatchPost(req *http.Request)
 	if a.srv.Post == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Post not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationProviders/(?P<authorizationProviderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizations/(?P<authorizationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getLoginLinks`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationProviders/(?P<authorizationProviderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizations/(?P<authorizationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getLoginLinks`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -120,7 +120,7 @@ func (a *AuthorizationLoginLinksServerTransport) dispatchPost(req *http.Request)
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }

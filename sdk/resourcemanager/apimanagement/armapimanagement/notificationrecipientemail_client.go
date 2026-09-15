@@ -30,6 +30,9 @@ type NotificationRecipientEmailClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNotificationRecipientEmailClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NotificationRecipientEmailClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,8 +66,7 @@ func (client *NotificationRecipientEmailClient) CheckEntityExists(ctx context.Co
 		return NotificationRecipientEmailClientCheckEntityExistsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent, http.StatusNotFound) {
-		err = runtime.NewResponseError(httpResp)
-		return NotificationRecipientEmailClientCheckEntityExistsResponse{}, err
+		return NotificationRecipientEmailClientCheckEntityExistsResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return NotificationRecipientEmailClientCheckEntityExistsResponse{Success: httpResp.StatusCode >= 200 && httpResp.StatusCode < 300}, nil
 }
@@ -73,7 +75,7 @@ func (client *NotificationRecipientEmailClient) CheckEntityExists(ctx context.Co
 func (client *NotificationRecipientEmailClient) checkEntityExistsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string, _ *NotificationRecipientEmailClientCheckEntityExistsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientEmails/{email}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -124,19 +126,14 @@ func (client *NotificationRecipientEmailClient) CreateOrUpdate(ctx context.Conte
 	if err != nil {
 		return NotificationRecipientEmailClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return NotificationRecipientEmailClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *NotificationRecipientEmailClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string, _ *NotificationRecipientEmailClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientEmails/{email}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -167,8 +164,11 @@ func (client *NotificationRecipientEmailClient) createOrUpdateCreateRequest(ctx 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *NotificationRecipientEmailClient) createOrUpdateHandleResponse(resp *http.Response) (NotificationRecipientEmailClientCreateOrUpdateResponse, error) {
+func (client *NotificationRecipientEmailClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (NotificationRecipientEmailClientCreateOrUpdateResponse, error) {
 	result := NotificationRecipientEmailClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecipientEmailContract); err != nil {
 		return NotificationRecipientEmailClientCreateOrUpdateResponse{}, err
 	}
@@ -198,8 +198,7 @@ func (client *NotificationRecipientEmailClient) Delete(ctx context.Context, reso
 		return NotificationRecipientEmailClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return NotificationRecipientEmailClientDeleteResponse{}, err
+		return NotificationRecipientEmailClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return NotificationRecipientEmailClientDeleteResponse{}, nil
 }
@@ -208,7 +207,7 @@ func (client *NotificationRecipientEmailClient) Delete(ctx context.Context, reso
 func (client *NotificationRecipientEmailClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string, _ *NotificationRecipientEmailClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientEmails/{email}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -258,19 +257,14 @@ func (client *NotificationRecipientEmailClient) ListByNotification(ctx context.C
 	if err != nil {
 		return NotificationRecipientEmailClientListByNotificationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NotificationRecipientEmailClientListByNotificationResponse{}, err
-	}
-	resp, err := client.listByNotificationHandleResponse(httpResp)
-	return resp, err
+	return client.listByNotificationHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByNotificationCreateRequest creates the ListByNotification request.
 func (client *NotificationRecipientEmailClient) listByNotificationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, _ *NotificationRecipientEmailClientListByNotificationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientEmails"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -297,8 +291,11 @@ func (client *NotificationRecipientEmailClient) listByNotificationCreateRequest(
 }
 
 // listByNotificationHandleResponse handles the ListByNotification response.
-func (client *NotificationRecipientEmailClient) listByNotificationHandleResponse(resp *http.Response) (NotificationRecipientEmailClientListByNotificationResponse, error) {
+func (client *NotificationRecipientEmailClient) listByNotificationHandleResponse(resp *http.Response, successCodes ...int) (NotificationRecipientEmailClientListByNotificationResponse, error) {
 	result := NotificationRecipientEmailClientListByNotificationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecipientEmailCollection); err != nil {
 		return NotificationRecipientEmailClientListByNotificationResponse{}, err
 	}

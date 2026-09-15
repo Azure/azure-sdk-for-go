@@ -36,8 +36,8 @@ func ExampleDeletedServicesClient_GetByName() {
 	// 		ID: to.Ptr("/subscriptions/subid/providers/Microsoft.ApiManagement/locations/westus/deletedservices/apimService3"),
 	// 		Location: to.Ptr("West US"),
 	// 		Properties: &armapimanagement.DeletedServiceContractProperties{
-	// 			DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T15:33:55.5426123Z"); return t}()),
-	// 			ScheduledPurgeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T15:33:55.5426123Z"); return t}()),
+	// 			DeletionDate: to.Ptr(time.Date(2017, time.May, 27, 15, 33, 55, 542612300, time.UTC)),
+	// 			ScheduledPurgeDate: to.Ptr(time.Date(2017, time.May, 27, 15, 33, 55, 542612300, time.UTC)),
 	// 			ServiceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService3"),
 	// 		},
 	// 	},
@@ -75,8 +75,8 @@ func ExampleDeletedServicesClient_NewListBySubscriptionPager() {
 		// 				ID: to.Ptr("/subscriptions/subid/providers/Microsoft.ApiManagement/locations/westus/deletedservices/apimService3"),
 		// 				Location: to.Ptr("West US"),
 		// 				Properties: &armapimanagement.DeletedServiceContractProperties{
-		// 					DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T15:33:55.5426123Z"); return t}()),
-		// 					ScheduledPurgeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T15:33:55.5426123Z"); return t}()),
+		// 					DeletionDate: to.Ptr(time.Date(2017, time.May, 27, 15, 33, 55, 542612300, time.UTC)),
+		// 					ScheduledPurgeDate: to.Ptr(time.Date(2017, time.May, 27, 15, 33, 55, 542612300, time.UTC)),
 		// 					ServiceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService3"),
 		// 				},
 		// 			},
@@ -86,8 +86,8 @@ func ExampleDeletedServicesClient_NewListBySubscriptionPager() {
 		// 				ID: to.Ptr("/subscriptions/subid/providers/Microsoft.ApiManagement/locations/westus2/deletedservices/apimService"),
 		// 				Location: to.Ptr("West US 2"),
 		// 				Properties: &armapimanagement.DeletedServiceContractProperties{
-		// 					DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T15:33:55.5426123Z"); return t}()),
-		// 					ScheduledPurgeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T15:33:55.5426123Z"); return t}()),
+		// 					DeletionDate: to.Ptr(time.Date(2017, time.May, 27, 15, 33, 55, 542612300, time.UTC)),
+		// 					ScheduledPurgeDate: to.Ptr(time.Date(2017, time.May, 27, 15, 33, 55, 542612300, time.UTC)),
 		// 					ServiceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService"),
 		// 				},
 		// 			},

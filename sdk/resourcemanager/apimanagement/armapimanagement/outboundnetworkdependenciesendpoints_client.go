@@ -30,6 +30,9 @@ type OutboundNetworkDependenciesEndpointsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOutboundNetworkDependenciesEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OutboundNetworkDependenciesEndpointsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *OutboundNetworkDependenciesEndpointsClient) ListByService(ctx cont
 	if err != nil {
 		return OutboundNetworkDependenciesEndpointsClientListByServiceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OutboundNetworkDependenciesEndpointsClientListByServiceResponse{}, err
-	}
-	resp, err := client.listByServiceHandleResponse(httpResp)
-	return resp, err
+	return client.listByServiceHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByServiceCreateRequest creates the ListByService request.
 func (client *OutboundNetworkDependenciesEndpointsClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, _ *OutboundNetworkDependenciesEndpointsClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/outboundNetworkDependenciesEndpoints"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -96,8 +94,11 @@ func (client *OutboundNetworkDependenciesEndpointsClient) listByServiceCreateReq
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *OutboundNetworkDependenciesEndpointsClient) listByServiceHandleResponse(resp *http.Response) (OutboundNetworkDependenciesEndpointsClientListByServiceResponse, error) {
+func (client *OutboundNetworkDependenciesEndpointsClient) listByServiceHandleResponse(resp *http.Response, successCodes ...int) (OutboundNetworkDependenciesEndpointsClientListByServiceResponse, error) {
 	result := OutboundNetworkDependenciesEndpointsClientListByServiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OutboundEnvironmentEndpointList); err != nil {
 		return OutboundNetworkDependenciesEndpointsClientListByServiceResponse{}, err
 	}

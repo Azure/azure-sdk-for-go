@@ -1749,10 +1749,12 @@ func PossibleSeverityValues() []Severity {
 }
 
 // SoapAPIType - Type of API to create.
-// * `http` creates a REST API
-// * `soap` creates a SOAP pass-through API
-// * `websocket` creates websocket API
-// * `graphql` creates GraphQL API.
+//
+//   - `http` creates a REST API
+//   - `soap` creates a SOAP pass-through API
+//   - `websocket` creates websocket API
+//   - `graphql` creates GraphQL API.
+//
 // New types can be added in the future.
 type SoapAPIType string
 

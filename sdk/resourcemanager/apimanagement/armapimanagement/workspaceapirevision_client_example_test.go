@@ -41,10 +41,10 @@ func ExampleWorkspaceAPIRevisionClient_NewListByServicePager() {
 		// 			{
 		// 				APIID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/apis/a1;rev=1"),
 		// 				APIRevision: to.Ptr("1"),
-		// 				CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T22:21:20.467Z"); return t}()),
+		// 				CreatedDateTime: to.Ptr(time.Date(2018, time.February, 1, 22, 21, 20, 467000000, time.UTC)),
 		// 				IsCurrent: to.Ptr(true),
 		// 				IsOnline: to.Ptr(true),
-		// 				UpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T22:21:20.467Z"); return t}()),
+		// 				UpdatedDateTime: to.Ptr(time.Date(2018, time.February, 1, 22, 21, 20, 467000000, time.UTC)),
 		// 			},
 		// 		},
 		// 	},

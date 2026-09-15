@@ -43,7 +43,7 @@ func ExampleProductSubscriptionsClient_NewListPager() {
 		// 				Type: to.Ptr("Microsoft.ApiManagement/service/products/subscriptions"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/products/5600b57e7e8880006a060002/subscriptions/5600b57e7e8880006a070002"),
 		// 				Properties: &armapimanagement.SubscriptionContractProperties{
-		// 					CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-09-22T01:57:18.723Z"); return t}()),
+		// 					CreatedDate: to.Ptr(time.Date(2015, time.September, 22, 1, 57, 18, 723000000, time.UTC)),
 		// 					OwnerID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1"),
 		// 					Scope: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/products/5600b57e7e8880006a060002"),
 		// 					State: to.Ptr(armapimanagement.SubscriptionStateActive),

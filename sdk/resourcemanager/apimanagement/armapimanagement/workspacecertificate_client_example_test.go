@@ -41,7 +41,7 @@ func ExampleWorkspaceCertificateClient_CreateOrUpdate_apiManagementCreateWorkspa
 	// 		Type: to.Ptr("Microsoft.ApiManagement/service/workspaces/certificates"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/certificates/tempcert"),
 	// 		Properties: &armapimanagement.CertificateContractProperties{
-	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-17T21:55:07+00:00"); return t}()),
+	// 			ExpirationDate: to.Ptr(time.Date(2018, time.March, 17, 21, 55, 7, 0, time.UTC)),
 	// 			Subject: to.Ptr("CN=contoso.com"),
 	// 			Thumbprint: to.Ptr("*******************3"),
 	// 		},
@@ -80,12 +80,12 @@ func ExampleWorkspaceCertificateClient_CreateOrUpdate_apiManagementCreateWorkspa
 	// 		Type: to.Ptr("Microsoft.ApiManagement/service/workspaces/certificates"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/certificates/templateCertkv"),
 	// 		Properties: &armapimanagement.CertificateContractProperties{
-	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2037-01-01T07:00:00Z"); return t}()),
+	// 			ExpirationDate: to.Ptr(time.Date(2037, time.January, 1, 7, 0, 0, 0, time.UTC)),
 	// 			KeyVault: &armapimanagement.KeyVaultContractProperties{
 	// 				IdentityClientID: to.Ptr("ceaa6b06-c00f-43ef-99ac-f53d1fe876a0"),
 	// 				LastStatus: &armapimanagement.KeyVaultLastAccessStatusContractProperties{
 	// 					Code: to.Ptr("Success"),
-	// 					TimeStampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-22T00:24:53.3191468Z"); return t}()),
+	// 					TimeStampUTC: to.Ptr(time.Date(2020, time.September, 22, 0, 24, 53, 319146800, time.UTC)),
 	// 				},
 	// 				SecretIdentifier: to.Ptr("https://rpbvtkeyvaultintegration.vault-int.azure-int.net/secrets/msitestingCert"),
 	// 			},
@@ -142,7 +142,7 @@ func ExampleWorkspaceCertificateClient_Get_apiManagementGetWorkspaceCertificate(
 	// 		Type: to.Ptr("Microsoft.ApiManagement/service/workspaces/certificates"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/certificates/templateCert1"),
 	// 		Properties: &armapimanagement.CertificateContractProperties{
-	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-23T17:03:41Z"); return t}()),
+	// 			ExpirationDate: to.Ptr(time.Date(2017, time.April, 23, 17, 3, 41, 0, time.UTC)),
 	// 			Subject: to.Ptr("CN=mutual-authcert"),
 	// 			Thumbprint: to.Ptr("EBA**********************8594A6"),
 	// 		},
@@ -174,12 +174,12 @@ func ExampleWorkspaceCertificateClient_Get_apiManagementGetWorkspaceCertificateW
 	// 		Type: to.Ptr("Microsoft.ApiManagement/service/workspaces/certificates"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/certificates/templateCertkv"),
 	// 		Properties: &armapimanagement.CertificateContractProperties{
-	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2037-01-01T07:00:00Z"); return t}()),
+	// 			ExpirationDate: to.Ptr(time.Date(2037, time.January, 1, 7, 0, 0, 0, time.UTC)),
 	// 			KeyVault: &armapimanagement.KeyVaultContractProperties{
 	// 				IdentityClientID: to.Ptr("ceaa6b06-c00f-43ef-99ac-f53d1fe876a0"),
 	// 				LastStatus: &armapimanagement.KeyVaultLastAccessStatusContractProperties{
 	// 					Code: to.Ptr("Success"),
-	// 					TimeStampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-22T00:24:53.3191468Z"); return t}()),
+	// 					TimeStampUTC: to.Ptr(time.Date(2020, time.September, 22, 0, 24, 53, 319146800, time.UTC)),
 	// 				},
 	// 				SecretIdentifier: to.Ptr("https://rpbvtkeyvaultintegration.vault-int.azure-int.net/secrets/msitestingCert"),
 	// 			},
@@ -244,7 +244,7 @@ func ExampleWorkspaceCertificateClient_NewListByWorkspacePager() {
 		// 				Type: to.Ptr("Microsoft.ApiManagement/service/workspaces/certificates"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/certificates/kjoshiarmtemplateCert1"),
 		// 				Properties: &armapimanagement.CertificateContractProperties{
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-23T17:03:41Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(time.Date(2017, time.April, 23, 17, 3, 41, 0, time.UTC)),
 		// 					Subject: to.Ptr("CN=mutual-authcert"),
 		// 					Thumbprint: to.Ptr("EBA************************48594A6"),
 		// 				},
@@ -254,12 +254,12 @@ func ExampleWorkspaceCertificateClient_NewListByWorkspacePager() {
 		// 				Type: to.Ptr("Microsoft.ApiManagement/service/workspaces/certificates"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/certificates/templateCertkv"),
 		// 				Properties: &armapimanagement.CertificateContractProperties{
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2037-01-01T07:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(time.Date(2037, time.January, 1, 7, 0, 0, 0, time.UTC)),
 		// 					KeyVault: &armapimanagement.KeyVaultContractProperties{
 		// 						IdentityClientID: to.Ptr("ceaa6b06-c00f-43ef-99ac-f53d1fe876a0"),
 		// 						LastStatus: &armapimanagement.KeyVaultLastAccessStatusContractProperties{
 		// 							Code: to.Ptr("Success"),
-		// 							TimeStampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-22T00:24:53.3191468Z"); return t}()),
+		// 							TimeStampUTC: to.Ptr(time.Date(2020, time.September, 22, 0, 24, 53, 319146800, time.UTC)),
 		// 						},
 		// 						SecretIdentifier: to.Ptr("https://rpbvtkeyvaultintegration.vault-int.azure-int.net/secrets/msitestingCert"),
 		// 					},
@@ -297,12 +297,12 @@ func ExampleWorkspaceCertificateClient_RefreshSecret() {
 	// 		Type: to.Ptr("Microsoft.ApiManagement/service/workspaces/certificates"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/certificates/templateCertkv"),
 	// 		Properties: &armapimanagement.CertificateContractProperties{
-	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2037-01-01T07:00:00Z"); return t}()),
+	// 			ExpirationDate: to.Ptr(time.Date(2037, time.January, 1, 7, 0, 0, 0, time.UTC)),
 	// 			KeyVault: &armapimanagement.KeyVaultContractProperties{
 	// 				IdentityClientID: to.Ptr("ceaa6b06-c00f-43ef-99ac-f53d1fe876a0"),
 	// 				LastStatus: &armapimanagement.KeyVaultLastAccessStatusContractProperties{
 	// 					Code: to.Ptr("Success"),
-	// 					TimeStampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-22T00:24:53.3191468Z"); return t}()),
+	// 					TimeStampUTC: to.Ptr(time.Date(2020, time.September, 22, 0, 24, 53, 319146800, time.UTC)),
 	// 				},
 	// 				SecretIdentifier: to.Ptr("https://rpbvtkeyvaultintegration.vault-int.azure-int.net/secrets/msitestingCert"),
 	// 			},

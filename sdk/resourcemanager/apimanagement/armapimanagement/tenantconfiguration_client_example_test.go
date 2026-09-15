@@ -48,9 +48,9 @@ func ExampleTenantConfigurationClient_BeginDeploy() {
 	// 				Code: to.Ptr("ValidationError"),
 	// 				Message: to.Ptr("File not found: 'api-management/configuration.json'"),
 	// 			},
-	// 			Started: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-26T17:06:54.303Z"); return t}()),
+	// 			Started: to.Ptr(time.Date(2017, time.November, 26, 17, 6, 54, 303000000, time.UTC)),
 	// 			Status: to.Ptr(armapimanagement.AsyncOperationStatusFailed),
-	// 			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-26T17:07:21.777Z"); return t}()),
+	// 			Updated: to.Ptr(time.Date(2017, time.November, 26, 17, 7, 21, 777000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -82,12 +82,12 @@ func ExampleTenantConfigurationClient_GetSyncState() {
 	// 		Properties: &armapimanagement.TenantConfigurationSyncStateContractProperties{
 	// 			Branch: to.Ptr("master"),
 	// 			CommitID: to.Ptr("de891c2342c7058dde45e5e624eae7e558c94683"),
-	// 			ConfigurationChangeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-13T00:11:43.862781Z"); return t}()),
+	// 			ConfigurationChangeDate: to.Ptr(time.Date(2021, time.April, 13, 0, 11, 43, 862781000, time.UTC)),
 	// 			IsExport: to.Ptr(true),
 	// 			IsGitEnabled: to.Ptr(true),
 	// 			IsSynced: to.Ptr(true),
 	// 			LastOperationID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/tenant/configuration/operationResults/6074f0bd093a9d0dac3d7347"),
-	// 			SyncDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-13T01:15:53.9824995Z"); return t}()),
+	// 			SyncDate: to.Ptr(time.Date(2021, time.April, 13, 1, 15, 53, 982499500, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -128,9 +128,9 @@ func ExampleTenantConfigurationClient_BeginSave() {
 	// 			ActionLog: []*armapimanagement.OperationResultLogItemContract{
 	// 			},
 	// 			ResultInfo: to.Ptr("The configuration was successfully saved to master as commit c0ae274f6046912107bad734834cbf65918668b6."),
-	// 			Started: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-13T00:31:14.94Z"); return t}()),
+	// 			Started: to.Ptr(time.Date(2021, time.April, 13, 0, 31, 14, 940000000, time.UTC)),
 	// 			Status: to.Ptr(armapimanagement.AsyncOperationStatusSucceeded),
-	// 			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-13T00:31:27.59Z"); return t}()),
+	// 			Updated: to.Ptr(time.Date(2021, time.April, 13, 0, 31, 27, 590000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -171,9 +171,9 @@ func ExampleTenantConfigurationClient_BeginValidate() {
 	// 			ActionLog: []*armapimanagement.OperationResultLogItemContract{
 	// 			},
 	// 			ResultInfo: to.Ptr("Validation is successfull"),
-	// 			Started: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-13T00:55:30.62Z"); return t}()),
+	// 			Started: to.Ptr(time.Date(2021, time.April, 13, 0, 55, 30, 620000000, time.UTC)),
 	// 			Status: to.Ptr(armapimanagement.AsyncOperationStatusSucceeded),
-	// 			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-13T00:55:39.857Z"); return t}()),
+	// 			Updated: to.Ptr(time.Date(2021, time.April, 13, 0, 55, 39, 857000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

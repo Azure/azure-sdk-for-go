@@ -36,9 +36,9 @@ func ExampleQuotaByCounterKeysClient_ListByService() {
 	// 		Value: []*armapimanagement.QuotaCounterContract{
 	// 			{
 	// 				CounterKey: to.Ptr("ba"),
-	// 				PeriodEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-08T16:54:40Z"); return t}()),
+	// 				PeriodEndTime: to.Ptr(time.Date(2018, time.February, 8, 16, 54, 40, 0, time.UTC)),
 	// 				PeriodKey: to.Ptr("0_P3Y6M4DT12H30M5S"),
-	// 				PeriodStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2014-08-04T04:24:35Z"); return t}()),
+	// 				PeriodStartTime: to.Ptr(time.Date(2014, time.August, 4, 4, 24, 35, 0, time.UTC)),
 	// 				Value: &armapimanagement.QuotaCounterValueContractProperties{
 	// 					CallsCount: to.Ptr[int32](5),
 	// 					KbTransferred: to.Ptr[float64](2.5830078125),
@@ -78,9 +78,9 @@ func ExampleQuotaByCounterKeysClient_Update() {
 	// 		Value: []*armapimanagement.QuotaCounterContract{
 	// 			{
 	// 				CounterKey: to.Ptr("ba"),
-	// 				PeriodEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-08T16:54:40Z"); return t}()),
+	// 				PeriodEndTime: to.Ptr(time.Date(2018, time.February, 8, 16, 54, 40, 0, time.UTC)),
 	// 				PeriodKey: to.Ptr("0_P3Y6M4DT12H30M5S"),
-	// 				PeriodStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2014-08-04T04:24:35Z"); return t}()),
+	// 				PeriodStartTime: to.Ptr(time.Date(2014, time.August, 4, 4, 24, 35, 0, time.UTC)),
 	// 				Value: &armapimanagement.QuotaCounterValueContractProperties{
 	// 					CallsCount: to.Ptr[int32](5),
 	// 					KbTransferred: to.Ptr[float64](2.5830078125),

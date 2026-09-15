@@ -30,6 +30,9 @@ type PortalSettingsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPortalSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PortalSettingsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *PortalSettingsClient) ListByService(ctx context.Context, resourceG
 	if err != nil {
 		return PortalSettingsClientListByServiceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PortalSettingsClientListByServiceResponse{}, err
-	}
-	resp, err := client.listByServiceHandleResponse(httpResp)
-	return resp, err
+	return client.listByServiceHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByServiceCreateRequest creates the ListByService request.
 func (client *PortalSettingsClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, _ *PortalSettingsClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -96,8 +94,11 @@ func (client *PortalSettingsClient) listByServiceCreateRequest(ctx context.Conte
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *PortalSettingsClient) listByServiceHandleResponse(resp *http.Response) (PortalSettingsClientListByServiceResponse, error) {
+func (client *PortalSettingsClient) listByServiceHandleResponse(resp *http.Response, successCodes ...int) (PortalSettingsClientListByServiceResponse, error) {
 	result := PortalSettingsClientListByServiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PortalSettingsCollection); err != nil {
 		return PortalSettingsClientListByServiceResponse{}, err
 	}

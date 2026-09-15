@@ -31,6 +31,9 @@ type WorkspaceProductPolicyClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkspaceProductPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceProductPolicyClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,19 +69,14 @@ func (client *WorkspaceProductPolicyClient) CreateOrUpdate(ctx context.Context, 
 	if err != nil {
 		return WorkspaceProductPolicyClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceProductPolicyClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *WorkspaceProductPolicyClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, productID string, policyID PolicyIDName, parameters PolicyContract, options *WorkspaceProductPolicyClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/products/{productId}/policies/{policyId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -120,9 +118,12 @@ func (client *WorkspaceProductPolicyClient) createOrUpdateCreateRequest(ctx cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *WorkspaceProductPolicyClient) createOrUpdateHandleResponse(resp *http.Response) (WorkspaceProductPolicyClientCreateOrUpdateResponse, error) {
+func (client *WorkspaceProductPolicyClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceProductPolicyClientCreateOrUpdateResponse, error) {
 	result := WorkspaceProductPolicyClientCreateOrUpdateResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Retry-After"); val != "" {
@@ -165,8 +166,7 @@ func (client *WorkspaceProductPolicyClient) Delete(ctx context.Context, resource
 		return WorkspaceProductPolicyClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceProductPolicyClientDeleteResponse{}, err
+		return WorkspaceProductPolicyClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WorkspaceProductPolicyClientDeleteResponse{}, nil
 }
@@ -175,7 +175,7 @@ func (client *WorkspaceProductPolicyClient) Delete(ctx context.Context, resource
 func (client *WorkspaceProductPolicyClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, productID string, policyID PolicyIDName, ifMatch string, _ *WorkspaceProductPolicyClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/products/{productId}/policies/{policyId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -232,19 +232,14 @@ func (client *WorkspaceProductPolicyClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return WorkspaceProductPolicyClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceProductPolicyClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *WorkspaceProductPolicyClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, productID string, policyID PolicyIDName, options *WorkspaceProductPolicyClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/products/{productId}/policies/{policyId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -282,9 +277,12 @@ func (client *WorkspaceProductPolicyClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkspaceProductPolicyClient) getHandleResponse(resp *http.Response) (WorkspaceProductPolicyClientGetResponse, error) {
+func (client *WorkspaceProductPolicyClient) getHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceProductPolicyClientGetResponse, error) {
 	result := WorkspaceProductPolicyClientGetResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyContract); err != nil {
@@ -315,19 +313,14 @@ func (client *WorkspaceProductPolicyClient) GetEntityTag(ctx context.Context, re
 	if err != nil {
 		return WorkspaceProductPolicyClientGetEntityTagResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceProductPolicyClientGetEntityTagResponse{}, err
-	}
-	resp, err := client.getEntityTagHandleResponse(httpResp)
-	return resp, err
+	return client.getEntityTagHandleResponse(httpResp, http.StatusOK)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
 func (client *WorkspaceProductPolicyClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, productID string, policyID PolicyIDName, _ *WorkspaceProductPolicyClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/products/{productId}/policies/{policyId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -361,11 +354,15 @@ func (client *WorkspaceProductPolicyClient) getEntityTagCreateRequest(ctx contex
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *WorkspaceProductPolicyClient) getEntityTagHandleResponse(resp *http.Response) (WorkspaceProductPolicyClientGetEntityTagResponse, error) {
-	result := WorkspaceProductPolicyClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
-	if val := resp.Header.Get("ETag"); val != "" {
+func (client *WorkspaceProductPolicyClient) getEntityTagHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceProductPolicyClientGetEntityTagResponse, error) {
+	result := WorkspaceProductPolicyClientGetEntityTagResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -391,19 +388,14 @@ func (client *WorkspaceProductPolicyClient) ListByProduct(ctx context.Context, r
 	if err != nil {
 		return WorkspaceProductPolicyClientListByProductResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceProductPolicyClientListByProductResponse{}, err
-	}
-	resp, err := client.listByProductHandleResponse(httpResp)
-	return resp, err
+	return client.listByProductHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByProductCreateRequest creates the ListByProduct request.
 func (client *WorkspaceProductPolicyClient) listByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, workspaceID string, productID string, _ *WorkspaceProductPolicyClientListByProductOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}/products/{productId}/policies"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -434,8 +426,11 @@ func (client *WorkspaceProductPolicyClient) listByProductCreateRequest(ctx conte
 }
 
 // listByProductHandleResponse handles the ListByProduct response.
-func (client *WorkspaceProductPolicyClient) listByProductHandleResponse(resp *http.Response) (WorkspaceProductPolicyClientListByProductResponse, error) {
+func (client *WorkspaceProductPolicyClient) listByProductHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceProductPolicyClientListByProductResponse, error) {
 	result := WorkspaceProductPolicyClientListByProductResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyCollection); err != nil {
 		return WorkspaceProductPolicyClientListByProductResponse{}, err
 	}

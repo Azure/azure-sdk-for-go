@@ -30,6 +30,9 @@ type QuotaByCounterKeysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewQuotaByCounterKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QuotaByCounterKeysClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,19 +68,14 @@ func (client *QuotaByCounterKeysClient) ListByService(ctx context.Context, resou
 	if err != nil {
 		return QuotaByCounterKeysClientListByServiceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return QuotaByCounterKeysClientListByServiceResponse{}, err
-	}
-	resp, err := client.listByServiceHandleResponse(httpResp)
-	return resp, err
+	return client.listByServiceHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByServiceCreateRequest creates the ListByService request.
 func (client *QuotaByCounterKeysClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, _ *QuotaByCounterKeysClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/quotas/{quotaCounterKey}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -104,8 +102,11 @@ func (client *QuotaByCounterKeysClient) listByServiceCreateRequest(ctx context.C
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *QuotaByCounterKeysClient) listByServiceHandleResponse(resp *http.Response) (QuotaByCounterKeysClientListByServiceResponse, error) {
+func (client *QuotaByCounterKeysClient) listByServiceHandleResponse(resp *http.Response, successCodes ...int) (QuotaByCounterKeysClientListByServiceResponse, error) {
 	result := QuotaByCounterKeysClientListByServiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaCounterCollection); err != nil {
 		return QuotaByCounterKeysClientListByServiceResponse{}, err
 	}
@@ -137,19 +138,14 @@ func (client *QuotaByCounterKeysClient) Update(ctx context.Context, resourceGrou
 	if err != nil {
 		return QuotaByCounterKeysClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return QuotaByCounterKeysClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *QuotaByCounterKeysClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, parameters QuotaCounterValueUpdateContract, _ *QuotaByCounterKeysClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/quotas/{quotaCounterKey}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -180,8 +176,11 @@ func (client *QuotaByCounterKeysClient) updateCreateRequest(ctx context.Context,
 }
 
 // updateHandleResponse handles the Update response.
-func (client *QuotaByCounterKeysClient) updateHandleResponse(resp *http.Response) (QuotaByCounterKeysClientUpdateResponse, error) {
+func (client *QuotaByCounterKeysClient) updateHandleResponse(resp *http.Response, successCodes ...int) (QuotaByCounterKeysClientUpdateResponse, error) {
 	result := QuotaByCounterKeysClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaCounterCollection); err != nil {
 		return QuotaByCounterKeysClientUpdateResponse{}, err
 	}

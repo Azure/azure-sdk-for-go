@@ -31,6 +31,9 @@ type AuthorizationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAuthorizationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AuthorizationClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,19 +68,14 @@ func (client *AuthorizationClient) ConfirmConsentCode(ctx context.Context, resou
 	if err != nil {
 		return AuthorizationClientConfirmConsentCodeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AuthorizationClientConfirmConsentCodeResponse{}, err
-	}
-	resp, err := client.confirmConsentCodeHandleResponse(httpResp)
-	return resp, err
+	return client.confirmConsentCodeHandleResponse(httpResp, http.StatusOK)
 }
 
 // confirmConsentCodeCreateRequest creates the ConfirmConsentCode request.
 func (client *AuthorizationClient) confirmConsentCodeCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, authorizationProviderID string, authorizationID string, parameters AuthorizationConfirmConsentCodeRequestContract, _ *AuthorizationClientConfirmConsentCodeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationProviders/{authorizationProviderId}/authorizations/{authorizationId}/confirmConsentCode"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -111,9 +109,12 @@ func (client *AuthorizationClient) confirmConsentCodeCreateRequest(ctx context.C
 }
 
 // confirmConsentCodeHandleResponse handles the ConfirmConsentCode response.
-func (client *AuthorizationClient) confirmConsentCodeHandleResponse(resp *http.Response) (AuthorizationClientConfirmConsentCodeResponse, error) {
+func (client *AuthorizationClient) confirmConsentCodeHandleResponse(resp *http.Response, successCodes ...int) (AuthorizationClientConfirmConsentCodeResponse, error) {
 	result := AuthorizationClientConfirmConsentCodeResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	return result, nil
@@ -142,19 +143,14 @@ func (client *AuthorizationClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return AuthorizationClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return AuthorizationClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *AuthorizationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, authorizationProviderID string, authorizationID string, parameters AuthorizationContract, options *AuthorizationClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationProviders/{authorizationProviderId}/authorizations/{authorizationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -192,9 +188,12 @@ func (client *AuthorizationClient) createOrUpdateCreateRequest(ctx context.Conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AuthorizationClient) createOrUpdateHandleResponse(resp *http.Response) (AuthorizationClientCreateOrUpdateResponse, error) {
+func (client *AuthorizationClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (AuthorizationClientCreateOrUpdateResponse, error) {
 	result := AuthorizationClientCreateOrUpdateResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationContract); err != nil {
@@ -227,8 +226,7 @@ func (client *AuthorizationClient) Delete(ctx context.Context, resourceGroupName
 		return AuthorizationClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return AuthorizationClientDeleteResponse{}, err
+		return AuthorizationClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return AuthorizationClientDeleteResponse{}, nil
 }
@@ -237,7 +235,7 @@ func (client *AuthorizationClient) Delete(ctx context.Context, resourceGroupName
 func (client *AuthorizationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, authorizationProviderID string, authorizationID string, ifMatch string, _ *AuthorizationClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationProviders/{authorizationProviderId}/authorizations/{authorizationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -288,19 +286,14 @@ func (client *AuthorizationClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return AuthorizationClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AuthorizationClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *AuthorizationClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, authorizationProviderID string, authorizationID string, _ *AuthorizationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationProviders/{authorizationProviderId}/authorizations/{authorizationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -331,9 +324,12 @@ func (client *AuthorizationClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *AuthorizationClient) getHandleResponse(resp *http.Response) (AuthorizationClientGetResponse, error) {
+func (client *AuthorizationClient) getHandleResponse(resp *http.Response, successCodes ...int) (AuthorizationClientGetResponse, error) {
 	result := AuthorizationClientGetResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationContract); err != nil {
@@ -359,60 +355,74 @@ func (client *AuthorizationClient) NewListByAuthorizationProviderPager(resourceG
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByAuthorizationProviderCreateRequest(ctx, resourceGroupName, serviceName, authorizationProviderID, options)
-			}, nil)
+			req, err := client.listByAuthorizationProviderCreateRequest(ctx, resourceGroupName, serviceName, authorizationProviderID, nextLink, options)
 			if err != nil {
 				return AuthorizationClientListByAuthorizationProviderResponse{}, err
 			}
-			return client.listByAuthorizationProviderHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AuthorizationClientListByAuthorizationProviderResponse{}, err
+			}
+			return client.listByAuthorizationProviderHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByAuthorizationProviderCreateRequest creates the ListByAuthorizationProvider request.
-func (client *AuthorizationClient) listByAuthorizationProviderCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, authorizationProviderID string, options *AuthorizationClientListByAuthorizationProviderOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationProviders/{authorizationProviderId}/authorizations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AuthorizationClient) listByAuthorizationProviderCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, authorizationProviderID string, nextLink string, options *AuthorizationClientListByAuthorizationProviderOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationProviders/{authorizationProviderId}/authorizations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serviceName == "" {
+			return nil, errors.New("parameter serviceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+		if authorizationProviderID == "" {
+			return nil, errors.New("parameter authorizationProviderID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{authorizationProviderId}", url.PathEscape(authorizationProviderID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serviceName == "" {
-		return nil, errors.New("parameter serviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if authorizationProviderID == "" {
-		return nil, errors.New("parameter authorizationProviderID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{authorizationProviderId}", url.PathEscape(authorizationProviderID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByAuthorizationProviderHandleResponse handles the ListByAuthorizationProvider response.
-func (client *AuthorizationClient) listByAuthorizationProviderHandleResponse(resp *http.Response) (AuthorizationClientListByAuthorizationProviderResponse, error) {
+func (client *AuthorizationClient) listByAuthorizationProviderHandleResponse(resp *http.Response, successCodes ...int) (AuthorizationClientListByAuthorizationProviderResponse, error) {
 	result := AuthorizationClientListByAuthorizationProviderResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationCollection); err != nil {
 		return AuthorizationClientListByAuthorizationProviderResponse{}, err
 	}

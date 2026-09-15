@@ -30,6 +30,9 @@ type GraphQLAPIResolverPolicyClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGraphQLAPIResolverPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GraphQLAPIResolverPolicyClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,19 +69,14 @@ func (client *GraphQLAPIResolverPolicyClient) CreateOrUpdate(ctx context.Context
 	if err != nil {
 		return GraphQLAPIResolverPolicyClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return GraphQLAPIResolverPolicyClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *GraphQLAPIResolverPolicyClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, resolverID string, policyID PolicyIDName, parameters PolicyContract, options *GraphQLAPIResolverPolicyClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/resolvers/{resolverId}/policies/{policyId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -120,9 +118,12 @@ func (client *GraphQLAPIResolverPolicyClient) createOrUpdateCreateRequest(ctx co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *GraphQLAPIResolverPolicyClient) createOrUpdateHandleResponse(resp *http.Response) (GraphQLAPIResolverPolicyClientCreateOrUpdateResponse, error) {
+func (client *GraphQLAPIResolverPolicyClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (GraphQLAPIResolverPolicyClientCreateOrUpdateResponse, error) {
 	result := GraphQLAPIResolverPolicyClientCreateOrUpdateResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyContract); err != nil {
@@ -158,8 +159,7 @@ func (client *GraphQLAPIResolverPolicyClient) Delete(ctx context.Context, resour
 		return GraphQLAPIResolverPolicyClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return GraphQLAPIResolverPolicyClientDeleteResponse{}, err
+		return GraphQLAPIResolverPolicyClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return GraphQLAPIResolverPolicyClientDeleteResponse{}, nil
 }
@@ -168,7 +168,7 @@ func (client *GraphQLAPIResolverPolicyClient) Delete(ctx context.Context, resour
 func (client *GraphQLAPIResolverPolicyClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, resolverID string, policyID PolicyIDName, ifMatch string, _ *GraphQLAPIResolverPolicyClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/resolvers/{resolverId}/policies/{policyId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -226,19 +226,14 @@ func (client *GraphQLAPIResolverPolicyClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return GraphQLAPIResolverPolicyClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GraphQLAPIResolverPolicyClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *GraphQLAPIResolverPolicyClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, resolverID string, policyID PolicyIDName, options *GraphQLAPIResolverPolicyClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/resolvers/{resolverId}/policies/{policyId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -276,9 +271,12 @@ func (client *GraphQLAPIResolverPolicyClient) getCreateRequest(ctx context.Conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *GraphQLAPIResolverPolicyClient) getHandleResponse(resp *http.Response) (GraphQLAPIResolverPolicyClientGetResponse, error) {
+func (client *GraphQLAPIResolverPolicyClient) getHandleResponse(resp *http.Response, successCodes ...int) (GraphQLAPIResolverPolicyClientGetResponse, error) {
 	result := GraphQLAPIResolverPolicyClientGetResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyContract); err != nil {
@@ -310,19 +308,14 @@ func (client *GraphQLAPIResolverPolicyClient) GetEntityTag(ctx context.Context, 
 	if err != nil {
 		return GraphQLAPIResolverPolicyClientGetEntityTagResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GraphQLAPIResolverPolicyClientGetEntityTagResponse{}, err
-	}
-	resp, err := client.getEntityTagHandleResponse(httpResp)
-	return resp, err
+	return client.getEntityTagHandleResponse(httpResp, http.StatusOK)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
 func (client *GraphQLAPIResolverPolicyClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, resolverID string, policyID PolicyIDName, _ *GraphQLAPIResolverPolicyClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/resolvers/{resolverId}/policies/{policyId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -356,11 +349,15 @@ func (client *GraphQLAPIResolverPolicyClient) getEntityTagCreateRequest(ctx cont
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *GraphQLAPIResolverPolicyClient) getEntityTagHandleResponse(resp *http.Response) (GraphQLAPIResolverPolicyClientGetEntityTagResponse, error) {
-	result := GraphQLAPIResolverPolicyClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
-	if val := resp.Header.Get("ETag"); val != "" {
+func (client *GraphQLAPIResolverPolicyClient) getEntityTagHandleResponse(resp *http.Response, successCodes ...int) (GraphQLAPIResolverPolicyClientGetEntityTagResponse, error) {
+	result := GraphQLAPIResolverPolicyClientGetEntityTagResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -383,55 +380,69 @@ func (client *GraphQLAPIResolverPolicyClient) NewListByResolverPager(resourceGro
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResolverCreateRequest(ctx, resourceGroupName, serviceName, apiID, resolverID, options)
-			}, nil)
+			req, err := client.listByResolverCreateRequest(ctx, resourceGroupName, serviceName, apiID, resolverID, nextLink, options)
 			if err != nil {
 				return GraphQLAPIResolverPolicyClientListByResolverResponse{}, err
 			}
-			return client.listByResolverHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GraphQLAPIResolverPolicyClientListByResolverResponse{}, err
+			}
+			return client.listByResolverHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResolverCreateRequest creates the ListByResolver request.
-func (client *GraphQLAPIResolverPolicyClient) listByResolverCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, resolverID string, _ *GraphQLAPIResolverPolicyClientListByResolverOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/resolvers/{resolverId}/policies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *GraphQLAPIResolverPolicyClient) listByResolverCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, resolverID string, nextLink string, _ *GraphQLAPIResolverPolicyClientListByResolverOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/resolvers/{resolverId}/policies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serviceName == "" {
+			return nil, errors.New("parameter serviceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+		if apiID == "" {
+			return nil, errors.New("parameter apiID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{apiId}", url.PathEscape(apiID))
+		if resolverID == "" {
+			return nil, errors.New("parameter resolverID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resolverId}", url.PathEscape(resolverID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serviceName == "" {
-		return nil, errors.New("parameter serviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if apiID == "" {
-		return nil, errors.New("parameter apiID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{apiId}", url.PathEscape(apiID))
-	if resolverID == "" {
-		return nil, errors.New("parameter resolverID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resolverId}", url.PathEscape(resolverID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResolverHandleResponse handles the ListByResolver response.
-func (client *GraphQLAPIResolverPolicyClient) listByResolverHandleResponse(resp *http.Response) (GraphQLAPIResolverPolicyClientListByResolverResponse, error) {
+func (client *GraphQLAPIResolverPolicyClient) listByResolverHandleResponse(resp *http.Response, successCodes ...int) (GraphQLAPIResolverPolicyClientListByResolverResponse, error) {
 	result := GraphQLAPIResolverPolicyClientListByResolverResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyCollection); err != nil {
 		return GraphQLAPIResolverPolicyClientListByResolverResponse{}, err
 	}

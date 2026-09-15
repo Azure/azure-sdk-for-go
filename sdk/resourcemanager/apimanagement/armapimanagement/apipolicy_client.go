@@ -30,6 +30,9 @@ type APIPolicyClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAPIPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIPolicyClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,19 +68,14 @@ func (client *APIPolicyClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return APIPolicyClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return APIPolicyClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *APIPolicyClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, policyID PolicyIDName, parameters PolicyContract, options *APIPolicyClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/policies/{policyId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -115,9 +113,12 @@ func (client *APIPolicyClient) createOrUpdateCreateRequest(ctx context.Context, 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *APIPolicyClient) createOrUpdateHandleResponse(resp *http.Response) (APIPolicyClientCreateOrUpdateResponse, error) {
+func (client *APIPolicyClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (APIPolicyClientCreateOrUpdateResponse, error) {
 	result := APIPolicyClientCreateOrUpdateResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyContract); err != nil {
@@ -151,8 +152,7 @@ func (client *APIPolicyClient) Delete(ctx context.Context, resourceGroupName str
 		return APIPolicyClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return APIPolicyClientDeleteResponse{}, err
+		return APIPolicyClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return APIPolicyClientDeleteResponse{}, nil
 }
@@ -161,7 +161,7 @@ func (client *APIPolicyClient) Delete(ctx context.Context, resourceGroupName str
 func (client *APIPolicyClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, policyID PolicyIDName, ifMatch string, _ *APIPolicyClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/policies/{policyId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -213,19 +213,14 @@ func (client *APIPolicyClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return APIPolicyClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return APIPolicyClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *APIPolicyClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, policyID PolicyIDName, options *APIPolicyClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/policies/{policyId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -259,9 +254,12 @@ func (client *APIPolicyClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *APIPolicyClient) getHandleResponse(resp *http.Response) (APIPolicyClientGetResponse, error) {
+func (client *APIPolicyClient) getHandleResponse(resp *http.Response, successCodes ...int) (APIPolicyClientGetResponse, error) {
 	result := APIPolicyClientGetResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyContract); err != nil {
@@ -291,19 +289,14 @@ func (client *APIPolicyClient) GetEntityTag(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return APIPolicyClientGetEntityTagResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return APIPolicyClientGetEntityTagResponse{}, err
-	}
-	resp, err := client.getEntityTagHandleResponse(httpResp)
-	return resp, err
+	return client.getEntityTagHandleResponse(httpResp, http.StatusOK)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
 func (client *APIPolicyClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, policyID PolicyIDName, _ *APIPolicyClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/policies/{policyId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -333,11 +326,15 @@ func (client *APIPolicyClient) getEntityTagCreateRequest(ctx context.Context, re
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *APIPolicyClient) getEntityTagHandleResponse(resp *http.Response) (APIPolicyClientGetEntityTagResponse, error) {
-	result := APIPolicyClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
-	if val := resp.Header.Get("ETag"); val != "" {
+func (client *APIPolicyClient) getEntityTagHandleResponse(resp *http.Response, successCodes ...int) (APIPolicyClientGetEntityTagResponse, error) {
+	result := APIPolicyClientGetEntityTagResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -362,19 +359,14 @@ func (client *APIPolicyClient) ListByAPI(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return APIPolicyClientListByAPIResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return APIPolicyClientListByAPIResponse{}, err
-	}
-	resp, err := client.listByAPIHandleResponse(httpResp)
-	return resp, err
+	return client.listByAPIHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByAPICreateRequest creates the ListByAPI request.
 func (client *APIPolicyClient) listByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, _ *APIPolicyClientListByAPIOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/policies"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -401,8 +393,11 @@ func (client *APIPolicyClient) listByAPICreateRequest(ctx context.Context, resou
 }
 
 // listByAPIHandleResponse handles the ListByAPI response.
-func (client *APIPolicyClient) listByAPIHandleResponse(resp *http.Response) (APIPolicyClientListByAPIResponse, error) {
+func (client *APIPolicyClient) listByAPIHandleResponse(resp *http.Response, successCodes ...int) (APIPolicyClientListByAPIResponse, error) {
 	result := APIPolicyClientListByAPIResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyCollection); err != nil {
 		return APIPolicyClientListByAPIResponse{}, err
 	}

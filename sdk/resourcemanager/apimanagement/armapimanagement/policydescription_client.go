@@ -30,6 +30,9 @@ type PolicyDescriptionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPolicyDescriptionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyDescriptionClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *PolicyDescriptionClient) ListByService(ctx context.Context, resour
 	if err != nil {
 		return PolicyDescriptionClientListByServiceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PolicyDescriptionClientListByServiceResponse{}, err
-	}
-	resp, err := client.listByServiceHandleResponse(httpResp)
-	return resp, err
+	return client.listByServiceHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByServiceCreateRequest creates the ListByService request.
 func (client *PolicyDescriptionClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *PolicyDescriptionClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policyDescriptions"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -99,8 +97,11 @@ func (client *PolicyDescriptionClient) listByServiceCreateRequest(ctx context.Co
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *PolicyDescriptionClient) listByServiceHandleResponse(resp *http.Response) (PolicyDescriptionClientListByServiceResponse, error) {
+func (client *PolicyDescriptionClient) listByServiceHandleResponse(resp *http.Response, successCodes ...int) (PolicyDescriptionClientListByServiceResponse, error) {
 	result := PolicyDescriptionClientListByServiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyDescriptionCollection); err != nil {
 		return PolicyDescriptionClientListByServiceResponse{}, err
 	}

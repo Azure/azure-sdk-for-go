@@ -27,7 +27,7 @@ func ExampleAPIIssueClient_CreateOrUpdate() {
 	res, err := clientFactory.NewAPIIssueClient().CreateOrUpdate(ctx, "rg1", "apimService1", "57d1f7558aa04f15146d9d8a", "57d2ef278aa04f0ad01d6cdc", armapimanagement.IssueContract{
 		Properties: &armapimanagement.IssueContractProperties{
 			Description: to.Ptr("New API issue description"),
-			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T22:21:20.467Z"); return t }()),
+			CreatedDate: to.Ptr(time.Date(2018, time.February, 1, 22, 21, 20, 467000000, time.UTC)),
 			State:       to.Ptr(armapimanagement.StateOpen),
 			Title:       to.Ptr("New API issue"),
 			UserID:      to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1"),
@@ -46,7 +46,7 @@ func ExampleAPIIssueClient_CreateOrUpdate() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d1f7558aa04f15146d9d8a/issues/57d2ef278aa04f0ad01d6cdc"),
 	// 		Properties: &armapimanagement.IssueContractProperties{
 	// 			Description: to.Ptr("New API issue description"),
-	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T22:21:20.467Z"); return t}()),
+	// 			CreatedDate: to.Ptr(time.Date(2018, time.February, 1, 22, 21, 20, 467000000, time.UTC)),
 	// 			State: to.Ptr(armapimanagement.StateOpen),
 	// 			Title: to.Ptr("New API issue"),
 	// 			UserID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1"),
@@ -103,7 +103,7 @@ func ExampleAPIIssueClient_Get() {
 	// 		Properties: &armapimanagement.IssueContractProperties{
 	// 			Description: to.Ptr("New API issue description"),
 	// 			APIID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d1f7558aa04f15146d9d8a"),
-	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T22:21:20.467Z"); return t}()),
+	// 			CreatedDate: to.Ptr(time.Date(2018, time.February, 1, 22, 21, 20, 467000000, time.UTC)),
 	// 			State: to.Ptr(armapimanagement.StateOpen),
 	// 			Title: to.Ptr("New API issue"),
 	// 			UserID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1"),
@@ -168,7 +168,7 @@ func ExampleAPIIssueClient_NewListByServicePager() {
 		// 				Properties: &armapimanagement.IssueContractProperties{
 		// 					Description: to.Ptr("New API issue description"),
 		// 					APIID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d1f7558aa04f15146d9d8a"),
-		// 					CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T22:21:20.467Z"); return t}()),
+		// 					CreatedDate: to.Ptr(time.Date(2018, time.February, 1, 22, 21, 20, 467000000, time.UTC)),
 		// 					State: to.Ptr(armapimanagement.StateOpen),
 		// 					Title: to.Ptr("New API issue"),
 		// 					UserID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1"),
@@ -210,7 +210,7 @@ func ExampleAPIIssueClient_Update() {
 	// 		Properties: &armapimanagement.IssueContractProperties{
 	// 			Description: to.Ptr("New API issue description"),
 	// 			APIID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d1f7558aa04f15146d9d8a"),
-	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T22:21:20.467Z"); return t}()),
+	// 			CreatedDate: to.Ptr(time.Date(2018, time.February, 1, 22, 21, 20, 467000000, time.UTC)),
 	// 			State: to.Ptr(armapimanagement.StateOpen),
 	// 			Title: to.Ptr("New API issue"),
 	// 			UserID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1"),

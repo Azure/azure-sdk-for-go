@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/DotNetComponents_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/DotNetComponents_CreateOrUpdate.json
 func ExampleDotNetComponentsClient_BeginCreateOrUpdate_createOrUpdateNetComponent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleDotNetComponentsClient_BeginCreateOrUpdate_createOrUpdateNetComponen
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/DotNetComponents_CreateOrUpdate_ServiceBind.json
+// Generated from example definition: 2026-07-01/DotNetComponents_CreateOrUpdate_ServiceBind.json
 func ExampleDotNetComponentsClient_BeginCreateOrUpdate_createOrUpdateNetComponentWithServiceBinds() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,7 +126,7 @@ func ExampleDotNetComponentsClient_BeginCreateOrUpdate_createOrUpdateNetComponen
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/DotNetComponents_Delete.json
+// Generated from example definition: 2026-07-01/DotNetComponents_Delete.json
 func ExampleDotNetComponentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleDotNetComponentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/DotNetComponents_Get.json
+// Generated from example definition: 2026-07-01/DotNetComponents_Get.json
 func ExampleDotNetComponentsClient_Get_getNetComponent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +184,7 @@ func ExampleDotNetComponentsClient_Get_getNetComponent() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/DotNetComponents_Get_ServiceBind.json
+// Generated from example definition: 2026-07-01/DotNetComponents_Get_ServiceBind.json
 func ExampleDotNetComponentsClient_Get_getNetComponentWithServiceBinds() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExampleDotNetComponentsClient_Get_getNetComponentWithServiceBinds() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/DotNetComponents_List.json
+// Generated from example definition: 2026-07-01/DotNetComponents_List.json
 func ExampleDotNetComponentsClient_NewListPager_listNetComponents() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +288,7 @@ func ExampleDotNetComponentsClient_NewListPager_listNetComponents() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/DotNetComponents_List_ServiceBind.json
+// Generated from example definition: 2026-07-01/DotNetComponents_List_ServiceBind.json
 func ExampleDotNetComponentsClient_NewListPager_listNetComponentsWithServiceBinds() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -361,7 +361,7 @@ func ExampleDotNetComponentsClient_NewListPager_listNetComponentsWithServiceBind
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/DotNetComponents_Patch.json
+// Generated from example definition: 2026-07-01/DotNetComponents_Patch.json
 func ExampleDotNetComponentsClient_BeginUpdate_patchNetComponent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -412,7 +412,7 @@ func ExampleDotNetComponentsClient_BeginUpdate_patchNetComponent() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/DotNetComponents_Patch_ServiceBind.json
+// Generated from example definition: 2026-07-01/DotNetComponents_Patch_ServiceBind.json
 func ExampleDotNetComponentsClient_BeginUpdate_patchNetComponentWithServiceBinds() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

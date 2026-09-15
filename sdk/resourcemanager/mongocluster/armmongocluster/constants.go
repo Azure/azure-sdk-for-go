@@ -5,7 +5,7 @@
 package armmongocluster
 
 const (
-	version20260601 string = "2026-06-01"
+	version20260615Preview string = "2026-06-15-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -346,12 +346,16 @@ const (
 	// PromoteOptionForced - Promote option forces the promotion without waiting for the replica to be caught up to the primary.
 	// This can result in data-loss so should only be used during disaster recovery scenarios.
 	PromoteOptionForced PromoteOption = "Forced"
+	// PromoteOptionPlanned - Promote option waits for the replica to be caught up to the primary before promoting, guaranteeing
+	// no data loss during the promotion.
+	PromoteOptionPlanned PromoteOption = "Planned"
 )
 
 // PossiblePromoteOptionValues returns the possible values for the PromoteOption const type.
 func PossiblePromoteOptionValues() []PromoteOption {
 	return []PromoteOption{
 		PromoteOptionForced,
+		PromoteOptionPlanned,
 	}
 }
 

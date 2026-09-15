@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/ContainerAppsDiagnostics_Get.json
+// Generated from example definition: 2026-07-01/ContainerAppsDiagnostics_Get.json
 func ExampleContainerAppsDiagnosticsClient_GetDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleContainerAppsDiagnosticsClient_GetDetector() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Revisions_Get1.json
+// Generated from example definition: 2026-07-01/Revisions_Get1.json
 func ExampleContainerAppsDiagnosticsClient_GetRevision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,9 +115,6 @@ func ExampleContainerAppsDiagnosticsClient_GetRevision() {
 	// 			Active: to.Ptr(true),
 	// 			CreatedTime: to.Ptr(time.Date(2021, time.May, 24, 21, 24, 22, 0, time.UTC)),
 	// 			Fqdn: to.Ptr("testcontainerApp0-pjxhsye.politehill-ab123456.eastus.azurecontainerapps.io"),
-	// 			Labels: []*string{
-	// 				to.Ptr("production"),
-	// 			},
 	// 			LastActiveTime: to.Ptr(time.Date(2021, time.May, 24, 21, 24, 22, 0, time.UTC)),
 	// 			Replicas: to.Ptr[int32](1),
 	// 			RunningState: to.Ptr(armappcontainers.RevisionRunningStateRunning),
@@ -153,7 +150,7 @@ func ExampleContainerAppsDiagnosticsClient_GetRevision() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ContainerApps_Get1.json
+// Generated from example definition: 2026-07-01/ContainerApps_Get1.json
 func ExampleContainerAppsDiagnosticsClient_GetRoot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -250,39 +247,21 @@ func ExampleContainerAppsDiagnosticsClient_GetRoot() {
 	// 						Affinity: to.Ptr(armappcontainers.AffinitySticky),
 	// 					},
 	// 					TargetPort: to.Ptr[int32](3000),
-	// 					TargetPortHTTPScheme: to.Ptr(armappcontainers.IngressTargetPortHTTPSchemeHTTP),
 	// 					Traffic: []*armappcontainers.TrafficWeight{
 	// 						{
 	// 							RevisionName: to.Ptr("testcontainerApp0-ab1234"),
-	// 							Weight: to.Ptr[int32](80),
 	// 						},
 	// 						{
 	// 							Label: to.Ptr("staging"),
 	// 							RevisionName: to.Ptr("testcontainerApp0-ab4321"),
-	// 							Weight: to.Ptr[int32](20),
 	// 						},
 	// 					},
 	// 					Transport: to.Ptr(armappcontainers.IngressTransportMethodAuto),
 	// 				},
 	// 				MaxInactiveRevisions: to.Ptr[int32](10),
-	// 				RevisionTransitionThreshold: to.Ptr[int32](100),
 	// 				Runtime: &armappcontainers.Runtime{
-	// 					Dotnet: &armappcontainers.RuntimeDotnet{
-	// 						AutoConfigureDataProtection: to.Ptr(true),
-	// 					},
 	// 					Java: &armappcontainers.RuntimeJava{
 	// 						EnableMetrics: to.Ptr(true),
-	// 						JavaAgent: &armappcontainers.RuntimeJavaAgent{
-	// 							Enabled: to.Ptr(true),
-	// 							Logging: &armappcontainers.RuntimeJavaAgentLogging{
-	// 								LoggerSettings: []*armappcontainers.LoggerSetting{
-	// 									{
-	// 										Level: to.Ptr(armappcontainers.LevelDebug),
-	// 										Logger: to.Ptr("org.springframework.boot"),
-	// 									},
-	// 								},
-	// 							},
-	// 						},
 	// 					},
 	// 				},
 	// 				Service: &armappcontainers.Service{
@@ -359,10 +338,6 @@ func ExampleContainerAppsDiagnosticsClient_GetRoot() {
 	// 				ServiceBinds: []*armappcontainers.ServiceBind{
 	// 					{
 	// 						Name: to.Ptr("service"),
-	// 						ClientType: to.Ptr("dotnet"),
-	// 						CustomizedKeys: map[string]*string{
-	// 							"DesiredKey": to.Ptr("defaultKey"),
-	// 						},
 	// 						ServiceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/service"),
 	// 					},
 	// 				},
@@ -385,7 +360,7 @@ func ExampleContainerAppsDiagnosticsClient_GetRoot() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ContainerAppsDiagnostics_List.json
+// Generated from example definition: 2026-07-01/ContainerAppsDiagnostics_List.json
 func ExampleContainerAppsDiagnosticsClient_NewListDetectorsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -438,7 +413,7 @@ func ExampleContainerAppsDiagnosticsClient_NewListDetectorsPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/Revisions_List1.json
+// Generated from example definition: 2026-07-01/Revisions_List1.json
 func ExampleContainerAppsDiagnosticsClient_NewListRevisionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

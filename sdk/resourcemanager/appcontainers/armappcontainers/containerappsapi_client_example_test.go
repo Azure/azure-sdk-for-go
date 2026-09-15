@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/Subscriptions_GetCustomDomainVerificationId.json
+// Generated from example definition: 2026-07-01/Subscriptions_GetCustomDomainVerificationId.json
 func ExampleContainerAppsAPIClient_GetCustomDomainVerificationID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleContainerAppsAPIClient_GetCustomDomainVerificationID() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Job_Execution_Get.json
+// Generated from example definition: 2026-07-01/Job_Execution_Get.json
 func ExampleContainerAppsAPIClient_JobExecution() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,6 +57,21 @@ func ExampleContainerAppsAPIClient_JobExecution() {
 	// 		Name: to.Ptr("jobExecution1"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerAppsJob0/executions/jobExecution1"),
 	// 		Properties: &armappcontainers.JobExecutionProperties{
+	// 			DetailedStatus: &armappcontainers.ExecutionStatus{
+	// 				Replicas: []*armappcontainers.ReplicaExecutionStatus{
+	// 					{
+	// 						Name: to.Ptr("testcontainerappsjob0-0"),
+	// 						Containers: []*armappcontainers.ContainerExecutionStatus{
+	// 							{
+	// 								Name: to.Ptr("testcontainerappsjob0"),
+	// 								AdditionalInformation: to.Ptr("Completed"),
+	// 								Code: to.Ptr[int32](0),
+	// 								Status: to.Ptr("Succeeded"),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
 	// 			EndTime: to.Ptr(time.Date(2023, time.February, 13, 20, 47, 30, 0, time.UTC)),
 	// 			Message: to.Ptr("Job has reached the specified backoff limit"),
 	// 			Reason: to.Ptr("BackoffLimitExceeded"),

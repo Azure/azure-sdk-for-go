@@ -5,6 +5,7 @@
 package fake
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
@@ -20,6 +21,10 @@ import (
 
 // ManagedEnvironmentPrivateLinkResourcesServer is a fake server for instances of the armappcontainers.ManagedEnvironmentPrivateLinkResourcesClient type.
 type ManagedEnvironmentPrivateLinkResourcesServer struct {
+	// Get is the fake for method ManagedEnvironmentPrivateLinkResourcesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, environmentName string, privateLinkResourceName string, options *armappcontainers.ManagedEnvironmentPrivateLinkResourcesClientGetOptions) (resp azfake.Responder[armappcontainers.ManagedEnvironmentPrivateLinkResourcesClientGetResponse], errResp azfake.ErrorResponder)
+
 	// NewListPager is the fake for method ManagedEnvironmentPrivateLinkResourcesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, environmentName string, options *armappcontainers.ManagedEnvironmentPrivateLinkResourcesClientListOptions) (resp azfake.PagerResponder[armappcontainers.ManagedEnvironmentPrivateLinkResourcesClientListResponse])
@@ -63,6 +68,8 @@ func (m *ManagedEnvironmentPrivateLinkResourcesServerTransport) dispatchToMethod
 		}
 		if !intercepted {
 			switch method {
+			case "ManagedEnvironmentPrivateLinkResourcesClient.Get":
+				res.resp, res.err = m.dispatchGet(req)
 			case "ManagedEnvironmentPrivateLinkResourcesClient.NewListPager":
 				res.resp, res.err = m.dispatchNewListPager(req)
 			default:
@@ -79,6 +86,43 @@ func (m *ManagedEnvironmentPrivateLinkResourcesServerTransport) dispatchToMethod
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (m *ManagedEnvironmentPrivateLinkResourcesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if m.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateLinkResources/(?P<privateLinkResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
+	if err != nil {
+		return nil, err
+	}
+	privateLinkResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateLinkResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameParam, environmentNameParam, privateLinkResourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateLinkResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
 }
 
 func (m *ManagedEnvironmentPrivateLinkResourcesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {

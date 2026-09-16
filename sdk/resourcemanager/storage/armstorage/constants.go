@@ -895,6 +895,30 @@ func PossibleListLocalUserIncludeParamValues() []ListLocalUserIncludeParam {
 	}
 }
 
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	// ManagedServiceIdentityTypeNone - No managed identity.
+	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
+	// ManagedServiceIdentityTypeSystemAssigned - System assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
+	// ManagedServiceIdentityTypeSystemAssignedUserAssigned - System and user assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	// ManagedServiceIdentityTypeUserAssigned - User assigned managed identity.
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
 type ManagementPolicyName string
 
 const (
@@ -1759,24 +1783,6 @@ func PossibleStorageTaskAssignmentProvisioningStateValues() []StorageTaskAssignm
 		StorageTaskAssignmentProvisioningStateSucceeded,
 		StorageTaskAssignmentProvisioningStateValidateSubscriptionQuotaBegin,
 		StorageTaskAssignmentProvisioningStateValidateSubscriptionQuotaEnd,
-	}
-}
-
-// SystemAssignedServiceIdentityType - Type of managed service identity (either system assigned, or none).
-type SystemAssignedServiceIdentityType string
-
-const (
-	// SystemAssignedServiceIdentityTypeNone - No managed system identity.
-	SystemAssignedServiceIdentityTypeNone SystemAssignedServiceIdentityType = "None"
-	// SystemAssignedServiceIdentityTypeSystemAssigned - System assigned managed system identity.
-	SystemAssignedServiceIdentityTypeSystemAssigned SystemAssignedServiceIdentityType = "SystemAssigned"
-)
-
-// PossibleSystemAssignedServiceIdentityTypeValues returns the possible values for the SystemAssignedServiceIdentityType const type.
-func PossibleSystemAssignedServiceIdentityTypeValues() []SystemAssignedServiceIdentityType {
-	return []SystemAssignedServiceIdentityType{
-		SystemAssignedServiceIdentityTypeNone,
-		SystemAssignedServiceIdentityTypeSystemAssigned,
 	}
 }
 

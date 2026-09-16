@@ -1383,7 +1383,7 @@ type ContextCache struct {
 	Properties *ContextCacheProperties
 
 	// The managed service identities assigned to this resource.
-	Identity *SystemAssignedServiceIdentity
+	Identity *ManagedServiceIdentity
 
 	// Resource tags.
 	Tags map[string]*string
@@ -1499,7 +1499,7 @@ type ContextCachePropertiesUpdate struct {
 // ContextCacheUpdate - The type used for update operations of the Context Cache.
 type ContextCacheUpdate struct {
 	// The managed service identity.
-	Identity *SystemAssignedServiceIdentity
+	Identity *ManagedServiceIdentity
 
 	// The updatable properties of the Context Cache.
 	Properties *ContextCachePropertiesUpdate
@@ -2859,6 +2859,22 @@ func (m *ManagedIdentityAuthPropertiesUpdate) GetConnectorAuthPropertiesUpdate()
 	}
 }
 
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; The type of managed identity assigned to this resource.
+	Type *ManagedServiceIdentityType
+
+	// The identities assigned to this resource by the user.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
+}
+
 // ManagementPolicy - The Get Storage Account ManagementPolicies operation response.
 type ManagementPolicy struct {
 	// Returns the Storage Account Data Policies Rules.
@@ -3800,19 +3816,6 @@ type StaticWebsite struct {
 	IndexDocument *string
 }
 
-// SystemAssignedServiceIdentity - Managed service identity (either system assigned, or none)
-type SystemAssignedServiceIdentity struct {
-	// REQUIRED; The type of managed identity assigned to this resource.
-	Type *SystemAssignedServiceIdentityType
-
-	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
-	// identity.
-	PrincipalID *string
-
-	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
-	TenantID *string
-}
-
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -4261,10 +4264,31 @@ type UsageName struct {
 
 // UserAssignedIdentity for the resource.
 type UserAssignedIdentity struct {
-	// READ-ONLY; The client ID of the identity.
+	// READ-ONLY; READ-ONLY; The client ID of the identity.
 	ClientID *string
 
-	// READ-ONLY; The principal ID of the identity.
+	// READ-ONLY; READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; READ-ONLY; The principal ID of the identity.
+	PrincipalID *string
+
+	// READ-ONLY; READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
+}
+
+// UserAssignedIdentity for the resource.
+type UserAssignedIdentity struct {
+	// READ-ONLY; READ-ONLY; The client ID of the identity.
+	ClientID *string
+
+	// READ-ONLY; READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; READ-ONLY; The principal ID of the identity.
+	PrincipalID *string
+
+	// READ-ONLY; READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string
 }
 

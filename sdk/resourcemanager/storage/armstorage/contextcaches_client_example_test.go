@@ -85,8 +85,8 @@ func ExampleContextCachesClient_BeginCreateOrUpdate_createAAzureContextCacheAcco
 		Tags: map[string]*string{
 			"environment": to.Ptr("test"),
 		},
-		Identity: &armstorage.SystemAssignedServiceIdentity{
-			Type: to.Ptr(armstorage.SystemAssignedServiceIdentityTypeSystemAssigned),
+		Identity: &armstorage.ManagedServiceIdentity{
+			Type: to.Ptr(armstorage.ManagedServiceIdentityTypeSystemAssigned),
 		},
 		Properties: &armstorage.ContextCacheProperties{
 			AccountKind: to.Ptr(armstorage.ContextCacheAccountKindRegional),
@@ -120,8 +120,8 @@ func ExampleContextCachesClient_BeginCreateOrUpdate_createAAzureContextCacheAcco
 	// 		Tags: map[string]*string{
 	// 			"environment": to.Ptr("test"),
 	// 		},
-	// 		Identity: &armstorage.SystemAssignedServiceIdentity{
-	// 			Type: to.Ptr(armstorage.SystemAssignedServiceIdentityTypeSystemAssigned),
+	// 		Identity: &armstorage.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armstorage.ManagedServiceIdentityTypeSystemAssigned),
 	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
@@ -337,8 +337,8 @@ func ExampleContextCachesClient_BeginUpdate_updateAContextCacheTags() {
 			"environment": to.Ptr("production"),
 			"team":        to.Ptr("context-cache"),
 		},
-		Identity: &armstorage.SystemAssignedServiceIdentity{
-			Type: to.Ptr(armstorage.SystemAssignedServiceIdentityTypeSystemAssigned),
+		Identity: &armstorage.ManagedServiceIdentity{
+			Type: to.Ptr(armstorage.ManagedServiceIdentityTypeSystemAssigned),
 		},
 		Properties: &armstorage.ContextCachePropertiesUpdate{
 			Description: to.Ptr("Updated Prompt Service account description"),
@@ -364,8 +364,8 @@ func ExampleContextCachesClient_BeginUpdate_updateAContextCacheTags() {
 	// 			"environment": to.Ptr("production"),
 	// 			"team": to.Ptr("context-cache"),
 	// 		},
-	// 		Identity: &armstorage.SystemAssignedServiceIdentity{
-	// 			Type: to.Ptr(armstorage.SystemAssignedServiceIdentityTypeSystemAssigned),
+	// 		Identity: &armstorage.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armstorage.ManagedServiceIdentityTypeSystemAssigned),
 	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
@@ -410,8 +410,8 @@ func ExampleContextCachesClient_BeginUpdate_updateAAzureContextCacheAccountSCust
 			"environment": to.Ptr("production"),
 			"team":        to.Ptr("context-cache"),
 		},
-		Identity: &armstorage.SystemAssignedServiceIdentity{
-			Type: to.Ptr(armstorage.SystemAssignedServiceIdentityTypeSystemAssigned),
+		Identity: &armstorage.ManagedServiceIdentity{
+			Type: to.Ptr(armstorage.ManagedServiceIdentityTypeSystemAssigned),
 		},
 		Properties: &armstorage.ContextCachePropertiesUpdate{
 			Description: to.Ptr("Updated Prompt Service account description"),
@@ -445,8 +445,8 @@ func ExampleContextCachesClient_BeginUpdate_updateAAzureContextCacheAccountSCust
 	// 			"environment": to.Ptr("production"),
 	// 			"team": to.Ptr("context-cache"),
 	// 		},
-	// 		Identity: &armstorage.SystemAssignedServiceIdentity{
-	// 			Type: to.Ptr(armstorage.SystemAssignedServiceIdentityTypeSystemAssigned),
+	// 		Identity: &armstorage.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armstorage.ManagedServiceIdentityTypeSystemAssigned),
 	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},

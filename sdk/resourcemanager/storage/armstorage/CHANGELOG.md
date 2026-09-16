@@ -1,6 +1,6 @@
 # Release History
 
-## 4.2.0 (2026-08-31)
+## 4.2.0 (2026-09-16)
 ### Features Added
 
 - New enum type `AiProvider` with values `AiProviderOpenAI`
@@ -8,8 +8,8 @@
 - New enum type `ContextCacheProvisioningState` with values `ContextCacheProvisioningStateAccepted`, `ContextCacheProvisioningStateCanceled`, `ContextCacheProvisioningStateCreating`, `ContextCacheProvisioningStateDeleting`, `ContextCacheProvisioningStateFailed`, `ContextCacheProvisioningStateSucceeded`, `ContextCacheProvisioningStateUpdating`
 - New enum type `InfrastructureEncryption` with values `InfrastructureEncryptionDisabled`, `InfrastructureEncryptionEnabled`
 - New enum type `KeyEncryptionKeyIdentityType` with values `KeyEncryptionKeyIdentityTypeDelegatedResourceIdentity`, `KeyEncryptionKeyIdentityTypeSystemAssignedIdentity`, `KeyEncryptionKeyIdentityTypeUserAssignedIdentity`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
 - New enum type `PolicyViolationAction` with values `PolicyViolationActionBlock`, `PolicyViolationActionLog`, `PolicyViolationActionNone`
-- New enum type `SystemAssignedServiceIdentityType` with values `SystemAssignedServiceIdentityTypeNone`, `SystemAssignedServiceIdentityTypeSystemAssigned`
 - New function `*ClientFactory.NewContextCacheContainersClient() *ContextCacheContainersClient`
 - New function `*ClientFactory.NewContextCachesClient() *ContextCachesClient`
 - New function `NewContextCacheContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContextCacheContainersClient, error)`
@@ -38,7 +38,7 @@
 - New struct `ContextCacheUpdate`
 - New struct `CustomerManagedKeyEncryption`
 - New struct `KeyEncryptionKeyIdentity`
-- New struct `SystemAssignedServiceIdentity`
+- New struct `ManagedServiceIdentity`
 - New field `AllowCrossTenantDelegationSas` in struct `AccountProperties`
 - New field `AllowCrossTenantDelegationSas` in struct `AccountPropertiesCreateParameters`
 - New field `AllowCrossTenantDelegationSas` in struct `AccountPropertiesUpdateParameters`

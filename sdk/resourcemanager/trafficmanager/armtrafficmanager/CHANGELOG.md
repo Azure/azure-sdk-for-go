@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.1 (2026-05-08)
+## 2.0.0 (2026-09-16)
 ### Breaking Changes
 
 - Struct `ProxyResource` has been removed

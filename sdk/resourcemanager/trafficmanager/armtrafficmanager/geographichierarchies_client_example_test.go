@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-04-01-preview/GeographicHierarchy-GET-default.json
+// Generated from example definition: 2026-09-01/GeographicHierarchy-GET-default.json
 func ExampleGeographicHierarchiesClient_GetDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

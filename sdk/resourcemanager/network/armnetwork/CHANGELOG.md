@@ -1,5 +1,92 @@
 # Release History
 
+## 12.0.0 (2026-09-15)
+### Breaking Changes
+
+- Type of `HubVirtualNetworkConnectionProperties.EnableOnlyIPv6Peering` has been changed from `*EnableOnlyIPv6PeeringState` to `*bool`
+- Type of `ManagedRuleSetRuleGroup.Rules` has been changed from `[]*string` to `[]*int32`
+- Enum `EnableOnlyIPv6PeeringState` has been removed
+- Function `*BastionHostsClient.BeginUpdateTags` has been removed
+
+### Features Added
+
+- New value `ApplicationGatewayRequestRoutingRuleTypeAdvancedRouting` added to enum type `ApplicationGatewayRequestRoutingRuleType`
+- New value `ApplicationGatewaySKUNameBasicV2`, `ApplicationGatewaySKUNameBasicWAFV2` added to enum type `ApplicationGatewaySKUName`
+- New value `ApplicationGatewayTierBasicV2`, `ApplicationGatewayTierBasicWAFV2` added to enum type `ApplicationGatewayTier`
+- New value `VirtualNetworkGatewayMigrationTypeMigrateGatewayForPointToSiteProfile`, `VirtualNetworkGatewayMigrationTypeUpgradeGatewayToDualStack` added to enum type `VirtualNetworkGatewayMigrationType`
+- New enum type `ApplicationGatewayAdvancedRoutingConditionType` with values `ApplicationGatewayAdvancedRoutingConditionTypeClientIP`, `ApplicationGatewayAdvancedRoutingConditionTypeHeader`, `ApplicationGatewayAdvancedRoutingConditionTypeMethod`, `ApplicationGatewayAdvancedRoutingConditionTypePath`, `ApplicationGatewayAdvancedRoutingConditionTypeQueryString`
+- New enum type `ApplicationGatewayWafRuleParanoiaLevel` with values `ApplicationGatewayWafRuleParanoiaLevelPL1`, `ApplicationGatewayWafRuleParanoiaLevelPL2`, `ApplicationGatewayWafRuleParanoiaLevelPL3`, `ApplicationGatewayWafRuleParanoiaLevelPL4`
+- New enum type `OnUnauthenticatedRequest` with values `OnUnauthenticatedRequestAllow`, `OnUnauthenticatedRequestAuthenticate`, `OnUnauthenticatedRequestDeny`
+- New enum type `SessionRecordingIdentityType` with values `SessionRecordingIdentityTypeSystemAssigned`, `SessionRecordingIdentityTypeUserAssigned`
+- New enum type `UserTrustProviderType` with values `UserTrustProviderTypeEntra`
+- New enum type `WebApplicationFirewallPolicyTier` with values `WebApplicationFirewallPolicyTierBasic`, `WebApplicationFirewallPolicyTierStandard`
+- New function `NewAuthenticationPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AuthenticationPoliciesClient, error)`
+- New function `*AuthenticationPoliciesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, authenticationPolicyName string, resource AuthenticationPolicy, options *AuthenticationPoliciesClientBeginCreateOrUpdateOptions) (*runtime.Poller[AuthenticationPoliciesClientCreateOrUpdateResponse], error)`
+- New function `*AuthenticationPoliciesClient.Delete(ctx context.Context, resourceGroupName string, authenticationPolicyName string, options *AuthenticationPoliciesClientDeleteOptions) (AuthenticationPoliciesClientDeleteResponse, error)`
+- New function `*AuthenticationPoliciesClient.Get(ctx context.Context, resourceGroupName string, authenticationPolicyName string, options *AuthenticationPoliciesClientGetOptions) (AuthenticationPoliciesClientGetResponse, error)`
+- New function `*AuthenticationPoliciesClient.NewListAllPager(options *AuthenticationPoliciesClientListAllOptions) *runtime.Pager[AuthenticationPoliciesClientListAllResponse]`
+- New function `*AuthenticationPoliciesClient.NewListPager(resourceGroupName string, options *AuthenticationPoliciesClientListOptions) *runtime.Pager[AuthenticationPoliciesClientListResponse]`
+- New function `*AuthenticationPoliciesClient.Update(ctx context.Context, resourceGroupName string, authenticationPolicyName string, parameters AuthenticationPolicyUpdateParameters, options *AuthenticationPoliciesClientUpdateOptions) (AuthenticationPoliciesClientUpdateResponse, error)`
+- New function `*BastionHostsClient.BeginUpdate(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHostUpdate, options *BastionHostsClientBeginUpdateOptions) (*runtime.Poller[BastionHostsClientUpdateResponse], error)`
+- New function `*ClientFactory.NewAuthenticationPoliciesClient() *AuthenticationPoliciesClient`
+- New function `*ExpressRouteCircuitAuthorizationsClient.ListKeys(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, options *ExpressRouteCircuitAuthorizationsClientListKeysOptions) (ExpressRouteCircuitAuthorizationsClientListKeysResponse, error)`
+- New function `*ExpressRouteCrossConnectionsClient.BeginCommitCircuitMigration(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters MigrateExpressRouteCircuitRequest, options *ExpressRouteCrossConnectionsClientBeginCommitCircuitMigrationOptions) (*runtime.Poller[ExpressRouteCrossConnectionsClientCommitCircuitMigrationResponse], error)`
+- New function `*ExpressRouteCrossConnectionsClient.BeginGetCircuitMigrationInfo(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters MigrateExpressRouteCircuitValidateAndHealthCheckRequest, options *ExpressRouteCrossConnectionsClientBeginGetCircuitMigrationInfoOptions) (*runtime.Poller[ExpressRouteCrossConnectionsClientGetCircuitMigrationInfoResponse], error)`
+- New function `*ExpressRouteCrossConnectionsClient.BeginMigrateCircuit(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters MigrateExpressRouteCircuitRequest, options *ExpressRouteCrossConnectionsClientBeginMigrateCircuitOptions) (*runtime.Poller[ExpressRouteCrossConnectionsClientMigrateCircuitResponse], error)`
+- New function `*ExpressRouteCrossConnectionsClient.BeginPrepareCircuitMigration(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters MigrateExpressRouteCircuitRequest, options *ExpressRouteCrossConnectionsClientBeginPrepareCircuitMigrationOptions) (*runtime.Poller[ExpressRouteCrossConnectionsClientPrepareCircuitMigrationResponse], error)`
+- New function `*ExpressRouteCrossConnectionsClient.BeginRestoreBgpForCircuitMigration(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters MigrateExpressRouteCircuitRequest, options *ExpressRouteCrossConnectionsClientBeginRestoreBgpForCircuitMigrationOptions) (*runtime.Poller[ExpressRouteCrossConnectionsClientRestoreBgpForCircuitMigrationResponse], error)`
+- New function `*ExpressRouteCrossConnectionsClient.BeginRollbackCircuitMigration(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters MigrateExpressRouteCircuitRequest, options *ExpressRouteCrossConnectionsClientBeginRollbackCircuitMigrationOptions) (*runtime.Poller[ExpressRouteCrossConnectionsClientRollbackCircuitMigrationResponse], error)`
+- New function `*ExpressRouteCrossConnectionsClient.BeginShutDownBgpForCircuitMigration(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters MigrateExpressRouteCircuitRequest, options *ExpressRouteCrossConnectionsClientBeginShutDownBgpForCircuitMigrationOptions) (*runtime.Poller[ExpressRouteCrossConnectionsClientShutDownBgpForCircuitMigrationResponse], error)`
+- New function `*ExpressRouteCrossConnectionsClient.BeginValidateCircuitMigration(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters MigrateExpressRouteCircuitValidateAndHealthCheckRequest, options *ExpressRouteCrossConnectionsClientBeginValidateCircuitMigrationOptions) (*runtime.Poller[ExpressRouteCrossConnectionsClientValidateCircuitMigrationResponse], error)`
+- New function `*ExpressRoutePortAuthorizationsClient.ListKeys(ctx context.Context, resourceGroupName string, expressRoutePortName string, authorizationName string, options *ExpressRoutePortAuthorizationsClientListKeysOptions) (ExpressRoutePortAuthorizationsClientListKeysResponse, error)`
+- New struct `ApplicationGatewayAdvancedRoutingCondition`
+- New struct `ApplicationGatewayAdvancedRoutingConditionSet`
+- New struct `ApplicationGatewayAdvancedRoutingConditionSetPropertiesFormat`
+- New struct `ApplicationGatewayAdvancedRoutingMap`
+- New struct `ApplicationGatewayAdvancedRoutingMapPropertiesFormat`
+- New struct `ApplicationGatewayAdvancedRoutingPropertyValueMatcher`
+- New struct `ApplicationGatewayAdvancedRoutingRule`
+- New struct `ApplicationGatewayAdvancedRoutingRulePropertiesFormat`
+- New struct `ApplicationGatewayAuthConfig`
+- New struct `ApprovalReference`
+- New struct `AuthenticationPolicy`
+- New struct `AuthenticationPolicyListResult`
+- New struct `AuthenticationPolicyPropertiesFormat`
+- New struct `AuthenticationPolicyUpdateParameters`
+- New struct `AuthenticationProviderProperties`
+- New struct `BastionHostUpdate`
+- New struct `BastionSessionRecordingConfiguration`
+- New struct `ExpressRouteAuthorizationKey`
+- New struct `Metric`
+- New struct `MigrateExpressRouteCircuitHealthCheckDetails`
+- New struct `MigrateExpressRouteCircuitHealthCheckResponse`
+- New struct `MigrateExpressRouteCircuitRequest`
+- New struct `MigrateExpressRouteCircuitValidateAndHealthCheckRequest`
+- New struct `MigrateExpressRouteCircuitValidateResponse`
+- New struct `PeeringHealth`
+- New struct `PeeringStats`
+- New struct `PortMapping`
+- New struct `PortMigrationInfo`
+- New struct `SessionRecordingIdentity`
+- New struct `SourcePortStats`
+- New field `DisplayName` in struct `ApplicationGatewayFirewallManifestRuleSet`
+- New field `ParanoiaLevel` in struct `ApplicationGatewayFirewallRule`
+- New field `DisplayName` in struct `ApplicationGatewayFirewallRuleSetPropertiesFormat`
+- New field `AdvancedRoutingConditionSets`, `AdvancedRoutingMaps`, `ReservedCapacity` in struct `ApplicationGatewayPropertiesFormat`
+- New field `AdvancedRoutingMap`, `AuthConfigs` in struct `ApplicationGatewayRequestRoutingRulePropertiesFormat`
+- New field `AiSecurityAddOn` in struct `AzureFirewallPropertiesFormat`
+- New field `Identity` in struct `BastionHost`
+- New field `SessionRecordingConfiguration` in struct `BastionHostPropertiesFormat`
+- New field `DisplayName` in struct `DefaultRuleSetPropertyFormat`
+- New field `ExpressRouteLag` in struct `ExpressRouteCircuitPropertiesFormat`
+- New field `Circuits` in struct `ExpressRouteLagPropertiesFormat`
+- New field `MaxAllocationSize`, `MinAllocationSize` in struct `IpamPoolProperties`
+- New field `MaxAllocationSize`, `MinAllocationSize` in struct `IpamPoolUpdateProperties`
+- New field `ApprovalReference` in struct `PrivateLinkServiceConnectionProperties`
+- New field `DestinationGeoLocations`, `SourceGeoLocations` in struct `Rule`
+- New field `Tier` in struct `WebApplicationFirewallPolicyPropertiesFormat`
+
+
 ## 11.0.0 (2026-08-14)
 ### Breaking Changes
 

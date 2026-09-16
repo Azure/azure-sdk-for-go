@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/FirstPartyServiceTagCreate.json
+// Generated from example definition: 2026-01-01/FirstPartyServiceTagCreate.json
 func ExampleFirstPartyServiceTagsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleFirstPartyServiceTagsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/FirstPartyServiceTagDelete.json
+// Generated from example definition: 2026-01-01/FirstPartyServiceTagDelete.json
 func ExampleFirstPartyServiceTagsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleFirstPartyServiceTagsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/FirstPartyServiceTagGet.json
+// Generated from example definition: 2026-01-01/FirstPartyServiceTagGet.json
 func ExampleFirstPartyServiceTagsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleFirstPartyServiceTagsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/FirstPartyServiceTagList.json
+// Generated from example definition: 2026-01-01/FirstPartyServiceTagList.json
 func ExampleFirstPartyServiceTagsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func ExampleFirstPartyServiceTagsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/FirstPartyServiceTagListAll.json
+// Generated from example definition: 2026-01-01/FirstPartyServiceTagListAll.json
 func ExampleFirstPartyServiceTagsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExampleFirstPartyServiceTagsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/FirstPartyServiceTagUpdateTags.json
+// Generated from example definition: 2026-01-01/FirstPartyServiceTagUpdateTags.json
 func ExampleFirstPartyServiceTagsClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

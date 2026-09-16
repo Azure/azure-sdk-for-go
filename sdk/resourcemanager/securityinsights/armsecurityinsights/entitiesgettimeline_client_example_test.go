@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-07-01-preview/entities/timeline/PostTimelineEntity.json
+// Generated from example definition: 2025-10-01-preview/entities/timeline/PostTimelineEntity.json
 func ExampleEntitiesGetTimelineClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

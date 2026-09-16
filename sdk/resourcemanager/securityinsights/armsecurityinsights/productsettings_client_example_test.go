@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/settings/DeleteEyesOnSetting.json
+// Generated from example definition: 2025-10-01-preview/settings/DeleteEyesOnSetting.json
 func ExampleProductSettingsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleProductSettingsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/settings/GetEyesOnSetting.json
+// Generated from example definition: 2025-10-01-preview/settings/GetEyesOnSetting.json
 func ExampleProductSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleProductSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/settings/GetAllSettings.json
+// Generated from example definition: 2025-10-01-preview/settings/GetAllSettings.json
 func ExampleProductSettingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleProductSettingsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/settings/UpdateEyesOnSetting.json
+// Generated from example definition: 2025-10-01-preview/settings/UpdateEyesOnSetting.json
 func ExampleProductSettingsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -6,13 +6,14 @@ package armhybridconnectivity_test
 
 import (
 	"context"
+	"log"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity"
-	"log"
 )
 
-// Generated from example definition: 2024-12-01/PublicCloudConnectors_CreateOrUpdate.json
+// Generated from example definition: 2027-01-01/PublicCloudConnectors_CreateOrUpdate_MaximumSet_Gen.json
 func ExamplePublicCloudConnectorsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -23,7 +24,7 @@ func ExamplePublicCloudConnectorsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPublicCloudConnectorsClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").BeginCreateOrUpdate(ctx, "rgpublicCloud", "advjwoakdusalamomg", armhybridconnectivity.PublicCloudConnector{
+	poller, err := clientFactory.NewPublicCloudConnectorsClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").BeginCreateOrUpdate(ctx, "rghybridconnectivity", "abc", armhybridconnectivity.PublicCloudConnector{
 		Properties: &armhybridconnectivity.PublicCloudConnectorProperties{
 			AwsCloudProfile: &armhybridconnectivity.AwsCloudProfile{
 				AccountID: to.Ptr("snbnuxckevyqpm"),
@@ -33,9 +34,27 @@ func ExamplePublicCloudConnectorsClient_BeginCreateOrUpdate() {
 				IsOrganizationalAccount: to.Ptr(true),
 			},
 			HostType: to.Ptr(armhybridconnectivity.HostTypeAWS),
+			GcpCloudProfile: &armhybridconnectivity.GcpCloudProfile{
+				ProjectProperties: &armhybridconnectivity.GcpProjectProperties{
+					ProjectNumber: to.Ptr("mjubieitixhpm"),
+					ProjectID:     to.Ptr("mjubieitixhpmid"),
+				},
+				OrganizationProperties: &armhybridconnectivity.GcpOrganizationProperties{
+					OrganizationID:          to.Ptr("vqlzghfdinlamurmg"),
+					ManagementProjectNumber: to.Ptr("mjubieitixhpm"),
+					ManagementProjectID:     to.Ptr("mjubieitixhpmid"),
+					ExcludedProjectNumbers: []*string{
+						to.Ptr("sepdnfxmhcrubtklwllxfbhju"),
+					},
+					ExcludedFolderIDs: []*string{
+						to.Ptr("xxl"),
+					},
+				},
+			},
 		},
 		Tags:     map[string]*string{},
 		Location: to.Ptr("jpiglusfxynfcewcjwvvnn"),
+		Kind:     to.Ptr(armhybridconnectivity.HostTypeAWS),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -58,6 +77,23 @@ func ExamplePublicCloudConnectorsClient_BeginCreateOrUpdate() {
 	// 				IsOrganizationalAccount: to.Ptr(true),
 	// 			},
 	// 			HostType: to.Ptr(armhybridconnectivity.HostTypeAWS),
+	// 			GcpCloudProfile: &armhybridconnectivity.GcpCloudProfile{
+	// 				ProjectProperties: &armhybridconnectivity.GcpProjectProperties{
+	// 					ProjectNumber: to.Ptr("mjubieitixhpm"),
+	// 					ProjectID: to.Ptr("mjubieitixhpmid"),
+	// 				},
+	// 				OrganizationProperties: &armhybridconnectivity.GcpOrganizationProperties{
+	// 					OrganizationID: to.Ptr("vqlzghfdinlamurmg"),
+	// 					ManagementProjectNumber: to.Ptr("mjubieitixhpm"),
+	// 					ManagementProjectID: to.Ptr("mjubieitixhpmid"),
+	// 					ExcludedProjectNumbers: []*string{
+	// 						to.Ptr("sepdnfxmhcrubtklwllxfbhju"),
+	// 					},
+	// 					ExcludedFolderIDs: []*string{
+	// 						to.Ptr("xxl"),
+	// 					},
+	// 				},
+	// 			},
 	// 			ProvisioningState: to.Ptr(armhybridconnectivity.ResourceProvisioningStateSucceeded),
 	// 			ConnectorPrimaryIdentifier: to.Ptr("20a4e2be-8158-4b9e-b512-7a1af6f827de"),
 	// 		},
@@ -67,6 +103,7 @@ func ExamplePublicCloudConnectorsClient_BeginCreateOrUpdate() {
 	// 		ID: to.Ptr("/subscriptions/5ACC4579-DB34-4C2F-8F8C-25061168F342/providers/Microsoft.HybridConnectivity/PublicCloudConnectors/esixipkbydb"),
 	// 		Name: to.Ptr("esixipkbydb"),
 	// 		Type: to.Ptr("eelsjvqvkdxdncptsobrswhulnm"),
+	// 		Kind: to.Ptr(armhybridconnectivity.HostTypeAWS),
 	// 		SystemData: &armhybridconnectivity.SystemData{
 	// 			CreatedBy: to.Ptr("rpxzkcrobprrdvuoqxz"),
 	// 			CreatedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
@@ -79,7 +116,7 @@ func ExamplePublicCloudConnectorsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01/PublicCloudConnectors_Delete.json
+// Generated from example definition: 2027-01-01/PublicCloudConnectors_Delete_MaximumSet_Gen.json
 func ExamplePublicCloudConnectorsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +127,7 @@ func ExamplePublicCloudConnectorsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPublicCloudConnectorsClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").Delete(ctx, "rgpublicCloud", "skcfyjvflkhibdywjay", nil)
+	res, err := clientFactory.NewPublicCloudConnectorsClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").Delete(ctx, "rghybridconnectivity", "abc", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -101,7 +138,7 @@ func ExamplePublicCloudConnectorsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01/PublicCloudConnectors_Get.json
+// Generated from example definition: 2027-01-01/PublicCloudConnectors_Get_MaximumSet_Gen.json
 func ExamplePublicCloudConnectorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +149,7 @@ func ExamplePublicCloudConnectorsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPublicCloudConnectorsClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").Get(ctx, "rgpublicCloud", "rzygvnpsnrdylwzdbsscjazvamyxmh", nil)
+	res, err := clientFactory.NewPublicCloudConnectorsClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").Get(ctx, "rghybridconnectivity", "abc", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -130,6 +167,23 @@ func ExamplePublicCloudConnectorsClient_Get() {
 	// 				IsOrganizationalAccount: to.Ptr(true),
 	// 			},
 	// 			HostType: to.Ptr(armhybridconnectivity.HostTypeAWS),
+	// 			GcpCloudProfile: &armhybridconnectivity.GcpCloudProfile{
+	// 				ProjectProperties: &armhybridconnectivity.GcpProjectProperties{
+	// 					ProjectNumber: to.Ptr("mjubieitixhpm"),
+	// 					ProjectID: to.Ptr("sample-project-id"),
+	// 				},
+	// 				OrganizationProperties: &armhybridconnectivity.GcpOrganizationProperties{
+	// 					OrganizationID: to.Ptr("vqlzghfdinlamurmg"),
+	// 					ManagementProjectNumber: to.Ptr("mjubieitixhpm"),
+	// 					ManagementProjectID: to.Ptr("sample-management-project-id"),
+	// 					ExcludedProjectNumbers: []*string{
+	// 						to.Ptr("sepdnfxmhcrubtklwllxfbhju"),
+	// 					},
+	// 					ExcludedFolderIDs: []*string{
+	// 						to.Ptr("xxl"),
+	// 					},
+	// 				},
+	// 			},
 	// 			ProvisioningState: to.Ptr(armhybridconnectivity.ResourceProvisioningStateSucceeded),
 	// 			ConnectorPrimaryIdentifier: to.Ptr("20a4e2be-8158-4b9e-b512-7a1af6f827de"),
 	// 		},
@@ -139,6 +193,7 @@ func ExamplePublicCloudConnectorsClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/5ACC4579-DB34-4C2F-8F8C-25061168F342/providers/Microsoft.HybridConnectivity/PublicCloudConnectors/esixipkbydb"),
 	// 		Name: to.Ptr("esixipkbydb"),
 	// 		Type: to.Ptr("eelsjvqvkdxdncptsobrswhulnm"),
+	// 		Kind: to.Ptr(armhybridconnectivity.HostType("sample-kind")),
 	// 		SystemData: &armhybridconnectivity.SystemData{
 	// 			CreatedBy: to.Ptr("rpxzkcrobprrdvuoqxz"),
 	// 			CreatedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
@@ -151,8 +206,8 @@ func ExamplePublicCloudConnectorsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01/PublicCloudConnectors_ListByResourceGroup.json
-func ExamplePublicCloudConnectorsClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2027-01-01/PublicCloudConnectors_ListByResourceGroup_MaximumSet_Gen.json
+func ExamplePublicCloudConnectorsClient_NewListByResourceGroupPager_publicCloudConnectorsListByResourceGroupGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -162,7 +217,7 @@ func ExamplePublicCloudConnectorsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewPublicCloudConnectorsClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").NewListByResourceGroupPager("rgpublicCloud", nil)
+	pager := clientFactory.NewPublicCloudConnectorsClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").NewListByResourceGroupPager("rghybridconnectivity", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -188,6 +243,23 @@ func ExamplePublicCloudConnectorsClient_NewListByResourceGroupPager() {
 		// 					HostType: to.Ptr(armhybridconnectivity.HostTypeAWS),
 		// 					ProvisioningState: to.Ptr(armhybridconnectivity.ResourceProvisioningStateSucceeded),
 		// 					ConnectorPrimaryIdentifier: to.Ptr("20a4e2be-8158-4b9e-b512-7a1af6f827de"),
+		// 					GcpCloudProfile: &armhybridconnectivity.GcpCloudProfile{
+		// 						ProjectProperties: &armhybridconnectivity.GcpProjectProperties{
+		// 							ProjectNumber: to.Ptr("mjubieitixhpm"),
+		// 							ProjectID: to.Ptr("sample-project-id"),
+		// 						},
+		// 						OrganizationProperties: &armhybridconnectivity.GcpOrganizationProperties{
+		// 							OrganizationID: to.Ptr("vqlzghfdinlamurmg"),
+		// 							ManagementProjectNumber: to.Ptr("mjubieitixhpm"),
+		// 							ManagementProjectID: to.Ptr("sample-management-project-id"),
+		// 							ExcludedProjectNumbers: []*string{
+		// 								to.Ptr("sepdnfxmhcrubtklwllxfbhju"),
+		// 							},
+		// 							ExcludedFolderIDs: []*string{
+		// 								to.Ptr("xxl"),
+		// 							},
+		// 						},
+		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -195,6 +267,7 @@ func ExamplePublicCloudConnectorsClient_NewListByResourceGroupPager() {
 		// 				ID: to.Ptr("/subscriptions/5ACC4579-DB34-4C2F-8F8C-25061168F342/providers/Microsoft.HybridConnectivity/PublicCloudConnectors/esixipkbydb"),
 		// 				Name: to.Ptr("esixipkbydb"),
 		// 				Type: to.Ptr("eelsjvqvkdxdncptsobrswhulnm"),
+		// 				Kind: to.Ptr(armhybridconnectivity.HostTypeGCP),
 		// 				SystemData: &armhybridconnectivity.SystemData{
 		// 					CreatedBy: to.Ptr("rpxzkcrobprrdvuoqxz"),
 		// 					CreatedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
@@ -211,8 +284,44 @@ func ExamplePublicCloudConnectorsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-12-01/PublicCloudConnectors_ListBySubscription.json
-func ExamplePublicCloudConnectorsClient_NewListBySubscriptionPager() {
+// Generated from example definition: 2027-01-01/PublicCloudConnectors_ListByResourceGroup_MinimumSet_Gen.json
+func ExamplePublicCloudConnectorsClient_NewListByResourceGroupPager_publicCloudConnectorsListByResourceGroupGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridconnectivity.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewPublicCloudConnectorsClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").NewListByResourceGroupPager("rghybridconnectivity", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armhybridconnectivity.PublicCloudConnectorsClientListByResourceGroupResponse{
+		// 	PublicCloudConnectorListResult: armhybridconnectivity.PublicCloudConnectorListResult{
+		// 		Value: []*armhybridconnectivity.PublicCloudConnector{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/5ACC4579-DB34-4C2F-8F8C-25061168F342/resourceGroups/rghybridconnectivity/providers/Microsoft.HybridConnectivity/PublicCloudConnectors/esixipkbydb"),
+		// 				Location: to.Ptr("jpiglusfxynfcewcjwvvnn"),
+		// 				Kind: to.Ptr(armhybridconnectivity.HostTypeGCP),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2027-01-01/PublicCloudConnectors_ListBySubscription_MaximumSet_Gen.json
+func ExamplePublicCloudConnectorsClient_NewListBySubscriptionPager_publicCloudConnectorsListBySubscriptionGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -248,6 +357,23 @@ func ExamplePublicCloudConnectorsClient_NewListBySubscriptionPager() {
 		// 					HostType: to.Ptr(armhybridconnectivity.HostTypeAWS),
 		// 					ProvisioningState: to.Ptr(armhybridconnectivity.ResourceProvisioningStateSucceeded),
 		// 					ConnectorPrimaryIdentifier: to.Ptr("20a4e2be-8158-4b9e-b512-7a1af6f827de"),
+		// 					GcpCloudProfile: &armhybridconnectivity.GcpCloudProfile{
+		// 						ProjectProperties: &armhybridconnectivity.GcpProjectProperties{
+		// 							ProjectNumber: to.Ptr("mjubieitixhpm"),
+		// 							ProjectID: to.Ptr("sample-project-id"),
+		// 						},
+		// 						OrganizationProperties: &armhybridconnectivity.GcpOrganizationProperties{
+		// 							OrganizationID: to.Ptr("vqlzghfdinlamurmg"),
+		// 							ManagementProjectNumber: to.Ptr("mjubieitixhpm"),
+		// 							ManagementProjectID: to.Ptr("sample-management-project-id"),
+		// 							ExcludedProjectNumbers: []*string{
+		// 								to.Ptr("sepdnfxmhcrubtklwllxfbhju"),
+		// 							},
+		// 							ExcludedFolderIDs: []*string{
+		// 								to.Ptr("xxl"),
+		// 							},
+		// 						},
+		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -255,6 +381,7 @@ func ExamplePublicCloudConnectorsClient_NewListBySubscriptionPager() {
 		// 				ID: to.Ptr("/subscriptions/5ACC4579-DB34-4C2F-8F8C-25061168F342/providers/Microsoft.HybridConnectivity/PublicCloudConnectors/esixipkbydb"),
 		// 				Name: to.Ptr("esixipkbydb"),
 		// 				Type: to.Ptr("eelsjvqvkdxdncptsobrswhulnm"),
+		// 				Kind: to.Ptr(armhybridconnectivity.HostType("sample-kind")),
 		// 				SystemData: &armhybridconnectivity.SystemData{
 		// 					CreatedBy: to.Ptr("rpxzkcrobprrdvuoqxz"),
 		// 					CreatedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
@@ -271,7 +398,43 @@ func ExamplePublicCloudConnectorsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2024-12-01/PublicCloudConnectors_TestPermissions.json
+// Generated from example definition: 2027-01-01/PublicCloudConnectors_ListBySubscription_MinimumSet_Gen.json
+func ExamplePublicCloudConnectorsClient_NewListBySubscriptionPager_publicCloudConnectorsListBySubscriptionGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridconnectivity.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewPublicCloudConnectorsClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armhybridconnectivity.PublicCloudConnectorsClientListBySubscriptionResponse{
+		// 	PublicCloudConnectorListResult: armhybridconnectivity.PublicCloudConnectorListResult{
+		// 		Value: []*armhybridconnectivity.PublicCloudConnector{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/5ACC4579-DB34-4C2F-8F8C-25061168F342/providers/Microsoft.HybridConnectivity/PublicCloudConnectors/esixipkbydb"),
+		// 				Location: to.Ptr("jpiglusfxynfcewcjwvvnn"),
+		// 				Kind: to.Ptr(armhybridconnectivity.HostTypeGCP),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2027-01-01/PublicCloudConnectors_TestPermissions_MaximumSet_Gen.json
 func ExamplePublicCloudConnectorsClient_BeginTestPermissions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -282,7 +445,7 @@ func ExamplePublicCloudConnectorsClient_BeginTestPermissions() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPublicCloudConnectorsClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").BeginTestPermissions(ctx, "rgpublicCloud", "rzygvnpsnrdylwzdbsscjazvamyxmh", nil)
+	poller, err := clientFactory.NewPublicCloudConnectorsClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").BeginTestPermissions(ctx, "rghybridconnectivity", "abc", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -297,37 +460,12 @@ func ExamplePublicCloudConnectorsClient_BeginTestPermissions() {
 	// 	OperationStatusResult: armhybridconnectivity.OperationStatusResult{
 	// 		ID: to.Ptr("/subscriptions/5ACC4579-DB34-4C2F-8F8C-25061168F342/providers/Microsoft.HybridConnectivity/PublicCloudConnectors/esixipkbydb"),
 	// 		ResourceID: to.Ptr("/subscriptions/5ACC4579-DB34-4C2F-8F8C-25061168F342/providers/Microsoft.HybridConnectivity/PublicCloudConnectors/esixipkbydb"),
-	// 		Name: to.Ptr("ppeygvsnaspxmpwalpmkqva"),
-	// 		Status: to.Ptr("toyjllkvm"),
-	// 		PercentComplete: to.Ptr[float64](81),
+	// 		Name: to.Ptr("svqtraeuwvyvblujlvqilypwpdrt"),
+	// 		Status: to.Ptr("bevmrejij"),
+	// 		PercentComplete: to.Ptr[float64](15),
 	// 		StartTime: to.Ptr(time.Date(2024, time.October, 2, 18, 38, 19, 143000000, time.UTC)),
 	// 		EndTime: to.Ptr(time.Date(2024, time.October, 2, 18, 38, 19, 143000000, time.UTC)),
 	// 		Operations: []*armhybridconnectivity.OperationStatusResult{
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/5ACC4579-DB34-4C2F-8F8C-25061168F342/providers/Microsoft.HybridConnectivity/PublicCloudConnectors/esixipkbydb"),
-	// 				ResourceID: to.Ptr("/subscriptions/5ACC4579-DB34-4C2F-8F8C-25061168F342/providers/Microsoft.HybridConnectivity/PublicCloudConnectors/esixipkbydb"),
-	// 				Name: to.Ptr("svqtraeuwvyvblujlvqilypwpdrt"),
-	// 				Status: to.Ptr("bevmrejij"),
-	// 				PercentComplete: to.Ptr[float64](15),
-	// 				StartTime: to.Ptr(time.Date(2024, time.October, 2, 18, 38, 19, 143000000, time.UTC)),
-	// 				EndTime: to.Ptr(time.Date(2024, time.October, 2, 18, 38, 19, 143000000, time.UTC)),
-	// 				Operations: []*armhybridconnectivity.OperationStatusResult{
-	// 				},
-	// 				Error: &armhybridconnectivity.ErrorDetail{
-	// 					Code: to.Ptr("ykzvluyqiftfsumgvwzdh"),
-	// 					Message: to.Ptr("krbjgtqkjgiux"),
-	// 					Target: to.Ptr("nsaucxt"),
-	// 					Details: []*armhybridconnectivity.ErrorDetail{
-	// 					},
-	// 					AdditionalInfo: []*armhybridconnectivity.ErrorAdditionalInfo{
-	// 						{
-	// 							Type: to.Ptr("qivvrewsjvcildjgwwytgimwklh"),
-	// 							Info: map[string]any{
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 			},
 	// 		},
 	// 		Error: &armhybridconnectivity.ErrorDetail{
 	// 			Code: to.Ptr("ykzvluyqiftfsumgvwzdh"),
@@ -347,7 +485,7 @@ func ExamplePublicCloudConnectorsClient_BeginTestPermissions() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01/PublicCloudConnectors_Update.json
+// Generated from example definition: 2027-01-01/PublicCloudConnectors_Update_MaximumSet_Gen.json
 func ExamplePublicCloudConnectorsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -358,7 +496,7 @@ func ExamplePublicCloudConnectorsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPublicCloudConnectorsClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").Update(ctx, "rgpublicCloud", "svtirlbyqpepbzyessjenlueeznhg", armhybridconnectivity.PublicCloudConnectorUpdate{
+	res, err := clientFactory.NewPublicCloudConnectorsClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").Update(ctx, "rghybridconnectivity", "abc", armhybridconnectivity.PublicCloudConnectorUpdate{
 		Tags: map[string]*string{},
 		Properties: &armhybridconnectivity.PublicCloudConnectorPropertiesUpdate{
 			AwsCloudProfile: &armhybridconnectivity.AwsCloudProfileUpdate{
@@ -385,6 +523,23 @@ func ExamplePublicCloudConnectorsClient_Update() {
 	// 				IsOrganizationalAccount: to.Ptr(true),
 	// 			},
 	// 			HostType: to.Ptr(armhybridconnectivity.HostTypeAWS),
+	// 			GcpCloudProfile: &armhybridconnectivity.GcpCloudProfile{
+	// 				ProjectProperties: &armhybridconnectivity.GcpProjectProperties{
+	// 					ProjectNumber: to.Ptr("mjubieitixhpm"),
+	// 					ProjectID: to.Ptr("sample-project-id"),
+	// 				},
+	// 				OrganizationProperties: &armhybridconnectivity.GcpOrganizationProperties{
+	// 					OrganizationID: to.Ptr("vqlzghfdinlamurmg"),
+	// 					ManagementProjectNumber: to.Ptr("mjubieitixhpm"),
+	// 					ManagementProjectID: to.Ptr("sample-management-project-id"),
+	// 					ExcludedProjectNumbers: []*string{
+	// 						to.Ptr("sepdnfxmhcrubtklwllxfbhju"),
+	// 					},
+	// 					ExcludedFolderIDs: []*string{
+	// 						to.Ptr("xxl"),
+	// 					},
+	// 				},
+	// 			},
 	// 			ProvisioningState: to.Ptr(armhybridconnectivity.ResourceProvisioningStateSucceeded),
 	// 			ConnectorPrimaryIdentifier: to.Ptr("20a4e2be-8158-4b9e-b512-7a1af6f827de"),
 	// 		},
@@ -394,6 +549,7 @@ func ExamplePublicCloudConnectorsClient_Update() {
 	// 		ID: to.Ptr("/subscriptions/5ACC4579-DB34-4C2F-8F8C-25061168F342/providers/Microsoft.HybridConnectivity/PublicCloudConnectors/esixipkbydb"),
 	// 		Name: to.Ptr("esixipkbydb"),
 	// 		Type: to.Ptr("eelsjvqvkdxdncptsobrswhulnm"),
+	// 		Kind: to.Ptr(armhybridconnectivity.HostType("sample-kind")),
 	// 		SystemData: &armhybridconnectivity.SystemData{
 	// 			CreatedBy: to.Ptr("rpxzkcrobprrdvuoqxz"),
 	// 			CreatedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),

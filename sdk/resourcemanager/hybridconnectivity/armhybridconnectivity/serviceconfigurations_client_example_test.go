@@ -6,14 +6,15 @@ package armhybridconnectivity_test
 
 import (
 	"context"
+	"log"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity"
-	"log"
 )
 
-// Generated from example definition: 2024-12-01/ServiceConfigurationsPutSSH.json
-func ExampleServiceConfigurationsClient_CreateOrupdate_serviceConfigurationsPutSsh() {
+// Generated from example definition: 2027-01-01/ServiceConfigurations_CreateOrupdate_MaximumSet_Gen.json
+func ExampleServiceConfigurationsClient_CreateOrupdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,10 +24,11 @@ func ExampleServiceConfigurationsClient_CreateOrupdate_serviceConfigurationsPutS
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewServiceConfigurationsClient().CreateOrupdate(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default", "default", "SSH", armhybridconnectivity.ServiceConfigurationResource{
+	res, err := clientFactory.NewServiceConfigurationsClient().CreateOrupdate(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "djevinbielhfx", "inlnklujw", armhybridconnectivity.ServiceConfigurationResource{
 		Properties: &armhybridconnectivity.ServiceConfigurationProperties{
 			Port:        to.Ptr[int64](22),
 			ServiceName: to.Ptr(armhybridconnectivity.ServiceNameSSH),
+			ResourceID:  to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine"),
 		},
 	}, nil)
 	if err != nil {
@@ -37,55 +39,29 @@ func ExampleServiceConfigurationsClient_CreateOrupdate_serviceConfigurationsPutS
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridconnectivity.ServiceConfigurationsClientCreateOrupdateResponse{
 	// 	ServiceConfigurationResource: armhybridconnectivity.ServiceConfigurationResource{
-	// 		Type: to.Ptr("Microsoft.HybridConnectivity/endpoints/serviceConfigurations"),
-	// 		ID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/SSH"),
 	// 		Properties: &armhybridconnectivity.ServiceConfigurationProperties{
 	// 			Port: to.Ptr[int64](22),
-	// 			ProvisioningState: to.Ptr(armhybridconnectivity.ProvisioningStateSucceeded),
 	// 			ServiceName: to.Ptr(armhybridconnectivity.ServiceNameSSH),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2024-12-01/ServiceConfigurationsPutWAC.json
-func ExampleServiceConfigurationsClient_CreateOrupdate_serviceConfigurationsPutWac() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhybridconnectivity.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewServiceConfigurationsClient().CreateOrupdate(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default", "default", "WAC", armhybridconnectivity.ServiceConfigurationResource{
-		Properties: &armhybridconnectivity.ServiceConfigurationProperties{
-			Port:        to.Ptr[int64](6516),
-			ServiceName: to.Ptr(armhybridconnectivity.ServiceNameWAC),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhybridconnectivity.ServiceConfigurationsClientCreateOrupdateResponse{
-	// 	ServiceConfigurationResource: armhybridconnectivity.ServiceConfigurationResource{
-	// 		Type: to.Ptr("Microsoft.HybridConnectivity/endpoints/serviceConfigurations"),
-	// 		ID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/WAC"),
-	// 		Properties: &armhybridconnectivity.ServiceConfigurationProperties{
-	// 			Port: to.Ptr[int64](6516),
+	// 			ResourceID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine"),
 	// 			ProvisioningState: to.Ptr(armhybridconnectivity.ProvisioningStateSucceeded),
-	// 			ServiceName: to.Ptr(armhybridconnectivity.ServiceNameWAC),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/SSH"),
+	// 		Name: to.Ptr("aevbkozvjyygiiwnfqucwd"),
+	// 		Type: to.Ptr("Microsoft.HybridConnectivity/endpoints/serviceConfigurations"),
+	// 		SystemData: &armhybridconnectivity.SystemData{
+	// 			CreatedBy: to.Ptr("rpxzkcrobprrdvuoqxz"),
+	// 			CreatedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 18, 22, 52, 7, 890000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("jidegyskxi"),
+	// 			LastModifiedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 18, 22, 52, 7, 890000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-12-01/ServiceConfigurationsDeleteSSH.json
-func ExampleServiceConfigurationsClient_Delete() {
+// Generated from example definition: 2027-01-01/ServiceConfigurations_Delete_MaximumSet_Gen.json
+func ExampleServiceConfigurationsClient_Delete_serviceConfigurationsDeleteSshGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -95,7 +71,7 @@ func ExampleServiceConfigurationsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewServiceConfigurationsClient().Delete(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default", "default", "SSH", nil)
+	res, err := clientFactory.NewServiceConfigurationsClient().Delete(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "ureaofizl", "ptkmrkoxmvcmvhdzxkd", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -106,8 +82,8 @@ func ExampleServiceConfigurationsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01/ServiceConfigurationsGetSSH.json
-func ExampleServiceConfigurationsClient_Get_hybridConnectivityEndpointsServiceconfigurationsGetSsh() {
+// Generated from example definition: 2027-01-01/ServiceConfigurations_Delete_MinimumSet_Gen.json
+func ExampleServiceConfigurationsClient_Delete_serviceConfigurationsDeleteSshGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -117,7 +93,29 @@ func ExampleServiceConfigurationsClient_Get_hybridConnectivityEndpointsServiceco
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewServiceConfigurationsClient().Get(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default", "default", "SSH", nil)
+	res, err := clientFactory.NewServiceConfigurationsClient().Delete(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "ykrzxbnhnszoikyge", "qwaxkaulnvwsspqjblxrlxtlyfr", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhybridconnectivity.ServiceConfigurationsClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2027-01-01/ServiceConfigurations_Get_MaximumSet_Gen.json
+func ExampleServiceConfigurationsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridconnectivity.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServiceConfigurationsClient().Get(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "qxkrgoqcdbdduowdxphfmfjpe", "bdahzuetmihmfsvxrtegqzkybmjbfu", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -126,47 +124,28 @@ func ExampleServiceConfigurationsClient_Get_hybridConnectivityEndpointsServiceco
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridconnectivity.ServiceConfigurationsClientGetResponse{
 	// 	ServiceConfigurationResource: armhybridconnectivity.ServiceConfigurationResource{
-	// 		Type: to.Ptr("Microsoft.HybridConnectivity/endpoints/serviceConfigurations"),
-	// 		ID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/SSH"),
 	// 		Properties: &armhybridconnectivity.ServiceConfigurationProperties{
 	// 			Port: to.Ptr[int64](22),
 	// 			ServiceName: to.Ptr(armhybridconnectivity.ServiceNameSSH),
+	// 			ResourceID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine"),
+	// 			ProvisioningState: to.Ptr(armhybridconnectivity.ProvisioningStateSucceeded),
 	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2024-12-01/ServiceConfigurationsGetWAC.json
-func ExampleServiceConfigurationsClient_Get_hybridConnectivityEndpointsServiceconfigurationsGetWac() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhybridconnectivity.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewServiceConfigurationsClient().Get(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default", "default", "WAC", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhybridconnectivity.ServiceConfigurationsClientGetResponse{
-	// 	ServiceConfigurationResource: armhybridconnectivity.ServiceConfigurationResource{
+	// 		ID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/SSH"),
+	// 		Name: to.Ptr("aevbkozvjyygiiwnfqucwd"),
 	// 		Type: to.Ptr("Microsoft.HybridConnectivity/endpoints/serviceConfigurations"),
-	// 		ID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/WAC"),
-	// 		Properties: &armhybridconnectivity.ServiceConfigurationProperties{
-	// 			Port: to.Ptr[int64](6516),
-	// 			ServiceName: to.Ptr(armhybridconnectivity.ServiceNameWAC),
+	// 		SystemData: &armhybridconnectivity.SystemData{
+	// 			CreatedBy: to.Ptr("rpxzkcrobprrdvuoqxz"),
+	// 			CreatedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 18, 22, 52, 7, 890000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("jidegyskxi"),
+	// 			LastModifiedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 18, 22, 52, 7, 890000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-12-01/ServiceConfigurationsList.json
+// Generated from example definition: 2027-01-01/ServiceConfigurations_ListByEndpointResource_MaximumSet_Gen.json
 func ExampleServiceConfigurationsClient_NewListByEndpointResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +156,7 @@ func ExampleServiceConfigurationsClient_NewListByEndpointResourcePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewServiceConfigurationsClient().NewListByEndpointResourcePager("subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default", "default", nil)
+	pager := clientFactory.NewServiceConfigurationsClient().NewListByEndpointResourcePager("subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "azklihfwffrqohr", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -197,6 +176,17 @@ func ExampleServiceConfigurationsClient_NewListByEndpointResourcePager() {
 		// 				Properties: &armhybridconnectivity.ServiceConfigurationProperties{
 		// 					Port: to.Ptr[int64](22),
 		// 					ServiceName: to.Ptr(armhybridconnectivity.ServiceNameSSH),
+		// 					ResourceID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/SSH"),
+		// 					ProvisioningState: to.Ptr(armhybridconnectivity.ProvisioningStateSucceeded),
+		// 				},
+		// 				Name: to.Ptr("emzgudeezgbufyg"),
+		// 				SystemData: &armhybridconnectivity.SystemData{
+		// 					CreatedBy: to.Ptr("rpxzkcrobprrdvuoqxz"),
+		// 					CreatedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.January, 18, 22, 52, 7, 890000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("jidegyskxi"),
+		// 					LastModifiedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.January, 18, 22, 52, 7, 890000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -205,15 +195,27 @@ func ExampleServiceConfigurationsClient_NewListByEndpointResourcePager() {
 		// 				Properties: &armhybridconnectivity.ServiceConfigurationProperties{
 		// 					Port: to.Ptr[int64](6516),
 		// 					ServiceName: to.Ptr(armhybridconnectivity.ServiceNameWAC),
+		// 					ResourceID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/WAC"),
+		// 					ProvisioningState: to.Ptr(armhybridconnectivity.ProvisioningStateSucceeded),
+		// 				},
+		// 				Name: to.Ptr("vielueudobamvtzyyodn"),
+		// 				SystemData: &armhybridconnectivity.SystemData{
+		// 					CreatedBy: to.Ptr("rpxzkcrobprrdvuoqxz"),
+		// 					CreatedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.January, 18, 22, 52, 7, 890000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("jidegyskxi"),
+		// 					LastModifiedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.January, 18, 22, 52, 7, 890000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2024-12-01/ServiceConfigurationsPatchSSH.json
+// Generated from example definition: 2027-01-01/ServiceConfigurations_Update_MaximumSet_Gen.json
 func ExampleServiceConfigurationsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -224,7 +226,7 @@ func ExampleServiceConfigurationsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewServiceConfigurationsClient().Update(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default", "default", "SSH", armhybridconnectivity.ServiceConfigurationResourcePatch{
+	res, err := clientFactory.NewServiceConfigurationsClient().Update(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "bsbpgdlspjhyjgpoxxsoptu", "dcdbyycehygofsazwxadc", armhybridconnectivity.ServiceConfigurationResourcePatch{
 		Properties: &armhybridconnectivity.ServiceConfigurationPropertiesPatch{
 			Port: to.Ptr[int64](22),
 		},
@@ -237,10 +239,22 @@ func ExampleServiceConfigurationsClient_Update() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridconnectivity.ServiceConfigurationsClientUpdateResponse{
 	// 	ServiceConfigurationResource: armhybridconnectivity.ServiceConfigurationResource{
-	// 		ID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default/serviceConfigurations/SSH"),
 	// 		Properties: &armhybridconnectivity.ServiceConfigurationProperties{
 	// 			Port: to.Ptr[int64](22),
 	// 			ServiceName: to.Ptr(armhybridconnectivity.ServiceNameSSH),
+	// 			ResourceID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine"),
+	// 			ProvisioningState: to.Ptr(armhybridconnectivity.ProvisioningStateSucceeded),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/SSH"),
+	// 		Name: to.Ptr("aevbkozvjyygiiwnfqucwd"),
+	// 		Type: to.Ptr("Microsoft.HybridConnectivity/endpoints/serviceConfigurations"),
+	// 		SystemData: &armhybridconnectivity.SystemData{
+	// 			CreatedBy: to.Ptr("rpxzkcrobprrdvuoqxz"),
+	// 			CreatedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 18, 22, 52, 7, 890000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("jidegyskxi"),
+	// 			LastModifiedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 18, 22, 52, 7, 890000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

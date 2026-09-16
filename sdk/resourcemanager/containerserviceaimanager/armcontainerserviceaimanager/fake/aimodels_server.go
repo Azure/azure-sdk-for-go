@@ -23,7 +23,7 @@ import (
 type AIModelsServer struct {
 	// CalculateCost is the fake for method AIModelsClient.CalculateCost
 	// HTTP status codes to indicate success: http.StatusOK
-	CalculateCost func(ctx context.Context, location string, aiModelName string, body armcontainerserviceaimanager.CalculateCostRequest, options *armcontainerserviceaimanager.AIModelsClientCalculateCostOptions) (resp azfake.Responder[armcontainerserviceaimanager.AIModelsClientCalculateCostResponse], errResp azfake.ErrorResponder)
+	CalculateCost func(ctx context.Context, location string, aiModelName string, options *armcontainerserviceaimanager.AIModelsClientCalculateCostOptions) (resp azfake.Responder[armcontainerserviceaimanager.AIModelsClientCalculateCostResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method AIModelsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -104,10 +104,6 @@ func (a *AIModelsServerTransport) dispatchCalculateCost(req *http.Request) (*htt
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcontainerserviceaimanager.CalculateCostRequest](req)
-	if err != nil {
-		return nil, err
-	}
 	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 	if err != nil {
 		return nil, err
@@ -116,7 +112,7 @@ func (a *AIModelsServerTransport) dispatchCalculateCost(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := a.srv.CalculateCost(req.Context(), locationParam, aiModelNameParam, body, nil)
+	respr, errRespr := a.srv.CalculateCost(req.Context(), locationParam, aiModelNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

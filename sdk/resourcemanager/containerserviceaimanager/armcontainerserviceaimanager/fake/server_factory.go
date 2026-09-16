@@ -24,6 +24,9 @@ type ServerFactory struct {
 	// AIModelsServer contains the fakes for client AIModelsClient
 	AIModelsServer AIModelsServer
 
+	// CustomAIModelsServer contains the fakes for client CustomAIModelsClient
+	CustomAIModelsServer CustomAIModelsServer
+
 	// ModelDeploymentsServer contains the fakes for client ModelDeploymentsClient
 	ModelDeploymentsServer ModelDeploymentsServer
 
@@ -51,6 +54,7 @@ type ServerFactoryTransport struct {
 	trAIManagerNamespacesServer *AIManagerNamespacesServerTransport
 	trAIManagersServer          *AIManagersServerTransport
 	trAIModelsServer            *AIModelsServerTransport
+	trCustomAIModelsServer      *CustomAIModelsServerTransport
 	trModelDeploymentsServer    *ModelDeploymentsServerTransport
 	trModelSourcesServer        *ModelSourcesServerTransport
 	trOperationsServer          *OperationsServerTransport
@@ -80,6 +84,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "AIModelsClient":
 		initServer(&s.trMu, &s.trAIModelsServer, func() *AIModelsServerTransport { return NewAIModelsServerTransport(&s.srv.AIModelsServer) })
 		resp, err = s.trAIModelsServer.Do(req)
+	case "CustomAIModelsClient":
+		initServer(&s.trMu, &s.trCustomAIModelsServer, func() *CustomAIModelsServerTransport {
+			return NewCustomAIModelsServerTransport(&s.srv.CustomAIModelsServer)
+		})
+		resp, err = s.trCustomAIModelsServer.Do(req)
 	case "ModelDeploymentsClient":
 		initServer(&s.trMu, &s.trModelDeploymentsServer, func() *ModelDeploymentsServerTransport {
 			return NewModelDeploymentsServerTransport(&s.srv.ModelDeploymentsServer)

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_Create.json
+// Generated from example definition: 2026-03-03/galleryExamples/GalleryImage_Create.json
 func ExampleGalleryImagesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleGalleryImagesClient_BeginCreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImagesClientCreateOrUpdateResponse{
 	// 	GalleryImage: armcompute.GalleryImage{
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGallery/Images/myGalleryImageName"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGallery/images/myGalleryImageName"),
 	// 		Properties: &armcompute.GalleryImageProperties{
 	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 	// 			OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
@@ -66,7 +66,7 @@ func ExampleGalleryImagesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_Delete.json
+// Generated from example definition: 2026-03-03/galleryExamples/GalleryImage_Delete.json
 func ExampleGalleryImagesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleGalleryImagesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_Get.json
+// Generated from example definition: 2026-03-03/galleryExamples/GalleryImage_Get.json
 func ExampleGalleryImagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleGalleryImagesClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImagesClientGetResponse{
 	// 	GalleryImage: armcompute.GalleryImage{
-	// 		ID: to.Ptr("/providers/Microsoft.Compute/galleries/myGallery/Images/myGalleryImageName"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName/images/myGalleryImageName"),
 	// 		Properties: &armcompute.GalleryImageProperties{
 	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 	// 			OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
@@ -130,7 +130,7 @@ func ExampleGalleryImagesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_ListByGallery.json
+// Generated from example definition: 2026-03-03/galleryExamples/GalleryImage_ListByGallery.json
 func ExampleGalleryImagesClient_NewListByGalleryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +156,7 @@ func ExampleGalleryImagesClient_NewListByGalleryPager() {
 		// 	GalleryImageList: armcompute.GalleryImageList{
 		// 		Value: []*armcompute.GalleryImage{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName"),
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName/images/myGalleryImageName"),
 		// 				Properties: &armcompute.GalleryImageProperties{
 		// 					OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 		// 					OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
@@ -178,7 +178,7 @@ func ExampleGalleryImagesClient_NewListByGalleryPager() {
 	}
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_Update.json
+// Generated from example definition: 2026-03-03/galleryExamples/GalleryImage_Update.json
 func ExampleGalleryImagesClient_BeginUpdate_updateASimpleGalleryImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExampleGalleryImagesClient_BeginUpdate_updateASimpleGalleryImage() {
 	// }
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_UpdateFeatures.json
+// Generated from example definition: 2026-03-03/galleryExamples/GalleryImage_UpdateFeatures.json
 func ExampleGalleryImagesClient_BeginUpdate_updateAGalleryImageFeature() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

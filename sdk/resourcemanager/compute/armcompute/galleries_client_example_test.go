@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-12-03/galleryExamples/CommunityGallery_Create.json
+// Generated from example definition: 2026-03-03/galleryExamples/CommunityGallery_Create.json
 func ExampleGalleriesClient_BeginCreateOrUpdate_createACommunityGallery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createACommunityGallery() {
 	// }
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/Gallery_Create.json
+// Generated from example definition: 2026-03-03/galleryExamples/Gallery_Create.json
 func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGallery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGallery() {
 	// }
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/Gallery_Create_SoftDeletionEnabled.json
+// Generated from example definition: 2026-03-03/galleryExamples/Gallery_Create_SoftDeletionEnabled.json
 func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWithSoftDeletionEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,9 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWith
 		Properties: &armcompute.GalleryProperties{
 			Description: to.Ptr("This is the gallery description."),
 			SoftDeletePolicy: &armcompute.SoftDeletePolicy{
-				IsSoftDeleteEnabled: to.Ptr(true),
+				IsSoftDeleteEnabled:   to.Ptr(true),
+				RetentionPeriodInDays: to.Ptr[int32](7),
+				GracePeriodInDays:     to.Ptr[int32](30),
 			},
 		},
 	}, nil)
@@ -157,6 +159,8 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWith
 	// 			ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateUpdating),
 	// 			SoftDeletePolicy: &armcompute.SoftDeletePolicy{
 	// 				IsSoftDeleteEnabled: to.Ptr(true),
+	// 				RetentionPeriodInDays: to.Ptr[int32](7),
+	// 				GracePeriodInDays: to.Ptr[int32](30),
 	// 			},
 	// 		},
 	// 		Location: to.Ptr("West US"),
@@ -165,7 +169,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWith
 	// }
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/Gallery_Create_WithManagedIdentity.json
+// Generated from example definition: 2026-03-03/galleryExamples/Gallery_Create_WithManagedIdentity.json
 func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWithSystemAssignedAndUserAssignedManagedIdentities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +227,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWith
 	// }
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/Gallery_Create_WithSharingProfile.json
+// Generated from example definition: 2026-03-03/galleryExamples/Gallery_Create_WithSharingProfile.json
 func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWithSharingProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -272,7 +276,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWith
 	// }
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/Gallery_Delete.json
+// Generated from example definition: 2026-03-03/galleryExamples/Gallery_Delete.json
 func ExampleGalleriesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -298,7 +302,7 @@ func ExampleGalleriesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/CommunityGallery_Get.json
+// Generated from example definition: 2026-03-03/galleryExamples/CommunityGallery_Get.json
 func ExampleGalleriesClient_Get_getACommunityGallery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -354,7 +358,7 @@ func ExampleGalleriesClient_Get_getACommunityGallery() {
 	// }
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/Gallery_Get.json
+// Generated from example definition: 2026-03-03/galleryExamples/Gallery_Get.json
 func ExampleGalleriesClient_Get_getAGallery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -388,7 +392,7 @@ func ExampleGalleriesClient_Get_getAGallery() {
 	// }
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/Gallery_Get_WithExpandSharingProfileGroups.json
+// Generated from example definition: 2026-03-03/galleryExamples/Gallery_Get_WithExpandSharingProfileGroups.json
 func ExampleGalleriesClient_Get_getAGalleryWithExpandSharingProfileGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -436,7 +440,7 @@ func ExampleGalleriesClient_Get_getAGalleryWithExpandSharingProfileGroups() {
 	// }
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/Gallery_Get_WithManagedIdentity.json
+// Generated from example definition: 2026-03-03/galleryExamples/Gallery_Get_WithManagedIdentity.json
 func ExampleGalleriesClient_Get_getAGalleryWithSystemAssignedAndUserAssignedManagedIdentities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -481,7 +485,7 @@ func ExampleGalleriesClient_Get_getAGalleryWithSystemAssignedAndUserAssignedMana
 	// }
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/Gallery_Get_WithSelectPermissions.json
+// Generated from example definition: 2026-03-03/galleryExamples/Gallery_Get_WithSelectPermissions.json
 func ExampleGalleriesClient_Get_getAGalleryWithSelectPermissions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -529,7 +533,7 @@ func ExampleGalleriesClient_Get_getAGalleryWithSelectPermissions() {
 	// }
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/Gallery_ListBySubscription.json
+// Generated from example definition: 2026-03-03/galleryExamples/Gallery_ListBySubscription.json
 func ExampleGalleriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -573,7 +577,7 @@ func ExampleGalleriesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/Gallery_ListByResourceGroup.json
+// Generated from example definition: 2026-03-03/galleryExamples/Gallery_ListByResourceGroup.json
 func ExampleGalleriesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -617,7 +621,7 @@ func ExampleGalleriesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-12-03/galleryExamples/Gallery_Update.json
+// Generated from example definition: 2026-03-03/galleryExamples/Gallery_Update.json
 func ExampleGalleriesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

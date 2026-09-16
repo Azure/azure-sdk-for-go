@@ -118,10 +118,7 @@ func (s *SolutionServerTransport) dispatchBeginCreate(req *http.Request) (*http.
 		if err != nil {
 			return nil, err
 		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		solutionResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionResourceName")])
 		if err != nil {
 			return nil, err
@@ -160,10 +157,7 @@ func (s *SolutionServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	solutionResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionResourceName")])
 	if err != nil {
 		return nil, err
@@ -199,10 +193,7 @@ func (s *SolutionServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		if err != nil {
 			return nil, err
 		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		solutionResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionResourceName")])
 		if err != nil {
 			return nil, err
@@ -245,10 +236,7 @@ func (s *SolutionServerTransport) dispatchWarmUp(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	solutionResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionResourceName")])
 	if err != nil {
 		return nil, err

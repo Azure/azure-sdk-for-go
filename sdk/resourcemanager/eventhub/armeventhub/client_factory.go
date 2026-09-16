@@ -80,6 +80,14 @@ func (c *ClientFactory) NewEventHubsClient() *EventHubsClient {
 	}
 }
 
+// NewFabricShortcutsClient creates a new instance of FabricShortcutsClient.
+func (c *ClientFactory) NewFabricShortcutsClient() *FabricShortcutsClient {
+	return &FabricShortcutsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewNamespacesClient creates a new instance of NamespacesClient.
 func (c *ClientFactory) NewNamespacesClient() *NamespacesClient {
 	return &NamespacesClient{
@@ -130,6 +138,14 @@ func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesCli
 // NewSchemaRegistryClient creates a new instance of SchemaRegistryClient.
 func (c *ClientFactory) NewSchemaRegistryClient() *SchemaRegistryClient {
 	return &SchemaRegistryClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewUpgradePreferencesOperationsClient creates a new instance of UpgradePreferencesOperationsClient.
+func (c *ClientFactory) NewUpgradePreferencesOperationsClient() *UpgradePreferencesOperationsClient {
+	return &UpgradePreferencesOperationsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

@@ -1,5 +1,10 @@
 # Release History
 
+## 1.0.1 (2026-09-15)
+### Other Changes
+
+- This module is now deprecated. The Microsoft.WeightsAndBiases service will be retired on September 30, 2026. This package will no longer be maintained after that date. There is no replacement service or SDK module. Refer to our [deprecation policy](https://aka.ms/azsdk/support-policies) for more details.
+
 ## 1.0.0 (2025-05-06)
 ### Other Changes
 

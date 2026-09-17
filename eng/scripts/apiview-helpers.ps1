@@ -31,8 +31,9 @@ function New-APIViewArtifacts {
         Compress-Archive -Path $sdk.DirectoryPath -DestinationPath $compressedArchivePath -force
         Rename-Item $compressedArchivePath -NewName "$fileName.gosource"
 
-        $artifactParentDirectory = $sdk.Name -Split "/" | Select-Object -First 1
-        Copy-Item -Force "$OutputDirectory/$artifactParentDirectory" -Destination "$DirectoryToPublish/$artifactParentDirectory" -Recurse
+        $directoryToPublishForSdk = Join-Path $DirectoryToPublish $sdk.Name
+        New-Item -ItemType Directory -Path $directoryToPublishForSdk -Force | Out-Null
+        Copy-Item -Force (Join-Path $sdkDirectoryPath "$fileName.gosource") -Destination $directoryToPublishForSdk
     }
 }
 

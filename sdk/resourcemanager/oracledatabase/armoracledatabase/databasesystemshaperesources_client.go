@@ -16,20 +16,20 @@ import (
 	"strings"
 )
 
-// GiVersionsClient contains the methods for the GiVersions group.
-// Don't use this type directly, use NewGiVersionsClient() instead.
+// DatabaseSystemShapeResourcesClient contains the methods for the DatabaseSystemShapeResources group.
+// Don't use this type directly, use NewDatabaseSystemShapeResourcesClient() instead.
 //
 // Generated from API version 2026-06-01
-type GiVersionsClient struct {
+type DatabaseSystemShapeResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewGiVersionsClient creates a new instance of GiVersionsClient with the specified values.
+// NewDatabaseSystemShapeResourcesClient creates a new instance of DatabaseSystemShapeResourcesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewGiVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GiVersionsClient, error) {
+func NewDatabaseSystemShapeResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseSystemShapeResourcesClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,38 +37,39 @@ func NewGiVersionsClient(subscriptionID string, credential azcore.TokenCredentia
 	if err != nil {
 		return nil, err
 	}
-	client := &GiVersionsClient{
+	client := &DatabaseSystemShapeResourcesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// Get - Get a GiVersion
+// Get - Get a DatabaseSystemShape
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - location - The name of the Azure region.
-//   - giversionname - GiVersion name
-//   - options - GiVersionsClientGetOptions contains the optional parameters for the GiVersionsClient.Get method.
-func (client *GiVersionsClient) Get(ctx context.Context, location string, giversionname string, options *GiVersionsClientGetOptions) (GiVersionsClientGetResponse, error) {
+//   - databasesystemshapename - DatabaseSystemShape name
+//   - options - DatabaseSystemShapeResourcesClientGetOptions contains the optional parameters for the DatabaseSystemShapeResourcesClient.Get
+//     method.
+func (client *DatabaseSystemShapeResourcesClient) Get(ctx context.Context, location string, databasesystemshapename string, options *DatabaseSystemShapeResourcesClientGetOptions) (DatabaseSystemShapeResourcesClientGetResponse, error) {
 	var err error
-	const operationName = "GiVersionsClient.Get"
+	const operationName = "DatabaseSystemShapeResourcesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, location, giversionname, options)
+	req, err := client.getCreateRequest(ctx, location, databasesystemshapename, options)
 	if err != nil {
-		return GiVersionsClientGetResponse{}, err
+		return DatabaseSystemShapeResourcesClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return GiVersionsClientGetResponse{}, err
+		return DatabaseSystemShapeResourcesClientGetResponse{}, err
 	}
 	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
-func (client *GiVersionsClient) getCreateRequest(ctx context.Context, location string, giversionname string, _ *GiVersionsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/giVersions/{giversionname}"
+func (client *DatabaseSystemShapeResourcesClient) getCreateRequest(ctx context.Context, location string, databasesystemshapename string, _ *DatabaseSystemShapeResourcesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/databaseSystemShapes/{databasesystemshapename}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -77,10 +78,10 @@ func (client *GiVersionsClient) getCreateRequest(ctx context.Context, location s
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if giversionname == "" {
-		return nil, errors.New("parameter giversionname cannot be empty")
+	if databasesystemshapename == "" {
+		return nil, errors.New("parameter databasesystemshapename cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{giversionname}", url.PathEscape(giversionname))
+	urlPath = strings.ReplaceAll(urlPath, "{databasesystemshapename}", url.PathEscape(databasesystemshapename))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -93,39 +94,39 @@ func (client *GiVersionsClient) getCreateRequest(ctx context.Context, location s
 }
 
 // getHandleResponse handles the Get response.
-func (client *GiVersionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (GiVersionsClientGetResponse, error) {
-	result := GiVersionsClientGetResponse{}
+func (client *DatabaseSystemShapeResourcesClient) getHandleResponse(resp *http.Response, successCodes ...int) (DatabaseSystemShapeResourcesClientGetResponse, error) {
+	result := DatabaseSystemShapeResourcesClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.GiVersion); err != nil {
-		return GiVersionsClientGetResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseSystemShape); err != nil {
+		return DatabaseSystemShapeResourcesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByLocationPager - List GiVersion resources by SubscriptionLocationResource
+// NewListByLocationPager - List DatabaseSystemShape resources by SubscriptionLocationResource
 //   - location - The name of the Azure region.
-//   - options - GiVersionsClientListByLocationOptions contains the optional parameters for the GiVersionsClient.NewListByLocationPager
+//   - options - DatabaseSystemShapeResourcesClientListByLocationOptions contains the optional parameters for the DatabaseSystemShapeResourcesClient.NewListByLocationPager
 //     method.
-func (client *GiVersionsClient) NewListByLocationPager(location string, options *GiVersionsClientListByLocationOptions) *runtime.Pager[GiVersionsClientListByLocationResponse] {
-	return runtime.NewPager(runtime.PagingHandler[GiVersionsClientListByLocationResponse]{
-		More: func(page GiVersionsClientListByLocationResponse) bool {
+func (client *DatabaseSystemShapeResourcesClient) NewListByLocationPager(location string, options *DatabaseSystemShapeResourcesClientListByLocationOptions) *runtime.Pager[DatabaseSystemShapeResourcesClientListByLocationResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DatabaseSystemShapeResourcesClientListByLocationResponse]{
+		More: func(page DatabaseSystemShapeResourcesClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *GiVersionsClientListByLocationResponse) (GiVersionsClientListByLocationResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GiVersionsClient.NewListByLocationPager")
+		Fetcher: func(ctx context.Context, page *DatabaseSystemShapeResourcesClientListByLocationResponse) (DatabaseSystemShapeResourcesClientListByLocationResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DatabaseSystemShapeResourcesClient.NewListByLocationPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listByLocationCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
-				return GiVersionsClientListByLocationResponse{}, err
+				return DatabaseSystemShapeResourcesClientListByLocationResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return GiVersionsClientListByLocationResponse{}, err
+				return DatabaseSystemShapeResourcesClientListByLocationResponse{}, err
 			}
 			return client.listByLocationHandleResponse(resp, http.StatusOK)
 		},
@@ -134,12 +135,12 @@ func (client *GiVersionsClient) NewListByLocationPager(location string, options 
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *GiVersionsClient) listByLocationCreateRequest(ctx context.Context, location string, nextLink string, options *GiVersionsClientListByLocationOptions) (*policy.Request, error) {
+func (client *DatabaseSystemShapeResourcesClient) listByLocationCreateRequest(ctx context.Context, location string, nextLink string, options *DatabaseSystemShapeResourcesClientListByLocationOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/giVersions"
+		urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/databaseSystemShapes"
 		if client.subscriptionID == "" {
 			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
@@ -158,8 +159,14 @@ func (client *GiVersionsClient) listByLocationCreateRequest(ctx context.Context,
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
 		reqQP.Set("api-version", version20260601)
-		if options != nil && options.Shape != nil {
-			reqQP.Set("shape", string(*options.Shape))
+		if options != nil && options.AvailabilityDomain != nil {
+			reqQP.Set("availabilityDomain", *options.AvailabilityDomain)
+		}
+		if options != nil && options.DatabaseEdition != nil {
+			reqQP.Set("databaseEdition", *options.DatabaseEdition)
+		}
+		if options != nil && options.DatabaseShapeFamily != nil {
+			reqQP.Set("databaseShapeFamily", *options.DatabaseShapeFamily)
 		}
 		if options != nil && options.ShapeAttribute != nil {
 			reqQP.Set("shapeAttribute", *options.ShapeAttribute)
@@ -174,13 +181,13 @@ func (client *GiVersionsClient) listByLocationCreateRequest(ctx context.Context,
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *GiVersionsClient) listByLocationHandleResponse(resp *http.Response, successCodes ...int) (GiVersionsClientListByLocationResponse, error) {
-	result := GiVersionsClientListByLocationResponse{}
+func (client *DatabaseSystemShapeResourcesClient) listByLocationHandleResponse(resp *http.Response, successCodes ...int) (DatabaseSystemShapeResourcesClientListByLocationResponse, error) {
+	result := DatabaseSystemShapeResourcesClientListByLocationResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.GiVersionListResult); err != nil {
-		return GiVersionsClientListByLocationResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseSystemShapeListResult); err != nil {
+		return DatabaseSystemShapeResourcesClientListByLocationResponse{}, err
 	}
 	return result, nil
 }

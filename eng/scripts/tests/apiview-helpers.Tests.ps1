@@ -1,5 +1,15 @@
+# cSpell:ignore gosource
 BeforeAll {
   . (Join-Path $PSScriptRoot .. apiview-helpers.ps1)
+}
+
+Describe "Find-Go-Artifacts-For-Apireview" {
+  It "returns no artifacts when the package was not generated" {
+    $artifactPath = Join-Path $TestDrive artifacts
+    New-Item -ItemType Directory -Path $artifactPath -Force | Out-Null
+
+    Find-Go-Artifacts-For-Apireview $artifactPath "sdk/service/missing" | Should -BeNullOrEmpty
+  }
 }
 
 Describe "New-APIViewArtifacts" {

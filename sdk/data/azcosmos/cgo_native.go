@@ -23,9 +23,14 @@ _Static_assert(sizeof(cosmos_value_t) == 16, "cosmos_value_t ABI size changed");
 _Static_assert(_Alignof(cosmos_value_t) == 8, "cosmos_value_t ABI alignment changed");
 COSMOS_ASSERT_OFFSET(cosmos_value_t, payload, 8);
 
-_Static_assert(sizeof(cosmos_partition_key_component_value_t) == 8, "partition-key value ABI size changed");
+_Static_assert(sizeof(cosmos_string_view_t) == 16, "string-view ABI size changed");
+_Static_assert(_Alignof(cosmos_string_view_t) == 8, "string-view ABI alignment changed");
+COSMOS_ASSERT_OFFSET(cosmos_string_view_t, data, 0);
+COSMOS_ASSERT_OFFSET(cosmos_string_view_t, len, 8);
+
+_Static_assert(sizeof(cosmos_partition_key_component_value_t) == 16, "partition-key value ABI size changed");
 _Static_assert(_Alignof(cosmos_partition_key_component_value_t) == 8, "partition-key value ABI alignment changed");
-_Static_assert(sizeof(cosmos_partition_key_component_t) == 16, "partition-key component ABI size changed");
+_Static_assert(sizeof(cosmos_partition_key_component_t) == 24, "partition-key component ABI size changed");
 _Static_assert(_Alignof(cosmos_partition_key_component_t) == 8, "partition-key component ABI alignment changed");
 COSMOS_ASSERT_OFFSET(cosmos_partition_key_component_t, value, 8);
 
@@ -81,7 +86,7 @@ COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, body, 96);
 COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, body_len, 104);
 COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, session_token, 112);
 COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, max_item_count, 160);
-COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, precondition_kind, 168);
+COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, precondition_kind, 172);
 COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, precondition_etag, 176);
 COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, options, 192);
 */

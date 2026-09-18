@@ -73,23 +73,22 @@ extends:
               EnvVars:
                 EMULATOR: 'true'
 
-      # The driver and the emulator are committed under internal/native/lib rather than built
-      # here. Building them needs crates.io, which the agents cannot reach, and the distribution
-      # design puts these binaries in their own modules in a separate repository anyway. That
-      # repository does not yet carry a module for this platform, so the committed copies stand in
-      # until it does. This stage is expected to shrink to a module dependency at that point.
+      # Driver archives come from platform Go modules; the test emulator is built from pinned Rust source.
       - stage: DriverEmulator
         displayName: 'Cosmos Emulator (v2 driver)'
         # A stage with no dependsOn implicitly depends on the one before it, which would queue this
         # behind the Windows emulator stage above and skip it entirely whenever that stage fails.
-        # This stage shares nothing with it: it builds what it needs itself, from binaries that are
-        # already in the tree. An empty dependsOn is what makes that independence explicit.
+        # This stage builds its own emulator. An empty dependsOn makes that independence explicit.
         dependsOn: []
         variables:
         - template: /eng/pipelines/templates/variables/globals.yml@self
         - template: /eng/pipelines/templates/variables/image.yml@self
-        - name: DriverLibDir
-          value: $(Build.SourcesDirectory)/sdk/data/azcosmos/internal/native/lib/linux_amd64
+        - name: EmulatorBinDir
+          value: $(Agent.TempDirectory)/cosmos-emulator-target/release
+        - name: EmulatorSourceRevision
+          value: a05f024d22cd0a70f6ccac5e310cbbbaf40bf20e
+        - name: EmulatorRustVersion
+          value: '1.95.0'
         jobs:
         - job: RunDriverEmulatorTests
           displayName: Run the driver emulator tests
@@ -104,22 +103,36 @@ extends:
             parameters:
               AgentImage: ubuntu
 
-          # Detect checkout corruption before making the emulator executable. The checksum and
-          # binary share one review trust boundary; this is integrity checking, not independent
-          # provenance attestation.
           - script: |
               set -euo pipefail
-              cd sdk/data/azcosmos
-              sha256sum -c internal/native/lib/SHA256SUMS
-            displayName: 'Check committed artifact integrity'
+              if ! command -v rustup >/dev/null 2>&1; then
+                curl --fail --show-error --silent --location --proto '=https' --tlsv1.2 \
+                  https://sh.rustup.rs -o "$(Agent.TempDirectory)/cosmos-rustup-init.sh"
+                sh "$(Agent.TempDirectory)/cosmos-rustup-init.sh" \
+                  -y --no-modify-path --profile minimal --default-toolchain none
+                export PATH="$HOME/.cargo/bin:$PATH"
+              fi
+              rustup toolchain install "$(EmulatorRustVersion)" --profile minimal
+
+              source="$(Agent.TempDirectory)/cosmos-emulator-source"
+              git init --quiet "$source"
+              git -C "$source" fetch --depth=1 https://github.com/Azure/azure-sdk-for-rust.git \
+                "$(EmulatorSourceRevision)"
+              git -C "$source" checkout --detach FETCH_HEAD
+              test "$(git -C "$source" rev-parse HEAD)" = "$(EmulatorSourceRevision)"
+              cd "$source"
+              cargo +"$(EmulatorRustVersion)" build --locked --release \
+                -p azure_data_cosmos_emulator \
+                --target-dir "$(Agent.TempDirectory)/cosmos-emulator-target"
+            displayName: 'Build the emulator from pinned Rust source'
 
           # Fail here rather than leaving the tests to fail with a less obvious message.
           - script: |
               set -euo pipefail
-              test -f "$(DriverLibDir)/azure_data_cosmos_emulator"
-              chmod +x "$(DriverLibDir)/azure_data_cosmos_emulator"
-              file "$(DriverLibDir)/azure_data_cosmos_emulator"
-            displayName: 'Check the committed emulator artifact'
+              test -f "$(EmulatorBinDir)/azure_data_cosmos_emulator"
+              test -x "$(EmulatorBinDir)/azure_data_cosmos_emulator"
+              file "$(EmulatorBinDir)/azure_data_cosmos_emulator"
+            displayName: 'Check the built emulator executable'
 
           # The emulator writes one JSON record to stdout once every listener is bound, and logs to
           # stderr, so the endpoint is read from that record rather than guessed. Its config asks
@@ -127,7 +140,7 @@ extends:
           - script: |
               set -euo pipefail
               config='sdk/data/azcosmos/internal/testdata/emulator-config.json'
-              nohup "$(DriverLibDir)/azure_data_cosmos_emulator" --config "$config" \
+              nohup "$(EmulatorBinDir)/azure_data_cosmos_emulator" --config "$config" \
                 > "$(Agent.TempDirectory)/emulator-ready.json" \
                 2> "$(Agent.TempDirectory)/emulator.log" &
 

@@ -89,13 +89,22 @@ func TestPartitionKeyReleaseIsSafe(t *testing.T) {
 	}
 }
 
-// Unset options must leave the driver's defaults in place rather than zeroing every field, which
-// is why the struct is built from cosmos_operation_options_default.
+// Unset options preserve driver defaults except binary encoding, since Go returns text JSON.
 func TestOperationOptionsToNativeKeepsDefaults(t *testing.T) {
 	options, release := inspectNativeOperationOptions(OperationOptions{})
 	t.Cleanup(release)
 
-	require.Equal(t, defaultNativeOperationOptions(), options)
+	expected := defaultNativeOperationOptions()
+	expected.binaryEncodingEnabled = 1
+	require.Equal(t, expected, options)
+}
+
+func TestClientOptionsToNativeDisablesBinaryEncoding(t *testing.T) {
+	options, release, err := inspectNativeClientOptions(ClientOptions{})
+	require.NoError(t, err)
+	t.Cleanup(release)
+
+	require.Equal(t, int8(1), options.operationOptions.binaryEncodingEnabled)
 }
 
 // The content-response setting is tri-state at the ABI, so false has to be distinguishable from

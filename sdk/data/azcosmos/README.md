@@ -68,8 +68,12 @@ use, so the binding is exercised against what the driver is developed against. I
 process rather than a container, it creates the test database and container from its config, and it
 reports its endpoints as JSON on stdout, so the endpoint is read rather than assumed:
 
+Build the emulator from the pinned Rust source using the
+[emulator build instructions](internal/testdata/README.md). No emulator executable is checked
+into this module. CI builds it with a pinned Rust toolchain and locked Cargo dependencies.
+
 ```sh
-internal/native/lib/linux_amd64/azure_data_cosmos_emulator \
+/path/to/emulator-target/release/azure_data_cosmos_emulator \
   --config path/to/azcosmos/internal/testdata/emulator-config.json
 # {"event":"ready","accountEndpoint":"http://127.0.0.1:49151/", ...}
 

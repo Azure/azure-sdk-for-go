@@ -92,6 +92,8 @@ func (o OperationOptions) toNative() (*C.cosmos_operation_options_t, func()) {
 	// package does not set keeps its documented default rather than becoming zero.
 	options := (*C.cosmos_operation_options_t)(C.malloc(C.size_t(unsafe.Sizeof(C.cosmos_operation_options_t{}))))
 	*options = C.cosmos_operation_options_default()
+	// Keep response bodies as service-provided text JSON rather than Cosmos binary JSON.
+	options.binary_encoding_enabled = 1
 
 	var allocations []unsafe.Pointer
 	release := func() {
@@ -201,6 +203,7 @@ var (
 
 // nativeOperationOptions is a converted option set, in Go types.
 type nativeOperationOptions struct {
+	binaryEncodingEnabled   int8
 	readConsistencyStrategy int32
 	contentResponseOnWrite  int32
 	endToEndTimeoutMillis   int64
@@ -212,6 +215,7 @@ func inspectNativeOperationOptions(o OperationOptions) (nativeOperationOptions, 
 	options, release := o.toNative()
 
 	out := nativeOperationOptions{
+		binaryEncodingEnabled:   int8(options.binary_encoding_enabled),
 		readConsistencyStrategy: int32(options.read_consistency_strategy),
 		contentResponseOnWrite:  int32(options.content_response_on_write),
 		endToEndTimeoutMillis:   int64(options.end_to_end_timeout_ms),
@@ -231,6 +235,7 @@ func inspectNativeOperationOptions(o OperationOptions) (nativeOperationOptions, 
 func defaultNativeOperationOptions() nativeOperationOptions {
 	defaults := C.cosmos_operation_options_default()
 	return nativeOperationOptions{
+		binaryEncodingEnabled:   int8(defaults.binary_encoding_enabled),
 		readConsistencyStrategy: int32(defaults.read_consistency_strategy),
 		contentResponseOnWrite:  int32(defaults.content_response_on_write),
 		endToEndTimeoutMillis:   int64(defaults.end_to_end_timeout_ms),
@@ -315,6 +320,7 @@ func inspectNativeClientOptions(o ClientOptions) (nativeClientOptions, func(), e
 	}
 	if config.operation_options != nil {
 		out.operationOptions = nativeOperationOptions{
+			binaryEncodingEnabled:   int8(config.operation_options.binary_encoding_enabled),
 			readConsistencyStrategy: int32(config.operation_options.read_consistency_strategy),
 			contentResponseOnWrite:  int32(config.operation_options.content_response_on_write),
 			endToEndTimeoutMillis:   int64(config.operation_options.end_to_end_timeout_ms),

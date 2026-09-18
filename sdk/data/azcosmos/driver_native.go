@@ -17,7 +17,6 @@ import (
 	"fmt"
 	"sync"
 	"time"
-	"unsafe"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )

@@ -15,7 +15,6 @@ import (
 	"context"
 	"errors"
 	"runtime/cgo"
-	"unsafe"
 )
 
 // unsetMaxItemCount is what the driver reads as "no page-size hint".

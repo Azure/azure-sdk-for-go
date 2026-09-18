@@ -4,6 +4,59 @@
 
 package armrelay
 
+// ClustersClientCreateOrUpdateResponse contains the response from method ClustersClient.BeginCreateOrUpdate.
+type ClustersClientCreateOrUpdateResponse struct {
+	// A Relay dedicated cluster.
+	Cluster
+}
+
+// ClustersClientDeleteResponse contains the response from method ClustersClient.BeginDelete.
+type ClustersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ClustersClientGetResponse contains the response from method ClustersClient.Get.
+type ClustersClientGetResponse struct {
+	// A Relay dedicated cluster.
+	Cluster
+}
+
+// ClustersClientListAvailableClusterRegionResponse contains the response from method ClustersClient.ListAvailableClusterRegion.
+type ClustersClientListAvailableClusterRegionResponse struct {
+	// The response from listing regions that have available Relay cluster capacity.
+	AvailableRelayClustersList
+}
+
+// ClustersClientListByResourceGroupResponse contains the response from method ClustersClient.NewListByResourceGroupPager.
+type ClustersClientListByResourceGroupResponse struct {
+	// The response of a RelayCluster list operation.
+	ClusterListResult
+}
+
+// ClustersClientListBySubscriptionResponse contains the response from method ClustersClient.NewListBySubscriptionPager.
+type ClustersClientListBySubscriptionResponse struct {
+	// The response of a RelayCluster list operation.
+	ClusterListResult
+}
+
+// ClustersClientListNamespacesResponse contains the response from method ClustersClient.ListNamespaces.
+type ClustersClientListNamespacesResponse struct {
+	// The response from listing Relay namespace references in a cluster.
+	NamespaceIDListResult
+}
+
+// ClustersClientListSKUsResponse contains the response from method ClustersClient.ListSKUs.
+type ClustersClientListSKUsResponse struct {
+	// The response from listing supported SKUs for a Relay cluster.
+	ClusterSKUListResult
+}
+
+// ClustersClientUpdateResponse contains the response from method ClustersClient.Update.
+type ClustersClientUpdateResponse struct {
+	// A Relay dedicated cluster.
+	Cluster
+}
+
 // HybridConnectionsClientCreateOrUpdateAuthorizationRuleResponse contains the response from method HybridConnectionsClient.CreateOrUpdateAuthorizationRule.
 type HybridConnectionsClientCreateOrUpdateAuthorizationRuleResponse struct {
 	// Single item in a List or Get AuthorizationRule operation

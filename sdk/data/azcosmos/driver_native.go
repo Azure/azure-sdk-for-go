@@ -23,7 +23,7 @@ import (
 )
 
 // This is the build of the package that binds to azure_data_cosmos_driver_native. It is selected
-// automatically when cgo is enabled on a target for which this module carries a native archive.
+// automatically when cgo is enabled on a target with a supported driver distribution module.
 
 // driverAvailable reports whether this build can reach the Cosmos driver.
 const driverAvailable = true
@@ -297,8 +297,8 @@ func (d *nativeDriver) buildRuntime() error {
 
 	if d.cfg.options.ApplicationID != "" {
 		// Copied into the runtime before the call returns, so freeing it here is safe.
-		suffix := C.CString(d.cfg.options.ApplicationID)
-		defer C.free(unsafe.Pointer(suffix))
+		suffix, allocation := toNativeString(d.cfg.options.ApplicationID)
+		defer C.free(allocation)
 		options.user_agent_suffix = suffix
 	}
 
@@ -331,11 +331,11 @@ func (d *nativeDriver) buildAccount(cfg driverConfig) error {
 		return d.buildTokenAccount(cfg)
 	}
 
-	endpoint := C.CString(cfg.endpoint)
-	defer C.free(unsafe.Pointer(endpoint))
+	endpoint, endpointAllocation := toNativeString(cfg.endpoint)
+	defer C.free(endpointAllocation)
 	// The key is copied into a Rust Secret before the call returns, so freeing it here is safe.
-	key := C.CString(cfg.accountKey)
-	defer C.free(unsafe.Pointer(key))
+	key, keyAllocation := toNativeString(cfg.accountKey)
+	defer C.free(keyAllocation)
 
 	var richErr *C.cosmos_error_t
 	status := C.cosmos_account_ref_with_master_key(endpoint, key, &d.account, &richErr) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.

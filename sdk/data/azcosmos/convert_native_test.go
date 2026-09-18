@@ -58,6 +58,16 @@ func TestPartitionKeyToNativePreservesOrder(t *testing.T) {
 	require.Equal(t, "session", components[2].stringValue)
 }
 
+func TestPartitionKeyToNativePreservesEmbeddedNUL(t *testing.T) {
+	pk := NewPartitionKeyString("tenant\x00suffix")
+
+	components, release := inspectNativePartitionKey(pk)
+	t.Cleanup(release)
+
+	require.Len(t, components, 1)
+	require.Equal(t, "tenant\x00suffix", components[0].stringValue)
+}
+
 // An empty partition key has to produce a null array rather than a zero-length allocation, because
 // the request struct treats a null components pointer as "use the handle instead".
 func TestPartitionKeyToNativeIsNilWhenEmpty(t *testing.T) {

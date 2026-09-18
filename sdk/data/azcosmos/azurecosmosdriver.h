@@ -48,6 +48,11 @@
 #define COSMOS_VALUE_KIND_BOOL   3
 #define COSMOS_VALUE_KIND_U64    4
 
+// Discriminants for cosmos_operation_options_t.query_plan_mode.
+#define COSMOS_QUERY_PLAN_MODE_UNSET           0
+#define COSMOS_QUERY_PLAN_MODE_LOCAL_PREFERRED 1
+#define COSMOS_QUERY_PLAN_MODE_GATEWAY_ONLY    2
+
 /**
  * Per spec section 3.6.1, every completion has exactly one of these outcomes.
  *
@@ -949,6 +954,26 @@ typedef struct cosmos_runtime_t cosmos_runtime_t;
 typedef int32_t cosmos_status_code_t;
 
 /**
+ * Borrowed counted UTF-8 input, copied before the FFI call returns.
+ *
+ * `len` counts bytes, not characters, and must not exceed `isize::MAX`.
+ * Nonempty data must occupy one readable allocation valid throughout the call.
+ * NULL/0 means unset for optional fields; non-NULL/0 means explicitly empty.
+ * Required fields reject NULL, except partition-key strings where NULL/0 is empty.
+ * NULL/nonzero is always invalid. Only partition-key strings permit embedded NUL.
+ */
+typedef struct cosmos_string_view_t {
+  /**
+   * Borrowed UTF-8 bytes, without a terminator requirement.
+   */
+  const uint8_t *data;
+  /**
+   * Number of readable bytes.
+   */
+  uintptr_t len;
+} cosmos_string_view_t;
+
+/**
  * Owned, flat rich error handed back through the synchronous `out_error`
  * slots (`cosmos_error_t`).
  *
@@ -1293,19 +1318,19 @@ typedef struct cosmos_completion_queue_options_t {
 } cosmos_completion_queue_options_t;
 
 /**
- * A single custom request/operation header. Both pointers are
- * NUL-terminated UTF-8 and borrowed for the duration of the submit call;
+ * A single custom request/operation header. Both views are
+ * counted UTF-8 and borrowed for the duration of the submit call;
  * the wrapper copies them before returning.
  */
 typedef struct cosmos_header_kv_t {
   /**
-   * Header name (NUL-terminated UTF-8).
+   * Required header name (counted UTF-8, non-NULL and nonempty).
    */
-  const char *name;
+  struct cosmos_string_view_t name;
   /**
-   * Header value (NUL-terminated UTF-8).
+   * Required header value (counted UTF-8, non-NULL; empty is allowed).
    */
-  const char *value;
+  struct cosmos_string_view_t value;
 } cosmos_header_kv_t;
 
 /**
@@ -1360,14 +1385,14 @@ typedef struct cosmos_operation_options_t {
    */
   int64_t endpoint_unavailability_ttl_ms;
   /**
-   * Throughput control group name (NUL-terminated UTF-8). NULL = unset.
+   * Throughput control group name (counted UTF-8). NULL/0 = unset.
    */
-  const char *throughput_control_group;
+  struct cosmos_string_view_t throughput_control_group;
   /**
-   * Excluded regions — array of NUL-terminated UTF-8 region ids.
+   * Excluded regions — array of counted UTF-8 region ids.
    * NULL / `0` length = unset; non-NULL with `0` length is rejected.
    */
-  const char *const *excluded_regions;
+  const struct cosmos_string_view_t *excluded_regions;
   /**
    * Number of entries in `excluded_regions`.
    */
@@ -1388,9 +1413,10 @@ typedef struct cosmos_operation_options_t {
    * When true, the driver transcodes a **text** request body to binary
    * before sending it (an already-binary body is passed through) and
    * advertises `CosmosBinary`, so the caller never encodes binary itself.
-   * An explicit `false` forces binary **off** for this operation regardless
-   * of any account/runtime default; `unset` inherits a lower layer (text by
-   * default).
+   * An explicit `false` (`1`) is the text opt-out: it forces binary **off**
+   * for this operation regardless of any account/runtime default. `unset`
+   * inherits a lower layer, which enables binary encoding by default, so an
+   * all-unset options struct negotiates binary.
    *
    * The response side is uniform across operation types: point reads,
    * writes that echo content, and queries all negotiate a binary response,
@@ -1407,8 +1433,11 @@ typedef struct cosmos_operation_options_t {
    * Tri-state bool (`0` unset / `1` false / `2` true).
    *
    * Only meaningful when [`binary_encoding_enabled`](Self::binary_encoding_enabled)
-   * is true: the wire stays binary in both directions and the driver hands
-   * back text. `unset` / `false` returns the binary response as-is.
+   * resolves to true: the wire stays binary in both directions and the
+   * driver hands back text. `unset` / `false` returns the binary response
+   * as-is. Setting this to `2` is honored even when
+   * [`binary_encoding_enabled`](Self::binary_encoding_enabled) is left
+   * unset, since binary is enabled by default.
    *
    * This applies to every operation type, queries included: the wire keeps
    * the bandwidth saving and the driver transcodes each response body — for
@@ -1417,10 +1446,17 @@ typedef struct cosmos_operation_options_t {
    * Note the returned text is re-serialized by the driver rather than being
    * the service's original bytes: values are preserved, but object keys are
    * emitted in sorted order and numbers use Rust's shortest round-trip
-   * rendering. Hosts needing byte-exact service output should leave binary
-   * encoding disabled.
+   * rendering. Hosts needing byte-exact service output must explicitly
+   * disable binary encoding by setting
+   * [`binary_encoding_enabled`](Self::binary_encoding_enabled) to `1`.
    */
   int8_t binary_encoding_request_text_response;
+  /**
+   * Query-plan mode encoded as a [`CosmosQueryPlanMode`] discriminant.
+   * `0` (`Unset`) inherits. Stored as a raw `i32` so invalid host values can
+   * be rejected before materializing the enum.
+   */
+  int32_t query_plan_mode;
 } cosmos_operation_options_t;
 
 /**
@@ -1435,7 +1471,6 @@ typedef struct cosmos_operation_options_t {
  * - `operation_options`: pointer to a flat
  *   [`cosmos_operation_options_t`](crate::op_request::CosmosOperationOptions),
  *   or NULL to inherit the driver defaults.
- *
  * The account reference stays a separate handle parameter on
  * [`cosmos_driver_options_build`] — it owns `Arc`-shared state and cannot be
  * flattened into bytes.
@@ -1445,10 +1480,10 @@ typedef struct cosmos_operation_options_t {
  */
 typedef struct cosmos_driver_options_config_t {
   /**
-   * Preferred regions for routing — array of NUL-terminated UTF-8 region
+   * Preferred regions for routing — array of counted UTF-8 region
    * names. NULL / `0` length = none.
    */
-  const char *const *preferred_regions;
+  const struct cosmos_string_view_t *preferred_regions;
   /**
    * Number of entries in `preferred_regions`.
    */
@@ -1474,9 +1509,9 @@ typedef struct cosmos_driver_options_config_t {
  */
 typedef union cosmos_partition_key_component_value_t {
   /**
-   * String payload (NUL-terminated UTF-8). Read iff `kind` is `String`.
+   * Borrowed counted UTF-8 payload. Read iff `kind` is `String`.
    */
-  const char *string_value;
+  struct cosmos_string_view_t string_value;
   /**
    * Numeric payload. Read iff `kind` is `Number`. Must be finite.
    */
@@ -1524,7 +1559,7 @@ typedef struct cosmos_partition_key_component_t {
  *
  * - `workload_id`: `0` = unset (valid range otherwise `1`–`50`).
  * - `correlation_id` / `user_agent_suffix` / `wrapping_sdk_identifier`:
- *   NULL = unset (otherwise a NUL-terminated UTF-8 string).
+ *   NULL/0 = unset; non-NULL/0 = explicit empty, per [`CosmosStringView`].
  * - `cpu_refresh_interval_ms`: `0` = unset (valid range otherwise
  *   `1000`–`60000`).
  *
@@ -1537,19 +1572,18 @@ typedef struct cosmos_runtime_options_t {
    */
   uint8_t workload_id;
   /**
-   * Correlation id for client-side metrics (NUL-terminated UTF-8), or NULL
-   * = unset.
+   * Correlation id for client-side metrics (counted UTF-8), or NULL/0 = unset.
    */
-  const char *correlation_id;
+  struct cosmos_string_view_t correlation_id;
   /**
-   * User-agent suffix (NUL-terminated UTF-8), or NULL = unset.
+   * User-agent suffix (counted UTF-8), or NULL/0 = unset.
    */
-  const char *user_agent_suffix;
+  struct cosmos_string_view_t user_agent_suffix;
   /**
    * Wrapping-SDK identifier prepended to the User-Agent header
-   * (NUL-terminated UTF-8), or NULL = unset.
+   * (counted UTF-8), or NULL/0 = unset.
    */
-  const char *wrapping_sdk_identifier;
+  struct cosmos_string_view_t wrapping_sdk_identifier;
   /**
    * CPU/memory monitoring refresh interval in milliseconds (valid range
    * `1000`–`60000`). `0` = unset.
@@ -1585,15 +1619,15 @@ typedef struct cosmos_operation_request_t {
    */
   const struct cosmos_container_ref_t *container;
   /**
-   * Item id (NUL-terminated UTF-8). Required for item-scope kinds that
+   * Item id (counted UTF-8). Required for item-scope kinds that
    * address a specific document; otherwise NULL.
    */
-  const char *item_id;
+  struct cosmos_string_view_t item_id;
   /**
-   * Offer resource link (NUL-terminated UTF-8). Required for the offer
+   * Offer resource link (counted UTF-8). Required for the offer
    * kinds; otherwise NULL.
    */
-  const char *resource_link;
+  struct cosmos_string_view_t resource_link;
   /**
    * Partition key handle. Required for item-scope, `read_all_items`, and
    * `batch` (unless the inline `partition_key_components` array is supplied
@@ -1630,19 +1664,19 @@ typedef struct cosmos_operation_request_t {
    */
   uintptr_t body_len;
   /**
-   * Session token override (NUL-terminated UTF-8). NULL = unset.
+   * Session token override (counted UTF-8). NULL/0 = unset.
    */
-  const char *session_token;
+  struct cosmos_string_view_t session_token;
   /**
-   * Activity id override (NUL-terminated UTF-8). NULL = auto-generate.
+   * Activity id override (counted UTF-8). NULL/0 = auto-generate.
    */
-  const char *activity_id;
+  struct cosmos_string_view_t activity_id;
   /**
-   * Continuation token to resume a feed (NUL-terminated UTF-8). NULL = none.
+   * Continuation token to resume a feed (counted UTF-8). NULL/0 = none.
    * Only meaningful for feed kinds dispatched through
    * `cosmos_submit_operation`.
    */
-  const char *continuation_token;
+  struct cosmos_string_view_t continuation_token;
   /**
    * Max item count hint for feeds. `< 0` = unset.
    */
@@ -1676,19 +1710,19 @@ typedef struct cosmos_operation_request_t {
    */
   int32_t precondition_kind;
   /**
-   * ETag for the precondition (NUL-terminated UTF-8). Required iff
+   * ETag for the precondition (counted UTF-8). Required iff
    * `precondition_kind` is not `None`.
    */
-  const char *precondition_etag;
+  struct cosmos_string_view_t precondition_etag;
   /**
    * Per-call options. NULL = use driver/runtime defaults.
    */
   const struct cosmos_operation_options_t *options;
   /**
-   * Stable PATCH tracking UUID (NUL-terminated UTF-8). NULL = generate one
+   * Stable PATCH tracking UUID (counted UTF-8). NULL/0 = generate one
    * for this invocation.
    */
-  const char *patch_tracking_id;
+  struct cosmos_string_view_t patch_tracking_id;
   /**
    * Maximum number of PATCH tracking entries retained on the item. The
    * oldest entry is evicted when full. `0` = use the driver default.
@@ -1731,9 +1765,9 @@ void cosmos_string_free(const char *s);
  *
  * # Parameters
  *
- * - `endpoint` — NUL-terminated UTF-8 service endpoint URL (e.g.
+ * - `endpoint` — counted UTF-8 service endpoint URL (e.g.
  *   `https://myaccount.documents.azure.com:443/`). Must be non-NULL.
- * - `key` — NUL-terminated UTF-8 master key. Must be non-NULL. The
+ * - `key` — counted UTF-8 master key. Must be non-NULL and NUL-free. The
  *   key is copied into a [`Secret`] on the Rust side; the caller may
  *   free its copy immediately after this call returns.
  * - `out_account` — receives the new FFI handle on success. Must be
@@ -1742,6 +1776,9 @@ void cosmos_string_free(const char *s);
  *   (`CLIENT_INVALID_ACCOUNT_ENDPOINT_URL`) receives a rich `cosmos_error_t *`
  *   describing the failure; the NULL / UTF-8 preflight failures return a
  *   status code only. NULL silently drops it.
+ *
+ * Views follow [`CosmosStringView`]'s allocation contract. Embedded NUL in
+ * endpoints is rejected before URL parsing; keys reject it as an invalid option.
  *
  * # Returns
  *
@@ -1756,8 +1793,8 @@ void cosmos_string_free(const char *s);
  * - `400` / `CLIENT_INVALID_ACCOUNT_ENDPOINT_URL` when `endpoint` is not a
  *   parsable URL. `*out_error` is populated when non-NULL.
  */
-cosmos_status_code_t cosmos_account_ref_with_master_key(const char *endpoint,
-                                                        const char *key,
+cosmos_status_code_t cosmos_account_ref_with_master_key(struct cosmos_string_view_t endpoint,
+                                                        struct cosmos_string_view_t key,
                                                         struct cosmos_account_ref_t **out_account,
                                                         struct cosmos_error_t **out_error);
 
@@ -1770,6 +1807,9 @@ cosmos_status_code_t cosmos_account_ref_with_master_key(const char *endpoint,
  * `user_data_free` callback runs after the final account/driver credential
  * reference is released.
  *
+ * `endpoint` follows [`CosmosStringView`]'s allocation contract and must be
+ * non-NULL and NUL-free. Its complete UTF-8 value is validated before URL parsing.
+ *
  * # Returns
  *
  * - `SUCCESS` (0) with `*out_account` populated.
@@ -1778,7 +1818,7 @@ cosmos_status_code_t cosmos_account_ref_with_master_key(const char *endpoint,
  * - `INVALID_UTF8` (2) when `endpoint` is not valid UTF-8.
  * - `INVALID_ACCOUNT_REFERENCE` (4003) when `endpoint` is not a parsable URL.
  */
-cosmos_status_code_t cosmos_account_ref_with_credential(const char *endpoint,
+cosmos_status_code_t cosmos_account_ref_with_credential(struct cosmos_string_view_t endpoint,
                                                         struct cosmos_token_provider_t provider,
                                                         intptr_t user_data,
                                                         struct cosmos_account_ref_t **out_account,
@@ -1939,8 +1979,8 @@ void cosmos_container_ref_free(struct cosmos_container_ref_t *container);
  *
  * - `runtime` — non-NULL.
  * - `driver` — non-NULL; the driver whose container cache to consult.
- * - `database_id` — NUL-terminated UTF-8.
- * - `container_id` — NUL-terminated UTF-8.
+ * - `database_id` — required counted UTF-8, per [`CosmosStringView`].
+ * - `container_id` — required counted UTF-8, per [`CosmosStringView`].
  * - `out_container` — non-NULL slot for the resolved handle.
  * - `out_error` — optional rich error on failure. NULL silently drops.
  *
@@ -1955,11 +1995,13 @@ void cosmos_container_ref_free(struct cosmos_container_ref_t *container);
  *   is not valid UTF-8.
  * - The packed HTTP/sub-status derived from the driver-side error on resolve
  *   failure; `*out_error` is populated when non-NULL.
+ *
+ * Embedded NUL in either identifier is rejected as an invalid option.
  */
 cosmos_status_code_t cosmos_driver_resolve_container_blocking(const struct cosmos_runtime_t *runtime,
                                                               const struct cosmos_driver_t *driver,
-                                                              const char *database_id,
-                                                              const char *container_id,
+                                                              struct cosmos_string_view_t database_id,
+                                                              struct cosmos_string_view_t container_id,
                                                               struct cosmos_container_ref_t **out_container,
                                                               struct cosmos_error_t **out_error);
 
@@ -1995,8 +2037,8 @@ cosmos_status_code_t cosmos_token_request_complete(uint64_t request_id,
  * # Parameters
  *
  * - `account` — parent account reference. Must be non-NULL.
- * - `database_id` — NUL-terminated UTF-8 database name. Must be
- *   non-NULL.
+ * - `database_id` — counted UTF-8 database name following [`CosmosStringView`].
+ *   Must be non-NULL; embedded NUL is rejected as an invalid option.
  * - `out_database` — receives the new FFI handle on success. Must be
  *   non-NULL.
  *
@@ -2011,7 +2053,7 @@ cosmos_status_code_t cosmos_token_request_complete(uint64_t request_id,
  * - `400` / `CLIENT_FFI_INVALID_UTF8` when `database_id` is not valid UTF-8.
  */
 cosmos_status_code_t cosmos_database_ref_create(const struct cosmos_account_ref_t *account,
-                                                const char *database_id,
+                                                struct cosmos_string_view_t database_id,
                                                 struct cosmos_database_ref_t **out_database);
 
 /**
@@ -2196,8 +2238,8 @@ struct cosmos_operation_options_t cosmos_operation_options_default(void);
  * # Parameters
  *
  * - `components` — array of `len` [`CosmosPartitionKeyComponent`] values.
- *   Each `String` component's `string_value` must be valid NUL-terminated
- *   UTF-8 for the duration of the call; the wrapper copies what it needs.
+ *   Each `String` component's `string_value` must describe valid UTF-8 bytes
+ *   for the duration of the call; the wrapper copies the complete slice.
  * - `len` — number of components (`1..=3`).
  * - `out_pk` — receives the new handle on success. Must be non-NULL.
  *
@@ -2424,8 +2466,8 @@ struct cosmos_operation_handle_t *cosmos_driver_get_or_create_submit(const struc
  * [`crate::completion::cosmos_completion_take_container`] detaches.
  */
 struct cosmos_operation_handle_t *cosmos_driver_resolve_container_submit(const struct cosmos_driver_t *driver,
-                                                                         const char *database_id,
-                                                                         const char *container_id,
+                                                                         struct cosmos_string_view_t database_id,
+                                                                         struct cosmos_string_view_t container_id,
                                                                          struct cosmos_completion_queue_t *queue,
                                                                          intptr_t user_data,
                                                                          cosmos_status_code_t *out_pre_error);

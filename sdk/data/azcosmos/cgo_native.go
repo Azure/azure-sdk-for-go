@@ -33,19 +33,19 @@ _Static_assert(sizeof(cosmos_completion_queue_options_t) == 12, "completion-queu
 _Static_assert(_Alignof(cosmos_completion_queue_options_t) == 4, "completion-queue options ABI alignment changed");
 COSMOS_ASSERT_OFFSET(cosmos_completion_queue_options_t, include_error_details, 8);
 
-_Static_assert(sizeof(cosmos_runtime_options_t) == 40, "runtime options ABI size changed");
+_Static_assert(sizeof(cosmos_runtime_options_t) == 64, "runtime options ABI size changed");
 _Static_assert(_Alignof(cosmos_runtime_options_t) == 8, "runtime options ABI alignment changed");
 COSMOS_ASSERT_OFFSET(cosmos_runtime_options_t, correlation_id, 8);
-COSMOS_ASSERT_OFFSET(cosmos_runtime_options_t, user_agent_suffix, 16);
-COSMOS_ASSERT_OFFSET(cosmos_runtime_options_t, wrapping_sdk_identifier, 24);
-COSMOS_ASSERT_OFFSET(cosmos_runtime_options_t, cpu_refresh_interval_ms, 32);
+COSMOS_ASSERT_OFFSET(cosmos_runtime_options_t, user_agent_suffix, 24);
+COSMOS_ASSERT_OFFSET(cosmos_runtime_options_t, wrapping_sdk_identifier, 40);
+COSMOS_ASSERT_OFFSET(cosmos_runtime_options_t, cpu_refresh_interval_ms, 56);
 
-_Static_assert(sizeof(cosmos_operation_options_t) == 88, "operation options ABI size changed");
+_Static_assert(sizeof(cosmos_operation_options_t) == 96, "operation options ABI size changed");
 _Static_assert(_Alignof(cosmos_operation_options_t) == 8, "operation options ABI alignment changed");
 COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, end_to_end_timeout_ms, 24);
-COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, excluded_regions, 48);
-COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, excluded_regions_len, 56);
-COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, binary_encoding_request_text_response, 81);
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, excluded_regions, 56);
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, excluded_regions_len, 64);
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, binary_encoding_request_text_response, 89);
 
 _Static_assert(sizeof(cosmos_driver_options_config_t) == 24, "driver options ABI size changed");
 _Static_assert(_Alignof(cosmos_driver_options_config_t) == 8, "driver options ABI alignment changed");
@@ -70,20 +70,20 @@ COSMOS_ASSERT_OFFSET(cosmos_completion_t, driver, 88);
 COSMOS_ASSERT_OFFSET(cosmos_completion_t, container, 96);
 COSMOS_ASSERT_OFFSET(cosmos_completion_t, backing, 104);
 
-_Static_assert(sizeof(cosmos_operation_request_t) == 168, "cosmos_operation_request_t ABI size changed");
+_Static_assert(sizeof(cosmos_operation_request_t) == 224, "cosmos_operation_request_t ABI size changed");
 _Static_assert(_Alignof(cosmos_operation_request_t) == 8, "cosmos_operation_request_t ABI alignment changed");
 COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, kind, 0);
 COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, container, 24);
 COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, item_id, 32);
-COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, partition_key_components, 56);
-COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, partition_key_len, 64);
-COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, body, 80);
-COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, body_len, 88);
-COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, session_token, 96);
-COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, max_item_count, 120);
-COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, precondition_kind, 132);
-COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, precondition_etag, 136);
-COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, options, 144);
+COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, partition_key_components, 72);
+COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, partition_key_len, 80);
+COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, body, 96);
+COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, body_len, 104);
+COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, session_token, 112);
+COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, max_item_count, 160);
+COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, precondition_kind, 168);
+COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, precondition_etag, 176);
+COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, options, 192);
 */
 import "C"
 
@@ -92,6 +92,6 @@ import "C"
 // package: repeating them means every file has to be kept in step, and a file that drifts is a
 // link error rather than a compile error.
 //
-// Target-specific internal packages carry the .syso archives and system-linker flags. Keeping each
-// archive behind a conditionally imported package matters because Go treats ios as darwin and
-// android as linux for build tags and .syso filename selection.
+// Target-specific external modules carry the archives and system-linker flags. The conditionally
+// imported internal packages compile the Go token callback shim for the same target. Keeping both
+// behind root-package constraints matters because Go treats ios as darwin and android as linux.

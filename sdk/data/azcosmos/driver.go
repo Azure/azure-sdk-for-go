@@ -5,7 +5,7 @@ package azcosmos
 
 // nativeDriverVersion pins the azure_data_cosmos_driver_native build this module binds to. The
 // C ABI is only guaranteed compatible within a pinned version, so this must be updated
-// deliberately and in lockstep with the vendored driver binaries.
+// deliberately and in lockstep with the driver distribution modules and local ABI header.
 //
 // This deliberately lives outside version.go: the release tooling greps *version*.go for the
 // first semver-shaped literal to determine the module version, so a second version constant

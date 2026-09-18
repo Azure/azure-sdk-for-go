@@ -113,15 +113,13 @@ extends:
               sha256sum -c internal/native/lib/SHA256SUMS
             displayName: 'Check committed artifact integrity'
 
-          # Fail here rather than leaving the tests to fail at link time with a less obvious
-          # message.
+          # Fail here rather than leaving the tests to fail with a less obvious message.
           - script: |
               set -euo pipefail
-              test -f "sdk/data/azcosmos/internal/native/linuxamd64/libazurecosmosdriver.syso"
               test -f "$(DriverLibDir)/azure_data_cosmos_emulator"
               chmod +x "$(DriverLibDir)/azure_data_cosmos_emulator"
-              file "sdk/data/azcosmos/internal/native/linuxamd64/libazurecosmosdriver.syso"
-            displayName: 'Check the committed driver artifacts'
+              file "$(DriverLibDir)/azure_data_cosmos_emulator"
+            displayName: 'Check the committed emulator artifact'
 
           # The emulator writes one JSON record to stdout once every listener is bound, and logs to
           # stderr, so the endpoint is read from that record rather than guessed. Its config asks

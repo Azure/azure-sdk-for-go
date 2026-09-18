@@ -23,35 +23,23 @@ The driver binding is selected automatically when cgo is enabled on glibc `linux
 go build ./...
 ```
 
-The native archives are committed as `.syso` files in target-specific internal packages, so Go
-preserves them in module zips and vendored builds and links the matching package automatically. No
-separate driver build or runtime sidecar is required; the resulting executable is self-contained.
+The native archives are distributed in target-specific modules from
+[azure-cosmos-driver](https://github.com/Azure/azure-cosmos-driver), so Go preserves them in module
+zips and vendored builds and links the matching package automatically. No separate driver build or
+runtime sidecar is required; the resulting executable is self-contained.
 
 `CGO_ENABLED=0` and unsupported platforms select `driver_stub.go`. That diagnostic build keeps the
 API compilable, but operations report that the driver is unavailable.
 
-Alpine and other musl-based Linux distributions are not supported yet. The bundled Linux archive
+Alpine and other musl-based Linux distributions are not supported yet. The Linux archive
 is built for glibc, and the build reports that limitation explicitly rather than linking Rust code
 compiled for a different libc ABI.
 
-**Those committed binaries are temporary and are meant to be deleted.** Checking a build artifact
-into the repository is not the plan of record: the distribution design puts each target's library
-in its own Go module in [azure-cosmos-driver](https://github.com/Azure/azure-cosmos-driver),
-selected by `GOOS`/`GOARCH`. That repository exists and already carries a darwin/arm64 module, but
-not yet one for `linux/amd64`, which is the platform CI runs on — so the copies here stand in until
-it does.
-
-The trigger to remove them, and the steps, are recorded in
-[`internal/native/lib/README.md`](internal/native/lib/README.md). Only `linux/amd64` and
-`darwin/arm64` are present, because those are the platforms actually built and tested; another
-platform needs its own build from
-[azure_data_cosmos_driver_native](https://github.com/Azure/azure-sdk-for-rust/tree/main/sdk/cosmos/azure_data_cosmos_driver_native)
-dropped into the matching directory, which is the cost these files impose.
-
-`azurecosmosdriver.h` is the header the driver generates, vendored here and pinned to the version
-in `driver.go`. That version is checked against the linked archive before any struct-sensitive ABI
-call during construction, because a header and a library from different versions do not fail to
-compile — they fail as moved struct offsets somewhere far from the cause.
+`azurecosmosdriver.h` is copied byte-for-byte from the pinned driver distribution modules because
+this package's cgo files need the ABI declarations in their own include path. The version in
+`driver.go` is checked against the linked archive before any struct-sensitive ABI call during
+construction, because a header and a library from different versions do not fail to compile — they
+fail as moved struct offsets somewhere far from the cause.
 
 ### Client initialization
 

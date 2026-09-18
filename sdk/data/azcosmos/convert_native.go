@@ -22,6 +22,21 @@ import (
 // C memory is used rather than Go memory throughout: cgo forbids passing Go memory that itself
 // holds Go pointers, which a slice of structs containing strings does.
 
+func toNativeString(value string) (C.cosmos_string_view_t, unsafe.Pointer) {
+	allocation := unsafe.Pointer(C.CString(value))
+	return C.cosmos_string_view_t{
+		data: (*C.uint8_t)(allocation),
+		len:  C.uintptr_t(len(value)),
+	}, allocation
+}
+
+func fromNativeString(value C.cosmos_string_view_t) string {
+	if value.data == nil {
+		return ""
+	}
+	return string(C.GoBytes(unsafe.Pointer(value.data), C.int(value.len)))
+}
+
 // toNative builds the driver's partition key value. The returned function releases it.
 //
 // The components are passed inline rather than through cosmos_partition_key_create, because the
@@ -44,13 +59,15 @@ func (pk PartitionKey) toNative() (*C.cosmos_partition_key_component_t, func()) 
 		components[i] = C.cosmos_partition_key_component_t{kind: C.uint8_t(component.kind)}
 		switch component.kind {
 		case partitionKeyKindString:
-			value := unsafe.Pointer(C.CString(component.stringValue))
-			strings = append(strings, value)
-			*(**C.char)(unsafe.Pointer(&components[i].value)) = (*C.char)(value)
+			value, allocation := toNativeString(component.stringValue)
+			strings = append(strings, allocation)
+			*(*C.cosmos_string_view_t)(unsafe.Pointer(&components[i].value)) = value
 		case partitionKeyKindNumber:
 			*(*C.double)(unsafe.Pointer(&components[i].value)) = C.double(component.numberValue)
 		case partitionKeyKindBool:
-			*(*C.bool)(unsafe.Pointer(&components[i].value)) = C.bool(component.boolValue)
+			if component.boolValue {
+				*(*C.uint8_t)(unsafe.Pointer(&components[i].value)) = 1
+			}
 		case partitionKeyKindNull, partitionKeyKindUndefined:
 			// Carry no value; the kind alone says what they are.
 		}
@@ -100,17 +117,17 @@ func (o OperationOptions) toNative() (*C.cosmos_operation_options_t, func()) {
 		options.end_to_end_timeout_ms = C.int64_t(milliseconds)
 	}
 	if len(o.ExcludedRegions) > 0 {
-		size := C.size_t(len(o.ExcludedRegions)) * C.size_t(unsafe.Sizeof(uintptr(0)))
-		array := (**C.char)(C.malloc(size))
+		size := C.size_t(len(o.ExcludedRegions)) * C.size_t(unsafe.Sizeof(C.cosmos_string_view_t{}))
+		array := (*C.cosmos_string_view_t)(C.malloc(size))
 		allocations = append(allocations, unsafe.Pointer(array))
 
 		regions := unsafe.Slice(array, len(o.ExcludedRegions))
 		for i, region := range o.ExcludedRegions {
-			value := C.CString(string(region))
-			allocations = append(allocations, unsafe.Pointer(value))
+			value, allocation := toNativeString(string(region))
+			allocations = append(allocations, allocation)
 			regions[i] = value
 		}
-		options.excluded_regions = (**C.char)(array)
+		options.excluded_regions = array
 		options.excluded_regions_len = C.uintptr_t(len(o.ExcludedRegions))
 	}
 
@@ -161,13 +178,12 @@ func inspectNativePartitionKey(pk PartitionKey) ([]nativePartitionKeyComponent, 
 		out[i].kind = uint8(components[i].kind)
 		switch components[i].kind {
 		case C.COSMOS_PARTITION_KEY_COMPONENT_KIND_STRING:
-			if ptr := *(**C.char)(unsafe.Pointer(&components[i].value)); ptr != nil {
-				out[i].stringValue = C.GoString(ptr)
-			}
+			value := *(*C.cosmos_string_view_t)(unsafe.Pointer(&components[i].value))
+			out[i].stringValue = fromNativeString(value)
 		case C.COSMOS_PARTITION_KEY_COMPONENT_KIND_NUMBER:
 			out[i].numberValue = float64(*(*C.double)(unsafe.Pointer(&components[i].value)))
 		case C.COSMOS_PARTITION_KEY_COMPONENT_KIND_BOOL:
-			out[i].boolValue = bool(*(*C.bool)(unsafe.Pointer(&components[i].value)))
+			out[i].boolValue = *(*C.uint8_t)(unsafe.Pointer(&components[i].value)) != 0
 		}
 	}
 	return out, release
@@ -204,7 +220,7 @@ func inspectNativeOperationOptions(o OperationOptions) (nativeOperationOptions, 
 		regions := unsafe.Slice(options.excluded_regions, int(options.excluded_regions_len))
 		out.excludedRegions = make([]string, len(regions))
 		for i, region := range regions {
-			out.excludedRegions[i] = C.GoString(region)
+			out.excludedRegions[i] = fromNativeString(region)
 		}
 	}
 	return out, release
@@ -259,17 +275,17 @@ func (o ClientOptions) toNative() (*C.cosmos_driver_options_config_t, func(), er
 		return nil, func() {}, err
 	}
 	if len(regions) > 0 {
-		size := C.size_t(len(regions)) * C.size_t(unsafe.Sizeof(uintptr(0)))
-		array := (**C.char)(C.malloc(size))
+		size := C.size_t(len(regions)) * C.size_t(unsafe.Sizeof(C.cosmos_string_view_t{}))
+		array := (*C.cosmos_string_view_t)(C.malloc(size))
 		allocations = append(allocations, unsafe.Pointer(array))
 
 		values := unsafe.Slice(array, len(regions))
 		for i, region := range regions {
-			value := C.CString(string(region))
-			allocations = append(allocations, unsafe.Pointer(value))
+			value, allocation := toNativeString(string(region))
+			allocations = append(allocations, allocation)
 			values[i] = value
 		}
-		config.preferred_regions = (**C.char)(unsafe.Pointer(array))
+		config.preferred_regions = array
 		config.preferred_regions_len = C.uintptr_t(len(regions))
 	}
 
@@ -291,10 +307,10 @@ func inspectNativeClientOptions(o ClientOptions) (nativeClientOptions, func(), e
 
 	out := nativeClientOptions{}
 	if config.preferred_regions != nil && config.preferred_regions_len > 0 {
-		regions := unsafe.Slice((**C.char)(unsafe.Pointer(config.preferred_regions)), int(config.preferred_regions_len))
+		regions := unsafe.Slice(config.preferred_regions, int(config.preferred_regions_len))
 		out.preferredRegions = make([]string, len(regions))
 		for i, region := range regions {
-			out.preferredRegions[i] = C.GoString(region)
+			out.preferredRegions[i] = fromNativeString(region)
 		}
 	}
 	if config.operation_options != nil {

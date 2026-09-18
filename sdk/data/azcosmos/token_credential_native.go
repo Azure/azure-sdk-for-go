@@ -32,8 +32,8 @@ type tokenProviderState struct {
 
 // buildTokenAccount adapts an azcore.TokenCredential to the driver's asynchronous callback ABI.
 func (d *nativeDriver) buildTokenAccount(cfg driverConfig) error {
-	endpoint := C.CString(cfg.endpoint)
-	defer C.free(unsafe.Pointer(endpoint))
+	endpoint, endpointAllocation := toNativeString(cfg.endpoint)
+	defer C.free(endpointAllocation)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	state := &tokenProviderState{

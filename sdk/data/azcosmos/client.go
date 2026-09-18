@@ -225,8 +225,7 @@ func (c *Client) NewContainer(databaseID string, containerID string) (*Container
 // validate reports option values the binding cannot implement. Values the driver understands are
 // passed through and validated there, so this package does not duplicate its rules.
 func (o ClientOptions) validate() error {
-	// The C ABI takes a NUL-terminated string. Passing an embedded NUL through C.CString would
-	// silently truncate the value before the driver could validate it.
+	// The driver rejects embedded NUL bytes in this counted UTF-8 field.
 	if strings.IndexByte(o.ApplicationID, 0) >= 0 {
 		return errors.New("azcosmos: ClientOptions.ApplicationID must not contain a NUL byte")
 	}

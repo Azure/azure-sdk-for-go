@@ -194,18 +194,18 @@ func (d *nativeDriver) submit(
 	request := newOperationRequest(req.kind, container)
 
 	if req.itemID != "" {
-		itemID := C.CString(req.itemID)
-		defer C.free(unsafe.Pointer(itemID))
+		itemID, allocation := toNativeString(req.itemID)
+		defer C.free(allocation)
 		request.item_id = itemID
 	}
 	if req.sessionToken != "" {
-		sessionToken := C.CString(string(req.sessionToken))
-		defer C.free(unsafe.Pointer(sessionToken))
+		sessionToken, allocation := toNativeString(string(req.sessionToken))
+		defer C.free(allocation)
 		request.session_token = sessionToken
 	}
 	if req.ifNoneMatchETag != "" {
-		etag := C.CString(req.ifNoneMatchETag)
-		defer C.free(unsafe.Pointer(etag))
+		etag, allocation := toNativeString(req.ifNoneMatchETag)
+		defer C.free(allocation)
 		request.precondition_kind = C.int32_t(C.COSMOS_PRECONDITION_KIND_IF_NONE_MATCH)
 		request.precondition_etag = etag
 	}
@@ -291,10 +291,10 @@ func (d *nativeDriver) submitResolveContainer(
 	driver *C.cosmos_driver_t,
 	databaseID, containerID string,
 ) (*C.cosmos_container_ref_t, error) {
-	cDatabaseID := C.CString(databaseID)
-	defer C.free(unsafe.Pointer(cDatabaseID))
-	cContainerID := C.CString(containerID)
-	defer C.free(unsafe.Pointer(cContainerID))
+	cDatabaseID, databaseAllocation := toNativeString(databaseID)
+	defer C.free(databaseAllocation)
+	cContainerID, containerAllocation := toNativeString(containerID)
+	defer C.free(containerAllocation)
 
 	result, err := d.awaitCompletion(ctx, "resolving the container",
 		func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {

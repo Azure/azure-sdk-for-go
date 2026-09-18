@@ -3,16 +3,14 @@
 
 //go:build cgo && linux && !android && amd64
 
-// Package linuxamd64 links the native Cosmos driver for glibc Linux on amd64.
+// Package linuxamd64 provides the Go token callback shim for glibc Linux on amd64.
 package linuxamd64
 
 /*
 #include <features.h>
 
 #ifndef __GLIBC__
-#error "azcosmos: the bundled linux/amd64 driver requires glibc; musl is not supported yet"
+#error "azcosmos: the linux/amd64 driver requires glibc; musl is not supported yet"
 #endif
-
-#cgo LDFLAGS: -lm -ldl -lpthread
 */
 import "C"

@@ -3,10 +3,7 @@
 
 //go:build cgo && darwin && !ios && arm64
 
-// Package darwinarm64 links the native Cosmos driver for macOS on Apple silicon.
+// Package darwinarm64 provides the Go token callback shim for macOS on Apple silicon.
 package darwinarm64
 
-/*
-#cgo LDFLAGS: -framework Security -framework CoreFoundation -liconv -lc -lm
-*/
 import "C"

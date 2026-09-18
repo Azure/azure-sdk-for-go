@@ -5,4 +5,7 @@
 
 package azcosmos
 
-import _ "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2/internal/native/darwinarm64"
+import (
+	_ "github.com/Azure/azure-cosmos-driver/darwin/arm64"
+	_ "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2/internal/native/darwinarm64"
+)

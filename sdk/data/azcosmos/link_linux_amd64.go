@@ -5,4 +5,7 @@
 
 package azcosmos
 
-import _ "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2/internal/native/linuxamd64"
+import (
+	_ "github.com/Azure/azure-cosmos-driver/linux/amd64"
+	_ "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2/internal/native/linuxamd64"
+)

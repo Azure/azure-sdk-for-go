@@ -1,6 +1,6 @@
 # Release History
 
-## 2.2.0-beta.1 (2026-09-17)
+## 2.2.0-beta.1 (2026-09-18)
 ### Features Added
 
 - New enum type `ClusterProvisioningState` with values `ClusterProvisioningStateCanceled`, `ClusterProvisioningStateCreating`, `ClusterProvisioningStateDeleting`, `ClusterProvisioningStateFailed`, `ClusterProvisioningStateScaling`, `ClusterProvisioningStateSucceeded`
@@ -32,6 +32,7 @@
 - New struct `ClusterUpdate`
 - New struct `NamespaceIDListResult`
 - New struct `NamespaceReference`
+- New field `ClusterArmID` in struct `NamespaceProperties`
 
 
 ## 2.1.0 (2026-09-01)

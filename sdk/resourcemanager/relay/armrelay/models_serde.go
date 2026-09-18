@@ -942,6 +942,7 @@ func (n *NamespaceListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type NamespaceProperties.
 func (n NamespaceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "clusterArmId", n.ClusterArmID)
 	populateTime[datetime.RFC3339](objectMap, "createdAt", n.CreatedAt, true)
 	populate(objectMap, "metricId", n.MetricID)
 	populate(objectMap, "minimumTlsVersion", n.MinimumTLSVersion)
@@ -963,6 +964,9 @@ func (n *NamespaceProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "clusterArmId":
+			err = unpopulate(val, "ClusterArmID", &n.ClusterArmID)
+			delete(rawMsg, key)
 		case "createdAt":
 			err = unpopulateTime[datetime.RFC3339](val, "CreatedAt", &n.CreatedAt)
 			delete(rawMsg, key)

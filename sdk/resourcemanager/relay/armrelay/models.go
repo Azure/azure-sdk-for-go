@@ -335,6 +335,9 @@ type NamespaceListResult struct {
 
 // NamespaceProperties - Properties of the namespace.
 type NamespaceProperties struct {
+	// Cluster ARM ID of the Namespace.
+	ClusterArmID *string
+
 	// The minimum TLS version for the namespace.
 	// Supported values are 1.2 and 1.3.
 	// The service defaults to 1.2 when the property is omitted.

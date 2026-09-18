@@ -4264,31 +4264,10 @@ type UsageName struct {
 
 // UserAssignedIdentity for the resource.
 type UserAssignedIdentity struct {
-	// READ-ONLY; READ-ONLY; The client ID of the identity.
+	// READ-ONLY; The client ID of the identity.
 	ClientID *string
 
-	// READ-ONLY; READ-ONLY; The client ID of the assigned identity.
-	ClientID *string
-
-	// READ-ONLY; READ-ONLY; The principal ID of the identity.
-	PrincipalID *string
-
-	// READ-ONLY; READ-ONLY; The principal ID of the assigned identity.
-	PrincipalID *string
-}
-
-// UserAssignedIdentity for the resource.
-type UserAssignedIdentity struct {
-	// READ-ONLY; READ-ONLY; The client ID of the identity.
-	ClientID *string
-
-	// READ-ONLY; READ-ONLY; The client ID of the assigned identity.
-	ClientID *string
-
-	// READ-ONLY; READ-ONLY; The principal ID of the identity.
-	PrincipalID *string
-
-	// READ-ONLY; READ-ONLY; The principal ID of the assigned identity.
+	// READ-ONLY; The principal ID of the identity.
 	PrincipalID *string
 }
 

@@ -23,3 +23,6 @@ azservicebus and azeventhubs can directly reference additional 3rd party modules
 azopenai can directly reference additional 3rd party modules:
 - github.com/openai/openai-go/v3
 
+azcosmos can directly reference the native driver distribution modules:
+- github.com/Azure/azure-cosmos-driver/darwin/arm64
+- github.com/Azure/azure-cosmos-driver/linux/amd64

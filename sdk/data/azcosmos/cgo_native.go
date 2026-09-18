@@ -17,16 +17,16 @@ _Static_assert((cosmos_status_code_t)-1 < 0, "cosmos_status_code_t must remain s
 _Static_assert(COSMOS_OPERATION_KIND_CREATE_ITEM == 19, "create-item operation discriminant changed");
 _Static_assert(COSMOS_OPERATION_KIND_READ_ITEM == 20, "read-item operation discriminant changed");
 
+_Static_assert(sizeof(cosmos_string_view_t) == 16, "cosmos_string_view_t ABI size changed");
+_Static_assert(_Alignof(cosmos_string_view_t) == 8, "cosmos_string_view_t ABI alignment changed");
+COSMOS_ASSERT_OFFSET(cosmos_string_view_t, data, 0);
+COSMOS_ASSERT_OFFSET(cosmos_string_view_t, len, 8);
+
 _Static_assert(sizeof(cosmos_value_payload_t) == 8, "cosmos_value_payload_t ABI size changed");
 _Static_assert(_Alignof(cosmos_value_payload_t) == 8, "cosmos_value_payload_t ABI alignment changed");
 _Static_assert(sizeof(cosmos_value_t) == 16, "cosmos_value_t ABI size changed");
 _Static_assert(_Alignof(cosmos_value_t) == 8, "cosmos_value_t ABI alignment changed");
 COSMOS_ASSERT_OFFSET(cosmos_value_t, payload, 8);
-
-_Static_assert(sizeof(cosmos_string_view_t) == 16, "string-view ABI size changed");
-_Static_assert(_Alignof(cosmos_string_view_t) == 8, "string-view ABI alignment changed");
-COSMOS_ASSERT_OFFSET(cosmos_string_view_t, data, 0);
-COSMOS_ASSERT_OFFSET(cosmos_string_view_t, len, 8);
 
 _Static_assert(sizeof(cosmos_partition_key_component_value_t) == 16, "partition-key value ABI size changed");
 _Static_assert(_Alignof(cosmos_partition_key_component_value_t) == 8, "partition-key value ABI alignment changed");

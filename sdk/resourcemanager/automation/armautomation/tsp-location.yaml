@@ -1,4 +1,4 @@
-directory: specification/automation/Automation.Management
-commit: 06c196ea9d68caba183765bf2f7530d8c840bed4
+directory: specification/automation/resource-manager/Microsoft.Automation/Automation
+commit: b05ec1fd11430d6bbbdaf4980fd3bdecafaad986
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

@@ -1,5 +1,9 @@
 # Release History
 
+## 1.0.1 (2026-09-18)
+### Other Changes
+
+
 ## 1.0.0 (2026-06-24)
 ### Other Changes
 

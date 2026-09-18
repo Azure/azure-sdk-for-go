@@ -6,5 +6,5 @@ package armdeviceprovisioningservices
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceprovisioningservices/armdeviceprovisioningservices"
-	moduleVersion = "v1.3.0"
+	moduleVersion = "v1.3.1"
 )

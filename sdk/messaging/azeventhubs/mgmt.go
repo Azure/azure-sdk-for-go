@@ -56,7 +56,7 @@ func getEventHubProperties[LinkT internal.AMQPLink](ctx context.Context, eventNa
 }
 
 func getEventHubPropertiesInternal(ctx context.Context, ns internal.NamespaceForManagementOps, rpcLink amqpwrap.RPCLink, eventHub string, options *GetEventHubPropertiesOptions) (EventHubProperties, error) {
-	token, err := ns.GetTokenForEntity(eventHub)
+	token, err := ns.GetTokenForEntity(ctx, eventHub)
 
 	if err != nil {
 		return EventHubProperties{}, internal.TransformError(err)
@@ -132,7 +132,7 @@ func getPartitionProperties[LinkT internal.AMQPLink](ctx context.Context, eventN
 }
 
 func getPartitionPropertiesInternal(ctx context.Context, ns internal.NamespaceForManagementOps, rpcLink amqpwrap.RPCLink, eventHub string, partitionID string, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
-	token, err := ns.GetTokenForEntity(eventHub)
+	token, err := ns.GetTokenForEntity(ctx, eventHub)
 
 	if err != nil {
 		return PartitionProperties{}, err

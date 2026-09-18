@@ -37,14 +37,14 @@ func (ns *Namespace) NewRPCLink(ctx context.Context, managementPath string) (amq
 	return rpcLink, connID, nil
 }
 
-func (ns *Namespace) GetTokenForEntity(eventHub string) (*auth.Token, error) {
+func (ns *Namespace) GetTokenForEntity(ctx context.Context, eventHub string) (*auth.Token, error) {
 	audience := ns.GetEntityAudience(eventHub)
-	return ns.TokenProvider.GetToken(audience)
+	return ns.TokenProvider.GetToken(ctx, audience)
 }
 
 type NamespaceForManagementOps interface {
 	NamespaceForAMQPLinks
-	GetTokenForEntity(eventHub string) (*auth.Token, error)
+	GetTokenForEntity(ctx context.Context, eventHub string) (*auth.Token, error)
 }
 
 // TODO: might just consolidate.

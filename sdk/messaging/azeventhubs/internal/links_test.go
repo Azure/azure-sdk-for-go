@@ -243,7 +243,7 @@ func TestLinksManagementRetry(t *testing.T) {
 	getEventHubProps := func(ctx context.Context, lwid LinkWithID[amqpwrap.RPCLink]) error {
 		called++
 		// mostly lifted from mgmt.go/getEventHubProperties
-		token, err := ns.GetTokenForEntity(testParams.EventHubName)
+		token, err := ns.GetTokenForEntity(ctx, testParams.EventHubName)
 
 		if err != nil {
 			return err

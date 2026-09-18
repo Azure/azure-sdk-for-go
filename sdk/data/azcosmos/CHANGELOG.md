@@ -30,8 +30,6 @@
 
 ### Bugs Fixed
 
-* Fixed native builds against the published driver modules and kept item response bodies in text JSON format.
-
 ### Other Changes
 
 ## 1.6.0-beta.2 (2026-08-03)

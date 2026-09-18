@@ -89,6 +89,8 @@ extends:
           value: a05f024d22cd0a70f6ccac5e310cbbbaf40bf20e
         - name: EmulatorRustVersion
           value: '1.95.0'
+        - name: EmulatorCargoHome
+          value: $(Agent.TempDirectory)/cosmos-emulator-cargo
         jobs:
         - job: RunDriverEmulatorTests
           displayName: Run the driver emulator tests
@@ -111,6 +113,7 @@ extends:
                 sh "$(Agent.TempDirectory)/cosmos-rustup-init.sh" \
                   -y --no-modify-path --profile minimal --default-toolchain none
                 export PATH="$HOME/.cargo/bin:$PATH"
+                echo "##vso[task.prependpath]$HOME/.cargo/bin"
               fi
               rustup toolchain install "$(EmulatorRustVersion)" --profile minimal
 
@@ -120,11 +123,32 @@ extends:
                 "$(EmulatorSourceRevision)"
               git -C "$source" checkout --detach FETCH_HEAD
               test "$(git -C "$source" rev-parse HEAD)" = "$(EmulatorSourceRevision)"
-              cd "$source"
+
+              mkdir -p "$(EmulatorCargoHome)"
+              cp "$source/eng/templates/config.toml.template" "$(EmulatorCargoHome)/config.toml"
+            displayName: 'Prepare pinned Rust source and Cargo feed configuration'
+
+          # Match Rust CI's endpoint-token workaround for public/fork builds.
+          # https://github.com/microsoft/azure-pipelines-tasks/issues/22421
+          - task: NuGetAuthenticate@1
+            displayName: 'Acquire the Azure Artifacts endpoint token'
+
+          - task: CargoAuthenticate@0
+            displayName: 'Authenticate Cargo to the Azure SDK Rust feed'
+            inputs:
+              configFile: $(EmulatorCargoHome)/config.toml
+            env:
+              SYSTEM_ACCESSTOKEN: $(VSS_NUGET_ACCESSTOKEN)
+
+          - script: |
+              set -euo pipefail
+              cd "$(Agent.TempDirectory)/cosmos-emulator-source"
               cargo +"$(EmulatorRustVersion)" build --locked --release \
                 -p azure_data_cosmos_emulator \
                 --target-dir "$(Agent.TempDirectory)/cosmos-emulator-target"
             displayName: 'Build the emulator from pinned Rust source'
+            env:
+              CARGO_HOME: $(EmulatorCargoHome)
 
           # Fail here rather than leaving the tests to fail with a less obvious message.
           - script: |

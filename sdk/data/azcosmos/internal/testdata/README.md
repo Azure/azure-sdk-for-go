@@ -13,6 +13,10 @@ The `DriverEmulator` stage in [`ci.yml`](../../ci.yml) pins:
 
 Building requires Git, rustup, a C compiler/linker, and network access to GitHub,
 Rust toolchain downloads, and Cargo dependencies. CI builds on glibc Linux/amd64.
+CI copies the pinned Rust repository's Cargo feed configuration into an isolated
+`CARGO_HOME` and authenticates using the same Azure Artifacts tasks as Rust CI.
+Dependencies resolve through the Azure SDK Rust feed instead of direct crates.io access;
+network isolation stays enabled. The pipeline identity needs read/upstream access to that feed.
 For local use, build on a platform supported by the Go native binding (glibc Linux/amd64
 or macOS/arm64).
 

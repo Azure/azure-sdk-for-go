@@ -8,6 +8,10 @@ package azcosmos
 /*
 #include <stdlib.h>
 #include "azurecosmosdriver.h"
+
+static const char *cosmos_go_header_version(void) {
+	return AZURECOSMOSDRIVER_H_VERSION;
+}
 */
 import "C"
 
@@ -102,29 +106,23 @@ func (d *nativeDriver) cancel() {
 	}
 }
 
-// verifyDriverVersion reports whether the library that was linked is the one this package was
-// built against.
-//
-// The header is vendored, so the binding compiles against one version and links against whatever
-// archive it was given. A mismatch is not a compile error: it is a struct layout or a calling
-// convention that has quietly moved, which surfaces as corrupted values or a crash somewhere far
-// from the cause. Checking before any struct-sensitive ABI call turns that into a message that
-// names the problem.
-//
-// The ABI carries no major-version concept yet, so this compares the whole version. Once it does,
-// this should relax to a compatible range rather than an exact match, which is what the
-// distribution design calls for.
+// verifyDriverVersion checks header and library versions before any struct-sensitive ABI call.
 func verifyDriverVersion() error {
+	header := C.GoString(C.cosmos_go_header_version())
 	linked := C.GoString(C.cosmos_version())
-	if linked == nativeDriverVersion {
+	return validateDriverVersions(header, linked)
+}
+
+func validateDriverVersions(header, linked string) error {
+	if header == nativeDriverVersion && linked == nativeDriverVersion {
 		return nil
 	}
 	return &Error{
 		Code: CodeClientError,
 		Message: fmt.Sprintf(
-			"azcosmos: the linked Cosmos driver is version %q, but this package was built against %q; "+
-				"the vendored header and the driver library have to come from the same version",
-			linked, nativeDriverVersion),
+			"azcosmos: Cosmos driver version mismatch: vendored header %q, linked library %q, Go pin %q; "+
+				"all three versions must match",
+			header, linked, nativeDriverVersion),
 	}
 }
 

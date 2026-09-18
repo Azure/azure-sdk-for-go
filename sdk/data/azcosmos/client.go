@@ -63,7 +63,7 @@ type Client struct {
 	closeErr  error
 
 	// driver holds the resources the client owns in the driver. It is nil in builds that are not
-	// bound to the driver, where operations report that they are not implemented.
+	// bound to the driver, where operations report that the driver is unavailable.
 	driver *nativeDriver
 }
 
@@ -95,7 +95,7 @@ func NewClientWithKey(endpoint string, cred KeyCredential, options *ClientOption
 // resources.
 //
 // accountKey is empty when the caller supplied a token credential. In builds that are not bound to
-// the driver no resources are acquired, and operations report that they are not implemented.
+// the driver no resources are acquired, and operations report that the driver is unavailable.
 func newClient(
 	endpoint string,
 	accountKey string,

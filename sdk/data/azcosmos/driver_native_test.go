@@ -8,6 +8,7 @@ package azcosmos
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net"
 	"sync"
 	"sync/atomic"
@@ -22,6 +23,39 @@ import (
 // emulatorKey is the Cosmos DB emulator's well-known account key, which is published in the
 // emulator documentation and grants nothing anywhere else.
 const emulatorKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="
+
+func TestVerifyDriverVersion(t *testing.T) {
+	require.NoError(t, verifyDriverVersion())
+}
+
+func TestValidateDriverVersions(t *testing.T) {
+	for _, tt := range []struct {
+		name   string
+		header string
+		linked string
+	}{
+		{"matching", nativeDriverVersion, nativeDriverVersion},
+		{"header mismatch", "different-header", nativeDriverVersion},
+		{"library mismatch", nativeDriverVersion, "different-library"},
+		{"matching wrong version", "different-version", "different-version"},
+		{"all different", "different-header", "different-library"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			err := validateDriverVersions(tt.header, tt.linked)
+			if tt.name == "matching" {
+				require.NoError(t, err)
+				return
+			}
+			var cosmosErr *Error
+			require.ErrorAs(t, err, &cosmosErr)
+			require.Equal(t, CodeClientError, cosmosErr.Code)
+			require.False(t, cosmosErr.FromWire)
+			require.Contains(t, cosmosErr.Message, fmt.Sprintf("vendored header %q", tt.header))
+			require.Contains(t, cosmosErr.Message, fmt.Sprintf("linked library %q", tt.linked))
+			require.Contains(t, cosmosErr.Message, fmt.Sprintf("Go pin %q", nativeDriverVersion))
+		})
+	}
+}
 
 // The runtime and the account reference are built without contacting the service, so this covers
 // acquiring and releasing them anywhere. Creating the driver is what needs a reachable account;

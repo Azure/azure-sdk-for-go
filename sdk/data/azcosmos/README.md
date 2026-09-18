@@ -36,10 +36,9 @@ is built for glibc, and the build reports that limitation explicitly rather than
 compiled for a different libc ABI.
 
 `azurecosmosdriver.h` is copied byte-for-byte from the pinned driver distribution modules because
-this package's cgo files need the ABI declarations in their own include path. The version in
-`driver.go` is checked against the linked archive before any struct-sensitive ABI call during
-construction, because a header and a library from different versions do not fail to compile — they
-fail as moved struct offsets somewhere far from the cause.
+this package's cgo files need the ABI declarations in their own include path. The header version
+and linked library version must both match the pin in `driver.go` before any struct-sensitive ABI
+call during construction. Mismatched versions can otherwise cause incompatible struct layouts.
 
 ### Client initialization
 

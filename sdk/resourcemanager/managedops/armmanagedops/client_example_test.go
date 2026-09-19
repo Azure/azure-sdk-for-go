@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-28-preview/ManagedOps_CreateOrUpdate.json
+// Generated from example definition: 2026-01-06-preview/ManagedOps_CreateOrUpdate.json
 func ExampleClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,12 +25,16 @@ func ExampleClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewClient().BeginCreateOrUpdate(ctx, "default", armmanagedops.ManagedOp{
 		Properties: &armmanagedops.Properties{
+			SKU: &armmanagedops.SKU{
+				Name: to.Ptr(armmanagedops.SKUNameManagedOps),
+				Tier: to.Ptr(armmanagedops.SKUTierEssential),
+			},
 			DesiredConfiguration: &armmanagedops.DesiredConfiguration{
 				ChangeTrackingAndInventory: &armmanagedops.ChangeTrackingConfiguration{
-					LogAnalyticsWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.OperationalInsights/workspaces/00000000-0000-0000-0000-000000000000-Default"),
+					LogAnalyticsWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.OperationalInsights/workspaces/myLogAnalyticsWorkspace"),
 				},
 				AzureMonitorInsights: &armmanagedops.AzureMonitorConfiguration{
-					AzureMonitorWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/example"),
+					AzureMonitorWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace"),
 				},
 				UserAssignedManagedIdentityID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myManagedIdentity"),
 			},
@@ -61,15 +65,15 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 		},
 	// 		Properties: &armmanagedops.Properties{
 	// 			SKU: &armmanagedops.SKU{
-	// 				Name: to.Ptr("ManagedOps"),
-	// 				Tier: to.Ptr("Essential"),
+	// 				Name: to.Ptr(armmanagedops.SKUNameManagedOps),
+	// 				Tier: to.Ptr(armmanagedops.SKUTierEssential),
 	// 			},
 	// 			DesiredConfiguration: &armmanagedops.DesiredConfiguration{
 	// 				ChangeTrackingAndInventory: &armmanagedops.ChangeTrackingConfiguration{
-	// 					LogAnalyticsWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.OperationalInsights/workspaces/00000000-0000-0000-0000-000000000000-Default"),
+	// 					LogAnalyticsWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.OperationalInsights/workspaces/myLogAnalyticsWorkspace"),
 	// 				},
 	// 				AzureMonitorInsights: &armmanagedops.AzureMonitorConfiguration{
-	// 					AzureMonitorWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/example"),
+	// 					AzureMonitorWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace"),
 	// 				},
 	// 				UserAssignedManagedIdentityID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myManagedIdentity"),
 	// 				DefenderForServers: to.Ptr(armmanagedops.DesiredEnablementStateDisable),
@@ -77,15 +81,15 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 			},
 	// 			ProvisioningState: to.Ptr(armmanagedops.ProvisioningStateProvisioning),
 	// 			PolicyAssignmentProperties: &armmanagedops.PolicyAssignmentProperties{
-	// 				PolicyInitiativeAssignmentID: to.Ptr("/subscriptions/aa4c0cba-5c0a-4751-a5e3-ea28e50afeeb/providers/microsoft.authorization/policyassignments/test-edition-policy-2"),
+	// 				PolicyInitiativeAssignmentID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/providers/microsoft.authorization/policyassignments/Managedops-Policy-11809CA1-E126-4017-945E-AA795CD5C5A9"),
 	// 			},
 	// 			Services: &armmanagedops.ServiceInformation{
 	// 				ChangeTrackingAndInventory: &armmanagedops.ChangeTrackingInformation{
-	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ct-dcr131878407"),
+	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionRules/ct-dcr131878407"),
 	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				AzureMonitorInsights: &armmanagedops.AzureMonitorInformation{
-	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ami-dcr131878407"),
+	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionRules/ami-dcr131878407"),
 	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				AzureUpdateManager: &armmanagedops.UpdateManagerInformation{
@@ -106,7 +110,7 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-28-preview/ManagedOps_Delete.json
+// Generated from example definition: 2026-01-06-preview/ManagedOps_Delete.json
 func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +131,7 @@ func ExampleClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-28-preview/ManagedOps_Get.json
+// Generated from example definition: 2026-01-06-preview/ManagedOps_Get.json
 func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,15 +164,15 @@ func ExampleClient_Get() {
 	// 		},
 	// 		Properties: &armmanagedops.Properties{
 	// 			SKU: &armmanagedops.SKU{
-	// 				Name: to.Ptr("ManagedOps"),
-	// 				Tier: to.Ptr("Essential"),
+	// 				Name: to.Ptr(armmanagedops.SKUNameManagedOps),
+	// 				Tier: to.Ptr(armmanagedops.SKUTierEssential),
 	// 			},
 	// 			DesiredConfiguration: &armmanagedops.DesiredConfiguration{
 	// 				ChangeTrackingAndInventory: &armmanagedops.ChangeTrackingConfiguration{
-	// 					LogAnalyticsWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.OperationalInsights/workspaces/00000000-0000-0000-0000-000000000000-Default"),
+	// 					LogAnalyticsWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.OperationalInsights/workspaces/myLogAnalyticsWorkspace"),
 	// 				},
 	// 				AzureMonitorInsights: &armmanagedops.AzureMonitorConfiguration{
-	// 					AzureMonitorWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/example"),
+	// 					AzureMonitorWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace"),
 	// 				},
 	// 				UserAssignedManagedIdentityID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myManagedIdentity"),
 	// 				DefenderForServers: to.Ptr(armmanagedops.DesiredEnablementStateEnable),
@@ -176,15 +180,15 @@ func ExampleClient_Get() {
 	// 			},
 	// 			ProvisioningState: to.Ptr(armmanagedops.ProvisioningStateProvisioning),
 	// 			PolicyAssignmentProperties: &armmanagedops.PolicyAssignmentProperties{
-	// 				PolicyInitiativeAssignmentID: to.Ptr("/subscriptions/aa4c0cba-5c0a-4751-a5e3-ea28e50afeeb/providers/microsoft.authorization/policyassignments/test-edition-policy-2"),
+	// 				PolicyInitiativeAssignmentID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/providers/microsoft.authorization/policyassignments/Managedops-Policy-11809CA1-E126-4017-945E-AA795CD5C5A9"),
 	// 			},
 	// 			Services: &armmanagedops.ServiceInformation{
 	// 				ChangeTrackingAndInventory: &armmanagedops.ChangeTrackingInformation{
-	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ct-dcr131878407"),
+	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionRules/ct-dcr131878407"),
 	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				AzureMonitorInsights: &armmanagedops.AzureMonitorInformation{
-	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ami-dcr131878407"),
+	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionRules/ami-dcr131878407"),
 	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				AzureUpdateManager: &armmanagedops.UpdateManagerInformation{
@@ -192,9 +196,17 @@ func ExampleClient_Get() {
 	// 				},
 	// 				AzurePolicyAndMachineConfiguration: &armmanagedops.GuestConfigurationInformation{
 	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+	// 					ErrorDetails: &armmanagedops.ErrorDetails{
+	// 						Code: to.Ptr("PolicyAssignmentNotFound"),
+	// 						Message: to.Ptr("The specified policy assignment was not found."),
+	// 					},
 	// 				},
 	// 				DefenderForServers: &armmanagedops.DefenderForServersInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateDisabled),
+	// 					ErrorDetails: &armmanagedops.ErrorDetails{
+	// 						Code: to.Ptr("DependencyFailed"),
+	// 						Message: to.Ptr("One or more dependencies failed to be provisioned. Please check the dependent resources and try again."),
+	// 					},
 	// 				},
 	// 				DefenderCspm: &armmanagedops.DefenderCspmInformation{
 	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
@@ -205,7 +217,7 @@ func ExampleClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-28-preview/ManagedOps_List.json
+// Generated from example definition: 2026-01-06-preview/ManagedOps_List.json
 func ExampleClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -244,15 +256,15 @@ func ExampleClient_NewListPager() {
 		// 				},
 		// 				Properties: &armmanagedops.Properties{
 		// 					SKU: &armmanagedops.SKU{
-		// 						Name: to.Ptr("ManagedOps"),
-		// 						Tier: to.Ptr("Essential"),
+		// 						Name: to.Ptr(armmanagedops.SKUNameManagedOps),
+		// 						Tier: to.Ptr(armmanagedops.SKUTierEssential),
 		// 					},
 		// 					DesiredConfiguration: &armmanagedops.DesiredConfiguration{
 		// 						ChangeTrackingAndInventory: &armmanagedops.ChangeTrackingConfiguration{
-		// 							LogAnalyticsWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.OperationalInsights/workspaces/00000000-0000-0000-0000-000000000000-Default"),
+		// 							LogAnalyticsWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.OperationalInsights/workspaces/myLogAnalyticsWorkspace"),
 		// 						},
 		// 						AzureMonitorInsights: &armmanagedops.AzureMonitorConfiguration{
-		// 							AzureMonitorWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/example"),
+		// 							AzureMonitorWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace"),
 		// 						},
 		// 						UserAssignedManagedIdentityID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myManagedIdentity"),
 		// 						DefenderForServers: to.Ptr(armmanagedops.DesiredEnablementStateEnable),
@@ -260,15 +272,15 @@ func ExampleClient_NewListPager() {
 		// 					},
 		// 					ProvisioningState: to.Ptr(armmanagedops.ProvisioningStateProvisioning),
 		// 					PolicyAssignmentProperties: &armmanagedops.PolicyAssignmentProperties{
-		// 						PolicyInitiativeAssignmentID: to.Ptr("/subscriptions/aa4c0cba-5c0a-4751-a5e3-ea28e50afeeb/providers/microsoft.authorization/policyassignments/test-edition-policy-2"),
+		// 						PolicyInitiativeAssignmentID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/providers/microsoft.authorization/policyassignments/Managedops-Policy-11809CA1-E126-4017-945E-AA795CD5C5A9"),
 		// 					},
 		// 					Services: &armmanagedops.ServiceInformation{
 		// 						ChangeTrackingAndInventory: &armmanagedops.ChangeTrackingInformation{
-		// 							DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ct-dcr131878407"),
+		// 							DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionRules/ct-dcr131878407"),
 		// 							EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 		// 						},
 		// 						AzureMonitorInsights: &armmanagedops.AzureMonitorInformation{
-		// 							DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ami-dcr131878407"),
+		// 							DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionRules/ami-dcr131878407"),
 		// 							EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 		// 						},
 		// 						AzureUpdateManager: &armmanagedops.UpdateManagerInformation{
@@ -292,7 +304,7 @@ func ExampleClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-28-preview/ManagedOps_Update.json
+// Generated from example definition: 2026-01-06-preview/ManagedOps_Update.json
 func ExampleClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -329,15 +341,15 @@ func ExampleClient_BeginUpdate() {
 	// 		},
 	// 		Properties: &armmanagedops.Properties{
 	// 			SKU: &armmanagedops.SKU{
-	// 				Name: to.Ptr("ManagedOps"),
-	// 				Tier: to.Ptr("Essential"),
+	// 				Name: to.Ptr(armmanagedops.SKUNameManagedOps),
+	// 				Tier: to.Ptr(armmanagedops.SKUTierEssential),
 	// 			},
 	// 			DesiredConfiguration: &armmanagedops.DesiredConfiguration{
 	// 				ChangeTrackingAndInventory: &armmanagedops.ChangeTrackingConfiguration{
-	// 					LogAnalyticsWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.OperationalInsights/workspaces/00000000-0000-0000-0000-000000000000-Default"),
+	// 					LogAnalyticsWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.OperationalInsights/workspaces/myLogAnalyticsWorkspace"),
 	// 				},
 	// 				AzureMonitorInsights: &armmanagedops.AzureMonitorConfiguration{
-	// 					AzureMonitorWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/example"),
+	// 					AzureMonitorWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace"),
 	// 				},
 	// 				UserAssignedManagedIdentityID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myManagedIdentity"),
 	// 				DefenderForServers: to.Ptr(armmanagedops.DesiredEnablementStateEnable),
@@ -345,15 +357,15 @@ func ExampleClient_BeginUpdate() {
 	// 			},
 	// 			ProvisioningState: to.Ptr(armmanagedops.ProvisioningStateProvisioning),
 	// 			PolicyAssignmentProperties: &armmanagedops.PolicyAssignmentProperties{
-	// 				PolicyInitiativeAssignmentID: to.Ptr("/subscriptions/aa4c0cba-5c0a-4751-a5e3-ea28e50afeeb/providers/microsoft.authorization/policyassignments/test-edition-policy-2"),
+	// 				PolicyInitiativeAssignmentID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/providers/microsoft.authorization/policyassignments/Managedops-Policy-11809CA1-E126-4017-945E-AA795CD5C5A9"),
 	// 			},
 	// 			Services: &armmanagedops.ServiceInformation{
 	// 				ChangeTrackingAndInventory: &armmanagedops.ChangeTrackingInformation{
-	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ct-dcr131878407"),
+	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionRules/ct-dcr131878407"),
 	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				AzureMonitorInsights: &armmanagedops.AzureMonitorInformation{
-	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ami-dcr131878407"),
+	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionRules/ami-dcr131878407"),
 	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				AzureUpdateManager: &armmanagedops.UpdateManagerInformation{

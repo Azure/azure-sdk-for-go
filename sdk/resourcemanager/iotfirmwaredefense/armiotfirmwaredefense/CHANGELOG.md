@@ -1,5 +1,33 @@
 # Release History
 
+## 2.1.0-beta.1 (2026-08-21)
+### Features Added
+
+- New value `SummaryTypeCve`, `SummaryTypePasswordHash`, `SummaryTypeSbom`, `SummaryTypeUnsafeFunctionCalls` added to enum type `SummaryType`
+- New enum type `ExploitMaturityLevel` with values `ExploitMaturityLevelAttacked`, `ExploitMaturityLevelNotDefined`, `ExploitMaturityLevelProofOfConcept`, `ExploitMaturityLevelUnreported`
+- New enum type `RansomwareCampaignUse` with values `RansomwareCampaignUseKnown`, `RansomwareCampaignUseUnknown`
+- New function `*ClientFactory.NewUnsafeFunctionCallsClient() *UnsafeFunctionCallsClient`
+- New function `*CveSummaryResource.GetSummaryResourceProperties() *SummaryResourceProperties`
+- New function `*PasswordHashSummaryResource.GetSummaryResourceProperties() *SummaryResourceProperties`
+- New function `*SbomSummaryResource.GetSummaryResourceProperties() *SummaryResourceProperties`
+- New function `NewUnsafeFunctionCallsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UnsafeFunctionCallsClient, error)`
+- New function `*UnsafeFunctionCallsClient.NewListByFirmwarePager(resourceGroupName string, workspaceName string, firmwareID string, options *UnsafeFunctionCallsClientListByFirmwareOptions) *runtime.Pager[UnsafeFunctionCallsClientListByFirmwareResponse]`
+- New function `*UnsafeFunctionCallsSummaryResource.GetSummaryResourceProperties() *SummaryResourceProperties`
+- New struct `CveSummaryResource`
+- New struct `CweProperties`
+- New struct `EpssProperties`
+- New struct `FunctionCall`
+- New struct `KevProperties`
+- New struct `PasswordHashSummaryResource`
+- New struct `SbomSummaryResource`
+- New struct `UnsafeFunctionCallsResource`
+- New struct `UnsafeFunctionCallsResourceListResult`
+- New struct `UnsafeFunctionCallsResult`
+- New struct `UnsafeFunctionCallsSummaryResource`
+- New field `Cwes`, `EffectiveExploitMaturity`, `EffectiveVectorString`, `Epss`, `FixedInVersions`, `Kev` in struct `CveResult`
+- New field `ExploitMaturity`, `VectorString` in struct `CvssScore`
+
+
 ## 2.0.0 (2025-09-01)
 ### Breaking Changes
 

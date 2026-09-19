@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-02-01-preview/ServiceGroup_Put.json
+// Generated from example definition: 2026-08-01/ServiceGroup_Put.json
 func ExampleManagementClient_BeginCreateOrUpdateServiceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,6 +25,9 @@ func ExampleManagementClient_BeginCreateOrUpdateServiceGroup() {
 	}
 	poller, err := clientFactory.NewManagementClient().BeginCreateOrUpdateServiceGroup(ctx, "ServiceGroup1", armservicegroups.ServiceGroup{
 		Properties: &armservicegroups.ServiceGroupProperties{
+			Attributes: &armservicegroups.ServiceGroupAttributes{
+				Criticality: to.Ptr[int32](2),
+			},
 			DisplayName: to.Ptr("ServiceGroup 1 Name"),
 			Parent: &armservicegroups.ParentServiceGroupProperties{
 				ResourceID: to.Ptr("/providers/Microsoft.Management/serviceGroups/RootGroup"),
@@ -47,6 +50,9 @@ func ExampleManagementClient_BeginCreateOrUpdateServiceGroup() {
 	// 		Type: to.Ptr("Microsoft.Management/serviceGroups"),
 	// 		ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/ServiceGroup1"),
 	// 		Properties: &armservicegroups.ServiceGroupProperties{
+	// 			Attributes: &armservicegroups.ServiceGroupAttributes{
+	// 				Criticality: to.Ptr[int32](2),
+	// 			},
 	// 			DisplayName: to.Ptr("ServiceGroup 1 Name"),
 	// 			Parent: &armservicegroups.ParentServiceGroupProperties{
 	// 				ResourceID: to.Ptr("/providers/Microsoft.Management/serviceGroups/RootGroup"),
@@ -57,7 +63,7 @@ func ExampleManagementClient_BeginCreateOrUpdateServiceGroup() {
 	// }
 }
 
-// Generated from example definition: 2024-02-01-preview/ServiceGroup_Delete.json
+// Generated from example definition: 2026-08-01/ServiceGroup_Delete.json
 func ExampleManagementClient_BeginDeleteServiceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +84,7 @@ func ExampleManagementClient_BeginDeleteServiceGroup() {
 	}
 }
 
-// Generated from example definition: 2024-02-01-preview/ServiceGroup_Patch.json
+// Generated from example definition: 2026-08-01/ServiceGroup_Patch.json
 func ExampleManagementClient_BeginUpdateServiceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,6 +97,9 @@ func ExampleManagementClient_BeginUpdateServiceGroup() {
 	}
 	poller, err := clientFactory.NewManagementClient().BeginUpdateServiceGroup(ctx, "ServiceGroup1", armservicegroups.ServiceGroup{
 		Properties: &armservicegroups.ServiceGroupProperties{
+			Attributes: &armservicegroups.ServiceGroupAttributes{
+				Criticality: to.Ptr[int32](2),
+			},
 			DisplayName: to.Ptr("ServiceGroup 1 Name"),
 		},
 		Tags: map[string]*string{
@@ -115,6 +124,9 @@ func ExampleManagementClient_BeginUpdateServiceGroup() {
 	// 		ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/ServiceGroup1"),
 	// 		Kind: to.Ptr("App"),
 	// 		Properties: &armservicegroups.ServiceGroupProperties{
+	// 			Attributes: &armservicegroups.ServiceGroupAttributes{
+	// 				Criticality: to.Ptr[int32](2),
+	// 			},
 	// 			DisplayName: to.Ptr("ServiceGroup 1 Name"),
 	// 			Parent: &armservicegroups.ParentServiceGroupProperties{
 	// 				ResourceID: to.Ptr("/providers/Microsoft.Management/serviceGroups/RootGroup"),

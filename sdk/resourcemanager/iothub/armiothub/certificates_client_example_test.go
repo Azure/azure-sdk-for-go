@@ -12,8 +12,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/CreateOrReplace_Certificates_With_DeviceRegistryPolicy.json
-func ExampleCertificatesClient_CreateOrUpdate_createOrReplaceCertificatesWithDeviceRegistryPolicy() {
+// Generated from example definition: 2026-10-01-preview/CreateOrReplace_Certificates_With_CertificateAuthorityResourceId.json
+func ExampleCertificatesClient_CreateOrUpdate_createOrReplaceCertificatesWithCertificateAuthorityResourceId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -36,25 +36,25 @@ func ExampleCertificatesClient_CreateOrUpdate_createOrReplaceCertificatesWithDev
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiothub.CertificatesClientCreateOrUpdateResponse{
 	// 	CertificateDescription: armiothub.CertificateDescription{
+	// 		Properties: &armiothub.CertificateProperties{
+	// 			Subject: to.Ptr("CN=testdevice1"),
+	// 			Expiry: to.Ptr(time.Date(2039, time.December, 31, 23, 59, 59, 0, time.UTC)),
+	// 			Thumbprint: to.Ptr("97388663832D0393C9246CAB4FBA2C8677185A25"),
+	// 			IsVerified: to.Ptr(false),
+	// 			Created: to.Ptr(time.Date(2017, time.October, 12, 19, 23, 50, 0, time.UTC)),
+	// 			Updated: to.Ptr(time.Date(2017, time.October, 12, 19, 23, 50, 0, time.UTC)),
+	// 			Certificate: to.Ptr("############################################"),
+	// 			CertificateAuthorityResourceID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/namespaces/testNamespace/credentials/default/certificateAuthorities/default"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/IotHubs/testHub/certificates/cert"),
 	// 		Name: to.Ptr("cert"),
 	// 		Type: to.Ptr("Microsoft.Devices/IotHubs/Certificates"),
 	// 		Etag: to.Ptr("AAAAAAExpNs="),
-	// 		ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/IotHubs/testHub/certificates/cert"),
-	// 		Properties: &armiothub.CertificateProperties{
-	// 			Certificate: to.Ptr("############################################"),
-	// 			Created: to.Ptr(time.Date(2017, time.October, 12, 19, 23, 50, 0, time.UTC)),
-	// 			Expiry: to.Ptr(time.Date(2039, time.December, 31, 23, 59, 59, 0, time.UTC)),
-	// 			IsVerified: to.Ptr(false),
-	// 			PolicyResourceID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/namespaces/testNamespace/credentials/default/policies/default"),
-	// 			Subject: to.Ptr("CN=testdevice1"),
-	// 			Thumbprint: to.Ptr("97388663832D0393C9246CAB4FBA2C8677185A25"),
-	// 			Updated: to.Ptr(time.Date(2017, time.October, 12, 19, 23, 50, 0, time.UTC)),
-	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/iothub_certificatescreateorupdate.json
+// Generated from example definition: 2026-10-01-preview/iothub_certificatescreateorupdate.json
 func ExampleCertificatesClient_CreateOrUpdate_certificatesCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleCertificatesClient_CreateOrUpdate_certificatesCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/iothub_certificatesdelete.json
+// Generated from example definition: 2026-10-01-preview/iothub_certificatesdelete.json
 func ExampleCertificatesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleCertificatesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/iothub_generateverificationcode.json
+// Generated from example definition: 2026-10-01-preview/iothub_generateverificationcode.json
 func ExampleCertificatesClient_GenerateVerificationCode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleCertificatesClient_GenerateVerificationCode() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/iothub_getcertificate.json
+// Generated from example definition: 2026-10-01-preview/iothub_getcertificate.json
 func ExampleCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,7 +188,7 @@ func ExampleCertificatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/iothub_listcertificates.json
+// Generated from example definition: 2026-10-01-preview/iothub_listcertificates.json
 func ExampleCertificatesClient_ListByIotHub() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,7 +229,7 @@ func ExampleCertificatesClient_ListByIotHub() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/iothub_certverify.json
+// Generated from example definition: 2026-10-01-preview/iothub_certverify.json
 func ExampleCertificatesClient_Verify() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

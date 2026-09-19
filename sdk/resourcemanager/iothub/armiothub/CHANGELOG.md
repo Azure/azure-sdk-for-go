@@ -1,5 +1,36 @@
 # Release History
 
+## 2.0.0-beta.3 (2026-09-14)
+### Breaking Changes
+
+- Field `PolicyResourceID` of struct `CertificateProperties` has been removed
+- Field `PolicyResourceID` of struct `CertificatePropertiesWithNonce` has been removed
+- Field `IdentityResourceID` of struct `DeviceRegistry` has been removed
+
+### Features Added
+
+- New enum type `ConnectionProfile` with values `ConnectionProfileClassic`, `ConnectionProfileMqttV5`
+- New enum type `DeviceRegistryIdentityType` with values `DeviceRegistryIdentityTypeSystemAssigned`, `DeviceRegistryIdentityTypeUserAssigned`
+- New enum type `DeviceRegistryLinkingState` with values `DeviceRegistryLinkingStateFailed`, `DeviceRegistryLinkingStateInProgress`, `DeviceRegistryLinkingStateOrphaned`, `DeviceRegistryLinkingStateSuccess`
+- New enum type `MessagePayloadFormat` with values `MessagePayloadFormatDOObservationV1`, `MessagePayloadFormatNone`
+- New struct `DeviceRegistryIdentity`
+- New struct `DeviceRegistryLinkingProperties`
+- New struct `ErrorDetails`
+- New struct `MqttV5Settings`
+- New struct `TopicGroup`
+- New field `CertificateAuthorityResourceID` in struct `CertificateProperties`
+- New field `CertificateAuthorityResourceID` in struct `CertificatePropertiesWithNonce`
+- New field `DataPlaneHostName`, `Identity`, `LinkingProperties`, `NamespaceUUID` in struct `DeviceRegistry`
+- New field `ConnectionProfile`, `MqttV5Settings` in struct `Properties`
+- New field `DataSchema` in struct `RouteProperties`
+- New field `MessagePayloadFormat` in struct `RoutingCosmosDBSQLAPIProperties`
+- New field `MessagePayloadFormat` in struct `RoutingEventHubProperties`
+- New field `MessagePayloadFormat` in struct `RoutingEventStreamProperties`
+- New field `MessagePayloadFormat` in struct `RoutingServiceBusQueueEndpointProperties`
+- New field `MessagePayloadFormat` in struct `RoutingServiceBusTopicEndpointProperties`
+- New field `MessagePayloadFormat` in struct `RoutingStorageContainerProperties`
+
+
 ## 2.0.0-beta.2 (2026-08-12)
 ### Breaking Changes
 

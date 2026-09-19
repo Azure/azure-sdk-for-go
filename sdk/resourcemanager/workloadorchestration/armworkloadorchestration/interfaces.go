@@ -7,7 +7,7 @@ package armworkloadorchestration
 // JobParameterBaseClassification provides polymorphic access to related types.
 // Call the interface's GetJobParameterBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *DeployJobParameter, *JobParameterBase
+// - *DeployJobParameter, *JobParameterBase, *PublishJobParameter, *UninstallJobParameter
 type JobParameterBaseClassification interface {
 	// GetJobParameterBase returns the JobParameterBase content of the underlying type.
 	GetJobParameterBase() *JobParameterBase
@@ -16,7 +16,7 @@ type JobParameterBaseClassification interface {
 // JobStepStatisticsBaseClassification provides polymorphic access to related types.
 // Call the interface's GetJobStepStatisticsBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *DeployJobStepStatistics, *JobStepStatisticsBase
+// - *DeployJobStepStatistics, *JobStepStatisticsBase, *PublishJobStepStatistics, *UninstallJobStepStatistics
 type JobStepStatisticsBaseClassification interface {
 	// GetJobStepStatisticsBase returns the JobStepStatisticsBase content of the underlying type.
 	GetJobStepStatisticsBase() *JobStepStatisticsBase

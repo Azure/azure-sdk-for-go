@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/StorageDiscoveryWorkspaces_CreateOrUpdate.json
+// Generated from example definition: 2026-10-01-preview/StorageDiscoveryWorkspaces_CreateOrUpdate.json
 func ExampleWorkspacesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,6 +34,30 @@ func ExampleWorkspacesClient_CreateOrUpdate() {
 				to.Ptr("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"),
 			},
 			Description: to.Ptr("Sample Storage Discovery Workspace"),
+			Capabilities: &armstoragediscovery.Capabilities{
+				AzureBlobStorage: &armstoragediscovery.AzureBlobStorageCapability{
+					CapacityDetails: &armstoragediscovery.CapacityDetails{
+						Status: to.Ptr(armstoragediscovery.CapabilityStatusEnabled),
+					},
+					PrefixDefinitions: []*armstoragediscovery.PrefixDefinition{
+						{
+							StorageAccountName: to.Ptr("firstsa"),
+							ContainerName:      to.Ptr("samplecontainer"),
+							Prefix:             to.Ptr("sampleDir"),
+						},
+						{
+							StorageAccountName: to.Ptr("secondsa"),
+							ContainerName:      to.Ptr("samplecontainer"),
+							Prefix:             to.Ptr("sampleDir/sampleSubDir"),
+						},
+						{
+							StorageAccountName: to.Ptr("thirdsa"),
+							ContainerName:      to.Ptr("anothersamplecontainer"),
+							Prefix:             to.Ptr("anotherSampleDir"),
+						},
+					},
+				},
+			},
 			Scopes: []*armstoragediscovery.Scope{
 				{
 					DisplayName: to.Ptr("Sample-Collection"),
@@ -87,6 +111,30 @@ func ExampleWorkspacesClient_CreateOrUpdate() {
 	// 				to.Ptr("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"),
 	// 			},
 	// 			Description: to.Ptr("Sample Storage Discovery Workspace"),
+	// 			Capabilities: &armstoragediscovery.Capabilities{
+	// 				AzureBlobStorage: &armstoragediscovery.AzureBlobStorageCapability{
+	// 					CapacityDetails: &armstoragediscovery.CapacityDetails{
+	// 						Status: to.Ptr(armstoragediscovery.CapabilityStatusEnabled),
+	// 					},
+	// 					PrefixDefinitions: []*armstoragediscovery.PrefixDefinition{
+	// 						{
+	// 							StorageAccountName: to.Ptr("firstsa"),
+	// 							ContainerName: to.Ptr("samplecontainer"),
+	// 							Prefix: to.Ptr("sampleDir"),
+	// 						},
+	// 						{
+	// 							StorageAccountName: to.Ptr("secondsa"),
+	// 							ContainerName: to.Ptr("samplecontainer"),
+	// 							Prefix: to.Ptr("sampleDir/sampleSubDir"),
+	// 						},
+	// 						{
+	// 							StorageAccountName: to.Ptr("thirdsa"),
+	// 							ContainerName: to.Ptr("anothersamplecontainer"),
+	// 							Prefix: to.Ptr("anotherSampleDir"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
 	// 			Scopes: []*armstoragediscovery.Scope{
 	// 				{
 	// 					DisplayName: to.Ptr("Sample-Collection"),
@@ -128,7 +176,7 @@ func ExampleWorkspacesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/StorageDiscoveryWorkspaces_Delete.json
+// Generated from example definition: 2026-10-01-preview/StorageDiscoveryWorkspaces_Delete.json
 func ExampleWorkspacesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +198,7 @@ func ExampleWorkspacesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/StorageDiscoveryWorkspaces_Get.json
+// Generated from example definition: 2026-10-01-preview/StorageDiscoveryWorkspaces_Get.json
 func ExampleWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,6 +233,30 @@ func ExampleWorkspacesClient_Get() {
 	// 				to.Ptr("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"),
 	// 			},
 	// 			Description: to.Ptr("Sample Storage Discovery Workspace"),
+	// 			Capabilities: &armstoragediscovery.Capabilities{
+	// 				AzureBlobStorage: &armstoragediscovery.AzureBlobStorageCapability{
+	// 					CapacityDetails: &armstoragediscovery.CapacityDetails{
+	// 						Status: to.Ptr(armstoragediscovery.CapabilityStatusEnabled),
+	// 					},
+	// 					PrefixDefinitions: []*armstoragediscovery.PrefixDefinition{
+	// 						{
+	// 							StorageAccountName: to.Ptr("firstsa"),
+	// 							ContainerName: to.Ptr("samplecontainer"),
+	// 							Prefix: to.Ptr("sampleDir"),
+	// 						},
+	// 						{
+	// 							StorageAccountName: to.Ptr("secondsa"),
+	// 							ContainerName: to.Ptr("samplecontainer"),
+	// 							Prefix: to.Ptr("sampleDir/sampleSubDir"),
+	// 						},
+	// 						{
+	// 							StorageAccountName: to.Ptr("thirdsa"),
+	// 							ContainerName: to.Ptr("anothersamplecontainer"),
+	// 							Prefix: to.Ptr("anotherSampleDir"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
 	// 			Scopes: []*armstoragediscovery.Scope{
 	// 				{
 	// 					DisplayName: to.Ptr("Sample-Collection-1"),
@@ -226,7 +298,7 @@ func ExampleWorkspacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/StorageDiscoveryWorkspaces_ListByResourceGroup.json
+// Generated from example definition: 2026-10-01-preview/StorageDiscoveryWorkspaces_ListByResourceGroup.json
 func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -267,6 +339,30 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 		// 						to.Ptr("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"),
 		// 					},
 		// 					Description: to.Ptr("Sample Storage Discovery Workspace"),
+		// 					Capabilities: &armstoragediscovery.Capabilities{
+		// 						AzureBlobStorage: &armstoragediscovery.AzureBlobStorageCapability{
+		// 							CapacityDetails: &armstoragediscovery.CapacityDetails{
+		// 								Status: to.Ptr(armstoragediscovery.CapabilityStatusEnabled),
+		// 							},
+		// 							PrefixDefinitions: []*armstoragediscovery.PrefixDefinition{
+		// 								{
+		// 									StorageAccountName: to.Ptr("firstsa"),
+		// 									ContainerName: to.Ptr("samplecontainer"),
+		// 									Prefix: to.Ptr("sampleDir"),
+		// 								},
+		// 								{
+		// 									StorageAccountName: to.Ptr("secondsa"),
+		// 									ContainerName: to.Ptr("samplecontainer"),
+		// 									Prefix: to.Ptr("sampleDir/sampleSubDir"),
+		// 								},
+		// 								{
+		// 									StorageAccountName: to.Ptr("thirdsa"),
+		// 									ContainerName: to.Ptr("anothersamplecontainer"),
+		// 									Prefix: to.Ptr("anotherSampleDir"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
 		// 					Scopes: []*armstoragediscovery.Scope{
 		// 						{
 		// 							DisplayName: to.Ptr("Sample-Collection-1"),
@@ -301,6 +397,30 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 		// 						to.Ptr("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"),
 		// 					},
 		// 					Description: to.Ptr("Sample Storage Discovery Workspace"),
+		// 					Capabilities: &armstoragediscovery.Capabilities{
+		// 						AzureBlobStorage: &armstoragediscovery.AzureBlobStorageCapability{
+		// 							CapacityDetails: &armstoragediscovery.CapacityDetails{
+		// 								Status: to.Ptr(armstoragediscovery.CapabilityStatusEnabled),
+		// 							},
+		// 							PrefixDefinitions: []*armstoragediscovery.PrefixDefinition{
+		// 								{
+		// 									StorageAccountName: to.Ptr("firstsa"),
+		// 									ContainerName: to.Ptr("samplecontainer"),
+		// 									Prefix: to.Ptr("sampleDir"),
+		// 								},
+		// 								{
+		// 									StorageAccountName: to.Ptr("secondsa"),
+		// 									ContainerName: to.Ptr("samplecontainer"),
+		// 									Prefix: to.Ptr("sampleDir/sampleSubDir"),
+		// 								},
+		// 								{
+		// 									StorageAccountName: to.Ptr("thirdsa"),
+		// 									ContainerName: to.Ptr("anothersamplecontainer"),
+		// 									Prefix: to.Ptr("anotherSampleDir"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
 		// 					Scopes: []*armstoragediscovery.Scope{
 		// 						{
 		// 							DisplayName: to.Ptr("Sample-Collection-2"),
@@ -323,7 +443,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/StorageDiscoveryWorkspaces_ListBySubscription.json
+// Generated from example definition: 2026-10-01-preview/StorageDiscoveryWorkspaces_ListBySubscription.json
 func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -372,6 +492,30 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		// 						to.Ptr("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"),
 		// 					},
 		// 					Description: to.Ptr("Sample Storage Discovery Workspace"),
+		// 					Capabilities: &armstoragediscovery.Capabilities{
+		// 						AzureBlobStorage: &armstoragediscovery.AzureBlobStorageCapability{
+		// 							CapacityDetails: &armstoragediscovery.CapacityDetails{
+		// 								Status: to.Ptr(armstoragediscovery.CapabilityStatusEnabled),
+		// 							},
+		// 							PrefixDefinitions: []*armstoragediscovery.PrefixDefinition{
+		// 								{
+		// 									StorageAccountName: to.Ptr("firstsa"),
+		// 									ContainerName: to.Ptr("samplecontainer"),
+		// 									Prefix: to.Ptr("sampleDir"),
+		// 								},
+		// 								{
+		// 									StorageAccountName: to.Ptr("secondsa"),
+		// 									ContainerName: to.Ptr("samplecontainer"),
+		// 									Prefix: to.Ptr("sampleDir/sampleSubDir"),
+		// 								},
+		// 								{
+		// 									StorageAccountName: to.Ptr("thirdsa"),
+		// 									ContainerName: to.Ptr("anothersamplecontainer"),
+		// 									Prefix: to.Ptr("anotherSampleDir"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
 		// 					Scopes: []*armstoragediscovery.Scope{
 		// 						{
 		// 							DisplayName: to.Ptr("Sample-Collection-1"),
@@ -414,6 +558,30 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		// 						to.Ptr("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"),
 		// 					},
 		// 					Description: to.Ptr("Sample Storage Discovery Workspace"),
+		// 					Capabilities: &armstoragediscovery.Capabilities{
+		// 						AzureBlobStorage: &armstoragediscovery.AzureBlobStorageCapability{
+		// 							CapacityDetails: &armstoragediscovery.CapacityDetails{
+		// 								Status: to.Ptr(armstoragediscovery.CapabilityStatusEnabled),
+		// 							},
+		// 							PrefixDefinitions: []*armstoragediscovery.PrefixDefinition{
+		// 								{
+		// 									StorageAccountName: to.Ptr("firstsa"),
+		// 									ContainerName: to.Ptr("samplecontainer"),
+		// 									Prefix: to.Ptr("sampleDir"),
+		// 								},
+		// 								{
+		// 									StorageAccountName: to.Ptr("secondsa"),
+		// 									ContainerName: to.Ptr("samplecontainer"),
+		// 									Prefix: to.Ptr("sampleDir/sampleSubDir"),
+		// 								},
+		// 								{
+		// 									StorageAccountName: to.Ptr("thirdsa"),
+		// 									ContainerName: to.Ptr("anothersamplecontainer"),
+		// 									Prefix: to.Ptr("anotherSampleDir"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
 		// 					Scopes: []*armstoragediscovery.Scope{
 		// 						{
 		// 							DisplayName: to.Ptr("Sample-Collection-2"),
@@ -436,7 +604,7 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/StorageDiscoveryWorkspaces_Update.json
+// Generated from example definition: 2026-10-01-preview/StorageDiscoveryWorkspaces_Update.json
 func ExampleWorkspacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -454,6 +622,30 @@ func ExampleWorkspacesClient_Update() {
 				to.Ptr("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"),
 			},
 			Description: to.Ptr("Updated Sample Storage Discovery Workspace"),
+			Capabilities: &armstoragediscovery.CapabilitiesUpdate{
+				AzureBlobStorage: &armstoragediscovery.AzureBlobStorageCapabilityUpdate{
+					CapacityDetails: &armstoragediscovery.CapacityDetailsUpdate{
+						Status: to.Ptr(armstoragediscovery.CapabilityStatusEnabled),
+					},
+					PrefixDefinitions: []*armstoragediscovery.PrefixDefinitionUpdate{
+						{
+							StorageAccountName: to.Ptr("firstsa"),
+							ContainerName:      to.Ptr("samplecontainer"),
+							Prefix:             to.Ptr("sampleDir"),
+						},
+						{
+							StorageAccountName: to.Ptr("secondsa"),
+							ContainerName:      to.Ptr("samplecontainer"),
+							Prefix:             to.Ptr("sampleDir/sampleSubDir"),
+						},
+						{
+							StorageAccountName: to.Ptr("thirdsa"),
+							ContainerName:      to.Ptr("anothersamplecontainer"),
+							Prefix:             to.Ptr("anotherSampleDir"),
+						},
+					},
+				},
+			},
 			Scopes: []*armstoragediscovery.Scope{
 				{
 					DisplayName: to.Ptr("Updated-Sample-Collection"),
@@ -495,6 +687,30 @@ func ExampleWorkspacesClient_Update() {
 	// 				to.Ptr("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"),
 	// 			},
 	// 			Description: to.Ptr("Updated Sample Storage Discovery Workspace"),
+	// 			Capabilities: &armstoragediscovery.Capabilities{
+	// 				AzureBlobStorage: &armstoragediscovery.AzureBlobStorageCapability{
+	// 					CapacityDetails: &armstoragediscovery.CapacityDetails{
+	// 						Status: to.Ptr(armstoragediscovery.CapabilityStatusEnabled),
+	// 					},
+	// 					PrefixDefinitions: []*armstoragediscovery.PrefixDefinition{
+	// 						{
+	// 							StorageAccountName: to.Ptr("firstsa"),
+	// 							ContainerName: to.Ptr("samplecontainer"),
+	// 							Prefix: to.Ptr("sampleDir"),
+	// 						},
+	// 						{
+	// 							StorageAccountName: to.Ptr("secondsa"),
+	// 							ContainerName: to.Ptr("samplecontainer"),
+	// 							Prefix: to.Ptr("sampleDir/sampleSubDir"),
+	// 						},
+	// 						{
+	// 							StorageAccountName: to.Ptr("thirdsa"),
+	// 							ContainerName: to.Ptr("anothersamplecontainer"),
+	// 							Prefix: to.Ptr("anotherSampleDir"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
 	// 			Scopes: []*armstoragediscovery.Scope{
 	// 				{
 	// 					DisplayName: to.Ptr("Updated-Sample-Collection"),

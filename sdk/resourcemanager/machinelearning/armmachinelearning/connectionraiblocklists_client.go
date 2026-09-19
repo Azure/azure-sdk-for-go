@@ -19,7 +19,7 @@ import (
 // ConnectionRaiBlocklistsClient contains the methods for the ConnectionRaiBlocklists group.
 // Don't use this type directly, use NewConnectionRaiBlocklistsClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-07-15-preview
 type ConnectionRaiBlocklistsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -109,7 +109,7 @@ func (client *ConnectionRaiBlocklistsClient) listCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260315Preview)
+		reqQP.Set("api-version", version20260715Preview)
 		if options != nil && options.ProxyAPIVersion != nil {
 			reqQP.Set("proxy-api-version", *options.ProxyAPIVersion)
 		}

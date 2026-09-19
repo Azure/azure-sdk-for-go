@@ -246,11 +246,6 @@ func (a *AccessKeyAuthTypeWorkspaceConnectionProperties) GetWorkspaceConnectionP
 	}
 }
 
-type AccountAPIKeys struct {
-	Key1 *string
-	Key2 *string
-}
-
 // AccountKeyAuthTypeWorkspaceConnectionProperties - This connection type covers the account key connection for Azure storage
 type AccountKeyAuthTypeWorkspaceConnectionProperties struct {
 	// CONSTANT; Authentication type of the connection target
@@ -338,25 +333,6 @@ func (a *AccountKeyDatastoreSecrets) GetDatastoreSecrets() *DatastoreSecrets {
 type AcrDetails struct {
 	// Details of system created ACR account to be used for the Registry
 	SystemCreatedAcrAccount *SystemCreatedAcrAccount
-}
-
-type ActualCapacityInfo struct {
-	// Gets or sets the number of instances (scale units) which have Failed provisioning state and have target group payload.
-	Failed *int32
-
-	// Gets or sets the number of instances (scale units) which have Failed provisioning state but do not have target group payload.
-	OutdatedFailed *int32
-
-	// Gets or sets the number of instances (scale units) which have Succeeded provisioning state but do not have target group
-	// payload.
-	OutdatedSucceeded *int32
-
-	// Gets or sets the number of instances (scale units) which have Succeeded provisioning state and target group payload.
-	Succeeded *int32
-
-	// Gets or sets the total number of instances (scale units) regardless of provisioning state or whether current group payload
-	// version matches the target group payload.
-	Total *int32
 }
 
 // AksComputeSecrets - Secrets related to a Machine Learning compute based on AKS.
@@ -742,9 +718,6 @@ type AutoMLJob struct {
 	// Mapping of output data bindings used in the job.
 	Outputs map[string]JobOutputClassification
 
-	// Parent job name.
-	ParentJobName *string
-
 	// The asset property dictionary.
 	Properties map[string]*string
 
@@ -777,7 +750,6 @@ func (a *AutoMLJob) GetJobBaseProperties() *JobBaseProperties {
 		IsArchived:          a.IsArchived,
 		JobType:             a.JobType,
 		NotificationSetting: a.NotificationSetting,
-		ParentJobName:       a.ParentJobName,
 		Properties:          a.Properties,
 		Services:            a.Services,
 		Status:              a.Status,
@@ -870,25 +842,6 @@ func (a *AutoTargetRollingWindowSize) GetTargetRollingWindowSize() *TargetRollin
 	return &TargetRollingWindowSize{
 		Mode: a.Mode,
 	}
-}
-
-type AvailableQuota struct {
-	// Available quota properties
-	Properties *AvailableQuotaProperties
-}
-
-// AvailableQuotaArmPaginatedResult - A paginated list of AvailableQuota entities.
-type AvailableQuotaArmPaginatedResult struct {
-	// REQUIRED; The AvailableQuota items on this page
-	Value []*AvailableQuota
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-type AvailableQuotaProperties struct {
-	// The number of available quota
-	Total *int64
 }
 
 // AzureBlobDatastore - Azure Blob datastore configuration.
@@ -1118,51 +1071,6 @@ func (a *AzureFileDatastore) GetDatastoreProperties() *DatastoreProperties {
 		Properties:    a.Properties,
 		Tags:          a.Tags,
 	}
-}
-
-type AzureOpenAiFineTuning struct {
-	// REQUIRED; [Required] Input model for fine tuning.
-	Model JobInputClassification
-
-	// CONSTANT; [Required] Enum to determine the type of fine tuning.
-	// Field has constant value ModelProviderAzureOpenAI, any specified value is ignored.
-	ModelProvider *ModelProvider
-
-	// REQUIRED; [Required] Fine tuning task type.
-	TaskType *FineTuningTaskType
-
-	// REQUIRED; [Required] Training data for fine tuning.
-	TrainingData JobInputClassification
-
-	// HyperParameters for fine tuning Azure Open AI model.
-	HyperParameters *AzureOpenAiHyperParameters
-
-	// Validation data for fine tuning.
-	ValidationData JobInputClassification
-}
-
-// GetFineTuningVertical implements the FineTuningVerticalClassification interface for type AzureOpenAiFineTuning.
-func (a *AzureOpenAiFineTuning) GetFineTuningVertical() *FineTuningVertical {
-	return &FineTuningVertical{
-		Model:          a.Model,
-		ModelProvider:  a.ModelProvider,
-		TaskType:       a.TaskType,
-		TrainingData:   a.TrainingData,
-		ValidationData: a.ValidationData,
-	}
-}
-
-// AzureOpenAiHyperParameters - Azure Open AI hyperparameters for fine tuning.
-type AzureOpenAiHyperParameters struct {
-	// Number of examples in each batch. A larger batch size means that model parameters are updated less frequently, but with
-	// lower variance.
-	BatchSize *int32
-
-	// Scaling factor for the learning rate. A smaller learning rate may be useful to avoid over fitting.
-	LearningRateMultiplier *float64
-
-	// The number of epochs to train the model for. An epoch refers to one full cycle through the training dataset.
-	NEpochs *int32
 }
 
 // BanditPolicy - Defines an early termination policy based on slack criteria, and a frequency and delay interval for evaluation
@@ -1862,14 +1770,6 @@ type CodeVersionResourceArmPaginatedResult struct {
 	NextLink *string
 }
 
-type CognitiveServicesSKU struct {
-	Capacity *int32
-	Family   *string
-	Name     *string
-	Size     *string
-	Tier     *string
-}
-
 type Collection struct {
 	// The msi client id used to collect logging to blob storage. If it's null,backend will pick a registered endpoint identity
 	// to auth.
@@ -1951,9 +1851,6 @@ type CommandJob struct {
 	// Mapping of output data bindings used in the job.
 	Outputs map[string]JobOutputClassification
 
-	// Parent job name.
-	ParentJobName *string
-
 	// The asset property dictionary.
 	Properties map[string]*string
 
@@ -1989,7 +1886,6 @@ func (c *CommandJob) GetJobBaseProperties() *JobBaseProperties {
 		IsArchived:          c.IsArchived,
 		JobType:             c.JobType,
 		NotificationSetting: c.NotificationSetting,
-		ParentJobName:       c.ParentJobName,
 		Properties:          c.Properties,
 		Services:            c.Services,
 		Status:              c.Status,
@@ -2220,12 +2116,6 @@ type ComputeInstanceApplication struct {
 	EndpointURI *string
 }
 
-// ComputeInstanceAutologgerSettings - Specifies settings for autologger.
-type ComputeInstanceAutologgerSettings struct {
-	// Indicates whether mlflow autologger is enabled for notebooks.
-	MlflowAutologger *MlflowAutologger
-}
-
 // ComputeInstanceConnectivityEndpoints - Defines all connectivity endpoints and properties for an ComputeInstance.
 type ComputeInstanceConnectivityEndpoints struct {
 	// READ-ONLY; Private IP Address of this ComputeInstance (local to the VNET in which the compute instance is deployed).
@@ -2355,9 +2245,6 @@ type ComputeInstanceProperties struct {
 	// depending on his/her assigned role.
 	ApplicationSharingPolicy *ApplicationSharingPolicy
 
-	// Specifies settings for autologger.
-	AutologgerSettings *ComputeInstanceAutologgerSettings
-
 	// Compute Instance Authorization type.
 	//
 	// The Compute Instance Authorization type. Available values are personal (default).
@@ -2373,16 +2260,6 @@ type ComputeInstanceProperties struct {
 	// and no public IPs.
 	EnableNodePublicIP *bool
 
-	// Enable Auto OS Patching.
-	//
-	// Enable Auto OS Patching. Possible values are: true, false.
-	EnableOSPatching *bool
-
-	// Enable root access.
-	//
-	// Enable root access. Possible values are: true, false.
-	EnableRootAccess *bool
-
 	// Enable SSO (single sign on).
 	//
 	// Enable SSO (single sign on). Possible values are: true, false.
@@ -2396,12 +2273,6 @@ type ComputeInstanceProperties struct {
 	//
 	// Settings for a personal compute instance.
 	PersonalComputeInstanceSettings *PersonalComputeInstanceSettings
-
-	// Release quota if compute instance stopped.
-	//
-	// Release quota if compute instance stopped. Possible values are: true - release quota if compute instance stopped. false
-	// - don't release quota when compute instance stopped.
-	ReleaseQuotaOnStop *bool
 
 	// Specifies policy and settings for SSH access.
 	SSHSettings *ComputeInstanceSSHSettings
@@ -2596,89 +2467,6 @@ type ContainerResourceSettings struct {
 type ContentSafety struct {
 	// REQUIRED; [Required] Specifies the status of content safety.
 	ContentSafetyStatus *ContentSafetyStatus
-
-	// Specifies the current safety level for content safety.
-	ContentSafetyLevel *ContentSafetyLevel
-}
-
-type ContentSafetyEndpointDeploymentResourceProperties struct {
-	// REQUIRED; Model used for the endpoint deployment.
-	Model *EndpointDeploymentModel
-
-	// CONSTANT; Kind of the deployment.
-	// Field has constant value "Azure.ContentSafety", any specified value is ignored.
-	Type *string
-
-	// The failure reason if the creation failed.
-	FailureReason *string
-
-	// The name of RAI policy.
-	RaiPolicyName *string
-	SKU           *CognitiveServicesSKU
-
-	// Deployment model version upgrade option.
-	VersionUpgradeOption *DeploymentModelVersionUpgradeOption
-
-	// READ-ONLY; Read-only provision state status property.
-	ProvisioningState *DefaultResourceProvisioningState
-}
-
-// GetEndpointDeploymentResourceProperties implements the EndpointDeploymentResourcePropertiesClassification interface for
-// type ContentSafetyEndpointDeploymentResourceProperties.
-func (c *ContentSafetyEndpointDeploymentResourceProperties) GetEndpointDeploymentResourceProperties() *EndpointDeploymentResourceProperties {
-	return &EndpointDeploymentResourceProperties{
-		FailureReason:     c.FailureReason,
-		ProvisioningState: c.ProvisioningState,
-		Type:              c.Type,
-	}
-}
-
-type ContentSafetyEndpointResourceProperties struct {
-	// CONSTANT; Type of the endpoint.
-	// Field has constant value EndpointTypeAzureContentSafety, any specified value is ignored.
-	EndpointType *EndpointType
-
-	// Byo resource id for creating the built-in model service endpoints.
-	AssociatedResourceID *string
-
-	// Deployments info.
-	Deployments []*EndpointDeploymentResourcePropertiesBasicResource
-
-	// Uri of the endpoint.
-	EndpointURI *string
-
-	// The failure reason if the creation failed.
-	FailureReason *string
-
-	// Location of the endpoint.
-	// Since input dto and when parse endpoint resource share the same contract
-	// this Location field is just for parse the endpoint resource info
-	// we won't let customer specify the endpoint resource location since we will create it the same location as workspace
-	Location *string
-
-	// Name of the endpoint.
-	Name *string
-
-	// Whether the proxy (non-byo) endpoint is a regular endpoint or a OneKeyV2 AI services account endpoint.
-	ShouldCreateAiServicesEndpoint *bool
-
-	// READ-ONLY; Read-only provision state status property.
-	ProvisioningState *DefaultResourceProvisioningState
-}
-
-// GetEndpointResourceProperties implements the EndpointResourcePropertiesClassification interface for type ContentSafetyEndpointResourceProperties.
-func (c *ContentSafetyEndpointResourceProperties) GetEndpointResourceProperties() *EndpointResourceProperties {
-	return &EndpointResourceProperties{
-		AssociatedResourceID:           c.AssociatedResourceID,
-		Deployments:                    c.Deployments,
-		EndpointType:                   c.EndpointType,
-		EndpointURI:                    c.EndpointURI,
-		FailureReason:                  c.FailureReason,
-		Location:                       c.Location,
-		Name:                           c.Name,
-		ProvisioningState:              c.ProvisioningState,
-		ShouldCreateAiServicesEndpoint: c.ShouldCreateAiServicesEndpoint,
-	}
 }
 
 type CosmosDbSettings struct {
@@ -2828,38 +2616,6 @@ type CustomMetricThreshold struct {
 
 	// The threshold value. If null, a default value will be set depending on the selected metric.
 	Threshold *MonitoringThreshold
-}
-
-type CustomModelFineTuning struct {
-	// REQUIRED; [Required] Input model for fine tuning.
-	Model JobInputClassification
-
-	// CONSTANT; [Required] Enum to determine the type of fine tuning.
-	// Field has constant value ModelProviderCustom, any specified value is ignored.
-	ModelProvider *ModelProvider
-
-	// REQUIRED; [Required] Fine tuning task type.
-	TaskType *FineTuningTaskType
-
-	// REQUIRED; [Required] Training data for fine tuning.
-	TrainingData JobInputClassification
-
-	// HyperParameters for fine tuning custom model.
-	HyperParameters map[string]*string
-
-	// Validation data for fine tuning.
-	ValidationData JobInputClassification
-}
-
-// GetFineTuningVertical implements the FineTuningVerticalClassification interface for type CustomModelFineTuning.
-func (c *CustomModelFineTuning) GetFineTuningVertical() *FineTuningVertical {
-	return &FineTuningVertical{
-		Model:          c.Model,
-		ModelProvider:  c.ModelProvider,
-		TaskType:       c.TaskType,
-		TrainingData:   c.TrainingData,
-		ValidationData: c.ValidationData,
-	}
 }
 
 type CustomModelJobInput struct {
@@ -3206,24 +2962,6 @@ func (d *DataFactory) GetCompute() *Compute {
 		ResourceID:         d.ResourceID,
 	}
 }
-
-type DataGenerationVertical struct {
-	// REQUIRED; [Required] DataGeneration Task type.
-	DataGenerationTaskType *DataGenerationTaskType
-
-	// REQUIRED; [Required] Enum to determine the type of Data Generation.
-	DataGenerationType *DataGenerationType
-
-	// REQUIRED; [Required] Teacher Model Endpoint Details.
-	TeacherModelEndpoint *TeacherModelEndpoint
-
-	// Prompt Settings.
-	PromptSettings       *PromptSettings
-	TeacherModelSettings *TeacherModelSettings
-}
-
-// GetDataGenerationVertical implements the DataGenerationVerticalClassification interface for type DataGenerationVertical.
-func (d *DataGenerationVertical) GetDataGenerationVertical() *DataGenerationVertical { return d }
 
 // DataLakeAnalytics - A DataLakeAnalytics compute.
 type DataLakeAnalytics struct {
@@ -3587,67 +3325,6 @@ func (d *DefaultScaleSettings) GetOnlineScaleSettings() *OnlineScaleSettings {
 	}
 }
 
-// DeltaModelCurrentState - Contract for DeltaModelCurrentState.
-type DeltaModelCurrentState struct {
-	// Gets or sets Count of instances with model.
-	Count *int32
-
-	// Gets or sets sample of instances with model.
-	SampleInstanceID *string
-
-	// Gets or sets status.
-	Status *string
-}
-
-type DeltaModelListRequest struct {
-	// Gets or sets number of delta models to return. Default: -1, means that all will be returned.
-	Count *int32
-
-	// Gets or sets skip token for paginated response.
-	SkipToken *string
-
-	// Gets or sets target base model.
-	TargetBaseModel *string
-}
-
-// DeltaModelModifyRequest - Contract base for DeltaModelChangeRequest. Used for adding or removing.
-type DeltaModelModifyRequest struct {
-	// Gets or sets delta models to remove.
-	AddDeltaModels []*string
-
-	// Gets or sets delta models to remove.
-	RemoveDeltaModels []*string
-
-	// Gets or sets target base model.
-	TargetBaseModel *string
-}
-
-type DeltaModelStatusRequest struct {
-	// Gets or sets collection of delta models to retrieve status for.
-	DeltaModels []*string
-
-	// Gets or sets target base model.
-	TargetBaseModel *string
-}
-
-// DeltaModelStatusResponse - Contract returning to user the delta models.
-type DeltaModelStatusResponse struct {
-	// Gets or sets actual instance count.
-	ActualInstanceCount *int32
-
-	// Gets or sets dictionary representing modelID and its current state.
-	DeltaModels map[string][]*DeltaModelCurrentState
-
-	// Gets or sets expected instance count.
-	ExpectedInstanceCount *int32
-
-	// Gets or sets revision ID.
-	RevisionID *string
-
-	// Gets or sets target base model.
-	TargetBaseModel *string
-}
-
 type DeploymentLogs struct {
 	// The retrieved online deployment logs.
 	Content *string
@@ -3747,89 +3424,6 @@ type DiagnoseResult struct {
 // DiagnoseWorkspaceParameters - Parameters to diagnose a workspace
 type DiagnoseWorkspaceParameters struct {
 	Value *DiagnoseRequestProperties
-}
-
-// DistillationJob - Distillation Job definition.
-type DistillationJob struct {
-	// REQUIRED; [Required]
-	DataGenerationDetails DataGenerationVerticalClassification
-
-	// REQUIRED; [Required]
-	FinetuningDetails *FinetuningDetails
-
-	// CONSTANT; [Required] Specifies the type of job.
-	// Field has constant value JobTypeDistillation, any specified value is ignored.
-	JobType *JobType
-
-	// REQUIRED; [Required]
-	Outputs map[string]JobOutputClassification
-
-	// ARM resource ID of the component resource.
-	ComponentID *string
-
-	// ARM resource ID of the compute resource.
-	ComputeID *string
-
-	// The asset description text.
-	Description *string
-
-	// Display name of job.
-	DisplayName *string
-
-	// The name of the experiment the job belongs to. If not set, the job is placed in the "Default" experiment.
-	ExperimentName *string
-
-	// Identity configuration. If set, this should be one of AmlToken, ManagedIdentity, UserIdentity or null.
-	// Defaults to AmlToken if null.
-	Identity IdentityConfigurationClassification
-
-	// Is the asset archived?
-	IsArchived *bool
-
-	// Notification setting for the job
-	NotificationSetting *NotificationSetting
-
-	// Parent job name.
-	ParentJobName *string
-
-	// The asset property dictionary.
-	Properties map[string]*string
-
-	// Queue settings for the job
-	QueueSettings *QueueSettings
-
-	// Instance types and other resources for the job
-	Resources *JobResources
-
-	// List of JobEndpoints.
-	// For local jobs, a job endpoint will have an endpoint value of FileStreamObject.
-	Services map[string]*JobService
-
-	// Tag dictionary. Tags can be added, removed, and updated.
-	Tags map[string]*string
-
-	// READ-ONLY; Status of the job.
-	Status *JobStatus
-}
-
-// GetJobBaseProperties implements the JobBasePropertiesClassification interface for type DistillationJob.
-func (d *DistillationJob) GetJobBaseProperties() *JobBaseProperties {
-	return &JobBaseProperties{
-		ComponentID:         d.ComponentID,
-		ComputeID:           d.ComputeID,
-		Description:         d.Description,
-		DisplayName:         d.DisplayName,
-		ExperimentName:      d.ExperimentName,
-		Identity:            d.Identity,
-		IsArchived:          d.IsArchived,
-		JobType:             d.JobType,
-		NotificationSetting: d.NotificationSetting,
-		ParentJobName:       d.ParentJobName,
-		Properties:          d.Properties,
-		Services:            d.Services,
-		Status:              d.Status,
-		Tags:                d.Tags,
-	}
 }
 
 // DistributionConfiguration - Base definition for job distribution configuration.
@@ -3960,238 +3554,6 @@ type EndpointAuthToken struct {
 	TokenType *string
 }
 
-type EndpointDeploymentModel struct {
-	// Model format
-	Format *string
-
-	// Model name.
-	Name *string
-
-	// Optional. Deployment model source ARM resource ID.
-	Source *string
-
-	// Model version.
-	Version *string
-}
-
-type EndpointDeploymentResourceProperties struct {
-	// REQUIRED; Kind of the deployment.
-	Type *string
-
-	// The failure reason if the creation failed.
-	FailureReason *string
-
-	// READ-ONLY; Read-only provision state status property.
-	ProvisioningState *DefaultResourceProvisioningState
-}
-
-// GetEndpointDeploymentResourceProperties implements the EndpointDeploymentResourcePropertiesClassification interface for
-// type EndpointDeploymentResourceProperties.
-func (e *EndpointDeploymentResourceProperties) GetEndpointDeploymentResourceProperties() *EndpointDeploymentResourceProperties {
-	return e
-}
-
-// EndpointDeploymentResourcePropertiesBasicResource is preview-only.
-type EndpointDeploymentResourcePropertiesBasicResource struct {
-	// REQUIRED
-	Properties EndpointDeploymentResourcePropertiesClassification
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// EndpointDeploymentResourcePropertiesBasicResourceArmPaginatedResult - Paged collection of EndpointDeploymentResourcePropertiesBasicResource
-// items
-type EndpointDeploymentResourcePropertiesBasicResourceArmPaginatedResult struct {
-	// REQUIRED; The EndpointDeploymentResourcePropertiesBasicResource items on this page
-	Value []*EndpointDeploymentResourcePropertiesBasicResource
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-type EndpointKeys struct {
-	// Dictionary of Keys for the endpoint.
-	Keys *AccountAPIKeys
-}
-
-type EndpointModelDeprecationProperties struct {
-	// The datetime of deprecation of the fineTune Model.
-	FineTune *time.Time
-
-	// The datetime of deprecation of the inference Model.
-	Inference *time.Time
-}
-
-// EndpointModelProperties - Endpoint Model properties.
-type EndpointModelProperties struct {
-	// The capabilities.
-	Capabilities map[string]*string
-	Deprecation  *EndpointModelDeprecationProperties
-
-	// The capabilities for finetune models.
-	FinetuneCapabilities map[string]*string
-
-	// Deployment model format.
-	Format *string
-
-	// If the model is default version.
-	IsDefaultVersion *bool
-
-	// Model lifecycle status.
-	LifecycleStatus *ModelLifecycleStatus
-
-	// The max capacity.
-	MaxCapacity *int32
-
-	// Deployment model name.
-	Name *string
-
-	// The list of Model Sku.
-	SKUs       []*EndpointModelSKUProperties
-	SystemData *SystemData
-
-	// Optional. Deployment model version. If version is not specified, a default version will be assigned. The default version
-	// is different for different models and might change when there is new version available for a model. Default version for
-	// a model could be found from list models API.
-	Version *string
-}
-
-type EndpointModelSKUCapacityProperties struct {
-	// The default capacity.
-	Default *int32
-
-	// The maximum capacity.
-	Maximum *int32
-}
-
-type EndpointModelSKUProperties struct {
-	Capacity *EndpointModelSKUCapacityProperties
-
-	// The list of ARM id for the connection support this SKU.
-	ConnectionIDs []*string
-
-	// The datetime of deprecation of the model SKU.
-	DeprecationDate *time.Time
-
-	// The name of the model SKU.
-	Name       *string
-	RateLimits []*EndpointModelSKURateLimitProperties
-
-	// The usage name of the model SKU.
-	UsageName *string
-}
-
-type EndpointModelSKURateLimitProperties struct {
-	// The count value of Call Rate Limit.
-	Count *float32
-
-	// The renewal period in seconds of Call Rate Limit.
-	RenewalPeriod *float32
-
-	// The call rate limit for the model.
-	Rules []*EndpointModelSKURateLimitRuleProperties
-}
-
-type EndpointModelSKURateLimitRulePatternProperties struct {
-	Method *string
-	Path   *string
-}
-
-type EndpointModelSKURateLimitRuleProperties struct {
-	Count *float32
-
-	// If the dynamic throttling is enabled.
-	DynamicThrottlingEnabled *bool
-	Key                      *string
-	MatchPatterns            []*EndpointModelSKURateLimitRulePatternProperties
-	MinCount                 *float32
-	RenewalPeriod            *float32
-}
-
-// EndpointModels - Paged collection of EndpointModelProperties items
-type EndpointModels struct {
-	// REQUIRED; The EndpointModelProperties items on this page
-	Value []*EndpointModelProperties
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-type EndpointResourceProperties struct {
-	// REQUIRED; Type of the endpoint.
-	EndpointType *EndpointType
-
-	// Byo resource id for creating the built-in model service endpoints.
-	AssociatedResourceID *string
-
-	// Deployments info.
-	Deployments []*EndpointDeploymentResourcePropertiesBasicResource
-
-	// Uri of the endpoint.
-	EndpointURI *string
-
-	// The failure reason if the creation failed.
-	FailureReason *string
-
-	// Location of the endpoint.
-	// Since input dto and when parse endpoint resource share the same contract
-	// this Location field is just for parse the endpoint resource info
-	// we won't let customer specify the endpoint resource location since we will create it the same location as workspace
-	Location *string
-
-	// Name of the endpoint.
-	Name *string
-
-	// Whether the proxy (non-byo) endpoint is a regular endpoint or a OneKeyV2 AI services account endpoint.
-	ShouldCreateAiServicesEndpoint *bool
-
-	// READ-ONLY; Read-only provision state status property.
-	ProvisioningState *DefaultResourceProvisioningState
-}
-
-// GetEndpointResourceProperties implements the EndpointResourcePropertiesClassification interface for type EndpointResourceProperties.
-func (e *EndpointResourceProperties) GetEndpointResourceProperties() *EndpointResourceProperties {
-	return e
-}
-
-// EndpointResourcePropertiesBasicResource is a preview-only resource.
-type EndpointResourcePropertiesBasicResource struct {
-	// REQUIRED
-	Properties EndpointResourcePropertiesClassification
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// EndpointResourcePropertiesBasicResourceArmPaginatedResult - Paged collection of EndpointResourcePropertiesBasicResource
-// items
-type EndpointResourcePropertiesBasicResourceArmPaginatedResult struct {
-	// REQUIRED; The EndpointResourcePropertiesBasicResource items on this page
-	Value []*EndpointResourcePropertiesBasicResource
-
-	// The link to the next page of items
-	NextLink *string
-}
-
 type EndpointScheduleAction struct {
 	// CONSTANT; [Required] Specifies the action type of the schedule
 	// Field has constant value ScheduleActionTypeInvokeBatchEndpoint, any specified value is ignored.
@@ -4310,9 +3672,6 @@ type EnvironmentVersionProperties struct {
 	// <seealso href="https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-custom-docker-image#use-a-custom-base-image"
 	// />
 	Image *string
-
-	// Environment image details.
-	ImageDetails *ImageDetails
 
 	// Defines configuration specific to inference.
 	InferenceConfig *InferenceContainerProperties
@@ -4832,114 +4191,6 @@ type FeaturestoreEntityVersionResourceArmPaginatedResult struct {
 	NextLink *string
 }
 
-// FineTuningJob - FineTuning Job definition.
-type FineTuningJob struct {
-	// REQUIRED; [Required]
-	FineTuningDetails FineTuningVerticalClassification
-
-	// CONSTANT; [Required] Specifies the type of job.
-	// Field has constant value JobTypeFineTuning, any specified value is ignored.
-	JobType *JobType
-
-	// REQUIRED; [Required]
-	Outputs map[string]JobOutputClassification
-
-	// ARM resource ID of the component resource.
-	ComponentID *string
-
-	// ARM resource ID of the compute resource.
-	ComputeID *string
-
-	// The asset description text.
-	Description *string
-
-	// Display name of job.
-	DisplayName *string
-
-	// The name of the experiment the job belongs to. If not set, the job is placed in the "Default" experiment.
-	ExperimentName *string
-
-	// Identity configuration. If set, this should be one of AmlToken, ManagedIdentity, UserIdentity or null.
-	// Defaults to AmlToken if null.
-	Identity IdentityConfigurationClassification
-
-	// Is the asset archived?
-	IsArchived *bool
-
-	// Notification setting for the job
-	NotificationSetting *NotificationSetting
-
-	// Parent job name.
-	ParentJobName *string
-
-	// The asset property dictionary.
-	Properties map[string]*string
-
-	// Queue settings for the job
-	QueueSettings *QueueSettings
-
-	// Instance types and other resources for the job
-	Resources *JobResources
-
-	// List of JobEndpoints.
-	// For local jobs, a job endpoint will have an endpoint value of FileStreamObject.
-	Services map[string]*JobService
-
-	// Tag dictionary. Tags can be added, removed, and updated.
-	Tags map[string]*string
-
-	// READ-ONLY; Status of the job.
-	Status *JobStatus
-}
-
-// GetJobBaseProperties implements the JobBasePropertiesClassification interface for type FineTuningJob.
-func (f *FineTuningJob) GetJobBaseProperties() *JobBaseProperties {
-	return &JobBaseProperties{
-		ComponentID:         f.ComponentID,
-		ComputeID:           f.ComputeID,
-		Description:         f.Description,
-		DisplayName:         f.DisplayName,
-		ExperimentName:      f.ExperimentName,
-		Identity:            f.Identity,
-		IsArchived:          f.IsArchived,
-		JobType:             f.JobType,
-		NotificationSetting: f.NotificationSetting,
-		ParentJobName:       f.ParentJobName,
-		Properties:          f.Properties,
-		Services:            f.Services,
-		Status:              f.Status,
-		Tags:                f.Tags,
-	}
-}
-
-type FineTuningVertical struct {
-	// REQUIRED; [Required] Input model for fine tuning.
-	Model JobInputClassification
-
-	// REQUIRED; [Required] Enum to determine the type of fine tuning.
-	ModelProvider *ModelProvider
-
-	// REQUIRED; [Required] Fine tuning task type.
-	TaskType *FineTuningTaskType
-
-	// REQUIRED; [Required] Training data for fine tuning.
-	TrainingData JobInputClassification
-
-	// Validation data for fine tuning.
-	ValidationData JobInputClassification
-}
-
-// GetFineTuningVertical implements the FineTuningVerticalClassification interface for type FineTuningVertical.
-func (f *FineTuningVertical) GetFineTuningVertical() *FineTuningVertical { return f }
-
-type FinetuningDetails struct {
-	// REQUIRED; [Required] Student model for fine tuning.
-	StudentModel JobInputClassification
-
-	// Finetuning Hyperparameters
-	HyperParameters map[string]*string
-}
-
 // FixedInputData - Fixed input data definition.
 type FixedInputData struct {
 	// CONSTANT; [Required] Specifies the type of signal to monitor.
@@ -5204,43 +4455,6 @@ func (g *GridSamplingAlgorithm) GetSamplingAlgorithm() *SamplingAlgorithm {
 	}
 }
 
-// GroupEnvironmentConfiguration - Environment configuration options.
-type GroupEnvironmentConfiguration struct {
-	// ARM resource ID of the environment specification for the inference pool.
-	EnvironmentID *string
-
-	// Environment variables configuration for the inference pool.
-	EnvironmentVariables []*StringStringKeyValuePair
-
-	// Liveness probe monitors the health of the container regularly.
-	LivenessProbe *ProbeSettings
-
-	// Readiness probe validates if the container is ready to serve traffic. The properties and defaults are the same as liveness
-	// probe.
-	ReadinessProbe *ProbeSettings
-
-	// This verifies whether the application within a container is started. Startup probes run before any other probe, and, unless
-	// it finishes successfully, disables other probes.
-	StartupProbe *ProbeSettings
-}
-
-// GroupModelConfiguration - Model configuration options.
-type GroupModelConfiguration struct {
-	// The URI path to the model.
-	ModelID *string
-}
-
-type GroupStatus struct {
-	// Gets or sets the actual capacity info for the group.
-	ActualCapacityInfo *ActualCapacityInfo
-
-	// Gets or sets the actual number of endpoints in the group.
-	EndpointCount *int32
-
-	// Gets or sets the request number of instances for the group.
-	RequestedCapacity *int32
-}
-
 // HDInsight - A HDInsight compute.
 type HDInsight struct {
 	// CONSTANT; The type of compute
@@ -5322,14 +4536,6 @@ func (i *IDAssetReference) GetAssetReferenceBase() *AssetReferenceBase {
 	}
 }
 
-// IPRule - Contains an IPv4 address range in CIDR notation, such as '124.56.78.91' (simple IP address) or '124.56.78.0/24'
-// (all addresses that start with 124.56.78). Value could be 'Allow' or 'Deny'.
-type IPRule struct {
-	// An IPv4 address range in CIDR notation, such as '124.56.78.91' (simple IP address) or '124.56.78.0/24' (all addresses that
-	// start with 124.56.78). Value could be 'Allow' or 'Deny'.
-	Value *string
-}
-
 // IdentityConfiguration - Base definition for identity configuration.
 type IdentityConfiguration struct {
 	// REQUIRED; [Required] Specifies the type of identity framework.
@@ -5343,12 +4549,6 @@ func (i *IdentityConfiguration) GetIdentityConfiguration() *IdentityConfiguratio
 type IdentityForCmk struct {
 	// UserAssignedIdentity to be used to fetch the encryption key from keyVault
 	UserAssignedIdentity *string
-}
-
-// IdleShutdownSetting - Stops compute instance after user defined period of inactivity.
-type IdleShutdownSetting struct {
-	// Time is defined in ISO8601 format. Minimum is 15 min, maximum is 3 days.
-	IdleTimeBeforeShutdown *string
 }
 
 type Image struct {
@@ -5469,31 +4669,6 @@ func (i *ImageClassificationMultilabel) GetAutoMLVertical() *AutoMLVertical {
 		TaskType:         i.TaskType,
 		TrainingData:     i.TrainingData,
 	}
-}
-
-type ImageDetails struct {
-	// Indicates if image exists
-	Exists *bool
-
-	// Container image details
-	Image *ImageInfo
-
-	// Vulnerability findings details
-	VulnerabilityFindings *VulnerabilityFindings
-}
-
-type ImageInfo struct {
-	// Image digest
-	Digest *string
-
-	// Container registry host name
-	Hostname *string
-
-	// Repository name
-	Repository *string
-
-	// Image tag
-	Tag *string
 }
 
 // ImageInstanceSegmentation - Image Instance Segmentation. Instance segmentation is used to identify objects in an image
@@ -6230,195 +5405,6 @@ type InferenceContainerProperties struct {
 	StartupRoute *Route
 }
 
-// InferenceEndpoint is a preview-only resource.
-type InferenceEndpoint struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// REQUIRED; [Required] Additional attributes of the entity.
-	Properties *InferenceEndpointProperties
-
-	// Managed service identity (system assigned and/or user assigned identities)
-	Identity *ManagedServiceIdentity
-
-	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type.
-	Kind *string
-
-	// Sku details required for ARM contract for Autoscaling.
-	SKU *SKU
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// InferenceEndpointProperties - InferenceEndpoint configuration
-type InferenceEndpointProperties struct {
-	// REQUIRED; [Required] Authentication mode for the endpoint.
-	AuthMode *AuthMode
-
-	// REQUIRED; [Required] Group within the same pool with which this endpoint needs to be associated with.
-	GroupName *string
-
-	// Description of the resource.
-	Description *string
-
-	// Property dictionary. Properties can be added, but not removed or altered.
-	Properties []*StringStringKeyValuePair
-
-	// RequestConfiguration for endpoint.
-	RequestConfiguration *RequestConfiguration
-
-	// READ-ONLY; Endpoint URI for the inference endpoint.
-	EndpointURI *string
-
-	// READ-ONLY; Provisioning state for the endpoint.
-	ProvisioningState *PoolProvisioningState
-}
-
-// InferenceEndpointTrackedResourceArmPaginatedResult - A paginated list of InferenceEndpoint entities.
-type InferenceEndpointTrackedResourceArmPaginatedResult struct {
-	// REQUIRED; The InferenceEndpoint items on this page
-	Value []*InferenceEndpoint
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// InferenceGroup is a preview-only resource.
-type InferenceGroup struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// REQUIRED; [Required] Additional attributes of the entity.
-	Properties *InferenceGroupProperties
-
-	// Managed service identity (system assigned and/or user assigned identities)
-	Identity *ManagedServiceIdentity
-
-	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type.
-	Kind *string
-
-	// Sku details required for ARM contract for Autoscaling.
-	SKU *SKU
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// InferenceGroupProperties - Inference group configuration
-type InferenceGroupProperties struct {
-	// Description of the resource.
-	Description *string
-
-	// Gets or sets environment configuration for the inference group. Used if PoolType=ScaleUnit.
-	EnvironmentConfiguration *GroupEnvironmentConfiguration
-
-	// Gets or sets model configuration for the inference group. Used if PoolType=ScaleUnit.
-	ModelConfiguration *GroupModelConfiguration
-
-	// Gets or sets compute instance type.
-	NodeSKUType *string
-
-	// Property dictionary. Properties can be added, but not removed or altered.
-	Properties []*StringStringKeyValuePair
-
-	// Gets or sets Scale Unit size.
-	ScaleUnitSize *int32
-
-	// READ-ONLY; Provisioning state for the inference group.
-	ProvisioningState *PoolProvisioningState
-}
-
-// InferenceGroupTrackedResourceArmPaginatedResult - A paginated list of InferenceGroup entities.
-type InferenceGroupTrackedResourceArmPaginatedResult struct {
-	// REQUIRED; The InferenceGroup items on this page
-	Value []*InferenceGroup
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// InferencePool is a preview-only resource.
-type InferencePool struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// REQUIRED; [Required] Additional attributes of the entity.
-	Properties *InferencePoolProperties
-
-	// Managed service identity (system assigned and/or user assigned identities)
-	Identity *ManagedServiceIdentity
-
-	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type.
-	Kind *string
-
-	// Sku details required for ARM contract for Autoscaling.
-	SKU *SKU
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// InferencePoolProperties - Inference pool configuration
-type InferencePoolProperties struct {
-	// Description of the resource.
-	Description *string
-
-	// Property dictionary. Properties can be added, but not removed or altered.
-	Properties []*StringStringKeyValuePair
-
-	// Gets or sets ScaleUnitConfiguration for the inference pool. Used if PoolType=ScaleUnit.
-	ScaleUnitConfiguration *ScaleUnitConfiguration
-
-	// READ-ONLY; Provisioning state for the pool.
-	ProvisioningState *PoolProvisioningState
-}
-
-// InferencePoolTrackedResourceArmPaginatedResult - A paginated list of InferencePool entities.
-type InferencePoolTrackedResourceArmPaginatedResult struct {
-	// REQUIRED; The InferencePool items on this page
-	Value []*InferencePool
-
-	// The link to the next page of items
-	NextLink *string
-}
-
 // InstanceTypeSchema - Instance type schema.
 type InstanceTypeSchema struct {
 	// Node Selector
@@ -6484,9 +5470,6 @@ type JobBaseProperties struct {
 
 	// Notification setting for the job
 	NotificationSetting *NotificationSetting
-
-	// Parent job name.
-	ParentJobName *string
 
 	// The asset property dictionary.
 	Properties map[string]*string
@@ -6571,11 +5554,6 @@ type JobResourceConfiguration struct {
 	// Size of the docker container's shared memory block. This should be in the format of (number)(unit) where number as to be
 	// greater than 0 and the unit can be one of b(bytes), k(kilobytes), m(megabytes), or g(gigabytes).
 	ShmSize *string
-}
-
-type JobResources struct {
-	// List of instance types to choose from.
-	InstanceTypes []*string
 }
 
 type JobScheduleAction struct {
@@ -6812,39 +5790,6 @@ type KubernetesProperties struct {
 
 	// VC name.
 	VcName *string
-}
-
-type LabelGeneration struct {
-	// REQUIRED; [Required] DataGeneration Task type.
-	DataGenerationTaskType *DataGenerationTaskType
-
-	// CONSTANT; [Required] Enum to determine the type of Data Generation.
-	// Field has constant value DataGenerationTypeLabelGeneration, any specified value is ignored.
-	DataGenerationType *DataGenerationType
-
-	// REQUIRED; [Required] Teacher Model Endpoint Details.
-	TeacherModelEndpoint *TeacherModelEndpoint
-
-	// Prompt Settings.
-	PromptSettings       *PromptSettings
-	TeacherModelSettings *TeacherModelSettings
-
-	// Training data for fine tuning.
-	TrainingData JobInputClassification
-
-	// Validation data for fine tuning.
-	ValidationData JobInputClassification
-}
-
-// GetDataGenerationVertical implements the DataGenerationVerticalClassification interface for type LabelGeneration.
-func (l *LabelGeneration) GetDataGenerationVertical() *DataGenerationVertical {
-	return &DataGenerationVertical{
-		DataGenerationTaskType: l.DataGenerationTaskType,
-		DataGenerationType:     l.DataGenerationType,
-		PromptSettings:         l.PromptSettings,
-		TeacherModelEndpoint:   l.TeacherModelEndpoint,
-		TeacherModelSettings:   l.TeacherModelSettings,
-	}
 }
 
 type LakeHouseArtifact struct {
@@ -7192,15 +6137,6 @@ func (m *ManagedIdentityCredential) GetDataReferenceCredential() *DataReferenceC
 	}
 }
 
-// ManagedNetworkListResult - Paged collection of ManagedNetworkSettingsPropertiesBasicResource items
-type ManagedNetworkListResult struct {
-	// REQUIRED; The ManagedNetworkSettingsPropertiesBasicResource items on this page
-	Value []*ManagedNetworkSettingsPropertiesBasicResource
-
-	// The link to the next page of items
-	NextLink *string
-}
-
 // ManagedNetworkProvisionOptions - Managed Network Provisioning options for managed network of a machine learning workspace.
 type ManagedNetworkProvisionOptions struct {
 	IncludeSpark *bool
@@ -7240,81 +6176,6 @@ type ManagedNetworkSettings struct {
 
 	// READ-ONLY
 	NetworkID *string
-}
-
-type ManagedNetworkSettingsBasicResource struct {
-	// Managed Network settings for a machine learning workspace.
-	Properties *ManagedNetworkSettings
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-type ManagedNetworkSettingsEx struct {
-	// A flag to indicate if monitoring needs to be enabled for the managed network.
-	EnableNetworkMonitor *bool
-
-	// Firewall Sku used for FQDN Rules
-	FirewallSKU *FirewallSKU
-
-	// Isolation mode for the managed network of a machine learning workspace.
-	IsolationMode *IsolationMode
-
-	// The Kind of the managed network. Users can switch from V1 to V2 for granular access controls, but cannot switch back to
-	// V1 once V2 is enabled.
-	ManagedNetworkKind *ManagedNetworkKind
-
-	// Dictionary of <OutboundRule>
-	OutboundRules map[string]OutboundRuleClassification
-
-	// Status of the Provisioning for the managed network of a machine learning workspace.
-	Status *ManagedNetworkProvisionStatus
-
-	// READ-ONLY
-	ChangeableIsolationModes []*IsolationMode
-
-	// READ-ONLY; Public IP address assigned to the Azure Firewall.
-	FirewallPublicIPAddress *string
-
-	// READ-ONLY
-	NetworkID *string
-}
-
-// ManagedNetworkSettingsProperties - The properties of the managed network settings of a machine learning workspace.
-type ManagedNetworkSettingsProperties struct {
-	// Managed Network settings for a machine learning workspace.
-	ManagedNetwork *ManagedNetworkSettingsEx
-
-	// READ-ONLY; The current deployment state of the managed network resource. The provisioningState is to indicate states for
-	// resource provisioning.
-	ProvisioningState *ManagedNetworkProvisioningState
-}
-
-// ManagedNetworkSettingsPropertiesBasicResource is a preview-only resource.
-type ManagedNetworkSettingsPropertiesBasicResource struct {
-	// The properties of the managed network settings of a machine learning workspace.
-	Properties *ManagedNetworkSettingsProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 // ManagedOnlineDeployment - Properties specific to a ManagedOnlineDeployment.
@@ -7400,88 +6261,6 @@ func (m *ManagedOnlineDeployment) GetOnlineDeploymentProperties() *OnlineDeploym
 		RequestSettings:           m.RequestSettings,
 		ScaleSettings:             m.ScaleSettings,
 		StartupProbe:              m.StartupProbe,
-	}
-}
-
-type ManagedOnlineEndpointDeploymentResourceProperties struct {
-	// CONSTANT; Kind of the deployment.
-	// Field has constant value "managedOnlineEndpoint", any specified value is ignored.
-	Type *string
-
-	// Enum to determine endpoint compute type.
-	EndpointComputeType *EndpointComputeType
-
-	// The failure reason if the creation failed.
-	FailureReason *string
-	Model         *string
-
-	// READ-ONLY; Read-only provision state status property.
-	ProvisioningState *DefaultResourceProvisioningState
-}
-
-// GetEndpointDeploymentResourceProperties implements the EndpointDeploymentResourcePropertiesClassification interface for
-// type ManagedOnlineEndpointDeploymentResourceProperties.
-func (m *ManagedOnlineEndpointDeploymentResourceProperties) GetEndpointDeploymentResourceProperties() *EndpointDeploymentResourceProperties {
-	return &EndpointDeploymentResourceProperties{
-		FailureReason:     m.FailureReason,
-		ProvisioningState: m.ProvisioningState,
-		Type:              m.Type,
-	}
-}
-
-type ManagedOnlineEndpointResourceProperties struct {
-	// CONSTANT; Type of the endpoint.
-	// Field has constant value EndpointTypeManagedOnlineEndpoint, any specified value is ignored.
-	EndpointType *EndpointType
-
-	// Byo resource id for creating the built-in model service endpoints.
-	AssociatedResourceID *string
-
-	// Enum to determine endpoint authentication mode.
-	AuthMode *EndpointAuthMode
-	Compute  *string
-
-	// Deployments info.
-	Deployments []*EndpointDeploymentResourcePropertiesBasicResource
-	Description *string
-
-	// Uri of the endpoint.
-	EndpointURI *string
-
-	// The failure reason if the creation failed.
-	FailureReason *string
-
-	// Location of the endpoint.
-	// Since input dto and when parse endpoint resource share the same contract
-	// this Location field is just for parse the endpoint resource info
-	// we won't let customer specify the endpoint resource location since we will create it the same location as workspace
-	Location      *string
-	MirrorTraffic map[string]*int32
-
-	// Name of the endpoint.
-	Name       *string
-	ScoringURI *string
-
-	// Whether the proxy (non-byo) endpoint is a regular endpoint or a OneKeyV2 AI services account endpoint.
-	ShouldCreateAiServicesEndpoint *bool
-	Traffic                        map[string]*int32
-
-	// READ-ONLY; Read-only provision state status property.
-	ProvisioningState *DefaultResourceProvisioningState
-}
-
-// GetEndpointResourceProperties implements the EndpointResourcePropertiesClassification interface for type ManagedOnlineEndpointResourceProperties.
-func (m *ManagedOnlineEndpointResourceProperties) GetEndpointResourceProperties() *EndpointResourceProperties {
-	return &EndpointResourceProperties{
-		AssociatedResourceID:           m.AssociatedResourceID,
-		Deployments:                    m.Deployments,
-		EndpointType:                   m.EndpointType,
-		EndpointURI:                    m.EndpointURI,
-		FailureReason:                  m.FailureReason,
-		Location:                       m.Location,
-		Name:                           m.Name,
-		ProvisioningState:              m.ProvisioningState,
-		ShouldCreateAiServicesEndpoint: m.ShouldCreateAiServicesEndpoint,
 	}
 }
 
@@ -7887,15 +6666,6 @@ type NCrossValidations struct {
 
 // GetNCrossValidations implements the NCrossValidationsClassification interface for type NCrossValidations.
 func (n *NCrossValidations) GetNCrossValidations() *NCrossValidations { return n }
-
-type NetworkACLs struct {
-	// The default action when no rule from ipRules and from virtualNetworkRules match. This is only used after the bypass property
-	// has been evaluated.
-	DefaultAction *DefaultActionType
-
-	// Rules governing the accessibility of a resource from a specific ip address or ip range.
-	IPRules []*IPRule
-}
 
 type NlpVerticalFeaturizationSettings struct {
 	// Dataset language, useful for the text data.
@@ -8457,86 +7227,6 @@ type OnlineScaleSettings struct {
 // GetOnlineScaleSettings implements the OnlineScaleSettingsClassification interface for type OnlineScaleSettings.
 func (o *OnlineScaleSettings) GetOnlineScaleSettings() *OnlineScaleSettings { return o }
 
-type OpenAIEndpointDeploymentResourceProperties struct {
-	// REQUIRED; Model used for the endpoint deployment.
-	Model *EndpointDeploymentModel
-
-	// CONSTANT; Kind of the deployment.
-	// Field has constant value "Azure.OpenAI", any specified value is ignored.
-	Type *string
-
-	// The failure reason if the creation failed.
-	FailureReason *string
-
-	// The name of RAI policy.
-	RaiPolicyName *string
-	SKU           *CognitiveServicesSKU
-
-	// Deployment model version upgrade option.
-	VersionUpgradeOption *DeploymentModelVersionUpgradeOption
-
-	// READ-ONLY; Read-only provision state status property.
-	ProvisioningState *DefaultResourceProvisioningState
-}
-
-// GetEndpointDeploymentResourceProperties implements the EndpointDeploymentResourcePropertiesClassification interface for
-// type OpenAIEndpointDeploymentResourceProperties.
-func (o *OpenAIEndpointDeploymentResourceProperties) GetEndpointDeploymentResourceProperties() *EndpointDeploymentResourceProperties {
-	return &EndpointDeploymentResourceProperties{
-		FailureReason:     o.FailureReason,
-		ProvisioningState: o.ProvisioningState,
-		Type:              o.Type,
-	}
-}
-
-type OpenAIEndpointResourceProperties struct {
-	// CONSTANT; Type of the endpoint.
-	// Field has constant value EndpointTypeAzureOpenAI, any specified value is ignored.
-	EndpointType *EndpointType
-
-	// Byo resource id for creating the built-in model service endpoints.
-	AssociatedResourceID *string
-
-	// Deployments info.
-	Deployments []*EndpointDeploymentResourcePropertiesBasicResource
-
-	// Uri of the endpoint.
-	EndpointURI *string
-
-	// The failure reason if the creation failed.
-	FailureReason *string
-
-	// Location of the endpoint.
-	// Since input dto and when parse endpoint resource share the same contract
-	// this Location field is just for parse the endpoint resource info
-	// we won't let customer specify the endpoint resource location since we will create it the same location as workspace
-	Location *string
-
-	// Name of the endpoint.
-	Name *string
-
-	// Whether the proxy (non-byo) endpoint is a regular endpoint or a OneKeyV2 AI services account endpoint.
-	ShouldCreateAiServicesEndpoint *bool
-
-	// READ-ONLY; Read-only provision state status property.
-	ProvisioningState *DefaultResourceProvisioningState
-}
-
-// GetEndpointResourceProperties implements the EndpointResourcePropertiesClassification interface for type OpenAIEndpointResourceProperties.
-func (o *OpenAIEndpointResourceProperties) GetEndpointResourceProperties() *EndpointResourceProperties {
-	return &EndpointResourceProperties{
-		AssociatedResourceID:           o.AssociatedResourceID,
-		Deployments:                    o.Deployments,
-		EndpointType:                   o.EndpointType,
-		EndpointURI:                    o.EndpointURI,
-		FailureReason:                  o.FailureReason,
-		Location:                       o.Location,
-		Name:                           o.Name,
-		ProvisioningState:              o.ProvisioningState,
-		ShouldCreateAiServicesEndpoint: o.ShouldCreateAiServicesEndpoint,
-	}
-}
-
 // Operation - REST API Operation
 //
 // Details of a REST API operation, returned from the Resource Provider Operations API
@@ -8721,37 +7411,6 @@ func (p *PATAuthTypeWorkspaceConnectionProperties) GetWorkspaceConnectionPropert
 	}
 }
 
-type PTUDeploymentUsage struct {
-	// Usage number from the collection level quota
-	CollectionQuotaUsage *int64
-
-	// Deployment name
-	DeploymentName *string
-
-	// Resource group name
-	ResourceGroup *string
-
-	// Usage number from subscription level quota
-	Usage *int64
-
-	// Workspace name
-	WorkspaceName *string
-}
-
-type PackageDetails struct {
-	// Install path.
-	InstallPath *string
-
-	// Installed version.
-	InstalledVersion *string
-
-	// Package or dependency name.
-	Name *string
-
-	// Patched version.
-	PatchedVersion *string
-}
-
 // PaginatedComputeResourcesList - Paginated list of Machine Learning compute objects wrapped in ARM resource envelope.
 type PaginatedComputeResourcesList struct {
 	// REQUIRED; The ComputeResource items on this page
@@ -8934,9 +7593,6 @@ type PipelineJob struct {
 	// Outputs for the pipeline job
 	Outputs map[string]JobOutputClassification
 
-	// Parent job name.
-	ParentJobName *string
-
 	// The asset property dictionary.
 	Properties map[string]*string
 
@@ -8969,7 +7625,6 @@ func (p *PipelineJob) GetJobBaseProperties() *JobBaseProperties {
 		IsArchived:          p.IsArchived,
 		JobType:             p.JobType,
 		NotificationSetting: p.NotificationSetting,
-		ParentJobName:       p.ParentJobName,
 		Properties:          p.Properties,
 		Services:            p.Services,
 		Status:              p.Status,
@@ -9207,12 +7862,6 @@ type ProbeSettings struct {
 	Timeout *string
 }
 
-type PromptSettings struct {
-	EnableChainOfDensity *bool
-	EnableChainOfThought *bool
-	MaxLenSummary        *int32
-}
-
 // PyTorch distribution configuration.
 type PyTorch struct {
 	// CONSTANT; [Required] Specifies the type of distribution framework.
@@ -9261,153 +7910,6 @@ type QuotaUpdateParameters struct {
 	Value []*QuotaBaseProperties
 }
 
-// RaiBlocklistConfig - Azure OpenAI blocklist config.
-type RaiBlocklistConfig struct {
-	// If blocking would occur.
-	Blocking *bool
-
-	// Name of ContentFilter.
-	BlocklistName *string
-}
-
-// RaiBlocklistItemBulkRequest - The Cognitive Services RaiBlocklist Item request body.
-type RaiBlocklistItemBulkRequest struct {
-	Name *string
-
-	// Properties of Cognitive Services RaiBlocklist Item.
-	Properties *RaiBlocklistItemProperties
-}
-
-// RaiBlocklistItemProperties - RAI Custom Blocklist Item properties.
-type RaiBlocklistItemProperties struct {
-	// If the pattern is a regex pattern.
-	IsRegex *bool
-
-	// Pattern to match against.
-	Pattern *string
-}
-
-// RaiBlocklistItemPropertiesBasicResource is a preview-only resource.
-type RaiBlocklistItemPropertiesBasicResource struct {
-	// REQUIRED; RAI Custom Blocklist Item properties.
-	Properties *RaiBlocklistItemProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// RaiBlocklistItemPropertiesBasicResourceArmPaginatedResult - Paged collection of RaiBlocklistItemPropertiesBasicResource
-// items
-type RaiBlocklistItemPropertiesBasicResourceArmPaginatedResult struct {
-	// REQUIRED; The RaiBlocklistItemPropertiesBasicResource items on this page
-	Value []*RaiBlocklistItemPropertiesBasicResource
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// RaiBlocklistProperties - RAI Custom Blocklist properties.
-type RaiBlocklistProperties struct {
-	// Description of the block list.
-	Description *string
-}
-
-// RaiBlocklistPropertiesBasicResource is a preview-only resource.
-type RaiBlocklistPropertiesBasicResource struct {
-	// REQUIRED; RAI Custom Blocklist properties.
-	Properties *RaiBlocklistProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// RaiBlocklistPropertiesBasicResourceArmPaginatedResult - Paged collection of RaiBlocklistPropertiesBasicResource items
-type RaiBlocklistPropertiesBasicResourceArmPaginatedResult struct {
-	// REQUIRED; The RaiBlocklistPropertiesBasicResource items on this page
-	Value []*RaiBlocklistPropertiesBasicResource
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// RaiPolicyContentFilter - Azure OpenAI Content Filter.
-type RaiPolicyContentFilter struct {
-	// Level at which content is filtered.
-	AllowedContentLevel *AllowedContentLevel
-
-	// If blocking would occur.
-	Blocking *bool
-
-	// If the ContentFilter is enabled.
-	Enabled *bool
-
-	// Name of ContentFilter.
-	Name *string
-
-	// Content source to apply the Content Filters.
-	Source *RaiPolicyContentSource
-}
-
-// RaiPolicyProperties - Azure OpenAI Content Filters properties.
-type RaiPolicyProperties struct {
-	// Name of the base Content Filters.
-	BasePolicyName       *string
-	CompletionBlocklists []*RaiBlocklistConfig
-	ContentFilters       []*RaiPolicyContentFilter
-
-	// Content Filters mode.
-	Mode             *RaiPolicyMode
-	PromptBlocklists []*RaiBlocklistConfig
-
-	// Content Filters policy type.
-	Type *RaiPolicyType
-}
-
-// RaiPolicyPropertiesBasicResource - Azure OpenAI Content Filters resource.
-type RaiPolicyPropertiesBasicResource struct {
-	// REQUIRED; Azure OpenAI Content Filters properties.
-	Properties *RaiPolicyProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// RaiPolicyPropertiesBasicResourceArmPaginatedResult - Azure OpenAI Content Filters resource list.
-type RaiPolicyPropertiesBasicResourceArmPaginatedResult struct {
-	// REQUIRED; The RaiPolicyPropertiesBasicResource items on this page
-	Value []*RaiPolicyPropertiesBasicResource
-
-	// The link to the next page of items
-	NextLink *string
-}
-
 // RandomSamplingAlgorithm - Defines a Sampling Algorithm that generates values randomly
 type RandomSamplingAlgorithm struct {
 	// CONSTANT; [Required] The algorithm used for generating hyperparameter values, along with configuration properties
@@ -9425,39 +7927,6 @@ type RandomSamplingAlgorithm struct {
 func (r *RandomSamplingAlgorithm) GetSamplingAlgorithm() *SamplingAlgorithm {
 	return &SamplingAlgorithm{
 		SamplingAlgorithmType: r.SamplingAlgorithmType,
-	}
-}
-
-// Ray distribution configuration.
-// A class for managing the configuration for a distributed Ray job.
-type Ray struct {
-	// CONSTANT; [Required] Specifies the type of distribution framework.
-	// Field has constant value DistributionTypeRay, any specified value is ignored.
-	DistributionType *DistributionType
-
-	// The address of Ray head node.
-	Address *string
-
-	// The port to bind the dashboard server to.
-	DashboardPort *int32
-
-	// Additional arguments passed to ray start in head node.
-	HeadNodeAdditionalArgs *string
-
-	// Provide this argument to start the Ray dashboard GUI.
-	IncludeDashboard *bool
-
-	// The port of the head ray process.
-	Port *int32
-
-	// Additional arguments passed to ray start in worker node.
-	WorkerNodeAdditionalArgs *string
-}
-
-// GetDistributionConfiguration implements the DistributionConfigurationClassification interface for type Ray.
-func (r *Ray) GetDistributionConfiguration() *DistributionConfiguration {
-	return &DistributionConfiguration{
-		DistributionType: r.DistributionType,
 	}
 }
 
@@ -9537,10 +8006,6 @@ type RegenerateEndpointKeysRequest struct {
 
 	// The value the key is set to.
 	KeyValue *string
-}
-
-type RegenerateServiceAccountKeyContent struct {
-	KeyName *ServiceAccountKeyName
 }
 
 // Registry - Concrete tracked resource types can be created by aliasing this type using a specific property type.
@@ -9788,26 +8253,10 @@ type RegressionTrainingSettings struct {
 	StackEnsembleSettings *StackEnsembleSettings
 }
 
-// RequestConfiguration - Scoring requests configuration.
-type RequestConfiguration struct {
-	// The number of maximum concurrent requests per node allowed per deployment. Defaults to 1.
-	MaxConcurrentRequestsPerInstance *int32
-
-	// The scoring timeout in ISO 8601 format.
-	// Defaults to 5000ms.
-	RequestTimeout *string
-}
-
 type RequestLogging struct {
 	// For payload logging, we only collect payload by default. If customers also want to collect the specified headers, they
 	// can set them in captureHeaders so that backend will collect those headers along with payload.
 	CaptureHeaders []*string
-}
-
-// ResizeSchema - Schema for Compute Instance resize.
-type ResizeSchema struct {
-	// The name of the virtual machine size.
-	TargetVMSize *string
 }
 
 // ResourceID - Represents a resource ID. For example, for a subnet, it is the resource URL for the subnet.
@@ -10121,15 +8570,6 @@ type ScaleSettingsInformation struct {
 	ScaleSettings *ScaleSettings
 }
 
-// ScaleUnitConfiguration - Configuration for ScaleUnit pool.
-type ScaleUnitConfiguration struct {
-	// Gets or sets a value indicating whether PublicEgress is disabled.
-	DisablePublicEgress *bool
-
-	// Gets or sets a list of Registry sources that will be used to confirm identity, storage, ACR.
-	Registries []*string
-}
-
 // Schedule - Azure Resource Manager resource envelope.
 type Schedule struct {
 	// REQUIRED; [Required] Additional attributes of the entity.
@@ -10287,30 +8727,6 @@ type ServerlessEndpoint struct {
 	Type *string
 }
 
-type ServerlessEndpointCapacityReservation struct {
-	// REQUIRED
-	CapacityReservationGroupID *string
-	EndpointReservedCapacity   *int32
-}
-
-type ServerlessEndpointContentSafety struct {
-	// REQUIRED; Specifies the status of content safety.
-	ContentSafetyStatus *ContentSafetyStatus
-}
-
-type ServerlessEndpointInferenceEndpoint struct {
-	// READ-ONLY
-	URI *string
-
-	// READ-ONLY
-	Headers map[string]*string
-}
-
-type ServerlessEndpointModelSettings struct {
-	// REQUIRED
-	ModelID *string
-}
-
 type ServerlessEndpointProperties struct {
 	// REQUIRED; [Required] Specifies the authentication mode for the Serverless endpoint.
 	AuthMode *ServerlessInferenceEndpointAuthMode
@@ -10334,65 +8750,6 @@ type ServerlessEndpointProperties struct {
 	ProvisioningState *EndpointProvisioningState
 }
 
-type ServerlessEndpointResourceProperties struct {
-	// CONSTANT; Type of the endpoint.
-	// Field has constant value EndpointTypeServerlessEndpoint, any specified value is ignored.
-	EndpointType *EndpointType
-
-	// Byo resource id for creating the built-in model service endpoints.
-	AssociatedResourceID *string
-	AuthMode             *ServerlessInferenceEndpointAuthMode
-	CapacityReservation  *ServerlessEndpointCapacityReservation
-	ContentSafety        *ServerlessEndpointContentSafety
-
-	// Deployments info.
-	Deployments []*EndpointDeploymentResourcePropertiesBasicResource
-
-	// State of the Serverless Endpoint.
-	EndpointState *ServerlessEndpointState
-
-	// Uri of the endpoint.
-	EndpointURI *string
-
-	// The failure reason if the creation failed.
-	FailureReason     *string
-	InferenceEndpoint *ServerlessEndpointInferenceEndpoint
-
-	// Location of the endpoint.
-	// Since input dto and when parse endpoint resource share the same contract
-	// this Location field is just for parse the endpoint resource info
-	// we won't let customer specify the endpoint resource location since we will create it the same location as workspace
-	Location                  *string
-	MarketplaceSubscriptionID *string
-	Metadata                  any
-	ModelSettings             *ServerlessEndpointModelSettings
-
-	// Name of the endpoint.
-	Name  *string
-	Offer *ServerlessOffer
-
-	// Whether the proxy (non-byo) endpoint is a regular endpoint or a OneKeyV2 AI services account endpoint.
-	ShouldCreateAiServicesEndpoint *bool
-
-	// READ-ONLY; Read-only provision state status property.
-	ProvisioningState *DefaultResourceProvisioningState
-}
-
-// GetEndpointResourceProperties implements the EndpointResourcePropertiesClassification interface for type ServerlessEndpointResourceProperties.
-func (s *ServerlessEndpointResourceProperties) GetEndpointResourceProperties() *EndpointResourceProperties {
-	return &EndpointResourceProperties{
-		AssociatedResourceID:           s.AssociatedResourceID,
-		Deployments:                    s.Deployments,
-		EndpointType:                   s.EndpointType,
-		EndpointURI:                    s.EndpointURI,
-		FailureReason:                  s.FailureReason,
-		Location:                       s.Location,
-		Name:                           s.Name,
-		ProvisioningState:              s.ProvisioningState,
-		ShouldCreateAiServicesEndpoint: s.ShouldCreateAiServicesEndpoint,
-	}
-}
-
 // ServerlessEndpointTrackedResourceArmPaginatedResult - A paginated list of ServerlessEndpoint entities.
 type ServerlessEndpointTrackedResourceArmPaginatedResult struct {
 	// REQUIRED; The ServerlessEndpoint items on this page
@@ -10408,14 +8765,6 @@ type ServerlessInferenceEndpoint struct {
 
 	// READ-ONLY; Specifies any required headers to target this serverless endpoint.
 	Headers map[string]*string
-}
-
-type ServerlessOffer struct {
-	// REQUIRED
-	OfferName *string
-
-	// REQUIRED
-	Publisher *string
 }
 
 type ServiceManagedResourcesSettings struct {
@@ -10657,9 +9006,6 @@ type SparkJob struct {
 	// Mapping of output data bindings used in the job.
 	Outputs map[string]JobOutputClassification
 
-	// Parent job name.
-	ParentJobName *string
-
 	// The asset property dictionary.
 	Properties map[string]*string
 
@@ -10695,7 +9041,6 @@ func (s *SparkJob) GetJobBaseProperties() *JobBaseProperties {
 		IsArchived:          s.IsArchived,
 		JobType:             s.JobType,
 		NotificationSetting: s.NotificationSetting,
-		ParentJobName:       s.ParentJobName,
 		Properties:          s.Properties,
 		Services:            s.Services,
 		Status:              s.Status,
@@ -10750,86 +9095,6 @@ type SparkResourceConfiguration struct {
 
 	// Version of spark runtime used for the job.
 	RuntimeVersion *string
-}
-
-type SpeechEndpointDeploymentResourceProperties struct {
-	// REQUIRED; Model used for the endpoint deployment.
-	Model *EndpointDeploymentModel
-
-	// CONSTANT; Kind of the deployment.
-	// Field has constant value "Azure.Speech", any specified value is ignored.
-	Type *string
-
-	// The failure reason if the creation failed.
-	FailureReason *string
-
-	// The name of RAI policy.
-	RaiPolicyName *string
-	SKU           *CognitiveServicesSKU
-
-	// Deployment model version upgrade option.
-	VersionUpgradeOption *DeploymentModelVersionUpgradeOption
-
-	// READ-ONLY; Read-only provision state status property.
-	ProvisioningState *DefaultResourceProvisioningState
-}
-
-// GetEndpointDeploymentResourceProperties implements the EndpointDeploymentResourcePropertiesClassification interface for
-// type SpeechEndpointDeploymentResourceProperties.
-func (s *SpeechEndpointDeploymentResourceProperties) GetEndpointDeploymentResourceProperties() *EndpointDeploymentResourceProperties {
-	return &EndpointDeploymentResourceProperties{
-		FailureReason:     s.FailureReason,
-		ProvisioningState: s.ProvisioningState,
-		Type:              s.Type,
-	}
-}
-
-type SpeechEndpointResourceProperties struct {
-	// CONSTANT; Type of the endpoint.
-	// Field has constant value EndpointTypeAzureSpeech, any specified value is ignored.
-	EndpointType *EndpointType
-
-	// Byo resource id for creating the built-in model service endpoints.
-	AssociatedResourceID *string
-
-	// Deployments info.
-	Deployments []*EndpointDeploymentResourcePropertiesBasicResource
-
-	// Uri of the endpoint.
-	EndpointURI *string
-
-	// The failure reason if the creation failed.
-	FailureReason *string
-
-	// Location of the endpoint.
-	// Since input dto and when parse endpoint resource share the same contract
-	// this Location field is just for parse the endpoint resource info
-	// we won't let customer specify the endpoint resource location since we will create it the same location as workspace
-	Location *string
-
-	// Name of the endpoint.
-	Name *string
-
-	// Whether the proxy (non-byo) endpoint is a regular endpoint or a OneKeyV2 AI services account endpoint.
-	ShouldCreateAiServicesEndpoint *bool
-
-	// READ-ONLY; Read-only provision state status property.
-	ProvisioningState *DefaultResourceProvisioningState
-}
-
-// GetEndpointResourceProperties implements the EndpointResourcePropertiesClassification interface for type SpeechEndpointResourceProperties.
-func (s *SpeechEndpointResourceProperties) GetEndpointResourceProperties() *EndpointResourceProperties {
-	return &EndpointResourceProperties{
-		AssociatedResourceID:           s.AssociatedResourceID,
-		Deployments:                    s.Deployments,
-		EndpointType:                   s.EndpointType,
-		EndpointURI:                    s.EndpointURI,
-		FailureReason:                  s.FailureReason,
-		Location:                       s.Location,
-		Name:                           s.Name,
-		ProvisioningState:              s.ProvisioningState,
-		ShouldCreateAiServicesEndpoint: s.ShouldCreateAiServicesEndpoint,
-	}
 }
 
 // StackEnsembleSettings - Advances setting to customize StackEnsemble run.
@@ -10894,20 +9159,6 @@ type StorageAccountDetails struct {
 	SystemCreatedStorageAccount *SystemCreatedStorageAccount
 }
 
-// StringArmPaginatedResult - A paginated list of String entities.
-type StringArmPaginatedResult struct {
-	// REQUIRED; The Stringforlist items on this page
-	Value []*string
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-type StringStringKeyValuePair struct {
-	Key   *string
-	Value *string
-}
-
 // SweepJob - Sweep job definition.
 type SweepJob struct {
 	// CONSTANT; [Required] Specifies the type of job.
@@ -10964,9 +9215,6 @@ type SweepJob struct {
 	// Mapping of output data bindings used in the job.
 	Outputs map[string]JobOutputClassification
 
-	// Parent job name.
-	ParentJobName *string
-
 	// The asset property dictionary.
 	Properties map[string]*string
 
@@ -10996,7 +9244,6 @@ func (s *SweepJob) GetJobBaseProperties() *JobBaseProperties {
 		IsArchived:          s.IsArchived,
 		JobType:             s.JobType,
 		NotificationSetting: s.NotificationSetting,
-		ParentJobName:       s.ParentJobName,
 		Properties:          s.Properties,
 		Services:            s.Services,
 		Status:              s.Status,
@@ -11276,23 +9523,6 @@ func (t *TargetUtilizationScaleSettings) GetOnlineScaleSettings() *OnlineScaleSe
 	return &OnlineScaleSettings{
 		ScaleType: t.ScaleType,
 	}
-}
-
-type TeacherModelEndpoint struct {
-	EndpointName *string
-}
-
-type TeacherModelEndpointRequestSettings struct {
-	MinEndpointSuccessRatio *float64
-	RequestBatchSize        *int32
-}
-
-type TeacherModelSettings struct {
-	// Teacher Model Request Settings.
-	TeacherModelEndpointRequestSettings *TeacherModelEndpointRequestSettings
-
-	// Teacher Model Inference Settings.
-	TeacherModelInferenceParameters map[string]*string
 }
 
 // TensorFlow distribution configuration.
@@ -11805,26 +10035,6 @@ type Usage struct {
 	Unit *UsageUnit
 }
 
-type UsageAndQuotaDetails struct {
-	// Model collection name
-	ModelCollection *string
-
-	// The total number of quota
-	Quota *int64
-
-	// Usage details for each deployment
-	UsageDetails []*PTUDeploymentUsage
-}
-
-// UsageAndQuotaDetailsArmPaginatedResult - A paginated list of UsageAndQuotaDetails entities.
-type UsageAndQuotaDetailsArmPaginatedResult struct {
-	// REQUIRED; The UsageAndQuotaDetails items on this page
-	Value []*UsageAndQuotaDetails
-
-	// The link to the next page of items
-	NextLink *string
-}
-
 // UsageName - The Usage Names.
 type UsageName struct {
 	// READ-ONLY; The localized name of the resource.
@@ -12127,76 +10337,6 @@ type VolumeOptions struct {
 	Nocopy *bool
 }
 
-type VulnerabilityDetails struct {
-	// CVE id.
-	Cve *string
-
-	// CVE url.
-	CveURL *string
-
-	// DueDate for vulnerability. Provider data or PublishDate + 30 days.
-	DueDate *time.Time
-
-	// Dependency details.
-	PackageDetails []*PackageDetails
-
-	// Indicates if there is a known patch for vulnerability.
-	Patchable *bool
-
-	// Vulnerability ID from provider.
-	ProviderID *string
-
-	// Vulnerability publish date.
-	PublishDate *time.Time
-
-	// Vulnerability Risk value.
-	Risk *VulnerabilityRisk
-
-	// Vulnerability description.
-	Solution *string
-
-	// Vulnerability name.
-	Title *string
-
-	// Vendor vulnerability ID (USN, GH Advisory, etc).
-	VendorID *string
-
-	// Vendor vulnerability url.
-	VendorURL *string
-
-	// READ-ONLY; Vulnerability ID.
-	ID *string
-}
-
-type VulnerabilityFindings struct {
-	// AssetId (Image digest).
-	AssetID *string
-
-	// List of vulnerability findings.
-	Data []*VulnerabilityDetails
-
-	// Time the report was generated.
-	GeneratedTime *time.Time
-
-	// Scan result date.
-	LastScanDate *time.Time
-
-	// Vulnerability scanner name.
-	Scanner *string
-
-	// Data source (internal).
-	Source *string
-
-	// READ-ONLY; Number of critical findings.
-	CriticalFindingsCount *int32
-
-	// READ-ONLY; Number of high findings.
-	HighFindingsCount *int32
-
-	// READ-ONLY; Total findings count.
-	TotalFindingsCount *int32
-}
-
 // Webhook base
 type Webhook struct {
 	// REQUIRED; [Required] Specifies the type of service to send a callback
@@ -12398,13 +10538,9 @@ type WorkspaceProperties struct {
 	// The flag to indicate whether to allow public access when behind VNet.
 	AllowPublicAccessWhenBehindVnet *bool
 
-	// The flag to indicate whether we will do role assignment for the workspace MSI on resource group level.
-	AllowRoleAssignmentOnRG *bool
-
 	// ARM id of the application insights associated with this workspace.
 	ApplicationInsights  *string
 	AssociatedWorkspaces []*string
-	ContainerRegistries  []*string
 
 	// ARM id of the container registry associated with this workspace.
 	ContainerRegistry *string
@@ -12416,14 +10552,7 @@ type WorkspaceProperties struct {
 	DiscoveryURL                   *string
 	EnableDataIsolation            *bool
 	EnableServiceSideCMKEncryption *bool
-
-	// Flag to tell if simplified CMK should be enabled for this workspace.
-	EnableSimplifiedCmk *bool
-
-	// Flag to tell if SoftwareBillOfMaterials should be enabled for this workspace.
-	EnableSoftwareBillOfMaterials *bool
-	Encryption                    *EncryptionProperty
-	ExistingWorkspaces            []*string
+	Encryption                     *EncryptionProperty
 
 	// Settings for feature store type workspace.
 	FeatureStoreSettings *FeatureStoreSettings
@@ -12435,19 +10564,12 @@ type WorkspaceProperties struct {
 	HbiWorkspace  *bool
 	HubResourceID *string
 
-	// The list of IPv4 addresses that are allowed to access the workspace.
-	IPAllowlist []*string
-
 	// The compute name for image build
 	ImageBuildCompute *string
 
 	// ARM id of the key vault associated with this workspace. This cannot be changed once the workspace has been created
 	KeyVault       *string
-	KeyVaults      []*string
 	ManagedNetwork *ManagedNetworkSettings
-
-	// A set of rules governing the network accessibility of the workspace.
-	NetworkACLs *NetworkACLs
 
 	// The user assigned identity resource id that represents the workspace identity.
 	PrimaryUserAssignedIdentity *string
@@ -12468,12 +10590,8 @@ type WorkspaceProperties struct {
 	// The list of shared private link resources in this workspace.
 	SharedPrivateLinkResources []*SharedPrivateLinkResource
 
-	// Retention time in days after workspace get soft deleted.
-	SoftDeleteRetentionInDays *int32
-
 	// ARM id of the storage account associated with this workspace. This cannot be changed once the workspace has been created
-	StorageAccount  *string
-	StorageAccounts []*string
+	StorageAccount *string
 
 	// The auth mode used for accessing the system datastores of the workspace.
 	SystemDatastoresAuthMode *SystemDatastoresAuthMode
@@ -12483,9 +10601,6 @@ type WorkspaceProperties struct {
 
 	// WorkspaceHub's configuration object.
 	WorkspaceHubConfig *WorkspaceHubConfig
-
-	// READ-ONLY; The URI of agents endpoint associated with this workspace.
-	AgentsEndpointURI *string
 
 	// READ-ONLY; The URI associated with this workspace that machine learning flow must point at to set up tracking.
 	MlFlowTrackingURI *string
@@ -12519,8 +10634,6 @@ type WorkspaceProperties struct {
 
 // WorkspacePropertiesUpdateParameters - The parameters for updating a machine learning workspace.
 type WorkspacePropertiesUpdateParameters struct {
-	AllowRoleAssignmentOnRG *bool
-
 	// ARM id of the application insights associated with this workspace.
 	ApplicationInsights *string
 
@@ -12530,10 +10643,7 @@ type WorkspacePropertiesUpdateParameters struct {
 	// The description of this workspace.
 	Description         *string
 	EnableDataIsolation *bool
-
-	// Flag to tell if SoftwareBillOfMaterials should be enabled for this workspace
-	EnableSoftwareBillOfMaterials *bool
-	Encryption                    *EncryptionUpdateProperties
+	Encryption          *EncryptionUpdateProperties
 
 	// Settings for feature store type workspace.
 	FeatureStoreSettings *FeatureStoreSettings
@@ -12541,15 +10651,9 @@ type WorkspacePropertiesUpdateParameters struct {
 	// The friendly name for this workspace. This name in mutable
 	FriendlyName *string
 
-	// The list of IPv4 addresses that are allowed to access the workspace.
-	IPAllowlist []*string
-
 	// The compute name for image build
 	ImageBuildCompute *string
 	ManagedNetwork    *ManagedNetworkSettings
-
-	// A set of rules governing the network accessibility of the workspace.
-	NetworkACLs *NetworkACLs
 
 	// The user assigned identity resource id that represents the workspace identity.
 	PrimaryUserAssignedIdentity *string
@@ -12562,9 +10666,6 @@ type WorkspacePropertiesUpdateParameters struct {
 
 	// The service managed resource settings.
 	ServiceManagedResourcesSettings *ServiceManagedResourcesSettings
-
-	// Retention time in days after workspace get soft deleted.
-	SoftDeleteRetentionInDays *int32
 
 	// The auth mode used for accessing the system datastores of the workspace.
 	SystemDatastoresAuthMode *SystemDatastoresAuthMode

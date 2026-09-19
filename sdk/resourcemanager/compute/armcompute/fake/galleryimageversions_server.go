@@ -17,6 +17,7 @@ import (
 	"net/url"
 	"regexp"
 	"slices"
+	"strconv"
 )
 
 // GalleryImageVersionsServer is a fake server for instances of the armcompute.GalleryImageVersionsClient type.
@@ -180,6 +181,7 @@ func (g *GalleryImageVersionsServerTransport) dispatchBeginDelete(req *http.Requ
 		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -196,7 +198,17 @@ func (g *GalleryImageVersionsServerTransport) dispatchBeginDelete(req *http.Requ
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := g.srv.BeginDelete(req.Context(), resourceGroupNameParam, galleryNameParam, galleryImageNameParam, galleryImageVersionNameParam, nil)
+		bypassSoftDeleteParam, err := parseOptional(qp.Get("bypassSoftDelete"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		var options *armcompute.GalleryImageVersionsClientBeginDeleteOptions
+		if bypassSoftDeleteParam != nil {
+			options = &armcompute.GalleryImageVersionsClientBeginDeleteOptions{
+				BypassSoftDelete: bypassSoftDeleteParam,
+			}
+		}
+		respr, errRespr := g.srv.BeginDelete(req.Context(), resourceGroupNameParam, galleryNameParam, galleryImageNameParam, galleryImageVersionNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

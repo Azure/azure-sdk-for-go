@@ -574,6 +574,15 @@ type ACSChatParticipantRemovedFromThreadWithUserEventData struct {
 	Version *int64
 }
 
+// ACSChatRetentionPolicy - Schema of common properties of all chat retention policy
+type ACSChatRetentionPolicy struct {
+	// The delete thread after number of days.
+	DeleteThreadAfterDays *int32
+
+	// The chat retention policy kind.
+	Kind *ACSChatRetentionPolicyKind
+}
+
 // ACSChatThreadCreatedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadCreated
 // event.
 type ACSChatThreadCreatedEventData struct {
@@ -590,7 +599,7 @@ type ACSChatThreadCreatedEventData struct {
 	ThreadID *string
 
 	// The retention policy for the chat.
-	RetentionPolicy *AcsChatRetentionPolicy
+	RetentionPolicy *ACSChatRetentionPolicy
 
 	// The transaction id will be used as co-relation vector
 	TransactionID *string
@@ -624,7 +633,7 @@ type ACSChatThreadCreatedWithUserEventData struct {
 	ThreadID *string
 
 	// The retention policy for the chat.
-	RetentionPolicy *AcsChatRetentionPolicy
+	RetentionPolicy *ACSChatRetentionPolicy
 
 	// The transaction id will be used as co-relation vector
 	TransactionID *string
@@ -655,7 +664,7 @@ type ACSChatThreadDeletedEventData struct {
 	ThreadID *string
 
 	// The chat thread deletion reason.
-	Reason *AcsChatThreadDeletedReasonType
+	Reason *ACSChatThreadDeletedReasonType
 
 	// The transaction id will be used as co-relation vector
 	TransactionID *string
@@ -695,7 +704,7 @@ type ACSChatThreadPropertiesUpdatedEventData struct {
 	ThreadID *string
 
 	// The retention policy for the chat.
-	RetentionPolicy *AcsChatRetentionPolicy
+	RetentionPolicy *ACSChatRetentionPolicy
 
 	// The transaction id will be used as co-relation vector
 	TransactionID *string
@@ -729,7 +738,7 @@ type ACSChatThreadPropertiesUpdatedPerUserEventData struct {
 	ThreadID *string
 
 	// The retention policy for the chat.
-	RetentionPolicy *AcsChatRetentionPolicy
+	RetentionPolicy *ACSChatRetentionPolicy
 
 	// The transaction id will be used as co-relation vector
 	TransactionID *string
@@ -945,7 +954,7 @@ type ACSMessageDeliveryStatusUpdatedEventData struct {
 	MessageID *string
 
 	// Optional. The BSUID of the recipient.
-	ToBsuid *string
+	ToBSUID *string
 }
 
 // ACSMessageInteractiveButtonReplyContent - Message Interactive button reply content for a user to business message
@@ -1039,7 +1048,7 @@ type ACSMessageReceivedEventData struct {
 	Error *Error
 
 	// Optional. The BSUID of the sender.
-	FromBsuid *string
+	FromBSUID *string
 
 	// Optional. The received message interactive content
 	InteractiveContent *ACSMessageInteractiveContent
@@ -2315,15 +2324,6 @@ type AVSScriptExecutionStartedEventData struct {
 
 	// READ-ONLY; Stdout outputs from the execution, if any.
 	Output []string
-}
-
-// AcsChatRetentionPolicy - Schema of common properties of all chat retention policy
-type AcsChatRetentionPolicy struct {
-	// The delete thread after number of days.
-	DeleteThreadAfterDays *int32
-
-	// The chat retention policy kind.
-	Kind *AcsChatRetentionPolicyKind
 }
 
 // AppConfigurationKeyValueDeletedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.KeyValueDeleted

@@ -595,6 +595,10 @@ type ManagedRuleDefinition struct {
 	// READ-ONLY; Describes the functionality of the managed rule.
 	Description *string
 
+	// READ-ONLY; Describes the paranoia level of the managed rule. Applicable only for DRS rules. Omitted for Bot Manager, DDoS,
+	// and AI rules.
+	ParanoiaLevel *ParanoiaLevel
+
 	// READ-ONLY; Identifier for the managed rule.
 	RuleID *string
 }
@@ -706,6 +710,9 @@ type ManagedRuleSetDefinitionList struct {
 
 // ManagedRuleSetDefinitionProperties - Properties for a managed rule set definition.
 type ManagedRuleSetDefinitionProperties struct {
+	// READ-ONLY; Human-readable display name for the managed rule set version (e.g., 'Default Ruleset 2.2 (Latest, Recommended)').
+	DisplayName *string
+
 	// READ-ONLY; Provisioning state of the managed rule set.
 	ProvisioningState *string
 
@@ -720,12 +727,62 @@ type ManagedRuleSetDefinitionProperties struct {
 
 	// READ-ONLY; Version of the managed rule set type.
 	RuleSetVersion *string
+
+	// READ-ONLY; Describes the lifecycle status of the managed rule set version.
+	Status *ManagedRuleSetStatus
+}
+
+// ManagedRuleSetException - Excludes whole requests from managed rule evaluation according to match conditions.
+type ManagedRuleSetException struct {
+	// REQUIRED; List of values to be matched with.
+	MatchValues []*string
+
+	// REQUIRED; The variable to be evaluated for excluding the request.
+	MatchVariable *ExceptionMatchVariable
+
+	// REQUIRED; Scope(s) of the exception.
+	Scopes []*ManagedRuleSetScope
+
+	// REQUIRED; Comparison operator to apply to the value to be matched.
+	ValueMatchOperator *ExceptionValueMatchOperator
+
+	// When matchVariable is a collection, operator used to specify which elements
+	// in the collection this exception applies to.
+	// Currently supported only for RequestHeaderNames.
+	Selector *string
+
+	// Comparison operator to apply to the selector when specifying which elements
+	// in the collection this exception applies to.
+	SelectorMatchOperator *ExceptionSelectorMatchOperator
+}
+
+// ManagedRuleSetExceptionList - Defines the list of exceptions for the managed rule sets.
+type ManagedRuleSetExceptionList struct {
+	// List of exceptions.
+	Exceptions []*ManagedRuleSetException
 }
 
 // ManagedRuleSetList - Defines the list of managed rule sets for the policy.
 type ManagedRuleSetList struct {
+	// List of exceptions applied on the managed rule sets.
+	ExceptionsList *ManagedRuleSetExceptionList
+
 	// List of rule sets.
 	ManagedRuleSets []*ManagedRuleSet
+}
+
+// ManagedRuleSetScope - Defines the scope of the managed rules.
+type ManagedRuleSetScope struct {
+	// REQUIRED; Defines the rule set type.
+	// Examples: DefaultRuleSet, Microsoft_DefaultRuleSet,
+	// Microsoft_BotManagerRuleSet, Microsoft_HTTPDDoSRuleSet, BotProtection
+	RuleSetType *string
+
+	// REQUIRED; Defines the version of the rule set.
+	RuleSetVersion *string
+
+	// List of rule group scopes.
+	RuleGroupScopes []*RuleGroupScope
 }
 
 // MatchCondition - Define a match condition.
@@ -1045,6 +1102,21 @@ type RoutingRuleProperties struct {
 type RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink struct {
 	// Resource ID.
 	ID *string
+}
+
+// RuleGroupScope - Defines the scope of the rule group.
+type RuleGroupScope struct {
+	// REQUIRED; Defines the rule group name.
+	RuleGroupName *string
+
+	// List of rule scopes.
+	RuleScopes []*RuleScope
+}
+
+// RuleScope - Defines the scope of the rule.
+type RuleScope struct {
+	// REQUIRED; Defines the rule id.
+	RuleID *string
 }
 
 // RulesEngine - A rules engine configuration containing a list of rules that will run to modify the runtime behavior of the

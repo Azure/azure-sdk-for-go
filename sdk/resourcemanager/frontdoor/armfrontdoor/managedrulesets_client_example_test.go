@@ -6,13 +6,12 @@ package armfrontdoor_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor/v2"
+	"log"
 )
 
-// Generated from example definition: 2025-10-01/WafListManagedRuleSets.json
+// Generated from example definition: 2026-04-01/WafListManagedRuleSets.json
 func ExampleManagedRuleSetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,6 +52,7 @@ func ExampleManagedRuleSetsClient_NewListPager() {
 		// 									DefaultAction: to.Ptr(armfrontdoor.ActionTypeBlock),
 		// 									DefaultState: to.Ptr(armfrontdoor.ManagedRuleEnabledStateEnabled),
 		// 									RuleID: to.Ptr("942100"),
+		// 									ParanoiaLevel: to.Ptr(armfrontdoor.ParanoiaLevelPL1),
 		// 								},
 		// 								{
 		// 									Description: to.Ptr("SQL Injection Attack: Common Injection Testing Detected"),
@@ -90,6 +90,8 @@ func ExampleManagedRuleSetsClient_NewListPager() {
 		// 					RuleSetID: to.Ptr("8125d145-ddc5-4d90-9bc3-24c5f2de69a2"),
 		// 					RuleSetType: to.Ptr("DefaultRuleSet"),
 		// 					RuleSetVersion: to.Ptr("1.0"),
+		// 					DisplayName: to.Ptr("Default Rule Set (DRS) 1.0"),
+		// 					Status: to.Ptr(armfrontdoor.ManagedRuleSetStatusDeprecated),
 		// 				},
 		// 			},
 		// 		},

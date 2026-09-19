@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Profiles_CanMigrate.json
+// Generated from example definition: 2026-07-01/Profiles_CanMigrate.json
 func ExampleProfilesClient_BeginCanMigrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleProfilesClient_BeginCanMigrate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/CdnProfiles_CanMigrate.json
+// Generated from example definition: 2026-07-01/CdnProfiles_CanMigrate.json
 func ExampleProfilesClient_BeginCdnCanMigrateToAfd() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleProfilesClient_BeginCdnCanMigrateToAfd() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/CdnProfiles_Migrate.json
+// Generated from example definition: 2026-07-01/CdnProfiles_Migrate.json
 func ExampleProfilesClient_BeginCdnMigrateToAfd() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleProfilesClient_BeginCdnMigrateToAfd() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Profiles_Create.json
+// Generated from example definition: 2026-07-01/Profiles_Create.json
 func ExampleProfilesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,7 +172,7 @@ func ExampleProfilesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Profiles_Delete.json
+// Generated from example definition: 2026-07-01/Profiles_Delete.json
 func ExampleProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,7 +198,7 @@ func ExampleProfilesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Profiles_GenerateSsoUri.json
+// Generated from example definition: 2026-07-01/Profiles_GenerateSsoUri.json
 func ExampleProfilesClient_GenerateSsoURI() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +223,7 @@ func ExampleProfilesClient_GenerateSsoURI() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Profiles_Get.json
+// Generated from example definition: 2026-07-01/Profiles_Get.json
 func ExampleProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +268,7 @@ func ExampleProfilesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Profiles_List.json
+// Generated from example definition: 2026-07-01/Profiles_List.json
 func ExampleProfilesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,7 +345,7 @@ func ExampleProfilesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Profiles_ListByResourceGroup.json
+// Generated from example definition: 2026-07-01/Profiles_ListByResourceGroup.json
 func ExampleProfilesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -422,7 +422,7 @@ func ExampleProfilesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Profiles_ListResourceUsage.json
+// Generated from example definition: 2026-07-01/Profiles_ListResourceUsage.json
 func ExampleProfilesClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -459,7 +459,7 @@ func ExampleProfilesClient_NewListResourceUsagePager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Profiles_ListSupportedOptimizationTypes.json
+// Generated from example definition: 2026-07-01/Profiles_ListSupportedOptimizationTypes.json
 func ExampleProfilesClient_ListSupportedOptimizationTypes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -487,7 +487,7 @@ func ExampleProfilesClient_ListSupportedOptimizationTypes() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Profiles_Migrate.json
+// Generated from example definition: 2026-07-01/Profiles_Migrate.json
 func ExampleProfilesClient_BeginMigrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -530,7 +530,7 @@ func ExampleProfilesClient_BeginMigrate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Profiles_MigrationAbort.json
+// Generated from example definition: 2026-07-01/Profiles_MigrationAbort.json
 func ExampleProfilesClient_BeginMigrationAbort() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -551,7 +551,7 @@ func ExampleProfilesClient_BeginMigrationAbort() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Profiles_MigrationCommit.json
+// Generated from example definition: 2026-07-01/Profiles_MigrationCommit.json
 func ExampleProfilesClient_BeginMigrationCommit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -577,7 +577,7 @@ func ExampleProfilesClient_BeginMigrationCommit() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Profiles_Update.json
+// Generated from example definition: 2026-07-01/Profiles_Update.json
 func ExampleProfilesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

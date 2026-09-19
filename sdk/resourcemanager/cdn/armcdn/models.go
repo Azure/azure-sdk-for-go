@@ -51,6 +51,12 @@ type AFDDomainHTTPSParameters struct {
 
 	// Resource reference to the secret. ie. subs/rg/profile/secret
 	Secret *ResourceReference
+
+	// Server TLS group policy that will be used for Https.
+	ServerTLSGroupPolicy *AfdServerTLSGroupPolicy
+
+	// Server TLS groups that will be used for Https when serverTlsGroupPolicy is Custom.
+	ServerTLSGroups []*AfdServerTLSGroup
 }
 
 // AFDDomainListResult - The response of a AFDDomain list operation.
@@ -62,6 +68,16 @@ type AFDDomainListResult struct {
 	NextLink *string
 }
 
+// AFDDomainMtlsParameters - Contains the properties to configure mutual TLS for a custom domain with FQDN. Mutual TLS cannot
+// be configured for custom domains with wildcard host names.
+type AFDDomainMtlsParameters struct {
+	// REQUIRED; Supported scenarios for establishing mTLS connection.
+	Scenario *MtlsScenarioType
+}
+
+// GetAFDDomainMtlsParameters implements the AFDDomainMtlsParametersClassification interface for type AFDDomainMtlsParameters.
+func (a *AFDDomainMtlsParameters) GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters { return a }
+
 // AFDDomainProperties - The JSON object that contains the properties of the domain to create.
 type AFDDomainProperties struct {
 	// REQUIRED; The host name of the domain. Must be a domain name.
@@ -72,6 +88,10 @@ type AFDDomainProperties struct {
 
 	// Key-Value pair representing migration properties for domains.
 	ExtendedProperties map[string]*string
+
+	// The configuration specifying how to enable mutual TLS for the domain, including specifying allowed FQDNs and which server
+	// certificate(s) to use.
+	MtlsSettings AFDDomainMtlsParametersClassification
 
 	// Resource reference to the Azure resource where custom domain ownership was prevalidated
 	PreValidatedCustomDomainResourceID *ResourceReference
@@ -107,6 +127,10 @@ type AFDDomainUpdateParameters struct {
 type AFDDomainUpdatePropertiesParameters struct {
 	// Resource reference to the Azure DNS zone
 	AzureDNSZone *ResourceReference
+
+	// The configuration specifying how to enable mutual TLS for the domain, including specifying allowed FQDNs and which server
+	// certificate(s) to use.
+	MtlsSettings AFDDomainMtlsParametersClassification
 
 	// Resource reference to the Azure resource where custom domain ownership was prevalidated
 	PreValidatedCustomDomainResourceID *ResourceReference
@@ -161,6 +185,9 @@ type AFDEndpointProperties struct {
 	// Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
 	EnabledState *EnabledState
 
+	// Set to Disabled by default. If set to Enabled, only custom domains with mTLS enabled can be added to child Route resources.
+	EnforceMtls *EnforceMtlsEnabledState
+
 	// READ-ONLY
 	DeploymentStatus *DeploymentStatus
 
@@ -178,6 +205,9 @@ type AFDEndpointProperties struct {
 type AFDEndpointPropertiesUpdateParameters struct {
 	// Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
 	EnabledState *EnabledState
+
+	// Set to Disabled by default. If set to Enabled, only custom domains with mTLS enabled can be added to child Route resources.
+	EnforceMtls *EnforceMtlsEnabledState
 
 	// READ-ONLY; The name of the profile which holds the endpoint.
 	ProfileName *string
@@ -310,6 +340,13 @@ type AFDOriginProperties struct {
 	// Resource reference to the Azure origin resource.
 	AzureOrigin *ResourceReference
 
+	// The validation mode for certificate name check. Only applicable when enforceCertificateNameCheck is true.
+	CertificateNameCheckValidationMode *CertificateNameCheckValidationMode
+
+	// The list of custom certificate subjects to validate against. Only applicable when certificateNameCheckValidationMode is
+	// 'CustomCertificateSubject'. Must contain 1 or 2 entries.
+	CustomCertificateSubjects []*string
+
 	// Whether to enable health probes to be made against backends defined under backendPools. Health probes can only be disabled
 	// if there is a single enabled backend in single enabled backend pool.
 	EnabledState *EnabledState
@@ -362,6 +399,13 @@ type AFDOriginUpdateParameters struct {
 type AFDOriginUpdatePropertiesParameters struct {
 	// Resource reference to the Azure origin resource.
 	AzureOrigin *ResourceReference
+
+	// The validation mode for certificate name check. Only applicable when enforceCertificateNameCheck is true.
+	CertificateNameCheckValidationMode *CertificateNameCheckValidationMode
+
+	// The list of custom certificate subjects to validate against. Only applicable when certificateNameCheckValidationMode is
+	// 'CustomCertificateSubject'. Must contain 1 or 2 entries.
+	CustomCertificateSubjects []*string
 
 	// Whether to enable health probes to be made against backends defined under backendPools. Health probes can only be disabled
 	// if there is a single enabled backend in single enabled backend pool.
@@ -431,6 +475,62 @@ type AfdRouteCacheConfiguration struct {
 	QueryStringCachingBehavior *AfdQueryStringCachingBehavior
 }
 
+// AfdSecretMtlsCertificateChain - Server-side certificate used for mTLS validation
+type AfdSecretMtlsCertificateChain struct {
+	// REQUIRED; Resource reference to the Azure Key Vault secret. Expected to be in format of /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets/{secretName}
+	SecretSource *ResourceReference
+
+	// REQUIRED; Version of the secret to be used
+	SecretVersion *string
+
+	// CONSTANT; The type of the secret resource.
+	// Field has constant value SecretTypeMtlsCertificateChain, any specified value is ignored.
+	Type *SecretType
+
+	// READ-ONLY; Soonest expiration date among certificates in customer's certificate chain in ISO 8601 compliant format yyyy-MM-ddTHH:mm:ss.fffffffK
+	// in UTC
+	ExpirationDate *time.Time
+}
+
+// GetSecretParameters implements the SecretParametersClassification interface for type AfdSecretMtlsCertificateChain.
+func (a *AfdSecretMtlsCertificateChain) GetSecretParameters() *SecretParameters {
+	return &SecretParameters{
+		Type: a.Type,
+	}
+}
+
+// AfdURLSigningAction - Defines the url signing action for the delivery rule.
+type AfdURLSigningAction struct {
+	// CONSTANT; The name of the action for the delivery rule.
+	// Field has constant value DeliveryRuleActionNameAfdURLSigning, any specified value is ignored.
+	Name *DeliveryRuleActionName
+
+	// REQUIRED; Defines the parameters for the action.
+	Parameters *AfdURLSigningActionParameters
+}
+
+// GetDeliveryRuleAction implements the DeliveryRuleActionClassification interface for type AfdURLSigningAction.
+func (a *AfdURLSigningAction) GetDeliveryRuleAction() *DeliveryRuleAction {
+	return &DeliveryRuleAction{
+		Name: a.Name,
+	}
+}
+
+// AfdURLSigningActionParameters - Defines the parameters for the Url Signing action.
+type AfdURLSigningActionParameters struct {
+	// REQUIRED; Resource reference to the Azure Key Vault secret. Expected to be in format of /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/keyGroups/{keyGroupName}
+	KeyGroupReference *ResourceReference
+
+	// REQUIRED
+	TypeName *TypeName
+
+	// Algorithm to use for URL signing
+	Algorithm *Algorithm
+
+	// Defines which query string parameters in the url to be considered for expires, key id etc.
+	ParameterNameOverride []*URLSigningParamIdentifier
+}
+
 // AzureFirstPartyManagedCertificateParameters - Azure FirstParty Managed Certificate provided by other first party resource
 // providers to enable HTTPS.
 type AzureFirstPartyManagedCertificateParameters struct {
@@ -462,6 +562,30 @@ func (a *AzureFirstPartyManagedCertificateParameters) GetSecretParameters() *Sec
 	return &SecretParameters{
 		Type: a.Type,
 	}
+}
+
+// BatchRuleProperties - The JSON object that contains a rule with its name for batch mode operations.
+type BatchRuleProperties struct {
+	// REQUIRED; Name of the rule.
+	RuleName *string
+
+	// A list of actions that are executed when all the conditions of a rule are satisfied.
+	Actions []DeliveryRuleActionClassification
+
+	// A list of conditions that must be matched for the actions to be executed
+	Conditions []DeliveryRuleConditionClassification
+
+	// If this rule is a match should the rules engine continue running the remaining rules or stop. If not present, defaults
+	// to Continue.
+	MatchProcessingBehavior *MatchProcessingBehavior
+
+	// The order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}. A rule with a lesser order will
+	// be applied before a rule with a greater order. Rule with order 0 is a special rule. It does not require any condition and
+	// actions listed in it will always be applied.
+	Order *int32
+
+	// READ-ONLY; The name of the rule set containing the rule.
+	RuleSetName *string
 }
 
 // CacheConfiguration - Caching settings for a caching-type route. To disable caching, do not provide a cacheConfiguration
@@ -648,6 +772,70 @@ type CidrIPAddress struct {
 	PrefixLength *int32
 }
 
+// ClientCertificateRequiredAndOriginValidatesAdvancedSettings - Advanced settings for MtlsScenarioType enum value: ClientCertificateRequiredAndOriginValidates.
+type ClientCertificateRequiredAndOriginValidatesAdvancedSettings struct {
+	// CONSTANT; Supported scenarios for establishing mTLS connection.
+	// Field has constant value MtlsScenarioTypeClientCertificateRequiredAndOriginValidates, any specified value is ignored.
+	Scenario *MtlsScenarioType
+}
+
+// GetAFDDomainMtlsParameters implements the AFDDomainMtlsParametersClassification interface for type ClientCertificateRequiredAndOriginValidatesAdvancedSettings.
+func (c *ClientCertificateRequiredAndOriginValidatesAdvancedSettings) GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters {
+	return &AFDDomainMtlsParameters{
+		Scenario: c.Scenario,
+	}
+}
+
+// ClientCertificateRequiredAndValidatedAdvancedSettings - Advanced settings for MtlsScenarioType enum value: ClientCertificateRequiredAndValidated.
+type ClientCertificateRequiredAndValidatedAdvancedSettings struct {
+	// CONSTANT; Supported scenarios for establishing mTLS connection.
+	// Field has constant value MtlsScenarioTypeClientCertificateRequiredAndValidated, any specified value is ignored.
+	Scenario *MtlsScenarioType
+
+	// REQUIRED; List of one or two of Resource References (ie. subs/rg/profile/secret) to Secrets of type MtlsCertificateChain
+	// to use in mutual TLS handshake as the trusted issuer certificate chain.
+	Secrets []*ResourceReference
+
+	// List of FQDNs that will be accepted for mutual TLS validation.
+	AllowedFqdns []*string
+
+	// Set to Enabled by default. If set to Disabled, revocation status of client certificate chain will be checked before establishing
+	// mutual TLS connection.
+	CertificateRevocationCheck *CertificateRevocationCheckEnabledState
+}
+
+// GetAFDDomainMtlsParameters implements the AFDDomainMtlsParametersClassification interface for type ClientCertificateRequiredAndValidatedAdvancedSettings.
+func (c *ClientCertificateRequiredAndValidatedAdvancedSettings) GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters {
+	return &AFDDomainMtlsParameters{
+		Scenario: c.Scenario,
+	}
+}
+
+// ClientCertificateValidatedIfPresentedAdvancedSettings - Advanced settings for MtlsScenarioType enum value: ClientCertificateValidatedIfPresented.
+type ClientCertificateValidatedIfPresentedAdvancedSettings struct {
+	// CONSTANT; Supported scenarios for establishing mTLS connection.
+	// Field has constant value MtlsScenarioTypeClientCertificateValidatedIfPresented, any specified value is ignored.
+	Scenario *MtlsScenarioType
+
+	// REQUIRED; List of one or two of Resource References (ie. subs/rg/profile/secret) to Secrets of type MtlsCertificateChain
+	// to use in mutual TLS handshake as the trusted issuer certificate chain.
+	Secrets []*ResourceReference
+
+	// List of FQDNs that will be accepted for mutual TLS validation.
+	AllowedFqdns []*string
+
+	// Set to Enabled by default. If set to Disabled, revocation status of client certificate chain will be checked before establishing
+	// mutual TLS connection.
+	CertificateRevocationCheck *CertificateRevocationCheckEnabledState
+}
+
+// GetAFDDomainMtlsParameters implements the AFDDomainMtlsParametersClassification interface for type ClientCertificateValidatedIfPresentedAdvancedSettings.
+func (c *ClientCertificateValidatedIfPresentedAdvancedSettings) GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters {
+	return &AFDDomainMtlsParameters{
+		Scenario: c.Scenario,
+	}
+}
+
 // ClientPortMatchConditionParameters - Defines the parameters for ClientPort match conditions
 type ClientPortMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
@@ -671,6 +859,20 @@ type ClientPortMatchConditionParameters struct {
 func (c *ClientPortMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
 	return &DeliveryRuleConditionParameters{
 		TypeName: c.TypeName,
+	}
+}
+
+// CompleteMtlsPassthroughToOriginAdvancedSettings - Advanced settings for MtlsScenarioType enum value: CompleteMtlsPassthroughToOrigin.
+type CompleteMtlsPassthroughToOriginAdvancedSettings struct {
+	// CONSTANT; Supported scenarios for establishing mTLS connection.
+	// Field has constant value MtlsScenarioTypeCompleteMtlsPassthroughToOrigin, any specified value is ignored.
+	Scenario *MtlsScenarioType
+}
+
+// GetAFDDomainMtlsParameters implements the AFDDomainMtlsParametersClassification interface for type CompleteMtlsPassthroughToOriginAdvancedSettings.
+func (c *CompleteMtlsPassthroughToOriginAdvancedSettings) GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters {
+	return &AFDDomainMtlsParameters{
+		Scenario: c.Scenario,
 	}
 }
 
@@ -1112,6 +1314,26 @@ func (d *DeliveryRuleCookiesCondition) GetDeliveryRuleCondition() *DeliveryRuleC
 	}
 }
 
+// DeliveryRuleEdgeActionParameters - Defines the parameters for the edge action.
+type DeliveryRuleEdgeActionParameters struct {
+	// REQUIRED; defines the edge action that will be invoked.
+	EdgeActionReference *ResourceReference
+
+	// REQUIRED; Defines at which point in the request processing pipeline the edge action will be invoked.
+	InvocationPoint *InvocationPoint
+
+	// CONSTANT; Field has constant value DeliveryRuleActionParametersTypeDeliveryRuleEdgeActionParameters, any specified value
+	// is ignored.
+	TypeName *DeliveryRuleActionParametersType
+}
+
+// GetDeliveryRuleActionParameters implements the DeliveryRuleActionParametersClassification interface for type DeliveryRuleEdgeActionParameters.
+func (d *DeliveryRuleEdgeActionParameters) GetDeliveryRuleActionParameters() *DeliveryRuleActionParameters {
+	return &DeliveryRuleActionParameters{
+		TypeName: d.TypeName,
+	}
+}
+
 // DeliveryRuleHTTPVersionCondition - Defines the HttpVersion condition for the delivery rule.
 type DeliveryRuleHTTPVersionCondition struct {
 	// CONSTANT; The name of the condition for the delivery rule.
@@ -1472,6 +1694,23 @@ type DomainValidationProperties struct {
 
 	// READ-ONLY; Challenge used for DNS TXT record or file based validation
 	ValidationToken *string
+}
+
+// EdgeAction - Defines the edge action for the delivery rule.
+type EdgeAction struct {
+	// CONSTANT; The name of the action for the delivery rule.
+	// Field has constant value DeliveryRuleActionNameEdgeAction, any specified value is ignored.
+	Name *DeliveryRuleActionName
+
+	// REQUIRED; Defines the parameters for the action.
+	Parameters *DeliveryRuleEdgeActionParameters
+}
+
+// GetDeliveryRuleAction implements the DeliveryRuleActionClassification interface for type EdgeAction.
+func (e *EdgeAction) GetDeliveryRuleAction() *DeliveryRuleAction {
+	return &DeliveryRuleAction{
+		Name: e.Name,
+	}
 }
 
 // EdgeNode - Edgenode is a global Point of Presence (POP) location used to deliver CDN content to end users.
@@ -2341,6 +2580,10 @@ type Origin struct {
 type OriginAuthenticationProperties struct {
 	// The scope used when requesting token from Microsoft Entra. For example, for Azure Blob Storage, scope could be "https://storage.azure.com/.default".
 	Scope *string
+
+	// The HTTP request header where the origin authentication token will be placed when forwarding the request to the origin.
+	// If not specified, the service will use the `Authorization` header for backward compatibility.
+	TokenDestinationHeader *OriginAuthenticationTokenDestinationHeader
 
 	// The type of the authentication for the origin.
 	Type *OriginAuthenticationType
@@ -3279,6 +3522,18 @@ type RuleSetListResult struct {
 
 // RuleSetProperties - The JSON object that contains the properties of the Rule Set to create.
 type RuleSetProperties struct {
+	// Indicates whether rule set is in batch mode. When batch mode is enabled, rules will be processed in a batch along with
+	// the rule set.
+	// When batch mode is disabled, rules would need to be processed independently.
+	// This property can only be set during rule set creation and cannot be updated later.
+	// For switching modes, a new rule set needs to be created with the desired mode and rules need to be migrated to the new
+	// rule set.
+	BatchMode *bool
+
+	// A list of rules that are part of this rule set provided the rule set is in batch mode.
+	// This property will be ignored if the rule set is not in batch mode.
+	Rules []*BatchRuleProperties
+
 	// READ-ONLY
 	DeploymentStatus *DeploymentStatus
 
@@ -3488,6 +3743,9 @@ type SecurityPolicyWebApplicationFirewallAssociation struct {
 
 	// List of paths
 	PatternsToMatch []*string
+
+	// List of routes.
+	Routes []*ResourceReference
 }
 
 // SecurityPolicyWebApplicationFirewallParameters - The json object containing security policy waf parameters
@@ -3498,6 +3756,9 @@ type SecurityPolicyWebApplicationFirewallParameters struct {
 
 	// Waf associations
 	Associations []*SecurityPolicyWebApplicationFirewallAssociation
+
+	// Indicates if this is a profile-level WAF policy.
+	IsProfileLevel *bool
 
 	// Resource ID.
 	WafPolicy *ResourceReference

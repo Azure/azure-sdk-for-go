@@ -45,6 +45,9 @@ type ServerFactory struct {
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
+	// RebalanceJobsServer contains the fakes for client RebalanceJobsClient
+	RebalanceJobsServer RebalanceJobsServer
+
 	// SKUsServer contains the fakes for client SKUsClient
 	SKUsServer SKUsServer
 
@@ -82,6 +85,7 @@ type ServerFactoryTransport struct {
 	trImportJobsServer     *ImportJobsServerTransport
 	trManagementServer     *ManagementServerTransport
 	trOperationsServer     *OperationsServerTransport
+	trRebalanceJobsServer  *RebalanceJobsServerTransport
 	trSKUsServer           *SKUsServerTransport
 	trStorageTargetServer  *StorageTargetServerTransport
 	trStorageTargetsServer *StorageTargetsServerTransport
@@ -141,6 +145,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "RebalanceJobsClient":
+		initServer(&s.trMu, &s.trRebalanceJobsServer, func() *RebalanceJobsServerTransport {
+			return NewRebalanceJobsServerTransport(&s.srv.RebalanceJobsServer)
+		})
+		resp, err = s.trRebalanceJobsServer.Do(req)
 	case "SKUsClient":
 		initServer(&s.trMu, &s.trSKUsServer, func() *SKUsServerTransport { return NewSKUsServerTransport(&s.srv.SKUsServer) })
 		resp, err = s.trSKUsServer.Do(req)

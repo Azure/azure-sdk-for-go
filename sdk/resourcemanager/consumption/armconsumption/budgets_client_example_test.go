@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2024-08-01/CreateOrUpdateBudget.json
+// Generated from example definition: 2026-06-01/CreateOrUpdateBudget.json
 func ExampleBudgetsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,7 +173,7 @@ func ExampleBudgetsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-08-01/DeleteBudget.json
+// Generated from example definition: 2026-06-01/DeleteBudget.json
 func ExampleBudgetsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func ExampleBudgetsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-08-01/Budget.json
+// Generated from example definition: 2026-06-01/Budget.json
 func ExampleBudgetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -289,7 +289,7 @@ func ExampleBudgetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-08-01/BudgetsList.json
+// Generated from example definition: 2026-06-01/BudgetsList.json
 func ExampleBudgetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

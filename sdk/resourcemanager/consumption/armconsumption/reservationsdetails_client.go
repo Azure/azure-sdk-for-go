@@ -19,7 +19,7 @@ import (
 // ReservationsDetailsClient contains the methods for the ReservationsDetails group.
 // Don't use this type directly, use NewReservationsDetailsClient() instead.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2026-06-01
 type ReservationsDetailsClient struct {
 	internal *arm.Client
 }
@@ -93,7 +93,7 @@ func (client *ReservationsDetailsClient) listCreateRequest(ctx context.Context, 
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20240801)
+		reqQP.Set("api-version", version20260601)
 		if options != nil && options.EndDate != nil {
 			reqQP.Set("endDate", *options.EndDate)
 		}
@@ -180,7 +180,7 @@ func (client *ReservationsDetailsClient) listByReservationOrderCreateRequest(ctx
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
 		reqQP.Set("$filter", filter)
-		reqQP.Set("api-version", version20240801)
+		reqQP.Set("api-version", version20260601)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -260,7 +260,7 @@ func (client *ReservationsDetailsClient) listByReservationOrderAndReservationCre
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
 		reqQP.Set("$filter", filter)
-		reqQP.Set("api-version", version20240801)
+		reqQP.Set("api-version", version20260601)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

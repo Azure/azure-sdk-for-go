@@ -19,7 +19,7 @@ import (
 // ObjectReplicationPoliciesClient contains the methods for the ObjectReplicationPolicies group.
 // Don't use this type directly, use NewObjectReplicationPoliciesClient() instead.
 //
-// Generated from API version 2026-04-01
+// Generated from API version 2026-06-01
 type ObjectReplicationPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -66,12 +66,7 @@ func (client *ObjectReplicationPoliciesClient) CreateOrUpdate(ctx context.Contex
 	if err != nil {
 		return ObjectReplicationPoliciesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ObjectReplicationPoliciesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -98,7 +93,7 @@ func (client *ObjectReplicationPoliciesClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -109,8 +104,11 @@ func (client *ObjectReplicationPoliciesClient) createOrUpdateCreateRequest(ctx c
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ObjectReplicationPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (ObjectReplicationPoliciesClientCreateOrUpdateResponse, error) {
+func (client *ObjectReplicationPoliciesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ObjectReplicationPoliciesClientCreateOrUpdateResponse, error) {
 	result := ObjectReplicationPoliciesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ObjectReplicationPolicy); err != nil {
 		return ObjectReplicationPoliciesClientCreateOrUpdateResponse{}, err
 	}
@@ -142,8 +140,7 @@ func (client *ObjectReplicationPoliciesClient) Delete(ctx context.Context, resou
 		return ObjectReplicationPoliciesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ObjectReplicationPoliciesClientDeleteResponse{}, err
+		return ObjectReplicationPoliciesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ObjectReplicationPoliciesClientDeleteResponse{}, nil
 }
@@ -172,7 +169,7 @@ func (client *ObjectReplicationPoliciesClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -201,12 +198,7 @@ func (client *ObjectReplicationPoliciesClient) Get(ctx context.Context, resource
 	if err != nil {
 		return ObjectReplicationPoliciesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ObjectReplicationPoliciesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -233,15 +225,18 @@ func (client *ObjectReplicationPoliciesClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ObjectReplicationPoliciesClient) getHandleResponse(resp *http.Response) (ObjectReplicationPoliciesClientGetResponse, error) {
+func (client *ObjectReplicationPoliciesClient) getHandleResponse(resp *http.Response, successCodes ...int) (ObjectReplicationPoliciesClientGetResponse, error) {
 	result := ObjectReplicationPoliciesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ObjectReplicationPolicy); err != nil {
 		return ObjectReplicationPoliciesClientGetResponse{}, err
 	}
@@ -265,47 +260,61 @@ func (client *ObjectReplicationPoliciesClient) NewListPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return ObjectReplicationPoliciesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ObjectReplicationPoliciesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ObjectReplicationPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *ObjectReplicationPoliciesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/objectReplicationPolicies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ObjectReplicationPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *ObjectReplicationPoliciesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/objectReplicationPolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ObjectReplicationPoliciesClient) listHandleResponse(resp *http.Response) (ObjectReplicationPoliciesClientListResponse, error) {
+func (client *ObjectReplicationPoliciesClient) listHandleResponse(resp *http.Response, successCodes ...int) (ObjectReplicationPoliciesClientListResponse, error) {
 	result := ObjectReplicationPoliciesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ObjectReplicationPolicies); err != nil {
 		return ObjectReplicationPoliciesClientListResponse{}, err
 	}

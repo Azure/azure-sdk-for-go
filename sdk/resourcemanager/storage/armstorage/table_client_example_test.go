@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-04-01/TableOperationPut.json
+// Generated from example definition: 2026-06-01/TableOperationPut.json
 func ExampleTableClient_Create_tableOperationPut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleTableClient_Create_tableOperationPut() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/TableOperationPutOrPatchAclsTableCreate.json
+// Generated from example definition: 2026-06-01/TableOperationPutOrPatchAclsTableCreate.json
 func ExampleTableClient_Create_tableOperationPutOrPatchAcls() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,17 +59,17 @@ func ExampleTableClient_Create_tableOperationPutOrPatchAcls() {
 			SignedIdentifiers: []*armstorage.TableSignedIdentifier{
 				{
 					AccessPolicy: &armstorage.TableAccessPolicy{
-						ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T08:49:37.0000000Z"); return t }()),
+						ExpiryTime: to.Ptr(time.Date(2022, time.March, 20, 8, 49, 37, 0, time.UTC)),
 						Permission: to.Ptr("raud"),
-						StartTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-17T08:49:37.0000000Z"); return t }()),
+						StartTime:  to.Ptr(time.Date(2022, time.March, 17, 8, 49, 37, 0, time.UTC)),
 					},
 					ID: to.Ptr("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI"),
 				},
 				{
 					AccessPolicy: &armstorage.TableAccessPolicy{
-						ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T08:49:37.0000000Z"); return t }()),
+						ExpiryTime: to.Ptr(time.Date(2022, time.March, 20, 8, 49, 37, 0, time.UTC)),
 						Permission: to.Ptr("rad"),
-						StartTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-17T08:49:37.0000000Z"); return t }()),
+						StartTime:  to.Ptr(time.Date(2022, time.March, 17, 8, 49, 37, 0, time.UTC)),
 					},
 					ID: to.Ptr("PTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODklMTI"),
 				},
@@ -91,17 +91,17 @@ func ExampleTableClient_Create_tableOperationPutOrPatchAcls() {
 	// 			SignedIdentifiers: []*armstorage.TableSignedIdentifier{
 	// 				{
 	// 					AccessPolicy: &armstorage.TableAccessPolicy{
-	// 						ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T08:49:37.0000000Z"); return t}()),
+	// 						ExpiryTime: to.Ptr(time.Date(2022, time.March, 20, 8, 49, 37, 0, time.UTC)),
 	// 						Permission: to.Ptr("raud"),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-17T08:49:37.0000000Z"); return t}()),
+	// 						StartTime: to.Ptr(time.Date(2022, time.March, 17, 8, 49, 37, 0, time.UTC)),
 	// 					},
 	// 					ID: to.Ptr("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI"),
 	// 				},
 	// 				{
 	// 					AccessPolicy: &armstorage.TableAccessPolicy{
-	// 						ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T08:49:37.0000000Z"); return t}()),
+	// 						ExpiryTime: to.Ptr(time.Date(2022, time.March, 20, 8, 49, 37, 0, time.UTC)),
 	// 						Permission: to.Ptr("rad"),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-17T08:49:37.0000000Z"); return t}()),
+	// 						StartTime: to.Ptr(time.Date(2022, time.March, 17, 8, 49, 37, 0, time.UTC)),
 	// 					},
 	// 					ID: to.Ptr("PTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODklMTI"),
 	// 				},
@@ -112,7 +112,7 @@ func ExampleTableClient_Create_tableOperationPutOrPatchAcls() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/TableOperationDelete.json
+// Generated from example definition: 2026-06-01/TableOperationDelete.json
 func ExampleTableClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleTableClient_Delete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/TableOperationGet.json
+// Generated from example definition: 2026-06-01/TableOperationGet.json
 func ExampleTableClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleTableClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/TableOperationList.json
+// Generated from example definition: 2026-06-01/TableOperationList.json
 func ExampleTableClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +207,7 @@ func ExampleTableClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/TableOperationPatch.json
+// Generated from example definition: 2026-06-01/TableOperationPatch.json
 func ExampleTableClient_Update_tableOperationPatch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,7 +237,7 @@ func ExampleTableClient_Update_tableOperationPatch() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/TableOperationPutOrPatchAcls.json
+// Generated from example definition: 2026-06-01/TableOperationPutOrPatchAcls.json
 func ExampleTableClient_Update_tableOperationPutOrPatchAcls() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,17 +253,17 @@ func ExampleTableClient_Update_tableOperationPutOrPatchAcls() {
 			SignedIdentifiers: []*armstorage.TableSignedIdentifier{
 				{
 					AccessPolicy: &armstorage.TableAccessPolicy{
-						ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T08:49:37.0000000Z"); return t }()),
+						ExpiryTime: to.Ptr(time.Date(2022, time.March, 20, 8, 49, 37, 0, time.UTC)),
 						Permission: to.Ptr("raud"),
-						StartTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-17T08:49:37.0000000Z"); return t }()),
+						StartTime:  to.Ptr(time.Date(2022, time.March, 17, 8, 49, 37, 0, time.UTC)),
 					},
 					ID: to.Ptr("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI"),
 				},
 				{
 					AccessPolicy: &armstorage.TableAccessPolicy{
-						ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T08:49:37.0000000Z"); return t }()),
+						ExpiryTime: to.Ptr(time.Date(2022, time.March, 20, 8, 49, 37, 0, time.UTC)),
 						Permission: to.Ptr("rad"),
-						StartTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-17T08:49:37.0000000Z"); return t }()),
+						StartTime:  to.Ptr(time.Date(2022, time.March, 17, 8, 49, 37, 0, time.UTC)),
 					},
 					ID: to.Ptr("PTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODklMTI"),
 				},
@@ -285,17 +285,17 @@ func ExampleTableClient_Update_tableOperationPutOrPatchAcls() {
 	// 			SignedIdentifiers: []*armstorage.TableSignedIdentifier{
 	// 				{
 	// 					AccessPolicy: &armstorage.TableAccessPolicy{
-	// 						ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T08:49:37.0000000Z"); return t}()),
+	// 						ExpiryTime: to.Ptr(time.Date(2022, time.March, 20, 8, 49, 37, 0, time.UTC)),
 	// 						Permission: to.Ptr("raud"),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-17T08:49:37.0000000Z"); return t}()),
+	// 						StartTime: to.Ptr(time.Date(2022, time.March, 17, 8, 49, 37, 0, time.UTC)),
 	// 					},
 	// 					ID: to.Ptr("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI"),
 	// 				},
 	// 				{
 	// 					AccessPolicy: &armstorage.TableAccessPolicy{
-	// 						ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T08:49:37.0000000Z"); return t}()),
+	// 						ExpiryTime: to.Ptr(time.Date(2022, time.March, 20, 8, 49, 37, 0, time.UTC)),
 	// 						Permission: to.Ptr("rad"),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-17T08:49:37.0000000Z"); return t}()),
+	// 						StartTime: to.Ptr(time.Date(2022, time.March, 17, 8, 49, 37, 0, time.UTC)),
 	// 					},
 	// 					ID: to.Ptr("PTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODklMTI"),
 	// 				},

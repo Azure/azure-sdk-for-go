@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Organizations_GetApiKey.json
+// Generated from example definition: 2026-03-15-preview/Organizations_GetApiKey.json
 func ExampleOrganizationsClient_GetAPIKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleOrganizationsClient_GetAPIKey() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Organizations_GetElasticToAzureSubscriptionMapping.json
+// Generated from example definition: 2026-03-15-preview/Organizations_GetElasticToAzureSubscriptionMapping.json
 func ExampleOrganizationsClient_GetElasticToAzureSubscriptionMapping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleOrganizationsClient_GetElasticToAzureSubscriptionMapping() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Organizations_Resubscribe.json
+// Generated from example definition: 2026-03-15-preview/Organizations_Resubscribe.json
 func ExampleOrganizationsClient_BeginResubscribe() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

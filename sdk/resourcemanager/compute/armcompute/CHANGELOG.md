@@ -1,6 +1,6 @@
 # Release History
 
-## 8.4.0 (2026-09-16)
+## 8.4.0 (2026-09-20)
 ### Features Added
 
 - New value `ConfidentialVMEncryptionTypeDataDiskEncryptedWithCmk` added to enum type `ConfidentialVMEncryptionType`

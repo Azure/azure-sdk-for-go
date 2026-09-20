@@ -22,10 +22,6 @@
 - New field `GracePeriodInDays`, `RetentionPeriodInDays` in struct `SoftDeletePolicy`
 
 
-## 8.3.1 (2026-09-14)
-### Other Changes
-
-
 ## 8.3.0 (2026-08-12)
 ### Features Added
 

@@ -1399,10 +1399,12 @@ type Volume struct {
 	// The git repo volume.
 	GitRepo *GitRepoVolume
 
-	// The secret volume.
+	// Defines files for a secret volume. Dictionary keys are file names and values are Base64-encoded secret data used as file
+	// contents. The values are sensitive, and the service does not return the contents of this property in GET responses.
 	Secret map[string]*string
 
-	// The secret reference volume.
+	// Defines files for a secret reference volume. Dictionary keys are file names and values identify entries in the container
+	// group's secretReferences collection. This property contains reference names rather than secret values.
 	SecretReference map[string]*string
 }
 

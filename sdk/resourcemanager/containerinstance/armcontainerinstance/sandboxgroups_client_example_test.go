@@ -34,7 +34,7 @@ func ExampleSandboxGroupsClient_Connect() {
 	// 	SandboxGroupAccessToken: armcontainerinstance.SandboxGroupAccessToken{
 	// 		Endpoint: to.Ptr("https://sandbox-endpoint.eastus.containerinstance.azure.com"),
 	// 		AccessToken: to.Ptr("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."),
-	// 		NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-01T12:00:00Z"); return t}()),
+	// 		NotAfter: to.Ptr(time.Date(2026, time.June, 1, 12, 0, 0, 0, time.UTC)),
 	// 	},
 	// }
 }

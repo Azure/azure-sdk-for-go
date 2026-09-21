@@ -843,8 +843,8 @@ func (c ContainerGroupProfileProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "revision", c.Revision)
 	populate(objectMap, "sku", c.SKU)
 	populate(objectMap, "securityContext", c.SecurityContext)
-	populateTime[datetime.RFC3339](objectMap, "shutdownGracePeriod", c.ShutdownGracePeriod)
-	populateTime[datetime.RFC3339](objectMap, "timeToLive", c.TimeToLive)
+	populateTime[datetime.RFC3339](objectMap, "shutdownGracePeriod", c.ShutdownGracePeriod, true)
+	populateTime[datetime.RFC3339](objectMap, "timeToLive", c.TimeToLive, true)
 	populate(objectMap, "useKrypton", c.UseKrypton)
 	populate(objectMap, "volumes", c.Volumes)
 	return json.Marshal(objectMap)
@@ -1403,8 +1403,8 @@ func (c ContainerState) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "detailStatus", c.DetailStatus)
 	populate(objectMap, "exitCode", c.ExitCode)
-	populateTime[datetime.RFC3339](objectMap, "finishTime", c.FinishTime)
-	populateTime[datetime.RFC3339](objectMap, "startTime", c.StartTime)
+	populateTime[datetime.RFC3339](objectMap, "finishTime", c.FinishTime, true)
+	populateTime[datetime.RFC3339](objectMap, "startTime", c.StartTime, true)
 	populate(objectMap, "state", c.State)
 	return json.Marshal(objectMap)
 }
@@ -1717,8 +1717,8 @@ func (e *EnvironmentVariable) UnmarshalJSON(data []byte) error {
 func (e Event) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "count", e.Count)
-	populateTime[datetime.RFC3339](objectMap, "firstTimestamp", e.FirstTimestamp)
-	populateTime[datetime.RFC3339](objectMap, "lastTimestamp", e.LastTimestamp)
+	populateTime[datetime.RFC3339](objectMap, "firstTimestamp", e.FirstTimestamp, true)
+	populateTime[datetime.RFC3339](objectMap, "lastTimestamp", e.LastTimestamp, true)
 	populate(objectMap, "message", e.Message)
 	populate(objectMap, "name", e.Name)
 	populate(objectMap, "type", e.Type)
@@ -3108,7 +3108,7 @@ func (s SandboxGroupAccessToken) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "accessToken", s.AccessToken)
 	populate(objectMap, "endpoint", s.Endpoint)
-	populateTime[datetime.RFC3339](objectMap, "notAfter", s.NotAfter)
+	populateTime[datetime.RFC3339](objectMap, "notAfter", s.NotAfter, true)
 	return json.Marshal(objectMap)
 }
 
@@ -3463,10 +3463,10 @@ func (s *SubnetReference) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt, true)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt, true)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -3836,13 +3836,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
-func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time, utc bool) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {
 		m[k] = nil
 	} else if !reflect.ValueOf(t).IsNil() {
-		newTime := T(*t)
+		tt := *t
+		if utc {
+			tt = tt.UTC()
+		}
+		newTime := T(tt)
 		m[k] = (*T)(&newTime)
 	}
 }
@@ -3862,7 +3866,7 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	return nil
 }
@@ -3873,7 +3877,7 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 	}
 	var aux T
 	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	newTime := time.Time(aux)
 	*t = &newTime

@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0 (2026-07-10)
+## 3.0.0 (2026-09-21)
 ### Breaking Changes
 
 - Struct `ContainerGroupProperties` has been removed

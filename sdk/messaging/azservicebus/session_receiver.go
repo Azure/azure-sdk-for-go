@@ -92,8 +92,8 @@ func calculateAcceptNextSessionTimeout(timeout time.Duration, jitterFraction flo
 	jitterBase := min(timeout/100, maxAcceptNextSessionTimeoutJitter)
 	timeout -= time.Duration(float64(jitterBase) * jitterFraction)
 
-	const maxTimeoutMilliseconds = time.Duration(1<<32 - 1)
-	timeoutMilliseconds := min(timeout/time.Millisecond, maxTimeoutMilliseconds)
+	const maxTimeoutMilliseconds = uint64(1<<32 - 1)
+	timeoutMilliseconds := min(uint64(timeout/time.Millisecond), maxTimeoutMilliseconds)
 	if timeoutMilliseconds == 0 {
 		return 0, false
 	}

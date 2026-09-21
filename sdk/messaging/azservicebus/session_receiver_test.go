@@ -203,12 +203,8 @@ func TestSessionReceiver_acceptNextSession_noSessionsExist(t *testing.T) {
 		}})
 	defer cleanup()
 
-	ctx := context.Background()
-
-	// This adds an extra property to our link that sets a shorter scanning interval on the
-	// service side. If you comment this out it will let the service determine the timeout,
-	// which is 1 minute.
-	client.acceptNextTimeout = time.Second
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
 
 	receiver, err := client.AcceptNextSessionForQueue(ctx, queueName, nil)
 	var sbErr *Error
@@ -260,9 +256,9 @@ func TestSessionReceiver_subscription(t *testing.T) {
 			},
 		}})
 
-	client.acceptNextTimeout = time.Second
-
-	receiver, err := client.AcceptNextSessionForSubscription(context.Background(), topic, "sub", nil)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	receiver, err := client.AcceptNextSessionForSubscription(ctx, topic, "sub", nil)
+	cancel()
 	require.Nil(t, receiver)
 
 	var sbError *Error
@@ -421,8 +417,6 @@ func TestSessionReceiver_roundRobin(t *testing.T) {
 		return err
 	}
 
-	client.acceptNextTimeout = time.Second
-
 	// NOTE: this code is intentionally similar to `ExampleClient_AcceptNextSessionForQueue_roundrobin` so we can
 	// test it.
 	// BEGIN
@@ -432,7 +426,9 @@ func TestSessionReceiver_roundRobin(t *testing.T) {
 		//
 		// AcceptNextSessionForQueue (or AcceptNextSessionForSubscription) makes it simple to implement
 		// this pattern, consuming multiple session receivers in parallel.
-		sessionReceiver, err := client.AcceptNextSessionForQueue(context.TODO(), sessionEnabledQueueName, nil)
+		acceptCtx, cancel := context.WithTimeout(context.Background(), time.Second)
+		sessionReceiver, err := client.AcceptNextSessionForQueue(acceptCtx, sessionEnabledQueueName, nil)
+		cancel()
 
 		if err != nil {
 			var sbErr *Error

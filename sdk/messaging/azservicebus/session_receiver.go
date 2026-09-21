@@ -6,6 +6,7 @@ package azservicebus
 import (
 	"context"
 	"fmt"
+	"math/rand"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
@@ -16,10 +17,9 @@ import (
 
 // SessionReceiver is a Receiver that handles sessions.
 type SessionReceiver struct {
-	inner             *Receiver
-	sessionID         *string
-	acceptNextTimeout time.Duration
-	lockedUntil       time.Time
+	inner       *Receiver
+	sessionID   *string
+	lockedUntil time.Time
 }
 
 // SessionReceiverOptions contains options for the `Client.AcceptSessionForQueue/Subscription` or `Client.AcceptNextSessionForQueue/Subscription`
@@ -51,12 +51,11 @@ func toReceiverOptions(sropts *SessionReceiverOptions) *ReceiverOptions {
 }
 
 type newSessionReceiverArgs struct {
-	sessionID         *string
-	ns                internal.NamespaceForAMQPLinks
-	entity            entity
-	cleanupOnClose    func()
-	retryOptions      RetryOptions
-	acceptNextTimeout time.Duration
+	sessionID      *string
+	ns             internal.NamespaceForAMQPLinks
+	entity         entity
+	cleanupOnClose func()
+	retryOptions   RetryOptions
 }
 
 func newSessionReceiver(ctx context.Context, args newSessionReceiverArgs, options *ReceiverOptions) (*SessionReceiver, error) {
@@ -78,10 +77,28 @@ func newSessionReceiver(ctx context.Context, args newSessionReceiverArgs, option
 		return nil, err
 	}
 
-	sessionReceiver.acceptNextTimeout = args.acceptNextTimeout
 	sessionReceiver.inner = r
 
 	return sessionReceiver, nil
+}
+
+const maxAcceptNextSessionTimeoutJitter = 100 * time.Millisecond
+
+func calculateAcceptNextSessionTimeout(timeout time.Duration, jitterFraction float64) (uint32, bool) {
+	if timeout < time.Millisecond {
+		return 0, false
+	}
+
+	jitterBase := min(timeout/100, maxAcceptNextSessionTimeoutJitter)
+	timeout -= time.Duration(float64(jitterBase) * jitterFraction)
+
+	const maxTimeoutMilliseconds = time.Duration(1<<32 - 1)
+	timeoutMilliseconds := min(timeout/time.Millisecond, maxTimeoutMilliseconds)
+	if timeoutMilliseconds == 0 {
+		return 0, false
+	}
+
+	return uint32(timeoutMilliseconds), true
 }
 
 func (r *SessionReceiver) newLink(ctx context.Context, session amqpwrap.AMQPSession) (amqpwrap.AMQPSenderCloser, amqpwrap.AMQPReceiverCloser, error) {
@@ -92,18 +109,18 @@ func (r *SessionReceiver) newLink(ctx context.Context, session amqpwrap.AMQPSess
 
 	if r.sessionID == nil {
 		linkOptions.Filters = append(linkOptions.Filters, amqp.NewLinkFilter(sessionFilterName, code, nil))
-	} else {
-		linkOptions.Filters = append(linkOptions.Filters, amqp.NewLinkFilter(sessionFilterName, code, r.sessionID))
-	}
 
-	if r.acceptNextTimeout > 0 {
 		if linkOptions.Properties == nil {
 			linkOptions.Properties = map[string]any{}
 		}
 
-		// the remote side of this seems _very_ picky that the type not be larger than 32-bits.
-		timeoutInMS := uint32(r.acceptNextTimeout / time.Millisecond)
-		linkOptions.Properties["com.microsoft:timeout"] = timeoutInMS
+		if deadline, ok := ctx.Deadline(); ok {
+			if timeoutInMS, ok := calculateAcceptNextSessionTimeout(time.Until(deadline), rand.Float64()); ok {
+				linkOptions.Properties["com.microsoft:timeout"] = timeoutInMS
+			}
+		}
+	} else {
+		linkOptions.Filters = append(linkOptions.Filters, amqp.NewLinkFilter(sessionFilterName, code, r.sessionID))
 	}
 
 	link, err := session.NewReceiver(ctx, r.inner.amqpLinks.EntityPath(), linkOptions)

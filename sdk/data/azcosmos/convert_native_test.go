@@ -188,10 +188,61 @@ func TestReadConsistencyStrategyToNativeIsInjective(t *testing.T) {
 // This pins the sentinel for both item kinds. A new field with a non-zero unset value has to be
 // added here as well as to newOperationRequest.
 func TestOperationRequestUsesTheDriversUnsetSentinels(t *testing.T) {
-	for _, kind := range []operationKind{operationKindReadItem, operationKindCreateItem} {
+	for _, kind := range []operationKind{
+		operationKindCreateItem,
+		operationKindReadItem,
+		operationKindUpsertItem,
+		operationKindReplaceItem,
+		operationKindDeleteItem,
+		operationKindPatchItem,
+	} {
 		maxItemCount := inspectRequestSentinels(kind)
 		require.Negative(t, maxItemCount,
 			"the driver reads < 0 as unset and rejects 0, so a zero here fails the operation")
+	}
+}
+
+func TestItemRequestToNativeCarriesItemOperationFields(t *testing.T) {
+	for _, tt := range []struct {
+		name             string
+		kind             operationKind
+		body             []byte
+		preconditionKind preconditionKind
+		preconditionETag string
+	}{
+		{"create", operationKindCreateItem, []byte(`{"id":"item-1"}`), preconditionKindNone, ""},
+		{"read if-none-match", operationKindReadItem, nil, preconditionKindIfNoneMatch, `"etag-1"`},
+		{"upsert if-match", operationKindUpsertItem, []byte(`{"id":"item-1"}`), preconditionKindIfMatch, `"etag-2"`},
+		{"replace if-match", operationKindReplaceItem, []byte(`{"id":"item-1"}`), preconditionKindIfMatch, `"etag-3"`},
+		{"delete if-match", operationKindDeleteItem, nil, preconditionKindIfMatch, `"etag-4"`},
+		{"patch if-match", operationKindPatchItem, []byte(`{"operations":[]}`), preconditionKindIfMatch, `"etag-5"`},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			enabled := true
+			request, release := inspectNativeItemRequest(itemRequest{
+				kind:             tt.kind,
+				itemID:           "item-1",
+				partitionKey:     NewPartitionKeyString("pk"),
+				body:             tt.body,
+				sessionToken:     "0:-1#42",
+				preconditionKind: tt.preconditionKind,
+				preconditionETag: tt.preconditionETag,
+				options: OperationOptions{
+					EnableContentResponseOnWrite: &enabled,
+				},
+			})
+			t.Cleanup(release)
+
+			require.Equal(t, int32(tt.kind), request.kind)
+			require.Equal(t, "item-1", request.itemID)
+			require.Equal(t, 1, request.partitionKeyLen)
+			require.Equal(t, tt.body, request.body)
+			require.Equal(t, "0:-1#42", request.sessionToken)
+			require.Negative(t, request.maxItemCount)
+			require.Equal(t, int32(tt.preconditionKind), request.preconditionKind)
+			require.Equal(t, tt.preconditionETag, request.preconditionETag)
+			require.Equal(t, int32(2), request.contentResponseWrite)
+		})
 	}
 }
 
@@ -242,16 +293,15 @@ func TestClientOptionsConvertToTheDriversConfig(t *testing.T) {
 		require.Empty(t, options.preferredRegions)
 	})
 
-	// The client-level value is sent explicitly rather than left unset, so the documented Go
-	// default holds even if the driver's default changes.
-	t.Run("the content response setting is sent explicitly", func(t *testing.T) {
+	t.Run("the content response setting preserves its tri-state", func(t *testing.T) {
 		for _, tt := range []struct {
 			name    string
-			enabled bool
+			enabled *bool
 			want    int32
 		}{
-			{"disabled", false, 1},
-			{"enabled", true, 2},
+			{"unset", nil, 0},
+			{"disabled", to(false), 1},
+			{"enabled", to(true), 2},
 		} {
 			t.Run(tt.name, func(t *testing.T) {
 				options, release, err := inspectNativeClientOptions(ClientOptions{

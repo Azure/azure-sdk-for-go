@@ -1,5 +1,7 @@
 # Azure Cosmos DB SDK for Go
 
+<!-- cSpell:ignore azsdk itemdb libc -->
+
 ## Introduction
 
 This client library enables client applications to connect to Azure Cosmos DB via the NoSQL API. Azure Cosmos DB is a globally distributed, multi-model database service.
@@ -8,7 +10,8 @@ This client library enables client applications to connect to Azure Cosmos DB vi
 
 This is the v2 major version of the module and it is **not usable yet**. The v2 surface is being
 assembled incrementally so that it can be reviewed as it lands. This release covers the error and
-response model, partition keys, client construction, and reading and creating single items.
+response model, partition keys, client construction, and creating, reading, replacing, upserting,
+deleting, and patching single items.
 
 v2 replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver, so that
 routing, retries, session handling, failover behavior and query fan-out are consistent across the
@@ -56,6 +59,17 @@ containers the application will use. The first operation on a container resolves
 container's metadata.
 
 One limit applies to the driver-backed build today: v1's WebAssembly support does not carry over.
+
+### Patching items
+
+`PatchOperations` owns a JSON snapshot of each value when it is appended and supports `add`, `set`,
+`replace`, `remove`, `incr`, and `move`. Paths use RFC 6901 JSON Pointer syntax. There is no
+Go-side ten-operation limit: the driver automatically chooses a server PATCH or a client-side
+read-modify-write execution strategy.
+
+Client-side execution of a patch that is not intrinsically retry-safe permanently adds the
+`_azsdkPatchTracking` property to the item. The driver uses it to deduplicate retries within one
+`PatchItem` call. Supplying a stable tracking ID across separate calls is not exposed yet.
 
 ### Running the end-to-end tests
 

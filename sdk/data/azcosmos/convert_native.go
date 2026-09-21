@@ -3,6 +3,8 @@
 
 //go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
 
+// cSpell:ignore finalizer
+
 package azcosmos
 
 /*
@@ -257,11 +259,8 @@ func (o ClientOptions) toNative() (*C.cosmos_driver_options_config_t, func(), er
 	config := (*C.cosmos_driver_options_config_t)(C.malloc(C.size_t(unsafe.Sizeof(C.cosmos_driver_options_config_t{}))))
 	*config = C.cosmos_driver_options_config_default()
 
-	// Passed explicitly rather than left unset, so that the documented Go default holds even if
-	// the driver's own default changes.
-	contentResponse := o.EnableContentResponseOnWrite
 	operationOptions, releaseOperationOptions := OperationOptions{
-		EnableContentResponseOnWrite: &contentResponse,
+		EnableContentResponseOnWrite: o.EnableContentResponseOnWrite,
 	}.toNative()
 	config.operation_options = operationOptions
 

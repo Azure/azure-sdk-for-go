@@ -13,8 +13,22 @@ import (
 type operationKind int32
 
 const (
-	operationKindCreateItem operationKind = 19
-	operationKindReadItem   operationKind = 20
+	operationKindCreateItem  operationKind = 19
+	operationKindReadItem    operationKind = 20
+	operationKindUpsertItem  operationKind = 21
+	operationKindReplaceItem operationKind = 22
+	operationKindDeleteItem  operationKind = 23
+	operationKindPatchItem   operationKind = 24
+)
+
+// preconditionKind identifies the conditional request header the driver should send. The values
+// mirror the driver's precondition kinds so the binding can pass them through directly.
+type preconditionKind int32
+
+const (
+	preconditionKindNone        preconditionKind = 0
+	preconditionKindIfMatch     preconditionKind = 1
+	preconditionKindIfNoneMatch preconditionKind = 2
 )
 
 // itemRequest describes one item operation, in Go types.
@@ -31,8 +45,8 @@ type itemRequest struct {
 	sessionToken SessionToken
 	options      OperationOptions
 
-	// ifNoneMatchETag is the conditional-read precondition. Empty means unconditional.
-	ifNoneMatchETag string
+	preconditionKind preconditionKind
+	preconditionETag string
 }
 
 // newDriverUnavailableError says what this build is missing, rather than reporting the operation as

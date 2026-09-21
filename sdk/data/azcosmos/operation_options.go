@@ -13,8 +13,8 @@ import "time"
 // consequence is that a setting can be present but inert for a given operation:
 // [OperationOptions.EnableContentResponseOnWrite] means nothing to a read, for instance.
 type OperationOptions struct {
-	// ConsistencyStrategy relaxes how fresh a read must be. The zero value reads with whatever
-	// the account's consistency level implies. It has no effect on writes.
+	// ConsistencyStrategy selects how fresh a read must be. The zero value reads with whatever the
+	// account's consistency level implies. It has no effect on writes.
 	ConsistencyStrategy ReadConsistencyStrategy
 
 	// EnableContentResponseOnWrite requests that a write return the resulting item. Nil uses the

@@ -3,6 +3,11 @@
 
 package azcosmos
 
+import (
+	"errors"
+	"strings"
+)
+
 // SessionToken is a marker of how far a client has read or written, used to guarantee a client
 // observes its own writes under session consistency.
 //
@@ -16,3 +21,10 @@ package azcosmos
 //
 // See https://learn.microsoft.com/azure/cosmos-db/consistency-levels#session-consistency.
 type SessionToken string
+
+func (s SessionToken) validate() error {
+	if strings.IndexByte(string(s), 0) >= 0 {
+		return errors.New("azcosmos: session token must not contain a NUL byte")
+	}
+	return nil
+}

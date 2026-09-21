@@ -294,7 +294,17 @@ func (s *Client) GetSASURL(permissions sas.SharePermissions, expiry time.Time, o
 		return "", err
 	}
 
-	endpoint := s.URL() + "?" + qps.Encode()
+	// s.URL() may already contain a query string (e.g. "sharesnapshot" for a client returned by
+	// WithSnapshot). Merge rather than blindly appending "?" to avoid producing a malformed URL
+	// with a duplicated "?".
+	endpoint := s.URL()
+	if encoded := qps.Encode(); encoded != "" {
+		separator := "?"
+		if strings.Contains(endpoint, "?") {
+			separator = "&"
+		}
+		endpoint += separator + encoded
+	}
 
 	return endpoint, nil
 }

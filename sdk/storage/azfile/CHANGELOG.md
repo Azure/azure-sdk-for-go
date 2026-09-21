@@ -10,6 +10,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed `share.Client.GetSASURL()` and `file.Client.GetSASURL()` appending a duplicated `?` to the resulting URL when called on a client whose URL already contained a query string (e.g. a client returned by `WithSnapshot`, or a file client derived from a share snapshot), which produced a malformed SAS URL.
 
 ### Other Changes
 

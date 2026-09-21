@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.DeviceUpdate": "2026-11-02-preview"
+  },
+  "emitterVersion": "0.17.4"
+}

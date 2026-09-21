@@ -12,7 +12,7 @@ import (
 )
 
 // Generated from example definition: 2026-09-06-preview/Operations_List_MaximumSet_Gen.json
-func ExampleOperationsClient_NewListPager_operationsListMaximumSetGenExample() {
+func ExampleOperationsClient_NewListPager_twoOperationsListMaximumSetGenExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -56,7 +56,7 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSetGenExample() {
 }
 
 // Generated from example definition: 2026-09-06-preview/Operations_List_MinimumSet_Gen.json
-func ExampleOperationsClient_NewListPager_operationsListMinimumGenExample() {
+func ExampleOperationsClient_NewListPager_oneOperationsListMinimumGenExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

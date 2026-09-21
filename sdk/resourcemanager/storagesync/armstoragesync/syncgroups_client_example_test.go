@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2022-09-01/SyncGroups_Create.json
+// Generated from example definition: 2025-12-01/SyncGroups_Create.json
 func ExampleSyncGroupsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleSyncGroupsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/SyncGroups_Delete.json
+// Generated from example definition: 2025-12-01/SyncGroups_Delete.json
 func ExampleSyncGroupsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleSyncGroupsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/SyncGroups_Get.json
+// Generated from example definition: 2025-12-01/SyncGroups_Get.json
 func ExampleSyncGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleSyncGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/SyncGroups_ListByStorageSyncService.json
+// Generated from example definition: 2025-12-01/SyncGroups_ListByStorageSyncService.json
 func ExampleSyncGroupsClient_NewListByStorageSyncServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

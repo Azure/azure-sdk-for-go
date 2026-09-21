@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/GetInstancePoolOperation.json
+// Generated from example definition: 2026-08-01-preview/GetInstancePoolOperation.json
 func ExampleInstancePoolOperationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,14 +40,14 @@ func ExampleInstancePoolOperationsClient_Get() {
 	// 			Operation: to.Ptr("UpsertInstancePoolAsync"),
 	// 			OperationFriendlyName: to.Ptr("UPDATE INSTANCE POOL"),
 	// 			PercentComplete: to.Ptr[int32](100),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-22T14:46:00.423Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2024, time.April, 22, 14, 46, 0, 423000000, time.UTC)),
 	// 			State: to.Ptr(armsql.ManagementOperationStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ListInstancePoolOperations.json
+// Generated from example definition: 2026-08-01-preview/ListInstancePoolOperations.json
 func ExampleInstancePoolOperationsClient_NewListByInstancePoolPager_listTheInstancePoolManagementOperationsWithSomeResults() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleInstancePoolOperationsClient_NewListByInstancePoolPager_listTheInsta
 		// 					Operation: to.Ptr("UpsertInstancePoolAsync"),
 		// 					OperationFriendlyName: to.Ptr("UPDATE INSTANCE POOL"),
 		// 					PercentComplete: to.Ptr[int32](100),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-22T14:46:00.423Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2024, time.April, 22, 14, 46, 0, 423000000, time.UTC)),
 		// 					State: to.Ptr(armsql.ManagementOperationStateSucceeded),
 		// 				},
 		// 			},
@@ -96,7 +96,7 @@ func ExampleInstancePoolOperationsClient_NewListByInstancePoolPager_listTheInsta
 		// 					Operation: to.Ptr("UpsertInstancePoolAsync"),
 		// 					OperationFriendlyName: to.Ptr("UPDATE INSTANCE POOL"),
 		// 					PercentComplete: to.Ptr[int32](100),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-22T14:46:22.847Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2024, time.April, 22, 14, 46, 22, 847000000, time.UTC)),
 		// 					State: to.Ptr(armsql.ManagementOperationStateSucceeded),
 		// 				},
 		// 			},
@@ -106,7 +106,7 @@ func ExampleInstancePoolOperationsClient_NewListByInstancePoolPager_listTheInsta
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ListInstancePoolOperationsEmpty.json
+// Generated from example definition: 2026-08-01-preview/ListInstancePoolOperationsEmpty.json
 func ExampleInstancePoolOperationsClient_NewListByInstancePoolPager_listTheInstancePoolManagementOperationsWithNoResults() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

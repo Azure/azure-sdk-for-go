@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/iothub_getprivatelinkresources.json
+// Generated from example definition: 2026-05-01-preview/iothub_getprivatelinkresources.json
 func ExamplePrivateLinkResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/iothub_listprivatelinkresources.json
+// Generated from example definition: 2026-05-01-preview/iothub_listprivatelinkresources.json
 func ExamplePrivateLinkResourcesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

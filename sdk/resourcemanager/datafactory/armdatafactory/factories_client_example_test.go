@@ -50,7 +50,7 @@ func ExampleFactoriesClient_ConfigureFactoryRepo() {
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName"),
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armdatafactory.FactoryProperties{
-	// 			CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-19T05:41:50.0041314Z"); return t}()),
+	// 			CreateTime: to.Ptr(time.Date(2018, time.June, 19, 5, 41, 50, 4131400, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			RepoConfiguration: &armdatafactory.FactoryVSTSConfiguration{
 	// 				Type: to.Ptr("FactoryVSTSConfiguration"),
@@ -99,7 +99,7 @@ func ExampleFactoriesClient_CreateOrUpdate() {
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName"),
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armdatafactory.FactoryProperties{
-	// 			CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-19T05:41:50.0041314Z"); return t}()),
+	// 			CreateTime: to.Ptr(time.Date(2018, time.June, 19, 5, 41, 50, 4131400, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			Version: to.Ptr("2018-06-01"),
 	// 		},
@@ -157,7 +157,7 @@ func ExampleFactoriesClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName"),
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armdatafactory.FactoryProperties{
-	// 			CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-19T05:41:50.0041314Z"); return t}()),
+	// 			CreateTime: to.Ptr(time.Date(2018, time.June, 19, 5, 41, 50, 4131400, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			PurviewConfiguration: &armdatafactory.PurviewConfiguration{
 	// 				PurviewResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/exampleResourceGroup/providers/Microsoft.Purview/accounts/examplePurview"),
@@ -286,7 +286,7 @@ func ExampleFactoriesClient_NewListPager() {
 		// 				},
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armdatafactory.FactoryProperties{
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-29T13:39:35.615921Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2018, time.May, 29, 13, 39, 35, 615921000, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					Version: to.Ptr("2017-09-01-preview"),
 		// 				},
@@ -305,7 +305,7 @@ func ExampleFactoriesClient_NewListPager() {
 		// 				},
 		// 				Location: to.Ptr("West Europe"),
 		// 				Properties: &armdatafactory.FactoryProperties{
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-14T00:06:04.6667461Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2018, time.June, 14, 0, 6, 4, 666746100, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					Version: to.Ptr("2017-09-01-preview"),
 		// 				},
@@ -324,7 +324,7 @@ func ExampleFactoriesClient_NewListPager() {
 		// 				},
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armdatafactory.FactoryProperties{
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-15T08:56:07.1828318Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2018, time.June, 15, 8, 56, 7, 182831800, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					Version: to.Ptr("2017-09-01-preview"),
 		// 				},
@@ -338,7 +338,7 @@ func ExampleFactoriesClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/factorytoupgrade"),
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armdatafactory.FactoryProperties{
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-19T05:35:35.7133828Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2018, time.June, 19, 5, 35, 35, 713382800, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					Version: to.Ptr("2018-06-01"),
 		// 				},
@@ -352,7 +352,7 @@ func ExampleFactoriesClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName"),
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armdatafactory.FactoryProperties{
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-19T05:41:50.0041314Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2018, time.June, 19, 5, 41, 50, 4131400, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					PurviewConfiguration: &armdatafactory.PurviewConfiguration{
 		// 						PurviewResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/exampleResourceGroup/providers/Microsoft.Purview/accounts/examplePurview"),
@@ -385,7 +385,7 @@ func ExampleFactoriesClient_NewListPager() {
 		// 				},
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armdatafactory.FactoryProperties{
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-29T13:39:35.615921Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2018, time.May, 29, 13, 39, 35, 615921000, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					Version: to.Ptr("2017-09-01-preview"),
 		// 				},
@@ -404,7 +404,7 @@ func ExampleFactoriesClient_NewListPager() {
 		// 				},
 		// 				Location: to.Ptr("West Europe"),
 		// 				Properties: &armdatafactory.FactoryProperties{
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-14T00:06:04.6667461Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2018, time.June, 14, 0, 6, 4, 666746100, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					Version: to.Ptr("2017-09-01-preview"),
 		// 				},
@@ -423,7 +423,7 @@ func ExampleFactoriesClient_NewListPager() {
 		// 				},
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armdatafactory.FactoryProperties{
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-15T08:56:07.1828318Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2018, time.June, 15, 8, 56, 7, 182831800, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					Version: to.Ptr("2017-09-01-preview"),
 		// 				},
@@ -437,7 +437,7 @@ func ExampleFactoriesClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/factorytoupgrade"),
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armdatafactory.FactoryProperties{
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-19T05:35:35.7133828Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2018, time.June, 19, 5, 35, 35, 713382800, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					Version: to.Ptr("2018-06-01"),
 		// 				},
@@ -451,7 +451,7 @@ func ExampleFactoriesClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName"),
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armdatafactory.FactoryProperties{
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-19T05:41:50.0041314Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2018, time.June, 19, 5, 41, 50, 4131400, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					PurviewConfiguration: &armdatafactory.PurviewConfiguration{
 		// 						PurviewResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/exampleResourceGroup/providers/Microsoft.Purview/accounts/examplePurview"),
@@ -515,7 +515,7 @@ func ExampleFactoriesClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armdatafactory.FactoryProperties{
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-15T08:56:07.1828318Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2018, time.June, 15, 8, 56, 7, 182831800, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					Version: to.Ptr("2017-09-01-preview"),
 		// 				},
@@ -529,7 +529,7 @@ func ExampleFactoriesClient_NewListByResourceGroupPager() {
 		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/factorytoupgrade"),
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armdatafactory.FactoryProperties{
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-19T05:35:35.7133828Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2018, time.June, 19, 5, 35, 35, 713382800, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					Version: to.Ptr("2018-06-01"),
 		// 				},
@@ -543,7 +543,7 @@ func ExampleFactoriesClient_NewListByResourceGroupPager() {
 		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName"),
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armdatafactory.FactoryProperties{
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-19T05:41:50.0041314Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2018, time.June, 19, 5, 41, 50, 4131400, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					RepoConfiguration: &armdatafactory.FactoryVSTSConfiguration{
 		// 						Type: to.Ptr("FactoryVSTSConfiguration"),
@@ -597,7 +597,7 @@ func ExampleFactoriesClient_Update() {
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName"),
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armdatafactory.FactoryProperties{
-	// 			CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-19T05:41:50.0041314Z"); return t}()),
+	// 			CreateTime: to.Ptr(time.Date(2018, time.June, 19, 5, 41, 50, 4131400, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			Version: to.Ptr("2018-06-01"),
 	// 		},

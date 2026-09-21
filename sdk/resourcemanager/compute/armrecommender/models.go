@@ -106,6 +106,175 @@ type ResourceSize struct {
 	SKU *string
 }
 
+// SKUMixPlacementBase - Contains metadata of the SkuMixPlacement scoring resource
+type SKUMixPlacementBase struct {
+	// The resource-specific properties for this resource.
+	Properties *SKUMixPlacementProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SKUMixPlacementCapacityLimit - Capacity availability for a single requested (VM size, zone) combination, independent of
+// the
+// recommended placement.
+type SKUMixPlacementCapacityLimit struct {
+	// REQUIRED; Upper bound, in VMs, on how much capacity can be allocated for this (VM size, zone): the smallest of
+	// the requested capacity, the available capacity, and the available quota, but never below the capacity
+	// already recommended for the slot. 0 when nothing is available.
+	Limit *int32
+
+	// REQUIRED; VM size name (e.g. Standard_D2s_v3).
+	Name *string
+
+	// REQUIRED; Priority of this entry (Regular or Spot).
+	Priority *SKUMixPlacementPriority
+
+	// REQUIRED; Why the limit is below the requested capacity, or None when the request is fully available.
+	Reason *SKUMixPlacementCapacityLimitReason
+
+	// Logical zone (e.g. "1", "2", "3"). Omitted or empty for regional requests.
+	Zone *string
+}
+
+// SKUMixPlacementCapacityProfile - Capacity-related properties for the placement request.
+type SKUMixPlacementCapacityProfile struct {
+	// REQUIRED; The capacity to run the workload. For VMs: [1..10,000]. For vCPUs: [1..100,000].
+	Capacity *int32
+
+	// REQUIRED; The unit type for the capacity value.
+	CapacityType *SKUMixPlacementCapacityType
+
+	// REQUIRED; The priority of the VMs to allocate.
+	Priority *SKUMixPlacementPriority
+
+	// The allocation strategy for determining the optimal SKU split.
+	AllocationStrategy *SKUMixPlacementAllocationStrategy
+
+	// The OS type. Required when allocationStrategy is LowestPrice because pricing varies by OS.
+	OSType *SKUMixPlacementOSType
+
+	// Contains spot-specific configuration.
+	SpotPriorityProfile *SKUMixPlacementSpotPriorityProfile
+
+	// Zone allocation policy. Default: BestEffortBalanced.
+	ZoneAllocationPolicy *SKUMixPlacementZoneAllocationPolicy
+}
+
+// SKUMixPlacementDeploymentChoice - A single deployment choice recommendation.
+type SKUMixPlacementDeploymentChoice struct {
+	// REQUIRED; The list of VM size / zone allocations that make up this deployment choice.
+	SKUSplit []*SKUMixPlacementItem
+
+	// REQUIRED; Placement score from 0 to 9 (inclusive). Higher is better.
+	Score *int32
+}
+
+// SKUMixPlacementInstanceDescription - Describes which VM sizes to consider.
+type SKUMixPlacementInstanceDescription struct {
+	// REQUIRED; The list of VM sizes to consider for placement.
+	VMSizes []*SKUMixPlacementVMSize
+}
+
+// SKUMixPlacementItem - A single VM size allocation within a deployment choice.
+type SKUMixPlacementItem struct {
+	// REQUIRED; Lower range of recommended allocation capacity.
+	Capacity *int32
+
+	// REQUIRED; VM size name (e.g. Standard_D2s_v3).
+	Name *string
+
+	// REQUIRED; Priority of this allocation (Regular or Spot).
+	Priority *SKUMixPlacementPriority
+
+	// Logical zone (e.g. "1", "2", "3"). Omitted or empty for regional deployments.
+	Zone *string
+}
+
+// SKUMixPlacementProperties - Contains properties of the SkuMixPlacement resource.
+type SKUMixPlacementProperties struct {
+	// Describes what resource types are supported by the mix placement scoring service.
+	SupportedResourceTypes []*string
+}
+
+// SKUMixPlacementRequest - Sku Mix Placement API request.
+type SKUMixPlacementRequest struct {
+	// REQUIRED; All capacity-related properties.
+	CapacityProfile *SKUMixPlacementCapacityProfile
+
+	// REQUIRED; Describes how the service should choose candidate VM sizes.
+	InstanceDescription *SKUMixPlacementInstanceDescription
+
+	// Optional logical zones to consider (e.g. ["1","2","3"]). Omitted or empty implies regional deployment.
+	Zones []*string
+}
+
+// SKUMixPlacementResponse - Sku Mix Placement API response.
+type SKUMixPlacementResponse struct {
+	// REQUIRED; Unique identifier for this placement response, including responses that contain no placement choices.
+	// Replaces the per-choice id that was present on placementChoices in earlier API versions.
+	ID *string
+
+	// REQUIRED; Indicates whether the response is a complete or partial fulfillment.
+	PartialFulfillmentReason *SKUMixPlacementPartialFulfillmentReason
+
+	// REQUIRED; List of placement choice recommendations.
+	PlacementChoices []*SKUMixPlacementDeploymentChoice
+
+	// Capacity availability for each requested (VM size, zone) combination, independent of the recommended
+	// placement. An entry is present for every requested combination, including those excluded by capacity
+	// or quota. Only returned for requests that describe instances by VM sizes.
+	CapacityLimits []*SKUMixPlacementCapacityLimit
+
+	// Date/time until which the recommendations are valid. Callers should request fresh recommendations after this time.
+	ValidUntil *time.Time
+}
+
+// SKUMixPlacementSpotPriorityProfile - Spot priority configuration.
+type SKUMixPlacementSpotPriorityProfile struct {
+	// Maximum price per VM the customer is willing to pay. Default: -1 (no price restriction).
+	MaxPricePerVM *float64
+}
+
+// SKUMixPlacementVMSize - A VM size with optional rank for prioritization.
+type SKUMixPlacementVMSize struct {
+	// REQUIRED; SKU name (e.g. Standard_D2s_v3).
+	Name *string
+
+	// Rank of the VM size. Lower = higher priority (starting at 0). Only valid with Prioritized strategy.
+	Rank *int32
+}
+
+// SKUMixPlacementZoneAllocationPolicy - Zone allocation policy for the placement request.
+type SKUMixPlacementZoneAllocationPolicy struct {
+	// Distribution strategy for allocating capacity across zones.
+	DistributionStrategy *SKUMixPlacementZonalDistributionStrategy
+
+	// Per-zone allocation preferences. Used with the Prioritized strategy.
+	ZonePreferences []*SKUMixPlacementZonePreference
+}
+
+// SKUMixPlacementZonePreference - Per-zone allocation preference.
+type SKUMixPlacementZonePreference struct {
+	// REQUIRED; Logical zone (e.g. "1", "2", "3").
+	Zone *string
+
+	// Rank of the zone. Lower values = higher priority (0 is highest).
+	Rank *int32
+
+	// Best-effort limit to avoid allocating more than this count within the zone. Used with the Prioritized strategy.
+	TargetMaxCapacity *int32
+}
+
 // SpotPlacementScoresInput - SpotPlacementScores API Input.
 type SpotPlacementScoresInput struct {
 	// Defines if the scope is zonal or regional.

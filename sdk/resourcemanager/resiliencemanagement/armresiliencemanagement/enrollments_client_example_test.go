@@ -50,10 +50,10 @@ func ExampleEnrollmentsClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armresiliencemanagement.SystemData{
 	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T10:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 1, 10, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T10:00:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 1, 10, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -110,10 +110,10 @@ func ExampleEnrollmentsClient_Get() {
 	// 		SystemData: &armresiliencemanagement.SystemData{
 	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T10:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 1, 10, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T10:00:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 1, 10, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -155,10 +155,10 @@ func ExampleEnrollmentsClient_NewListPager() {
 		// 				SystemData: &armresiliencemanagement.SystemData{
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T10:00:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 1, 10, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T10:00:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.June, 1, 10, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

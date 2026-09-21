@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/Job_Executions_Get.json
+// Generated from example definition: 2026-07-01/Job_Executions_Get.json
 func ExampleJobsExecutionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,10 +61,10 @@ func ExampleJobsExecutionsClient_NewListPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-13T20:47:30+00:00"); return t}()),
+		// 					EndTime: to.Ptr(time.Date(2023, time.February, 13, 20, 47, 30, 0, time.UTC)),
 		// 					Message: to.Ptr("Job has reached the specified backoff limit"),
 		// 					Reason: to.Ptr("BackoffLimitExceeded"),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-13T20:37:30+00:00"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2023, time.February, 13, 20, 37, 30, 0, time.UTC)),
 		// 					Status: to.Ptr(armappcontainers.JobExecutionRunningStateRunning),
 		// 					Template: &armappcontainers.JobExecutionTemplate{
 		// 						Containers: []*armappcontainers.JobExecutionContainer{

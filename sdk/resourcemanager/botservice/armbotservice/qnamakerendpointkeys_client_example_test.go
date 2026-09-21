@@ -34,7 +34,7 @@ func ExampleQnAMakerEndpointKeysClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbotservice.QnAMakerEndpointKeysClientGetResponse{
-	// 	QnAMakerEndpointKeysResponse: &armbotservice.QnAMakerEndpointKeysResponse{
+	// 	QnAMakerEndpointKeysResponse: armbotservice.QnAMakerEndpointKeysResponse{
 	// 		InstalledVersion: to.Ptr("4.1.0"),
 	// 		LastStableVersion: to.Ptr("4.2.0"),
 	// 		PrimaryEndpointKey: to.Ptr("sample_primaryEndpointKey"),

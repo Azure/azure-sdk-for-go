@@ -30,6 +30,9 @@ type SupportedOperatingSystemsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSupportedOperatingSystemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SupportedOperatingSystemsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *SupportedOperatingSystemsClient) Get(ctx context.Context, resource
 	if err != nil {
 		return SupportedOperatingSystemsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SupportedOperatingSystemsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *SupportedOperatingSystemsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *SupportedOperatingSystemsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationSupportedOperatingSystems"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,8 +99,11 @@ func (client *SupportedOperatingSystemsClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *SupportedOperatingSystemsClient) getHandleResponse(resp *http.Response) (SupportedOperatingSystemsClientGetResponse, error) {
+func (client *SupportedOperatingSystemsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SupportedOperatingSystemsClientGetResponse, error) {
 	result := SupportedOperatingSystemsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SupportedOperatingSystems); err != nil {
 		return SupportedOperatingSystemsClientGetResponse{}, err
 	}

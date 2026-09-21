@@ -30,6 +30,9 @@ type ComputeClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewComputeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ComputeClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -86,8 +89,7 @@ func (client *ComputeClient) createOrUpdate(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -96,7 +98,7 @@ func (client *ComputeClient) createOrUpdate(ctx context.Context, resourceGroupNa
 func (client *ComputeClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ComputeResource, _ *ComputeClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -168,8 +170,7 @@ func (client *ComputeClient) deleteOperation(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -178,7 +179,7 @@ func (client *ComputeClient) deleteOperation(ctx context.Context, resourceGroupN
 func (client *ComputeClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, underlyingResourceAction UnderlyingResourceAction, _ *ComputeClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -225,19 +226,14 @@ func (client *ComputeClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return ComputeClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ComputeClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ComputeClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, _ *ComputeClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -264,8 +260,11 @@ func (client *ComputeClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *ComputeClient) getHandleResponse(resp *http.Response) (ComputeClientGetResponse, error) {
+func (client *ComputeClient) getHandleResponse(resp *http.Response, successCodes ...int) (ComputeClientGetResponse, error) {
 	result := ComputeClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComputeResource); err != nil {
 		return ComputeClientGetResponse{}, err
 	}
@@ -293,19 +292,14 @@ func (client *ComputeClient) GetAllowedResizeSizes(ctx context.Context, resource
 	if err != nil {
 		return ComputeClientGetAllowedResizeSizesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ComputeClientGetAllowedResizeSizesResponse{}, err
-	}
-	resp, err := client.getAllowedResizeSizesHandleResponse(httpResp)
-	return resp, err
+	return client.getAllowedResizeSizesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAllowedResizeSizesCreateRequest creates the GetAllowedResizeSizes request.
 func (client *ComputeClient) getAllowedResizeSizesCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, _ *ComputeClientGetAllowedResizeSizesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/getAllowedVmSizesForResize"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -332,8 +326,11 @@ func (client *ComputeClient) getAllowedResizeSizesCreateRequest(ctx context.Cont
 }
 
 // getAllowedResizeSizesHandleResponse handles the GetAllowedResizeSizes response.
-func (client *ComputeClient) getAllowedResizeSizesHandleResponse(resp *http.Response) (ComputeClientGetAllowedResizeSizesResponse, error) {
+func (client *ComputeClient) getAllowedResizeSizesHandleResponse(resp *http.Response, successCodes ...int) (ComputeClientGetAllowedResizeSizesResponse, error) {
 	result := ComputeClientGetAllowedResizeSizesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineSizeListResult); err != nil {
 		return ComputeClientGetAllowedResizeSizesResponse{}, err
 	}
@@ -355,50 +352,64 @@ func (client *ComputeClient) NewListPager(resourceGroupName string, workspaceNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, nextLink, options)
 			if err != nil {
 				return ComputeClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ComputeClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ComputeClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *ComputeClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ComputeClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, nextLink string, options *ComputeClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", *options.Skip)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", *options.Skip)
+		}
+		reqQP.Set("api-version", version20260315Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ComputeClient) listHandleResponse(resp *http.Response) (ComputeClientListResponse, error) {
+func (client *ComputeClient) listHandleResponse(resp *http.Response, successCodes ...int) (ComputeClientListResponse, error) {
 	result := ComputeClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PaginatedComputeResourcesList); err != nil {
 		return ComputeClientListResponse{}, err
 	}
@@ -425,19 +436,14 @@ func (client *ComputeClient) ListKeys(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return ComputeClientListKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ComputeClientListKeysResponse{}, err
-	}
-	resp, err := client.listKeysHandleResponse(httpResp)
-	return resp, err
+	return client.listKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // listKeysCreateRequest creates the ListKeys request.
 func (client *ComputeClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, _ *ComputeClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/listKeys"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -464,8 +470,11 @@ func (client *ComputeClient) listKeysCreateRequest(ctx context.Context, resource
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *ComputeClient) listKeysHandleResponse(resp *http.Response) (ComputeClientListKeysResponse, error) {
+func (client *ComputeClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (ComputeClientListKeysResponse, error) {
 	result := ComputeClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return ComputeClientListKeysResponse{}, err
 	}
@@ -488,51 +497,65 @@ func (client *ComputeClient) NewListNodesPager(resourceGroupName string, workspa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listNodesCreateRequest(ctx, resourceGroupName, workspaceName, computeName, options)
-			}, nil)
+			req, err := client.listNodesCreateRequest(ctx, resourceGroupName, workspaceName, computeName, nextLink, options)
 			if err != nil {
 				return ComputeClientListNodesResponse{}, err
 			}
-			return client.listNodesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ComputeClientListNodesResponse{}, err
+			}
+			return client.listNodesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listNodesCreateRequest creates the ListNodes request.
-func (client *ComputeClient) listNodesCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, _ *ComputeClientListNodesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/listNodes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ComputeClient) listNodesCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, nextLink string, _ *ComputeClientListNodesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/listNodes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		if computeName == "" {
+			return nil, errors.New("parameter computeName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if computeName == "" {
-		return nil, errors.New("parameter computeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listNodesHandleResponse handles the ListNodes response.
-func (client *ComputeClient) listNodesHandleResponse(resp *http.Response) (ComputeClientListNodesResponse, error) {
+func (client *ComputeClient) listNodesHandleResponse(resp *http.Response, successCodes ...int) (ComputeClientListNodesResponse, error) {
 	result := ComputeClientListNodesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AmlComputeNodesInformation); err != nil {
 		return ComputeClientListNodesResponse{}, err
 	}
@@ -580,8 +603,7 @@ func (client *ComputeClient) resize(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -590,7 +612,7 @@ func (client *ComputeClient) resize(ctx context.Context, resourceGroupName strin
 func (client *ComputeClient) resizeCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ResizeSchema, _ *ComputeClientBeginResizeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/resize"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -659,8 +681,7 @@ func (client *ComputeClient) restart(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -669,7 +690,7 @@ func (client *ComputeClient) restart(ctx context.Context, resourceGroupName stri
 func (client *ComputeClient) restartCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, _ *ComputeClientBeginRestartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/restart"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -734,8 +755,7 @@ func (client *ComputeClient) start(ctx context.Context, resourceGroupName string
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -744,7 +764,7 @@ func (client *ComputeClient) start(ctx context.Context, resourceGroupName string
 func (client *ComputeClient) startCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, _ *ComputeClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/start"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -809,8 +829,7 @@ func (client *ComputeClient) stop(ctx context.Context, resourceGroupName string,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -819,7 +838,7 @@ func (client *ComputeClient) stop(ctx context.Context, resourceGroupName string,
 func (client *ComputeClient) stopCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, _ *ComputeClientBeginStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/stop"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -887,8 +906,7 @@ func (client *ComputeClient) update(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -897,7 +915,7 @@ func (client *ComputeClient) update(ctx context.Context, resourceGroupName strin
 func (client *ComputeClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ClusterUpdateParameters, _ *ComputeClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -950,8 +968,7 @@ func (client *ComputeClient) UpdateCustomServices(ctx context.Context, resourceG
 		return ComputeClientUpdateCustomServicesResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ComputeClientUpdateCustomServicesResponse{}, err
+		return ComputeClientUpdateCustomServicesResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ComputeClientUpdateCustomServicesResponse{}, nil
 }
@@ -960,7 +977,7 @@ func (client *ComputeClient) UpdateCustomServices(ctx context.Context, resourceG
 func (client *ComputeClient) updateCustomServicesCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, customServices []*CustomService, _ *ComputeClientUpdateCustomServicesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/customServices"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1014,8 +1031,7 @@ func (client *ComputeClient) UpdateDataMounts(ctx context.Context, resourceGroup
 		return ComputeClientUpdateDataMountsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ComputeClientUpdateDataMountsResponse{}, err
+		return ComputeClientUpdateDataMountsResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ComputeClientUpdateDataMountsResponse{}, nil
 }
@@ -1024,7 +1040,7 @@ func (client *ComputeClient) UpdateDataMounts(ctx context.Context, resourceGroup
 func (client *ComputeClient) updateDataMountsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, dataMounts []*ComputeInstanceDataMount, _ *ComputeClientUpdateDataMountsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/updateDataMounts"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1076,8 +1092,7 @@ func (client *ComputeClient) UpdateIdleShutdownSetting(ctx context.Context, reso
 		return ComputeClientUpdateIdleShutdownSettingResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ComputeClientUpdateIdleShutdownSettingResponse{}, err
+		return ComputeClientUpdateIdleShutdownSettingResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ComputeClientUpdateIdleShutdownSettingResponse{}, nil
 }
@@ -1086,7 +1101,7 @@ func (client *ComputeClient) UpdateIdleShutdownSetting(ctx context.Context, reso
 func (client *ComputeClient) updateIdleShutdownSettingCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters IdleShutdownSetting, _ *ComputeClientUpdateIdleShutdownSettingOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/updateIdleShutdownSetting"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

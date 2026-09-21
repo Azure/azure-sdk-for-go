@@ -30,6 +30,9 @@ type PrivateLinkResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return PrivateLinkResourcesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateLinkResourcesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, groupName string, _ *PrivateLinkResourcesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateLinkResources/{groupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,8 +99,11 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response) (PrivateLinkResourcesClientGetResponse, error) {
+func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinkResourcesClientGetResponse, error) {
 	result := PrivateLinkResourcesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
 		return PrivateLinkResourcesClientGetResponse{}, err
 	}
@@ -125,47 +126,61 @@ func (client *PrivateLinkResourcesClient) NewListByConfigurationStorePager(resou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByConfigurationStoreCreateRequest(ctx, resourceGroupName, configStoreName, options)
-			}, nil)
+			req, err := client.listByConfigurationStoreCreateRequest(ctx, resourceGroupName, configStoreName, nextLink, options)
 			if err != nil {
 				return PrivateLinkResourcesClientListByConfigurationStoreResponse{}, err
 			}
-			return client.listByConfigurationStoreHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PrivateLinkResourcesClientListByConfigurationStoreResponse{}, err
+			}
+			return client.listByConfigurationStoreHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByConfigurationStoreCreateRequest creates the ListByConfigurationStore request.
-func (client *PrivateLinkResourcesClient) listByConfigurationStoreCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, _ *PrivateLinkResourcesClientListByConfigurationStoreOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateLinkResources"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PrivateLinkResourcesClient) listByConfigurationStoreCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, nextLink string, _ *PrivateLinkResourcesClientListByConfigurationStoreOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateLinkResources"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if configStoreName == "" {
+			return nil, errors.New("parameter configStoreName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{configStoreName}", url.PathEscape(configStoreName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if configStoreName == "" {
-		return nil, errors.New("parameter configStoreName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{configStoreName}", url.PathEscape(configStoreName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByConfigurationStoreHandleResponse handles the ListByConfigurationStore response.
-func (client *PrivateLinkResourcesClient) listByConfigurationStoreHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListByConfigurationStoreResponse, error) {
+func (client *PrivateLinkResourcesClient) listByConfigurationStoreHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinkResourcesClientListByConfigurationStoreResponse, error) {
 	result := PrivateLinkResourcesClientListByConfigurationStoreResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
 		return PrivateLinkResourcesClientListByConfigurationStoreResponse{}, err
 	}

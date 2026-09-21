@@ -98,7 +98,7 @@ func (n *NodeReportsServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/nodes/(?P<nodeId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reports/(?P<reportId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/nodes/(?P<nodeId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reports/(?P<reportId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -139,7 +139,7 @@ func (n *NodeReportsServerTransport) dispatchGetContent(req *http.Request) (*htt
 	if n.srv.GetContent == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetContent not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/nodes/(?P<nodeId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reports/(?P<reportId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/content`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/nodes/(?P<nodeId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reports/(?P<reportId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/content`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -182,7 +182,7 @@ func (n *NodeReportsServerTransport) dispatchNewListByNodePager(req *http.Reques
 	}
 	newListByNodePager := n.newListByNodePager.get(req)
 	if newListByNodePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/nodes/(?P<nodeId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reports`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/nodes/(?P<nodeId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reports`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

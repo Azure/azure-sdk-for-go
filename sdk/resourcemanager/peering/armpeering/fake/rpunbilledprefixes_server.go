@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 )
 
@@ -54,9 +55,7 @@ func (r *RpUnbilledPrefixesServerTransport) Do(req *http.Request) (*http.Respons
 }
 
 func (r *RpUnbilledPrefixesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -72,10 +71,7 @@ func (r *RpUnbilledPrefixesServerTransport) dispatchToMethodFake(req *http.Reque
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -92,7 +88,7 @@ func (r *RpUnbilledPrefixesServerTransport) dispatchNewListPager(req *http.Reque
 	}
 	newListPager := r.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Peering/peerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rpUnbilledPrefixes`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Peering/peerings/(?P<peeringName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rpUnbilledPrefixes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -107,11 +103,7 @@ func (r *RpUnbilledPrefixesServerTransport) dispatchNewListPager(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		consolidateUnescaped, err := url.QueryUnescape(qp.Get("consolidate"))
-		if err != nil {
-			return nil, err
-		}
-		consolidateParam, err := parseOptional(consolidateUnescaped, strconv.ParseBool)
+		consolidateParam, err := parseOptional(qp.Get("consolidate"), strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
@@ -132,7 +124,7 @@ func (r *RpUnbilledPrefixesServerTransport) dispatchNewListPager(req *http.Reque
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

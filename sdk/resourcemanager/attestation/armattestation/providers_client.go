@@ -18,6 +18,8 @@ import (
 
 // ProvidersClient contains the methods for the Providers group.
 // Don't use this type directly, use NewProvidersClient() instead.
+//
+// Generated from API version 2021-06-01
 type ProvidersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type ProvidersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProvidersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProvidersClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,8 +46,6 @@ func NewProvidersClient(subscriptionID string, credential azcore.TokenCredential
 
 // Create - Creates or updates an Attestation Provider.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - providerName - Name of the attestation provider.
 //   - creationParams - Client supplied parameters.
@@ -61,19 +64,14 @@ func (client *ProvidersClient) Create(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return ProvidersClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ProvidersClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
 func (client *ProvidersClient) createCreateRequest(ctx context.Context, resourceGroupName string, providerName string, creationParams ServiceCreationParams, _ *ProvidersClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Attestation/attestationProviders/{providerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -89,8 +87,8 @@ func (client *ProvidersClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, creationParams); err != nil {
@@ -100,8 +98,11 @@ func (client *ProvidersClient) createCreateRequest(ctx context.Context, resource
 }
 
 // createHandleResponse handles the Create response.
-func (client *ProvidersClient) createHandleResponse(resp *http.Response) (ProvidersClientCreateResponse, error) {
+func (client *ProvidersClient) createHandleResponse(resp *http.Response, successCodes ...int) (ProvidersClientCreateResponse, error) {
 	result := ProvidersClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Provider); err != nil {
 		return ProvidersClientCreateResponse{}, err
 	}
@@ -110,8 +111,6 @@ func (client *ProvidersClient) createHandleResponse(resp *http.Response) (Provid
 
 // Delete - Delete Attestation Service.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - providerName - Name of the attestation provider.
 //   - options - ProvidersClientDeleteOptions contains the optional parameters for the ProvidersClient.Delete method.
@@ -130,8 +129,7 @@ func (client *ProvidersClient) Delete(ctx context.Context, resourceGroupName str
 		return ProvidersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ProvidersClientDeleteResponse{}, err
+		return ProvidersClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ProvidersClientDeleteResponse{}, nil
 }
@@ -140,7 +138,7 @@ func (client *ProvidersClient) Delete(ctx context.Context, resourceGroupName str
 func (client *ProvidersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, providerName string, _ *ProvidersClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Attestation/attestationProviders/{providerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -156,15 +154,13 @@ func (client *ProvidersClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get the status of Attestation Provider.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - providerName - Name of the attestation provider.
 //   - options - ProvidersClientGetOptions contains the optional parameters for the ProvidersClient.Get method.
@@ -182,19 +178,14 @@ func (client *ProvidersClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return ProvidersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProvidersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ProvidersClient) getCreateRequest(ctx context.Context, resourceGroupName string, providerName string, _ *ProvidersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Attestation/attestationProviders/{providerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -210,15 +201,18 @@ func (client *ProvidersClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProvidersClient) getHandleResponse(resp *http.Response) (ProvidersClientGetResponse, error) {
+func (client *ProvidersClient) getHandleResponse(resp *http.Response, successCodes ...int) (ProvidersClientGetResponse, error) {
 	result := ProvidersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Provider); err != nil {
 		return ProvidersClientGetResponse{}, err
 	}
@@ -227,8 +221,6 @@ func (client *ProvidersClient) getHandleResponse(resp *http.Response) (Providers
 
 // GetDefaultByLocation - Get the default provider by location.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-06-01
 //   - location - The name of the Azure region.
 //   - options - ProvidersClientGetDefaultByLocationOptions contains the optional parameters for the ProvidersClient.GetDefaultByLocation
 //     method.
@@ -246,19 +238,14 @@ func (client *ProvidersClient) GetDefaultByLocation(ctx context.Context, locatio
 	if err != nil {
 		return ProvidersClientGetDefaultByLocationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProvidersClientGetDefaultByLocationResponse{}, err
-	}
-	resp, err := client.getDefaultByLocationHandleResponse(httpResp)
-	return resp, err
+	return client.getDefaultByLocationHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDefaultByLocationCreateRequest creates the GetDefaultByLocation request.
 func (client *ProvidersClient) getDefaultByLocationCreateRequest(ctx context.Context, location string, _ *ProvidersClientGetDefaultByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Attestation/locations/{location}/defaultProvider"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -270,15 +257,18 @@ func (client *ProvidersClient) getDefaultByLocationCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getDefaultByLocationHandleResponse handles the GetDefaultByLocation response.
-func (client *ProvidersClient) getDefaultByLocationHandleResponse(resp *http.Response) (ProvidersClientGetDefaultByLocationResponse, error) {
+func (client *ProvidersClient) getDefaultByLocationHandleResponse(resp *http.Response, successCodes ...int) (ProvidersClientGetDefaultByLocationResponse, error) {
 	result := ProvidersClientGetDefaultByLocationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Provider); err != nil {
 		return ProvidersClientGetDefaultByLocationResponse{}, err
 	}
@@ -287,8 +277,6 @@ func (client *ProvidersClient) getDefaultByLocationHandleResponse(resp *http.Res
 
 // List - Returns a list of attestation providers in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-06-01
 //   - options - ProvidersClientListOptions contains the optional parameters for the ProvidersClient.List method.
 func (client *ProvidersClient) List(ctx context.Context, options *ProvidersClientListOptions) (ProvidersClientListResponse, error) {
 	var err error
@@ -304,19 +292,14 @@ func (client *ProvidersClient) List(ctx context.Context, options *ProvidersClien
 	if err != nil {
 		return ProvidersClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProvidersClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
 func (client *ProvidersClient) listCreateRequest(ctx context.Context, _ *ProvidersClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Attestation/attestationProviders"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -324,15 +307,18 @@ func (client *ProvidersClient) listCreateRequest(ctx context.Context, _ *Provide
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ProvidersClient) listHandleResponse(resp *http.Response) (ProvidersClientListResponse, error) {
+func (client *ProvidersClient) listHandleResponse(resp *http.Response, successCodes ...int) (ProvidersClientListResponse, error) {
 	result := ProvidersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderListResult); err != nil {
 		return ProvidersClientListResponse{}, err
 	}
@@ -341,8 +327,6 @@ func (client *ProvidersClient) listHandleResponse(resp *http.Response) (Provider
 
 // ListByResourceGroup - Returns attestation providers list in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProvidersClientListByResourceGroupOptions contains the optional parameters for the ProvidersClient.ListByResourceGroup
 //     method.
@@ -360,19 +344,14 @@ func (client *ProvidersClient) ListByResourceGroup(ctx context.Context, resource
 	if err != nil {
 		return ProvidersClientListByResourceGroupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProvidersClientListByResourceGroupResponse{}, err
-	}
-	resp, err := client.listByResourceGroupHandleResponse(httpResp)
-	return resp, err
+	return client.listByResourceGroupHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *ProvidersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *ProvidersClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Attestation/attestationProviders"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -384,15 +363,18 @@ func (client *ProvidersClient) listByResourceGroupCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ProvidersClient) listByResourceGroupHandleResponse(resp *http.Response) (ProvidersClientListByResourceGroupResponse, error) {
+func (client *ProvidersClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ProvidersClientListByResourceGroupResponse, error) {
 	result := ProvidersClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderListResult); err != nil {
 		return ProvidersClientListByResourceGroupResponse{}, err
 	}
@@ -401,8 +383,6 @@ func (client *ProvidersClient) listByResourceGroupHandleResponse(resp *http.Resp
 
 // ListDefault - Get the default provider
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-06-01
 //   - options - ProvidersClientListDefaultOptions contains the optional parameters for the ProvidersClient.ListDefault method.
 func (client *ProvidersClient) ListDefault(ctx context.Context, options *ProvidersClientListDefaultOptions) (ProvidersClientListDefaultResponse, error) {
 	var err error
@@ -418,19 +398,14 @@ func (client *ProvidersClient) ListDefault(ctx context.Context, options *Provide
 	if err != nil {
 		return ProvidersClientListDefaultResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProvidersClientListDefaultResponse{}, err
-	}
-	resp, err := client.listDefaultHandleResponse(httpResp)
-	return resp, err
+	return client.listDefaultHandleResponse(httpResp, http.StatusOK)
 }
 
 // listDefaultCreateRequest creates the ListDefault request.
 func (client *ProvidersClient) listDefaultCreateRequest(ctx context.Context, _ *ProvidersClientListDefaultOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Attestation/defaultProviders"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -438,15 +413,18 @@ func (client *ProvidersClient) listDefaultCreateRequest(ctx context.Context, _ *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listDefaultHandleResponse handles the ListDefault response.
-func (client *ProvidersClient) listDefaultHandleResponse(resp *http.Response) (ProvidersClientListDefaultResponse, error) {
+func (client *ProvidersClient) listDefaultHandleResponse(resp *http.Response, successCodes ...int) (ProvidersClientListDefaultResponse, error) {
 	result := ProvidersClientListDefaultResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderListResult); err != nil {
 		return ProvidersClientListDefaultResponse{}, err
 	}
@@ -455,8 +433,6 @@ func (client *ProvidersClient) listDefaultHandleResponse(resp *http.Response) (P
 
 // Update - Updates the Attestation Provider.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - providerName - Name of the attestation provider.
 //   - updateParams - Client supplied parameters.
@@ -475,19 +451,14 @@ func (client *ProvidersClient) Update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return ProvidersClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProvidersClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *ProvidersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, providerName string, updateParams ServicePatchParams, _ *ProvidersClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Attestation/attestationProviders/{providerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -503,8 +474,8 @@ func (client *ProvidersClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateParams); err != nil {
@@ -514,8 +485,11 @@ func (client *ProvidersClient) updateCreateRequest(ctx context.Context, resource
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ProvidersClient) updateHandleResponse(resp *http.Response) (ProvidersClientUpdateResponse, error) {
+func (client *ProvidersClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ProvidersClientUpdateResponse, error) {
 	result := ProvidersClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Provider); err != nil {
 		return ProvidersClientUpdateResponse{}, err
 	}

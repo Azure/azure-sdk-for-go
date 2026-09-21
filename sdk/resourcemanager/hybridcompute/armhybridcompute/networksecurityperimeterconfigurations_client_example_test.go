@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-16-preview/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationGet.json
+// Generated from example definition: 2026-07-15/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationGet.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_GetByPrivateLinkScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_GetByPrivateLinkScope()
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationList.json
+// Generated from example definition: 2026-07-15/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationList.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListByPrivateLinkScopePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +181,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListByPrivateLinkSco
 	}
 }
 
-// Generated from example definition: 2026-06-16-preview/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationReconcile.json
+// Generated from example definition: 2026-07-15/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationReconcile.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_BeginReconcileForPrivateLinkScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

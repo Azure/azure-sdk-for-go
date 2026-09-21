@@ -128,10 +128,10 @@ func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 		Properties: &armcomputeschedule.ScheduledActionProperties{
 			ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
 			ActionType:   to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
-			StartTime:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.061Z"); return t }()),
-			EndTime:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.062Z"); return t }()),
+			StartTime:    to.Ptr(time.Date(2026, time.March, 12, 2, 39, 45, 61000000, time.UTC)),
+			EndTime:      to.Ptr(time.Date(2026, time.March, 12, 2, 39, 45, 62000000, time.UTC)),
 			Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "12:00:00"); return t }()),
+				ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 12, 0, 0, 0, time.UTC)),
 				TimeZone:      to.Ptr("America/Los_Angeles"),
 				RequestedWeekDays: []*armcomputeschedule.WeekDay{
 					to.Ptr(armcomputeschedule.WeekDayMonday),
@@ -182,10 +182,10 @@ func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 	// 		Properties: &armcomputeschedule.ScheduledActionProperties{
 	// 			ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
 	// 			ActionType: to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.061Z"); return t}()),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.062Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 45, 61000000, time.UTC)),
+	// 			EndTime: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 45, 62000000, time.UTC)),
 	// 			Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-	// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "12:00:00"); return t}()),
+	// 				ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 12, 0, 0, 0, time.UTC)),
 	// 				TimeZone: to.Ptr("America/Los_Angeles"),
 	// 				RequestedWeekDays: []*armcomputeschedule.WeekDay{
 	// 					to.Ptr(armcomputeschedule.WeekDayMonday),
@@ -227,10 +227,10 @@ func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armcomputeschedule.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 641000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 641000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -369,10 +369,10 @@ func ExampleScheduledActionsClient_Get() {
 	// 		Properties: &armcomputeschedule.ScheduledActionProperties{
 	// 			ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
 	// 			ActionType: to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.061Z"); return t}()),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.062Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 45, 61000000, time.UTC)),
+	// 			EndTime: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 45, 62000000, time.UTC)),
 	// 			Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-	// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "12:00:00"); return t}()),
+	// 				ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 12, 0, 0, 0, time.UTC)),
 	// 				TimeZone: to.Ptr("America/Los_Angeles"),
 	// 				RequestedWeekDays: []*armcomputeschedule.WeekDay{
 	// 					to.Ptr(armcomputeschedule.WeekDayMonday),
@@ -414,10 +414,10 @@ func ExampleScheduledActionsClient_Get() {
 	// 		SystemData: &armcomputeschedule.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 641000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 641000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -452,10 +452,10 @@ func ExampleScheduledActionsClient_NewListByResourceGroupPager_scheduledActionsL
 		// 				Properties: &armcomputeschedule.ScheduledActionProperties{
 		// 					ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
 		// 					ActionType: to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.061Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.062Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 45, 61000000, time.UTC)),
+		// 					EndTime: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 45, 62000000, time.UTC)),
 		// 					Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "12:00:00"); return t}()),
+		// 						ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 12, 0, 0, 0, time.UTC)),
 		// 						TimeZone: to.Ptr("America/Los_Angeles"),
 		// 						RequestedWeekDays: []*armcomputeschedule.WeekDay{
 		// 							to.Ptr(armcomputeschedule.WeekDayMonday),
@@ -497,10 +497,10 @@ func ExampleScheduledActionsClient_NewListByResourceGroupPager_scheduledActionsL
 		// 				SystemData: &armcomputeschedule.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 641000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 641000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -576,10 +576,10 @@ func ExampleScheduledActionsClient_NewListBySubscriptionPager_scheduledActionsLi
 		// 				Properties: &armcomputeschedule.ScheduledActionProperties{
 		// 					ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
 		// 					ActionType: to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.061Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.062Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 45, 61000000, time.UTC)),
+		// 					EndTime: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 45, 62000000, time.UTC)),
 		// 					Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "12:00:00"); return t}()),
+		// 						ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 12, 0, 0, 0, time.UTC)),
 		// 						TimeZone: to.Ptr("America/Los_Angeles"),
 		// 						RequestedWeekDays: []*armcomputeschedule.WeekDay{
 		// 							to.Ptr(armcomputeschedule.WeekDayMonday),
@@ -621,10 +621,10 @@ func ExampleScheduledActionsClient_NewListBySubscriptionPager_scheduledActionsLi
 		// 				SystemData: &armcomputeschedule.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 641000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 641000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -793,7 +793,7 @@ func ExampleScheduledActionsClient_TriggerManualOccurrence() {
 	// res = armcomputeschedule.ScheduledActionsClientTriggerManualOccurrenceResponse{
 	// 	Occurrence: armcomputeschedule.Occurrence{
 	// 		Properties: &armcomputeschedule.OccurrenceProperties{
-	// 			ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T18:53:47.024Z"); return t}()),
+	// 			ScheduledTime: to.Ptr(time.Date(2026, time.April, 1, 18, 53, 47, 24000000, time.UTC)),
 	// 			ResultSummary: &armcomputeschedule.OccurrenceResultSummary{
 	// 				Total: to.Ptr[int32](18),
 	// 				Statuses: []*armcomputeschedule.ResourceResultSummary{
@@ -821,10 +821,10 @@ func ExampleScheduledActionsClient_TriggerManualOccurrence() {
 	// 		SystemData: &armcomputeschedule.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T18:53:38.591Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 1, 18, 53, 38, 591000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T18:53:38.591Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 1, 18, 53, 38, 591000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -848,10 +848,10 @@ func ExampleScheduledActionsClient_Update() {
 		Properties: &armcomputeschedule.ScheduledActionUpdateProperties{
 			ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
 			ActionType:   to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
-			StartTime:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.818Z"); return t }()),
-			EndTime:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.818Z"); return t }()),
+			StartTime:    to.Ptr(time.Date(2026, time.March, 12, 2, 39, 45, 818000000, time.UTC)),
+			EndTime:      to.Ptr(time.Date(2026, time.March, 12, 2, 39, 45, 818000000, time.UTC)),
 			Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "12:00:00"); return t }()),
+				ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 12, 0, 0, 0, time.UTC)),
 				TimeZone:      to.Ptr("America/Los_Angeles"),
 				RequestedWeekDays: []*armcomputeschedule.WeekDay{
 					to.Ptr(armcomputeschedule.WeekDayMonday),
@@ -894,10 +894,10 @@ func ExampleScheduledActionsClient_Update() {
 	// 		Properties: &armcomputeschedule.ScheduledActionProperties{
 	// 			ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
 	// 			ActionType: to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.061Z"); return t}()),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:45.062Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 45, 61000000, time.UTC)),
+	// 			EndTime: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 45, 62000000, time.UTC)),
 	// 			Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-	// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "12:00:00"); return t}()),
+	// 				ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 12, 0, 0, 0, time.UTC)),
 	// 				TimeZone: to.Ptr("America/Los_Angeles"),
 	// 				RequestedWeekDays: []*armcomputeschedule.WeekDay{
 	// 					to.Ptr(armcomputeschedule.WeekDayMonday),
@@ -939,10 +939,10 @@ func ExampleScheduledActionsClient_Update() {
 	// 		SystemData: &armcomputeschedule.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 641000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 641000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -983,7 +983,7 @@ func ExampleScheduledActionsClient_VirtualMachinesCancelOperations_scheduledActi
 	// 					ResourceID: to.Ptr("/subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					SubscriptionID: to.Ptr("732116BD-AF31-4E74-9283-B387C44B4A44"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					Deadline: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 42, 468000000, time.UTC)),
 	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
 	// 					Timezone: to.Ptr("UTC"),
@@ -1000,7 +1000,7 @@ func ExampleScheduledActionsClient_VirtualMachinesCancelOperations_scheduledActi
 	// 							ErrorDetails: to.Ptr(""),
 	// 						},
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					CompletedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 42, 468000000, time.UTC)),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
 	// 						RetryCount: to.Ptr[int32](3),
 	// 						RetryWindowInMinutes: to.Ptr[int32](30),
@@ -1245,7 +1245,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteCreate_scheduledActions
 	// 					ResourceID: to.Ptr("/subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myBulkVm-0"),
 	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationType("CreateOrUpdate")),
 	// 					SubscriptionID: to.Ptr("732116BD-AF31-4E74-9283-B387C44B4A44"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-15T10:00:00.000Z"); return t}()),
+	// 					Deadline: to.Ptr(time.Date(2026, time.April, 15, 10, 0, 0, 0, time.UTC)),
 	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeInitiateAt),
 	// 					State: to.Ptr(armcomputeschedule.OperationStateSucceeded),
 	// 					Timezone: to.Ptr("UTC"),
@@ -1254,7 +1254,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteCreate_scheduledActions
 	// 						ErrorCode: to.Ptr(""),
 	// 						ErrorDetails: to.Ptr(""),
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-15T09:35:42.468Z"); return t}()),
+	// 					CompletedAt: to.Ptr(time.Date(2026, time.April, 15, 9, 35, 42, 468000000, time.UTC)),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
 	// 						RetryCount: to.Ptr[int32](3),
 	// 						RetryWindowInMinutes: to.Ptr[int32](30),
@@ -1524,7 +1524,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteCreateFlex_scheduledAct
 	// 					ResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1"),
 	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					SubscriptionID: to.Ptr("732116BD-AF31-4E74-9283-B387C44B4A44"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					Deadline: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 42, 468000000, time.UTC)),
 	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
 	// 					Timezone: to.Ptr("UTC"),
@@ -1541,7 +1541,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteCreateFlex_scheduledAct
 	// 							ErrorDetails: to.Ptr(""),
 	// 						},
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					CompletedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 42, 468000000, time.UTC)),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
 	// 						RetryCount: to.Ptr[int32](3),
 	// 						RetryWindowInMinutes: to.Ptr[int32](30),
@@ -1648,7 +1648,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteDeallocate_scheduledAct
 	// 					ResourceID: to.Ptr("/subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					SubscriptionID: to.Ptr("732116BD-AF31-4E74-9283-B387C44B4A44"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					Deadline: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 42, 468000000, time.UTC)),
 	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
 	// 					Timezone: to.Ptr("UTC"),
@@ -1665,7 +1665,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteDeallocate_scheduledAct
 	// 							ErrorDetails: to.Ptr(""),
 	// 						},
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					CompletedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 42, 468000000, time.UTC)),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
 	// 						RetryCount: to.Ptr[int32](3),
 	// 						RetryWindowInMinutes: to.Ptr[int32](30),
@@ -1762,7 +1762,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteDelete_scheduledActions
 	// 					ResourceID: to.Ptr("/subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					SubscriptionID: to.Ptr("732116BD-AF31-4E74-9283-B387C44B4A44"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					Deadline: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 42, 468000000, time.UTC)),
 	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
 	// 					Timezone: to.Ptr("UTC"),
@@ -1779,7 +1779,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteDelete_scheduledActions
 	// 							ErrorDetails: to.Ptr(""),
 	// 						},
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					CompletedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 42, 468000000, time.UTC)),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
 	// 						RetryCount: to.Ptr[int32](3),
 	// 						RetryWindowInMinutes: to.Ptr[int32](30),
@@ -1874,7 +1874,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteHibernate_scheduledActi
 	// 					ResourceID: to.Ptr("/subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					SubscriptionID: to.Ptr("732116BD-AF31-4E74-9283-B387C44B4A44"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					Deadline: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 42, 468000000, time.UTC)),
 	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
 	// 					Timezone: to.Ptr("UTC"),
@@ -1891,7 +1891,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteHibernate_scheduledActi
 	// 							ErrorDetails: to.Ptr(""),
 	// 						},
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					CompletedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 42, 468000000, time.UTC)),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
 	// 						RetryCount: to.Ptr[int32](3),
 	// 						RetryWindowInMinutes: to.Ptr[int32](30),
@@ -1987,7 +1987,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteStart_scheduledActionsV
 	// 					ResourceID: to.Ptr("/subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					SubscriptionID: to.Ptr("732116BD-AF31-4E74-9283-B387C44B4A44"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					Deadline: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 42, 468000000, time.UTC)),
 	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
 	// 					Timezone: to.Ptr("UTC"),
@@ -2004,7 +2004,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteStart_scheduledActionsV
 	// 							ErrorDetails: to.Ptr(""),
 	// 						},
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					CompletedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 42, 468000000, time.UTC)),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
 	// 						RetryCount: to.Ptr[int32](3),
 	// 						RetryWindowInMinutes: to.Ptr[int32](30),
@@ -2079,15 +2079,15 @@ func ExampleScheduledActionsClient_VirtualMachinesGetOperationErrors_scheduledAc
 	// 		Results: []*armcomputeschedule.OperationErrorsResult{
 	// 			{
 	// 				OperationID: to.Ptr("8f88ead2-fba8-4df2-8eaf-c7cf68a15574"),
-	// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:43.809Z"); return t}()),
-	// 				ActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:43.809Z"); return t}()),
-	// 				CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:43.809Z"); return t}()),
+	// 				CreationTime: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 43, 809000000, time.UTC)),
+	// 				ActivationTime: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 43, 809000000, time.UTC)),
+	// 				CompletedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 43, 809000000, time.UTC)),
 	// 				OperationErrors: []*armcomputeschedule.OperationErrorDetails{
 	// 					{
 	// 						ErrorCode: to.Ptr("VMAllocationFailed"),
 	// 						ErrorDetails: to.Ptr("Failed to allocate virtual machine due to insufficient capacity."),
-	// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:43.809Z"); return t}()),
-	// 						TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:43.809Z"); return t}()),
+	// 						Timestamp: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 43, 809000000, time.UTC)),
+	// 						TimeStamp: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 43, 809000000, time.UTC)),
 	// 						AzureOperationName: to.Ptr("Microsoft.Compute/virtualMachines/deallocate"),
 	// 						CrpOperationID: to.Ptr("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
 	// 					},
@@ -2167,7 +2167,7 @@ func ExampleScheduledActionsClient_VirtualMachinesGetOperationStatus_scheduledAc
 	// 					ResourceID: to.Ptr("/subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					SubscriptionID: to.Ptr("732116BD-AF31-4E74-9283-B387C44B4A44"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					Deadline: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 42, 468000000, time.UTC)),
 	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
 	// 					Timezone: to.Ptr("UTC"),
@@ -2184,7 +2184,7 @@ func ExampleScheduledActionsClient_VirtualMachinesGetOperationStatus_scheduledAc
 	// 							ErrorDetails: to.Ptr(""),
 	// 						},
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					CompletedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 42, 468000000, time.UTC)),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
 	// 						RetryCount: to.Ptr[int32](3),
 	// 						RetryWindowInMinutes: to.Ptr[int32](30),
@@ -2243,8 +2243,8 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitDeallocate_scheduledActi
 	}
 	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitDeallocate(ctx, "eastus2", armcomputeschedule.SubmitDeallocateRequest{
 		Schedule: &armcomputeschedule.Schedule{
-			Deadline:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:44.444Z"); return t }()),
-			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:44.444Z"); return t }()),
+			Deadline:     to.Ptr(time.Date(2026, time.March, 12, 2, 39, 44, 444000000, time.UTC)),
+			DeadLine:     to.Ptr(time.Date(2026, time.March, 12, 2, 39, 44, 444000000, time.UTC)),
 			Timezone:     to.Ptr("America/Los_Angeles"),
 			TimeZone:     to.Ptr("America/Los_Angeles"),
 			DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
@@ -2285,7 +2285,7 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitDeallocate_scheduledActi
 	// 					ResourceID: to.Ptr("/subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					SubscriptionID: to.Ptr("732116BD-AF31-4E74-9283-B387C44B4A44"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					Deadline: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 42, 468000000, time.UTC)),
 	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
 	// 					Timezone: to.Ptr("UTC"),
@@ -2302,7 +2302,7 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitDeallocate_scheduledActi
 	// 							ErrorDetails: to.Ptr(""),
 	// 						},
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					CompletedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 42, 468000000, time.UTC)),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
 	// 						RetryCount: to.Ptr[int32](3),
 	// 						RetryWindowInMinutes: to.Ptr[int32](30),
@@ -2366,8 +2366,8 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitHibernate_scheduledActio
 	}
 	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitHibernate(ctx, "eastus2", armcomputeschedule.SubmitHibernateRequest{
 		Schedule: &armcomputeschedule.Schedule{
-			Deadline:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:44.444Z"); return t }()),
-			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:44.444Z"); return t }()),
+			Deadline:     to.Ptr(time.Date(2026, time.March, 12, 2, 39, 44, 444000000, time.UTC)),
+			DeadLine:     to.Ptr(time.Date(2026, time.March, 12, 2, 39, 44, 444000000, time.UTC)),
 			Timezone:     to.Ptr("America/Los_Angeles"),
 			TimeZone:     to.Ptr("America/Los_Angeles"),
 			DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
@@ -2408,7 +2408,7 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitHibernate_scheduledActio
 	// 					ResourceID: to.Ptr("/subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					SubscriptionID: to.Ptr("732116BD-AF31-4E74-9283-B387C44B4A44"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					Deadline: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 42, 468000000, time.UTC)),
 	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
 	// 					Timezone: to.Ptr("UTC"),
@@ -2425,7 +2425,7 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitHibernate_scheduledActio
 	// 							ErrorDetails: to.Ptr(""),
 	// 						},
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					CompletedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 42, 468000000, time.UTC)),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
 	// 						RetryCount: to.Ptr[int32](3),
 	// 						RetryWindowInMinutes: to.Ptr[int32](30),
@@ -2489,8 +2489,8 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitStart_scheduledActionsVi
 	}
 	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitStart(ctx, "eastus2", armcomputeschedule.SubmitStartRequest{
 		Schedule: &armcomputeschedule.Schedule{
-			Deadline:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:44.444Z"); return t }()),
-			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:44.444Z"); return t }()),
+			Deadline:     to.Ptr(time.Date(2026, time.March, 12, 2, 39, 44, 444000000, time.UTC)),
+			DeadLine:     to.Ptr(time.Date(2026, time.March, 12, 2, 39, 44, 444000000, time.UTC)),
 			Timezone:     to.Ptr("America/Los_Angeles"),
 			TimeZone:     to.Ptr("America/Los_Angeles"),
 			DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
@@ -2531,7 +2531,7 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitStart_scheduledActionsVi
 	// 					ResourceID: to.Ptr("/subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 					OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
 	// 					SubscriptionID: to.Ptr("732116BD-AF31-4E74-9283-B387C44B4A44"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					Deadline: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 42, 468000000, time.UTC)),
 	// 					DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
 	// 					State: to.Ptr(armcomputeschedule.OperationStateUnknown),
 	// 					Timezone: to.Ptr("UTC"),
@@ -2548,7 +2548,7 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitStart_scheduledActionsVi
 	// 							ErrorDetails: to.Ptr(""),
 	// 						},
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:42.468Z"); return t}()),
+	// 					CompletedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 42, 468000000, time.UTC)),
 	// 					RetryPolicy: &armcomputeschedule.RetryPolicy{
 	// 						RetryCount: to.Ptr[int32](3),
 	// 						RetryWindowInMinutes: to.Ptr[int32](30),

@@ -73,10 +73,10 @@ func ExampleSchedulersClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armdurabletask.SystemData{
 	// 			CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
 	// 			CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.365Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 365000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("xfvdcegtj"),
 	// 			LastModifiedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.366Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 366000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -135,10 +135,10 @@ func ExampleSchedulersClient_BeginCreateOrUpdatePrivateEndpointConnection() {
 	// 		SystemData: &armdurabletask.SystemData{
 	// 			CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
 	// 			CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.365Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 365000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("xfvdcegtj"),
 	// 			LastModifiedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.366Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 366000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -232,10 +232,10 @@ func ExampleSchedulersClient_Get() {
 	// 		SystemData: &armdurabletask.SystemData{
 	// 			CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
 	// 			CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.365Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 365000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("xfvdcegtj"),
 	// 			LastModifiedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.366Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 366000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -281,10 +281,10 @@ func ExampleSchedulersClient_GetPrivateEndpointConnection() {
 	// 		SystemData: &armdurabletask.SystemData{
 	// 			CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
 	// 			CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.365Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 365000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("xfvdcegtj"),
 	// 			LastModifiedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.366Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 366000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -325,10 +325,10 @@ func ExampleSchedulersClient_GetPrivateLink() {
 	// 		SystemData: &armdurabletask.SystemData{
 	// 			CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
 	// 			CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.365Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 365000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("xfvdcegtj"),
 	// 			LastModifiedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.366Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 366000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -386,10 +386,10 @@ func ExampleSchedulersClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armdurabletask.SystemData{
 		// 					CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
 		// 					CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.365Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 365000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("xfvdcegtj"),
 		// 					LastModifiedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.366Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 366000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -451,10 +451,10 @@ func ExampleSchedulersClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armdurabletask.SystemData{
 		// 					CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
 		// 					CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.365Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 365000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("xfvdcegtj"),
 		// 					LastModifiedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.366Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 366000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -510,10 +510,10 @@ func ExampleSchedulersClient_NewListPrivateEndpointConnectionsPager() {
 		// 				SystemData: &armdurabletask.SystemData{
 		// 					CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
 		// 					CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.365Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 365000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("xfvdcegtj"),
 		// 					LastModifiedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.366Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 366000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -564,10 +564,10 @@ func ExampleSchedulersClient_NewListPrivateLinksPager() {
 		// 				SystemData: &armdurabletask.SystemData{
 		// 					CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
 		// 					CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.365Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 365000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("xfvdcegtj"),
 		// 					LastModifiedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.366Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 366000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -638,10 +638,10 @@ func ExampleSchedulersClient_BeginUpdate() {
 	// 		SystemData: &armdurabletask.SystemData{
 	// 			CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
 	// 			CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.365Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 365000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("xfvdcegtj"),
 	// 			LastModifiedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.366Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 366000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -697,10 +697,10 @@ func ExampleSchedulersClient_BeginUpdatePrivateEndpointConnection() {
 	// 		SystemData: &armdurabletask.SystemData{
 	// 			CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
 	// 			CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.365Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 365000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("xfvdcegtj"),
 	// 			LastModifiedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-17T15:34:17.366Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.April, 17, 15, 34, 17, 366000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

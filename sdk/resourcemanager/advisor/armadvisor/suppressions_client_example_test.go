@@ -90,7 +90,7 @@ func ExampleSuppressionsClient_Get() {
 	// 		Properties: &armadvisor.SuppressionProperties{
 	// 			SuppressionID: to.Ptr("suppressionId1"),
 	// 			TTL: to.Ptr("7.00:00:00"),
-	// 			ExpirationTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-25T22:24:43.3216408Z"); return t}()),
+	// 			ExpirationTimeStamp: to.Ptr(time.Date(2020, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -129,7 +129,7 @@ func ExampleSuppressionsClient_NewListPager() {
 		// 				Properties: &armadvisor.SuppressionProperties{
 		// 					SuppressionID: to.Ptr("58403b0e-113b-e428-d6f7-2a524380b955"),
 		// 					TTL: to.Ptr("7.00:00:00"),
-		// 					ExpirationTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-24T22:24:43.3216408Z"); return t}()),
+		// 					ExpirationTimeStamp: to.Ptr(time.Date(2022, time.October, 24, 22, 24, 43, 321640800, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -139,7 +139,7 @@ func ExampleSuppressionsClient_NewListPager() {
 		// 				Properties: &armadvisor.SuppressionProperties{
 		// 					SuppressionID: to.Ptr("72a23574-d49a-84d0-0a7d-fb3fe6cba16b"),
 		// 					TTL: to.Ptr("7.00:00:00"),
-		// 					ExpirationTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-25T22:24:43.3216408Z"); return t}()),
+		// 					ExpirationTimeStamp: to.Ptr(time.Date(2022, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

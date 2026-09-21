@@ -11,10 +11,11 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v4"
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // Server is a fake server for instances of the armproviderhub.Client type.
@@ -53,9 +54,7 @@ func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -73,10 +72,7 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -91,7 +87,7 @@ func (s *ServerTransport) dispatchCheckinManifest(req *http.Request) (*http.Resp
 	if s.srv.CheckinManifest == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckinManifest not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkinManifest`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkinManifest`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -110,7 +106,7 @@ func (s *ServerTransport) dispatchCheckinManifest(req *http.Request) (*http.Resp
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckinManifestInfo, req)
@@ -124,7 +120,7 @@ func (s *ServerTransport) dispatchGenerateManifest(req *http.Request) (*http.Res
 	if s.srv.GenerateManifest == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GenerateManifest not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generateManifest`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/generateManifest`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -139,7 +135,7 @@ func (s *ServerTransport) dispatchGenerateManifest(req *http.Request) (*http.Res
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ResourceProviderManifest, req)

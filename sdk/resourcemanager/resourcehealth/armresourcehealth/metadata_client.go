@@ -56,12 +56,7 @@ func (client *MetadataClient) GetEntity(ctx context.Context, name string, option
 	if err != nil {
 		return MetadataClientGetEntityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MetadataClientGetEntityResponse{}, err
-	}
-	resp, err := client.getEntityHandleResponse(httpResp)
-	return resp, err
+	return client.getEntityHandleResponse(httpResp, http.StatusOK)
 }
 
 // getEntityCreateRequest creates the GetEntity request.
@@ -83,8 +78,11 @@ func (client *MetadataClient) getEntityCreateRequest(ctx context.Context, name s
 }
 
 // getEntityHandleResponse handles the GetEntity response.
-func (client *MetadataClient) getEntityHandleResponse(resp *http.Response) (MetadataClientGetEntityResponse, error) {
+func (client *MetadataClient) getEntityHandleResponse(resp *http.Response, successCodes ...int) (MetadataClientGetEntityResponse, error) {
 	result := MetadataClientGetEntityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetadataEntity); err != nil {
 		return MetadataClientGetEntityResponse{}, err
 	}
@@ -104,35 +102,49 @@ func (client *MetadataClient) NewListPager(options *MetadataClientListOptions) *
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return MetadataClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MetadataClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *MetadataClient) listCreateRequest(ctx context.Context, _ *MetadataClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.ResourceHealth/metadata"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *MetadataClient) listCreateRequest(ctx context.Context, nextLink string, _ *MetadataClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.ResourceHealth/metadata"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *MetadataClient) listHandleResponse(resp *http.Response) (MetadataClientListResponse, error) {
+func (client *MetadataClient) listHandleResponse(resp *http.Response, successCodes ...int) (MetadataClientListResponse, error) {
 	result := MetadataClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetadataEntityListResult); err != nil {
 		return MetadataClientListResponse{}, err
 	}

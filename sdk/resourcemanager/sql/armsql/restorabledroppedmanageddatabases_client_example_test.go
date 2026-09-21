@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/GetRestorableDroppedManagedDatabase.json
+// Generated from example definition: 2026-08-01-preview/GetRestorableDroppedManagedDatabase.json
 func ExampleRestorableDroppedManagedDatabasesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,15 +36,15 @@ func ExampleRestorableDroppedManagedDatabasesClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/managedInstances/testsvr/restorableDroppedDatabases/testdb,131403269876900000"),
 	// 		Location: to.Ptr("southeastasia"),
 	// 		Properties: &armsql.RestorableDroppedManagedDatabaseProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.May, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			DatabaseName: to.Ptr("testdb"),
-	// 			DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T02:49:47.69Z"); return t}()),
+	// 			DeletionDate: to.Ptr(time.Date(2017, time.May, 27, 2, 49, 47, 690000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/RestorableDroppedManagedDatabaseListByManagedInstance.json
+// Generated from example definition: 2026-08-01-preview/RestorableDroppedManagedDatabaseListByManagedInstance.json
 func ExampleRestorableDroppedManagedDatabasesClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,9 +75,9 @@ func ExampleRestorableDroppedManagedDatabasesClient_NewListByInstancePager() {
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/managedInstances/testsvr/restorableDroppedDatabases/testdb,131403269876900000"),
 		// 				Location: to.Ptr("southeastasia"),
 		// 				Properties: &armsql.RestorableDroppedManagedDatabaseProperties{
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-07T04:41:33.937Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.May, 7, 4, 41, 33, 937000000, time.UTC)),
 		// 					DatabaseName: to.Ptr("testdb"),
-		// 					DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T02:49:47.69Z"); return t}()),
+		// 					DeletionDate: to.Ptr(time.Date(2017, time.May, 27, 2, 49, 47, 690000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -86,9 +86,9 @@ func ExampleRestorableDroppedManagedDatabasesClient_NewListByInstancePager() {
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/managedInstances/testsvr/restorableDroppedDatabases/testdb2,131403269876900000"),
 		// 				Location: to.Ptr("southeastasia"),
 		// 				Properties: &armsql.RestorableDroppedManagedDatabaseProperties{
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-07T04:41:33.937Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.May, 7, 4, 41, 33, 937000000, time.UTC)),
 		// 					DatabaseName: to.Ptr("testdb2"),
-		// 					DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T02:49:47.69Z"); return t}()),
+		// 					DeletionDate: to.Ptr(time.Date(2017, time.May, 27, 2, 49, 47, 690000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

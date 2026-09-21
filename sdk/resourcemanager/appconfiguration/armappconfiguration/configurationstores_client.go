@@ -30,6 +30,9 @@ type ConfigurationStoresClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConfigurationStoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationStoresClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -82,8 +85,7 @@ func (client *ConfigurationStoresClient) create(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -92,7 +94,7 @@ func (client *ConfigurationStoresClient) create(ctx context.Context, resourceGro
 func (client *ConfigurationStoresClient) createCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, configStoreCreationParameters ConfigurationStore, _ *ConfigurationStoresClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -158,8 +160,7 @@ func (client *ConfigurationStoresClient) deleteOperation(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -168,7 +169,7 @@ func (client *ConfigurationStoresClient) deleteOperation(ctx context.Context, re
 func (client *ConfigurationStoresClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, _ *ConfigurationStoresClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -208,19 +209,14 @@ func (client *ConfigurationStoresClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ConfigurationStoresClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConfigurationStoresClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ConfigurationStoresClient) getCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, _ *ConfigurationStoresClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -243,8 +239,11 @@ func (client *ConfigurationStoresClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConfigurationStoresClient) getHandleResponse(resp *http.Response) (ConfigurationStoresClientGetResponse, error) {
+func (client *ConfigurationStoresClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationStoresClientGetResponse, error) {
 	result := ConfigurationStoresClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationStore); err != nil {
 		return ConfigurationStoresClientGetResponse{}, err
 	}
@@ -271,19 +270,14 @@ func (client *ConfigurationStoresClient) GetDeleted(ctx context.Context, locatio
 	if err != nil {
 		return ConfigurationStoresClientGetDeletedResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConfigurationStoresClientGetDeletedResponse{}, err
-	}
-	resp, err := client.getDeletedHandleResponse(httpResp)
-	return resp, err
+	return client.getDeletedHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDeletedCreateRequest creates the GetDeleted request.
 func (client *ConfigurationStoresClient) getDeletedCreateRequest(ctx context.Context, location string, configStoreName string, _ *ConfigurationStoresClientGetDeletedOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/locations/{location}/deletedConfigurationStores/{configStoreName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -306,8 +300,11 @@ func (client *ConfigurationStoresClient) getDeletedCreateRequest(ctx context.Con
 }
 
 // getDeletedHandleResponse handles the GetDeleted response.
-func (client *ConfigurationStoresClient) getDeletedHandleResponse(resp *http.Response) (ConfigurationStoresClientGetDeletedResponse, error) {
+func (client *ConfigurationStoresClient) getDeletedHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationStoresClientGetDeletedResponse, error) {
 	result := ConfigurationStoresClientGetDeletedResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedConfigurationStore); err != nil {
 		return ConfigurationStoresClientGetDeletedResponse{}, err
 	}
@@ -328,42 +325,56 @@ func (client *ConfigurationStoresClient) NewListPager(options *ConfigurationStor
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ConfigurationStoresClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ConfigurationStoresClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ConfigurationStoresClient) listCreateRequest(ctx context.Context, options *ConfigurationStoresClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/configurationStores"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ConfigurationStoresClient) listCreateRequest(ctx context.Context, nextLink string, options *ConfigurationStoresClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/configurationStores"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		reqQP.Set("api-version", version20250801Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ConfigurationStoresClient) listHandleResponse(resp *http.Response) (ConfigurationStoresClientListResponse, error) {
+func (client *ConfigurationStoresClient) listHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationStoresClientListResponse, error) {
 	result := ConfigurationStoresClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationStoreListResult); err != nil {
 		return ConfigurationStoresClientListResponse{}, err
 	}
@@ -385,46 +396,60 @@ func (client *ConfigurationStoresClient) NewListByResourceGroupPager(resourceGro
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return ConfigurationStoresClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ConfigurationStoresClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ConfigurationStoresClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ConfigurationStoresClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ConfigurationStoresClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, options *ConfigurationStoresClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		reqQP.Set("api-version", version20250801Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ConfigurationStoresClient) listByResourceGroupHandleResponse(resp *http.Response) (ConfigurationStoresClientListByResourceGroupResponse, error) {
+func (client *ConfigurationStoresClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationStoresClientListByResourceGroupResponse, error) {
 	result := ConfigurationStoresClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationStoreListResult); err != nil {
 		return ConfigurationStoresClientListByResourceGroupResponse{}, err
 	}
@@ -445,39 +470,53 @@ func (client *ConfigurationStoresClient) NewListDeletedPager(options *Configurat
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listDeletedCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listDeletedCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ConfigurationStoresClientListDeletedResponse{}, err
 			}
-			return client.listDeletedHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ConfigurationStoresClientListDeletedResponse{}, err
+			}
+			return client.listDeletedHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listDeletedCreateRequest creates the ListDeleted request.
-func (client *ConfigurationStoresClient) listDeletedCreateRequest(ctx context.Context, _ *ConfigurationStoresClientListDeletedOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/deletedConfigurationStores"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ConfigurationStoresClient) listDeletedCreateRequest(ctx context.Context, nextLink string, _ *ConfigurationStoresClientListDeletedOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/deletedConfigurationStores"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listDeletedHandleResponse handles the ListDeleted response.
-func (client *ConfigurationStoresClient) listDeletedHandleResponse(resp *http.Response) (ConfigurationStoresClientListDeletedResponse, error) {
+func (client *ConfigurationStoresClient) listDeletedHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationStoresClientListDeletedResponse, error) {
 	result := ConfigurationStoresClientListDeletedResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedConfigurationStoreListResult); err != nil {
 		return ConfigurationStoresClientListDeletedResponse{}, err
 	}
@@ -500,50 +539,64 @@ func (client *ConfigurationStoresClient) NewListKeysPager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listKeysCreateRequest(ctx, resourceGroupName, configStoreName, options)
-			}, nil)
+			req, err := client.listKeysCreateRequest(ctx, resourceGroupName, configStoreName, nextLink, options)
 			if err != nil {
 				return ConfigurationStoresClientListKeysResponse{}, err
 			}
-			return client.listKeysHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ConfigurationStoresClientListKeysResponse{}, err
+			}
+			return client.listKeysHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listKeysCreateRequest creates the ListKeys request.
-func (client *ConfigurationStoresClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, options *ConfigurationStoresClientListKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/listKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ConfigurationStoresClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, nextLink string, options *ConfigurationStoresClientListKeysOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/listKeys"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if configStoreName == "" {
+			return nil, errors.New("parameter configStoreName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{configStoreName}", url.PathEscape(configStoreName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if configStoreName == "" {
-		return nil, errors.New("parameter configStoreName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{configStoreName}", url.PathEscape(configStoreName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		reqQP.Set("api-version", version20250801Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *ConfigurationStoresClient) listKeysHandleResponse(resp *http.Response) (ConfigurationStoresClientListKeysResponse, error) {
+func (client *ConfigurationStoresClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationStoresClientListKeysResponse, error) {
 	result := ConfigurationStoresClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKeyListResult); err != nil {
 		return ConfigurationStoresClientListKeysResponse{}, err
 	}
@@ -590,8 +643,7 @@ func (client *ConfigurationStoresClient) purgeDeleted(ctx context.Context, locat
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -600,7 +652,7 @@ func (client *ConfigurationStoresClient) purgeDeleted(ctx context.Context, locat
 func (client *ConfigurationStoresClient) purgeDeletedCreateRequest(ctx context.Context, location string, configStoreName string, _ *ConfigurationStoresClientBeginPurgeDeletedOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/locations/{location}/deletedConfigurationStores/{configStoreName}/purge"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -642,19 +694,14 @@ func (client *ConfigurationStoresClient) RegenerateKey(ctx context.Context, reso
 	if err != nil {
 		return ConfigurationStoresClientRegenerateKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConfigurationStoresClientRegenerateKeyResponse{}, err
-	}
-	resp, err := client.regenerateKeyHandleResponse(httpResp)
-	return resp, err
+	return client.regenerateKeyHandleResponse(httpResp, http.StatusOK)
 }
 
 // regenerateKeyCreateRequest creates the RegenerateKey request.
 func (client *ConfigurationStoresClient) regenerateKeyCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, regenerateKeyParameters RegenerateKeyParameters, _ *ConfigurationStoresClientRegenerateKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/regenerateKey"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -681,8 +728,11 @@ func (client *ConfigurationStoresClient) regenerateKeyCreateRequest(ctx context.
 }
 
 // regenerateKeyHandleResponse handles the RegenerateKey response.
-func (client *ConfigurationStoresClient) regenerateKeyHandleResponse(resp *http.Response) (ConfigurationStoresClientRegenerateKeyResponse, error) {
+func (client *ConfigurationStoresClient) regenerateKeyHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationStoresClientRegenerateKeyResponse, error) {
 	result := ConfigurationStoresClientRegenerateKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKey); err != nil {
 		return ConfigurationStoresClientRegenerateKeyResponse{}, err
 	}
@@ -730,8 +780,7 @@ func (client *ConfigurationStoresClient) update(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -740,7 +789,7 @@ func (client *ConfigurationStoresClient) update(ctx context.Context, resourceGro
 func (client *ConfigurationStoresClient) updateCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, configStoreUpdateParameters ConfigurationStoreUpdateParameters, _ *ConfigurationStoresClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

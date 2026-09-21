@@ -44,7 +44,7 @@ func ExampleGenerateDetailedCostReportClient_BeginCreateOperation_generateDetail
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CostManagement/operationResults/00000000-0000-0000-0000-000000000000"),
 	// 		Properties: &armcostmanagement.DownloadURL{
 	// 			DownloadURL: to.Ptr("https://ccmreportstorageeastus.blob.core.windows.net/armreports/20201207/00000000-0000-0000-0000-000000000000?sv=2020-05-31&sr=b&sig=abcd"),
-	// 			ValidTill: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-08T05:55:59.4394737Z"); return t}()),
+	// 			ValidTill: to.Ptr(time.Date(2020, time.December, 8, 5, 55, 59, 439473700, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -82,7 +82,7 @@ func ExampleGenerateDetailedCostReportClient_BeginCreateOperation_generateDetail
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CostManagement/operationResults/00000000-0000-0000-0000-000000000000"),
 	// 		Properties: &armcostmanagement.DownloadURL{
 	// 			DownloadURL: to.Ptr("https://ccmreportstorageeastus.blob.core.windows.net/armreports/20201207/00000000-0000-0000-0000-000000000000?sv=2020-05-31&sr=b&sig=abcd"),
-	// 			ValidTill: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-08T05:55:59.4394737Z"); return t}()),
+	// 			ValidTill: to.Ptr(time.Date(2020, time.December, 8, 5, 55, 59, 439473700, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -121,7 +121,7 @@ func ExampleGenerateDetailedCostReportClient_BeginCreateOperation_generateDetail
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CostManagement/operationResults/00000000-0000-0000-0000-000000000000"),
 	// 		Properties: &armcostmanagement.DownloadURL{
 	// 			DownloadURL: to.Ptr("https://ccmreportstorageeastus.blob.core.windows.net/armreports/20201207/00000000-0000-0000-0000-000000000000?sv=2020-05-31&sr=b&sig=abcd"),
-	// 			ValidTill: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-08T05:55:59.4394737Z"); return t}()),
+	// 			ValidTill: to.Ptr(time.Date(2020, time.December, 8, 5, 55, 59, 439473700, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -162,7 +162,7 @@ func ExampleGenerateDetailedCostReportClient_BeginCreateOperation_generateDetail
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CostManagement/operationResults/00000000-0000-0000-0000-000000000000"),
 	// 		Properties: &armcostmanagement.DownloadURL{
 	// 			DownloadURL: to.Ptr("https://ccmreportstorageeastus.blob.core.windows.net/armreports/20201207/00000000-0000-0000-0000-000000000000?sv=2020-05-31&sr=b&sig=abcd"),
-	// 			ValidTill: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-08T05:55:59.4394737Z"); return t}()),
+	// 			ValidTill: to.Ptr(time.Date(2020, time.December, 8, 5, 55, 59, 439473700, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -203,7 +203,7 @@ func ExampleGenerateDetailedCostReportClient_BeginCreateOperation_generateDetail
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CostManagement/operationResults/00000000-0000-0000-0000-000000000000"),
 	// 		Properties: &armcostmanagement.DownloadURL{
 	// 			DownloadURL: to.Ptr("https://ccmreportstorageeastus.blob.core.windows.net/armreports/20201207/00000000-0000-0000-0000-000000000000?sv=2020-05-31&sr=b&sig=abcd"),
-	// 			ValidTill: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-08T05:55:59.4394737Z"); return t}()),
+	// 			ValidTill: to.Ptr(time.Date(2020, time.December, 8, 5, 55, 59, 439473700, time.UTC)),
 	// 		},
 	// 	},
 	// }

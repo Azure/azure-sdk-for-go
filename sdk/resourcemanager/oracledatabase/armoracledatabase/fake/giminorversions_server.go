@@ -92,7 +92,7 @@ func (g *GiMinorVersionsServerTransport) dispatchGet(req *http.Request) (*http.R
 	if g.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Oracle\.Database/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/giVersions/(?P<giversionname>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/giMinorVersions/(?P<giMinorVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/giVersions/(?P<giversionname>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/giMinorVersions/(?P<giMinorVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -131,7 +131,7 @@ func (g *GiMinorVersionsServerTransport) dispatchNewListByParentPager(req *http.
 	}
 	newListByParentPager := g.newListByParentPager.get(req)
 	if newListByParentPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Oracle\.Database/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/giVersions/(?P<giversionname>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/giMinorVersions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/giVersions/(?P<giversionname>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/giMinorVersions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

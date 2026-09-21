@@ -7,11 +7,11 @@ package armnetwork_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/GetApplicationGatewayWafDynamicManifestsDefault.json
+// Generated from example definition: 2026-01-01/GetApplicationGatewayWafDynamicManifestsDefault.json
 func ExampleApplicationGatewayWafDynamicManifestsDefaultClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,6 +47,7 @@ func ExampleApplicationGatewayWafDynamicManifestsDefaultClient_Get() {
 	// 									Action: to.Ptr(armnetwork.ApplicationGatewayWafRuleActionTypesAnomalyScoring),
 	// 									RuleID: to.Ptr[int32](200002),
 	// 									RuleIDString: to.Ptr("200002"),
+	// 									ParanoiaLevel: to.Ptr(armnetwork.ApplicationGatewayWafRuleParanoiaLevelPL1),
 	// 									State: to.Ptr(armnetwork.ApplicationGatewayWafRuleStateTypesEnabled),
 	// 								},
 	// 								{
@@ -54,6 +55,7 @@ func ExampleApplicationGatewayWafDynamicManifestsDefaultClient_Get() {
 	// 									Action: to.Ptr(armnetwork.ApplicationGatewayWafRuleActionTypesAnomalyScoring),
 	// 									RuleID: to.Ptr[int32](200003),
 	// 									RuleIDString: to.Ptr("200003"),
+	// 									ParanoiaLevel: to.Ptr(armnetwork.ApplicationGatewayWafRuleParanoiaLevelPL1),
 	// 									State: to.Ptr(armnetwork.ApplicationGatewayWafRuleStateTypesEnabled),
 	// 								},
 	// 								{
@@ -61,6 +63,7 @@ func ExampleApplicationGatewayWafDynamicManifestsDefaultClient_Get() {
 	// 									Action: to.Ptr(armnetwork.ApplicationGatewayWafRuleActionTypesAnomalyScoring),
 	// 									RuleID: to.Ptr[int32](200004),
 	// 									RuleIDString: to.Ptr("200004"),
+	// 									ParanoiaLevel: to.Ptr(armnetwork.ApplicationGatewayWafRuleParanoiaLevelPL2),
 	// 									State: to.Ptr(armnetwork.ApplicationGatewayWafRuleStateTypesEnabled),
 	// 								},
 	// 							},
@@ -68,6 +71,7 @@ func ExampleApplicationGatewayWafDynamicManifestsDefaultClient_Get() {
 	// 					},
 	// 					RuleSetType: to.Ptr("OWASP"),
 	// 					RuleSetVersion: to.Ptr("3.2"),
+	// 					DisplayName: to.Ptr("Core Ruleset 3.2 (Older than DRS)"),
 	// 					Status: to.Ptr(armnetwork.ApplicationGatewayRuleSetStatusOptions("0")),
 	// 					Tiers: []*armnetwork.ApplicationGatewayTierTypes{
 	// 						to.Ptr(armnetwork.ApplicationGatewayTierTypesWAFV2),
@@ -77,6 +81,7 @@ func ExampleApplicationGatewayWafDynamicManifestsDefaultClient_Get() {
 	// 			DefaultRuleSet: &armnetwork.DefaultRuleSetPropertyFormat{
 	// 				RuleSetType: to.Ptr("OWASP"),
 	// 				RuleSetVersion: to.Ptr("3.2"),
+	// 				DisplayName: to.Ptr("Core Ruleset 3.2 (Older than DRS)"),
 	// 			},
 	// 		},
 	// 	},

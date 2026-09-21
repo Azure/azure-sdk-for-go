@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // Server is a fake server for instances of the armsubscription.Client type.
@@ -69,9 +70,7 @@ func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -95,10 +94,7 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -115,7 +111,7 @@ func (s *ServerTransport) dispatchBeginAcceptOwnership(req *http.Request) (*http
 	}
 	beginAcceptOwnership := s.beginAcceptOwnership.get(req)
 	if beginAcceptOwnership == nil {
-		const regexStr = `/providers/Microsoft\.Subscription/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/acceptOwnership`
+		const regexStr = `/providers/Microsoft\.Subscription/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/acceptOwnership`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -142,7 +138,7 @@ func (s *ServerTransport) dispatchBeginAcceptOwnership(req *http.Request) (*http
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginAcceptOwnership.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -157,7 +153,7 @@ func (s *ServerTransport) dispatchAcceptOwnershipStatus(req *http.Request) (*htt
 	if s.srv.AcceptOwnershipStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method AcceptOwnershipStatus not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Subscription/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/acceptOwnershipStatus`
+	const regexStr = `/providers/Microsoft\.Subscription/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/acceptOwnershipStatus`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -172,7 +168,7 @@ func (s *ServerTransport) dispatchAcceptOwnershipStatus(req *http.Request) (*htt
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AcceptOwnershipStatusResponse, req)
@@ -186,7 +182,7 @@ func (s *ServerTransport) dispatchCancel(req *http.Request) (*http.Response, err
 	if s.srv.Cancel == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Cancel not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Subscription/cancel`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Subscription/cancel`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -201,7 +197,7 @@ func (s *ServerTransport) dispatchCancel(req *http.Request) (*http.Response, err
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CanceledSubscriptionID, req)
@@ -215,7 +211,7 @@ func (s *ServerTransport) dispatchEnable(req *http.Request) (*http.Response, err
 	if s.srv.Enable == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Enable not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Subscription/enable`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Subscription/enable`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -230,7 +226,7 @@ func (s *ServerTransport) dispatchEnable(req *http.Request) (*http.Response, err
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EnabledSubscriptionID, req)
@@ -244,7 +240,7 @@ func (s *ServerTransport) dispatchRename(req *http.Request) (*http.Response, err
 	if s.srv.Rename == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Rename not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Subscription/rename`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Subscription/rename`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -263,7 +259,7 @@ func (s *ServerTransport) dispatchRename(req *http.Request) (*http.Response, err
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RenamedSubscriptionID, req)

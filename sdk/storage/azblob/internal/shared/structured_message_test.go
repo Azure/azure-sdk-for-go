@@ -9,9 +9,11 @@ package shared
 import (
 	"bytes"
 	"encoding/binary"
+	"errors"
 	"fmt"
 	"hash/crc64"
 	"io"
+	"net"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -983,4 +985,348 @@ func TestSMEncoderSegmentSizeJustOverLimit(t *testing.T) {
 	decodedData, err := io.ReadAll(dec)
 	require.NoError(t, err)
 	require.Equal(t, content, decodedData)
+}
+
+// segBoundaryReader is a test io.ReadSeeker whose Read returns err exactly when its data is
+// exhausted, allowing simulation of a source that returns bytes together with an error at a
+// segment boundary.
+type segBoundaryReader struct {
+	data []byte
+	err  error
+	off  int
+}
+
+func (r *segBoundaryReader) Read(p []byte) (int, error) {
+	if r.off >= len(r.data) {
+		return 0, r.err
+	}
+	n := copy(p, r.data[r.off:])
+	r.off += n
+	if r.off >= len(r.data) {
+		return n, r.err
+	}
+	return n, nil
+}
+
+func (r *segBoundaryReader) Seek(offset int64, whence int) (int64, error) {
+	switch whence {
+	case io.SeekStart:
+		r.off = int(offset)
+	case io.SeekCurrent:
+		r.off += int(offset)
+	case io.SeekEnd:
+		r.off = len(r.data) + int(offset)
+	}
+	return int64(r.off), nil
+}
+
+// TestStreamingDecoderValidatesTrailerOnExactBufferFill guards against a decoder that returns the
+// final payload byte without draining and validating the trailing segment footer/message trailer in
+// the same Read. A bounded reader (e.g. RetryReader) could otherwise report EOF and skip validation
+// when the payload exactly fills the caller's buffer.
+func TestStreamingDecoderValidatesTrailerOnExactBufferFill(t *testing.T) {
+	data := make([]byte, 2048)
+	for i := range data {
+		data[i] = byte(i % 251)
+	}
+
+	// Corrupt only the message trailer CRC (last 8 bytes); the segment data and footer remain valid.
+	corrupted := makeCorruptedSM(data, func(d []byte) { d[len(d)-1] ^= 0xFF })
+
+	dec := NewSMDecoder(io.NopCloser(bytes.NewReader(corrupted)))
+
+	// Buffer sized exactly to the payload length so the last payload byte fills it exactly.
+	buf := make([]byte, len(data))
+	n, err := dec.Read(buf)
+	require.Equal(t, len(data), n)
+	// The trailing framing must have been drained and validated in this same call.
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "trailer CRC64 mismatch")
+}
+
+// TestStreamingDecoderExactBufferFillValid verifies the happy path for the same exact-fill boundary:
+// a valid message returns all payload bytes plus a nil error on the fill read, and a subsequent read
+// reports io.EOF with no extra bytes.
+func TestStreamingDecoderExactBufferFillValid(t *testing.T) {
+	data := make([]byte, 2048)
+	for i := range data {
+		data[i] = byte(i % 251)
+	}
+
+	valid := SMEncode(data, 0).EncodedData
+	dec := NewSMDecoder(io.NopCloser(bytes.NewReader(valid)))
+
+	buf := make([]byte, len(data))
+	n, err := dec.Read(buf)
+	require.NoError(t, err)
+	require.Equal(t, len(data), n)
+	require.Equal(t, data, buf)
+
+	n, err = dec.Read(make([]byte, 8))
+	require.Equal(t, 0, n)
+	require.ErrorIs(t, err, io.EOF)
+}
+
+// TestEncoderPropagatesNonEOFErrorAtSegmentBoundary verifies that when the inner reader returns data
+// together with a non-EOF error and those bytes exactly complete a segment, the encoder propagates
+// the error instead of silently emitting a valid trailer.
+func TestEncoderPropagatesNonEOFErrorAtSegmentBoundary(t *testing.T) {
+	data := []byte("ABCD") // exactly one 4-byte segment
+	sentinel := errors.New("read failure at segment boundary")
+
+	enc := NewSMEncoder(&segBoundaryReader{data: data, err: sentinel}, int64(len(data)), len(data))
+	_, err := io.ReadAll(enc)
+	require.Error(t, err)
+	require.ErrorIs(t, err, sentinel)
+}
+
+// TestEncoderAcceptsDataWithEOFAtFinalBoundary verifies that a source returning its final bytes
+// together with io.EOF (valid io.Reader behavior) still produces a correctly encoded message rather
+// than a spurious error.
+func TestEncoderAcceptsDataWithEOFAtFinalBoundary(t *testing.T) {
+	data := []byte("ABCDEFGHIJ") // 10 bytes across two 5-byte segments
+	segSize := 5
+
+	enc := NewSMEncoder(&segBoundaryReader{data: data, err: io.EOF}, int64(len(data)), segSize)
+	encoded, err := io.ReadAll(enc)
+	require.NoError(t, err)
+
+	decoded, err := SMDecode(encoded)
+	require.NoError(t, err)
+	require.Equal(t, data, decoded.Data)
+}
+
+// TestDecoderRejectsMissingCRC64Flag verifies that a structured message whose CRC64 flag is not set
+// is rejected. The body is negotiated with properties=crc64, so a missing flag (which would cause the
+// decoder to skip all footer/trailer validation) must be treated as an error by both the streaming
+// decoder and the one-shot SMDecode.
+func TestDecoderRejectsMissingCRC64Flag(t *testing.T) {
+	data := []byte("structured message body that should be validated")
+
+	// Clear the CRC64 flag bits (flags occupy bytes [9:11]) while leaving msgLen and framing intact.
+	noFlag := makeCorruptedSM(data, func(d []byte) {
+		d[9] = 0
+		d[10] = 0
+	})
+
+	// Streaming decoder must reject it.
+	dec := NewSMDecoder(io.NopCloser(bytes.NewReader(noFlag)))
+	_, err := io.ReadAll(dec)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "missing the required CRC64 flag")
+
+	// One-shot decode must reject it too.
+	_, err = SMDecode(noFlag)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "missing the required CRC64 flag")
+}
+
+// TestDecodeRejectsTrailingBytes verifies that SMDecode rejects a payload whose declared length
+// matches the input but whose parsed segments/trailer end before the end of the buffer, leaving
+// unexamined trailing bytes. This guards against declaring fewer segments, placing a valid message
+// CRC at the resulting trailer offset, and appending arbitrary bytes.
+func TestDecodeRejectsTrailingBytes(t *testing.T) {
+	data := []byte("payload that will be followed by junk")
+	encoded := SMEncode(data, 0).EncodedData
+
+	// Append arbitrary trailing bytes and bump the header's declared message length to match, so the
+	// initial length check passes but the parsed message ends before len(smData).
+	junk := []byte{0xDE, 0xAD, 0xBE, 0xEF}
+	tampered := make([]byte, 0, len(encoded)+len(junk))
+	tampered = append(tampered, encoded...)
+	tampered = append(tampered, junk...)
+	binary.LittleEndian.PutUint64(tampered[1:9], uint64(len(tampered)))
+
+	_, err := SMDecode(tampered)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "unexpected trailing bytes")
+}
+
+// TestEncoderPrematureEOFIsUnexpected verifies that when the source ends before the declared content
+// length, the encoder surfaces io.ErrUnexpectedEOF rather than a plain io.EOF, so callers such as
+// io.ReadAll do not accept a truncated structured message as success.
+func TestEncoderPrematureEOFIsUnexpected(t *testing.T) {
+	// Declare 10 bytes of content but only supply 4 before EOF.
+	data := []byte("ABCD")
+	enc := NewSMEncoder(&segBoundaryReader{data: data, err: io.EOF}, 10, 0)
+
+	_, err := io.ReadAll(enc)
+	require.Error(t, err)
+	require.ErrorIs(t, err, io.ErrUnexpectedEOF)
+}
+
+// TestDecoderPropagatesNetErrorAtExactSegmentCompletion verifies that when the source returns bytes
+// together with a net.Error and those bytes exactly complete a segment, the decoder propagates the
+// error (wrapped with %w) instead of silently advancing to the footer state.
+func TestDecoderPropagatesNetErrorAtExactSegmentCompletion(t *testing.T) {
+	data := []byte("ABCD") // 4 bytes, one segment
+	segSize := len(data)
+
+	// Encode a valid structured message to get the framing.
+	encoded := SMEncode(data, segSize).EncodedData
+
+	// Build a reader that returns the full encoded bytes but injects a net.Error exactly when the
+	// segment data is exhausted. The segBoundaryReader returns (n, err) when its data runs out.
+	netErr := &net.DNSError{IsTemporary: true}
+
+	// We need a reader that returns SM framing normally but injects the error at the segment data boundary.
+	src := &segDataNetErrorReader{
+		encoded: encoded,
+		segSize: segSize,
+		netErr:  netErr,
+	}
+
+	dec := NewSMDecoder(io.NopCloser(src))
+	_, err := io.ReadAll(dec)
+	require.Error(t, err)
+	require.ErrorIs(t, err, netErr)
+}
+
+// segDataNetErrorReader serves an encoded SM stream but injects a net.Error exactly when the
+// segment data bytes are exhausted (bytes + error at segment completion boundary).
+type segDataNetErrorReader struct {
+	encoded  []byte
+	segSize  int
+	netErr   net.Error
+	off      int
+	injected bool
+}
+
+func (r *segDataNetErrorReader) Read(p []byte) (int, error) {
+	if r.off >= len(r.encoded) {
+		return 0, io.EOF
+	}
+	// Calculate the end of the first segment's data within the encoded stream.
+	// Header (13 bytes) + segment header (6 bytes) + segment data (segSize bytes).
+	segDataEnd := SMHeaderSize + SMSegmentHeaderSize + r.segSize
+	if !r.injected && r.off < segDataEnd {
+		// Serve up to the end of segment data, then inject the error.
+		avail := segDataEnd - r.off
+		n := copy(p, r.encoded[r.off:r.off+avail])
+		r.off += n
+		if r.off >= segDataEnd {
+			r.injected = true
+			return n, r.netErr
+		}
+		return n, nil
+	}
+	n := copy(p, r.encoded[r.off:])
+	r.off += n
+	if r.off >= len(r.encoded) {
+		return n, io.EOF
+	}
+	return n, nil
+}
+
+// TestDecoderPrematureEOFDuringSegmentData verifies that when the source returns io.EOF while
+// segment data bytes are still expected, the decoder converts it to io.ErrUnexpectedEOF so the
+// error is retryable by RetryReader.
+func TestDecoderPrematureEOFDuringSegmentData(t *testing.T) {
+	data := []byte("ABCDEFGH") // 8 bytes
+	segSize := len(data)
+
+	encoded := SMEncode(data, segSize).EncodedData
+
+	// Truncate the encoded stream partway through the segment data (cut after header + seg header + 4 bytes).
+	truncateAt := SMHeaderSize + SMSegmentHeaderSize + 4
+	truncated := encoded[:truncateAt]
+
+	dec := NewSMDecoder(io.NopCloser(bytes.NewReader(truncated)))
+	_, err := io.ReadAll(dec)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "segment")
+}
+
+// TestDecoderEOFExactlyCompletingSegmentIsUnexpected verifies that a source returning (n, io.EOF)
+// where n exactly completes the segment is treated as an error (footer/trailer must still follow).
+func TestDecoderEOFExactlyCompletingSegmentIsUnexpected(t *testing.T) {
+	data := []byte("ABCD")
+	segSize := len(data)
+
+	encoded := SMEncode(data, segSize).EncodedData
+
+	// Build a reader that returns (n, io.EOF) exactly when segment data is exhausted,
+	// before footer/trailer can be read.
+	segDataEnd := SMHeaderSize + SMSegmentHeaderSize + segSize
+	src := &segBoundaryEOFReader{
+		encoded:    encoded,
+		segDataEnd: segDataEnd,
+	}
+
+	dec := NewSMDecoder(io.NopCloser(src))
+	_, err := io.ReadAll(dec)
+	require.Error(t, err)
+	require.ErrorIs(t, err, io.ErrUnexpectedEOF)
+}
+
+// segBoundaryEOFReader returns (n, io.EOF) exactly when the segment data is exhausted, simulating
+// a source that ends at the segment data boundary before footer/trailer framing.
+type segBoundaryEOFReader struct {
+	encoded    []byte
+	segDataEnd int
+	off        int
+}
+
+func (r *segBoundaryEOFReader) Read(p []byte) (int, error) {
+	if r.off >= len(r.encoded) {
+		return 0, io.EOF
+	}
+	if r.off < r.segDataEnd {
+		end := r.segDataEnd
+		if end > r.off+len(p) {
+			end = r.off + len(p)
+		}
+		n := copy(p, r.encoded[r.off:end])
+		r.off += n
+		if r.off >= r.segDataEnd {
+			return n, io.EOF
+		}
+		return n, nil
+	}
+	n := copy(p, r.encoded[r.off:])
+	r.off += n
+	if r.off >= len(r.encoded) {
+		return n, io.EOF
+	}
+	return n, nil
+}
+
+// TestFillFrameTruncatedFooterIsRetryable verifies that a premature EOF during footer/trailer
+// framing reads wraps io.ErrUnexpectedEOF so RetryReader can classify it as retryable.
+func TestFillFrameTruncatedFooterIsRetryable(t *testing.T) {
+	data := []byte("ABCDEFGH")
+	segSize := len(data)
+
+	encoded := SMEncode(data, segSize).EncodedData
+
+	// Truncate after segment data, partway through the segment footer.
+	// Header (13) + seg header (6) + seg data (8) + partial footer (4 of 8).
+	truncateAt := SMHeaderSize + SMSegmentHeaderSize + segSize + 4
+	require.Less(t, truncateAt, len(encoded))
+	truncated := encoded[:truncateAt]
+
+	dec := NewSMDecoder(io.NopCloser(bytes.NewReader(truncated)))
+	_, err := io.ReadAll(dec)
+	require.Error(t, err)
+	require.ErrorIs(t, err, io.ErrUnexpectedEOF)
+}
+
+// TestFillFrameTruncatedTrailerIsRetryable verifies that a premature EOF during message trailer
+// reads wraps io.ErrUnexpectedEOF.
+func TestFillFrameTruncatedTrailerIsRetryable(t *testing.T) {
+	data := []byte("ABCDEFGH")
+	segSize := len(data)
+
+	encoded := SMEncode(data, segSize).EncodedData
+
+	// Truncate after segment footer, partway through the message trailer.
+	// Header (13) + seg header (6) + seg data (8) + seg footer (8) + partial trailer (4 of 8).
+	truncateAt := SMHeaderSize + SMSegmentHeaderSize + segSize + SMSegmentFooterSize + 4
+	require.Less(t, truncateAt, len(encoded))
+	truncated := encoded[:truncateAt]
+
+	dec := NewSMDecoder(io.NopCloser(bytes.NewReader(truncated)))
+	_, err := io.ReadAll(dec)
+	require.Error(t, err)
+	require.ErrorIs(t, err, io.ErrUnexpectedEOF)
 }

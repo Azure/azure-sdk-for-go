@@ -6,10 +6,79 @@ package armhorizondb
 
 import "time"
 
-// Cluster - Represents the HorizonDb cluster.
+// Administrator - Represents an Entra ID administrator configured on a HorizonDB cluster.
+type Administrator struct {
+	// The resource-specific properties for this resource.
+	Properties *AdministratorProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AdministratorAdd - The request body for adding a HorizonDB administrator.
+type AdministratorAdd struct {
+	// REQUIRED; The properties for adding a HorizonDB administrator.
+	Properties *AdministratorPropertiesForAdd
+}
+
+// AdministratorListResult - The response of a HorizonDbAdministrator list operation.
+type AdministratorListResult struct {
+	// REQUIRED; The HorizonDbAdministrator items on this page
+	Value []*Administrator
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// AdministratorProperties - Properties of a HorizonDB administrator.
+type AdministratorProperties struct {
+	// REQUIRED; The display name or UPN of the Entra ID principal. For users, typically the User Principal Name (e.g., admin@contoso.com).
+	// For groups, the group display name. For service principals, the application display name.
+	PrincipalName *string
+
+	// REQUIRED; The type of the Entra ID principal.
+	PrincipalType *PrincipalTypes
+
+	// The Entra ID tenant identifier (an RFC 4122 GUID). If omitted, defaults to the tenant of the subscription.
+	TenantID *string
+
+	// READ-ONLY; The Entra ID object identifier of the principal (an RFC 4122 GUID). On PUT requests, this value comes from the
+	// URI path parameter.
+	ObjectID *string
+
+	// READ-ONLY; The provisioning state of the administrator.
+	ProvisioningState *ProvisioningState
+}
+
+// AdministratorPropertiesForAdd - The properties for adding a HorizonDB administrator.
+type AdministratorPropertiesForAdd struct {
+	// REQUIRED; The display name or UPN of the Entra ID principal. For users, typically the User Principal Name (e.g., admin@contoso.com).
+	// For groups, the group display name. For service principals, the application display name.
+	PrincipalName *string
+
+	// REQUIRED; The type of the Entra ID principal.
+	PrincipalType *PrincipalTypes
+
+	// The Entra ID tenant identifier (an RFC 4122 GUID). If omitted, defaults to the tenant of the subscription.
+	TenantID *string
+}
+
+// Cluster - Represents the HorizonDB cluster.
 type Cluster struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
+
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
 
 	// The resource-specific properties for this resource.
 	Properties *ClusterProperties
@@ -30,9 +99,24 @@ type Cluster struct {
 	Type *string
 }
 
-// ClusterForPatchUpdate - HorizonDb cluster for update operations.
+// ClusterAuthConfig - Authentication configuration for a HorizonDB cluster.
+type ClusterAuthConfig struct {
+	// Indicates whether Microsoft Entra ID authentication is enabled or disabled.
+	EntraIDAuth *AuthenticationState
+
+	// Indicates whether password authentication is enabled or disabled.
+	PasswordAuth *AuthenticationState
+
+	// The Microsoft Entra tenant ID.
+	TenantID *string
+}
+
+// ClusterForPatchUpdate - HorizonDB cluster for update operations.
 type ClusterForPatchUpdate struct {
-	// The properties that can be updated for a HorizonDb cluster.
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// The properties that can be updated for a HorizonDB cluster.
 	Properties *ClusterPropertiesForPatchUpdate
 
 	// Resource tags.
@@ -48,7 +132,16 @@ type ClusterListResult struct {
 	NextLink *string
 }
 
-// ClusterParameterGroupConnectionProperties - Connection information for HorizonDb parameter group.
+// ClusterMirroring - Mirroring configuration for a HorizonDB cluster.
+type ClusterMirroring struct {
+	// The names of the databases to mirror.
+	DatabaseNames []*string
+
+	// The resource ID of the user-assigned managed identity used for mirroring.
+	UserAssignedIdentityID *string
+}
+
+// ClusterParameterGroupConnectionProperties - Connection information for HorizonDB parameter group.
 type ClusterParameterGroupConnectionProperties struct {
 	// Indicates whether the parameters should be applied immediately.
 	ApplyImmediately *bool
@@ -56,11 +149,11 @@ type ClusterParameterGroupConnectionProperties struct {
 	// The resource ID of the connected parameter group.
 	ID *string
 
-	// READ-ONLY; Indication of if parameter group is applied on HorizonDb resource.
+	// READ-ONLY; Indication of if parameter group is applied on HorizonDB resource.
 	SyncStatus *string
 }
 
-// ClusterProperties - Properties of a HorizonDb cluster.
+// ClusterProperties - Properties of a HorizonDB cluster.
 type ClusterProperties struct {
 	// REQUIRED; The administrator login name.
 	AdministratorLogin *string
@@ -68,8 +161,17 @@ type ClusterProperties struct {
 	// The administrator login password.
 	AdministratorLoginPassword *string
 
-	// The mode to create a new HorizonDb cluster.
+	// Authentication configuration for the HorizonDB cluster.
+	AuthConfig *ClusterAuthConfig
+
+	// The compute model for the cluster.
+	ComputeModel *ComputeModel
+
+	// The mode to create a new HorizonDB cluster.
 	CreateMode *CreateModeCluster
+
+	// Mirroring configuration for the HorizonDB cluster.
+	Mirroring *ClusterMirroring
 
 	// The network related info.
 	Network *Network
@@ -83,7 +185,7 @@ type ClusterProperties struct {
 	// The pool name for restore or replica operations.
 	PoolName *string
 
-	// The processor type for the HorizonDb cluster.
+	// The processor type for the HorizonDB cluster.
 	ProcessorType *string
 
 	// Number of replicas.
@@ -95,7 +197,7 @@ type ClusterProperties struct {
 	// Number of vCores.
 	VCores *int32
 
-	// The version of the HorizonDb cluster.
+	// The version of the HorizonDB cluster.
 	Version *string
 
 	// Defines how replicas are placed across availability zones.
@@ -114,10 +216,19 @@ type ClusterProperties struct {
 	State *State
 }
 
-// ClusterPropertiesForPatchUpdate - Properties of a HorizonDb cluster for update operations.
+// ClusterPropertiesForPatchUpdate - Properties of a HorizonDB cluster for update operations.
 type ClusterPropertiesForPatchUpdate struct {
 	// The administrator login password.
 	AdministratorLoginPassword *string
+
+	// Authentication configuration for the HorizonDB cluster.
+	AuthConfig *ClusterAuthConfig
+
+	// The compute model for the cluster.
+	ComputeModel *ComputeModel
+
+	// Mirroring configuration for the HorizonDB cluster.
+	Mirroring *ClusterMirroring
 
 	// Defines connection to a parameter group.
 	ParameterGroup *ClusterParameterGroupConnectionProperties
@@ -126,7 +237,22 @@ type ClusterPropertiesForPatchUpdate struct {
 	VCores *int32
 }
 
-// FirewallRule - Represents the HorizonDb firewall rule.
+// ComputeModel - The compute model for a HorizonDB cluster.
+type ComputeModel struct {
+	// The maximum vCores for Serverless compute. Defines the upper autoscaling bound.
+	MaxvCores *float64
+
+	// The minimum vCores for Serverless compute. Defines the lower autoscaling bound.
+	MinvCores *float64
+
+	// The compute model type. Supported values: 'Provisioned', 'Serverless'.
+	Type *ComputeModelType
+
+	// The fixed vCore count for Provisioned compute.
+	VCores *int32
+}
+
+// FirewallRule - Represents the HorizonDB firewall rule.
 type FirewallRule struct {
 	// The resource-specific properties for this resource.
 	Properties *FirewallRuleProperties
@@ -153,7 +279,7 @@ type FirewallRuleListResult struct {
 	NextLink *string
 }
 
-// FirewallRuleProperties - Properties of a HorizonDb firewall rule.
+// FirewallRuleProperties - Properties of a HorizonDB firewall rule.
 type FirewallRuleProperties struct {
 	// REQUIRED; The end IP address of the firewall rule (IPv4).
 	EndIPAddress *string
@@ -161,11 +287,27 @@ type FirewallRuleProperties struct {
 	// REQUIRED; The start IP address of the firewall rule (IPv4).
 	StartIPAddress *string
 
-	// The description of the HorizonDb firewall rule.
+	// The description of the HorizonDB firewall rule.
 	Description *string
 
 	// READ-ONLY; The provisioning state of the firewall rule.
 	ProvisioningState *ProvisioningState
+}
+
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; The type of managed identity assigned to this resource.
+	Type *ManagedServiceIdentityType
+
+	// The identities assigned to this resource by the user.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
 }
 
 // Network properties.
@@ -225,16 +367,7 @@ type OperationListResult struct {
 	NextLink *string
 }
 
-// OptionalPropertiesUpdateableProperties - The template for adding optional properties.
-type OptionalPropertiesUpdateableProperties struct {
-	// The private endpoint resource.
-	PrivateEndpoint *PrivateEndpoint
-
-	// A collection of information about the state of the connection between service consumer and provider.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
-}
-
-// ParameterGroup - Represents the HorizonDb parameter group.
+// ParameterGroup - Represents the HorizonDB parameter group.
 type ParameterGroup struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
@@ -258,7 +391,7 @@ type ParameterGroup struct {
 	Type *string
 }
 
-// ParameterGroupConnectionProperties - Connection information for HorizonDb parameter group.
+// ParameterGroupConnectionProperties - Connection information for HorizonDB parameter group.
 type ParameterGroupConnectionProperties struct {
 	// READ-ONLY; The resource ID of the connected resource.
 	ID *string
@@ -279,9 +412,9 @@ type ParameterGroupConnectionPropertiesListResult struct {
 	NextLink *string
 }
 
-// ParameterGroupForPatchUpdate - HorizonDb parameter group for update operations.
+// ParameterGroupForPatchUpdate - HorizonDB parameter group for update operations.
 type ParameterGroupForPatchUpdate struct {
-	// The properties that can be updated for a HorizonDb parameter group.
+	// The properties that can be updated for a HorizonDB parameter group.
 	Properties *ParameterGroupPropertiesForPatchUpdate
 
 	// Resource tags.
@@ -297,7 +430,7 @@ type ParameterGroupListResult struct {
 	NextLink *string
 }
 
-// ParameterGroupProperties - Properties of a HorizonDb parameter group.
+// ParameterGroupProperties - Properties of a HorizonDB parameter group.
 type ParameterGroupProperties struct {
 	// Indicates whether the parameters should be applied immediately.
 	ApplyImmediately *bool
@@ -318,7 +451,7 @@ type ParameterGroupProperties struct {
 	Version *int32
 }
 
-// ParameterGroupPropertiesForPatchUpdate - Properties of a HorizonDb parameter group for update operations.
+// ParameterGroupPropertiesForPatchUpdate - Properties of a HorizonDB parameter group for update operations.
 type ParameterGroupPropertiesForPatchUpdate struct {
 	// Indicates whether the parameters should be applied immediately.
 	ApplyImmediately *bool
@@ -330,7 +463,7 @@ type ParameterGroupPropertiesForPatchUpdate struct {
 	Parameters []*ParameterProperties
 }
 
-// ParameterProperties - Properties of a HorizonDb parameters.
+// ParameterProperties - Properties of a HorizonDB parameters.
 type ParameterProperties struct {
 	// The name of the parameter.
 	Name *string
@@ -360,7 +493,7 @@ type ParameterProperties struct {
 	Unit *string
 }
 
-// Pool - Represents the HorizonDb pool.
+// Pool - Represents the HorizonDB pool.
 type Pool struct {
 	// The resource-specific properties for this resource.
 	Properties *PoolProperties
@@ -390,9 +523,9 @@ type PoolListResult struct {
 	NextLink *string
 }
 
-// PoolProperties - Properties of a HorizonDb pool.
+// PoolProperties - Properties of a HorizonDB pool.
 type PoolProperties struct {
-	// The location of the HorizonDb pool.
+	// The location of the HorizonDB pool.
 	Location *string
 
 	// READ-ONLY; The create mode for the pool.
@@ -407,7 +540,7 @@ type PoolProperties struct {
 	// READ-ONLY; Current state of the pool.
 	State *State
 
-	// READ-ONLY; The version of the HorizonDb pool.
+	// READ-ONLY; The version of the HorizonDB pool.
 	Version *string
 }
 
@@ -415,24 +548,6 @@ type PoolProperties struct {
 type PrivateEndpoint struct {
 	// READ-ONLY; The resource identifier of the private endpoint
 	ID *string
-}
-
-// PrivateEndpointConnection - The private endpoint connection resource
-type PrivateEndpointConnection struct {
-	// The private endpoint connection properties
-	Properties *PrivateEndpointConnectionProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 // PrivateEndpointConnectionProperties - Properties of the private endpoint connection.
@@ -477,13 +592,7 @@ type PrivateEndpointConnectionResourceListResult struct {
 	NextLink *string
 }
 
-// PrivateEndpointConnectionUpdate - PATCH model for private endpoint connections
-type PrivateEndpointConnectionUpdate struct {
-	// The private endpoint connection properties
-	Properties *OptionalPropertiesUpdateableProperties
-}
-
-// PrivateLinkResource - Represents the HorizonDb private link resource.
+// PrivateLinkResource - Represents the HorizonDB private link resource.
 type PrivateLinkResource struct {
 	// The resource-specific properties for this resource.
 	Properties *PrivateLinkResourceProperties
@@ -535,7 +644,7 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus
 }
 
-// Replica - Represents the HorizonDb replica.
+// Replica - Represents the HorizonDB replica.
 type Replica struct {
 	// The resource-specific properties for this resource.
 	Properties *ReplicaProperties
@@ -553,9 +662,9 @@ type Replica struct {
 	Type *string
 }
 
-// ReplicaForPatchUpdate - HorizonDb replica for update operations.
+// ReplicaForPatchUpdate - HorizonDB replica for update operations.
 type ReplicaForPatchUpdate struct {
-	// Properties of a HorizonDb replica for update operations.
+	// Properties of a HorizonDB replica for update operations.
 	Properties *ReplicaPropertiesForPatchUpdate
 }
 
@@ -568,7 +677,7 @@ type ReplicaListResult struct {
 	NextLink *string
 }
 
-// ReplicaProperties - Properties of a HorizonDb replica.
+// ReplicaProperties - Properties of a HorizonDB replica.
 type ReplicaProperties struct {
 	// The availability zone of the replica.
 	AvailabilityZone *string
@@ -586,7 +695,7 @@ type ReplicaProperties struct {
 	Status *State
 }
 
-// ReplicaPropertiesForPatchUpdate - Properties of a HorizonDb replica for update operations.
+// ReplicaPropertiesForPatchUpdate - Properties of a HorizonDB replica for update operations.
 type ReplicaPropertiesForPatchUpdate struct {
 	// Role of the replica.
 	Role *ReplicaRole
@@ -611,4 +720,13 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
+}
+
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
 }

@@ -257,14 +257,14 @@ func ExampleInvoicesClient_Get() {
 	// 					Kind: to.Ptr(armbilling.InvoiceDocumentTypeTaxReceipt),
 	// 				},
 	// 			},
-	// 			DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-16T17:32:28Z"); return t}()),
+	// 			DueDate: to.Ptr(time.Date(2023, time.February, 16, 17, 32, 28, 0, time.UTC)),
 	// 			FreeAzureCreditApplied: &armbilling.InvoicePropertiesFreeAzureCreditApplied{
 	// 				Currency: to.Ptr("USD"),
 	// 				Value: to.Ptr[float32](0),
 	// 			},
-	// 			InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28Z"); return t}()),
-	// 			InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-15T17:32:28Z"); return t}()),
-	// 			InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28Z"); return t}()),
+	// 			InvoiceDate: to.Ptr(time.Date(2023, time.February, 1, 17, 32, 28, 0, time.UTC)),
+	// 			InvoicePeriodEndDate: to.Ptr(time.Date(2023, time.February, 15, 17, 32, 28, 0, time.UTC)),
+	// 			InvoicePeriodStartDate: to.Ptr(time.Date(2023, time.February, 1, 17, 32, 28, 0, time.UTC)),
 	// 			IsMonthlyInvoice: to.Ptr(false),
 	// 			PurchaseOrderNumber: to.Ptr("123456"),
 	// 			RebillDetails: &armbilling.InvoicePropertiesRebillDetails{
@@ -347,14 +347,14 @@ func ExampleInvoicesClient_GetByBillingAccount() {
 	// 					Kind: to.Ptr(armbilling.InvoiceDocumentTypeTaxReceipt),
 	// 				},
 	// 			},
-	// 			DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-16T17:32:28Z"); return t}()),
+	// 			DueDate: to.Ptr(time.Date(2023, time.February, 16, 17, 32, 28, 0, time.UTC)),
 	// 			FreeAzureCreditApplied: &armbilling.InvoicePropertiesFreeAzureCreditApplied{
 	// 				Currency: to.Ptr("USD"),
 	// 				Value: to.Ptr[float32](0),
 	// 			},
-	// 			InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28Z"); return t}()),
-	// 			InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-15T17:32:28Z"); return t}()),
-	// 			InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28Z"); return t}()),
+	// 			InvoiceDate: to.Ptr(time.Date(2023, time.February, 1, 17, 32, 28, 0, time.UTC)),
+	// 			InvoicePeriodEndDate: to.Ptr(time.Date(2023, time.February, 15, 17, 32, 28, 0, time.UTC)),
+	// 			InvoicePeriodStartDate: to.Ptr(time.Date(2023, time.February, 1, 17, 32, 28, 0, time.UTC)),
 	// 			IsMonthlyInvoice: to.Ptr(false),
 	// 			PurchaseOrderNumber: to.Ptr("123456"),
 	// 			RebillDetails: &armbilling.InvoicePropertiesRebillDetails{
@@ -416,10 +416,10 @@ func ExampleInvoicesClient_GetByBillingSubscription() {
 	// 				Currency: to.Ptr("USD"),
 	// 				Value: to.Ptr[float32](33.99),
 	// 			},
-	// 			DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-16T17:32:28Z"); return t}()),
-	// 			InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28Z"); return t}()),
-	// 			InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-15T17:32:28Z"); return t}()),
-	// 			InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28Z"); return t}()),
+	// 			DueDate: to.Ptr(time.Date(2023, time.February, 16, 17, 32, 28, 0, time.UTC)),
+	// 			InvoiceDate: to.Ptr(time.Date(2023, time.February, 1, 17, 32, 28, 0, time.UTC)),
+	// 			InvoicePeriodEndDate: to.Ptr(time.Date(2023, time.February, 15, 17, 32, 28, 0, time.UTC)),
+	// 			InvoicePeriodStartDate: to.Ptr(time.Date(2023, time.February, 1, 17, 32, 28, 0, time.UTC)),
 	// 			InvoiceType: to.Ptr(armbilling.InvoiceTypeAzureServices),
 	// 			PurchaseOrderNumber: to.Ptr("123456"),
 	// 			Status: to.Ptr(armbilling.InvoiceStatusDue),
@@ -442,8 +442,8 @@ func ExampleInvoicesClient_NewListByBillingAccountPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewInvoicesClient().NewListByBillingAccountPager("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", &armbilling.InvoicesClientListByBillingAccountOptions{
-		PeriodEndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-06-30"); return t }()),
-		PeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-01-01"); return t }())})
+		PeriodEndDate:   to.Ptr(time.Date(2023, time.June, 30, 0, 0, 0, 0, time.UTC)),
+		PeriodStartDate: to.Ptr(time.Date(2023, time.January, 1, 0, 0, 0, 0, time.UTC))})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -491,14 +491,14 @@ func ExampleInvoicesClient_NewListByBillingAccountPager() {
 		// 							Kind: to.Ptr(armbilling.InvoiceDocumentTypeTaxReceipt),
 		// 						},
 		// 					},
-		// 					DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-16T17:32:28Z"); return t}()),
+		// 					DueDate: to.Ptr(time.Date(2023, time.February, 16, 17, 32, 28, 0, time.UTC)),
 		// 					FreeAzureCreditApplied: &armbilling.InvoicePropertiesFreeAzureCreditApplied{
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float32](0),
 		// 					},
-		// 					InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28Z"); return t}()),
-		// 					InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-15T17:32:28Z"); return t}()),
-		// 					InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28Z"); return t}()),
+		// 					InvoiceDate: to.Ptr(time.Date(2023, time.February, 1, 17, 32, 28, 0, time.UTC)),
+		// 					InvoicePeriodEndDate: to.Ptr(time.Date(2023, time.February, 15, 17, 32, 28, 0, time.UTC)),
+		// 					InvoicePeriodStartDate: to.Ptr(time.Date(2023, time.February, 1, 17, 32, 28, 0, time.UTC)),
 		// 					IsMonthlyInvoice: to.Ptr(false),
 		// 					PurchaseOrderNumber: to.Ptr("123456"),
 		// 					RebillDetails: &armbilling.InvoicePropertiesRebillDetails{
@@ -558,14 +558,14 @@ func ExampleInvoicesClient_NewListByBillingAccountPager() {
 		// 							Kind: to.Ptr(armbilling.InvoiceDocumentTypeTaxReceipt),
 		// 						},
 		// 					},
-		// 					DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-16T17:32:28Z"); return t}()),
+		// 					DueDate: to.Ptr(time.Date(2023, time.January, 16, 17, 32, 28, 0, time.UTC)),
 		// 					FreeAzureCreditApplied: &armbilling.InvoicePropertiesFreeAzureCreditApplied{
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float32](0),
 		// 					},
-		// 					InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:32:28Z"); return t}()),
-		// 					InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-15T17:32:28Z"); return t}()),
-		// 					InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:32:28Z"); return t}()),
+		// 					InvoiceDate: to.Ptr(time.Date(2023, time.January, 1, 17, 32, 28, 0, time.UTC)),
+		// 					InvoicePeriodEndDate: to.Ptr(time.Date(2023, time.January, 15, 17, 32, 28, 0, time.UTC)),
+		// 					InvoicePeriodStartDate: to.Ptr(time.Date(2023, time.January, 1, 17, 32, 28, 0, time.UTC)),
 		// 					IsMonthlyInvoice: to.Ptr(false),
 		// 					Payments: []*armbilling.Payment{
 		// 						{
@@ -573,7 +573,7 @@ func ExampleInvoicesClient_NewListByBillingAccountPager() {
 		// 								Currency: to.Ptr("USD"),
 		// 								Value: to.Ptr[float32](33.99),
 		// 							},
-		// 							Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-14T17:32:28Z"); return t}()),
+		// 							Date: to.Ptr(time.Date(2023, time.January, 14, 17, 32, 28, 0, time.UTC)),
 		// 							PaymentMethodFamily: to.Ptr(armbilling.PaymentMethodFamilyCreditCard),
 		// 							PaymentMethodType: to.Ptr("visa"),
 		// 							PaymentType: to.Ptr("debited"),
@@ -621,8 +621,8 @@ func ExampleInvoicesClient_NewListByBillingProfilePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewInvoicesClient().NewListByBillingProfilePager("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "xxxx-xxxx-xxx-xxx", &armbilling.InvoicesClientListByBillingProfileOptions{
-		PeriodEndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-06-30"); return t }()),
-		PeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-01-01"); return t }())})
+		PeriodEndDate:   to.Ptr(time.Date(2023, time.June, 30, 0, 0, 0, 0, time.UTC)),
+		PeriodStartDate: to.Ptr(time.Date(2023, time.January, 1, 0, 0, 0, 0, time.UTC))})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -670,14 +670,14 @@ func ExampleInvoicesClient_NewListByBillingProfilePager() {
 		// 							Kind: to.Ptr(armbilling.InvoiceDocumentTypeTaxReceipt),
 		// 						},
 		// 					},
-		// 					DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-16T17:32:28Z"); return t}()),
+		// 					DueDate: to.Ptr(time.Date(2023, time.February, 16, 17, 32, 28, 0, time.UTC)),
 		// 					FreeAzureCreditApplied: &armbilling.InvoicePropertiesFreeAzureCreditApplied{
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float32](0),
 		// 					},
-		// 					InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28Z"); return t}()),
-		// 					InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-15T17:32:28Z"); return t}()),
-		// 					InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28Z"); return t}()),
+		// 					InvoiceDate: to.Ptr(time.Date(2023, time.February, 1, 17, 32, 28, 0, time.UTC)),
+		// 					InvoicePeriodEndDate: to.Ptr(time.Date(2023, time.February, 15, 17, 32, 28, 0, time.UTC)),
+		// 					InvoicePeriodStartDate: to.Ptr(time.Date(2023, time.February, 1, 17, 32, 28, 0, time.UTC)),
 		// 					IsMonthlyInvoice: to.Ptr(false),
 		// 					PurchaseOrderNumber: to.Ptr("123456"),
 		// 					RebillDetails: &armbilling.InvoicePropertiesRebillDetails{
@@ -737,14 +737,14 @@ func ExampleInvoicesClient_NewListByBillingProfilePager() {
 		// 							Kind: to.Ptr(armbilling.InvoiceDocumentTypeTaxReceipt),
 		// 						},
 		// 					},
-		// 					DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-16T17:32:28Z"); return t}()),
+		// 					DueDate: to.Ptr(time.Date(2023, time.January, 16, 17, 32, 28, 0, time.UTC)),
 		// 					FreeAzureCreditApplied: &armbilling.InvoicePropertiesFreeAzureCreditApplied{
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float32](0),
 		// 					},
-		// 					InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:32:28Z"); return t}()),
-		// 					InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-15T17:32:28Z"); return t}()),
-		// 					InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:32:28Z"); return t}()),
+		// 					InvoiceDate: to.Ptr(time.Date(2023, time.January, 1, 17, 32, 28, 0, time.UTC)),
+		// 					InvoicePeriodEndDate: to.Ptr(time.Date(2023, time.January, 15, 17, 32, 28, 0, time.UTC)),
+		// 					InvoicePeriodStartDate: to.Ptr(time.Date(2023, time.January, 1, 17, 32, 28, 0, time.UTC)),
 		// 					IsMonthlyInvoice: to.Ptr(false),
 		// 					Payments: []*armbilling.Payment{
 		// 						{
@@ -752,7 +752,7 @@ func ExampleInvoicesClient_NewListByBillingProfilePager() {
 		// 								Currency: to.Ptr("USD"),
 		// 								Value: to.Ptr[float32](33.99),
 		// 							},
-		// 							Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-14T17:32:28Z"); return t}()),
+		// 							Date: to.Ptr(time.Date(2023, time.January, 14, 17, 32, 28, 0, time.UTC)),
 		// 							PaymentMethodFamily: to.Ptr(armbilling.PaymentMethodFamilyCreditCard),
 		// 							PaymentMethodType: to.Ptr("visa"),
 		// 							PaymentType: to.Ptr("debited"),
@@ -800,8 +800,8 @@ func ExampleInvoicesClient_NewListByBillingSubscriptionPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewInvoicesClient().NewListByBillingSubscriptionPager(&armbilling.InvoicesClientListByBillingSubscriptionOptions{
-		PeriodEndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-06-30"); return t }()),
-		PeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-01-01"); return t }())})
+		PeriodEndDate:   to.Ptr(time.Date(2023, time.June, 30, 0, 0, 0, 0, time.UTC)),
+		PeriodStartDate: to.Ptr(time.Date(2023, time.January, 1, 0, 0, 0, 0, time.UTC))})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -828,10 +828,10 @@ func ExampleInvoicesClient_NewListByBillingSubscriptionPager() {
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float32](33.99),
 		// 					},
-		// 					DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-16T17:32:28Z"); return t}()),
-		// 					InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28Z"); return t}()),
-		// 					InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-15T17:32:28Z"); return t}()),
-		// 					InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28Z"); return t}()),
+		// 					DueDate: to.Ptr(time.Date(2023, time.February, 16, 17, 32, 28, 0, time.UTC)),
+		// 					InvoiceDate: to.Ptr(time.Date(2023, time.February, 1, 17, 32, 28, 0, time.UTC)),
+		// 					InvoicePeriodEndDate: to.Ptr(time.Date(2023, time.February, 15, 17, 32, 28, 0, time.UTC)),
+		// 					InvoicePeriodStartDate: to.Ptr(time.Date(2023, time.February, 1, 17, 32, 28, 0, time.UTC)),
 		// 					InvoiceType: to.Ptr(armbilling.InvoiceTypeAzureServices),
 		// 					PurchaseOrderNumber: to.Ptr("123456"),
 		// 					Status: to.Ptr(armbilling.InvoiceStatusDue),
@@ -852,10 +852,10 @@ func ExampleInvoicesClient_NewListByBillingSubscriptionPager() {
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float32](55.99),
 		// 					},
-		// 					DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-16T17:32:28Z"); return t}()),
-		// 					InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28Z"); return t}()),
-		// 					InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-15T17:32:28Z"); return t}()),
-		// 					InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28Z"); return t}()),
+		// 					DueDate: to.Ptr(time.Date(2023, time.February, 16, 17, 32, 28, 0, time.UTC)),
+		// 					InvoiceDate: to.Ptr(time.Date(2023, time.February, 1, 17, 32, 28, 0, time.UTC)),
+		// 					InvoicePeriodEndDate: to.Ptr(time.Date(2023, time.February, 15, 17, 32, 28, 0, time.UTC)),
+		// 					InvoicePeriodStartDate: to.Ptr(time.Date(2023, time.February, 1, 17, 32, 28, 0, time.UTC)),
 		// 					InvoiceType: to.Ptr(armbilling.InvoiceTypeAzureMarketplace),
 		// 					PurchaseOrderNumber: to.Ptr("123456"),
 		// 					Status: to.Ptr(armbilling.InvoiceStatusDue),
@@ -882,10 +882,10 @@ func ExampleInvoicesClient_NewListByBillingSubscriptionPager() {
 		// 							Kind: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
 		// 						},
 		// 					},
-		// 					DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-16T17:32:28Z"); return t}()),
-		// 					InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:32:28Z"); return t}()),
-		// 					InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-15T17:32:28Z"); return t}()),
-		// 					InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:32:28Z"); return t}()),
+		// 					DueDate: to.Ptr(time.Date(2023, time.January, 16, 17, 32, 28, 0, time.UTC)),
+		// 					InvoiceDate: to.Ptr(time.Date(2023, time.January, 1, 17, 32, 28, 0, time.UTC)),
+		// 					InvoicePeriodEndDate: to.Ptr(time.Date(2023, time.January, 15, 17, 32, 28, 0, time.UTC)),
+		// 					InvoicePeriodStartDate: to.Ptr(time.Date(2023, time.January, 1, 17, 32, 28, 0, time.UTC)),
 		// 					InvoiceType: to.Ptr(armbilling.InvoiceTypeAzureSupport),
 		// 					Payments: []*armbilling.Payment{
 		// 						{
@@ -893,7 +893,7 @@ func ExampleInvoicesClient_NewListByBillingSubscriptionPager() {
 		// 								Currency: to.Ptr("USD"),
 		// 								Value: to.Ptr[float32](2000),
 		// 							},
-		// 							Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-14T17:32:28Z"); return t}()),
+		// 							Date: to.Ptr(time.Date(2023, time.January, 14, 17, 32, 28, 0, time.UTC)),
 		// 							PaymentMethodFamily: to.Ptr(armbilling.PaymentMethodFamilyCreditCard),
 		// 							PaymentMethodType: to.Ptr("visa"),
 		// 							PaymentType: to.Ptr("credited"),

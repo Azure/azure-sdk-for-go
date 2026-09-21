@@ -96,7 +96,7 @@ func ExampleConnectionTypeClient_Get() {
 	// 		Name: to.Ptr("myCT"),
 	// 		ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount22/connectionTypes/myCT"),
 	// 		Properties: &armautomation.ConnectionTypeProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T03:47:53.433+00:00"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.March, 27, 3, 47, 53, 433000000, time.UTC)),
 	// 			FieldDefinitions: map[string]*armautomation.FieldDefinition{
 	// 				"myBoolField": &armautomation.FieldDefinition{
 	// 					Type: to.Ptr("bool"),
@@ -115,7 +115,7 @@ func ExampleConnectionTypeClient_Get() {
 	// 				},
 	// 			},
 	// 			IsGlobal: to.Ptr(false),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T03:47:53.557+00:00"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 3, 47, 53, 557000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -151,7 +151,7 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 				Name: to.Ptr("Azure"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/Azure"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2014-03-18T23:02:40.613+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2014, time.March, 18, 23, 2, 40, 613000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"AutomationCertificateName": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("System.String"),
@@ -165,14 +165,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(true),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2014-03-18T23:02:40.74+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2014, time.March, 18, 23, 2, 40, 740000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("AzureClassicCertificate"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/AzureClassicCertificate"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-04-25T23:54:02.65+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2016, time.April, 25, 23, 54, 2, 650000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"CertificateAssetName": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("System.String"),
@@ -191,14 +191,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(true),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-04-25T23:54:03.167+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2016, time.April, 25, 23, 54, 3, 167000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("AzureServicePrincipal"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/AzureServicePrincipal"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-16T23:08:41.853+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2016, time.March, 16, 23, 8, 41, 853000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"ApplicationId": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("System.String"),
@@ -222,14 +222,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(true),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-16T23:08:42.407+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2016, time.March, 16, 23, 8, 42, 407000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:14.43+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 14, 430000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -248,14 +248,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:14.51+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 14, 510000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT0"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT0"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:14.837+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 14, 837000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -274,14 +274,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:14.853+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 14, 853000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT1"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT1"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:15.04+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 15, 40000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -300,14 +300,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:15.057+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 15, 57000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT10"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT10"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:17.12+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 17, 120000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -326,14 +326,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:17.15+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 17, 150000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT100"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT100"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:36.73+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 36, 730000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -352,14 +352,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:36.76+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 36, 760000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT101"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT101"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:36.963+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 36, 963000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -378,14 +378,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:36.993+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 36, 993000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT102"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT102"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:37.197+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 37, 197000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -404,14 +404,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:37.213+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 37, 213000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT103"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT103"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:37.417+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 37, 417000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -430,14 +430,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:37.43+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 37, 430000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT104"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT104"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:37.633+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 37, 633000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -456,14 +456,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:37.65+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 37, 650000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT105"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT105"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:37.837+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 37, 837000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -482,14 +482,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:37.883+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 37, 883000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT106"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT106"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:38.073+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 38, 73000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -508,14 +508,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:38.087+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 38, 87000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT107"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT107"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:38.277+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 38, 277000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -534,14 +534,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:38.29+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 38, 290000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT108"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT108"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:38.493+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 38, 493000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -560,14 +560,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:38.51+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 38, 510000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT109"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT109"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:38.697+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 38, 697000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -586,14 +586,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:38.713+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 38, 713000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT11"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT11"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:17.337+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 17, 337000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -612,14 +612,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:17.383+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 17, 383000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT110"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT110"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:38.93+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 38, 930000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -638,14 +638,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:38.947+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 38, 947000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT111"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT111"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:39.15+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 39, 150000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -664,14 +664,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:39.167+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 39, 167000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT112"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT112"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:39.353+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 39, 353000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -690,14 +690,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:39.37+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 39, 370000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT113"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT113"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:39.557+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 39, 557000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -716,14 +716,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:39.573+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 39, 573000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT114"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT114"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:39.777+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 39, 777000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -742,14 +742,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:39.79+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 39, 790000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT115"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT115"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:39.98+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 39, 980000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -768,14 +768,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:39.993+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 39, 993000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT116"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT116"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:40.18+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 40, 180000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -794,14 +794,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:40.197+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 40, 197000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT117"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT117"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:40.417+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 40, 417000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -820,14 +820,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:40.43+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 40, 430000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT118"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT118"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:40.633+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 40, 633000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -846,14 +846,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:40.65+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 40, 650000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT119"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT119"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:40.837+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 40, 837000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -872,14 +872,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:40.853+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 40, 853000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT12"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT12"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:17.587+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 17, 587000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -898,14 +898,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:17.603+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 17, 603000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT120"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT120"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:41.04+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 41, 40000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -924,14 +924,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:41.057+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 41, 57000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT121"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT121"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:41.26+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 41, 260000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -950,14 +950,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:41.277+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 41, 277000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT122"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT122"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:41.48+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 41, 480000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -976,14 +976,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:41.557+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 41, 557000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT123"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT123"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:41.743+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 41, 743000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1002,14 +1002,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:41.76+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 41, 760000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT124"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT124"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:41.947+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 41, 947000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1028,14 +1028,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:41.963+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 41, 963000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT125"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT125"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:42.18+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 42, 180000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1054,14 +1054,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:42.197+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 42, 197000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT126"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT126"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:42.383+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 42, 383000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1080,14 +1080,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:42.4+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 42, 400000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT127"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT127"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:42.603+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 42, 603000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1106,14 +1106,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:42.62+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 42, 620000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT128"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT128"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:42.823+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 42, 823000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1132,14 +1132,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:42.837+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 42, 837000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT129"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT129"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:43.027+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 43, 27000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1158,14 +1158,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:43.04+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 43, 40000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT13"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT13"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:17.79+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 17, 790000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1184,14 +1184,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:17.807+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 17, 807000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT130"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT130"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:43.243+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 43, 243000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1210,14 +1210,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:43.26+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 43, 260000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT131"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT131"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:43.447+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 43, 447000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1236,14 +1236,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:43.463+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 43, 463000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT132"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT132"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:43.65+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 43, 650000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1262,14 +1262,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:43.667+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 43, 667000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT133"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT133"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:43.87+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 43, 870000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1288,14 +1288,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:43.887+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 43, 887000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT134"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT134"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:44.073+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 44, 73000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1314,14 +1314,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:44.087+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 44, 87000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT135"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT135"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:44.29+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 44, 290000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1340,14 +1340,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:44.307+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 44, 307000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT136"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT136"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:44.493+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 44, 493000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1366,14 +1366,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:44.51+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 44, 510000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT137"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT137"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:44.76+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 44, 760000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1392,14 +1392,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:44.807+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 44, 807000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT138"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT138"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:45.01+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 45, 10000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1418,14 +1418,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:45.027+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 45, 27000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT139"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT139"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:45.213+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 45, 213000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1444,14 +1444,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:45.23+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 45, 230000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT14"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT14"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:17.993+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 17, 993000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1470,14 +1470,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:18.01+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 18, 10000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT140"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT140"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:45.433+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 45, 433000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1496,14 +1496,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:45.463+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 45, 463000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT141"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT141"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:45.65+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 45, 650000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1522,14 +1522,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:45.667+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 45, 667000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT142"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT142"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:45.883+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 45, 883000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1548,14 +1548,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:45.917+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 45, 917000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT143"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT143"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:46.103+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 46, 103000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1574,14 +1574,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:46.133+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 46, 133000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT144"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT144"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:46.34+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 46, 340000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1600,14 +1600,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:46.353+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 46, 353000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT145"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT145"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:46.54+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 46, 540000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1626,14 +1626,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:46.557+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 46, 557000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT146"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT146"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:46.76+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 46, 760000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1652,14 +1652,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:46.777+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 46, 777000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT147"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT147"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:46.963+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 46, 963000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1678,14 +1678,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:46.98+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 46, 980000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT148"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT148"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:47.197+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 47, 197000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1704,14 +1704,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:47.213+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 47, 213000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT149"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT149"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:47.417+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 47, 417000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1730,14 +1730,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:47.43+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 47, 430000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT15"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT15"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:18.213+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 18, 213000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1756,14 +1756,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:18.227+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 18, 227000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT150"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT150"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:47.637+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 47, 637000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1782,14 +1782,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:47.65+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 47, 650000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT151"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT151"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:47.853+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 47, 853000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1808,14 +1808,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:47.87+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 47, 870000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT152"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT152"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:48.103+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 48, 103000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1834,14 +1834,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:48.167+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 48, 167000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT153"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT153"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:48.37+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 48, 370000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1860,14 +1860,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:48.4+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 48, 400000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT154"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT154"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:48.59+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 48, 590000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1886,14 +1886,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:48.667+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 48, 667000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT155"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT155"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:48.887+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 48, 887000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1912,14 +1912,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:48.93+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 48, 930000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT156"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT156"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:49.12+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 49, 120000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1938,14 +1938,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:49.167+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 49, 167000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT157"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT157"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:49.37+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 49, 370000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1964,14 +1964,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:49.4+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 49, 400000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT158"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT158"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:49.603+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 49, 603000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -1990,14 +1990,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:49.637+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 49, 637000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT159"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT159"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:49.84+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 49, 840000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2016,14 +2016,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:49.87+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 49, 870000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT16"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT16"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:18.417+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 18, 417000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2042,14 +2042,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:18.43+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 18, 430000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT160"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT160"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:50.09+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 50, 90000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2068,14 +2068,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:50.103+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 50, 103000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT161"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT161"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:50.29+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 50, 290000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2094,14 +2094,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:50.307+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 50, 307000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT162"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT162"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:50.493+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 50, 493000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2120,14 +2120,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:50.51+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 50, 510000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT163"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT163"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:50.697+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 50, 697000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2146,14 +2146,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:50.713+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 50, 713000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT164"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT164"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:50.917+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 50, 917000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2172,14 +2172,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:50.933+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 50, 933000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT165"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT165"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:51.12+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 51, 120000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2198,14 +2198,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:51.137+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 51, 137000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT166"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT166"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:51.34+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 51, 340000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2224,14 +2224,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:51.353+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 51, 353000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT167"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT167"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:51.54+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 51, 540000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2250,14 +2250,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:51.557+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 51, 557000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT168"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT168"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:51.743+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 51, 743000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2276,14 +2276,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:51.76+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 51, 760000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT169"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT169"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:51.98+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 51, 980000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2302,14 +2302,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:51.98+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 51, 980000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT17"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT17"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:18.62+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 18, 620000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2328,14 +2328,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:18.633+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 18, 633000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT170"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT170"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:52.213+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 52, 213000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2354,14 +2354,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:52.23+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 52, 230000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT171"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT171"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:52.417+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 52, 417000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2380,14 +2380,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:52.433+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 52, 433000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT172"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT172"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:52.637+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 52, 637000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2406,14 +2406,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:52.65+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 52, 650000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT173"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT173"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:52.84+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 52, 840000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2432,14 +2432,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:52.87+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 52, 870000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT174"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT174"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:53.057+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 53, 57000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2458,14 +2458,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:53.073+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 53, 73000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT175"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT175"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:53.26+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 53, 260000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2484,14 +2484,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:53.29+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 53, 290000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT18"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT18"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:18.82+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 18, 820000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2510,14 +2510,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:18.837+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 18, 837000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT19"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT19"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:19.04+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 19, 40000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2536,14 +2536,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:19.057+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 19, 57000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT2"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT2"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:15.26+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 15, 260000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2562,14 +2562,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:15.273+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 15, 273000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT20"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT20"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:19.243+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 19, 243000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2588,14 +2588,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:19.26+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 19, 260000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT21"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT21"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:19.463+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 19, 463000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2614,14 +2614,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:19.477+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 19, 477000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT22"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT22"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:19.667+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 19, 667000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2640,14 +2640,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:19.68+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 19, 680000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT23"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT23"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:19.883+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 19, 883000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2666,14 +2666,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:19.9+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 19, 900000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT24"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT24"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:20.103+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 20, 103000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2692,14 +2692,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:20.12+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 20, 120000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT25"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT25"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:20.4+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 20, 400000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2718,14 +2718,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:20.417+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 20, 417000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT26"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT26"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:20.65+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 20, 650000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2744,7 +2744,7 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:20.667+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 20, 667000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -2782,7 +2782,7 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 				Name: to.Ptr("myCT27"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT27"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:20.87+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 20, 870000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2801,14 +2801,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:20.883+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 20, 883000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT28"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT28"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:21.07+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 21, 70000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2827,14 +2827,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:21.087+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 21, 87000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT29"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT29"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:21.29+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 21, 290000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2853,14 +2853,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:21.307+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 21, 307000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT3"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT3"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:15.477+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 15, 477000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2879,14 +2879,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:15.493+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 15, 493000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT30"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT30"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:21.523+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 21, 523000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2905,14 +2905,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:21.54+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 21, 540000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT31"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT31"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:21.727+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 21, 727000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2931,14 +2931,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:21.743+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 21, 743000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT32"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT32"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:21.93+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 21, 930000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2957,14 +2957,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:21.947+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 21, 947000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT33"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT33"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:22.133+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 22, 133000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -2983,14 +2983,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:22.15+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 22, 150000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT34"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT34"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:22.353+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 22, 353000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3009,14 +3009,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:22.37+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 22, 370000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT35"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT35"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:22.57+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 22, 570000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3035,14 +3035,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:22.587+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 22, 587000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT36"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT36"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:22.773+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 22, 773000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3061,14 +3061,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:22.79+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 22, 790000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT37"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT37"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:22.977+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 22, 977000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3087,14 +3087,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:22.993+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 22, 993000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT38"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT38"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:23.197+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 23, 197000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3113,14 +3113,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:23.213+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 23, 213000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT39"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT39"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:23.417+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 23, 417000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3139,14 +3139,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:23.447+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 23, 447000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT4"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT4"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:15.68+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 15, 680000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3165,14 +3165,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:15.697+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 15, 697000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT40"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT40"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:23.633+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 23, 633000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3191,14 +3191,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:23.65+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 23, 650000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT41"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT41"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:23.853+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 23, 853000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3217,14 +3217,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:23.87+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 23, 870000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT42"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT42"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:24.057+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 24, 57000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3243,14 +3243,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:24.07+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 24, 70000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT43"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT43"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:24.26+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 24, 260000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3269,14 +3269,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:24.273+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 24, 273000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT44"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT44"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:24.477+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 24, 477000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3295,14 +3295,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:24.493+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 24, 493000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT45"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT45"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:24.68+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 24, 680000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3321,14 +3321,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:24.697+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 24, 697000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT46"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT46"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:24.883+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 24, 883000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3347,14 +3347,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:24.9+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 24, 900000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT47"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT47"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:25.103+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 25, 103000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3373,14 +3373,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:25.12+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 25, 120000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT48"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT48"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:25.307+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 25, 307000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3399,14 +3399,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:25.32+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 25, 320000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT49"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT49"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:25.523+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 25, 523000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3425,14 +3425,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:25.54+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 25, 540000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT5"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT5"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:15.9+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 15, 900000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3451,14 +3451,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:15.917+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 15, 917000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT50"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT50"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:25.727+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 25, 727000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3477,14 +3477,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:25.743+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 25, 743000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT51"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT51"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:25.93+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 25, 930000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3503,14 +3503,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:25.947+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 25, 947000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT52"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT52"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:26.133+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 26, 133000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3529,14 +3529,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:26.167+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 26, 167000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT53"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT53"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:26.353+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 26, 353000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3555,14 +3555,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:26.37+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 26, 370000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT54"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT54"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:26.57+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 26, 570000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3581,14 +3581,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:26.587+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 26, 587000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT55"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT55"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:26.773+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 26, 773000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3607,14 +3607,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:26.79+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 26, 790000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT56"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT56"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:26.977+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 26, 977000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3633,14 +3633,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:26.993+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 26, 993000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT57"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT57"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:27.197+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 27, 197000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3659,14 +3659,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:27.213+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 27, 213000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT58"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT58"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:27.477+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 27, 477000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3685,14 +3685,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:27.493+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 27, 493000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT59"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT59"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:27.68+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 27, 680000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3711,14 +3711,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:27.697+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 27, 697000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT6"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT6"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:16.133+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 16, 133000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3737,14 +3737,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:16.167+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 16, 167000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT60"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT60"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:27.917+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 27, 917000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3763,14 +3763,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:27.947+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 27, 947000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT61"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT61"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:28.133+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 28, 133000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3789,14 +3789,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:28.15+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 28, 150000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT62"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT62"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:28.337+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 28, 337000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3815,14 +3815,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:28.353+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 28, 353000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT63"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT63"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:28.587+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 28, 587000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3841,14 +3841,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:28.587+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 28, 587000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT64"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT64"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:28.79+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 28, 790000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3867,14 +3867,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:28.807+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 28, 807000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT65"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT65"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:28.993+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 28, 993000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3893,14 +3893,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:29.01+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 29, 10000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT66"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT66"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:29.197+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 29, 197000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3919,14 +3919,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:29.213+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 29, 213000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT67"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT67"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:29.417+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 29, 417000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3945,14 +3945,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:29.463+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 29, 463000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT68"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT68"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:29.65+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 29, 650000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3971,14 +3971,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:29.697+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 29, 697000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT69"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT69"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:29.883+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 29, 883000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -3997,14 +3997,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:29.9+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 29, 900000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT7"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT7"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:16.4+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 16, 400000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4023,14 +4023,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:16.447+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 16, 447000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT70"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT70"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:30.087+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 30, 87000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4049,14 +4049,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:30.12+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 30, 120000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT71"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT71"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:30.32+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 30, 320000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4075,14 +4075,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:30.353+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 30, 353000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT72"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT72"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:30.557+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 30, 557000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4101,14 +4101,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:30.57+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 30, 570000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT73"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT73"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:30.773+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 30, 773000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4127,14 +4127,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:30.79+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 30, 790000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT74"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT74"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:30.98+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 30, 980000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4153,14 +4153,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:30.98+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 30, 980000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT75"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT75"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:31.18+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 31, 180000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4179,14 +4179,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:31.2+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 31, 200000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT76"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT76"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:31.383+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 31, 383000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4205,14 +4205,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:31.4+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 31, 400000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT77"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT77"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:31.587+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 31, 587000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4231,14 +4231,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:31.62+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 31, 620000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT78"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT78"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:31.837+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 31, 837000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4257,14 +4257,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:31.853+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 31, 853000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT79"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT79"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:32.057+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 32, 57000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4283,14 +4283,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:32.057+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 32, 57000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT8"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT8"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:16.633+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 16, 633000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4309,14 +4309,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:16.68+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 16, 680000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT80"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT80"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:32.26+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 32, 260000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4335,14 +4335,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:32.277+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 32, 277000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT81"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT81"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:32.493+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 32, 493000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4361,14 +4361,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:32.51+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 32, 510000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT82"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT82"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:32.73+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 32, 730000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4387,14 +4387,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:32.743+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 32, 743000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT83"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT83"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:32.93+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 32, 930000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4413,14 +4413,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:32.947+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 32, 947000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT84"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT84"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:33.133+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 33, 133000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4439,14 +4439,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:33.197+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 33, 197000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT85"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT85"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:33.4+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 33, 400000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4465,14 +4465,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:33.417+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 33, 417000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT86"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT86"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:33.603+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 33, 603000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4491,14 +4491,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:33.62+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 33, 620000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT87"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT87"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:33.82+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 33, 820000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4517,14 +4517,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:33.837+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 33, 837000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT88"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT88"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:34.027+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 34, 27000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4543,14 +4543,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:34.04+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 34, 40000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT89"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT89"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:34.23+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 34, 230000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4569,14 +4569,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:34.243+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 34, 243000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT9"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT9"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:16.883+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 16, 883000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4595,14 +4595,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:16.917+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 16, 917000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT90"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT90"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:34.43+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 34, 430000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4621,14 +4621,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:34.48+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 34, 480000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT91"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT91"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:34.667+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 34, 667000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4647,14 +4647,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:34.713+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 34, 713000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT92"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT92"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:34.9+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 34, 900000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4673,14 +4673,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:34.947+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 34, 947000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT93"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT93"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:35.133+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 35, 133000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4699,14 +4699,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:35.15+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 35, 150000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT94"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT94"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:35.37+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 35, 370000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4725,14 +4725,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:35.417+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 35, 417000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT95"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT95"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:35.603+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 35, 603000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4751,14 +4751,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:35.62+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 35, 620000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT96"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT96"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:35.823+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 35, 823000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4777,14 +4777,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:35.837+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 35, 837000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT97"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT97"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:36.027+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 36, 27000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4803,14 +4803,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:36.04+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 36, 40000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT98"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT98"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:36.243+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 36, 243000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4829,14 +4829,14 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:36.29+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 36, 290000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myCT99"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount25/connectionTypes/myCT99"),
 		// 				Properties: &armautomation.ConnectionTypeProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:36.493+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 36, 493000000, time.UTC)),
 		// 					FieldDefinitions: map[string]*armautomation.FieldDefinition{
 		// 						"myBoolField": &armautomation.FieldDefinition{
 		// 							Type: to.Ptr("bool"),
@@ -4855,7 +4855,7 @@ func ExampleConnectionTypeClient_NewListByAutomationAccountPager_getConnectionTy
 		// 						},
 		// 					},
 		// 					IsGlobal: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T06:25:36.527+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 6, 25, 36, 527000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

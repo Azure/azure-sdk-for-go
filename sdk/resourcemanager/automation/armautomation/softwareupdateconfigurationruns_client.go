@@ -30,6 +30,9 @@ type SoftwareUpdateConfigurationRunsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSoftwareUpdateConfigurationRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SoftwareUpdateConfigurationRunsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *SoftwareUpdateConfigurationRunsClient) GetByID(ctx context.Context
 	if err != nil {
 		return SoftwareUpdateConfigurationRunsClientGetByIDResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SoftwareUpdateConfigurationRunsClientGetByIDResponse{}, err
-	}
-	resp, err := client.getByIDHandleResponse(httpResp)
-	return resp, err
+	return client.getByIDHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByIDCreateRequest creates the GetByID request.
 func (client *SoftwareUpdateConfigurationRunsClient) getByIDCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, softwareUpdateConfigurationRunID string, options *SoftwareUpdateConfigurationRunsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/softwareUpdateConfigurationRuns/{softwareUpdateConfigurationRunId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -104,8 +102,11 @@ func (client *SoftwareUpdateConfigurationRunsClient) getByIDCreateRequest(ctx co
 }
 
 // getByIDHandleResponse handles the GetByID response.
-func (client *SoftwareUpdateConfigurationRunsClient) getByIDHandleResponse(resp *http.Response) (SoftwareUpdateConfigurationRunsClientGetByIDResponse, error) {
+func (client *SoftwareUpdateConfigurationRunsClient) getByIDHandleResponse(resp *http.Response, successCodes ...int) (SoftwareUpdateConfigurationRunsClientGetByIDResponse, error) {
 	result := SoftwareUpdateConfigurationRunsClientGetByIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwareUpdateConfigurationRun); err != nil {
 		return SoftwareUpdateConfigurationRunsClientGetByIDResponse{}, err
 	}
@@ -132,19 +133,14 @@ func (client *SoftwareUpdateConfigurationRunsClient) List(ctx context.Context, r
 	if err != nil {
 		return SoftwareUpdateConfigurationRunsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SoftwareUpdateConfigurationRunsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
 func (client *SoftwareUpdateConfigurationRunsClient) listCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *SoftwareUpdateConfigurationRunsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/softwareUpdateConfigurationRuns"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -179,8 +175,11 @@ func (client *SoftwareUpdateConfigurationRunsClient) listCreateRequest(ctx conte
 }
 
 // listHandleResponse handles the List response.
-func (client *SoftwareUpdateConfigurationRunsClient) listHandleResponse(resp *http.Response) (SoftwareUpdateConfigurationRunsClientListResponse, error) {
+func (client *SoftwareUpdateConfigurationRunsClient) listHandleResponse(resp *http.Response, successCodes ...int) (SoftwareUpdateConfigurationRunsClientListResponse, error) {
 	result := SoftwareUpdateConfigurationRunsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwareUpdateConfigurationRunListResult); err != nil {
 		return SoftwareUpdateConfigurationRunsClientListResponse{}, err
 	}

@@ -30,6 +30,9 @@ type ResourceReferenceClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewResourceReferenceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceReferenceClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -60,19 +63,14 @@ func (client *ResourceReferenceClient) GetByTargetResources(ctx context.Context,
 	if err != nil {
 		return ResourceReferenceClientGetByTargetResourcesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceReferenceClientGetByTargetResourcesResponse{}, err
-	}
-	resp, err := client.getByTargetResourcesHandleResponse(httpResp)
-	return resp, err
+	return client.getByTargetResourcesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByTargetResourcesCreateRequest creates the GetByTargetResources request.
 func (client *ResourceReferenceClient) getByTargetResourcesCreateRequest(ctx context.Context, parameters ResourceReferenceRequest, _ *ResourceReferenceClientGetByTargetResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/getDnsResourceReference"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -91,8 +89,11 @@ func (client *ResourceReferenceClient) getByTargetResourcesCreateRequest(ctx con
 }
 
 // getByTargetResourcesHandleResponse handles the GetByTargetResources response.
-func (client *ResourceReferenceClient) getByTargetResourcesHandleResponse(resp *http.Response) (ResourceReferenceClientGetByTargetResourcesResponse, error) {
+func (client *ResourceReferenceClient) getByTargetResourcesHandleResponse(resp *http.Response, successCodes ...int) (ResourceReferenceClientGetByTargetResourcesResponse, error) {
 	result := ResourceReferenceClientGetByTargetResourcesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceReferenceResult); err != nil {
 		return ResourceReferenceClientGetByTargetResourcesResponse{}, err
 	}

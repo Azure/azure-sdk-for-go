@@ -29,13 +29,13 @@ func ExampleRoutePoliciesClient_BeginCommitConfiguration() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.RoutePoliciesClientCommitConfigurationResponse{
-	// 	CommonPostActionResponseForStateUpdate: &armmanagednetworkfabric.CommonPostActionResponseForStateUpdate{
+	// 	CommonPostActionResponseForStateUpdate: armmanagednetworkfabric.CommonPostActionResponseForStateUpdate{
 	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 	// 	},
 	// }
@@ -124,13 +124,13 @@ func ExampleRoutePoliciesClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.RoutePoliciesClientCreateResponse{
-	// 	RoutePolicy: &armmanagednetworkfabric.RoutePolicy{
+	// 	RoutePolicy: armmanagednetworkfabric.RoutePolicy{
 	// 		Properties: &armmanagednetworkfabric.RoutePolicyProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			DefaultAction: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
@@ -204,10 +204,10 @@ func ExampleRoutePoliciesClient_BeginCreate() {
 	// 		SystemData: &armmanagednetworkfabric.SystemData{
 	// 			CreatedBy: to.Ptr("email@address.com"),
 	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("UserId"),
 	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -230,7 +230,7 @@ func ExampleRoutePoliciesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -253,7 +253,7 @@ func ExampleRoutePoliciesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.RoutePoliciesClientGetResponse{
-	// 	RoutePolicy: &armmanagednetworkfabric.RoutePolicy{
+	// 	RoutePolicy: armmanagednetworkfabric.RoutePolicy{
 	// 		Properties: &armmanagednetworkfabric.RoutePolicyProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			DefaultAction: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
@@ -330,10 +330,10 @@ func ExampleRoutePoliciesClient_Get() {
 	// 		SystemData: &armmanagednetworkfabric.SystemData{
 	// 			CreatedBy: to.Ptr("email@address.com"),
 	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("UserId"),
 	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -441,10 +441,10 @@ func ExampleRoutePoliciesClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armmanagednetworkfabric.SystemData{
 		// 					CreatedBy: to.Ptr("email@address.com"),
 		// 					CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("UserId"),
 		// 					LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -556,10 +556,10 @@ func ExampleRoutePoliciesClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armmanagednetworkfabric.SystemData{
 		// 					CreatedBy: to.Ptr("email@address.com"),
 		// 					CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("UserId"),
 		// 					LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -647,13 +647,13 @@ func ExampleRoutePoliciesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.RoutePoliciesClientUpdateResponse{
-	// 	RoutePolicy: &armmanagednetworkfabric.RoutePolicy{
+	// 	RoutePolicy: armmanagednetworkfabric.RoutePolicy{
 	// 		Properties: &armmanagednetworkfabric.RoutePolicyProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			DefaultAction: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
@@ -727,10 +727,10 @@ func ExampleRoutePoliciesClient_BeginUpdate() {
 	// 		SystemData: &armmanagednetworkfabric.SystemData{
 	// 			CreatedBy: to.Ptr("email@address.com"),
 	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("UserId"),
 	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -758,13 +758,13 @@ func ExampleRoutePoliciesClient_BeginUpdateAdministrativeState() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.RoutePoliciesClientUpdateAdministrativeStateResponse{
-	// 	UpdateAdministrativeStateResponse: &armmanagednetworkfabric.UpdateAdministrativeStateResponse{
+	// 	UpdateAdministrativeStateResponse: armmanagednetworkfabric.UpdateAdministrativeStateResponse{
 	// 		Status: to.Ptr("Failed"),
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr(""),
@@ -801,13 +801,13 @@ func ExampleRoutePoliciesClient_BeginValidateConfiguration() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.RoutePoliciesClientValidateConfigurationResponse{
-	// 	ValidateConfigurationResponse: &armmanagednetworkfabric.ValidateConfigurationResponse{
+	// 	ValidateConfigurationResponse: armmanagednetworkfabric.ValidateConfigurationResponse{
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr(""),
 	// 			Message: to.Ptr(""),

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/BackupInstanceOperations/GetRecoveryPoint.json
+// Generated from example definition: 2026-06-01/BackupInstanceOperations/GetRecoveryPoint.json
 func ExampleRecoveryPointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,26 +40,26 @@ func ExampleRecoveryPointsClient_Get() {
 	// 			RecoveryPointDataStoresDetails: []*armdataprotection.RecoveryPointDataStoreDetails{
 	// 				{
 	// 					Type: to.Ptr("Snapshot"),
-	// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00Z"); return t}()),
+	// 					CreationTime: to.Ptr(time.Date(2019, time.March, 1, 13, 0, 0, 0, time.UTC)),
 	// 					ID: to.Ptr("0ff03512-b333-4509-a6c7-12164c8b1dce"),
 	// 					MetaData: to.Ptr("123456"),
 	// 				},
 	// 				{
 	// 					Type: to.Ptr("BackupStorage"),
-	// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00Z"); return t}()),
+	// 					CreationTime: to.Ptr(time.Date(2019, time.March, 1, 13, 0, 0, 0, time.UTC)),
 	// 					ID: to.Ptr("5d8cfd30-722e-4bab-85f6-4a9d01ffc6f1"),
 	// 					MetaData: to.Ptr("123456"),
 	// 				},
 	// 			},
 	// 			RecoveryPointState: to.Ptr(armdataprotection.RecoveryPointCompletionStateCompleted),
-	// 			RecoveryPointTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00Z"); return t}()),
+	// 			RecoveryPointTime: to.Ptr(time.Date(2019, time.March, 1, 13, 0, 0, 0, time.UTC)),
 	// 			RecoveryPointType: to.Ptr("Full"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01/BackupInstanceOperations/ListRecoveryPoints.json
+// Generated from example definition: 2026-06-01/BackupInstanceOperations/ListRecoveryPoints.json
 func ExampleRecoveryPointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,25 +89,25 @@ func ExampleRecoveryPointsClient_NewListPager() {
 		// 				Type: to.Ptr("microsoft.dataprotection/backupvaults/backupInstances/recoveryPoints"),
 		// 				ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/HelloTest/providers/Microsoft.DataProtection/backupVaults/HelloTestVault/backupInstances/653213d-c5b3-44f6-a0d9-db3c4f9d8e34/recoveryPoints/7fb2cddd-c5b3-44f6-a0d9-db3c4f9d5f25"),
 		// 				Properties: &armdataprotection.AzureBackupDiscreteRecoveryPoint{
-		// 					ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T13:00:00Z"); return t}()),
+		// 					ExpiryTime: to.Ptr(time.Date(2023, time.March, 1, 13, 0, 0, 0, time.UTC)),
 		// 					FriendlyName: to.Ptr("panbha4"),
 		// 					ObjectType: to.Ptr("AzureBackupDiscreteRecoveryPoint"),
 		// 					RecoveryPointDataStoresDetails: []*armdataprotection.RecoveryPointDataStoreDetails{
 		// 						{
 		// 							Type: to.Ptr("Snapshot"),
-		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00Z"); return t}()),
+		// 							CreationTime: to.Ptr(time.Date(2019, time.March, 1, 13, 0, 0, 0, time.UTC)),
 		// 							ID: to.Ptr("0ff03512-b333-4509-a6c7-12164c8b1dce"),
 		// 							MetaData: to.Ptr("123456"),
 		// 						},
 		// 						{
 		// 							Type: to.Ptr("BackupStorage"),
-		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00Z"); return t}()),
+		// 							CreationTime: to.Ptr(time.Date(2019, time.March, 1, 13, 0, 0, 0, time.UTC)),
 		// 							ID: to.Ptr("5d8cfd30-722e-4bab-85f6-4a9d01ffc6f1"),
 		// 							MetaData: to.Ptr("123456"),
 		// 						},
 		// 					},
 		// 					RecoveryPointState: to.Ptr(armdataprotection.RecoveryPointCompletionStateCompleted),
-		// 					RecoveryPointTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00Z"); return t}()),
+		// 					RecoveryPointTime: to.Ptr(time.Date(2019, time.March, 1, 13, 0, 0, 0, time.UTC)),
 		// 					RecoveryPointType: to.Ptr("Full"),
 		// 				},
 		// 			},
@@ -121,19 +121,19 @@ func ExampleRecoveryPointsClient_NewListPager() {
 		// 					RecoveryPointDataStoresDetails: []*armdataprotection.RecoveryPointDataStoreDetails{
 		// 						{
 		// 							Type: to.Ptr("Snapshot"),
-		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00Z"); return t}()),
+		// 							CreationTime: to.Ptr(time.Date(2019, time.March, 1, 13, 0, 0, 0, time.UTC)),
 		// 							ID: to.Ptr("808cfd30-722e-4bab-85f6-4a9d01ffc6f2"),
 		// 							MetaData: to.Ptr("123456"),
 		// 						},
 		// 						{
 		// 							Type: to.Ptr("BackupStorage"),
-		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00Z"); return t}()),
+		// 							CreationTime: to.Ptr(time.Date(2019, time.March, 1, 13, 0, 0, 0, time.UTC)),
 		// 							ID: to.Ptr("798cfd30-722e-4bab-85f6-4a9d01ffc6f3"),
 		// 							MetaData: to.Ptr("123456"),
 		// 						},
 		// 					},
 		// 					RecoveryPointState: to.Ptr(armdataprotection.RecoveryPointCompletionStateCompleted),
-		// 					RecoveryPointTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00Z"); return t}()),
+		// 					RecoveryPointTime: to.Ptr(time.Date(2019, time.March, 1, 13, 0, 0, 0, time.UTC)),
 		// 					RecoveryPointType: to.Ptr("Full"),
 		// 				},
 		// 			},

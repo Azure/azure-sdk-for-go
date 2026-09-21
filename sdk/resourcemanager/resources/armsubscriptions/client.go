@@ -58,12 +58,7 @@ func (client *Client) CheckZonePeers(ctx context.Context, subscriptionID string,
 	if err != nil {
 		return ClientCheckZonePeersResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientCheckZonePeersResponse{}, err
-	}
-	resp, err := client.checkZonePeersHandleResponse(httpResp)
-	return resp, err
+	return client.checkZonePeersHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkZonePeersCreateRequest creates the CheckZonePeers request.
@@ -89,8 +84,11 @@ func (client *Client) checkZonePeersCreateRequest(ctx context.Context, subscript
 }
 
 // checkZonePeersHandleResponse handles the CheckZonePeers response.
-func (client *Client) checkZonePeersHandleResponse(resp *http.Response) (ClientCheckZonePeersResponse, error) {
+func (client *Client) checkZonePeersHandleResponse(resp *http.Response, successCodes ...int) (ClientCheckZonePeersResponse, error) {
 	result := ClientCheckZonePeersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckZonePeersResult); err != nil {
 		return ClientCheckZonePeersResponse{}, err
 	}
@@ -115,12 +113,7 @@ func (client *Client) Get(ctx context.Context, subscriptionID string, options *C
 	if err != nil {
 		return ClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -142,8 +135,11 @@ func (client *Client) getCreateRequest(ctx context.Context, subscriptionID strin
 }
 
 // getHandleResponse handles the Get response.
-func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse, error) {
+func (client *Client) getHandleResponse(resp *http.Response, successCodes ...int) (ClientGetResponse, error) {
 	result := ClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Subscription); err != nil {
 		return ClientGetResponse{}, err
 	}
@@ -163,35 +159,49 @@ func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[Cl
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *Client) listCreateRequest(ctx context.Context, _ *ClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *Client) listCreateRequest(ctx context.Context, nextLink string, _ *ClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20221201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20221201)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *Client) listHandleResponse(resp *http.Response) (ClientListResponse, error) {
+func (client *Client) listHandleResponse(resp *http.Response, successCodes ...int) (ClientListResponse, error) {
 	result := ClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionListResult); err != nil {
 		return ClientListResponse{}, err
 	}
@@ -215,42 +225,56 @@ func (client *Client) NewListLocationsPager(subscriptionID string, options *Clie
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listLocationsCreateRequest(ctx, subscriptionID, options)
-			}, nil)
+			req, err := client.listLocationsCreateRequest(ctx, subscriptionID, nextLink, options)
 			if err != nil {
 				return ClientListLocationsResponse{}, err
 			}
-			return client.listLocationsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ClientListLocationsResponse{}, err
+			}
+			return client.listLocationsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listLocationsCreateRequest creates the ListLocations request.
-func (client *Client) listLocationsCreateRequest(ctx context.Context, subscriptionID string, options *ClientListLocationsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/locations"
-	if subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+func (client *Client) listLocationsCreateRequest(ctx context.Context, subscriptionID string, nextLink string, options *ClientListLocationsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/locations"
+		if subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20221201)
-	if options != nil && options.IncludeExtendedLocations != nil {
-		reqQP.Set("includeExtendedLocations", strconv.FormatBool(*options.IncludeExtendedLocations))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20221201)
+		if options != nil && options.IncludeExtendedLocations != nil {
+			reqQP.Set("includeExtendedLocations", strconv.FormatBool(*options.IncludeExtendedLocations))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listLocationsHandleResponse handles the ListLocations response.
-func (client *Client) listLocationsHandleResponse(resp *http.Response) (ClientListLocationsResponse, error) {
+func (client *Client) listLocationsHandleResponse(resp *http.Response, successCodes ...int) (ClientListLocationsResponse, error) {
 	result := ClientListLocationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocationListResult); err != nil {
 		return ClientListLocationsResponse{}, err
 	}

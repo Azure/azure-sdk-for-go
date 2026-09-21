@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/DatabaseRestorePointsPost.json
+// Generated from example definition: 2026-08-01-preview/DatabaseRestorePointsPost.json
 func ExampleRestorePointsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleRestorePointsClient_BeginCreate() {
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/servers/testserver/databases/testDatabase/restorePoints/131546477590000000"),
 	// 		Location: to.Ptr("japaneast"),
 	// 		Properties: &armsql.RestorePointProperties{
-	// 			RestorePointCreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+	// 			RestorePointCreationDate: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 	// 			RestorePointLabel: to.Ptr("mylabel"),
 	// 			RestorePointType: to.Ptr(armsql.RestorePointTypeDISCRETE),
 	// 		},
@@ -51,7 +51,7 @@ func ExampleRestorePointsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/DatabaseRestorePointsDelete.json
+// Generated from example definition: 2026-08-01-preview/DatabaseRestorePointsDelete.json
 func ExampleRestorePointsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleRestorePointsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/DataWarehouseRestorePointsGet.json
+// Generated from example definition: 2026-08-01-preview/DataWarehouseRestorePointsGet.json
 func ExampleRestorePointsClient_Get_getsADatawarehouseDatabaseRestorePoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleRestorePointsClient_Get_getsADatawarehouseDatabaseRestorePoint() {
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/servers/testserver/databases/testDatabase/restorePoints/131546477590000000"),
 	// 		Location: to.Ptr("japaneast"),
 	// 		Properties: &armsql.RestorePointProperties{
-	// 			RestorePointCreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+	// 			RestorePointCreationDate: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 	// 			RestorePointLabel: to.Ptr("mylabel"),
 	// 			RestorePointType: to.Ptr(armsql.RestorePointTypeDISCRETE),
 	// 		},
@@ -106,7 +106,7 @@ func ExampleRestorePointsClient_Get_getsADatawarehouseDatabaseRestorePoint() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/DatabaseRestorePointsGet.json
+// Generated from example definition: 2026-08-01-preview/DatabaseRestorePointsGet.json
 func ExampleRestorePointsClient_Get_getsADatabaseRestorePoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,14 +131,14 @@ func ExampleRestorePointsClient_Get_getsADatabaseRestorePoint() {
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/servers/testserver/databases/testDatabase/restorePoints/ContinuousRestorePoint"),
 	// 		Location: to.Ptr("japaneast"),
 	// 		Properties: &armsql.RestorePointProperties{
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 	// 			RestorePointType: to.Ptr(armsql.RestorePointTypeCONTINUOUS),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/DataWarehouseRestorePointsListByDatabase.json
+// Generated from example definition: 2026-08-01-preview/DataWarehouseRestorePointsListByDatabase.json
 func ExampleRestorePointsClient_NewListByDatabasePager_listDatawarehouseDatabaseRestorePoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -169,7 +169,7 @@ func ExampleRestorePointsClient_NewListByDatabasePager_listDatawarehouseDatabase
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/servers/testserver/databases/testDatabase/restorePoints/131546477590000000"),
 		// 				Location: to.Ptr("japaneast"),
 		// 				Properties: &armsql.RestorePointProperties{
-		// 					RestorePointCreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+		// 					RestorePointCreationDate: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 		// 					RestorePointLabel: to.Ptr("mylabel1"),
 		// 					RestorePointType: to.Ptr(armsql.RestorePointTypeDISCRETE),
 		// 				},
@@ -180,7 +180,7 @@ func ExampleRestorePointsClient_NewListByDatabasePager_listDatawarehouseDatabase
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/servers/testserver/databases/testDatabase/restorePoints/131553636140000000"),
 		// 				Location: to.Ptr("japaneast"),
 		// 				Properties: &armsql.RestorePointProperties{
-		// 					RestorePointCreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-17T03:40:14Z"); return t}()),
+		// 					RestorePointCreationDate: to.Ptr(time.Date(2017, time.November, 17, 3, 40, 14, 0, time.UTC)),
 		// 					RestorePointLabel: to.Ptr("mylabel2"),
 		// 					RestorePointType: to.Ptr(armsql.RestorePointTypeDISCRETE),
 		// 				},
@@ -191,7 +191,7 @@ func ExampleRestorePointsClient_NewListByDatabasePager_listDatawarehouseDatabase
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/servers/testserver/databases/testDatabase/restorePoints/131553619750000000"),
 		// 				Location: to.Ptr("japaneast"),
 		// 				Properties: &armsql.RestorePointProperties{
-		// 					RestorePointCreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-17T03:12:55Z"); return t}()),
+		// 					RestorePointCreationDate: to.Ptr(time.Date(2017, time.November, 17, 3, 12, 55, 0, time.UTC)),
 		// 					RestorePointType: to.Ptr(armsql.RestorePointTypeDISCRETE),
 		// 				},
 		// 			},
@@ -201,7 +201,7 @@ func ExampleRestorePointsClient_NewListByDatabasePager_listDatawarehouseDatabase
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/DatabaseRestorePointsListByDatabase.json
+// Generated from example definition: 2026-08-01-preview/DatabaseRestorePointsListByDatabase.json
 func ExampleRestorePointsClient_NewListByDatabasePager_listDatabaseRestorePoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,7 +232,7 @@ func ExampleRestorePointsClient_NewListByDatabasePager_listDatabaseRestorePoints
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-6730/providers/Microsoft.Sql/servers/sqlcrudtest-9007/databases/3481/restorepoints/ContinuousRestorePoint"),
 		// 				Location: to.Ptr("West US"),
 		// 				Properties: &armsql.RestorePointProperties{
-		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-12T00:00:00Z"); return t}()),
+		// 					EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 12, 0, 0, 0, 0, time.UTC)),
 		// 					RestorePointType: to.Ptr(armsql.RestorePointTypeCONTINUOUS),
 		// 				},
 		// 			},

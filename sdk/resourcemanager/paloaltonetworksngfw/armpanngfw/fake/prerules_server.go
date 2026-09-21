@@ -128,7 +128,7 @@ func (p *PreRulesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 	}
 	beginCreateOrUpdate := p.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/preRules/(?P<priority>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/preRules/(?P<priority>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -176,7 +176,7 @@ func (p *PreRulesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	}
 	beginDelete := p.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/preRules/(?P<priority>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/preRules/(?P<priority>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -218,7 +218,7 @@ func (p *PreRulesServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/preRules/(?P<priority>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/preRules/(?P<priority>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -251,7 +251,7 @@ func (p *PreRulesServerTransport) dispatchGetCounters(req *http.Request) (*http.
 	if p.srv.GetCounters == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetCounters not implemented")}
 	}
-	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/preRules/(?P<priority>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getCounters`
+	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/preRules/(?P<priority>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getCounters`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -294,7 +294,7 @@ func (p *PreRulesServerTransport) dispatchNewListPager(req *http.Request) (*http
 	}
 	newListPager := p.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/preRules`
+		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/preRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -329,7 +329,7 @@ func (p *PreRulesServerTransport) dispatchRefreshCounters(req *http.Request) (*h
 	if p.srv.RefreshCounters == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RefreshCounters not implemented")}
 	}
-	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/preRules/(?P<priority>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/refreshCounters`
+	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/preRules/(?P<priority>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/refreshCounters`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -370,7 +370,7 @@ func (p *PreRulesServerTransport) dispatchResetCounters(req *http.Request) (*htt
 	if p.srv.ResetCounters == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ResetCounters not implemented")}
 	}
-	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/preRules/(?P<priority>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resetCounters`
+	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/preRules/(?P<priority>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resetCounters`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

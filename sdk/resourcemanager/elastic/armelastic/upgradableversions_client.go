@@ -30,6 +30,9 @@ type UpgradableVersionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewUpgradableVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UpgradableVersionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *UpgradableVersionsClient) Details(ctx context.Context, resourceGro
 	if err != nil {
 		return UpgradableVersionsClientDetailsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UpgradableVersionsClientDetailsResponse{}, err
-	}
-	resp, err := client.detailsHandleResponse(httpResp)
-	return resp, err
+	return client.detailsHandleResponse(httpResp, http.StatusOK)
 }
 
 // detailsCreateRequest creates the Details request.
 func (client *UpgradableVersionsClient) detailsCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *UpgradableVersionsClientDetailsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/listUpgradableVersions"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -96,8 +94,11 @@ func (client *UpgradableVersionsClient) detailsCreateRequest(ctx context.Context
 }
 
 // detailsHandleResponse handles the Details response.
-func (client *UpgradableVersionsClient) detailsHandleResponse(resp *http.Response) (UpgradableVersionsClientDetailsResponse, error) {
+func (client *UpgradableVersionsClient) detailsHandleResponse(resp *http.Response, successCodes ...int) (UpgradableVersionsClientDetailsResponse, error) {
 	result := UpgradableVersionsClientDetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UpgradableVersionsList); err != nil {
 		return UpgradableVersionsClientDetailsResponse{}, err
 	}

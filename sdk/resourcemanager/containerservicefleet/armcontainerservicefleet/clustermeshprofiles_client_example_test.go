@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-02-preview/ClusterMeshProfiles_Apply.json
+// Generated from example definition: 2026-06-02-preview/ClusterMeshProfiles_Apply.json
 func ExampleClusterMeshProfilesClient_BeginApply() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,16 +56,16 @@ func ExampleClusterMeshProfilesClient_BeginApply() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("someUser"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("someOtherUser"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/ClusterMeshProfiles_CreateOrUpdate.json
+// Generated from example definition: 2026-06-02-preview/ClusterMeshProfiles_CreateOrUpdate.json
 func ExampleClusterMeshProfilesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,16 +116,16 @@ func ExampleClusterMeshProfilesClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("someUser"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("someOtherUser"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/ClusterMeshProfiles_Delete.json
+// Generated from example definition: 2026-06-02-preview/ClusterMeshProfiles_Delete.json
 func ExampleClusterMeshProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleClusterMeshProfilesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-02-preview/ClusterMeshProfiles_Get.json
+// Generated from example definition: 2026-06-02-preview/ClusterMeshProfiles_Get.json
 func ExampleClusterMeshProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,16 +186,16 @@ func ExampleClusterMeshProfilesClient_Get() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("someUser"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("someOtherUser"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/ClusterMeshProfiles_ListByFleet.json
+// Generated from example definition: 2026-06-02-preview/ClusterMeshProfiles_ListByFleet.json
 func ExampleClusterMeshProfilesClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -241,10 +241,10 @@ func ExampleClusterMeshProfilesClient_NewListByFleetPager() {
 		// 				SystemData: &armcontainerservicefleet.SystemData{
 		// 					CreatedBy: to.Ptr("someUser"),
 		// 					CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("someOtherUser"),
 		// 					LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

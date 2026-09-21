@@ -63,10 +63,10 @@ func ExampleAppLinksClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armappnetwork.SystemData{
 	// 			CreatedBy: to.Ptr("user01"),
 	// 			CreatedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user02"),
 	// 			LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -131,10 +131,10 @@ func ExampleAppLinksClient_Get() {
 	// 		SystemData: &armappnetwork.SystemData{
 	// 			CreatedBy: to.Ptr("user01"),
 	// 			CreatedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user02"),
 	// 			LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -184,10 +184,10 @@ func ExampleAppLinksClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armappnetwork.SystemData{
 		// 					CreatedBy: to.Ptr("user01"),
 		// 					CreatedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user02"),
 		// 					LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -213,10 +213,10 @@ func ExampleAppLinksClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armappnetwork.SystemData{
 		// 					CreatedBy: to.Ptr("user01"),
 		// 					CreatedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user02"),
 		// 					LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -271,10 +271,10 @@ func ExampleAppLinksClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armappnetwork.SystemData{
 		// 					CreatedBy: to.Ptr("user01"),
 		// 					CreatedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user02"),
 		// 					LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -301,10 +301,10 @@ func ExampleAppLinksClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armappnetwork.SystemData{
 		// 					CreatedBy: to.Ptr("dev-user"),
 		// 					CreatedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-10T14:22:30.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.June, 10, 14, 22, 30, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("dev-user"),
 		// 					LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-15T09:15:45.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.June, 15, 9, 15, 45, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -326,10 +326,10 @@ func ExampleAppLinksClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armappnetwork.SystemData{
 		// 					CreatedBy: to.Ptr("staging-user"),
 		// 					CreatedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T08:30:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.July, 1, 8, 30, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("staging-user"),
 		// 					LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T08:30:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.July, 1, 8, 30, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -391,10 +391,10 @@ func ExampleAppLinksClient_BeginUpdate() {
 	// 		SystemData: &armappnetwork.SystemData{
 	// 			CreatedBy: to.Ptr("user01"),
 	// 			CreatedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user02"),
 	// 			LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption/v2"
 	"net/http"
-	"net/url"
 	"regexp"
 	"slices"
 )
@@ -81,17 +80,14 @@ func (r *ReservationRecommendationDetailsServerTransport) dispatchGet(req *http.
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/(?P<resourceScope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Consumption/reservationRecommendationDetails`
+	const regexStr = `/(?P<resourceScope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Consumption/reservationRecommendationDetails`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	resourceScopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceScope")])
-	if err != nil {
-		return nil, err
-	}
+	resourceScopeParam := matches[regex.SubexpIndex("resourceScope")]
 	filterParam := getOptional(qp.Get("$filter"))
 	var options *armconsumption.ReservationRecommendationDetailsClientGetOptions
 	if filterParam != nil {

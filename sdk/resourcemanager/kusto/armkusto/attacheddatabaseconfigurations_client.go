@@ -30,6 +30,9 @@ type AttachedDatabaseConfigurationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAttachedDatabaseConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AttachedDatabaseConfigurationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *AttachedDatabaseConfigurationsClient) CheckNameAvailability(ctx co
 	if err != nil {
 		return AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
 func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, resourceName AttachedDatabaseConfigurationsCheckNameRequest, _ *AttachedDatabaseConfigurationsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurationCheckNameAvailability"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,8 +99,11 @@ func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityCreateR
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse, error) {
+func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse, error) {
 	result := AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameResult); err != nil {
 		return AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -151,8 +152,7 @@ func (client *AttachedDatabaseConfigurationsClient) createOrUpdate(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -161,7 +161,7 @@ func (client *AttachedDatabaseConfigurationsClient) createOrUpdate(ctx context.C
 func (client *AttachedDatabaseConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters AttachedDatabaseConfiguration, _ *AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -232,8 +232,7 @@ func (client *AttachedDatabaseConfigurationsClient) deleteOperation(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -242,7 +241,7 @@ func (client *AttachedDatabaseConfigurationsClient) deleteOperation(ctx context.
 func (client *AttachedDatabaseConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, _ *AttachedDatabaseConfigurationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -288,19 +287,14 @@ func (client *AttachedDatabaseConfigurationsClient) Get(ctx context.Context, res
 	if err != nil {
 		return AttachedDatabaseConfigurationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AttachedDatabaseConfigurationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *AttachedDatabaseConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, _ *AttachedDatabaseConfigurationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -327,8 +321,11 @@ func (client *AttachedDatabaseConfigurationsClient) getCreateRequest(ctx context
 }
 
 // getHandleResponse handles the Get response.
-func (client *AttachedDatabaseConfigurationsClient) getHandleResponse(resp *http.Response) (AttachedDatabaseConfigurationsClientGetResponse, error) {
+func (client *AttachedDatabaseConfigurationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AttachedDatabaseConfigurationsClientGetResponse, error) {
 	result := AttachedDatabaseConfigurationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AttachedDatabaseConfiguration); err != nil {
 		return AttachedDatabaseConfigurationsClientGetResponse{}, err
 	}
@@ -351,47 +348,61 @@ func (client *AttachedDatabaseConfigurationsClient) NewListByClusterPager(resour
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
-			}, nil)
+			req, err := client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, nextLink, options)
 			if err != nil {
 				return AttachedDatabaseConfigurationsClientListByClusterResponse{}, err
 			}
-			return client.listByClusterHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AttachedDatabaseConfigurationsClientListByClusterResponse{}, err
+			}
+			return client.listByClusterHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByClusterCreateRequest creates the ListByCluster request.
-func (client *AttachedDatabaseConfigurationsClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *AttachedDatabaseConfigurationsClientListByClusterOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AttachedDatabaseConfigurationsClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nextLink string, _ *AttachedDatabaseConfigurationsClientListByClusterOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if clusterName == "" {
+			return nil, errors.New("parameter clusterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250214)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250214)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByClusterHandleResponse handles the ListByCluster response.
-func (client *AttachedDatabaseConfigurationsClient) listByClusterHandleResponse(resp *http.Response) (AttachedDatabaseConfigurationsClientListByClusterResponse, error) {
+func (client *AttachedDatabaseConfigurationsClient) listByClusterHandleResponse(resp *http.Response, successCodes ...int) (AttachedDatabaseConfigurationsClientListByClusterResponse, error) {
 	result := AttachedDatabaseConfigurationsClientListByClusterResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AttachedDatabaseConfigurationListResult); err != nil {
 		return AttachedDatabaseConfigurationsClientListByClusterResponse{}, err
 	}

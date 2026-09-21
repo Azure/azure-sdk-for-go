@@ -77,6 +77,19 @@ type TopicRuntimeProperties struct {
 	// SubscriptionCount is the number of subscriptions to the topic.
 	SubscriptionCount int32
 
+	// SQLFilterCount is the total number of SQL filters across all subscriptions of the topic,
+	// including the default rule each subscription is created with. The service reports this only at
+	// api-version 2024-05 or later, so the field is 0 when the response omits it, which happens when
+	// ClientOptions.APIVersion pins an earlier version or the namespace's service build predates the
+	// field.
+	SQLFilterCount int32
+
+	// CorrelationFilterCount is the total number of correlation filters across all subscriptions of
+	// the topic. The service reports this only at api-version 2024-05 or later, so the field is 0
+	// when the response omits it, which happens when ClientOptions.APIVersion pins an earlier version
+	// or the namespace's service build predates the field.
+	CorrelationFilterCount int32
+
 	// ScheduledMessageCount is the number of messages that are scheduled to be entopicd.
 	ScheduledMessageCount int32
 }
@@ -414,9 +427,11 @@ func newTopicRuntimePropertiesItem(env *atom.TopicEnvelope) (*TopicRuntimeProper
 	}
 
 	props := &TopicRuntimeProperties{
-		SizeInBytes:           int64OrZero(desc.SizeInBytes),
-		ScheduledMessageCount: int32OrZero(desc.CountDetails.ScheduledMessageCount),
-		SubscriptionCount:     int32OrZero(desc.SubscriptionCount),
+		SizeInBytes:            int64OrZero(desc.SizeInBytes),
+		ScheduledMessageCount:  int32OrZero(desc.CountDetails.ScheduledMessageCount),
+		SubscriptionCount:      int32OrZero(desc.SubscriptionCount),
+		SQLFilterCount:         int32OrZero(desc.SQLFilterCount),
+		CorrelationFilterCount: int32OrZero(desc.CorrelationFilterCount),
 	}
 
 	var err error

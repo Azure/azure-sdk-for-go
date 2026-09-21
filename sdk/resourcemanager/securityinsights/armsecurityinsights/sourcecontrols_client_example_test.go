@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/sourcecontrols/CreateSourceControl.json
+// Generated from example definition: 2025-10-01-preview/sourcecontrols/CreateSourceControl.json
 func ExampleSourceControlsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,13 +72,13 @@ func ExampleSourceControlsClient_Create() {
 	// 					DeploymentLogsURL: to.Ptr("https://github.com/user/repo/actions"),
 	// 					DeploymentResult: to.Ptr(armsecurityinsights.DeploymentResultSuccess),
 	// 					DeploymentState: to.Ptr(armsecurityinsights.DeploymentStateCompleted),
-	// 					DeploymentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T17:18:19.1234567Z"); return t}()),
+	// 					DeploymentTime: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 				},
 	// 				DeploymentFetchStatus: to.Ptr(armsecurityinsights.DeploymentFetchStatusSuccess),
 	// 				Message: to.Ptr("Successful deployment"),
 	// 			},
 	// 			PullRequest: &armsecurityinsights.PullRequest{
-	// 				State: to.Ptr(armsecurityinsights.State("Open")),
+	// 				State: to.Ptr(armsecurityinsights.PullRequestStateOpen),
 	// 				URL: to.Ptr("https://github.com/user/repo/pull/123"),
 	// 			},
 	// 			RepoType: to.Ptr(armsecurityinsights.RepoTypeGithub),
@@ -94,7 +94,7 @@ func ExampleSourceControlsClient_Create() {
 	// 				},
 	// 				Webhook: &armsecurityinsights.Webhook{
 	// 					WebhookID: to.Ptr("342768323"),
-	// 					WebhookSecretUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T17:18:19.1234567Z"); return t}()),
+	// 					WebhookSecretUpdateTime: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 					WebhookURL: to.Ptr("https://cac.sentinel.azure.com/workspaces/eeca17ff-d744-4a8b-9f5e-1edcc3346a1d/webhooks/ado/sourceControl/789e0c1f-4a3d-43ad-809c-e713b677b04a"),
 	// 				},
 	// 			},
@@ -112,10 +112,10 @@ func ExampleSourceControlsClient_Create() {
 	// 			},
 	// 		},
 	// 		SystemData: &armsecurityinsights.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armsecurityinsights.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armsecurityinsights.CreatedByTypeUser),
 	// 		},
@@ -123,7 +123,7 @@ func ExampleSourceControlsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/sourcecontrols/DeleteSourceControl.json
+// Generated from example definition: 2025-10-01-preview/sourcecontrols/DeleteSourceControl.json
 func ExampleSourceControlsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +160,7 @@ func ExampleSourceControlsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/sourcecontrols/GetSourceControlById.json
+// Generated from example definition: 2025-10-01-preview/sourcecontrols/GetSourceControlById.json
 func ExampleSourceControlsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,13 +198,13 @@ func ExampleSourceControlsClient_Get() {
 	// 					DeploymentLogsURL: to.Ptr("https://github.com/user/repo/actions"),
 	// 					DeploymentResult: to.Ptr(armsecurityinsights.DeploymentResultSuccess),
 	// 					DeploymentState: to.Ptr(armsecurityinsights.DeploymentStateCompleted),
-	// 					DeploymentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T17:18:19.1234567Z"); return t}()),
+	// 					DeploymentTime: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 				},
 	// 				DeploymentFetchStatus: to.Ptr(armsecurityinsights.DeploymentFetchStatusSuccess),
 	// 				Message: to.Ptr("Successful deployment"),
 	// 			},
 	// 			PullRequest: &armsecurityinsights.PullRequest{
-	// 				State: to.Ptr(armsecurityinsights.State("Open")),
+	// 				State: to.Ptr(armsecurityinsights.PullRequestStateOpen),
 	// 				URL: to.Ptr("https://github.com/user/repo/pull/123"),
 	// 			},
 	// 			RepoType: to.Ptr(armsecurityinsights.RepoTypeGithub),
@@ -220,7 +220,7 @@ func ExampleSourceControlsClient_Get() {
 	// 				},
 	// 				Webhook: &armsecurityinsights.Webhook{
 	// 					WebhookID: to.Ptr("342768323"),
-	// 					WebhookSecretUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T17:18:19.1234567Z"); return t}()),
+	// 					WebhookSecretUpdateTime: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 					WebhookURL: to.Ptr("https://cac.sentinel.azure.com/workspaces/eeca17ff-d744-4a8b-9f5e-1edcc3346a1d/webhooks/ado/sourceControl/789e0c1f-4a3d-43ad-809c-e713b677b04a"),
 	// 				},
 	// 			},
@@ -238,10 +238,10 @@ func ExampleSourceControlsClient_Get() {
 	// 			},
 	// 		},
 	// 		SystemData: &armsecurityinsights.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armsecurityinsights.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armsecurityinsights.CreatedByTypeUser),
 	// 		},
@@ -249,7 +249,7 @@ func ExampleSourceControlsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/sourcecontrols/GetSourceControls.json
+// Generated from example definition: 2025-10-01-preview/sourcecontrols/GetSourceControls.json
 func ExampleSourceControlsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -293,13 +293,13 @@ func ExampleSourceControlsClient_NewListPager() {
 		// 							DeploymentLogsURL: to.Ptr("https://github.com/user/repo/actions"),
 		// 							DeploymentResult: to.Ptr(armsecurityinsights.DeploymentResultSuccess),
 		// 							DeploymentState: to.Ptr(armsecurityinsights.DeploymentStateCompleted),
-		// 							DeploymentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T17:18:19.1234567Z"); return t}()),
+		// 							DeploymentTime: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 		// 						},
 		// 						DeploymentFetchStatus: to.Ptr(armsecurityinsights.DeploymentFetchStatusSuccess),
 		// 						Message: to.Ptr("Successful deployment"),
 		// 					},
 		// 					PullRequest: &armsecurityinsights.PullRequest{
-		// 						State: to.Ptr(armsecurityinsights.State("Open")),
+		// 						State: to.Ptr(armsecurityinsights.PullRequestStateOpen),
 		// 						URL: to.Ptr("https://github.com/user/repo/pull/123"),
 		// 					},
 		// 					RepoType: to.Ptr(armsecurityinsights.RepoTypeGithub),
@@ -315,7 +315,7 @@ func ExampleSourceControlsClient_NewListPager() {
 		// 						},
 		// 						Webhook: &armsecurityinsights.Webhook{
 		// 							WebhookID: to.Ptr("342768323"),
-		// 							WebhookSecretUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T17:18:19.1234567Z"); return t}()),
+		// 							WebhookSecretUpdateTime: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 		// 							WebhookURL: to.Ptr("https://cac.sentinel.azure.com/workspaces/eeca17ff-d744-4a8b-9f5e-1edcc3346a1d/webhooks/ado/sourceControl/789e0c1f-4a3d-43ad-809c-e713b677b04a"),
 		// 						},
 		// 					},
@@ -333,10 +333,10 @@ func ExampleSourceControlsClient_NewListPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armsecurityinsights.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T17:18:19.1234567Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armsecurityinsights.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-02T17:18:19.1234567Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user2"),
 		// 					LastModifiedByType: to.Ptr(armsecurityinsights.CreatedByTypeUser),
 		// 				},

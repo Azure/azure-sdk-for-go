@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-06-16-preview/machine/Machine_AssessPatches.json
+// Generated from example definition: 2026-07-15/machine/Machine_AssessPatches.json
 func ExampleMachinesClient_BeginAssessPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,17 +48,17 @@ func ExampleMachinesClient_BeginAssessPatches() {
 	// 			UpdateRollup: to.Ptr[int32](1),
 	// 			Updates: to.Ptr[int32](1),
 	// 		},
-	// 		LastModifiedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-22T02:16:06.9740000Z"); return t}()),
+	// 		LastModifiedDateTime: to.Ptr(time.Date(2021, time.August, 22, 2, 16, 6, 974000000, time.UTC)),
 	// 		OSType: to.Ptr(armhybridcompute.OsTypeWindows),
 	// 		RebootPending: to.Ptr(true),
-	// 		StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-22T02:15:20.9340000Z"); return t}()),
+	// 		StartDateTime: to.Ptr(time.Date(2021, time.August, 22, 2, 15, 20, 934000000, time.UTC)),
 	// 		StartedBy: to.Ptr(armhybridcompute.PatchOperationStartedByUser),
 	// 		Status: to.Ptr(armhybridcompute.PatchOperationStatusSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/machine/Machines_CreateOrUpdate.json
+// Generated from example definition: 2026-07-15/machine/Machines_CreateOrUpdate.json
 func ExampleMachinesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,17 +138,17 @@ func ExampleMachinesClient_CreateOrUpdate() {
 	// 				LicenseChannel: to.Ptr("PSG"),
 	// 				LicenseStatus: to.Ptr(armhybridcompute.LicenseStatusLicensed),
 	// 				ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
-	// 					BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 					BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-	// 					DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 					EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 					BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 	// 					ProductFeatures: []*armhybridcompute.ProductFeature{
 	// 						{
 	// 							Name: to.Ptr("Hotpatch"),
-	// 							BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 							BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-	// 							DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 							EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 							BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 	// 							SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
 	// 						},
 	// 					},
@@ -190,7 +190,7 @@ func ExampleMachinesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/machine/Machines_Delete.json
+// Generated from example definition: 2026-07-15/machine/Machines_Delete.json
 func ExampleMachinesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +211,7 @@ func ExampleMachinesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-16-preview/machine/Machines_Get.json
+// Generated from example definition: 2026-07-15/machine/Machines_Get.json
 func ExampleMachinesClient_Get_getMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -296,17 +296,17 @@ func ExampleMachinesClient_Get_getMachine() {
 	// 				LicenseChannel: to.Ptr("PSG"),
 	// 				LicenseStatus: to.Ptr(armhybridcompute.LicenseStatusLicensed),
 	// 				ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
-	// 					BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 					BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-	// 					DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 					EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 					BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 	// 					ProductFeatures: []*armhybridcompute.ProductFeature{
 	// 						{
 	// 							Name: to.Ptr("Hotpatch"),
-	// 							BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 							BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-	// 							DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 							EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 							BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 	// 							SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
 	// 						},
 	// 					},
@@ -405,7 +405,7 @@ func ExampleMachinesClient_Get_getMachine() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/machine/Machines_Get_LicenseProfileInstanceView.json
+// Generated from example definition: 2026-07-15/machine/Machines_Get_LicenseProfileInstanceView.json
 func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -509,17 +509,17 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// 				LicenseChannel: to.Ptr("PSG"),
 	// 				LicenseStatus: to.Ptr(armhybridcompute.LicenseStatusLicensed),
 	// 				ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
-	// 					BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 					BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-	// 					DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 					EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 					BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 	// 					ProductFeatures: []*armhybridcompute.ProductFeature{
 	// 						{
 	// 							Name: to.Ptr("Hotpatch"),
-	// 							BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 							BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-	// 							DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 							EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 							BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 	// 							SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
 	// 						},
 	// 					},
@@ -617,7 +617,7 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/machine/Machine_InstallPatches.json
+// Generated from example definition: 2026-07-15/machine/Machine_InstallPatches.json
 func ExampleMachinesClient_BeginInstallPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -636,7 +636,7 @@ func ExampleMachinesClient_BeginInstallPatches() {
 				to.Ptr(armhybridcompute.VMGuestPatchClassificationWindowsCritical),
 				to.Ptr(armhybridcompute.VMGuestPatchClassificationWindowsSecurity),
 			},
-			MaxPatchPublishDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T02:36:43.0539904+00:00"); return t }()),
+			MaxPatchPublishDate: to.Ptr(time.Date(2021, time.August, 19, 2, 36, 43, 53990400, time.UTC)),
 			PatchNameMasksToExclude: []*string{
 				to.Ptr("*Windows*"),
 			},
@@ -661,20 +661,20 @@ func ExampleMachinesClient_BeginInstallPatches() {
 	// 		FailedPatchCount: to.Ptr[int32](0),
 	// 		InstallationActivityID: to.Ptr("68f8b292-dfc2-4646-9781-33cc88631968"),
 	// 		InstalledPatchCount: to.Ptr[int32](3),
-	// 		LastModifiedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-22T02:16:06.9740000Z"); return t}()),
+	// 		LastModifiedDateTime: to.Ptr(time.Date(2021, time.August, 22, 2, 16, 6, 974000000, time.UTC)),
 	// 		MaintenanceWindowExceeded: to.Ptr(false),
 	// 		NotSelectedPatchCount: to.Ptr[int32](0),
 	// 		OSType: to.Ptr(armhybridcompute.OsTypeWindows),
 	// 		PendingPatchCount: to.Ptr[int32](2),
 	// 		RebootStatus: to.Ptr(armhybridcompute.VMGuestPatchRebootStatusCompleted),
-	// 		StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-22T02:15:06.9740000Z"); return t}()),
+	// 		StartDateTime: to.Ptr(time.Date(2021, time.August, 22, 2, 15, 6, 974000000, time.UTC)),
 	// 		StartedBy: to.Ptr(armhybridcompute.PatchOperationStartedByUser),
 	// 		Status: to.Ptr(armhybridcompute.PatchOperationStatusSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/machine/Machines_ListByResourceGroup.json
+// Generated from example definition: 2026-07-15/machine/Machines_ListByResourceGroup.json
 func ExampleMachinesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -750,17 +750,17 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 		// 						LicenseChannel: to.Ptr("PSG"),
 		// 						LicenseStatus: to.Ptr(armhybridcompute.LicenseStatusLicensed),
 		// 						ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
-		// 							BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 							BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-		// 							DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 							EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+		// 							BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 		// 							ProductFeatures: []*armhybridcompute.ProductFeature{
 		// 								{
 		// 									Name: to.Ptr("Hotpatch"),
-		// 									BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 									BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-		// 									DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 									EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+		// 									BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 		// 									SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
 		// 								},
 		// 							},
@@ -846,17 +846,17 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 		// 						LicenseChannel: to.Ptr("PSG"),
 		// 						LicenseStatus: to.Ptr(armhybridcompute.LicenseStatusLicensed),
 		// 						ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
-		// 							BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 							BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-		// 							DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 							EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+		// 							BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 		// 							ProductFeatures: []*armhybridcompute.ProductFeature{
 		// 								{
 		// 									Name: to.Ptr("Hotpatch"),
-		// 									BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 									BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-		// 									DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 									EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+		// 									BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 		// 									SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
 		// 								},
 		// 							},
@@ -898,7 +898,7 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-16-preview/machine/Machines_ListBySubscription.json
+// Generated from example definition: 2026-07-15/machine/Machines_ListBySubscription.json
 func ExampleMachinesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -922,7 +922,7 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armhybridcompute.MachinesClientListBySubscriptionResponse{
 		// 	MachineListResult: armhybridcompute.MachineListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.HybridCompute/machines?api-version=2026-06-16-preview&$skiptoken=nextPageToken"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.HybridCompute/machines?api-version=2026-07-15&$skiptoken=nextPageToken"),
 		// 		Value: []*armhybridcompute.Machine{
 		// 			{
 		// 				Name: to.Ptr("myMachine"),
@@ -975,17 +975,17 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// 						LicenseChannel: to.Ptr("PSG"),
 		// 						LicenseStatus: to.Ptr(armhybridcompute.LicenseStatusLicensed),
 		// 						ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
-		// 							BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 							BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-		// 							DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 							EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+		// 							BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 		// 							ProductFeatures: []*armhybridcompute.ProductFeature{
 		// 								{
 		// 									Name: to.Ptr("Hotpatch"),
-		// 									BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 									BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-		// 									DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 									EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+		// 									BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 		// 									SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
 		// 								},
 		// 							},
@@ -1071,17 +1071,17 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// 						LicenseChannel: to.Ptr("PSG"),
 		// 						LicenseStatus: to.Ptr(armhybridcompute.LicenseStatusLicensed),
 		// 						ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
-		// 							BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 							BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-		// 							DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 							EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+		// 							BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 		// 							ProductFeatures: []*armhybridcompute.ProductFeature{
 		// 								{
 		// 									Name: to.Ptr("Hotpatch"),
-		// 									BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 									BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-		// 									DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 									EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+		// 									BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 		// 									SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
 		// 								},
 		// 							},
@@ -1122,7 +1122,7 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-16-preview/machine/Machines_Update.json
+// Generated from example definition: 2026-07-15/machine/Machines_Update.json
 func ExampleMachinesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1202,17 +1202,17 @@ func ExampleMachinesClient_Update() {
 	// 				LicenseChannel: to.Ptr("PSG"),
 	// 				LicenseStatus: to.Ptr(armhybridcompute.LicenseStatusLicensed),
 	// 				ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
-	// 					BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 					BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-	// 					DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 					EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 					BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 	// 					ProductFeatures: []*armhybridcompute.ProductFeature{
 	// 						{
 	// 							Name: to.Ptr("Hotpatch"),
-	// 							BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 							BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-	// 							DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 							EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 							BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 	// 							SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
 	// 						},
 	// 					},

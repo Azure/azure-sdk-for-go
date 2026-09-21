@@ -30,6 +30,9 @@ type DatasetsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDatasetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatasetsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *DatasetsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DatasetsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatasetsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *DatasetsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, datasetName string, dataset DatasetResource, options *DatasetsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/datasets/{datasetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -108,8 +106,11 @@ func (client *DatasetsClient) createOrUpdateCreateRequest(ctx context.Context, r
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DatasetsClient) createOrUpdateHandleResponse(resp *http.Response) (DatasetsClientCreateOrUpdateResponse, error) {
+func (client *DatasetsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (DatasetsClientCreateOrUpdateResponse, error) {
 	result := DatasetsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatasetResource); err != nil {
 		return DatasetsClientCreateOrUpdateResponse{}, err
 	}
@@ -137,8 +138,7 @@ func (client *DatasetsClient) Delete(ctx context.Context, resourceGroupName stri
 		return DatasetsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return DatasetsClientDeleteResponse{}, err
+		return DatasetsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DatasetsClientDeleteResponse{}, nil
 }
@@ -147,7 +147,7 @@ func (client *DatasetsClient) Delete(ctx context.Context, resourceGroupName stri
 func (client *DatasetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, datasetName string, _ *DatasetsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/datasets/{datasetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -192,19 +192,14 @@ func (client *DatasetsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return DatasetsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNotModified) {
-		err = runtime.NewResponseError(httpResp)
-		return DatasetsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusNotModified)
 }
 
 // getCreateRequest creates the Get request.
 func (client *DatasetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, datasetName string, options *DatasetsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/datasets/{datasetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -234,8 +229,11 @@ func (client *DatasetsClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatasetsClient) getHandleResponse(resp *http.Response) (DatasetsClientGetResponse, error) {
+func (client *DatasetsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DatasetsClientGetResponse, error) {
 	result := DatasetsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatasetResource); err != nil {
 		return DatasetsClientGetResponse{}, err
 	}
@@ -258,47 +256,61 @@ func (client *DatasetsClient) NewListByFactoryPager(resourceGroupName string, fa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
-			}, nil)
+			req, err := client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, nextLink, options)
 			if err != nil {
 				return DatasetsClientListByFactoryResponse{}, err
 			}
-			return client.listByFactoryHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DatasetsClientListByFactoryResponse{}, err
+			}
+			return client.listByFactoryHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByFactoryCreateRequest creates the ListByFactory request.
-func (client *DatasetsClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, _ *DatasetsClientListByFactoryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/datasets"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DatasetsClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, nextLink string, _ *DatasetsClientListByFactoryOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/datasets"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if factoryName == "" {
+			return nil, errors.New("parameter factoryName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if factoryName == "" {
-		return nil, errors.New("parameter factoryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20180601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByFactoryHandleResponse handles the ListByFactory response.
-func (client *DatasetsClient) listByFactoryHandleResponse(resp *http.Response) (DatasetsClientListByFactoryResponse, error) {
+func (client *DatasetsClient) listByFactoryHandleResponse(resp *http.Response, successCodes ...int) (DatasetsClientListByFactoryResponse, error) {
 	result := DatasetsClientListByFactoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatasetListResponse); err != nil {
 		return DatasetsClientListByFactoryResponse{}, err
 	}

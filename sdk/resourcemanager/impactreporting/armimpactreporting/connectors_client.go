@@ -30,6 +30,9 @@ type ConnectorsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectorsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -81,8 +84,7 @@ func (client *ConnectorsClient) createOrUpdate(ctx context.Context, connectorNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -91,7 +93,7 @@ func (client *ConnectorsClient) createOrUpdate(ctx context.Context, connectorNam
 func (client *ConnectorsClient) createOrUpdateCreateRequest(ctx context.Context, connectorName string, resource Connector, _ *ConnectorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors/{connectorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if connectorName == "" {
@@ -132,8 +134,7 @@ func (client *ConnectorsClient) Delete(ctx context.Context, connectorName string
 		return ConnectorsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectorsClientDeleteResponse{}, err
+		return ConnectorsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ConnectorsClientDeleteResponse{}, nil
 }
@@ -142,7 +143,7 @@ func (client *ConnectorsClient) Delete(ctx context.Context, connectorName string
 func (client *ConnectorsClient) deleteCreateRequest(ctx context.Context, connectorName string, _ *ConnectorsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors/{connectorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if connectorName == "" {
@@ -177,19 +178,14 @@ func (client *ConnectorsClient) Get(ctx context.Context, connectorName string, o
 	if err != nil {
 		return ConnectorsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectorsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ConnectorsClient) getCreateRequest(ctx context.Context, connectorName string, _ *ConnectorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors/{connectorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if connectorName == "" {
@@ -208,8 +204,11 @@ func (client *ConnectorsClient) getCreateRequest(ctx context.Context, connectorN
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConnectorsClient) getHandleResponse(resp *http.Response) (ConnectorsClientGetResponse, error) {
+func (client *ConnectorsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConnectorsClientGetResponse, error) {
 	result := ConnectorsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connector); err != nil {
 		return ConnectorsClientGetResponse{}, err
 	}
@@ -230,39 +229,53 @@ func (client *ConnectorsClient) NewListBySubscriptionPager(options *ConnectorsCl
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ConnectorsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ConnectorsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ConnectorsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *ConnectorsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ConnectorsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *ConnectorsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *ConnectorsClient) listBySubscriptionHandleResponse(resp *http.Response) (ConnectorsClientListBySubscriptionResponse, error) {
+func (client *ConnectorsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (ConnectorsClientListBySubscriptionResponse, error) {
 	result := ConnectorsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectorListResult); err != nil {
 		return ConnectorsClientListBySubscriptionResponse{}, err
 	}
@@ -288,19 +301,14 @@ func (client *ConnectorsClient) Update(ctx context.Context, connectorName string
 	if err != nil {
 		return ConnectorsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectorsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *ConnectorsClient) updateCreateRequest(ctx context.Context, connectorName string, properties ConnectorUpdate, _ *ConnectorsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors/{connectorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if connectorName == "" {
@@ -323,8 +331,11 @@ func (client *ConnectorsClient) updateCreateRequest(ctx context.Context, connect
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ConnectorsClient) updateHandleResponse(resp *http.Response) (ConnectorsClientUpdateResponse, error) {
+func (client *ConnectorsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ConnectorsClientUpdateResponse, error) {
 	result := ConnectorsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connector); err != nil {
 		return ConnectorsClientUpdateResponse{}, err
 	}

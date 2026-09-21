@@ -56,12 +56,7 @@ func (client *ChildAvailabilityStatusesClient) GetByResource(ctx context.Context
 	if err != nil {
 		return ChildAvailabilityStatusesClientGetByResourceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ChildAvailabilityStatusesClientGetByResourceResponse{}, err
-	}
-	resp, err := client.getByResourceHandleResponse(httpResp)
-	return resp, err
+	return client.getByResourceHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByResourceCreateRequest creates the GetByResource request.
@@ -89,8 +84,11 @@ func (client *ChildAvailabilityStatusesClient) getByResourceCreateRequest(ctx co
 }
 
 // getByResourceHandleResponse handles the GetByResource response.
-func (client *ChildAvailabilityStatusesClient) getByResourceHandleResponse(resp *http.Response) (ChildAvailabilityStatusesClientGetByResourceResponse, error) {
+func (client *ChildAvailabilityStatusesClient) getByResourceHandleResponse(resp *http.Response, successCodes ...int) (ChildAvailabilityStatusesClientGetByResourceResponse, error) {
 	result := ChildAvailabilityStatusesClientGetByResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityStatus); err != nil {
 		return ChildAvailabilityStatusesClientGetByResourceResponse{}, err
 	}
@@ -113,45 +111,59 @@ func (client *ChildAvailabilityStatusesClient) NewListPager(resourceURI string, 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceURI, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceURI, nextLink, options)
 			if err != nil {
 				return ChildAvailabilityStatusesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ChildAvailabilityStatusesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ChildAvailabilityStatusesClient) listCreateRequest(ctx context.Context, resourceURI string, options *ChildAvailabilityStatusesClientListOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.ResourceHealth/childAvailabilityStatuses"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
+func (client *ChildAvailabilityStatusesClient) listCreateRequest(ctx context.Context, resourceURI string, nextLink string, options *ChildAvailabilityStatusesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceUri}/providers/Microsoft.ResourceHealth/childAvailabilityStatuses"
+		if resourceURI == "" {
+			return nil, errors.New("parameter resourceURI cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", *options.Expand)
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ChildAvailabilityStatusesClient) listHandleResponse(resp *http.Response) (ChildAvailabilityStatusesClientListResponse, error) {
+func (client *ChildAvailabilityStatusesClient) listHandleResponse(resp *http.Response, successCodes ...int) (ChildAvailabilityStatusesClientListResponse, error) {
 	result := ChildAvailabilityStatusesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityStatusListResult); err != nil {
 		return ChildAvailabilityStatusesClientListResponse{}, err
 	}

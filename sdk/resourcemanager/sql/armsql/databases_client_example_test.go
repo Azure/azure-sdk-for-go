@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseConfiguredBackupStorageRedundancy.json
+// Generated from example definition: 2026-08-01-preview/CreateDatabaseConfiguredBackupStorageRedundancy.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithSpecifiedBackupStorageRedundancy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithSpecifiedBac
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyZone),
 	// 			CurrentServiceObjectiveName: to.Ptr("S0"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -60,7 +60,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithSpecifiedBac
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
@@ -79,7 +79,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithSpecifiedBac
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseCopyMode.json
+// Generated from example definition: 2026-08-01-preview/CreateDatabaseCopyMode.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsACopy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsACopy() {
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("S0"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -131,7 +131,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsACopy() {
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
@@ -150,7 +150,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsACopy() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseDefaultEnclave.json
+// Generated from example definition: 2026-08-01-preview/CreateDatabaseDefaultEnclave.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDefaultEnclaveType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDefaultEncla
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("S0"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -197,7 +197,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDefaultEncla
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
 	// 			PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeDefault),
 	// 			ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
@@ -215,7 +215,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDefaultEncla
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseDefaultMode.json
+// Generated from example definition: 2026-08-01-preview/CreateDatabaseDefaultMode.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDefaultMode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -258,7 +258,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDefaultMode(
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("S0"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -268,7 +268,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDefaultMode(
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			MaxSizeBytes: to.Ptr[int64](1073741824),
@@ -287,7 +287,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDefaultMode(
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseDefaultModeWithKeysAndEncryptionProtector.json
+// Generated from example definition: 2026-08-01-preview/CreateDatabaseDefaultModeWithKeysAndEncryptionProtector.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDatabaseLevelCustomerManagedKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -341,7 +341,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDatabaseLeve
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("S0"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -351,7 +351,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDatabaseLeve
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			MaxSizeBytes: to.Ptr[int64](1073741824),
@@ -370,7 +370,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDatabaseLeve
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseDefaultModeWithVersionlessKeysAndVersionlessEncryptionProtector.json
+// Generated from example definition: 2026-08-01-preview/CreateDatabaseDefaultModeWithVersionlessKeysAndVersionlessEncryptionProtector.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDatabaseLevelVersionlessCustomerManagedKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -424,7 +424,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDatabaseLeve
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("S0"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -434,7 +434,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDatabaseLeve
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			MaxSizeBytes: to.Ptr[int64](1073741824),
@@ -453,7 +453,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDatabaseLeve
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseLedger.json
+// Generated from example definition: 2026-08-01-preview/CreateDatabaseLedger.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithLedgerOn() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -490,7 +490,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithLedgerOn() {
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("S0"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -500,7 +500,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithLedgerOn() {
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			IsLedgerOn: to.Ptr(true),
 	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
 	// 			ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
@@ -518,7 +518,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithLedgerOn() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseMaintenanceConfiguration.json
+// Generated from example definition: 2026-08-01-preview/CreateDatabaseMaintenanceConfiguration.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithPreferredMaintenanceWindow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -562,7 +562,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithPreferredMai
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("S2"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -572,7 +572,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithPreferredMai
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-29T06:41:18.283Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2020, time.August, 29, 6, 41, 18, 283000000, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
@@ -590,7 +590,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithPreferredMai
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseMin.json
+// Generated from example definition: 2026-08-01-preview/CreateDatabaseMin.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithMinimumNumberOfParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -624,7 +624,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithMinimumNumbe
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("S0"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -634,7 +634,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithMinimumNumbe
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
@@ -653,7 +653,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithMinimumNumbe
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseNamedReplica.json
+// Generated from example definition: 2026-08-01-preview/CreateDatabaseNamedReplica.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsNamedReplicaSecondary() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -697,7 +697,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsNamedReplicaSe
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("HS_Gen4_2"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -708,7 +708,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsNamedReplicaSe
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			HighAvailabilityReplicaCount: to.Ptr[int32](0),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
@@ -731,7 +731,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsNamedReplicaSe
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabasePITRMode.json
+// Generated from example definition: 2026-08-01-preview/CreateDatabasePITRMode.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseFromPointInTimeRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -746,7 +746,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseFromPointInTimeR
 		Location: to.Ptr("southeastasia"),
 		Properties: &armsql.DatabaseProperties{
 			CreateMode:         to.Ptr(armsql.CreateModePointInTimeRestore),
-			RestorePointInTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-22T05:35:31.503Z"); return t }()),
+			RestorePointInTime: to.Ptr(time.Date(2020, time.October, 22, 5, 35, 31, 503000000, time.UTC)),
 			SourceDatabaseID:   to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SoutheastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
 		},
 	}, nil)
@@ -770,7 +770,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseFromPointInTimeR
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-23T20:31:35.807Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2020, time.October, 23, 20, 31, 35, 807000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("S0"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -780,7 +780,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseFromPointInTimeR
 	// 			},
 	// 			DatabaseID: to.Ptr("2463ef48-53e2-4c26-9781-2d7138080bfd"),
 	// 			DefaultSecondaryLocation: to.Ptr("SoutheastAsia"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-23T20:47:37Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2020, time.October, 23, 20, 47, 37, 0, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
@@ -799,7 +799,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseFromPointInTimeR
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseSecondaryMode.json
+// Generated from example definition: 2026-08-01-preview/CreateDatabaseSecondaryMode.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsAnOnLineSecondary() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -842,7 +842,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsAnOnLineSecond
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("S0"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -852,7 +852,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsAnOnLineSecond
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
@@ -872,7 +872,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsAnOnLineSecond
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseStandbyMode.json
+// Generated from example definition: 2026-08-01-preview/CreateDatabaseStandbyMode.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsAStandbySecondary() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -915,7 +915,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsAStandbySecond
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("S0"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -925,7 +925,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsAStandbySecond
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
@@ -945,7 +945,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsAStandbySecond
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseVBSEnclave.json
+// Generated from example definition: 2026-08-01-preview/CreateDatabaseVBSEnclave.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithVbsEnclaveType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -982,7 +982,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithVbsEnclaveTy
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("S0"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -992,7 +992,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithVbsEnclaveTy
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
 	// 			PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeVBS),
 	// 			ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
@@ -1010,7 +1010,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithVbsEnclaveTy
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseWithAvailabilityZone.json
+// Generated from example definition: 2026-08-01-preview/CreateDatabaseWithAvailabilityZone.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithAvailabilityZoneSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1055,7 +1055,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithAvailability
 	// 			AvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("S0"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -1065,7 +1065,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithAvailability
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			MaxSizeBytes: to.Ptr[int64](1073741824),
@@ -1084,7 +1084,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithAvailability
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseWithEncryptionProtectorAutoRotation.json
+// Generated from example definition: 2026-08-01-preview/CreateDatabaseWithEncryptionProtectorAutoRotation.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithEncryptionProtectorAutoRotation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1135,7 +1135,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithEncryptionPr
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("S0"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -1145,7 +1145,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithEncryptionPr
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			EncryptionProtector: to.Ptr("https://your-key-vault-name.vault.azure.net/yourKey/yourKeyVersion"),
 	// 			EncryptionProtectorAutoRotation: to.Ptr(true),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
@@ -1166,7 +1166,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithEncryptionPr
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDwDatabaseCrossSubscriptionPITR.json
+// Generated from example definition: 2026-08-01-preview/CreateDwDatabaseCrossSubscriptionPITR.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsACrossSubscriptionRestoreFromARestorePointOfAnExistingDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1181,7 +1181,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsA
 		Location: to.Ptr("southeastasia"),
 		Properties: &armsql.DatabaseProperties{
 			CreateMode:         to.Ptr(armsql.CreateModePointInTimeRestore),
-			RestorePointInTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-22T05:35:31.503Z"); return t }()),
+			RestorePointInTime: to.Ptr(time.Date(2022, time.January, 22, 5, 35, 31, 503000000, time.UTC)),
 			SourceResourceID:   to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/srcsvr/databases/srcdw"),
 		},
 	}, nil)
@@ -1205,7 +1205,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsA
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-24T06:46:14.99Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.January, 24, 6, 46, 14, 990000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("DW1000c"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -1229,7 +1229,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsA
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDwDatabaseCrossSubscriptionRecovery.json
+// Generated from example definition: 2026-08-01-preview/CreateDwDatabaseCrossSubscriptionRecovery.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsACrossSubscriptionRestoreFromAGeoBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1267,7 +1267,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsA
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-24T06:46:14.99Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.January, 24, 6, 46, 14, 990000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("DW1000c"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -1291,7 +1291,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsA
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDwDatabaseCrossSubscriptionRestore.json
+// Generated from example definition: 2026-08-01-preview/CreateDwDatabaseCrossSubscriptionRestore.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsACrossSubscriptionRestoreFromABackupOfADroppedDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1329,7 +1329,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsA
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-24T06:46:14.99Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.January, 24, 6, 46, 14, 990000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("DW1000c"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -1353,7 +1353,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsA
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateVCoreDatabaseByServiceObjective.json
+// Generated from example definition: 2026-08-01-preview/CreateVCoreDatabaseByServiceObjective.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsAVCoreDatabaseBySpecifyingServiceObjectiveName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1392,7 +1392,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsAVCoreDatabaseBySpecifyin
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen4_2"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -1402,7 +1402,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsAVCoreDatabaseBySpecifyin
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
@@ -1423,7 +1423,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsAVCoreDatabaseBySpecifyin
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateVCoreDatabaseBySkuNameCapacity.json
+// Generated from example definition: 2026-08-01-preview/CreateVCoreDatabaseBySkuNameCapacity.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsAVCoreDatabaseBySpecifyingSkuNameAndCapacity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1461,7 +1461,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsAVCoreDatabaseBySpecifyin
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen4_2"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -1471,7 +1471,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsAVCoreDatabaseBySpecifyin
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
@@ -1492,7 +1492,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsAVCoreDatabaseBySpecifyin
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/UpdateDatabaseHyperscaleMigrationPerformCutover.json
+// Generated from example definition: 2026-08-01-preview/UpdateDatabaseHyperscaleMigrationPerformCutover.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_updatesADatabaseToHyperscaleTierByTriggeringManualCutoverDuringMigrationWorkflow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1535,7 +1535,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_updatesADatabaseToHyperscaleTier
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-08T12:41:23.953Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.December, 8, 12, 41, 23, 953000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("GP_Gen5_2"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -1546,7 +1546,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_updatesADatabaseToHyperscaleTier
 	// 			},
 	// 			DatabaseID: to.Ptr("dad50ee1-9fbb-4fb9-bd2b-5786d175ce3c"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-08T12:42:00Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2022, time.December, 8, 12, 42, 0, 0, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
@@ -1569,7 +1569,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_updatesADatabaseToHyperscaleTier
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/UpdateDatabaseHyperscaleMigrationWithManualCutover.json
+// Generated from example definition: 2026-08-01-preview/UpdateDatabaseHyperscaleMigrationWithManualCutover.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_updatesADatabaseToHyperscaleSloWithManualCutover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1616,7 +1616,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_updatesADatabaseToHyperscaleSloW
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-08T12:41:23.953Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.December, 8, 12, 41, 23, 953000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("GP_Gen5_2"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -1627,7 +1627,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_updatesADatabaseToHyperscaleSloW
 	// 			},
 	// 			DatabaseID: to.Ptr("dad50ee1-9fbb-4fb9-bd2b-5786d175ce3c"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-08T12:42:00Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2022, time.December, 8, 12, 42, 0, 0, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
@@ -1650,7 +1650,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_updatesADatabaseToHyperscaleSloW
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/DeleteDatabase.json
+// Generated from example definition: 2026-08-01-preview/DeleteDatabase.json
 func ExampleDatabasesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1676,7 +1676,7 @@ func ExampleDatabasesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ExportDatabase.json
+// Generated from example definition: 2026-08-01-preview/ExportDatabase.json
 func ExampleDatabasesClient_BeginExport_exportsADatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1724,7 +1724,7 @@ func ExampleDatabasesClient_BeginExport_exportsADatabase() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ExportDatabaseWithManagedIdentity.json
+// Generated from example definition: 2026-08-01-preview/ExportDatabaseWithManagedIdentity.json
 func ExampleDatabasesClient_BeginExport_exportsADatabaseUsingManagedIdentityToCommunicateWithSqlServerAndStorageAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1771,7 +1771,7 @@ func ExampleDatabasesClient_BeginExport_exportsADatabaseUsingManagedIdentityToCo
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ExportDatabaseWithNetworkIsolation.json
+// Generated from example definition: 2026-08-01-preview/ExportDatabaseWithNetworkIsolation.json
 func ExampleDatabasesClient_BeginExport_exportsADatabaseUsingPrivateLinkToCommunicateWithSqlServerAndStorageAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1823,7 +1823,7 @@ func ExampleDatabasesClient_BeginExport_exportsADatabaseUsingPrivateLinkToCommun
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/FailoverDatabase.json
+// Generated from example definition: 2026-08-01-preview/FailoverDatabase.json
 func ExampleDatabasesClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1850,7 +1850,7 @@ func ExampleDatabasesClient_BeginFailover() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/GetDatabaseWithAvailabilityZone.json
+// Generated from example definition: 2026-08-01-preview/GetDatabaseWithAvailabilityZone.json
 func ExampleDatabasesClient_Get_getsADatabaseWithAvailabilityZoneSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1879,7 +1879,7 @@ func ExampleDatabasesClient_Get_getsADatabaseWithAvailabilityZoneSpecified() {
 	// 			AvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("S0"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -1889,7 +1889,7 @@ func ExampleDatabasesClient_Get_getsADatabaseWithAvailabilityZoneSpecified() {
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			MaxSizeBytes: to.Ptr[int64](1073741824),
@@ -1908,7 +1908,7 @@ func ExampleDatabasesClient_Get_getsADatabaseWithAvailabilityZoneSpecified() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/GetVCoreDatabase.json
+// Generated from example definition: 2026-08-01-preview/GetVCoreDatabase.json
 func ExampleDatabasesClient_Get_getsADatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1936,7 +1936,7 @@ func ExampleDatabasesClient_Get_getsADatabase() {
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -1946,7 +1946,7 @@ func ExampleDatabasesClient_Get_getsADatabase() {
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
@@ -1968,7 +1968,7 @@ func ExampleDatabasesClient_Get_getsADatabase() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/GetVCoreDatabaseDefaultEnclave.json
+// Generated from example definition: 2026-08-01-preview/GetVCoreDatabaseDefaultEnclave.json
 func ExampleDatabasesClient_Get_getsADatabaseConfiguredWithDefaultEnclaveType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1996,7 +1996,7 @@ func ExampleDatabasesClient_Get_getsADatabaseConfiguredWithDefaultEnclaveType() 
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -2006,7 +2006,7 @@ func ExampleDatabasesClient_Get_getsADatabaseConfiguredWithDefaultEnclaveType() 
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
@@ -2029,7 +2029,7 @@ func ExampleDatabasesClient_Get_getsADatabaseConfiguredWithDefaultEnclaveType() 
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/GetVCoreDatabaseVBSEnclave.json
+// Generated from example definition: 2026-08-01-preview/GetVCoreDatabaseVBSEnclave.json
 func ExampleDatabasesClient_Get_getsADatabaseConfiguredWithVbsEnclaveType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2057,7 +2057,7 @@ func ExampleDatabasesClient_Get_getsADatabaseConfiguredWithVbsEnclaveType() {
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -2067,7 +2067,7 @@ func ExampleDatabasesClient_Get_getsADatabaseConfiguredWithVbsEnclaveType() {
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
@@ -2090,7 +2090,7 @@ func ExampleDatabasesClient_Get_getsADatabaseConfiguredWithVbsEnclaveType() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/GetVCoreDatabaseWithExpandEqualsKeys.json
+// Generated from example definition: 2026-08-01-preview/GetVCoreDatabaseWithExpandEqualsKeys.json
 func ExampleDatabasesClient_Get_getsADatabaseWithDatabaseLevelKeysExpanded() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2119,7 +2119,7 @@ func ExampleDatabasesClient_Get_getsADatabaseWithDatabaseLevelKeysExpanded() {
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -2129,7 +2129,7 @@ func ExampleDatabasesClient_Get_getsADatabaseWithDatabaseLevelKeysExpanded() {
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			EncryptionProtector: to.Ptr("https://your-key-vault-name.vault.azure.net/yourKey/yourKeyVersion"),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
@@ -2158,7 +2158,7 @@ func ExampleDatabasesClient_Get_getsADatabaseWithDatabaseLevelKeysExpanded() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/GetVCoreDatabaseWithExpandEqualsKeysWithVersionlessKeys.json
+// Generated from example definition: 2026-08-01-preview/GetVCoreDatabaseWithExpandEqualsKeysWithVersionlessKeys.json
 func ExampleDatabasesClient_Get_getsADatabaseWithDatabaseLevelKeysExpandedUsingVersionlessKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2187,7 +2187,7 @@ func ExampleDatabasesClient_Get_getsADatabaseWithDatabaseLevelKeysExpandedUsingV
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -2197,7 +2197,7 @@ func ExampleDatabasesClient_Get_getsADatabaseWithDatabaseLevelKeysExpandedUsingV
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			EncryptionProtector: to.Ptr("https://your-key-vault-name.vault.azure.net/yourKey"),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
@@ -2226,7 +2226,7 @@ func ExampleDatabasesClient_Get_getsADatabaseWithDatabaseLevelKeysExpandedUsingV
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ImportDatabase.json
+// Generated from example definition: 2026-08-01-preview/ImportDatabase.json
 func ExampleDatabasesClient_BeginImport_importsToAnExistingEmptyDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2274,7 +2274,7 @@ func ExampleDatabasesClient_BeginImport_importsToAnExistingEmptyDatabase() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ImportDatabaseWithManagedIdentity.json
+// Generated from example definition: 2026-08-01-preview/ImportDatabaseWithManagedIdentity.json
 func ExampleDatabasesClient_BeginImport_importsToAnExistingEmptyDatabaseUsingManagedIdentityToCommunicateWithSqlServerAndStorageAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2321,7 +2321,7 @@ func ExampleDatabasesClient_BeginImport_importsToAnExistingEmptyDatabaseUsingMan
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ImportDatabaseWithNetworkIsolation.json
+// Generated from example definition: 2026-08-01-preview/ImportDatabaseWithNetworkIsolation.json
 func ExampleDatabasesClient_BeginImport_importsToAnExistingEmptyDatabaseUsingPrivateLinkToCommunicateWithSqlServerAndStorageAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2373,7 +2373,7 @@ func ExampleDatabasesClient_BeginImport_importsToAnExistingEmptyDatabaseUsingPri
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ListDatabasesByElasticPool.json
+// Generated from example definition: 2026-08-01-preview/ListDatabasesByElasticPool.json
 func ExampleDatabasesClient_NewListByElasticPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2407,7 +2407,7 @@ func ExampleDatabasesClient_NewListByElasticPoolPager() {
 		// 				Properties: &armsql.DatabaseProperties{
 		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-12T22:08:39.163Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.July, 12, 22, 8, 39, 163000000, time.UTC)),
 		// 					CurrentServiceObjectiveName: to.Ptr("ElasticPool"),
 		// 					DatabaseID: to.Ptr("bfe0735f-bc87-447f-b2c2-481f4b100614"),
 		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
@@ -2429,7 +2429,7 @@ func ExampleDatabasesClient_NewListByElasticPoolPager() {
 		// 				Properties: &armsql.DatabaseProperties{
 		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-12T22:10:10.773Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.July, 12, 22, 10, 10, 773000000, time.UTC)),
 		// 					CurrentServiceObjectiveName: to.Ptr("ElasticPool"),
 		// 					DatabaseID: to.Ptr("82246152-3177-4357-b81c-a16d87ce3593"),
 		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
@@ -2448,7 +2448,7 @@ func ExampleDatabasesClient_NewListByElasticPoolPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ListVCoreDatabasesByServer.json
+// Generated from example definition: 2026-08-01-preview/ListVCoreDatabasesByServer.json
 func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabases() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2482,7 +2482,7 @@ func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabases() {
 		// 				Properties: &armsql.DatabaseProperties{
 		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyZone),
 		// 					CurrentServiceObjectiveName: to.Ptr("BC_Gen4_2"),
 		// 					CurrentSKU: &armsql.SKU{
@@ -2492,7 +2492,7 @@ func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabases() {
 		// 					},
 		// 					DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
-		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+		// 					EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 		// 					IsInfraEncryptionEnabled: to.Ptr(false),
 		// 					IsLedgerOn: to.Ptr(false),
 		// 					LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
@@ -2519,7 +2519,7 @@ func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabases() {
 		// 				Properties: &armsql.DatabaseProperties{
 		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:23:42.537Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 23, 42, 537000000, time.UTC)),
 		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyLocal),
 		// 					CurrentServiceObjectiveName: to.Ptr("System0"),
 		// 					CurrentSKU: &armsql.SKU{
@@ -2550,7 +2550,7 @@ func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabases() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ListVCoreDatabasesByServerWithOdata.json
+// Generated from example definition: 2026-08-01-preview/ListVCoreDatabasesByServerWithOdata.json
 func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabasesWithODataFiltering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2587,7 +2587,7 @@ func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabasesWithODataFi
 		// 					MaxSizeBytes: to.Ptr[int64](268435456000),
 		// 					Status: to.Ptr(armsql.DatabaseStatusOnline),
 		// 					DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 		// 					CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
 		// 					RequestedServiceObjectiveName: to.Ptr("BC_Gen5_2"),
 		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
@@ -2597,7 +2597,7 @@ func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabasesWithODataFi
 		// 					IsInfraEncryptionEnabled: to.Ptr(false),
 		// 					ZoneRedundant: to.Ptr(false),
 		// 					ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
-		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+		// 					EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 		// 					MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
 		// 					CurrentSKU: &armsql.SKU{
 		// 						Name: to.Ptr("BC_Gen5"),
@@ -2625,7 +2625,7 @@ func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabasesWithODataFi
 		// 					MaxSizeBytes: to.Ptr[int64](268435456000),
 		// 					Status: to.Ptr(armsql.DatabaseStatusOnline),
 		// 					DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 		// 					CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
 		// 					RequestedServiceObjectiveName: to.Ptr("BC_Gen5_2"),
 		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
@@ -2635,7 +2635,7 @@ func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabasesWithODataFi
 		// 					IsInfraEncryptionEnabled: to.Ptr(false),
 		// 					ZoneRedundant: to.Ptr(false),
 		// 					ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
-		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+		// 					EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 		// 					MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
 		// 					CurrentSKU: &armsql.SKU{
 		// 						Name: to.Ptr("BC_Gen5"),
@@ -2657,7 +2657,7 @@ func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabasesWithODataFi
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ListVCoreDatabasesEnclaveTypeByServer.json
+// Generated from example definition: 2026-08-01-preview/ListVCoreDatabasesEnclaveTypeByServer.json
 func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabasesConfiguredWithEnclaveType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2691,7 +2691,7 @@ func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabasesConfiguredW
 		// 				Properties: &armsql.DatabaseProperties{
 		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyZone),
 		// 					CurrentServiceObjectiveName: to.Ptr("BC_Gen4_2"),
 		// 					CurrentSKU: &armsql.SKU{
@@ -2701,7 +2701,7 @@ func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabasesConfiguredW
 		// 					},
 		// 					DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
-		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+		// 					EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 		// 					IsInfraEncryptionEnabled: to.Ptr(false),
 		// 					IsLedgerOn: to.Ptr(false),
 		// 					LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
@@ -2729,7 +2729,7 @@ func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabasesConfiguredW
 		// 				Properties: &armsql.DatabaseProperties{
 		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:23:42.537Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 23, 42, 537000000, time.UTC)),
 		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyLocal),
 		// 					CurrentServiceObjectiveName: to.Ptr("System0"),
 		// 					CurrentSKU: &armsql.SKU{
@@ -2761,7 +2761,7 @@ func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabasesConfiguredW
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ListVCoreInaccessibleDatabasesByServer.json
+// Generated from example definition: 2026-08-01-preview/ListVCoreInaccessibleDatabasesByServer.json
 func ExampleDatabasesClient_NewListInaccessibleByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2795,7 +2795,7 @@ func ExampleDatabasesClient_NewListInaccessibleByServerPager() {
 		// 				Properties: &armsql.DatabaseProperties{
 		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 		// 					CurrentServiceObjectiveName: to.Ptr("BC_Gen4_2"),
 		// 					DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
@@ -2817,7 +2817,7 @@ func ExampleDatabasesClient_NewListInaccessibleByServerPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/PauseDatabase.json
+// Generated from example definition: 2026-08-01-preview/PauseDatabase.json
 func ExampleDatabasesClient_BeginPause() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2849,7 +2849,7 @@ func ExampleDatabasesClient_BeginPause() {
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-13T02:04:26.187Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.July, 13, 2, 4, 26, 187000000, time.UTC)),
 	// 			CurrentServiceObjectiveName: to.Ptr("D1"),
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
@@ -2863,7 +2863,7 @@ func ExampleDatabasesClient_BeginPause() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/RenameDatabase.json
+// Generated from example definition: 2026-08-01-preview/RenameDatabase.json
 func ExampleDatabasesClient_Rename() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2887,7 +2887,7 @@ func ExampleDatabasesClient_Rename() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ResumeDatabase.json
+// Generated from example definition: 2026-08-01-preview/ResumeDatabase.json
 func ExampleDatabasesClient_BeginResume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2919,7 +2919,7 @@ func ExampleDatabasesClient_BeginResume() {
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-13T02:04:26.187Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.July, 13, 2, 4, 26, 187000000, time.UTC)),
 	// 			CurrentServiceObjectiveName: to.Ptr("D1"),
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
@@ -2933,7 +2933,7 @@ func ExampleDatabasesClient_BeginResume() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/PatchDatabaseDefaultEnclave.json
+// Generated from example definition: 2026-08-01-preview/PatchDatabaseDefaultEnclave.json
 func ExampleDatabasesClient_BeginUpdate_updatesADatabaseWithDefaultEnclaveType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2969,7 +2969,7 @@ func ExampleDatabasesClient_BeginUpdate_updatesADatabaseWithDefaultEnclaveType()
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("S0"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -2979,7 +2979,7 @@ func ExampleDatabasesClient_BeginUpdate_updatesADatabaseWithDefaultEnclaveType()
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
 	// 			PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeDefault),
 	// 			ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
@@ -2997,7 +2997,7 @@ func ExampleDatabasesClient_BeginUpdate_updatesADatabaseWithDefaultEnclaveType()
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/PatchDatabaseVBSEnclave.json
+// Generated from example definition: 2026-08-01-preview/PatchDatabaseVBSEnclave.json
 func ExampleDatabasesClient_BeginUpdate_updatesADatabaseWithVbsEnclaveType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3033,7 +3033,7 @@ func ExampleDatabasesClient_BeginUpdate_updatesADatabaseWithVbsEnclaveType() {
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("S0"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -3043,7 +3043,7 @@ func ExampleDatabasesClient_BeginUpdate_updatesADatabaseWithVbsEnclaveType() {
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
 	// 			PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeVBS),
 	// 			ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
@@ -3061,7 +3061,7 @@ func ExampleDatabasesClient_BeginUpdate_updatesADatabaseWithVbsEnclaveType() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/PatchVCoreDatabase.json
+// Generated from example definition: 2026-08-01-preview/PatchVCoreDatabase.json
 func ExampleDatabasesClient_BeginUpdate_updatesADatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3101,7 +3101,7 @@ func ExampleDatabasesClient_BeginUpdate_updatesADatabase() {
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen4_2"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -3111,7 +3111,7 @@ func ExampleDatabasesClient_BeginUpdate_updatesADatabase() {
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
@@ -3132,7 +3132,7 @@ func ExampleDatabasesClient_BeginUpdate_updatesADatabase() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/PatchVCoreDatabaseAssignMaintenanceConfiguration.json
+// Generated from example definition: 2026-08-01-preview/PatchVCoreDatabaseAssignMaintenanceConfiguration.json
 func ExampleDatabasesClient_BeginUpdate_assignsMaintenanceWindowToADatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3171,7 +3171,7 @@ func ExampleDatabasesClient_BeginUpdate_assignsMaintenanceWindowToADatabase() {
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -3181,7 +3181,7 @@ func ExampleDatabasesClient_BeginUpdate_assignsMaintenanceWindowToADatabase() {
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
@@ -3203,7 +3203,7 @@ func ExampleDatabasesClient_BeginUpdate_assignsMaintenanceWindowToADatabase() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/PatchVCoreDatabaseResetMaintenanceConfiguration.json
+// Generated from example definition: 2026-08-01-preview/PatchVCoreDatabaseResetMaintenanceConfiguration.json
 func ExampleDatabasesClient_BeginUpdate_resetsMaintenanceWindowOfADatabaseToDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3242,7 +3242,7 @@ func ExampleDatabasesClient_BeginUpdate_resetsMaintenanceWindowOfADatabaseToDefa
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen5_4"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -3252,7 +3252,7 @@ func ExampleDatabasesClient_BeginUpdate_resetsMaintenanceWindowOfADatabaseToDefa
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
@@ -3273,7 +3273,7 @@ func ExampleDatabasesClient_BeginUpdate_resetsMaintenanceWindowOfADatabaseToDefa
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/PatchVCoreDatabaseWithKeysAndEncryptionProtector.json
+// Generated from example definition: 2026-08-01-preview/PatchVCoreDatabaseWithKeysAndEncryptionProtector.json
 func ExampleDatabasesClient_BeginUpdate_patchADatabaseWithDatabaseLevelCustomerManagedKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3322,7 +3322,7 @@ func ExampleDatabasesClient_BeginUpdate_patchADatabaseWithDatabaseLevelCustomerM
 	// 		Properties: &armsql.DatabaseProperties{
 	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen4_2"),
 	// 			CurrentSKU: &armsql.SKU{
@@ -3332,7 +3332,7 @@ func ExampleDatabasesClient_BeginUpdate_patchADatabaseWithDatabaseLevelCustomerM
 	// 			},
 	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
 	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
 	// 			IsInfraEncryptionEnabled: to.Ptr(false),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
@@ -3353,7 +3353,7 @@ func ExampleDatabasesClient_BeginUpdate_patchADatabaseWithDatabaseLevelCustomerM
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/UpgradeDataWarehouse.json
+// Generated from example definition: 2026-08-01-preview/UpgradeDataWarehouse.json
 func ExampleDatabasesClient_BeginUpgradeDataWarehouse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

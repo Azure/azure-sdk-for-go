@@ -135,10 +135,10 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armpineconevectordb.SystemData{
 	// 			CreatedBy: to.Ptr("a8006d37-bf85-4ab3-bf9d-2fb4702a1cfb"),
 	// 			CreatedByType: to.Ptr(armpineconevectordb.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-22T20:59:36.290Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.October, 22, 20, 59, 36, 290000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("a8006d37-bf85-4ab3-bf9d-2fb4702a1cfb"),
 	// 			LastModifiedByType: to.Ptr(armpineconevectordb.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-22T20:59:36.290Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.October, 22, 20, 59, 36, 290000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -240,10 +240,10 @@ func ExampleOrganizationsClient_Get() {
 	// 		SystemData: &armpineconevectordb.SystemData{
 	// 			CreatedBy: to.Ptr("a8006d37-bf85-4ab3-bf9d-2fb4702a1cfb"),
 	// 			CreatedByType: to.Ptr(armpineconevectordb.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-22T20:59:36.290Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.October, 22, 20, 59, 36, 290000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("a8006d37-bf85-4ab3-bf9d-2fb4702a1cfb"),
 	// 			LastModifiedByType: to.Ptr(armpineconevectordb.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-22T20:59:36.290Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.October, 22, 20, 59, 36, 290000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -330,10 +330,10 @@ func ExampleOrganizationsClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armpineconevectordb.SystemData{
 		// 					CreatedBy: to.Ptr("a8006d37-bf85-4ab3-bf9d-2fb4702a1cfb"),
 		// 					CreatedByType: to.Ptr(armpineconevectordb.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-22T20:59:36.290Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.October, 22, 20, 59, 36, 290000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("a8006d37-bf85-4ab3-bf9d-2fb4702a1cfb"),
 		// 					LastModifiedByType: to.Ptr(armpineconevectordb.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-22T20:59:36.290Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.October, 22, 20, 59, 36, 290000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -424,10 +424,10 @@ func ExampleOrganizationsClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armpineconevectordb.SystemData{
 		// 					CreatedBy: to.Ptr("a8006d37-bf85-4ab3-bf9d-2fb4702a1cfb"),
 		// 					CreatedByType: to.Ptr(armpineconevectordb.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-22T20:59:36.290Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.October, 22, 20, 59, 36, 290000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("a8006d37-bf85-4ab3-bf9d-2fb4702a1cfb"),
 		// 					LastModifiedByType: to.Ptr(armpineconevectordb.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-22T20:59:36.290Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.October, 22, 20, 59, 36, 290000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -527,10 +527,10 @@ func ExampleOrganizationsClient_Update() {
 	// 		SystemData: &armpineconevectordb.SystemData{
 	// 			CreatedBy: to.Ptr("a8006d37-bf85-4ab3-bf9d-2fb4702a1cfb"),
 	// 			CreatedByType: to.Ptr(armpineconevectordb.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-22T20:59:36.290Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.October, 22, 20, 59, 36, 290000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("a8006d37-bf85-4ab3-bf9d-2fb4702a1cfb"),
 	// 			LastModifiedByType: to.Ptr(armpineconevectordb.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-22T21:33:13.330Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.October, 22, 21, 33, 13, 330000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

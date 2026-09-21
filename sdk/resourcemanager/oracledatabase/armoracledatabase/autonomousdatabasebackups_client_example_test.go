@@ -57,7 +57,7 @@ func ExampleAutonomousDatabaseBackupsClient_BeginCreateOrUpdate_createAutonomous
 	// 			LifecycleDetails: to.Ptr("Backup completed successfully"),
 	// 			LifecycleState: to.Ptr(armoracledatabase.AutonomousDatabaseBackupLifecycleStateActive),
 	// 			SizeInTbs: to.Ptr[float64](2),
-	// 			TimeAvailableTil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-09T20:44:09.466Z"); return t}()),
+	// 			TimeAvailableTil: to.Ptr(time.Date(2025, time.January, 9, 20, 44, 9, 466000000, time.UTC)),
 	// 			TimeStarted: to.Ptr("lcogiebqmxudyzo"),
 	// 			TimeEnded: to.Ptr("2024-01-09T20:44:09.466Z"),
 	// 			BackupType: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
@@ -69,10 +69,10 @@ func ExampleAutonomousDatabaseBackupsClient_BeginCreateOrUpdate_createAutonomous
 	// 		SystemData: &armoracledatabase.SystemData{
 	// 			CreatedBy: to.Ptr("sqehacivpuim"),
 	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
 	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -122,7 +122,7 @@ func ExampleAutonomousDatabaseBackupsClient_BeginCreateOrUpdate_autonomousDataba
 	// 			LifecycleState: to.Ptr(armoracledatabase.AutonomousDatabaseBackupLifecycleStateActive),
 	// 			RetentionPeriodInDays: to.Ptr[int32](365),
 	// 			SizeInTbs: to.Ptr[float64](2),
-	// 			TimeAvailableTil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-09T20:44:09.466Z"); return t}()),
+	// 			TimeAvailableTil: to.Ptr(time.Date(2025, time.January, 9, 20, 44, 9, 466000000, time.UTC)),
 	// 			TimeStarted: to.Ptr("2024-01-09T19:44:09.466Z"),
 	// 			TimeEnded: to.Ptr("2024-01-09T20:44:09.466Z"),
 	// 			BackupType: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
@@ -206,7 +206,7 @@ func ExampleAutonomousDatabaseBackupsClient_Get_getAutonomousDatabaseBackupGener
 	// 			LifecycleDetails: to.Ptr("Backup completed successfully"),
 	// 			LifecycleState: to.Ptr(armoracledatabase.AutonomousDatabaseBackupLifecycleStateActive),
 	// 			SizeInTbs: to.Ptr[float64](2),
-	// 			TimeAvailableTil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-09T20:44:09.466Z"); return t}()),
+	// 			TimeAvailableTil: to.Ptr(time.Date(2025, time.January, 9, 20, 44, 9, 466000000, time.UTC)),
 	// 			TimeStarted: to.Ptr("lcogiebqmxudyzo"),
 	// 			TimeEnded: to.Ptr("2024-01-09T20:44:09.466Z"),
 	// 			BackupType: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
@@ -218,10 +218,10 @@ func ExampleAutonomousDatabaseBackupsClient_Get_getAutonomousDatabaseBackupGener
 	// 		SystemData: &armoracledatabase.SystemData{
 	// 			CreatedBy: to.Ptr("sqehacivpuim"),
 	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
 	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -261,7 +261,7 @@ func ExampleAutonomousDatabaseBackupsClient_Get_autonomousDatabaseBackupsGet() {
 	// 			LifecycleState: to.Ptr(armoracledatabase.AutonomousDatabaseBackupLifecycleStateActive),
 	// 			RetentionPeriodInDays: to.Ptr[int32](365),
 	// 			SizeInTbs: to.Ptr[float64](2),
-	// 			TimeAvailableTil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-09T20:44:09.466Z"); return t}()),
+	// 			TimeAvailableTil: to.Ptr(time.Date(2025, time.January, 9, 20, 44, 9, 466000000, time.UTC)),
 	// 			TimeStarted: to.Ptr("2024-01-09T19:44:09.466Z"),
 	// 			TimeEnded: to.Ptr("2024-01-09T20:44:09.466Z"),
 	// 			BackupType: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
@@ -271,7 +271,7 @@ func ExampleAutonomousDatabaseBackupsClient_Get_autonomousDatabaseBackupsGet() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/autonomousDatabaseBackup_listByParent.json
+// Generated from example definition: 2025-09-01/AutonomousDatabaseBackups_ListByParent_MaximumSet_Gen.json
 func ExampleAutonomousDatabaseBackupsClient_NewListByAutonomousDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -282,7 +282,7 @@ func ExampleAutonomousDatabaseBackupsClient_NewListByAutonomousDatabasePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewAutonomousDatabaseBackupsClient().NewListByAutonomousDatabasePager("rg000", "databasedb1", nil)
+	pager := clientFactory.NewAutonomousDatabaseBackupsClient().NewListByAutonomousDatabasePager("rgopenapi", "databasedb1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -311,13 +311,24 @@ func ExampleAutonomousDatabaseBackupsClient_NewListByAutonomousDatabasePager() {
 		// 					LifecycleState: to.Ptr(armoracledatabase.AutonomousDatabaseBackupLifecycleStateActive),
 		// 					RetentionPeriodInDays: to.Ptr[int32](365),
 		// 					SizeInTbs: to.Ptr[float64](2),
-		// 					TimeAvailableTil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-09T20:44:09.466Z"); return t}()),
+		// 					TimeAvailableTil: to.Ptr(time.Date(2025, time.January, 9, 20, 44, 9, 466000000, time.UTC)),
 		// 					TimeEnded: to.Ptr("2024-01-09T20:44:09.466Z"),
 		// 					BackupType: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
 		// 					ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+		// 					TimeStarted: to.Ptr("krhgmxolymoepnkghvd"),
+		// 				},
+		// 				Name: to.Ptr("oqossvyqkeitdj"),
+		// 				SystemData: &armoracledatabase.SystemData{
+		// 					CreatedBy: to.Ptr("sqehacivpuim"),
+		// 					CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+		// 					LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
 		// 	},
 		// }
 	}
@@ -363,7 +374,7 @@ func ExampleAutonomousDatabaseBackupsClient_BeginUpdate_patchAutonomousDatabaseB
 	// 			LifecycleDetails: to.Ptr("Backup completed successfully"),
 	// 			LifecycleState: to.Ptr(armoracledatabase.AutonomousDatabaseBackupLifecycleStateActive),
 	// 			SizeInTbs: to.Ptr[float64](2),
-	// 			TimeAvailableTil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-09T20:44:09.466Z"); return t}()),
+	// 			TimeAvailableTil: to.Ptr(time.Date(2025, time.January, 9, 20, 44, 9, 466000000, time.UTC)),
 	// 			TimeStarted: to.Ptr("lcogiebqmxudyzo"),
 	// 			TimeEnded: to.Ptr("2024-01-09T20:44:09.466Z"),
 	// 			BackupType: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
@@ -375,10 +386,10 @@ func ExampleAutonomousDatabaseBackupsClient_BeginUpdate_patchAutonomousDatabaseB
 	// 		SystemData: &armoracledatabase.SystemData{
 	// 			CreatedBy: to.Ptr("sqehacivpuim"),
 	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
 	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

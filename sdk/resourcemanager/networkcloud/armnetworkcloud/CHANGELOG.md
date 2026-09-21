@@ -1,5 +1,107 @@
 # Release History
 
+## 2.0.0 (2026-08-18)
+### Breaking Changes
+
+- Type of `ClusterPatchProperties.AggregatorOrSingleRackDefinition` has been changed from `*RackDefinition` to `*RackDefinitionPatch`
+- Type of `ClusterPatchProperties.ClusterServicePrincipal` has been changed from `*ServicePrincipalInformation` to `*ServicePrincipalInformationPatch`
+- Type of `ClusterPatchProperties.ComputeDeploymentThreshold` has been changed from `*ValidationThreshold` to `*ValidationThresholdPatch`
+- Type of `ClusterPatchProperties.ComputeRackDefinitions` has been changed from `[]*RackDefinition` to `[]*RackDefinitionPatch`
+- Type of `ClusterPatchProperties.RuntimeProtectionConfiguration` has been changed from `*RuntimeProtectionConfiguration` to `*RuntimeProtectionConfigurationPatch`
+- Type of `ClusterPatchProperties.SecretArchive` has been changed from `*ClusterSecretArchive` to `*ClusterSecretArchivePatch`
+- Type of `ClusterPatchProperties.UpdateStrategy` has been changed from `*ClusterUpdateStrategy` to `*ClusterUpdateStrategyPatch`
+- Type of `ConsolePatchProperties.SSHPublicKey` has been changed from `*SSHPublicKey` to `*SSHPublicKeyPatch`
+- Type of `VirtualMachinePatchProperties.VMImageRepositoryCredentials` has been changed from `*ImageRepositoryCredentials` to `*ImageRepositoryCredentialsPatch`
+
+### Features Added
+
+- New value `CloudServicesNetworkStorageStatusStatusInitializing`, `CloudServicesNetworkStorageStatusStatusNone`, `CloudServicesNetworkStorageStatusStatusRepairing` added to enum type `CloudServicesNetworkStorageStatusStatus`
+- New value `CommandOutputTypeClusterSupportAdministrativeActions` added to enum type `CommandOutputType`
+- New enum type `AccessBridgeAllowedName` with values `AccessBridgeAllowedNameBastion`, `AccessBridgeAllowedNamePrivateVault`, `AccessBridgeAllowedNameStorageDashboard`
+- New enum type `AccessBridgeDetailedStatus` with values `AccessBridgeDetailedStatusDegraded`, `AccessBridgeDetailedStatusFailed`, `AccessBridgeDetailedStatusRunning`
+- New enum type `AccessBridgeProvisioningState` with values `AccessBridgeProvisioningStateAccepted`, `AccessBridgeProvisioningStateCanceled`, `AccessBridgeProvisioningStateFailed`, `AccessBridgeProvisioningStateProvisioning`, `AccessBridgeProvisioningStateSucceeded`
+- New enum type `BareMetalMachineMonitoringConfigurationStatusLogLevel` with values `BareMetalMachineMonitoringConfigurationStatusLogLevelDefault`, `BareMetalMachineMonitoringConfigurationStatusLogLevelNexus`
+- New enum type `BareMetalMachineMonitoringConfigurationStatusMetricsLevel` with values `BareMetalMachineMonitoringConfigurationStatusMetricsLevelDefault`, `BareMetalMachineMonitoringConfigurationStatusMetricsLevelNexus`
+- New enum type `BareMetalMachineReimageSafeguardMode` with values `BareMetalMachineReimageSafeguardModeAll`, `BareMetalMachineReimageSafeguardModeNone`
+- New enum type `ClusterContinueUpdateVersionSafeguardMode` with values `ClusterContinueUpdateVersionSafeguardModeAll`, `ClusterContinueUpdateVersionSafeguardModeNone`
+- New enum type `ClusterInspectAdditionalAction` with values `ClusterInspectAdditionalActionResetHardware`
+- New enum type `ClusterUpdateVersionSafeguardMode` with values `ClusterUpdateVersionSafeguardModeAll`, `ClusterUpdateVersionSafeguardModeNone`
+- New enum type `DeploymentType` with values `DeploymentTypeAzureLocal`, `DeploymentTypeNexus`
+- New enum type `KubernetesVersionProvisioningState` with values `KubernetesVersionProvisioningStateAccepted`, `KubernetesVersionProvisioningStateCanceled`, `KubernetesVersionProvisioningStateFailed`, `KubernetesVersionProvisioningStateSucceeded`
+- New enum type `RelayPrivateEndpointConnectionState` with values `RelayPrivateEndpointConnectionStateApproved`, `RelayPrivateEndpointConnectionStateRejected`
+- New enum type `RuntimeProtectionAgentHealthStatus` with values `RuntimeProtectionAgentHealthStatusHealthy`, `RuntimeProtectionAgentHealthStatusUnhealthy`
+- New enum type `RuntimeProtectionAgentLicenseStatus` with values `RuntimeProtectionAgentLicenseStatusLicensed`, `RuntimeProtectionAgentLicenseStatusUnlicensed`
+- New enum type `RuntimeProtectionDefinitionUpdateMode` with values `RuntimeProtectionDefinitionUpdateModeAutomatic`, `RuntimeProtectionDefinitionUpdateModeNone`
+- New enum type `SecurityRuleDirection` with values `SecurityRuleDirectionInbound`, `SecurityRuleDirectionOutbound`
+- New enum type `StorageApplianceMonitoringConfigurationStatusLogLevel` with values `StorageApplianceMonitoringConfigurationStatusLogLevelDefault`, `StorageApplianceMonitoringConfigurationStatusLogLevelNexus`
+- New enum type `StorageApplianceMonitoringConfigurationStatusMetricsLevel` with values `StorageApplianceMonitoringConfigurationStatusMetricsLevelDefault`, `StorageApplianceMonitoringConfigurationStatusMetricsLevelNexus`
+- New enum type `TransportProtocol` with values `TransportProtocolTCP`, `TransportProtocolUDP`
+- New function `NewAccessBridgesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessBridgesClient, error)`
+- New function `*AccessBridgesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, accessBridge AccessBridge, options *AccessBridgesClientBeginCreateOrUpdateOptions) (*runtime.Poller[AccessBridgesClientCreateOrUpdateResponse], error)`
+- New function `*AccessBridgesClient.BeginDelete(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, options *AccessBridgesClientBeginDeleteOptions) (*runtime.Poller[AccessBridgesClientDeleteResponse], error)`
+- New function `*AccessBridgesClient.Get(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, options *AccessBridgesClientGetOptions) (AccessBridgesClientGetResponse, error)`
+- New function `*AccessBridgesClient.NewListByResourceGroupPager(resourceGroupName string, options *AccessBridgesClientListByResourceGroupOptions) *runtime.Pager[AccessBridgesClientListByResourceGroupResponse]`
+- New function `*AccessBridgesClient.NewListBySubscriptionPager(options *AccessBridgesClientListBySubscriptionOptions) *runtime.Pager[AccessBridgesClientListBySubscriptionResponse]`
+- New function `*AccessBridgesClient.BeginUpdate(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, accessBridgeUpdateParameters AccessBridgePatchParameters, options *AccessBridgesClientBeginUpdateOptions) (*runtime.Poller[AccessBridgesClientUpdateResponse], error)`
+- New function `*ClientFactory.NewAccessBridgesClient() *AccessBridgesClient`
+- New function `*ClientFactory.NewKubernetesVersionsClient() *KubernetesVersionsClient`
+- New function `*ClusterManagersClient.BeginUpdateRelayPrivateEndpointConnection(ctx context.Context, resourceGroupName string, clusterManagerName string, options *ClusterManagersClientBeginUpdateRelayPrivateEndpointConnectionOptions) (*runtime.Poller[ClusterManagersClientUpdateRelayPrivateEndpointConnectionResponse], error)`
+- New function `*ClustersClient.BeginInspect(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginInspectOptions) (*runtime.Poller[ClustersClientInspectResponse], error)`
+- New function `*ClustersClient.BeginRotateCredential(ctx context.Context, resourceGroupName string, clusterName string, body ClusterRotateCredentialParameters, options *ClustersClientBeginRotateCredentialOptions) (*runtime.Poller[ClustersClientRotateCredentialResponse], error)`
+- New function `NewKubernetesVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*KubernetesVersionsClient, error)`
+- New function `*KubernetesVersionsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, kubernetesVersionName string, kubernetesVersionParameters KubernetesVersion, options *KubernetesVersionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[KubernetesVersionsClientCreateOrUpdateResponse], error)`
+- New function `*KubernetesVersionsClient.BeginDelete(ctx context.Context, resourceGroupName string, kubernetesVersionName string, options *KubernetesVersionsClientBeginDeleteOptions) (*runtime.Poller[KubernetesVersionsClientDeleteResponse], error)`
+- New function `*KubernetesVersionsClient.Get(ctx context.Context, resourceGroupName string, kubernetesVersionName string, options *KubernetesVersionsClientGetOptions) (KubernetesVersionsClientGetResponse, error)`
+- New function `*KubernetesVersionsClient.NewListByResourceGroupPager(resourceGroupName string, options *KubernetesVersionsClientListByResourceGroupOptions) *runtime.Pager[KubernetesVersionsClientListByResourceGroupResponse]`
+- New function `*KubernetesVersionsClient.NewListBySubscriptionPager(options *KubernetesVersionsClientListBySubscriptionOptions) *runtime.Pager[KubernetesVersionsClientListBySubscriptionResponse]`
+- New function `*KubernetesVersionsClient.BeginUpdate(ctx context.Context, resourceGroupName string, kubernetesVersionName string, kubernetesVersionPatchParameters KubernetesVersionPatchParameters, options *KubernetesVersionsClientBeginUpdateOptions) (*runtime.Poller[KubernetesVersionsClientUpdateResponse], error)`
+- New struct `AccessBridge`
+- New struct `AccessBridgeEndpoint`
+- New struct `AccessBridgeList`
+- New struct `AccessBridgePatchParameters`
+- New struct `AccessBridgePatchProperties`
+- New struct `AccessBridgeProperties`
+- New struct `AccessBridgeSecurityRule`
+- New struct `AdministrativeCredentialsPatch`
+- New struct `BareMetalMachineConfigurationDataPatch`
+- New struct `BareMetalMachineMonitoringConfigurationStatus`
+- New struct `BareMetalMachineReimageParameters`
+- New struct `ClusterInspectParameters`
+- New struct `ClusterManagerRelayConfiguration`
+- New struct `ClusterManagerUpdateRelayPrivateEndpointConnectionParameters`
+- New struct `ClusterRotateCredentialParameters`
+- New struct `ClusterSecretArchivePatch`
+- New struct `ClusterUpdateStrategyPatch`
+- New struct `FilterDevices`
+- New struct `ImageRepositoryCredentialsPatch`
+- New struct `KubernetesVersion`
+- New struct `KubernetesVersionList`
+- New struct `KubernetesVersionPatchParameters`
+- New struct `KubernetesVersionProperties`
+- New struct `KubernetesVersionValue`
+- New struct `RackDefinitionPatch`
+- New struct `RuntimeProtectionConfigurationPatch`
+- New struct `SSHPublicKeyPatch`
+- New struct `ServicePrincipalInformationPatch`
+- New struct `StorageApplianceConfigurationDataPatch`
+- New struct `StorageApplianceExpansionShelf`
+- New struct `StorageApplianceMonitoringConfigurationStatus`
+- New struct `ValidationThresholdPatch`
+- New field `BmcIPv4Address`, `BmcIPv6Address`, `MonitoringConfigurationStatus` in struct `BareMetalMachineProperties`
+- New field `Body` in struct `BareMetalMachinesClientBeginReimageOptions`
+- New field `Kind` in struct `Cluster`
+- New field `SafeguardMode` in struct `ClusterContinueUpdateVersionParameters`
+- New field `Kind` in struct `ClusterManager`
+- New field `RelayConfiguration` in struct `ClusterManagerProperties`
+- New field `LastSuccessfulVersionUpdateTime`, `ManagedCredentials` in struct `ClusterProperties`
+- New field `SafeguardMode` in struct `ClusterUpdateVersionParameters`
+- New field `DeploymentType` in struct `RackSKUProperties`
+- New field `DefinitionUpdateMode` in struct `RuntimeProtectionConfiguration`
+- New field `AgentHealthStatus`, `AgentHealthStatusIssues`, `AgentLicenseStatus`, `DefinitionUpdateMode`, `EnforcementLevel` in struct `RuntimeProtectionStatus`
+- New field `ExpansionShelves`, `MonitoringConfigurationStatus` in struct `StorageApplianceProperties`
+- New field `AssignedStorageApplianceID` in struct `VolumeProperties`
+
+
 ## 1.5.0-beta.1 (2026-05-06)
 ### Features Added
 

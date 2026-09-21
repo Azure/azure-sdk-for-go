@@ -193,7 +193,7 @@ func (l *LocalRulestacksServerTransport) dispatchBeginCommit(req *http.Request) 
 	}
 	beginCommit := l.beginCommit.get(req)
 	if beginCommit == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/commit`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/commit`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -237,7 +237,7 @@ func (l *LocalRulestacksServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 	}
 	beginCreateOrUpdate := l.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -285,7 +285,7 @@ func (l *LocalRulestacksServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	beginDelete := l.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -327,7 +327,7 @@ func (l *LocalRulestacksServerTransport) dispatchGet(req *http.Request) (*http.R
 	if l.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -360,7 +360,7 @@ func (l *LocalRulestacksServerTransport) dispatchGetChangeLog(req *http.Request)
 	if l.srv.GetChangeLog == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetChangeLog not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getChangeLog`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getChangeLog`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -393,7 +393,7 @@ func (l *LocalRulestacksServerTransport) dispatchGetSupportInfo(req *http.Reques
 	if l.srv.GetSupportInfo == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSupportInfo not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getSupportInfo`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getSupportInfo`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -434,7 +434,7 @@ func (l *LocalRulestacksServerTransport) dispatchListAdvancedSecurityObjects(req
 	if l.srv.ListAdvancedSecurityObjects == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListAdvancedSecurityObjects not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listAdvancedSecurityObjects`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listAdvancedSecurityObjects`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -488,7 +488,7 @@ func (l *LocalRulestacksServerTransport) dispatchNewListAppIDsPager(req *http.Re
 	}
 	newListAppIDsPager := l.newListAppIDsPager.get(req)
 	if newListAppIDsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listAppIds`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listAppIds`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -552,7 +552,7 @@ func (l *LocalRulestacksServerTransport) dispatchNewListByResourceGroupPager(req
 	}
 	newListByResourceGroupPager := l.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -589,7 +589,7 @@ func (l *LocalRulestacksServerTransport) dispatchNewListBySubscriptionPager(req 
 	}
 	newListBySubscriptionPager := l.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -622,7 +622,7 @@ func (l *LocalRulestacksServerTransport) dispatchNewListCountriesPager(req *http
 	}
 	newListCountriesPager := l.newListCountriesPager.get(req)
 	if newListCountriesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listCountries`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listCountries`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -680,7 +680,7 @@ func (l *LocalRulestacksServerTransport) dispatchListFirewalls(req *http.Request
 	if l.srv.ListFirewalls == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListFirewalls not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listFirewalls`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listFirewalls`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -715,7 +715,7 @@ func (l *LocalRulestacksServerTransport) dispatchNewListPredefinedURLCategoriesP
 	}
 	newListPredefinedURLCategoriesPager := l.newListPredefinedURLCategoriesPager.get(req)
 	if newListPredefinedURLCategoriesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listPredefinedUrlCategories`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listPredefinedUrlCategories`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -773,7 +773,7 @@ func (l *LocalRulestacksServerTransport) dispatchListSecurityServices(req *http.
 	if l.srv.ListSecurityServices == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListSecurityServices not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listSecurityServices`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSecurityServices`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -825,7 +825,7 @@ func (l *LocalRulestacksServerTransport) dispatchRevert(req *http.Request) (*htt
 	if l.srv.Revert == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Revert not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/revert`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/revert`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -858,7 +858,7 @@ func (l *LocalRulestacksServerTransport) dispatchUpdate(req *http.Request) (*htt
 	if l.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/localRulestacks/(?P<localRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

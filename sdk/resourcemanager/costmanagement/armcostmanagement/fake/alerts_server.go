@@ -99,7 +99,7 @@ func (a *AlertsServerTransport) dispatchDismiss(req *http.Request) (*http.Respon
 	if a.srv.Dismiss == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Dismiss not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/alerts/(?P<alertId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.CostManagement/alerts/(?P<alertId>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -109,14 +109,8 @@ func (a *AlertsServerTransport) dispatchDismiss(req *http.Request) (*http.Respon
 	if err != nil {
 		return nil, err
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
-	alertIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("alertId")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
+	alertIDParam := matches[regex.SubexpIndex("alertId")]
 	respr, errRespr := a.srv.Dismiss(req.Context(), scopeParam, alertIDParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
@@ -136,20 +130,14 @@ func (a *AlertsServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/alerts/(?P<alertId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.CostManagement/alerts/(?P<alertId>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
-	alertIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("alertId")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
+	alertIDParam := matches[regex.SubexpIndex("alertId")]
 	respr, errRespr := a.srv.Get(req.Context(), scopeParam, alertIDParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
@@ -169,16 +157,13 @@ func (a *AlertsServerTransport) dispatchList(req *http.Request) (*http.Response,
 	if a.srv.List == nil {
 		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/alerts`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.CostManagement/alerts`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	respr, errRespr := a.srv.List(req.Context(), scopeParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
@@ -198,7 +183,7 @@ func (a *AlertsServerTransport) dispatchListExternal(req *http.Request) (*http.R
 	if a.srv.ListExternal == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListExternal not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.CostManagement/(?P<externalCloudProviderType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<externalCloudProviderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/alerts`
+	const regexStr = `/providers/Microsoft\.CostManagement/(?P<externalCloudProviderType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<externalCloudProviderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/alerts`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

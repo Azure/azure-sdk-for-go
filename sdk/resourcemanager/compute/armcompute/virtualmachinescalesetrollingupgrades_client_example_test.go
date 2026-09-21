@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrade_Cancel_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrade_Cancel_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetRollingUpgradesClient_BeginCancel_virtualMachineScaleSetRollingUpgradeCancelMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleVirtualMachineScaleSetRollingUpgradesClient_BeginCancel_virtualMachi
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrade_Cancel_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrade_Cancel_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetRollingUpgradesClient_BeginCancel_virtualMachineScaleSetRollingUpgradeCancelMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleVirtualMachineScaleSetRollingUpgradesClient_BeginCancel_virtualMachi
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrade_GetLatest_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrade_GetLatest_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetRollingUpgradesClient_GetLatest_virtualMachineScaleSetRollingUpgradeGetLatestMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,9 +96,9 @@ func ExampleVirtualMachineScaleSetRollingUpgradesClient_GetLatest_virtualMachine
 	// 			},
 	// 			RunningStatus: &armcompute.RollingUpgradeRunningStatus{
 	// 				Code: to.Ptr(armcompute.RollingUpgradeStatusCodeRollingForward),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T13:06:23.362Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2021, time.November, 30, 13, 6, 23, 362000000, time.UTC)),
 	// 				LastAction: to.Ptr(armcompute.RollingUpgradeActionTypeStart),
-	// 				LastActionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T13:06:23.362Z"); return t}()),
+	// 				LastActionTime: to.Ptr(time.Date(2021, time.November, 30, 13, 6, 23, 362000000, time.UTC)),
 	// 			},
 	// 			Progress: &armcompute.RollingUpgradeProgressInfo{
 	// 				SuccessfulInstanceCount: to.Ptr[int32](6),
@@ -134,7 +134,7 @@ func ExampleVirtualMachineScaleSetRollingUpgradesClient_GetLatest_virtualMachine
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrade_GetLatest_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrade_GetLatest_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetRollingUpgradesClient_GetLatest_virtualMachineScaleSetRollingUpgradeGetLatestMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +160,7 @@ func ExampleVirtualMachineScaleSetRollingUpgradesClient_GetLatest_virtualMachine
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_RollingUpgrade.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_RollingUpgrade.json
 func ExampleVirtualMachineScaleSetRollingUpgradesClient_BeginStartExtensionUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,7 +186,7 @@ func ExampleVirtualMachineScaleSetRollingUpgradesClient_BeginStartExtensionUpgra
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrade_StartOSUpgrade_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrade_StartOSUpgrade_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetRollingUpgradesClient_BeginStartOSUpgrade_virtualMachineScaleSetRollingUpgradeStartOSUpgradeMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +212,7 @@ func ExampleVirtualMachineScaleSetRollingUpgradesClient_BeginStartOSUpgrade_virt
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrade_StartOSUpgrade_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrade_StartOSUpgrade_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetRollingUpgradesClient_BeginStartOSUpgrade_virtualMachineScaleSetRollingUpgradeStartOSUpgradeMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

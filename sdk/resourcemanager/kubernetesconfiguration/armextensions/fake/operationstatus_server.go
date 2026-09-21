@@ -81,7 +81,7 @@ func (o *OperationStatusServerTransport) dispatchGet(req *http.Request) (*http.R
 	if o.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<clusterRp>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<clusterResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesConfiguration/extensions/(?P<extensionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/operations/(?P<operationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<clusterRp>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<clusterResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KubernetesConfiguration/extensions/(?P<extensionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/operations/(?P<operationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 8 {

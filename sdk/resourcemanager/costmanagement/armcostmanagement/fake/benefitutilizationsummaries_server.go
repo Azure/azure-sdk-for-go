@@ -111,7 +111,7 @@ func (b *BenefitUtilizationSummariesServerTransport) dispatchNewListByBillingAcc
 	}
 	newListByBillingAccountIDPager := b.newListByBillingAccountIDPager.get(req)
 	if newListByBillingAccountIDPager == nil {
-		const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/benefitUtilizationSummaries`
+		const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/benefitUtilizationSummaries`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -158,7 +158,7 @@ func (b *BenefitUtilizationSummariesServerTransport) dispatchNewListByBillingPro
 	}
 	newListByBillingProfileIDPager := b.newListByBillingProfileIDPager.get(req)
 	if newListByBillingProfileIDPager == nil {
-		const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/benefitUtilizationSummaries`
+		const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/benefitUtilizationSummaries`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -209,7 +209,7 @@ func (b *BenefitUtilizationSummariesServerTransport) dispatchNewListBySavingsPla
 	}
 	newListBySavingsPlanIDPager := b.newListBySavingsPlanIDPager.get(req)
 	if newListBySavingsPlanIDPager == nil {
-		const regexStr = `/providers/microsoft\.BillingBenefits/savingsPlanOrders/(?P<savingsPlanOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/savingsPlans/(?P<savingsPlanId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/benefitUtilizationSummaries`
+		const regexStr = `/providers/microsoft\.BillingBenefits/savingsPlanOrders/(?P<savingsPlanOrderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/savingsPlans/(?P<savingsPlanId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/benefitUtilizationSummaries`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -260,7 +260,7 @@ func (b *BenefitUtilizationSummariesServerTransport) dispatchNewListBySavingsPla
 	}
 	newListBySavingsPlanOrderPager := b.newListBySavingsPlanOrderPager.get(req)
 	if newListBySavingsPlanOrderPager == nil {
-		const regexStr = `/providers/microsoft\.BillingBenefits/savingsPlanOrders/(?P<savingsPlanOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/benefitUtilizationSummaries`
+		const regexStr = `/providers/microsoft\.BillingBenefits/savingsPlanOrders/(?P<savingsPlanOrderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/benefitUtilizationSummaries`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

@@ -200,10 +200,10 @@ func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T19:38:09.5283958Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 9, 528395800, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T19:38:16.6634263Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 16, 663426300, time.UTC)),
 	// 		},
 	// 		Location: to.Ptr("West Europe"),
 	// 		ExtendedLocation: &armdeviceregistry.ExtendedLocation{
@@ -228,7 +228,7 @@ func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 	// 			DisplayName: to.Ptr("AssetDisplayName"),
 	// 			Description: to.Ptr("This is a sample Asset"),
 	// 			Version: to.Ptr[int64](12),
-	// 			LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-11T20:14:21.949Z"); return t}()),
+	// 			LastTransitionTime: to.Ptr(time.Date(2025, time.March, 11, 20, 14, 21, 949000000, time.UTC)),
 	// 			Manufacturer: to.Ptr("Contoso"),
 	// 			ManufacturerURI: to.Ptr("https://www.contoso.com/manufacturerUri"),
 	// 			Model: to.Ptr("ContosoModel"),
@@ -367,7 +367,7 @@ func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 	// 			Status: &armdeviceregistry.NamespaceAssetStatus{
 	// 				Config: &armdeviceregistry.StatusConfig{
 	// 					Version: to.Ptr[int64](9),
-	// 					LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-11T02:19:16.489Z"); return t}()),
+	// 					LastTransitionTime: to.Ptr(time.Date(2025, time.March, 11, 2, 19, 16, 489000000, time.UTC)),
 	// 					Error: &armdeviceregistry.StatusError{
 	// 						Code: to.Ptr("400"),
 	// 						Message: to.Ptr("u"),
@@ -544,10 +544,10 @@ func ExampleNamespaceAssetsClient_Get() {
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.2516899Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.0922793Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 	// 		},
 	// 		Properties: &armdeviceregistry.NamespaceAssetProperties{
 	// 			UUID: to.Ptr("1824a74f-21e1-4458-ae07-604d3a241d2e"),
@@ -564,7 +564,7 @@ func ExampleNamespaceAssetsClient_Get() {
 	// 			DisplayName: to.Ptr("AssetDisplayName"),
 	// 			Description: to.Ptr("This is a sample Asset"),
 	// 			Version: to.Ptr[int64](12),
-	// 			LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-11T20:14:21.949Z"); return t}()),
+	// 			LastTransitionTime: to.Ptr(time.Date(2025, time.March, 11, 20, 14, 21, 949000000, time.UTC)),
 	// 			Manufacturer: to.Ptr("Contoso"),
 	// 			ManufacturerURI: to.Ptr("https://www.contoso.com/manufacturerUri"),
 	// 			Model: to.Ptr("ContosoModel"),
@@ -703,7 +703,7 @@ func ExampleNamespaceAssetsClient_Get() {
 	// 			Status: &armdeviceregistry.NamespaceAssetStatus{
 	// 				Config: &armdeviceregistry.StatusConfig{
 	// 					Version: to.Ptr[int64](9),
-	// 					LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-11T02:19:16.489Z"); return t}()),
+	// 					LastTransitionTime: to.Ptr(time.Date(2025, time.March, 11, 2, 19, 16, 489000000, time.UTC)),
 	// 					Error: &armdeviceregistry.StatusError{
 	// 						Code: to.Ptr("400"),
 	// 						Message: to.Ptr("u"),
@@ -892,10 +892,10 @@ func ExampleNamespaceAssetsClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armdeviceregistry.SystemData{
 		// 					CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 		// 					CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.2516899Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 		// 					LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.0922793Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 		// 				},
 		// 				Properties: &armdeviceregistry.NamespaceAssetProperties{
 		// 					UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
@@ -1057,10 +1057,10 @@ func ExampleNamespaceAssetsClient_BeginUpdate() {
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.2516899Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.0922793Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 	// 		},
 	// 		Properties: &armdeviceregistry.NamespaceAssetProperties{
 	// 			UUID: to.Ptr("1824a74f-21e1-4458-ae07-604d3a241d2e"),
@@ -1077,7 +1077,7 @@ func ExampleNamespaceAssetsClient_BeginUpdate() {
 	// 			DisplayName: to.Ptr("AssetDisplayNameUpdate"),
 	// 			Description: to.Ptr("This is a sample updated Asset"),
 	// 			Version: to.Ptr[int64](12),
-	// 			LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-11T20:14:21.949Z"); return t}()),
+	// 			LastTransitionTime: to.Ptr(time.Date(2025, time.March, 11, 20, 14, 21, 949000000, time.UTC)),
 	// 			Manufacturer: to.Ptr("Contoso"),
 	// 			ManufacturerURI: to.Ptr("https://www.contoso.com/manufacturerUri"),
 	// 			Model: to.Ptr("ContosoModel"),
@@ -1216,7 +1216,7 @@ func ExampleNamespaceAssetsClient_BeginUpdate() {
 	// 			Status: &armdeviceregistry.NamespaceAssetStatus{
 	// 				Config: &armdeviceregistry.StatusConfig{
 	// 					Version: to.Ptr[int64](9),
-	// 					LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-11T02:19:16.489Z"); return t}()),
+	// 					LastTransitionTime: to.Ptr(time.Date(2025, time.March, 11, 2, 19, 16, 489000000, time.UTC)),
 	// 					Error: &armdeviceregistry.StatusError{
 	// 						Code: to.Ptr("400"),
 	// 						Message: to.Ptr("u"),

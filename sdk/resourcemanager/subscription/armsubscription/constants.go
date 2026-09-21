@@ -4,6 +4,10 @@
 
 package armsubscription
 
+const (
+	version20251101Preview string = "2025-11-01-preview"
+)
+
 // AcceptOwnership - The accept ownership state of the resource.
 type AcceptOwnership string
 

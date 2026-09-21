@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // NetworkToNetworkInterconnectsServer is a fake server for instances of the armmanagednetworkfabric.NetworkToNetworkInterconnectsClient type.
@@ -94,9 +95,7 @@ func (n *NetworkToNetworkInterconnectsServerTransport) Do(req *http.Request) (*h
 }
 
 func (n *NetworkToNetworkInterconnectsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -126,10 +125,7 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchToMethodFake(req 
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -146,7 +142,7 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchBeginCreate(req *
 	}
 	beginCreate := n.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkToNetworkInterconnects/(?P<networkToNetworkInterconnectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkToNetworkInterconnects/(?P<networkToNetworkInterconnectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -181,7 +177,7 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchBeginCreate(req *
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		n.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -198,7 +194,7 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchBeginDelete(req *
 	}
 	beginDelete := n.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkToNetworkInterconnects/(?P<networkToNetworkInterconnectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkToNetworkInterconnects/(?P<networkToNetworkInterconnectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -229,7 +225,7 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchBeginDelete(req *
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		n.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -244,7 +240,7 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchGet(req *http.Req
 	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkToNetworkInterconnects/(?P<networkToNetworkInterconnectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkToNetworkInterconnects/(?P<networkToNetworkInterconnectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -267,7 +263,7 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchGet(req *http.Req
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkToNetworkInterconnect, req)
@@ -283,7 +279,7 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchNewListByNetworkF
 	}
 	newListByNetworkFabricPager := n.newListByNetworkFabricPager.get(req)
 	if newListByNetworkFabricPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkToNetworkInterconnects`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkToNetworkInterconnects`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -308,7 +304,7 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchNewListByNetworkF
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		n.newListByNetworkFabricPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -324,7 +320,7 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchBeginUpdate(req *
 	}
 	beginUpdate := n.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkToNetworkInterconnects/(?P<networkToNetworkInterconnectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkToNetworkInterconnects/(?P<networkToNetworkInterconnectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -359,7 +355,7 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchBeginUpdate(req *
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -376,7 +372,7 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchBeginUpdateAdmini
 	}
 	beginUpdateAdministrativeState := n.beginUpdateAdministrativeState.get(req)
 	if beginUpdateAdministrativeState == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkToNetworkInterconnects/(?P<networkToNetworkInterconnectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateAdministrativeState`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkToNetworkInterconnects/(?P<networkToNetworkInterconnectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateAdministrativeState`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -411,7 +407,7 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchBeginUpdateAdmini
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginUpdateAdministrativeState.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -428,7 +424,7 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchBeginUpdateBfdAdm
 	}
 	beginUpdateBfdAdministrativeState := n.beginUpdateBfdAdministrativeState.get(req)
 	if beginUpdateBfdAdministrativeState == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkToNetworkInterconnects/(?P<networkToNetworkInterconnectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateBfdAdministrativeState`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkToNetworkInterconnects/(?P<networkToNetworkInterconnectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateBfdAdministrativeState`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -463,7 +459,7 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchBeginUpdateBfdAdm
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginUpdateBfdAdministrativeState.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -480,7 +476,7 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchBeginUpdateNpbSta
 	}
 	beginUpdateNpbStaticRouteBfdAdministrativeState := n.beginUpdateNpbStaticRouteBfdAdministrativeState.get(req)
 	if beginUpdateNpbStaticRouteBfdAdministrativeState == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkToNetworkInterconnects/(?P<networkToNetworkInterconnectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateNpbStaticRouteBfdAdministrativeState`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkToNetworkInterconnects/(?P<networkToNetworkInterconnectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateNpbStaticRouteBfdAdministrativeState`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -515,7 +511,7 @@ func (n *NetworkToNetworkInterconnectsServerTransport) dispatchBeginUpdateNpbSta
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginUpdateNpbStaticRouteBfdAdministrativeState.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

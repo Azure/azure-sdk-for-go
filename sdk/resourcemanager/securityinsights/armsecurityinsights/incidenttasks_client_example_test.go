@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentTasks/IncidentTasks_CreateOrUpdate.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentTasks/IncidentTasks_CreateOrUpdate.json
 func ExampleIncidentTasksClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,14 +50,14 @@ func ExampleIncidentTasksClient_CreateOrUpdate() {
 	// 				ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 	// 				UserPrincipalName: to.Ptr("john@contoso.com"),
 	// 			},
-	// 			CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t}()),
+	// 			CreatedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
 	// 			LastModifiedBy: &armsecurityinsights.ClientInfo{
 	// 				Name: to.Ptr("john doe"),
 	// 				Email: to.Ptr("john.doe@contoso.com"),
 	// 				ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 	// 				UserPrincipalName: to.Ptr("john@contoso.com"),
 	// 			},
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-03T11:10:30Z"); return t}()),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Date(2019, time.January, 3, 11, 10, 30, 0, time.UTC)),
 	// 			Status: to.Ptr(armsecurityinsights.IncidentTaskStatusNew),
 	// 			Title: to.Ptr("Task title"),
 	// 		},
@@ -65,7 +65,7 @@ func ExampleIncidentTasksClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentTasks/IncidentTasks_Delete.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentTasks/IncidentTasks_Delete.json
 func ExampleIncidentTasksClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleIncidentTasksClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentTasks/IncidentTasks_Get.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentTasks/IncidentTasks_Get.json
 func ExampleIncidentTasksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,14 +119,14 @@ func ExampleIncidentTasksClient_Get() {
 	// 				ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 	// 				UserPrincipalName: to.Ptr("john@contoso.com"),
 	// 			},
-	// 			CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t}()),
+	// 			CreatedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
 	// 			LastModifiedBy: &armsecurityinsights.ClientInfo{
 	// 				Name: to.Ptr("john doe"),
 	// 				Email: to.Ptr("john.doe@contoso.com"),
 	// 				ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 	// 				UserPrincipalName: to.Ptr("john@contoso.com"),
 	// 			},
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-03T11:10:30Z"); return t}()),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Date(2019, time.January, 3, 11, 10, 30, 0, time.UTC)),
 	// 			Status: to.Ptr(armsecurityinsights.IncidentTaskStatusNew),
 	// 			Title: to.Ptr("Task title"),
 	// 		},
@@ -134,7 +134,7 @@ func ExampleIncidentTasksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentTasks/IncidentTasks_List.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentTasks/IncidentTasks_List.json
 func ExampleIncidentTasksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,14 +172,14 @@ func ExampleIncidentTasksClient_NewListPager() {
 		// 						ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 		// 						UserPrincipalName: to.Ptr("john@contoso.com"),
 		// 					},
-		// 					CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t}()),
+		// 					CreatedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
 		// 					LastModifiedBy: &armsecurityinsights.ClientInfo{
 		// 						Name: to.Ptr("john doe"),
 		// 						Email: to.Ptr("john.doe@contoso.com"),
 		// 						ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 		// 						UserPrincipalName: to.Ptr("john@contoso.com"),
 		// 					},
-		// 					LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-03T11:10:30Z"); return t}()),
+		// 					LastModifiedTimeUTC: to.Ptr(time.Date(2019, time.January, 3, 11, 10, 30, 0, time.UTC)),
 		// 					Status: to.Ptr(armsecurityinsights.IncidentTaskStatusNew),
 		// 					Title: to.Ptr("Task title"),
 		// 				},

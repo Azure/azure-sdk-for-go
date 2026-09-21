@@ -30,6 +30,9 @@ type NetworkSecurityPerimeterConfigurationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNetworkSecurityPerimeterConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkSecurityPerimeterConfigurationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -82,8 +85,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) createOrUpdate(ctx c
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -92,7 +94,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) createOrUpdate(ctx c
 func (client *NetworkSecurityPerimeterConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, resourceAssociationName string, _ *NetworkSecurityPerimeterConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkSecurityPerimeterConfigurations/{resourceAssociationName}/reconcile"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -138,19 +140,14 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) GetResourceAssociati
 	if err != nil {
 		return NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse{}, err
-	}
-	resp, err := client.getResourceAssociationNameHandleResponse(httpResp)
-	return resp, err
+	return client.getResourceAssociationNameHandleResponse(httpResp, http.StatusOK)
 }
 
 // getResourceAssociationNameCreateRequest creates the GetResourceAssociationName request.
 func (client *NetworkSecurityPerimeterConfigurationsClient) getResourceAssociationNameCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, resourceAssociationName string, _ *NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkSecurityPerimeterConfigurations/{resourceAssociationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -177,8 +174,11 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) getResourceAssociati
 }
 
 // getResourceAssociationNameHandleResponse handles the GetResourceAssociationName response.
-func (client *NetworkSecurityPerimeterConfigurationsClient) getResourceAssociationNameHandleResponse(resp *http.Response) (NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse, error) {
+func (client *NetworkSecurityPerimeterConfigurationsClient) getResourceAssociationNameHandleResponse(resp *http.Response, successCodes ...int) (NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse, error) {
 	result := NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfiguration); err != nil {
 		return NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse{}, err
 	}

@@ -59,12 +59,7 @@ func (client *GoalResourcesClient) Get(ctx context.Context, serviceGroupName str
 	if err != nil {
 		return GoalResourcesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GoalResourcesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -94,8 +89,11 @@ func (client *GoalResourcesClient) getCreateRequest(ctx context.Context, service
 }
 
 // getHandleResponse handles the Get response.
-func (client *GoalResourcesClient) getHandleResponse(resp *http.Response) (GoalResourcesClientGetResponse, error) {
+func (client *GoalResourcesClient) getHandleResponse(resp *http.Response, successCodes ...int) (GoalResourcesClientGetResponse, error) {
 	result := GoalResourcesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GoalResource); err != nil {
 		return GoalResourcesClientGetResponse{}, err
 	}
@@ -117,49 +115,63 @@ func (client *GoalResourcesClient) NewListPager(serviceGroupName string, goalAss
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, serviceGroupName, goalAssignmentName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, serviceGroupName, goalAssignmentName, nextLink, options)
 			if err != nil {
 				return GoalResourcesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GoalResourcesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *GoalResourcesClient) listCreateRequest(ctx context.Context, serviceGroupName string, goalAssignmentName string, options *GoalResourcesClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/goalAssignments/{goalAssignmentName}/goalResources"
-	if serviceGroupName == "" {
-		return nil, errors.New("parameter serviceGroupName cannot be empty")
+func (client *GoalResourcesClient) listCreateRequest(ctx context.Context, serviceGroupName string, goalAssignmentName string, nextLink string, options *GoalResourcesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/goalAssignments/{goalAssignmentName}/goalResources"
+		if serviceGroupName == "" {
+			return nil, errors.New("parameter serviceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
+		if goalAssignmentName == "" {
+			return nil, errors.New("parameter goalAssignmentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{goalAssignmentName}", url.PathEscape(goalAssignmentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
-	if goalAssignmentName == "" {
-		return nil, errors.New("parameter goalAssignmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{goalAssignmentName}", url.PathEscape(goalAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260401Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *GoalResourcesClient) listHandleResponse(resp *http.Response) (GoalResourcesClientListResponse, error) {
+func (client *GoalResourcesClient) listHandleResponse(resp *http.Response, successCodes ...int) (GoalResourcesClientListResponse, error) {
 	result := GoalResourcesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GoalResourceListResult); err != nil {
 		return GoalResourcesClientListResponse{}, err
 	}

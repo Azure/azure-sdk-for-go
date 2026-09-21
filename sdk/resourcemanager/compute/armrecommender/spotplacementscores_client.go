@@ -19,7 +19,7 @@ import (
 // SpotPlacementScoresClient contains the methods for the SpotPlacementScores group.
 // Don't use this type directly, use NewSpotPlacementScoresClient() instead.
 //
-// Generated from API version 2025-06-05
+// Generated from API version 2026-09-05-preview
 type SpotPlacementScoresClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type SpotPlacementScoresClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSpotPlacementScoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SpotPlacementScoresClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -59,19 +62,14 @@ func (client *SpotPlacementScoresClient) Get(ctx context.Context, location strin
 	if err != nil {
 		return SpotPlacementScoresClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SpotPlacementScoresClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *SpotPlacementScoresClient) getCreateRequest(ctx context.Context, location string, _ *SpotPlacementScoresClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/placementScores/spot"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -83,15 +81,18 @@ func (client *SpotPlacementScoresClient) getCreateRequest(ctx context.Context, l
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250605)
+	reqQP.Set("api-version", version20260905Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SpotPlacementScoresClient) getHandleResponse(resp *http.Response) (SpotPlacementScoresClientGetResponse, error) {
+func (client *SpotPlacementScoresClient) getHandleResponse(resp *http.Response, successCodes ...int) (SpotPlacementScoresClientGetResponse, error) {
 	result := SpotPlacementScoresClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComputeDiagnosticBase); err != nil {
 		return SpotPlacementScoresClientGetResponse{}, err
 	}
@@ -118,19 +119,14 @@ func (client *SpotPlacementScoresClient) Post(ctx context.Context, location stri
 	if err != nil {
 		return SpotPlacementScoresClientPostResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SpotPlacementScoresClientPostResponse{}, err
-	}
-	resp, err := client.postHandleResponse(httpResp)
-	return resp, err
+	return client.postHandleResponse(httpResp, http.StatusOK)
 }
 
 // postCreateRequest creates the Post request.
 func (client *SpotPlacementScoresClient) postCreateRequest(ctx context.Context, location string, spotPlacementScoresInput SpotPlacementScoresInput, _ *SpotPlacementScoresClientPostOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/placementScores/spot/generate"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -142,7 +138,7 @@ func (client *SpotPlacementScoresClient) postCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250605)
+	reqQP.Set("api-version", version20260905Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -153,8 +149,11 @@ func (client *SpotPlacementScoresClient) postCreateRequest(ctx context.Context, 
 }
 
 // postHandleResponse handles the Post response.
-func (client *SpotPlacementScoresClient) postHandleResponse(resp *http.Response) (SpotPlacementScoresClientPostResponse, error) {
+func (client *SpotPlacementScoresClient) postHandleResponse(resp *http.Response, successCodes ...int) (SpotPlacementScoresClientPostResponse, error) {
 	result := SpotPlacementScoresClientPostResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SpotPlacementScoresResponse); err != nil {
 		return SpotPlacementScoresClientPostResponse{}, err
 	}

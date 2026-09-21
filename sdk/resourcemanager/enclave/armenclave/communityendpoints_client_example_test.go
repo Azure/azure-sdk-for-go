@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/CommunityEndpoints_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/CommunityEndpoints_CreateOrUpdate.json
 func ExampleCommunityEndpointsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,16 +80,16 @@ func ExampleCommunityEndpointsClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armenclave.SystemData{
 	// 			CreatedBy: to.Ptr("myAlias"),
 	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("myAlias"),
 	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/CommunityEndpoints_Delete.json
+// Generated from example definition: 2026-04-01/CommunityEndpoints_Delete.json
 func ExampleCommunityEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleCommunityEndpointsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/CommunityEndpoints_Get.json
+// Generated from example definition: 2026-04-01/CommunityEndpoints_Get.json
 func ExampleCommunityEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,16 +155,16 @@ func ExampleCommunityEndpointsClient_Get() {
 	// 		SystemData: &armenclave.SystemData{
 	// 			CreatedBy: to.Ptr("myAlias"),
 	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("myAlias"),
 	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/CommunityEndpoints_HandleApprovalCreation.json
+// Generated from example definition: 2026-04-01/CommunityEndpoints_HandleApprovalCreation.json
 func ExampleCommunityEndpointsClient_BeginHandleApprovalCreation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +196,7 @@ func ExampleCommunityEndpointsClient_BeginHandleApprovalCreation() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/CommunityEndpoints_HandleApprovalDeletion.json
+// Generated from example definition: 2026-04-01/CommunityEndpoints_HandleApprovalDeletion.json
 func ExampleCommunityEndpointsClient_BeginHandleApprovalDeletion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExampleCommunityEndpointsClient_BeginHandleApprovalDeletion() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/CommunityEndpoints_ListByCommunityResource.json
+// Generated from example definition: 2026-04-01/CommunityEndpoints_ListByCommunityResource.json
 func ExampleCommunityEndpointsClient_NewListByCommunityResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,10 +278,10 @@ func ExampleCommunityEndpointsClient_NewListByCommunityResourcePager() {
 		// 				SystemData: &armenclave.SystemData{
 		// 					CreatedBy: to.Ptr("myAlias"),
 		// 					CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("myAlias"),
 		// 					LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -291,7 +291,7 @@ func ExampleCommunityEndpointsClient_NewListByCommunityResourcePager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/CommunityEndpoints_ListBySubscription.json
+// Generated from example definition: 2026-04-01/CommunityEndpoints_ListBySubscription.json
 func ExampleCommunityEndpointsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -342,10 +342,10 @@ func ExampleCommunityEndpointsClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armenclave.SystemData{
 		// 					CreatedBy: to.Ptr("myAlias"),
 		// 					CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("myAlias"),
 		// 					LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -355,7 +355,7 @@ func ExampleCommunityEndpointsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/CommunityEndpoints_Update.json
+// Generated from example definition: 2026-04-01/CommunityEndpoints_Update.json
 func ExampleCommunityEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -422,10 +422,10 @@ func ExampleCommunityEndpointsClient_BeginUpdate() {
 	// 		SystemData: &armenclave.SystemData{
 	// 			CreatedBy: to.Ptr("myAlias"),
 	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("myAlias"),
 	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

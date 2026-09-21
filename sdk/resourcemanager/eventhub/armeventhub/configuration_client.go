@@ -30,6 +30,9 @@ type ConfigurationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *ConfigurationClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return ConfigurationClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConfigurationClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ConfigurationClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *ConfigurationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}/quotaConfiguration/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -96,8 +94,11 @@ func (client *ConfigurationClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConfigurationClient) getHandleResponse(resp *http.Response) (ConfigurationClientGetResponse, error) {
+func (client *ConfigurationClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationClientGetResponse, error) {
 	result := ConfigurationClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterQuotaConfigurationProperties); err != nil {
 		return ConfigurationClientGetResponse{}, err
 	}
@@ -125,19 +126,14 @@ func (client *ConfigurationClient) Patch(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ConfigurationClientPatchResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return ConfigurationClientPatchResponse{}, err
-	}
-	resp, err := client.patchHandleResponse(httpResp)
-	return resp, err
+	return client.patchHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
 }
 
 // patchCreateRequest creates the Patch request.
 func (client *ConfigurationClient) patchCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterQuotaConfigurationProperties, _ *ConfigurationClientPatchOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}/quotaConfiguration/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -164,8 +160,11 @@ func (client *ConfigurationClient) patchCreateRequest(ctx context.Context, resou
 }
 
 // patchHandleResponse handles the Patch response.
-func (client *ConfigurationClient) patchHandleResponse(resp *http.Response) (ConfigurationClientPatchResponse, error) {
+func (client *ConfigurationClient) patchHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationClientPatchResponse, error) {
 	result := ConfigurationClientPatchResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterQuotaConfigurationProperties); err != nil {
 		return ConfigurationClientPatchResponse{}, err
 	}

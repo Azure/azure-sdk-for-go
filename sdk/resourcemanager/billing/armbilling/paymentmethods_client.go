@@ -58,8 +58,7 @@ func (client *PaymentMethodsClient) DeleteByUser(ctx context.Context, paymentMet
 		return PaymentMethodsClientDeleteByUserResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return PaymentMethodsClientDeleteByUserResponse{}, err
+		return PaymentMethodsClientDeleteByUserResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return PaymentMethodsClientDeleteByUserResponse{}, nil
 }
@@ -102,12 +101,7 @@ func (client *PaymentMethodsClient) GetByBillingAccount(ctx context.Context, bil
 	if err != nil {
 		return PaymentMethodsClientGetByBillingAccountResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PaymentMethodsClientGetByBillingAccountResponse{}, err
-	}
-	resp, err := client.getByBillingAccountHandleResponse(httpResp)
-	return resp, err
+	return client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.
@@ -133,8 +127,11 @@ func (client *PaymentMethodsClient) getByBillingAccountCreateRequest(ctx context
 }
 
 // getByBillingAccountHandleResponse handles the GetByBillingAccount response.
-func (client *PaymentMethodsClient) getByBillingAccountHandleResponse(resp *http.Response) (PaymentMethodsClientGetByBillingAccountResponse, error) {
+func (client *PaymentMethodsClient) getByBillingAccountHandleResponse(resp *http.Response, successCodes ...int) (PaymentMethodsClientGetByBillingAccountResponse, error) {
 	result := PaymentMethodsClientGetByBillingAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PaymentMethod); err != nil {
 		return PaymentMethodsClientGetByBillingAccountResponse{}, err
 	}
@@ -163,12 +160,7 @@ func (client *PaymentMethodsClient) GetByBillingProfile(ctx context.Context, bil
 	if err != nil {
 		return PaymentMethodsClientGetByBillingProfileResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PaymentMethodsClientGetByBillingProfileResponse{}, err
-	}
-	resp, err := client.getByBillingProfileHandleResponse(httpResp)
-	return resp, err
+	return client.getByBillingProfileHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByBillingProfileCreateRequest creates the GetByBillingProfile request.
@@ -198,8 +190,11 @@ func (client *PaymentMethodsClient) getByBillingProfileCreateRequest(ctx context
 }
 
 // getByBillingProfileHandleResponse handles the GetByBillingProfile response.
-func (client *PaymentMethodsClient) getByBillingProfileHandleResponse(resp *http.Response) (PaymentMethodsClientGetByBillingProfileResponse, error) {
+func (client *PaymentMethodsClient) getByBillingProfileHandleResponse(resp *http.Response, successCodes ...int) (PaymentMethodsClientGetByBillingProfileResponse, error) {
 	result := PaymentMethodsClientGetByBillingProfileResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PaymentMethodLink); err != nil {
 		return PaymentMethodsClientGetByBillingProfileResponse{}, err
 	}
@@ -225,12 +220,7 @@ func (client *PaymentMethodsClient) GetByUser(ctx context.Context, paymentMethod
 	if err != nil {
 		return PaymentMethodsClientGetByUserResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PaymentMethodsClientGetByUserResponse{}, err
-	}
-	resp, err := client.getByUserHandleResponse(httpResp)
-	return resp, err
+	return client.getByUserHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByUserCreateRequest creates the GetByUser request.
@@ -252,8 +242,11 @@ func (client *PaymentMethodsClient) getByUserCreateRequest(ctx context.Context, 
 }
 
 // getByUserHandleResponse handles the GetByUser response.
-func (client *PaymentMethodsClient) getByUserHandleResponse(resp *http.Response) (PaymentMethodsClientGetByUserResponse, error) {
+func (client *PaymentMethodsClient) getByUserHandleResponse(resp *http.Response, successCodes ...int) (PaymentMethodsClientGetByUserResponse, error) {
 	result := PaymentMethodsClientGetByUserResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PaymentMethod); err != nil {
 		return PaymentMethodsClientGetByUserResponse{}, err
 	}
@@ -277,39 +270,53 @@ func (client *PaymentMethodsClient) NewListByBillingAccountPager(billingAccountN
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByBillingAccountCreateRequest(ctx, billingAccountName, options)
-			}, nil)
+			req, err := client.listByBillingAccountCreateRequest(ctx, billingAccountName, nextLink, options)
 			if err != nil {
 				return PaymentMethodsClientListByBillingAccountResponse{}, err
 			}
-			return client.listByBillingAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PaymentMethodsClientListByBillingAccountResponse{}, err
+			}
+			return client.listByBillingAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByBillingAccountCreateRequest creates the ListByBillingAccount request.
-func (client *PaymentMethodsClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, _ *PaymentMethodsClientListByBillingAccountOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/paymentMethods"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *PaymentMethodsClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, nextLink string, _ *PaymentMethodsClientListByBillingAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/paymentMethods"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByBillingAccountHandleResponse handles the ListByBillingAccount response.
-func (client *PaymentMethodsClient) listByBillingAccountHandleResponse(resp *http.Response) (PaymentMethodsClientListByBillingAccountResponse, error) {
+func (client *PaymentMethodsClient) listByBillingAccountHandleResponse(resp *http.Response, successCodes ...int) (PaymentMethodsClientListByBillingAccountResponse, error) {
 	result := PaymentMethodsClientListByBillingAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PaymentMethodsListResult); err != nil {
 		return PaymentMethodsClientListByBillingAccountResponse{}, err
 	}
@@ -333,43 +340,57 @@ func (client *PaymentMethodsClient) NewListByBillingProfilePager(billingAccountN
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, options)
-			}, nil)
+			req, err := client.listByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, nextLink, options)
 			if err != nil {
 				return PaymentMethodsClientListByBillingProfileResponse{}, err
 			}
-			return client.listByBillingProfileHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PaymentMethodsClientListByBillingProfileResponse{}, err
+			}
+			return client.listByBillingProfileHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByBillingProfileCreateRequest creates the ListByBillingProfile request.
-func (client *PaymentMethodsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, _ *PaymentMethodsClientListByBillingProfileOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/paymentMethodLinks"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *PaymentMethodsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, nextLink string, _ *PaymentMethodsClientListByBillingProfileOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/paymentMethodLinks"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		if billingProfileName == "" {
+			return nil, errors.New("parameter billingProfileName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if billingProfileName == "" {
-		return nil, errors.New("parameter billingProfileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByBillingProfileHandleResponse handles the ListByBillingProfile response.
-func (client *PaymentMethodsClient) listByBillingProfileHandleResponse(resp *http.Response) (PaymentMethodsClientListByBillingProfileResponse, error) {
+func (client *PaymentMethodsClient) listByBillingProfileHandleResponse(resp *http.Response, successCodes ...int) (PaymentMethodsClientListByBillingProfileResponse, error) {
 	result := PaymentMethodsClientListByBillingProfileResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PaymentMethodLinksListResult); err != nil {
 		return PaymentMethodsClientListByBillingProfileResponse{}, err
 	}
@@ -390,35 +411,49 @@ func (client *PaymentMethodsClient) NewListByUserPager(options *PaymentMethodsCl
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByUserCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listByUserCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return PaymentMethodsClientListByUserResponse{}, err
 			}
-			return client.listByUserHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PaymentMethodsClientListByUserResponse{}, err
+			}
+			return client.listByUserHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByUserCreateRequest creates the ListByUser request.
-func (client *PaymentMethodsClient) listByUserCreateRequest(ctx context.Context, _ *PaymentMethodsClientListByUserOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/paymentMethods"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *PaymentMethodsClient) listByUserCreateRequest(ctx context.Context, nextLink string, _ *PaymentMethodsClientListByUserOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/paymentMethods"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByUserHandleResponse handles the ListByUser response.
-func (client *PaymentMethodsClient) listByUserHandleResponse(resp *http.Response) (PaymentMethodsClientListByUserResponse, error) {
+func (client *PaymentMethodsClient) listByUserHandleResponse(resp *http.Response, successCodes ...int) (PaymentMethodsClientListByUserResponse, error) {
 	result := PaymentMethodsClientListByUserResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PaymentMethodsListResult); err != nil {
 		return PaymentMethodsClientListByUserResponse{}, err
 	}

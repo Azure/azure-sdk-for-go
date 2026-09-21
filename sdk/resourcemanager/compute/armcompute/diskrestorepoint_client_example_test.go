@@ -35,7 +35,7 @@ func ExampleDiskRestorePointClient_Get_getAnIncrementalDiskRestorePointResource(
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/rpc/restorePoints/vmrp/diskRestorePoints/TestDisk45ceb03433006d1baee0_b70cd924-3362-4a80-93c2-9415eaa12745"),
 	// 		Name: to.Ptr("TestDisk45ceb03433006d1baee0_b70cd924-3362-4a80-93c2-9415eaa12745"),
 	// 		Properties: &armcompute.DiskRestorePointProperties{
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-16T04:41:35.079872+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2020, time.September, 16, 4, 41, 35, 79872000, time.UTC)),
 	// 			SourceResourceID: to.Ptr("/subscriptions/d2260d06-e00d-422f-8b63-93df551a59ae/resourceGroups/rg0680fb0c-89f1-41b4-96c0-35733a181558/providers/Microsoft.Compute/disks/TestDisk45ceb03433006d1baee0"),
 	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 	// 			HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
@@ -72,7 +72,7 @@ func ExampleDiskRestorePointClient_Get_getAnIncrementalDiskRestorePointWhenSourc
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/rpc/restorePoints/vmrp/diskRestorePoints/TestDisk45ceb03433006d1baee0_b70cd924-3362-4a80-93c2-9415eaa12745"),
 	// 		Name: to.Ptr("TestDisk45ceb03433006d1baee0_b70cd924-3362-4a80-93c2-9415eaa12745"),
 	// 		Properties: &armcompute.DiskRestorePointProperties{
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-16T04:41:35.079872+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2020, time.September, 16, 4, 41, 35, 79872000, time.UTC)),
 	// 			SourceResourceID: to.Ptr("/subscriptions/d2260d06-e00d-422f-8b63-93df551a59ae/resourceGroups/rg0680fb0c-89f1-41b4-96c0-35733a181558/providers/Microsoft.Compute/disks/TestDisk45ceb03433006d1baee0"),
 	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 	// 			HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
@@ -112,7 +112,7 @@ func ExampleDiskRestorePointClient_Get_getAConfidentialVMIncrementalDiskRestoreP
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/rpc/restorePoints/vmrp/diskRestorePoints/myConfidentialDisk_c4bc27e0-ccf6-494e-a740-af34de775527"),
 	// 		Name: to.Ptr("myConfidentialDisk_c4bc27e0-ccf6-494e-a740-af34de775527"),
 	// 		Properties: &armcompute.DiskRestorePointProperties{
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-02T04:41:35.079872+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2026, time.March, 2, 4, 41, 35, 79872000, time.UTC)),
 	// 			SourceResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myConfidentialDisk"),
 	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 	// 			HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV2),
@@ -153,7 +153,7 @@ func ExampleDiskRestorePointClient_Get_getADiskRestorePointResourceWithInstantAc
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/rpc/restorePoints/vmrp/diskRestorePoints/TestDisk45ceb03433006d1baee_5c1528-43e2-4c77-9c55-a78bf5a5fc88"),
 	// 		Name: to.Ptr("TestDisk45ceb03433006d1baee_5c1528-43e2-4c77-9c55-a78bf5a5fc88"),
 	// 		Properties: &armcompute.DiskRestorePointProperties{
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-02T04:41:35.079872+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2026, time.March, 2, 4, 41, 35, 79872000, time.UTC)),
 	// 			SourceResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/TestDisk45ceb03433006d1baee"),
 	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 	// 			HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV2),
@@ -231,7 +231,7 @@ func ExampleDiskRestorePointClient_NewListByRestorePointPager() {
 		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/rpc/restorePoints/vmrp/diskRestorePoints/TestDisk45ceb03433006d1baee0_b70cd924-3362-4a80-93c2-9415eaa12745"),
 		// 				Name: to.Ptr("TestDisk45ceb03433006d1baee0_b70cd924-3362-4a80-93c2-9415eaa12745"),
 		// 				Properties: &armcompute.DiskRestorePointProperties{
-		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-16T04:41:35.079872+00:00"); return t}()),
+		// 					TimeCreated: to.Ptr(time.Date(2020, time.September, 16, 4, 41, 35, 79872000, time.UTC)),
 		// 					SourceResourceID: to.Ptr("/subscriptions/d2260d06-e00d-422f-8b63-93df551a59ae/resourceGroups/rg0680fb0c-89f1-41b4-96c0-35733a181558/providers/Microsoft.Compute/disks/TestDisk45ceb03433006d1baee0"),
 		// 					OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 		// 					HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),

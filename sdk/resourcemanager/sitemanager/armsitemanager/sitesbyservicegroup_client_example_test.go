@@ -74,10 +74,10 @@ func ExampleSitesByServiceGroupClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armsitemanager.SystemData{
 	// 			CreatedBy: to.Ptr("julxbiyjzi"),
 	// 			CreatedByType: to.Ptr(armsitemanager.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-30T07:53:03.972Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.December, 30, 7, 53, 3, 972000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("bceneuzzvzqmiocbrfef"),
 	// 			LastModifiedByType: to.Ptr(armsitemanager.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-30T07:53:03.972Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.December, 30, 7, 53, 3, 972000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -147,10 +147,10 @@ func ExampleSitesByServiceGroupClient_Get() {
 	// 		SystemData: &armsitemanager.SystemData{
 	// 			CreatedBy: to.Ptr("julxbiyjzi"),
 	// 			CreatedByType: to.Ptr(armsitemanager.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-30T07:53:03.972Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.December, 30, 7, 53, 3, 972000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("bceneuzzvzqmiocbrfef"),
 	// 			LastModifiedByType: to.Ptr(armsitemanager.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-30T07:53:03.972Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.December, 30, 7, 53, 3, 972000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -204,10 +204,10 @@ func ExampleSitesByServiceGroupClient_NewListByServiceGroupPager() {
 		// 				SystemData: &armsitemanager.SystemData{
 		// 					CreatedBy: to.Ptr("julxbiyjzi"),
 		// 					CreatedByType: to.Ptr(armsitemanager.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-30T07:53:03.972Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.December, 30, 7, 53, 3, 972000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("bceneuzzvzqmiocbrfef"),
 		// 					LastModifiedByType: to.Ptr(armsitemanager.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-30T07:53:03.972Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.December, 30, 7, 53, 3, 972000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -275,10 +275,10 @@ func ExampleSitesByServiceGroupClient_Update() {
 	// 		SystemData: &armsitemanager.SystemData{
 	// 			CreatedBy: to.Ptr("julxbiyjzi"),
 	// 			CreatedByType: to.Ptr(armsitemanager.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-30T07:53:03.972Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.December, 30, 7, 53, 3, 972000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("bceneuzzvzqmiocbrfef"),
 	// 			LastModifiedByType: to.Ptr(armsitemanager.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-30T07:53:03.972Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.December, 30, 7, 53, 3, 972000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

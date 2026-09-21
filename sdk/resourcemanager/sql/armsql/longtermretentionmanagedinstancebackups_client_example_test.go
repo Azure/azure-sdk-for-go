@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceLongTermRetentionBackupDelete.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceLongTermRetentionBackupDelete.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupDelete.json
+// Generated from example definition: 2026-08-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupDelete.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_BeginDeleteByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,7 +64,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_BeginDeleteByResourceG
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceLongTermRetentionBackupGet.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceLongTermRetentionBackupGet.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,16 +90,16 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_Get() {
 	// 		Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 	// 			BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
 	// 			BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-23T08:00:00Z"); return t}()),
+	// 			BackupTime: to.Ptr(time.Date(2018, time.August, 23, 8, 0, 0, 0, time.UTC)),
 	// 			DatabaseName: to.Ptr("testDatabase"),
-	// 			ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-01T08:00:00Z"); return t}()),
+	// 			ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.September, 1, 8, 0, 0, 0, time.UTC)),
 	// 			ManagedInstanceName: to.Ptr("testInstance"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupGet.json
+// Generated from example definition: 2026-08-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupGet.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_GetByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,16 +125,16 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_GetByResourceGroup() {
 	// 		Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 	// 			BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
 	// 			BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-06T08:00:00Z"); return t}()),
+	// 			BackupTime: to.Ptr(time.Date(2017, time.September, 6, 8, 0, 0, 0, time.UTC)),
 	// 			DatabaseName: to.Ptr("testDatabase"),
-	// 			ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+	// 			ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 	// 			ManagedInstanceName: to.Ptr("testInstance"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceLongTermRetentionBackupListByDatabase.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceLongTermRetentionBackupListByDatabase.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,9 +166,9 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByDatabasePager
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-23T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2018, time.August, 23, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance"),
 		// 				},
 		// 			},
@@ -179,9 +179,9 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByDatabasePager
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-30T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2018, time.August, 30, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance"),
 		// 				},
 		// 			},
@@ -192,10 +192,10 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByDatabasePager
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-06T08:00:00Z"); return t}()),
-		// 					DatabaseDeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-07T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2018, time.September, 6, 8, 0, 0, 0, time.UTC)),
+		// 					DatabaseDeletionTime: to.Ptr(time.Date(2018, time.September, 7, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance"),
 		// 				},
 		// 			},
@@ -205,7 +205,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByDatabasePager
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceLongTermRetentionBackupListByInstance.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceLongTermRetentionBackupListByInstance.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,9 +237,9 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByInstancePager
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-23T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 23, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase1"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance"),
 		// 				},
 		// 			},
@@ -250,9 +250,9 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByInstancePager
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 30, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase2"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance"),
 		// 				},
 		// 			},
@@ -263,9 +263,9 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByInstancePager
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-06T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.September, 6, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase3"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance"),
 		// 				},
 		// 			},
@@ -275,7 +275,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByInstancePager
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceLongTermRetentionBackupListByLocation.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceLongTermRetentionBackupListByLocation.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByLocationPager_getAllLongTermRetentionBackupsUnderTheLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,9 +307,9 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByLocationPager
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-23T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 23, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase1"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance1"),
 		// 				},
 		// 			},
@@ -320,9 +320,9 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByLocationPager
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 30, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase2"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.April, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance2"),
 		// 				},
 		// 			},
@@ -333,9 +333,9 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByLocationPager
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-06T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.September, 6, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase3"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.May, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance3"),
 		// 				},
 		// 			},
@@ -345,7 +345,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByLocationPager
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceLongTermRetentionBackupListByLocationMax.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceLongTermRetentionBackupListByLocationMax.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByLocationPager_getAllLongTermRetentionBackupsUnderTheLocationWithMaximalParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -380,9 +380,9 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByLocationPager
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-23T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 23, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase1"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance1"),
 		// 				},
 		// 			},
@@ -393,9 +393,9 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByLocationPager
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 30, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase2"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.April, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance1"),
 		// 				},
 		// 			},
@@ -405,7 +405,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByLocationPager
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByDatabase.json
+// Generated from example definition: 2026-08-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByDatabase.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroupDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -437,9 +437,9 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroup
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-23T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2018, time.August, 23, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance"),
 		// 				},
 		// 			},
@@ -450,9 +450,9 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroup
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-30T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2018, time.August, 30, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance"),
 		// 				},
 		// 			},
@@ -463,10 +463,10 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroup
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-06T08:00:00Z"); return t}()),
-		// 					DatabaseDeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-07T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2018, time.September, 6, 8, 0, 0, 0, time.UTC)),
+		// 					DatabaseDeletionTime: to.Ptr(time.Date(2018, time.September, 7, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2018, time.March, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance"),
 		// 				},
 		// 			},
@@ -476,7 +476,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroup
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByInstance.json
+// Generated from example definition: 2026-08-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByInstance.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroupInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -508,9 +508,9 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroup
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-23T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 23, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase1"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance"),
 		// 				},
 		// 			},
@@ -521,9 +521,9 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroup
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 30, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase2"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance"),
 		// 				},
 		// 			},
@@ -534,9 +534,9 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroup
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-06T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.September, 6, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase3"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance"),
 		// 				},
 		// 			},
@@ -546,7 +546,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroup
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByLocation.json
+// Generated from example definition: 2026-08-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByLocation.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroupLocationPager_getAllLongTermRetentionBackupsUnderTheLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -578,9 +578,9 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroup
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-23T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 23, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase1"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance1"),
 		// 				},
 		// 			},
@@ -591,9 +591,9 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroup
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 30, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase2"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.April, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance2"),
 		// 				},
 		// 			},
@@ -604,9 +604,9 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroup
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-06T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.September, 6, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase3"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.May, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance3"),
 		// 				},
 		// 			},
@@ -616,7 +616,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroup
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByLocationMax.json
+// Generated from example definition: 2026-08-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByLocationMax.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroupLocationPager_getAllLongTermRetentionBackupsUnderTheLocationWithMaximalParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -651,9 +651,9 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroup
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-23T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 23, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase1"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance1"),
 		// 				},
 		// 			},
@@ -664,9 +664,9 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroup
 		// 				Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
 		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
 		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					BackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T08:00:00Z"); return t}()),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 30, 8, 0, 0, 0, time.UTC)),
 		// 					DatabaseName: to.Ptr("testDatabase2"),
-		// 					ManagedInstanceCreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-10T08:00:00Z"); return t}()),
+		// 					ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.April, 10, 8, 0, 0, 0, time.UTC)),
 		// 					ManagedInstanceName: to.Ptr("testInstance1"),
 		// 				},
 		// 			},

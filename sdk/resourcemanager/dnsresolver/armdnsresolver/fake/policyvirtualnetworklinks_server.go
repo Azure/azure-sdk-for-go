@@ -119,7 +119,7 @@ func (p *PolicyVirtualNetworkLinksServerTransport) dispatchBeginCreateOrUpdate(r
 	}
 	beginCreateOrUpdate := p.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/dnsResolverPolicies/(?P<dnsResolverPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkLinks/(?P<dnsResolverPolicyVirtualNetworkLinkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsResolverPolicies/(?P<dnsResolverPolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkLinks/(?P<dnsResolverPolicyVirtualNetworkLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -180,7 +180,7 @@ func (p *PolicyVirtualNetworkLinksServerTransport) dispatchBeginDelete(req *http
 	}
 	beginDelete := p.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/dnsResolverPolicies/(?P<dnsResolverPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkLinks/(?P<dnsResolverPolicyVirtualNetworkLinkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsResolverPolicies/(?P<dnsResolverPolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkLinks/(?P<dnsResolverPolicyVirtualNetworkLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -233,7 +233,7 @@ func (p *PolicyVirtualNetworkLinksServerTransport) dispatchGet(req *http.Request
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/dnsResolverPolicies/(?P<dnsResolverPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkLinks/(?P<dnsResolverPolicyVirtualNetworkLinkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsResolverPolicies/(?P<dnsResolverPolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkLinks/(?P<dnsResolverPolicyVirtualNetworkLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -272,7 +272,7 @@ func (p *PolicyVirtualNetworkLinksServerTransport) dispatchNewListPager(req *htt
 	}
 	newListPager := p.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/dnsResolverPolicies/(?P<dnsResolverPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkLinks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsResolverPolicies/(?P<dnsResolverPolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkLinks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -330,7 +330,7 @@ func (p *PolicyVirtualNetworkLinksServerTransport) dispatchBeginUpdate(req *http
 	}
 	beginUpdate := p.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/dnsResolverPolicies/(?P<dnsResolverPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkLinks/(?P<dnsResolverPolicyVirtualNetworkLinkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dnsResolverPolicies/(?P<dnsResolverPolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkLinks/(?P<dnsResolverPolicyVirtualNetworkLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

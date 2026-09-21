@@ -47,7 +47,7 @@ func ExampleOccurrenceExtensionClient_NewListOccurrenceByVMsPager_occurrenceExte
 		// 							Disabled: to.Ptr(true),
 		// 						},
 		// 					},
-		// 					ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.64Z"); return t}()),
+		// 					ScheduledTime: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 640000000, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armcomputeschedule.ResourceProvisioningStateSucceeded),
 		// 					ErrorDetails: &armcomputeschedule.Error{
 		// 						Code: to.Ptr("ResourceNotFound"),
@@ -67,10 +67,10 @@ func ExampleOccurrenceExtensionClient_NewListOccurrenceByVMsPager_occurrenceExte
 		// 				SystemData: &armcomputeschedule.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 641000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.March, 12, 2, 39, 41, 641000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

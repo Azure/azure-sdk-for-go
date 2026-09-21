@@ -60,12 +60,7 @@ func (client *TroubleshootersClient) Continue(ctx context.Context, scope string,
 	if err != nil {
 		return TroubleshootersClientContinueResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return TroubleshootersClientContinueResponse{}, err
-	}
-	resp, err := client.continueHandleResponse(httpResp)
-	return resp, err
+	return client.continueHandleResponse(httpResp, http.StatusNoContent)
 }
 
 // continueCreateRequest creates the Continue request.
@@ -97,9 +92,12 @@ func (client *TroubleshootersClient) continueCreateRequest(ctx context.Context, 
 }
 
 // continueHandleResponse handles the Continue response.
-func (client *TroubleshootersClient) continueHandleResponse(resp *http.Response) (TroubleshootersClientContinueResponse, error) {
+func (client *TroubleshootersClient) continueHandleResponse(resp *http.Response, successCodes ...int) (TroubleshootersClientContinueResponse, error) {
 	result := TroubleshootersClientContinueResponse{}
-	if val := resp.Header.Get("location"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}
 	return result, nil
@@ -131,12 +129,7 @@ func (client *TroubleshootersClient) Create(ctx context.Context, scope string, t
 	if err != nil {
 		return TroubleshootersClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return TroubleshootersClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
@@ -166,8 +159,11 @@ func (client *TroubleshootersClient) createCreateRequest(ctx context.Context, sc
 }
 
 // createHandleResponse handles the Create response.
-func (client *TroubleshootersClient) createHandleResponse(resp *http.Response) (TroubleshootersClientCreateResponse, error) {
+func (client *TroubleshootersClient) createHandleResponse(resp *http.Response, successCodes ...int) (TroubleshootersClientCreateResponse, error) {
 	result := TroubleshootersClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TroubleshooterResource); err != nil {
 		return TroubleshootersClientCreateResponse{}, err
 	}
@@ -193,12 +189,7 @@ func (client *TroubleshootersClient) End(ctx context.Context, scope string, trou
 	if err != nil {
 		return TroubleshootersClientEndResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return TroubleshootersClientEndResponse{}, err
-	}
-	resp, err := client.endHandleResponse(httpResp)
-	return resp, err
+	return client.endHandleResponse(httpResp, http.StatusNoContent)
 }
 
 // endCreateRequest creates the End request.
@@ -223,9 +214,12 @@ func (client *TroubleshootersClient) endCreateRequest(ctx context.Context, scope
 }
 
 // endHandleResponse handles the End response.
-func (client *TroubleshootersClient) endHandleResponse(resp *http.Response) (TroubleshootersClientEndResponse, error) {
+func (client *TroubleshootersClient) endHandleResponse(resp *http.Response, successCodes ...int) (TroubleshootersClientEndResponse, error) {
 	result := TroubleshootersClientEndResponse{}
-	if val := resp.Header.Get("location"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}
 	return result, nil
@@ -253,12 +247,7 @@ func (client *TroubleshootersClient) Get(ctx context.Context, scope string, trou
 	if err != nil {
 		return TroubleshootersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TroubleshootersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -284,8 +273,11 @@ func (client *TroubleshootersClient) getCreateRequest(ctx context.Context, scope
 }
 
 // getHandleResponse handles the Get response.
-func (client *TroubleshootersClient) getHandleResponse(resp *http.Response) (TroubleshootersClientGetResponse, error) {
+func (client *TroubleshootersClient) getHandleResponse(resp *http.Response, successCodes ...int) (TroubleshootersClientGetResponse, error) {
 	result := TroubleshootersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TroubleshooterResource); err != nil {
 		return TroubleshootersClientGetResponse{}, err
 	}
@@ -312,12 +304,7 @@ func (client *TroubleshootersClient) Restart(ctx context.Context, scope string, 
 	if err != nil {
 		return TroubleshootersClientRestartResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TroubleshootersClientRestartResponse{}, err
-	}
-	resp, err := client.restartHandleResponse(httpResp)
-	return resp, err
+	return client.restartHandleResponse(httpResp, http.StatusOK)
 }
 
 // restartCreateRequest creates the Restart request.
@@ -343,9 +330,12 @@ func (client *TroubleshootersClient) restartCreateRequest(ctx context.Context, s
 }
 
 // restartHandleResponse handles the Restart response.
-func (client *TroubleshootersClient) restartHandleResponse(resp *http.Response) (TroubleshootersClientRestartResponse, error) {
+func (client *TroubleshootersClient) restartHandleResponse(resp *http.Response, successCodes ...int) (TroubleshootersClientRestartResponse, error) {
 	result := TroubleshootersClientRestartResponse{}
-	if val := resp.Header.Get("location"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestartTroubleshooterResponse); err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/DiscoveryRules_CreateOrUpdate.json
+// Generated from example definition: 2026-09-01-preview/DiscoveryRules_CreateOrUpdate.json
 func ExampleDiscoveryRulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,16 +67,16 @@ func ExampleDiscoveryRulesClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armcloudhealth.SystemData{
 	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/DiscoveryRules_Delete.json
+// Generated from example definition: 2026-09-01-preview/DiscoveryRules_Delete.json
 func ExampleDiscoveryRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleDiscoveryRulesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/DiscoveryRules_Get.json
+// Generated from example definition: 2026-09-01-preview/DiscoveryRules_Get.json
 func ExampleDiscoveryRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,16 +143,16 @@ func ExampleDiscoveryRulesClient_Get() {
 	// 		SystemData: &armcloudhealth.SystemData{
 	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/DiscoveryRules_ListByHealthModel.json
+// Generated from example definition: 2026-09-01-preview/DiscoveryRules_ListByHealthModel.json
 func ExampleDiscoveryRulesClient_NewListByHealthModelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,10 +197,10 @@ func ExampleDiscoveryRulesClient_NewListByHealthModelPager() {
 		// 				SystemData: &armcloudhealth.SystemData{
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -223,10 +223,10 @@ func ExampleDiscoveryRulesClient_NewListByHealthModelPager() {
 		// 				SystemData: &armcloudhealth.SystemData{
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

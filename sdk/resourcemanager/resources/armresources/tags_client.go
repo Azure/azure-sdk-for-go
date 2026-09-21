@@ -30,6 +30,9 @@ type TagsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTagsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TagsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *TagsClient) CreateOrUpdate(ctx context.Context, tagName string, op
 	if err != nil {
 		return TagsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return TagsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *TagsClient) createOrUpdateCreateRequest(ctx context.Context, tagName string, _ *TagsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if tagName == "" {
@@ -94,8 +92,11 @@ func (client *TagsClient) createOrUpdateCreateRequest(ctx context.Context, tagNa
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *TagsClient) createOrUpdateHandleResponse(resp *http.Response) (TagsClientCreateOrUpdateResponse, error) {
+func (client *TagsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (TagsClientCreateOrUpdateResponse, error) {
 	result := TagsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagDetails); err != nil {
 		return TagsClientCreateOrUpdateResponse{}, err
 	}
@@ -147,8 +148,7 @@ func (client *TagsClient) createOrUpdateAtScope(ctx context.Context, scope strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -198,19 +198,14 @@ func (client *TagsClient) CreateOrUpdateValue(ctx context.Context, tagName strin
 	if err != nil {
 		return TagsClientCreateOrUpdateValueResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return TagsClientCreateOrUpdateValueResponse{}, err
-	}
-	resp, err := client.createOrUpdateValueHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateValueHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateValueCreateRequest creates the CreateOrUpdateValue request.
 func (client *TagsClient) createOrUpdateValueCreateRequest(ctx context.Context, tagName string, tagValue string, _ *TagsClientCreateOrUpdateValueOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if tagName == "" {
@@ -233,8 +228,11 @@ func (client *TagsClient) createOrUpdateValueCreateRequest(ctx context.Context, 
 }
 
 // createOrUpdateValueHandleResponse handles the CreateOrUpdateValue response.
-func (client *TagsClient) createOrUpdateValueHandleResponse(resp *http.Response) (TagsClientCreateOrUpdateValueResponse, error) {
+func (client *TagsClient) createOrUpdateValueHandleResponse(resp *http.Response, successCodes ...int) (TagsClientCreateOrUpdateValueResponse, error) {
 	result := TagsClientCreateOrUpdateValueResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagValue); err != nil {
 		return TagsClientCreateOrUpdateValueResponse{}, err
 	}
@@ -264,8 +262,7 @@ func (client *TagsClient) Delete(ctx context.Context, tagName string, options *T
 		return TagsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return TagsClientDeleteResponse{}, err
+		return TagsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TagsClientDeleteResponse{}, nil
 }
@@ -274,7 +271,7 @@ func (client *TagsClient) Delete(ctx context.Context, tagName string, options *T
 func (client *TagsClient) deleteCreateRequest(ctx context.Context, tagName string, _ *TagsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if tagName == "" {
@@ -333,8 +330,7 @@ func (client *TagsClient) deleteAtScope(ctx context.Context, scope string, optio
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -379,8 +375,7 @@ func (client *TagsClient) DeleteValue(ctx context.Context, tagName string, tagVa
 		return TagsClientDeleteValueResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return TagsClientDeleteValueResponse{}, err
+		return TagsClientDeleteValueResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TagsClientDeleteValueResponse{}, nil
 }
@@ -389,7 +384,7 @@ func (client *TagsClient) DeleteValue(ctx context.Context, tagName string, tagVa
 func (client *TagsClient) deleteValueCreateRequest(ctx context.Context, tagName string, tagValue string, _ *TagsClientDeleteValueOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if tagName == "" {
@@ -430,12 +425,7 @@ func (client *TagsClient) GetAtScope(ctx context.Context, scope string, options 
 	if err != nil {
 		return TagsClientGetAtScopeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TagsClientGetAtScopeResponse{}, err
-	}
-	resp, err := client.getAtScopeHandleResponse(httpResp)
-	return resp, err
+	return client.getAtScopeHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAtScopeCreateRequest creates the GetAtScope request.
@@ -457,8 +447,11 @@ func (client *TagsClient) getAtScopeCreateRequest(ctx context.Context, scope str
 }
 
 // getAtScopeHandleResponse handles the GetAtScope response.
-func (client *TagsClient) getAtScopeHandleResponse(resp *http.Response) (TagsClientGetAtScopeResponse, error) {
+func (client *TagsClient) getAtScopeHandleResponse(resp *http.Response, successCodes ...int) (TagsClientGetAtScopeResponse, error) {
 	result := TagsClientGetAtScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagsResource); err != nil {
 		return TagsClientGetAtScopeResponse{}, err
 	}
@@ -482,39 +475,53 @@ func (client *TagsClient) NewListPager(options *TagsClientListOptions) *runtime.
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return TagsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TagsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *TagsClient) listCreateRequest(ctx context.Context, _ *TagsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/tagNames"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *TagsClient) listCreateRequest(ctx context.Context, nextLink string, _ *TagsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/tagNames"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *TagsClient) listHandleResponse(resp *http.Response) (TagsClientListResponse, error) {
+func (client *TagsClient) listHandleResponse(resp *http.Response, successCodes ...int) (TagsClientListResponse, error) {
 	result := TagsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagsListResult); err != nil {
 		return TagsClientListResponse{}, err
 	}
@@ -569,8 +576,7 @@ func (client *TagsClient) updateAtScope(ctx context.Context, scope string, param
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

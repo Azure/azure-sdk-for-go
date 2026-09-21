@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/Operations_List.json
+// Generated from example definition: 2026-07-01/Operations_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,6 +43,66 @@ func ExampleOperationsClient_NewListPager() {
 		// 					Operation: to.Ptr("Get Container App"),
 		// 					Provider: to.Ptr("Microsoft Apps"),
 		// 					Resource: to.Ptr("Container App"),
+		// 				},
+		// 				Origin: to.Ptr("user,system"),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.App/sandboxGroups/write"),
+		// 				Display: &armappcontainers.OperationDisplay{
+		// 					Description: to.Ptr("Create or update a sandbox group resource"),
+		// 					Operation: to.Ptr("Create or Update Sandbox Group"),
+		// 					Provider: to.Ptr("Microsoft Apps"),
+		// 					Resource: to.Ptr("Sandbox Groups"),
+		// 				},
+		// 				Origin: to.Ptr("user,system"),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.App/sandboxGroups/read"),
+		// 				Display: &armappcontainers.OperationDisplay{
+		// 					Description: to.Ptr("Get a sandbox group resource"),
+		// 					Operation: to.Ptr("Get Sandbox Group"),
+		// 					Provider: to.Ptr("Microsoft Apps"),
+		// 					Resource: to.Ptr("Sandbox Groups"),
+		// 				},
+		// 				Origin: to.Ptr("user,system"),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.App/sandboxGroups/delete"),
+		// 				Display: &armappcontainers.OperationDisplay{
+		// 					Description: to.Ptr("Delete a sandbox group resource"),
+		// 					Operation: to.Ptr("Delete Sandbox Group"),
+		// 					Provider: to.Ptr("Microsoft Apps"),
+		// 					Resource: to.Ptr("Sandbox Groups"),
+		// 				},
+		// 				Origin: to.Ptr("user,system"),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.App/sandboxGroups/vnetConnections/write"),
+		// 				Display: &armappcontainers.OperationDisplay{
+		// 					Description: to.Ptr("Create or update a vnetConnection resource"),
+		// 					Operation: to.Ptr("Create or Update Vnet Connection"),
+		// 					Provider: to.Ptr("Microsoft Apps"),
+		// 					Resource: to.Ptr("Vnet Connections"),
+		// 				},
+		// 				Origin: to.Ptr("user,system"),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.App/sandboxGroups/vnetConnections/read"),
+		// 				Display: &armappcontainers.OperationDisplay{
+		// 					Description: to.Ptr("Get a vnetConnection resource"),
+		// 					Operation: to.Ptr("Get Vnet Connection"),
+		// 					Provider: to.Ptr("Microsoft Apps"),
+		// 					Resource: to.Ptr("Vnet Connections"),
+		// 				},
+		// 				Origin: to.Ptr("user,system"),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.App/sandboxGroups/vnetConnections/delete"),
+		// 				Display: &armappcontainers.OperationDisplay{
+		// 					Description: to.Ptr("Delete a vnetConnection resource"),
+		// 					Operation: to.Ptr("Delete Vnet Connection"),
+		// 					Provider: to.Ptr("Microsoft Apps"),
+		// 					Resource: to.Ptr("Vnet Connections"),
 		// 				},
 		// 				Origin: to.Ptr("user,system"),
 		// 			},

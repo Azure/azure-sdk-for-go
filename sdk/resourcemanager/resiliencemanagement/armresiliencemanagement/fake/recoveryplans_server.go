@@ -119,7 +119,7 @@ func (r *RecoveryPlansServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 	}
 	beginCreateOrUpdate := r.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -167,7 +167,7 @@ func (r *RecoveryPlansServerTransport) dispatchBeginDelete(req *http.Request) (*
 	}
 	beginDelete := r.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -209,7 +209,7 @@ func (r *RecoveryPlansServerTransport) dispatchGet(req *http.Request) (*http.Res
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -244,7 +244,7 @@ func (r *RecoveryPlansServerTransport) dispatchNewListPager(req *http.Request) (
 	}
 	newListPager := r.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -300,7 +300,7 @@ func (r *RecoveryPlansServerTransport) dispatchBeginUpdate(req *http.Request) (*
 	}
 	beginUpdate := r.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

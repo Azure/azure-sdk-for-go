@@ -35,7 +35,7 @@ func ExampleAPIKeysClient_CreateOrUpdate() {
 	// 		Type: to.Ptr("Nginx.NginxPlus/nginxDeployments/apiKeys"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment/apiKeys/myApiKey"),
 	// 		Properties: &armnginx.DeploymentAPIKeyResponseProperties{
-	// 			EndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-01T00:00:00Z"); return t}()),
+	// 			EndDateTime: to.Ptr(time.Date(2024, time.September, 1, 0, 0, 0, 0, time.UTC)),
 	// 			Hint: to.Ptr("000"),
 	// 		},
 	// 	},
@@ -88,7 +88,7 @@ func ExampleAPIKeysClient_Get() {
 	// 		Type: to.Ptr("Nginx.NginxPlus/nginxDeployments/apiKeys"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment/apiKeys/myApiKey"),
 	// 		Properties: &armnginx.DeploymentAPIKeyResponseProperties{
-	// 			EndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-01T00:00:00Z"); return t}()),
+	// 			EndDateTime: to.Ptr(time.Date(2024, time.September, 1, 0, 0, 0, 0, time.UTC)),
 	// 			Hint: to.Ptr("000"),
 	// 		},
 	// 	},
@@ -125,7 +125,7 @@ func ExampleAPIKeysClient_NewListPager() {
 		// 				Type: to.Ptr("Nginx.NginxPlus/nginxDeployments/apiKeys"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment/apiKeys/myApiKey"),
 		// 				Properties: &armnginx.DeploymentAPIKeyResponseProperties{
-		// 					EndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-01T00:00:00Z"); return t}()),
+		// 					EndDateTime: to.Ptr(time.Date(2024, time.September, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Hint: to.Ptr("000"),
 		// 				},
 		// 			},
@@ -134,7 +134,7 @@ func ExampleAPIKeysClient_NewListPager() {
 		// 				Type: to.Ptr("Nginx.NginxPlus/nginxDeployments/apiKeys"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment/apiKeys/myApiKey2"),
 		// 				Properties: &armnginx.DeploymentAPIKeyResponseProperties{
-		// 					EndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-01T00:00:00Z"); return t}()),
+		// 					EndDateTime: to.Ptr(time.Date(2024, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Hint: to.Ptr("111"),
 		// 				},
 		// 			},

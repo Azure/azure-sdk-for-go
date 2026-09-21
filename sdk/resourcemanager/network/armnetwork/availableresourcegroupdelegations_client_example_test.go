@@ -7,11 +7,11 @@ package armnetwork_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/AvailableDelegationsResourceGroupGet.json
+// Generated from example definition: 2026-01-01/AvailableDelegationsResourceGroupGet.json
 func ExampleAvailableResourceGroupDelegationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

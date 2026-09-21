@@ -30,6 +30,9 @@ type SchemaClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSchemaClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SchemaClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -60,19 +63,14 @@ func (client *SchemaClient) Get(ctx context.Context, resourceGroupName string, w
 	if err != nil {
 		return SchemaClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SchemaClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *SchemaClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *SchemaClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/schema"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -95,8 +93,11 @@ func (client *SchemaClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *SchemaClient) getHandleResponse(resp *http.Response) (SchemaClientGetResponse, error) {
+func (client *SchemaClient) getHandleResponse(resp *http.Response, successCodes ...int) (SchemaClientGetResponse, error) {
 	result := SchemaClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SearchGetSchemaResponse); err != nil {
 		return SchemaClientGetResponse{}, err
 	}

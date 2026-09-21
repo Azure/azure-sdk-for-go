@@ -217,14 +217,28 @@ func TestClientOptionsConvertToTheDriversConfig(t *testing.T) {
 		require.Empty(t, options.preferredRegions)
 	})
 
-	t.Run("proximity routing is reported rather than ignored", func(t *testing.T) {
-		_, release, err := inspectNativeClientOptions(ClientOptions{Routing: ProximityTo(RegionEastUS)})
+	t.Run("proximity routing is expanded in order", func(t *testing.T) {
+		options, release, err := inspectNativeClientOptions(ClientOptions{Routing: ProximityTo(RegionEastUS)})
+		require.NoError(t, err)
 		defer release()
 
-		var cosmosErr *Error
-		require.ErrorAs(t, err, &cosmosErr,
-			"silently leaving the order to the account would hide that the request had no effect")
-		require.Contains(t, cosmosErr.Message, "ProximityTo is not supported")
+		require.Equal(t, []string{
+			string(RegionEastUS),
+			string(RegionEastUS2),
+			string(RegionEastUS3),
+			string(RegionNorthCentralUS),
+			string(RegionNortheastUS5),
+		}, options.preferredRegions[:5])
+	})
+
+	t.Run("unknown proximity leaves the order to the account", func(t *testing.T) {
+		options, release, err := inspectNativeClientOptions(ClientOptions{
+			Routing: ProximityTo("not-a-real-region"),
+		})
+		require.NoError(t, err)
+		defer release()
+
+		require.Empty(t, options.preferredRegions)
 	})
 
 	// The client-level value is sent explicitly rather than left unset, so the documented Go

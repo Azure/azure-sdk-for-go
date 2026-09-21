@@ -305,47 +305,28 @@ func TestCloseWaitsForInFlightOperations(t *testing.T) {
 	}
 }
 
-// Options the binding cannot implement are rejected when the client is constructed.
-func TestNewClientWithKeyRejectsUnusableOptions(t *testing.T) {
+func TestNewClientWithKeyRejectsInvalidOptions(t *testing.T) {
 	credential, err := NewKeyCredential(testAccountKey)
 	require.NoError(t, err)
 
-	for _, tt := range []struct {
-		name    string
-		options ClientOptions
-		wantIn  string
-	}{
-		{
-			name:    "proximity routing",
-			options: ClientOptions{Routing: ProximityTo(RegionEastUS)},
-			wantIn:  "ProximityTo is not supported",
-		},
-		{
-			name:    "application id with NUL",
-			options: ClientOptions{ApplicationID: "order\x00service"},
-			wantIn:  "must not contain a NUL byte",
-		},
-	} {
-		t.Run(tt.name, func(t *testing.T) {
-			client, err := NewClientWithKey(
-				"https://myaccount.documents.azure.com",
-				credential,
-				&tt.options)
+	client, err := NewClientWithKey(
+		"https://myaccount.documents.azure.com",
+		credential,
+		&ClientOptions{ApplicationID: "order\x00service"})
 
-			require.ErrorContains(t, err, tt.wantIn)
-			require.Nil(t, client)
-		})
-	}
+	require.ErrorContains(t, err, "must not contain a NUL byte")
+	require.Nil(t, client)
 }
 
-// The values the binding can pass through have to survive local construction.
-func TestNewClientWithKeyAcceptsUsableOptions(t *testing.T) {
+func TestNewClientWithKeyAcceptsOptions(t *testing.T) {
 	for _, tt := range []struct {
 		name    string
 		options ClientOptions
 	}{
 		{"defaults", ClientOptions{}},
 		{"preferred regions", ClientOptions{Routing: PreferredRegions(RegionEastUS, RegionWestUS)}},
+		{"proximity to known region", ClientOptions{Routing: ProximityTo(RegionEastUS)}},
+		{"proximity to unknown region", ClientOptions{Routing: ProximityTo("not-a-real-region")}},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil, &tt.options)

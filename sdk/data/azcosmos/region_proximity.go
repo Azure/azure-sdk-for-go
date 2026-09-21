@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-// Code generated from Azure/azure-sdk-for-rust region_proximity.rs at 294719d5da11318f5d49d090302cc61c461bf83a; DO NOT EDIT.
+// Code generated from Azure/azure-sdk-for-rust region_proximity.rs at 294719d5da11318f5d49d090302cc61c461bf83a (SHA-256 1f067621a59ea59fdc8c60d48ba6673998204fca941820f74fd1876bb9947bdb); DO NOT EDIT.
 
 package azcosmos
 

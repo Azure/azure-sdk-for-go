@@ -75,9 +75,7 @@ func TestProximityRegionTableMatchesRust(t *testing.T) {
 }
 
 func TestProximityToKnownRegionUsesEstimatedOrder(t *testing.T) {
-	regions, err := ProximityTo(RegionEastUS).preferredRegionOrder()
-	require.NoError(t, err)
-	require.Equal(t, []Region{
+	want := []Region{
 		RegionEastUS,
 		RegionEastUS2,
 		RegionEastUS3,
@@ -86,7 +84,12 @@ func TestProximityToKnownRegionUsesEstimatedOrder(t *testing.T) {
 		RegionCentralUS,
 		RegionSoutheastUS5,
 		RegionCanadaCentral,
-	}, regions[:8])
+	}
+	for _, region := range []Region{RegionEastUS, "EASTUS", "East US", "East\tUS"} {
+		regions, err := ProximityTo(region).preferredRegionOrder()
+		require.NoError(t, err)
+		require.Equal(t, want, regions[:len(want)], "source %q", region)
+	}
 }
 
 func TestProximityRegionOrderCannotBeMutated(t *testing.T) {

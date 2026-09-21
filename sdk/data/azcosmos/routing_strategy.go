@@ -3,6 +3,11 @@
 
 package azcosmos
 
+import (
+	"strings"
+	"unicode"
+)
+
 //go:generate go run ./internal/generate/regionproximity
 
 // RoutingStrategy decides the order in which a client considers the account's regions.
@@ -44,7 +49,13 @@ func (r RoutingStrategy) clone() RoutingStrategy {
 // resolves to none, which leaves the order to the account.
 func (r RoutingStrategy) preferredRegionOrder() ([]Region, error) {
 	if r.proximityTo != "" {
-		return append([]Region(nil), proximityRegionOrderBySource[r.proximityTo]...), nil
+		normalized := Region(strings.ToLower(strings.Map(func(value rune) rune {
+			if unicode.IsSpace(value) {
+				return -1
+			}
+			return value
+		}, string(r.proximityTo))))
+		return append([]Region(nil), proximityRegionOrderBySource[normalized]...), nil
 	}
 	return r.preferredRegions, nil
 }

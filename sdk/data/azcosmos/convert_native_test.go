@@ -222,13 +222,14 @@ func TestClientOptionsConvertToTheDriversConfig(t *testing.T) {
 		require.NoError(t, err)
 		defer release()
 
-		require.Equal(t, []string{
-			string(RegionEastUS),
-			string(RegionEastUS2),
-			string(RegionEastUS3),
-			string(RegionNorthCentralUS),
-			string(RegionNortheastUS5),
-		}, options.preferredRegions[:5])
+		regions, err := ProximityTo(RegionEastUS).preferredRegionOrder()
+		require.NoError(t, err)
+		want := make([]string, len(regions))
+		for i, region := range regions {
+			want[i] = string(region)
+		}
+		require.Len(t, options.preferredRegions, 96)
+		require.Equal(t, want, options.preferredRegions)
 	})
 
 	t.Run("unknown proximity leaves the order to the account", func(t *testing.T) {

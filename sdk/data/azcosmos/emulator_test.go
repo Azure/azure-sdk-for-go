@@ -112,10 +112,10 @@ func setEmulatorReplication(t *testing.T, region Region, action string) {
 	require.NoError(t, err)
 	response, err := http.DefaultClient.Do(request)
 	require.NoError(t, err)
-	defer response.Body.Close()
 
 	body, err := io.ReadAll(response.Body)
 	require.NoError(t, err)
+	require.NoError(t, response.Body.Close())
 	require.Equal(t, http.StatusOK, response.StatusCode, string(body))
 }
 
@@ -508,8 +508,9 @@ func TestEmulatorOperationContentResponseOverridesTheClient(t *testing.T) {
 // can then prove which region each routing strategy selected, rather than only proving that the
 // driver accepted its preferred-region list.
 func TestEmulatorRoutingStrategiesRouteReads(t *testing.T) {
-	setEmulatorReplication(t, RegionWestUS, "pause")
-	t.Cleanup(func() { setEmulatorReplication(t, RegionWestUS, "resume") })
+	const westUSManagementName Region = "West US"
+	setEmulatorReplication(t, westUSManagementName, "pause")
+	t.Cleanup(func() { setEmulatorReplication(t, westUSManagementName, "resume") })
 
 	writer := emulatorContainerWithOptions(t, &ClientOptions{
 		Routing: PreferredRegions(RegionEastUS),
@@ -528,6 +529,7 @@ func TestEmulatorRoutingStrategiesRouteReads(t *testing.T) {
 		{"preferred East US", PreferredRegions(RegionEastUS), true},
 		{"preferred West US", PreferredRegions(RegionWestUS), false},
 		{"proximity to West US", ProximityTo(RegionWestUS), false},
+		{"unknown proximity", ProximityTo("not-a-real-region"), true},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			container := emulatorContainerWithOptions(t, &ClientOptions{Routing: tt.routing})

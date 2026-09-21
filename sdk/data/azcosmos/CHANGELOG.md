@@ -18,9 +18,10 @@
   See [PR 27336](https://github.com/Azure/azure-sdk-for-go/pull/27336).
 * Added the Cosmos driver binding for cgo builds on `linux/amd64` and `darwin/arm64`. `ReadItem` and
   `CreateItem` run against the driver, including `LatestCommitted` reads; `Client.Initialize`
-  eagerly fills account and routing caches, token credentials are supported, and `ProximityTo`
-  expands an application region to a proximity-sorted routing order.
+  eagerly fills account and routing caches, and token credentials are supported.
   See [PR 27482](https://github.com/Azure/azure-sdk-for-go/pull/27482).
+* Added proximity routing: `ProximityTo` expands an application region to a proximity-sorted
+  routing order. See [PR 27589](https://github.com/Azure/azure-sdk-for-go/pull/27589).
 
 ### Breaking Changes
 

@@ -169,16 +169,6 @@ func TestNewClientCopiesRoutingRegions(t *testing.T) {
 	require.Equal(t, []Region{RegionWestUS, RegionEastUS}, client.options.Routing.preferredRegions)
 }
 
-func TestRoutingStrategy(t *testing.T) {
-	require.Equal(t, RegionEastUS, ProximityTo(RegionEastUS).proximityTo)
-	require.Equal(t, []Region{RegionWestUS, RegionEastUS}, PreferredRegions(RegionWestUS, RegionEastUS).preferredRegions)
-
-	// The zero value carries neither, which is what "leave the order to the account" means.
-	var zero RoutingStrategy
-	require.Empty(t, zero.proximityTo)
-	require.Empty(t, zero.preferredRegions)
-}
-
 // Close is documented as idempotent, safe to call concurrently, and as reporting the same result
 // to every caller. Storing the teardown error in a local rather than on the client would give it
 // to the first caller alone, which is what this exercises under -race.

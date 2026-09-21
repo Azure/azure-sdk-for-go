@@ -12,6 +12,31 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestProximityTo(t *testing.T) {
+	strategy := ProximityTo(RegionEastUS)
+
+	require.Equal(t, RegionEastUS, strategy.proximityTo)
+	require.Empty(t, strategy.preferredRegions)
+}
+
+func TestPreferredRegions(t *testing.T) {
+	regions := []Region{RegionWestUS, RegionEastUS}
+	strategy := PreferredRegions(regions...)
+
+	require.Empty(t, strategy.proximityTo)
+	require.Equal(t, regions, strategy.preferredRegions)
+
+	regions[0] = RegionNorthEurope
+	require.Equal(t, []Region{RegionWestUS, RegionEastUS}, strategy.preferredRegions)
+}
+
+func TestRoutingStrategyZeroValue(t *testing.T) {
+	var strategy RoutingStrategy
+
+	require.Empty(t, strategy.proximityTo)
+	require.Empty(t, strategy.preferredRegions)
+}
+
 func TestProximityRegionTableMatchesRust(t *testing.T) {
 	require.Len(t, proximityRegionOrderBySource, 96)
 

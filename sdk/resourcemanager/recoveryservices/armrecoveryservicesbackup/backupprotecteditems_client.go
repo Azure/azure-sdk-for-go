@@ -19,7 +19,7 @@ import (
 // BackupProtectedItemsClient contains the methods for the BackupProtectedItems group.
 // Don't use this type directly, use NewBackupProtectedItemsClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-08-01
 type BackupProtectedItemsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -108,7 +108,7 @@ func (client *BackupProtectedItemsClient) listCreateRequest(ctx context.Context,
 		if options != nil && options.SkipToken != nil {
 			reqQP.Set("$skipToken", *options.SkipToken)
 		}
-		reqQP.Set("api-version", version20260701)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

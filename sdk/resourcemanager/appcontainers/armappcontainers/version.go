@@ -6,5 +6,5 @@ package armappcontainers
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers"
-	moduleVersion = "v5.0.0-beta.1"
+	moduleVersion = "v5.0.0"
 )

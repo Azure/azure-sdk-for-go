@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.ContainerInstance": "2026-07-01"
   },
-  "emitterVersion": "0.14.3"
+  "emitterVersion": "0.17.4"
 }

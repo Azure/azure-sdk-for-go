@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/ReachabilityAnalysisRunPut.json
+// Generated from example definition: 2026-01-01/ReachabilityAnalysisRunPut.json
 func ExampleReachabilityAnalysisRunsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleReachabilityAnalysisRunsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ReachabilityAnalysisRunDelete.json
+// Generated from example definition: 2026-01-01/ReachabilityAnalysisRunDelete.json
 func ExampleReachabilityAnalysisRunsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleReachabilityAnalysisRunsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ReachabilityAnalysisRunGet.json
+// Generated from example definition: 2026-01-01/ReachabilityAnalysisRunGet.json
 func ExampleReachabilityAnalysisRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleReachabilityAnalysisRunsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ReachabilityAnalysisRunList.json
+// Generated from example definition: 2026-01-01/ReachabilityAnalysisRunList.json
 func ExampleReachabilityAnalysisRunsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

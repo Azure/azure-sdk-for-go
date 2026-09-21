@@ -22,7 +22,7 @@ import (
 // DpsCertificateClient contains the methods for the DpsCertificate group.
 // Don't use this type directly, use NewDpsCertificateClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2026-08-31
 type DpsCertificateClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -96,7 +96,7 @@ func (client *DpsCertificateClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20260831)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -169,7 +169,7 @@ func (client *DpsCertificateClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20260831)
 	if options != nil && options.CertificateCreated != nil {
 		reqQP.Set("certificate.created", datetime.RFC3339((*options.CertificateCreated).UTC()).String())
 	}
@@ -245,7 +245,7 @@ func (client *DpsCertificateClient) generateVerificationCodeCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20260831)
 	if options != nil && options.CertificateCreated != nil {
 		reqQP.Set("certificate.created", datetime.RFC3339((*options.CertificateCreated).UTC()).String())
 	}
@@ -333,7 +333,7 @@ func (client *DpsCertificateClient) getCreateRequest(ctx context.Context, certif
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20260831)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -396,7 +396,7 @@ func (client *DpsCertificateClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20260831)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -461,7 +461,7 @@ func (client *DpsCertificateClient) verifyCertificateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20260831)
 	if options != nil && options.CertificateCreated != nil {
 		reqQP.Set("certificate.created", datetime.RFC3339((*options.CertificateCreated).UTC()).String())
 	}

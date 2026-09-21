@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/AuthConfigs_BlobStorageTokenStore_ClientId_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/AuthConfigs_BlobStorageTokenStore_ClientId_CreateOrUpdate.json
 func ExampleContainerAppsAuthConfigsClient_CreateOrUpdate_createOrUpdateContainerAppAuthConfigWithMsiClientIdBlobStorageTokenStore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleContainerAppsAuthConfigsClient_CreateOrUpdate_createOrUpdateContaine
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AuthConfigs_BlobStorageTokenStore_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/AuthConfigs_BlobStorageTokenStore_CreateOrUpdate.json
 func ExampleContainerAppsAuthConfigsClient_CreateOrUpdate_createOrUpdateContainerAppAuthConfigWithMsiManagedIdentityResourceIdBlobStorageTokenStore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -180,7 +180,7 @@ func ExampleContainerAppsAuthConfigsClient_CreateOrUpdate_createOrUpdateContaine
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AuthConfigs_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/AuthConfigs_CreateOrUpdate.json
 func ExampleContainerAppsAuthConfigsClient_CreateOrUpdate_createOrUpdateContainerAppAuthConfig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -248,7 +248,7 @@ func ExampleContainerAppsAuthConfigsClient_CreateOrUpdate_createOrUpdateContaine
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AuthConfigs_Delete.json
+// Generated from example definition: 2026-07-01/AuthConfigs_Delete.json
 func ExampleContainerAppsAuthConfigsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -270,7 +270,7 @@ func ExampleContainerAppsAuthConfigsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AuthConfigs_Get.json
+// Generated from example definition: 2026-07-01/AuthConfigs_Get.json
 func ExampleContainerAppsAuthConfigsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -317,7 +317,7 @@ func ExampleContainerAppsAuthConfigsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AuthConfigs_ListByContainer.json
+// Generated from example definition: 2026-07-01/AuthConfigs_ListByContainer.json
 func ExampleContainerAppsAuthConfigsClient_NewListByContainerAppPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -111,10 +111,7 @@ func (s *ServiceGroupMemberRelationshipsServerTransport) dispatchBeginCreateOrUp
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
 		if err != nil {
 			return nil, err
@@ -155,10 +152,7 @@ func (s *ServiceGroupMemberRelationshipsServerTransport) dispatchBeginDelete(req
 		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
 		if err != nil {
 			return nil, err
@@ -197,10 +191,7 @@ func (s *ServiceGroupMemberRelationshipsServerTransport) dispatchGet(req *http.R
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
 	if err != nil {
 		return nil, err

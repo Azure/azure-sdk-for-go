@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/ManagedCertificate_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/ManagedCertificate_CreateOrUpdate.json
 func ExampleManagedCertificatesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleManagedCertificatesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedCertificate_Delete.json
+// Generated from example definition: 2026-07-01/ManagedCertificate_Delete.json
 func ExampleManagedCertificatesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleManagedCertificatesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedCertificate_Get.json
+// Generated from example definition: 2026-07-01/ManagedCertificate_Get.json
 func ExampleManagedCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleManagedCertificatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedCertificates_ListByManagedEnvironment.json
+// Generated from example definition: 2026-07-01/ManagedCertificates_ListByManagedEnvironment.json
 func ExampleManagedCertificatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -169,7 +169,7 @@ func ExampleManagedCertificatesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedCertificates_Patch.json
+// Generated from example definition: 2026-07-01/ManagedCertificates_Patch.json
 func ExampleManagedCertificatesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

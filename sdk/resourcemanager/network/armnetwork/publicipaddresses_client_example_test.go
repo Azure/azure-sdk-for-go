@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/PublicIpAddressCreateCustomizedValues.json
+// Generated from example definition: 2026-01-01/PublicIpAddressCreateCustomizedValues.json
 func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIPAddressAllocationMethod() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIPAddressAll
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PublicIpAddressCreateDefaults.json
+// Generated from example definition: 2026-01-01/PublicIpAddressCreateDefaults.json
 func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIPAddressDefaults() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIPAddressDef
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PublicIpAddressCreateDefaultsStandardV2Sku.json
+// Generated from example definition: 2026-01-01/PublicIpAddressCreateDefaultsStandardV2Sku.json
 func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIPAddressDefaultsWithStandardV2Sku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIPAddressDef
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PublicIpAddressCreateDns.json
+// Generated from example definition: 2026-01-01/PublicIpAddressCreateDns.json
 func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIPAddressDns() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,7 +218,7 @@ func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIPAddressDns
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PublicIpAddressCreateDnsWithDomainNameLabelScope.json
+// Generated from example definition: 2026-01-01/PublicIpAddressCreateDnsWithDomainNameLabelScope.json
 func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIPAddressDnsWithDomainNameLabelScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -272,7 +272,7 @@ func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIPAddressDns
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PublicIpAddressCreateWithFirstPartyServiceTag.json
+// Generated from example definition: 2026-01-01/PublicIpAddressCreateWithFirstPartyServiceTag.json
 func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIPAddressWithFirstPartyServiceTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -342,7 +342,7 @@ func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIPAddressWit
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PublicIpAddressGetDdosProtectionStatus.json
+// Generated from example definition: 2026-01-01/PublicIpAddressGetDdosProtectionStatus.json
 func ExamplePublicIPAddressesClient_BeginDdosProtectionStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -374,7 +374,7 @@ func ExamplePublicIPAddressesClient_BeginDdosProtectionStatus() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PublicIpAddressDelete.json
+// Generated from example definition: 2026-01-01/PublicIpAddressDelete.json
 func ExamplePublicIPAddressesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -400,7 +400,7 @@ func ExamplePublicIPAddressesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PublicIpAddressDisassociateCloudServiceReservedPublicIp.json
+// Generated from example definition: 2026-01-01/PublicIpAddressDisassociateCloudServiceReservedPublicIp.json
 func ExamplePublicIPAddressesClient_BeginDisassociateCloudServiceReservedPublicIP() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -446,7 +446,7 @@ func ExamplePublicIPAddressesClient_BeginDisassociateCloudServiceReservedPublicI
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PublicIpAddressGet.json
+// Generated from example definition: 2026-01-01/PublicIpAddressGet.json
 func ExamplePublicIPAddressesClient_Get_getPublicIPAddress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -499,7 +499,7 @@ func ExamplePublicIPAddressesClient_Get_getPublicIPAddress() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PublicIpAddressGetStandardV2Sku.json
+// Generated from example definition: 2026-01-01/PublicIpAddressGetStandardV2Sku.json
 func ExamplePublicIPAddressesClient_Get_getPublicIPAddressWithStandardV2Sku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -556,7 +556,7 @@ func ExamplePublicIPAddressesClient_Get_getPublicIPAddressWithStandardV2Sku() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/CloudServicePublicIpGet.json
+// Generated from example definition: 2026-01-01/CloudServicePublicIpGet.json
 func ExamplePublicIPAddressesClient_GetCloudServicePublicIPAddress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -596,7 +596,7 @@ func ExamplePublicIPAddressesClient_GetCloudServicePublicIPAddress() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PublicIpAddressList.json
+// Generated from example definition: 2026-01-01/PublicIpAddressList.json
 func ExamplePublicIPAddressesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -702,7 +702,7 @@ func ExamplePublicIPAddressesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/PublicIpAddressListAll.json
+// Generated from example definition: 2026-01-01/PublicIpAddressListAll.json
 func ExamplePublicIPAddressesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -798,7 +798,7 @@ func ExamplePublicIPAddressesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/CloudServicePublicIpListAll.json
+// Generated from example definition: 2026-01-01/CloudServicePublicIpListAll.json
 func ExamplePublicIPAddressesClient_NewListCloudServicePublicIPAddressesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -865,7 +865,7 @@ func ExamplePublicIPAddressesClient_NewListCloudServicePublicIPAddressesPager() 
 	}
 }
 
-// Generated from example definition: 2025-09-01/CloudServiceRoleInstancePublicIpList.json
+// Generated from example definition: 2026-01-01/CloudServiceRoleInstancePublicIpList.json
 func ExamplePublicIPAddressesClient_NewListCloudServiceRoleInstancePublicIPAddressesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -914,7 +914,7 @@ func ExamplePublicIPAddressesClient_NewListCloudServiceRoleInstancePublicIPAddre
 	}
 }
 
-// Generated from example definition: 2025-09-01/PublicIpAddressReserve.json
+// Generated from example definition: 2026-01-01/PublicIpAddressReserve.json
 func ExamplePublicIPAddressesClient_BeginReserveCloudServicePublicIPAddress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -960,7 +960,7 @@ func ExamplePublicIPAddressesClient_BeginReserveCloudServicePublicIPAddress() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PublicIpAddressUpdateTags.json
+// Generated from example definition: 2026-01-01/PublicIpAddressUpdateTags.json
 func ExamplePublicIPAddressesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

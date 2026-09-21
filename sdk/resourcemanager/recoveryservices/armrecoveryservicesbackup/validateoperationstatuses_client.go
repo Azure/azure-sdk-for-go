@@ -19,7 +19,7 @@ import (
 // ValidateOperationStatusesClient contains the methods for the ValidateOperationStatuses group.
 // Don't use this type directly, use NewValidateOperationStatusesClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-08-01
 type ValidateOperationStatusesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -94,7 +94,7 @@ func (client *ValidateOperationStatusesClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

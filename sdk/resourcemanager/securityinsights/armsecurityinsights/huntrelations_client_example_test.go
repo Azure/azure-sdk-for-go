@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/hunts/CreateHuntRelation.json
+// Generated from example definition: 2025-10-01-preview/hunts/CreateHuntRelation.json
 func ExampleHuntRelationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleHuntRelationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/hunts/DeleteHuntRelation.json
+// Generated from example definition: 2025-10-01-preview/hunts/DeleteHuntRelation.json
 func ExampleHuntRelationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleHuntRelationsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/hunts/GetHuntRelationById.json
+// Generated from example definition: 2025-10-01-preview/hunts/GetHuntRelationById.json
 func ExampleHuntRelationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleHuntRelationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/hunts/GetHuntRelations.json
+// Generated from example definition: 2025-10-01-preview/hunts/GetHuntRelations.json
 func ExampleHuntRelationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

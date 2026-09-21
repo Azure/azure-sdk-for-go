@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_Cancel_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/BulkCreateCustom_Cancel_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleBulkCreateCustomClient_BeginCancel() {
 	}
 }
 
-// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/BulkCreateCustom_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -357,7 +357,7 @@ func ExampleBulkCreateCustomClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/BulkCreateCustom_Delete_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -379,7 +379,7 @@ func ExampleBulkCreateCustomClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/BulkCreateCustom_Get_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -537,7 +537,7 @@ func ExampleBulkCreateCustomClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_GetAsyncOperationStatus_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/BulkCreateCustom_GetAsyncOperationStatus_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_GetAsyncOperationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -607,7 +607,7 @@ func ExampleBulkCreateCustomClient_GetAsyncOperationStatus() {
 	// }
 }
 
-// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/BulkCreateCustom_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -887,13 +887,13 @@ func ExampleBulkCreateCustomClient_NewListByResourceGroupPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/locations/eastus/bulkCreateCustom?api-version=2026-08-06-preview&$skiptoken=page2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/locations/eastus/bulkCreateCustom?api-version=2026-09-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/BulkCreateCustom_ListBySubscription_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1173,13 +1173,13 @@ func ExampleBulkCreateCustomClient_NewListBySubscriptionPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/providers/Microsoft.Compute/locations/eastus/bulkCreateCustom?api-version=2026-08-06-preview&$skiptoken=page2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/providers/Microsoft.Compute/locations/eastus/bulkCreateCustom?api-version=2026-09-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-08-06-preview/BulkCreateCustom_VirtualMachinesGetOperationStatus_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/BulkCreateCustom_VirtualMachinesGetOperationStatus_MaximumSet_Gen.json
 func ExampleBulkCreateCustomClient_NewVirtualMachinesGetOperationStatusPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1213,7 +1213,7 @@ func ExampleBulkCreateCustomClient_NewVirtualMachinesGetOperationStatusPager() {
 		// 					SubscriptionID: to.Ptr("700935bc-adf2-4176-b9ad-c571731c09fc"),
 		// 					Deadline: to.Ptr(time.Date(2026, time.August, 4, 15, 40, 8, 280208200, time.UTC)),
 		// 					DeadlineType: to.Ptr(armbulkactions.DeadlineTypeInitiateAt),
-		// 					State: to.Ptr(armbulkactions.OperationStatePendingScheduling),
+		// 					State: to.Ptr(armbulkactions.OperationStateScheduled),
 		// 					Timezone: to.Ptr("UTC"),
 		// 					RetryPolicy: &armbulkactions.RetryPolicy{
 		// 						RetryCount: to.Ptr[int32](1),
@@ -1223,10 +1223,11 @@ func ExampleBulkCreateCustomClient_NewVirtualMachinesGetOperationStatusPager() {
 		// 				VirtualMachineInfo: &armbulkactions.VirtualMachineInfo{
 		// 					VMSize: to.Ptr("Standard_D4as_v5"),
 		// 					Zone: to.Ptr("1"),
+		// 					Name: to.Ptr("vm-001"),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/700935bc-adf2-4176-b9ad-c571731c09fc/resourceGroups/local-test-rg/providers/Microsoft.Compute/locations/eastus/bulkCreateCustom/00000000-0000-0000-0000-000000000102/virtualMachinesGetOperationStatus?api-version=2026-08-06-preview&$skiptoken=page2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/700935bc-adf2-4176-b9ad-c571731c09fc/resourceGroups/local-test-rg/providers/Microsoft.Compute/locations/eastus/bulkCreateCustom/00000000-0000-0000-0000-000000000102/virtualMachinesGetOperationStatus?api-version=2026-09-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}

@@ -104,6 +104,14 @@ func (c *ClientFactory) NewApplicationSecurityGroupsClient() *ApplicationSecurit
 	}
 }
 
+// NewAuthenticationPoliciesClient creates a new instance of AuthenticationPoliciesClient.
+func (c *ClientFactory) NewAuthenticationPoliciesClient() *AuthenticationPoliciesClient {
+	return &AuthenticationPoliciesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewAvailableDelegationsClient creates a new instance of AvailableDelegationsClient.
 func (c *ClientFactory) NewAvailableDelegationsClient() *AvailableDelegationsClient {
 	return &AvailableDelegationsClient{

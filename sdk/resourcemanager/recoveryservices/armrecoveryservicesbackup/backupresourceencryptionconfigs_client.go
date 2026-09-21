@@ -19,7 +19,7 @@ import (
 // BackupResourceEncryptionConfigsClient contains the methods for the BackupResourceEncryptionConfigs group.
 // Don't use this type directly, use NewBackupResourceEncryptionConfigsClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-08-01
 type BackupResourceEncryptionConfigsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -86,7 +86,7 @@ func (client *BackupResourceEncryptionConfigsClient) getCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -149,7 +149,7 @@ func (client *BackupResourceEncryptionConfigsClient) updateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

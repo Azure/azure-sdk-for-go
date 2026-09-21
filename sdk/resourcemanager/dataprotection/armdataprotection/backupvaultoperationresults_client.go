@@ -20,7 +20,7 @@ import (
 // BackupVaultOperationResultsClient contains the methods for the BackupVaultOperationResults group.
 // Don't use this type directly, use NewBackupVaultOperationResultsClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-06-01
 type BackupVaultOperationResultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -93,7 +93,7 @@ func (client *BackupVaultOperationResultsClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

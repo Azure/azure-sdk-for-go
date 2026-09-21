@@ -19,7 +19,7 @@ import (
 // ProtectedItemOperationStatusesClient contains the methods for the ProtectedItemOperationStatuses group.
 // Don't use this type directly, use NewProtectedItemOperationStatusesClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-08-01
 type ProtectedItemOperationStatusesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -104,7 +104,7 @@ func (client *ProtectedItemOperationStatusesClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

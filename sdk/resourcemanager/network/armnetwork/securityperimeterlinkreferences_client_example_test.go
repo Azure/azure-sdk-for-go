@@ -7,11 +7,11 @@ package armnetwork_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/NspLinkReferenceDelete.json
+// Generated from example definition: 2026-01-01/NspLinkReferenceDelete.json
 func ExampleSecurityPerimeterLinkReferencesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleSecurityPerimeterLinkReferencesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NspLinkReferenceGet.json
+// Generated from example definition: 2026-01-01/NspLinkReferenceGet.json
 func ExampleSecurityPerimeterLinkReferencesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleSecurityPerimeterLinkReferencesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NspLinkReferenceList.json
+// Generated from example definition: 2026-01-01/NspLinkReferenceList.json
 func ExampleSecurityPerimeterLinkReferencesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

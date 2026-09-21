@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/NetworkManagerCommitPut.json
+// Generated from example definition: 2026-01-01/NetworkManagerCommitPut.json
 func ExampleCommitsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleCommitsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerCommitDelete.json
+// Generated from example definition: 2026-01-01/NetworkManagerCommitDelete.json
 func ExampleCommitsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleCommitsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerCommitGet.json
+// Generated from example definition: 2026-01-01/NetworkManagerCommitGet.json
 func ExampleCommitsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleCommitsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerCommitList.json
+// Generated from example definition: 2026-01-01/NetworkManagerCommitList.json
 func ExampleCommitsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

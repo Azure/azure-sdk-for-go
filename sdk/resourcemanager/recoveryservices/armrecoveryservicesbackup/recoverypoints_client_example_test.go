@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/RecoveryPoints_Get.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/RecoveryPoints_Get.json
 func ExampleRecoveryPointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,18 +35,6 @@ func ExampleRecoveryPointsClient_Get() {
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rshhtestmdvmrg/providers/Microsoft.RecoveryServices/vaults/rshvault/backupFabrics/Azure/protectionContainers/IaasVMContainer;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall/protectedItems/VM;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall/recoveryPoints/26083826328862"),
 	// 		Properties: &armrecoveryservicesbackup.IaasVMRecoveryPoint{
-	// 			DataDiskMetadata: &armrecoveryservicesbackup.DataDiskDetails{
-	// 				EncryptedDataDisks: []*armrecoveryservicesbackup.DiskDetails{
-	// 					{
-	// 						Lun: to.Ptr[int32](0),
-	// 						DiskName: to.Ptr("cvm-06170038-DataDisk-0"),
-	// 					},
-	// 					{
-	// 						Lun: to.Ptr[int32](1),
-	// 						DiskName: to.Ptr("cvm-06170038-DataDisk-1"),
-	// 					},
-	// 				},
-	// 			},
 	// 			IsInstantIlrSessionActive: to.Ptr(false),
 	// 			IsManagedVirtualMachine: to.Ptr(true),
 	// 			IsPrivateAccessEnabledOnAnyDisk: to.Ptr(true),
@@ -80,25 +68,12 @@ func ExampleRecoveryPointsClient_Get() {
 	// 			Zones: []*string{
 	// 				to.Ptr("1"),
 	// 			},
-	// 			ThreatStatus: to.Ptr(armrecoveryservicesbackup.ThreatStatusHealthy),
-	// 			ThreatInfo: []*armrecoveryservicesbackup.ThreatInfo{
-	// 				{
-	// 					ThreatTitle: to.Ptr("MDC threat title"),
-	// 					ThreatDescription: to.Ptr("Threat description"),
-	// 					LastUpdatedTime: to.Ptr(time.Date(2025, time.January, 22, 22, 32, 46, 608847200, time.UTC)),
-	// 					ThreatState: to.Ptr(armrecoveryservicesbackup.ThreatStateActive),
-	// 					ThreatStartTime: to.Ptr(time.Date(2024, time.November, 22, 22, 32, 46, 608847200, time.UTC)),
-	// 					ThreatEndTime: to.Ptr(time.Date(2024, time.November, 23, 17, 13, 23, 604547200, time.UTC)),
-	// 					ThreatURI: to.Ptr("https://portal.azure.com/#blade/Microsoft_Azure_Security_AzureDefenderForData/AlertBlade/alertId/00000000-0000-0000-0000-000000000000/subscriptionId/00000000-0000-0000-0000-000000000000/resourceGroup/Sample-RG/referencedFrom/alertDeepLink/location/centralus"),
-	// 					ThreatSeverity: to.Ptr(armrecoveryservicesbackup.ThreatSeverityInformational),
-	// 				},
-	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/RecoveryPoints_List.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/RecoveryPoints_List.json
 func ExampleRecoveryPointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

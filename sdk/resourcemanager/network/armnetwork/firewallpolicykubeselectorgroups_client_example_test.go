@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/FirewallPolicyKubeSelectorGroupPut.json
+// Generated from example definition: 2026-01-01/FirewallPolicyKubeSelectorGroupPut.json
 func ExampleFirewallPolicyKubeSelectorGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleFirewallPolicyKubeSelectorGroupsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/FirewallPolicyKubeSelectorGroupDelete.json
+// Generated from example definition: 2026-01-01/FirewallPolicyKubeSelectorGroupDelete.json
 func ExampleFirewallPolicyKubeSelectorGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleFirewallPolicyKubeSelectorGroupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/FirewallPolicyKubeSelectorGroupGet.json
+// Generated from example definition: 2026-01-01/FirewallPolicyKubeSelectorGroupGet.json
 func ExampleFirewallPolicyKubeSelectorGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleFirewallPolicyKubeSelectorGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/FirewallPolicyKubeSelectorGroupList.json
+// Generated from example definition: 2026-01-01/FirewallPolicyKubeSelectorGroupList.json
 func ExampleFirewallPolicyKubeSelectorGroupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

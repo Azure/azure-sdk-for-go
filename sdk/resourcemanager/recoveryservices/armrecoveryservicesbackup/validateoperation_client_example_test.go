@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/TriggerValidateOperation_RestoreDisk.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/TriggerValidateOperation_RestoreDisk.json
 func ExampleValidateOperationClient_BeginTrigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

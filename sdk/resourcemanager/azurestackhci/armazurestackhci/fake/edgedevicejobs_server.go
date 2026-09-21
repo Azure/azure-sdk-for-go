@@ -124,10 +124,7 @@ func (e *EdgeDeviceJobsServerTransport) dispatchBeginCreateOrUpdate(req *http.Re
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		edgeDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeDeviceName")])
 		if err != nil {
 			return nil, err
@@ -172,10 +169,7 @@ func (e *EdgeDeviceJobsServerTransport) dispatchBeginDelete(req *http.Request) (
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		edgeDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeDeviceName")])
 		if err != nil {
 			return nil, err
@@ -218,10 +212,7 @@ func (e *EdgeDeviceJobsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	edgeDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeDeviceName")])
 	if err != nil {
 		return nil, err
@@ -257,10 +248,7 @@ func (e *EdgeDeviceJobsServerTransport) dispatchNewListByEdgeDevicePager(req *ht
 		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		edgeDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeDeviceName")])
 		if err != nil {
 			return nil, err

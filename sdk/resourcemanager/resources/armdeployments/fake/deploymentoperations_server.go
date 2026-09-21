@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -229,10 +229,7 @@ func (d *DeploymentOperationsServerTransport) dispatchGetAtScope(req *http.Reque
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
@@ -451,10 +448,7 @@ func (d *DeploymentOperationsServerTransport) dispatchNewListAtScopePager(req *h
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err

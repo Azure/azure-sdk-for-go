@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/watchlists/CreateWatchlist.json
+// Generated from example definition: 2025-10-01-preview/watchlists/CreateWatchlist.json
 func ExampleWatchlistsClient_BeginCreateOrUpdate_createOrUpdateAWatchlist() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleWatchlistsClient_BeginCreateOrUpdate_createOrUpdateAWatchlist() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/watchlists/CreateWatchlistAndWatchlistItems.json
+// Generated from example definition: 2025-10-01-preview/watchlists/CreateWatchlistAndWatchlistItems.json
 func ExampleWatchlistsClient_BeginCreateOrUpdate_createOrUpdateAWatchlistAndBulkCreatesWatchlistItems() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleWatchlistsClient_BeginCreateOrUpdate_createOrUpdateAWatchlistAndBulk
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/watchlists/DeleteWatchlist.json
+// Generated from example definition: 2025-10-01-preview/watchlists/DeleteWatchlist.json
 func ExampleWatchlistsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleWatchlistsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/watchlists/GetWatchlistByAlias.json
+// Generated from example definition: 2025-10-01-preview/watchlists/GetWatchlistByAlias.json
 func ExampleWatchlistsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,7 +228,7 @@ func ExampleWatchlistsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/watchlists/GetWatchlists.json
+// Generated from example definition: 2025-10-01-preview/watchlists/GetWatchlists.json
 func ExampleWatchlistsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

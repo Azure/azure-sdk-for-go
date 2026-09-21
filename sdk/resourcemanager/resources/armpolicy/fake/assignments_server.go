@@ -169,10 +169,7 @@ func (a *AssignmentsServerTransport) dispatchCreate(req *http.Request) (*http.Re
 	if err != nil {
 		return nil, err
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	policyAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyAssignmentName")])
 	if err != nil {
 		return nil, err
@@ -206,10 +203,7 @@ func (a *AssignmentsServerTransport) dispatchCreateByID(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	policyAssignmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyAssignmentId")])
-	if err != nil {
-		return nil, err
-	}
+	policyAssignmentIDParam := matches[regex.SubexpIndex("policyAssignmentId")]
 	respr, errRespr := a.srv.CreateByID(req.Context(), policyAssignmentIDParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
@@ -235,10 +229,7 @@ func (a *AssignmentsServerTransport) dispatchDelete(req *http.Request) (*http.Re
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	policyAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyAssignmentName")])
 	if err != nil {
 		return nil, err
@@ -268,10 +259,7 @@ func (a *AssignmentsServerTransport) dispatchDeleteByID(req *http.Request) (*htt
 	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	policyAssignmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyAssignmentId")])
-	if err != nil {
-		return nil, err
-	}
+	policyAssignmentIDParam := matches[regex.SubexpIndex("policyAssignmentId")]
 	respr, errRespr := a.srv.DeleteByID(req.Context(), policyAssignmentIDParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
@@ -298,10 +286,7 @@ func (a *AssignmentsServerTransport) dispatchGet(req *http.Request) (*http.Respo
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	policyAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyAssignmentName")])
 	if err != nil {
 		return nil, err
@@ -338,10 +323,7 @@ func (a *AssignmentsServerTransport) dispatchGetByID(req *http.Request) (*http.R
 	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	policyAssignmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyAssignmentId")])
-	if err != nil {
-		return nil, err
-	}
+	policyAssignmentIDParam := matches[regex.SubexpIndex("policyAssignmentId")]
 	respr, errRespr := a.srv.GetByID(req.Context(), policyAssignmentIDParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
@@ -490,14 +472,8 @@ func (a *AssignmentsServerTransport) dispatchNewListForResourcePager(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		parentResourcePathParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResourcePath")])
-		if err != nil {
-			return nil, err
-		}
-		resourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceType")])
-		if err != nil {
-			return nil, err
-		}
+		parentResourcePathParam := matches[regex.SubexpIndex("parentResourcePath")]
+		resourceTypeParam := matches[regex.SubexpIndex("resourceType")]
 		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
 		if err != nil {
 			return nil, err
@@ -615,10 +591,7 @@ func (a *AssignmentsServerTransport) dispatchUpdate(req *http.Request) (*http.Re
 	if err != nil {
 		return nil, err
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	policyAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyAssignmentName")])
 	if err != nil {
 		return nil, err
@@ -652,10 +625,7 @@ func (a *AssignmentsServerTransport) dispatchUpdateByID(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	policyAssignmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyAssignmentId")])
-	if err != nil {
-		return nil, err
-	}
+	policyAssignmentIDParam := matches[regex.SubexpIndex("policyAssignmentId")]
 	respr, errRespr := a.srv.UpdateByID(req.Context(), policyAssignmentIDParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr

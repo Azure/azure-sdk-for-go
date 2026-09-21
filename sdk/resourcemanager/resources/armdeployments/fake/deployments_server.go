@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -492,10 +492,7 @@ func (d *DeploymentsServerTransport) dispatchCancelAtScope(req *http.Request) (*
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
@@ -649,10 +646,7 @@ func (d *DeploymentsServerTransport) dispatchCheckExistenceAtScope(req *http.Req
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
@@ -842,10 +836,7 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtScope(req *htt
 		if err != nil {
 			return nil, err
 		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
@@ -1062,10 +1053,7 @@ func (d *DeploymentsServerTransport) dispatchBeginDeleteAtScope(req *http.Reques
 		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
@@ -1250,10 +1238,7 @@ func (d *DeploymentsServerTransport) dispatchExportTemplateAtScope(req *http.Req
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
@@ -1407,10 +1392,7 @@ func (d *DeploymentsServerTransport) dispatchGetAtScope(req *http.Request) (*htt
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
@@ -1557,10 +1539,7 @@ func (d *DeploymentsServerTransport) dispatchNewListAtScopePager(req *http.Reque
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		filterParam := getOptional(qp.Get("$filter"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
@@ -1866,10 +1845,7 @@ func (d *DeploymentsServerTransport) dispatchBeginValidateAtScope(req *http.Requ
 		if err != nil {
 			return nil, err
 		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err

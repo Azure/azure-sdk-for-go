@@ -19,7 +19,7 @@ import (
 // FetchTieringCostClient contains the methods for the FetchTieringCost group.
 // Don't use this type directly, use NewFetchTieringCostClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-08-01
 type FetchTieringCostClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -114,7 +114,7 @@ func (client *FetchTieringCostClient) postCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

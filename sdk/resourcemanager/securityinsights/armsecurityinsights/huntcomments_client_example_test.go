@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/hunts/CreateHuntComment.json
+// Generated from example definition: 2025-10-01-preview/hunts/CreateHuntComment.json
 func ExampleHuntCommentsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleHuntCommentsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/hunts/DeleteHuntComment.json
+// Generated from example definition: 2025-10-01-preview/hunts/DeleteHuntComment.json
 func ExampleHuntCommentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleHuntCommentsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/hunts/GetHuntCommentById.json
+// Generated from example definition: 2025-10-01-preview/hunts/GetHuntCommentById.json
 func ExampleHuntCommentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleHuntCommentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/hunts/GetHuntComments.json
+// Generated from example definition: 2025-10-01-preview/hunts/GetHuntComments.json
 func ExampleHuntCommentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -19,7 +19,7 @@ import (
 // FetchSecondaryRecoveryPointsClient contains the methods for the FetchSecondaryRecoveryPoints group.
 // Don't use this type directly, use NewFetchSecondaryRecoveryPointsClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-06-01
 type FetchSecondaryRecoveryPointsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -110,7 +110,7 @@ func (client *FetchSecondaryRecoveryPointsClient) listCreateRequest(ctx context.
 		if options != nil && options.SkipToken != nil {
 			reqQP.Set("$skipToken", *options.SkipToken)
 		}
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260601)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

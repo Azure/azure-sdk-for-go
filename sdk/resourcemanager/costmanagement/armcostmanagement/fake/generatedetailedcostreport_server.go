@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement/v3"
 	"net/http"
-	"net/url"
 	"regexp"
 	"slices"
 )
@@ -97,10 +96,7 @@ func (g *GenerateDetailedCostReportServerTransport) dispatchBeginCreateOperation
 		if err != nil {
 			return nil, err
 		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		respr, errRespr := g.srv.BeginCreateOperation(req.Context(), scopeParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr

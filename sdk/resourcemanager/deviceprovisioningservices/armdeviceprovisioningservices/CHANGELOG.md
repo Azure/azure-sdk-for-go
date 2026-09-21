@@ -1,21 +1,15 @@
 # Release History
 
-## 1.3.0-beta.2 (2025-10-21)
+## 1.3.0 (2026-08-26)
 ### Features Added
 
-- New enum type `DeviceRegistryNamespaceAuthenticationType` with values `DeviceRegistryNamespaceAuthenticationTypeSystemAssigned`, `DeviceRegistryNamespaceAuthenticationTypeUserAssigned`
-- New struct `DeviceRegistryNamespaceDescription`
-- New field `SystemData` in struct `GroupIDInformation`
-- New field `DeviceRegistryNamespace` in struct `IotDpsPropertiesDescription`
-
-
-## 1.3.0-beta.1 (2023-11-30)
-### Features Added
-
+- New enum type `IotHubAuthenticationType` with values `IotHubAuthenticationTypeKeyBased`, `IotHubAuthenticationTypeSystemAssigned`, `IotHubAuthenticationTypeUserAssigned`
 - New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
 - New struct `ManagedServiceIdentity`
 - New struct `UserAssignedIdentity`
-- New field `PortalOperationsHostName` in struct `IotDpsPropertiesDescription`
+- New field `SystemData` in struct `GroupIDInformation`
+- New field `DisableLocalAuth`, `PortalOperationsHostName` in struct `IotDpsPropertiesDescription`
+- New field `AuthenticationType`, `HostName`, `SelectedUserAssignedIdentityResourceID` in struct `IotHubDefinitionDescription`
 - New field `Identity`, `Resourcegroup`, `Subscriptionid` in struct `ProvisioningServiceDescription`
 
 

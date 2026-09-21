@@ -19,7 +19,7 @@ import (
 // AvailableServiceAliasesClient contains the methods for the AvailableServiceAliases group.
 // Don't use this type directly, use NewAvailableServiceAliasesClient() instead.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-01-01
 type AvailableServiceAliasesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -97,7 +97,7 @@ func (client *AvailableServiceAliasesClient) listCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
+		reqQP.Set("api-version", version20260101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -174,7 +174,7 @@ func (client *AvailableServiceAliasesClient) listByResourceGroupCreateRequest(ct
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
+		reqQP.Set("api-version", version20260101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

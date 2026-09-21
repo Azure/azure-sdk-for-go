@@ -1148,7 +1148,7 @@ func PossibleClusterTypeValues() []ClusterType {
 	}
 }
 
-// ClusterUpdateStrategyType - The mode of operation for runtime protection.
+// ClusterUpdateStrategyType - The strategy for updating the cluster.
 type ClusterUpdateStrategyType string
 
 const (

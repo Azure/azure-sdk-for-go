@@ -1636,7 +1636,7 @@ type ClusterSecretArchivePatch struct {
 
 // ClusterUpdateStrategy represents the strategy for updating the cluster.
 type ClusterUpdateStrategy struct {
-	// REQUIRED; The mode of operation for runtime protection.
+	// REQUIRED; The strategy for updating the cluster.
 	StrategyType *ClusterUpdateStrategyType
 
 	// REQUIRED; Selection of how the threshold should be evaluated.
@@ -1659,7 +1659,7 @@ type ClusterUpdateStrategyPatch struct {
 	// maximum number of machines in the increment. Defaults to the whole increment size.
 	MaxUnavailable *int64
 
-	// The mode of operation for runtime protection.
+	// The strategy for updating the cluster.
 	StrategyType *ClusterUpdateStrategyType
 
 	// Selection of how the threshold should be evaluated.

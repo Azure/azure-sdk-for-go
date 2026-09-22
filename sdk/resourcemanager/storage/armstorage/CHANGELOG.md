@@ -1,6 +1,6 @@
 # Release History
 
-## 4.2.0 (2026-09-18)
+## 4.2.0 (2026-09-22)
 ### Features Added
 
 - New enum type `AiProvider` with values `AiProviderOpenAI`

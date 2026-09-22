@@ -391,6 +391,21 @@ type DownloadStreamOptions struct {
 	CPKInfo *CPKInfo
 	// CPKScopeInfo contains a group of parameters for client provided encryption scope.
 	CPKScopeInfo *CPKScopeInfo
+
+	// LayoutEndpoint optionally routes this read to a specific storage endpoint for better
+	// locality. This is an advanced option; most callers should leave it empty, or use
+	// DownloadBuffer/DownloadFile with LayoutAwareRoutingEnabled, which selects endpoints
+	// automatically.
+	//
+	// Set it only when implementing a custom chunked download: page through
+	// Client.GetLayoutPager, find the layout range covering Range.Offset, and pass that range's
+	// endpoint here. Passing an endpoint that does not cover the requested range is not an
+	// error, but forfeits the locality benefit.
+	//
+	// When set, the SDK rewrites the outgoing request URI's host/port to this endpoint while
+	// preserving the original Host header, so authentication (including SAS) is unaffected.
+	// When empty (the default), the request is sent to the client's configured endpoint.
+	LayoutEndpoint string
 }
 
 func (o *DownloadStreamOptions) format() *blob.DownloadStreamOptions {
@@ -413,11 +428,16 @@ func (o *DownloadStreamOptions) format() *blob.DownloadStreamOptions {
 	downloadStreamOptions.RangeGetContentMD5 = o.RangeGetContentMD5
 	downloadStreamOptions.AccessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
 	downloadStreamOptions.CPKScopeInfo = o.CPKScopeInfo
+	downloadStreamOptions.LayoutEndpoint = o.LayoutEndpoint
 	return downloadStreamOptions
 }
 
 // DownloadBufferOptions contains the optional parameters for the DownloadBuffer method.
 type DownloadBufferOptions struct {
+	// LayoutAwareRouting indicates whether downloads should attempt to be routed to the ideal endpoint
+	// for each chunk. The default, LayoutAwareRoutingAuto, currently resolves to enabled; set
+	// LayoutAwareRoutingDisabled to always use the client's configured endpoint.
+	LayoutAwareRouting LayoutAwareRouting
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range *HTTPRange
 	// ChunkSize specifies the chunk size to use for each parallel download; the default size is 4MB.
@@ -462,6 +482,7 @@ func (o *DownloadBufferOptions) format() *blob.DownloadBufferOptions {
 	downloadBufferOptions.BlockSize = o.ChunkSize
 	downloadBufferOptions.Progress = o.Progress
 	downloadBufferOptions.Concurrency = o.Concurrency
+	downloadBufferOptions.LayoutAwareRouting = o.LayoutAwareRouting
 	if o.RetryReaderOptionsPerChunk != nil {
 		downloadBufferOptions.RetryReaderOptionsPerBlock.OnFailedRead = o.RetryReaderOptionsPerChunk.OnFailedRead
 		downloadBufferOptions.RetryReaderOptionsPerBlock.EarlyCloseAsError = o.RetryReaderOptionsPerChunk.EarlyCloseAsError
@@ -473,6 +494,10 @@ func (o *DownloadBufferOptions) format() *blob.DownloadBufferOptions {
 
 // DownloadFileOptions contains the optional parameters for the Client.DownloadFile method.
 type DownloadFileOptions struct {
+	// LayoutAwareRouting indicates whether downloads should attempt to be routed to the ideal endpoint
+	// for each chunk. The default, LayoutAwareRoutingAuto, currently resolves to enabled; set
+	// LayoutAwareRoutingDisabled to always use the client's configured endpoint.
+	LayoutAwareRouting LayoutAwareRouting
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range *HTTPRange
 	// ChunkSize specifies the chunk size to use for each parallel download; the default size is 4MB.
@@ -517,6 +542,7 @@ func (o *DownloadFileOptions) format() *blob.DownloadFileOptions {
 	downloadFileOptions.BlockSize = o.ChunkSize
 	downloadFileOptions.Progress = o.Progress
 	downloadFileOptions.Concurrency = o.Concurrency
+	downloadFileOptions.LayoutAwareRouting = o.LayoutAwareRouting
 	if o.RetryReaderOptionsPerChunk != nil {
 		downloadFileOptions.RetryReaderOptionsPerBlock.OnFailedRead = o.RetryReaderOptionsPerChunk.OnFailedRead
 		downloadFileOptions.RetryReaderOptionsPerBlock.EarlyCloseAsError = o.RetryReaderOptionsPerChunk.EarlyCloseAsError
@@ -524,6 +550,49 @@ func (o *DownloadFileOptions) format() *blob.DownloadFileOptions {
 	}
 
 	return downloadFileOptions
+}
+
+// GetLayoutOptions contains the optional parameters for the Client.GetLayoutPager method.
+type GetLayoutOptions struct {
+	// Marker is the continuation token returned by a previous page of results. It is set by the
+	// pager as it walks the layout, and is not normally set by callers.
+	Marker *string
+	// MaxResults specifies the maximum number of layout ranges to return per page.
+	MaxResults *int32
+	// Range specifies the range of bytes of the file to return the layout for.
+	// The default value is all bytes.
+	Range *HTTPRange
+	// AccessConditions indicates the access conditions used when making the GetLayout requests.
+	AccessConditions *AccessConditions
+	// CPKInfo contains a group of parameters for client provided encryption key.
+	CPKInfo *CPKInfo
+}
+
+func (o *GetLayoutOptions) format() *blob.GetLayoutOptions {
+	if o == nil {
+		return nil
+	}
+
+	getLayoutOptions := &blob.GetLayoutOptions{
+		Marker:     o.Marker,
+		MaxResults: o.MaxResults,
+	}
+	if o.Range != nil {
+		getLayoutOptions.Range = blob.HTTPRange{
+			Offset: o.Range.Offset,
+			Count:  o.Range.Count,
+		}
+	}
+	if o.CPKInfo != nil {
+		getLayoutOptions.CPKInfo = &blob.CPKInfo{
+			EncryptionKey:       o.CPKInfo.EncryptionKey,
+			EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
+			EncryptionAlgorithm: (*blob.EncryptionAlgorithmType)(o.CPKInfo.EncryptionAlgorithm),
+		}
+	}
+
+	getLayoutOptions.AccessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
+	return getLayoutOptions
 }
 
 // SetExpiryValues describes when a file should expire.

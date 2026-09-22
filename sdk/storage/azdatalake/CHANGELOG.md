@@ -1,5 +1,22 @@
 # Release History
 
+## 1.7.0-beta.1 (Unreleased)
+
+### Features Added
+* Added support for data locality. `Client.GetLayoutPager` on the file client returns a file's layout: the byte ranges making up the file and the
+  storage endpoint that serves each one. Pass the endpoint covering a given offset as `DownloadStreamOptions.LayoutEndpoint` to route that read to the ideal
+  endpoint.
+* `DownloadBuffer` and `DownloadFile` now route each chunk to its ideal endpoint automatically, fetching and caching the file's layout on the caller's behalf.
+  The new `LayoutAwareRouting` field on `DownloadBufferOptions`/`DownloadFileOptions` controls this; the default, `LayoutAwareRoutingAuto`, currently resolves
+  to enabled. Set `LayoutAwareRoutingDisabled` to always download from the client's configured endpoint. When the service can't provide a layout, downloads
+  fall back to the previous behavior automatically.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.6.1-beta.1 (2026-07-24)
 
 ### Other Changes

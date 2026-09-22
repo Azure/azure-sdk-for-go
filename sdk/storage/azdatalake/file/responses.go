@@ -288,3 +288,6 @@ type UpdateAccessControlResponse = path.UpdateAccessControlResponse
 
 // RemoveAccessControlResponse contains the response fields for the RemoveAccessControlRecursive operation.
 type RemoveAccessControlResponse = path.RemoveAccessControlResponse
+
+// GetLayoutResponse contains the response from the Client.GetLayoutPager method.
+type GetLayoutResponse = blob.GetLayoutResponse

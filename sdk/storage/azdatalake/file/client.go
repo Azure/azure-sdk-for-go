@@ -572,6 +572,34 @@ func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *Uplo
 	return exported.ConvertToDFSError(err)
 }
 
+// GetLayoutPager returns the file's layout: the byte ranges that make up the file and the storage
+// endpoint that serves each one. Pass the endpoint covering a given offset as
+// DownloadStreamOptions.LayoutEndpoint to route that read to the ideal endpoint.
+//
+// DownloadBuffer and DownloadFile do this automatically; use this method only when implementing a
+// custom chunked download. A single layout covers the whole file, so one enumeration can serve
+// every chunk; a file's layout can change over time, so refresh a cached layout roughly every
+// 5 minutes, which is the interval the managed downloads use internally.
+//
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-layout.
+func (f *Client) GetLayoutPager(options *GetLayoutOptions) *runtime.Pager[GetLayoutResponse] {
+	// The blob pager owns the paging, continuation marker and ETag locking; this wrapper only
+	// converts errors to their DFS form, which is what the rest of this package returns.
+	blobPager := f.blobClient().GetLayoutPager(options.format())
+	return runtime.NewPager(runtime.PagingHandler[GetLayoutResponse]{
+		More: func(GetLayoutResponse) bool {
+			return blobPager.More()
+		},
+		Fetcher: func(ctx context.Context, _ *GetLayoutResponse) (GetLayoutResponse, error) {
+			resp, err := blobPager.NextPage(ctx)
+			if err != nil {
+				return GetLayoutResponse{}, exported.ConvertToDFSError(err)
+			}
+			return resp, nil
+		},
+	})
+}
+
 // DownloadStream reads a range of bytes from a file. The response also includes the file's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
 func (f *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (DownloadStreamResponse, error) {

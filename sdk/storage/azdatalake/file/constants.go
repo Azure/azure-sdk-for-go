@@ -131,3 +131,25 @@ var (
 	LeaseActionAcquireRelease LeaseAction = path.LeaseActionAcquireRelease
 	LeaseActionRenew          LeaseAction = path.LeaseActionRenew
 )
+
+// LayoutAwareRouting defines whether managed downloads should attempt to be routed to the ideal
+// endpoint for each chunk, based on the file's layout.
+type LayoutAwareRouting = path.LayoutAwareRouting
+
+const (
+	// LayoutAwareRoutingAuto is the zero value, and therefore the default when no value is
+	// specified. Currently, the SDK resolves Auto to enabled, so it behaves identically to
+	// LayoutAwareRoutingEnabled.
+	LayoutAwareRoutingAuto LayoutAwareRouting = path.LayoutAwareRoutingAuto
+
+	// LayoutAwareRoutingEnabled always attempts to route requests to the ideal endpoint for each chunk.
+	LayoutAwareRoutingEnabled LayoutAwareRouting = path.LayoutAwareRoutingEnabled
+
+	// LayoutAwareRoutingDisabled never uses layout aware routing; requests are sent to the client's configured endpoint.
+	LayoutAwareRoutingDisabled LayoutAwareRouting = path.LayoutAwareRoutingDisabled
+)
+
+// PossibleLayoutAwareRoutingValues returns the possible values for the LayoutAwareRouting const type.
+func PossibleLayoutAwareRoutingValues() []LayoutAwareRouting {
+	return path.PossibleLayoutAwareRoutingValues()
+}

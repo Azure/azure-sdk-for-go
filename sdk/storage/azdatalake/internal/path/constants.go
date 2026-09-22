@@ -79,3 +79,26 @@ const (
 	LeaseActionAcquireRelease = generated.LeaseActionAcquireRelease
 	LeaseActionRenew          = generated.LeaseActionAutoRenew
 )
+
+// LayoutAwareRouting defines whether downloads should attempt to be routed to the ideal
+// endpoint for each chunk, based on the file's layout.
+type LayoutAwareRouting = blob.LayoutAwareRouting
+
+const (
+	// LayoutAwareRoutingAuto is the zero value, and therefore the default when no value is
+	// specified. Currently, the SDK resolves Auto to enabled, so it behaves identically to
+	// LayoutAwareRoutingEnabled. Specify LayoutAwareRoutingEnabled or
+	// LayoutAwareRoutingDisabled to pin the behavior.
+	LayoutAwareRoutingAuto LayoutAwareRouting = blob.LayoutAwareRoutingAuto
+
+	// LayoutAwareRoutingEnabled always attempts to route requests to the ideal endpoint for each chunk.
+	LayoutAwareRoutingEnabled LayoutAwareRouting = blob.LayoutAwareRoutingEnabled
+
+	// LayoutAwareRoutingDisabled never uses layout aware routing; requests are sent to the client's configured endpoint.
+	LayoutAwareRoutingDisabled LayoutAwareRouting = blob.LayoutAwareRoutingDisabled
+)
+
+// PossibleLayoutAwareRoutingValues returns the possible values for the LayoutAwareRouting const type.
+func PossibleLayoutAwareRoutingValues() []LayoutAwareRouting {
+	return blob.PossibleLayoutAwareRoutingValues()
+}

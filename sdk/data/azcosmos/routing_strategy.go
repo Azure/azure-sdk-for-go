@@ -6,9 +6,13 @@ package azcosmos
 import (
 	"strings"
 	"unicode"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 //go:generate go run ./internal/generate/regionproximity
+
+const eventRouting log.Event = "CosmosRouting"
 
 // RoutingStrategy decides the order in which a client considers the account's regions.
 //
@@ -28,7 +32,9 @@ type RoutingStrategy struct {
 //
 // The estimates are built into the SDK and may not match the round-trip times actually observed.
 //
-// An unrecognized region leaves the order to the account.
+// An unrecognized region leaves the order to the account and writes a CosmosRouting warning. Some
+// exported [Region] constants are unrecognized because the shared proximity dataset has no
+// estimates for them yet.
 func ProximityTo(region Region) RoutingStrategy {
 	return RoutingStrategy{proximityTo: region}
 }
@@ -55,7 +61,14 @@ func (r RoutingStrategy) preferredRegionOrder() ([]Region, error) {
 			}
 			return value
 		}, string(r.proximityTo))))
-		return append([]Region(nil), proximityRegionOrderBySource[normalized]...), nil
+		regions, ok := proximityRegionOrderBySource[normalized]
+		if !ok {
+			log.Writef(eventRouting,
+				"unrecognized application region %q; falling back to account-defined region order",
+				r.proximityTo)
+			return nil, nil
+		}
+		return append([]Region(nil), regions...), nil
 	}
 	return r.preferredRegions, nil
 }

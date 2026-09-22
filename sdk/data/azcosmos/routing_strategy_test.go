@@ -6,11 +6,36 @@ package azcosmos
 import (
 	"crypto/sha256"
 	"fmt"
+	"go/ast"
+	"go/parser"
+	"go/token"
 	"sort"
+	"strconv"
+	"strings"
 	"testing"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/stretchr/testify/require"
 )
+
+var regionsWithoutProximityData = map[Region]struct{}{
+	RegionGermanyCentral:    {},
+	RegionGermanyNortheast:  {},
+	RegionUSGOVIowa:         {},
+	RegionNorthEurope2:      {},
+	RegionEastEurope:        {},
+	RegionAPACSoutheast2:    {},
+	RegionUKSouth2:          {},
+	RegionUKNorth:           {},
+	RegionEastUSSTG:         {},
+	RegionSouthCentralUSSTG: {},
+	RegionUSGOVWyoming:      {},
+	RegionUSDODSouthwest:    {},
+	RegionUSDODWestCentral:  {},
+	RegionUSDODSouthCentral: {},
+	RegionChinaNorth10:      {},
+	RegionKoreaSouth2:       {},
+}
 
 func TestProximityTo(t *testing.T) {
 	strategy := ProximityTo(RegionEastUS)
@@ -74,6 +99,46 @@ func TestProximityRegionTableMatchesRust(t *testing.T) {
 		fmt.Sprintf("%x", hash.Sum(nil)))
 }
 
+func TestExportedRegionConstantsHaveProximityDataOrDocumentedException(t *testing.T) {
+	file, err := parser.ParseFile(token.NewFileSet(), "region.go", nil, 0)
+	require.NoError(t, err)
+
+	foundExceptions := make(map[Region]struct{}, len(regionsWithoutProximityData))
+	for _, declaration := range file.Decls {
+		general, ok := declaration.(*ast.GenDecl)
+		if !ok || general.Tok != token.CONST {
+			continue
+		}
+		for _, specification := range general.Specs {
+			value, ok := specification.(*ast.ValueSpec)
+			if !ok {
+				continue
+			}
+			for i, name := range value.Names {
+				if !name.IsExported() || !strings.HasPrefix(name.Name, "Region") || i >= len(value.Values) {
+					continue
+				}
+				literal, ok := value.Values[i].(*ast.BasicLit)
+				require.True(t, ok, "constant %s must remain a string literal", name.Name)
+				regionValue, err := strconv.Unquote(literal.Value)
+				require.NoError(t, err)
+				region := Region(regionValue)
+
+				if _, excepted := regionsWithoutProximityData[region]; excepted {
+					require.NotContains(t, proximityRegionOrderBySource, region,
+						"remove %s from regionsWithoutProximityData now that it has proximity data", name.Name)
+					foundExceptions[region] = struct{}{}
+					continue
+				}
+				require.Contains(t, proximityRegionOrderBySource, region,
+					"%s needs proximity data or an explicit documented exception", name.Name)
+			}
+		}
+	}
+	require.Equal(t, regionsWithoutProximityData, foundExceptions,
+		"every documented exception must still be an exported Region constant")
+}
+
 func TestProximityToKnownRegionUsesEstimatedOrder(t *testing.T) {
 	want := []Region{
 		RegionEastUS,
@@ -103,9 +168,24 @@ func TestProximityRegionOrderCannotBeMutated(t *testing.T) {
 }
 
 func TestProximityToUnknownRegionLeavesAccountOrder(t *testing.T) {
+	var event azlog.Event
+	var message string
+	azlog.SetEvents(eventRouting)
+	azlog.SetListener(func(receivedEvent azlog.Event, receivedMessage string) {
+		event = receivedEvent
+		message = receivedMessage
+	})
+	t.Cleanup(func() {
+		azlog.SetListener(nil)
+		azlog.SetEvents()
+	})
+
 	regions, err := ProximityTo("not-a-real-region").preferredRegionOrder()
 	require.NoError(t, err)
 	require.Empty(t, regions)
+	require.Equal(t, eventRouting, event)
+	require.Contains(t, message, `unrecognized application region "not-a-real-region"`)
+	require.Contains(t, message, "falling back to account-defined region order")
 }
 
 func TestOtherRoutingStrategiesKeepTheirOrder(t *testing.T) {

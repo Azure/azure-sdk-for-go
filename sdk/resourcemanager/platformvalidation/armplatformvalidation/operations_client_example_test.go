@@ -37,19 +37,17 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSet() {
 		// 	OperationListResult: armplatformvalidation.OperationListResult{
 		// 		Value: []*armplatformvalidation.Operation{
 		// 			{
-		// 				Name: to.Ptr("mukejdcvkyl"),
-		// 				IsDataAction: to.Ptr(true),
+		// 				Name: to.Ptr("Microsoft.PlatformValidation/cloudValidations/read"),
+		// 				IsDataAction: to.Ptr(false),
 		// 				Display: &armplatformvalidation.OperationDisplay{
-		// 					Provider: to.Ptr("bdcjjtsexup"),
-		// 					Resource: to.Ptr("dyscgtoa"),
-		// 					Operation: to.Ptr("i"),
-		// 					Description: to.Ptr("fyvcefugsb"),
+		// 					Provider: to.Ptr("Microsoft.PlatformValidation"),
+		// 					Resource: to.Ptr("Cloud Validations"),
+		// 					Operation: to.Ptr("Read Cloud Validation"),
+		// 					Description: to.Ptr("Read cloud validation resources."),
 		// 				},
 		// 				Origin: to.Ptr(armplatformvalidation.OriginUser),
-		// 				ActionType: to.Ptr(armplatformvalidation.ActionTypeInternal),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/asxqrm"),
 		// 	},
 		// }
 	}

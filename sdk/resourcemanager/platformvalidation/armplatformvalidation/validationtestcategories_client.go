@@ -30,6 +30,9 @@ type ValidationTestCategoriesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewValidationTestCategoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ValidationTestCategoriesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,7 +70,7 @@ func (client *ValidationTestCategoriesClient) Get(ctx context.Context, validatio
 func (client *ValidationTestCategoriesClient) getCreateRequest(ctx context.Context, validationTestCategoryName string, _ *ValidationTestCategoriesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PlatformValidation/validationTestCategories/{validationTestCategoryName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if validationTestCategoryName == "" {
@@ -133,7 +136,7 @@ func (client *ValidationTestCategoriesClient) listBySubscriptionCreateRequest(ct
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PlatformValidation/validationTestCategories"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))

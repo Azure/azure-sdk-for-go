@@ -19,11 +19,11 @@ func ExampleValidationTestCategoriesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armplatformvalidation.NewClientFactory("7BB14EC4-B6DC-4C0C-807F-C3562C790F07", cred, nil)
+	clientFactory, err := armplatformvalidation.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewValidationTestCategoriesClient().Get(ctx, "olnmhyteecutmvckbt", nil)
+	res, err := clientFactory.NewValidationTestCategoriesClient().Get(ctx, "linux-quality-validations", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -33,19 +33,22 @@ func ExampleValidationTestCategoriesClient_Get() {
 	// res = armplatformvalidation.ValidationTestCategoriesClientGetResponse{
 	// 	ValidationTestCategory: armplatformvalidation.ValidationTestCategory{
 	// 		Properties: &armplatformvalidation.ValidationTestCategoryProperties{
-	// 			Description: to.Ptr("otfljtrbibuhvrfhrzztgq"),
-	// 			ParentCategoryID: to.Ptr("placudbpctdnwmndqgyuskopotr"),
+	// 			DisplayName: to.Ptr("Linux Quality Validations"),
+	// 			Description: to.Ptr("AzCertify Linux image-quality validations. Groups Linux quality checks selected through the test's per-run inputs."),
+	// 			Audience: to.Ptr(armplatformvalidation.CatalogAudiencePublic),
+	// 			ProvisioningState: to.Ptr(armplatformvalidation.ResourceProvisioningStateSucceeded),
+	// 			ParentCategoryID: to.Ptr("image-certification"),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.PlatformValidation/validationTestCategories/category1"),
-	// 		Name: to.Ptr("cozjfmpiaeopagxloo"),
-	// 		Type: to.Ptr("ngovtovcwnlrndzuf"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.PlatformValidation/validationTestCategories/linux-quality-validations"),
+	// 		Name: to.Ptr("linux-quality-validations"),
+	// 		Type: to.Ptr("Microsoft.PlatformValidation/validationTestCategories"),
 	// 		SystemData: &armplatformvalidation.SystemData{
-	// 			CreatedBy: to.Ptr("btefmdbwflkxmnojvapnl"),
-	// 			CreatedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("ppdavpxjfyg"),
-	// 			LastModifiedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("11111111-1111-4111-8111-111111111111"),
+	// 			CreatedByType: to.Ptr(armplatformvalidation.CreatedByTypeApplication),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.September, 9, 11, 0, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("11111111-1111-4111-8111-111111111111"),
+	// 			LastModifiedByType: to.Ptr(armplatformvalidation.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.September, 9, 11, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -58,12 +61,12 @@ func ExampleValidationTestCategoriesClient_NewListBySubscriptionPager_validation
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armplatformvalidation.NewClientFactory("7BB14EC4-B6DC-4C0C-807F-C3562C790F07", cred, nil)
+	clientFactory, err := armplatformvalidation.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewValidationTestCategoriesClient().NewListBySubscriptionPager(&armplatformvalidation.ValidationTestCategoriesClientListBySubscriptionOptions{
-		Filter: to.Ptr("yolfvidccdfa")})
+		Filter: to.Ptr("audience eq 'Public'")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -79,23 +82,26 @@ func ExampleValidationTestCategoriesClient_NewListBySubscriptionPager_validation
 		// 		Value: []*armplatformvalidation.ValidationTestCategory{
 		// 			{
 		// 				Properties: &armplatformvalidation.ValidationTestCategoryProperties{
-		// 					Description: to.Ptr("otfljtrbibuhvrfhrzztgq"),
-		// 					ParentCategoryID: to.Ptr("placudbpctdnwmndqgyuskopotr"),
+		// 					DisplayName: to.Ptr("Linux Quality Validations"),
+		// 					Description: to.Ptr("AzCertify Linux image-quality validations. Groups Linux quality checks selected through the test's per-run inputs."),
+		// 					Audience: to.Ptr(armplatformvalidation.CatalogAudiencePublic),
+		// 					ProvisioningState: to.Ptr(armplatformvalidation.ResourceProvisioningStateSucceeded),
+		// 					ParentCategoryID: to.Ptr("image-certification"),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.PlatformValidation/validationTestCategories/category1"),
-		// 				Name: to.Ptr("cozjfmpiaeopagxloo"),
-		// 				Type: to.Ptr("ngovtovcwnlrndzuf"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.PlatformValidation/validationTestCategories/linux-quality-validations"),
+		// 				Name: to.Ptr("linux-quality-validations"),
+		// 				Type: to.Ptr("Microsoft.PlatformValidation/validationTestCategories"),
 		// 				SystemData: &armplatformvalidation.SystemData{
-		// 					CreatedBy: to.Ptr("btefmdbwflkxmnojvapnl"),
-		// 					CreatedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("ppdavpxjfyg"),
-		// 					LastModifiedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
+		// 					CreatedBy: to.Ptr("11111111-1111-4111-8111-111111111111"),
+		// 					CreatedByType: to.Ptr(armplatformvalidation.CreatedByTypeApplication),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.September, 9, 11, 0, 0, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("11111111-1111-4111-8111-111111111111"),
+		// 					LastModifiedByType: to.Ptr(armplatformvalidation.CreatedByTypeApplication),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.September, 9, 11, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.PlatformValidation/validationTestCategories?api-version=2026-08-01-preview&$filter=audience%20eq%20'Public'&$skiptoken=cGFnZT0y"),
 		// 	},
 		// }
 	}
@@ -108,7 +114,7 @@ func ExampleValidationTestCategoriesClient_NewListBySubscriptionPager_validation
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armplatformvalidation.NewClientFactory("7BB14EC4-B6DC-4C0C-807F-C3562C790F07", cred, nil)
+	clientFactory, err := armplatformvalidation.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -127,8 +133,8 @@ func ExampleValidationTestCategoriesClient_NewListBySubscriptionPager_validation
 		// 	ValidationTestCategoryListResult: armplatformvalidation.ValidationTestCategoryListResult{
 		// 		Value: []*armplatformvalidation.ValidationTestCategory{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.PlatformValidation/validationTestCategories/category1"),
-		// 				Name: to.Ptr("category1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.PlatformValidation/validationTestCategories/linux-quality-validations"),
+		// 				Name: to.Ptr("linux-quality-validations"),
 		// 				Type: to.Ptr("Microsoft.PlatformValidation/validationTestCategories"),
 		// 			},
 		// 		},

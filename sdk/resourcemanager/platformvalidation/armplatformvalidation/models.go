@@ -44,9 +44,6 @@ type CloudValidationProperties struct {
 	// The description of the resource.
 	Description *string
 
-	// The overall state of the resource.
-	OverallState *CloudValidationOverallState
-
 	// READ-ONLY; Error details. Populated when provisioningState is Failed or Canceled.
 	Error *ErrorDetail
 
@@ -70,9 +67,6 @@ type CloudValidationUpdate struct {
 type CloudValidationUpdateProperties struct {
 	// The description of the resource.
 	Description *string
-
-	// The overall state of the resource.
-	OverallState *CloudValidationOverallState
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -338,9 +332,6 @@ type ValidationExecutionPlanProperties struct {
 	// The description of the resource.
 	Description *string
 
-	// The overall state of the resource.
-	OverallState *ValidationExecutionPlanOverallState
-
 	// Entire execution plan configuration/manifest json.
 	// Either this property or `planConfigurationUri` is mandatory while creating; they are mutually exclusive.
 	// In get, always return the entire json configuration.
@@ -349,6 +340,8 @@ type ValidationExecutionPlanProperties struct {
 
 	// URI where the configuration of the execution plan is defined.
 	// Either this property or `planConfigurationJson` is mandatory while creating; they are mutually exclusive.
+	// This must be a plain, non-SAS reference (no embedded credentials, tokens, or query-string secrets);
+	// the service reads the referenced content using its managed identity.
 	// This value is returned as-is in get responses, so it must not contain credentials or other secrets.
 	PlanConfigurationURI *string
 
@@ -373,9 +366,6 @@ type ValidationExecutionPlanUpdateProperties struct {
 	// The description of the resource.
 	Description *string
 
-	// The overall state of the resource.
-	OverallState *ValidationExecutionPlanOverallState
-
 	// Entire execution plan configuration/manifest json.
 	// Either this property or `planConfigurationUri` is mandatory while creating; they are mutually exclusive.
 	// In get, always return the entire json configuration.
@@ -384,6 +374,8 @@ type ValidationExecutionPlanUpdateProperties struct {
 
 	// URI where the configuration of the execution plan is defined.
 	// Either this property or `planConfigurationJson` is mandatory while creating; they are mutually exclusive.
+	// This must be a plain, non-SAS reference (no embedded credentials, tokens, or query-string secrets);
+	// the service reads the referenced content using its managed identity.
 	// This value is returned as-is in get responses, so it must not contain credentials or other secrets.
 	PlanConfigurationURI *string
 }
@@ -435,21 +427,22 @@ type ValidationTestCategoryListResult struct {
 
 // ValidationTestCategoryProperties - Validation test category properties.
 type ValidationTestCategoryProperties struct {
-	// Audience visibility of this validation test category.
+	// READ-ONLY; Audience visibility of this validation test category.
 	Audience *CatalogAudience
 
-	// Validation test category description.
+	// READ-ONLY; Validation test category description.
 	Description *string
 
-	// Display name of the validation test category.
+	// READ-ONLY; Display name of the validation test category.
 	DisplayName *string
 
-	// Owners of the validation test category, expressed as email aliases or Microsoft Entra object IDs.
+	// READ-ONLY; Owners of the validation test category, expressed as team or distribution list aliases.
+	// Individual user aliases and directory object identifiers are not published in this field.
 	// Only catalog publishers set this value through an internal publishing process; end users of the validation
 	// service consume catalog entries read-only through Get/List and cannot modify it.
 	Owners []*string
 
-	// Parent validation test category id. Categories form a two-level hierarchy only:
+	// READ-ONLY; Parent validation test category id. Categories form a two-level hierarchy only:
 	// a top-level category leaves this unset, and a sub-category sets this to its
 	// top-level parent's category id. Sub-categories cannot themselves have sub-categories,
 	// and a category must not reference itself as its own parent.
@@ -527,42 +520,43 @@ type ValidationTestPassDetails struct {
 
 // ValidationTestProperties - Validation test catalog properties.
 type ValidationTestProperties struct {
-	// Audience visibility of this validation test.
+	// READ-ONLY; Audience visibility of this validation test.
 	Audience *CatalogAudience
 
-	// The names of the validation test categories (ValidationTestCategory resource names, not ARM resource IDs) associated with
-	// this test.
+	// READ-ONLY; The names of the validation test categories (ValidationTestCategory resource names, not ARM resource IDs) associated
+	// with this test.
 	CategoryIDs []*string
 
-	// The resource ID of the current immutable version snapshot.
+	// READ-ONLY; The resource ID of the current immutable version snapshot.
 	CurrentVersion *string
 
-	// Validation test description.
+	// READ-ONLY; Validation test description.
 	Description *string
 
-	// Declared input contract for this validation test.
+	// READ-ONLY; Display name of the validation test.
+	DisplayName *string
+
+	// READ-ONLY; Declared input contract for this validation test.
 	Inputs []*ValidationTestInput
 
-	// Timestamp of the last version publication.
+	// READ-ONLY; Timestamp of the last version publication.
 	LastPublishedAt *time.Time
 
-	// The resource ID of the latest published version snapshot.
+	// READ-ONLY; The resource ID of the latest published version snapshot.
 	LatestPublishedVersion *string
 
-	// Overall state of the validation test.
-	OverallState *ValidationTestOverallState
-
-	// Owners of the validation test definition, expressed as aliases.
+	// READ-ONLY; Owners of the validation test definition, expressed as team or distribution list aliases.
+	// Individual user aliases and directory object identifiers are not published in this field.
 	// Only catalog publishers(limited to microsoft internal only) set this value through an internal publishing process; end
 	// users of the validation
 	// service consume catalog entries read-only through Get/List and cannot modify it.
 	Owners []*string
 
-	// URI of the location where the test artifact is stored.
-	TestStoreURI *string
-
 	// READ-ONLY; Provisioning state of the validation test catalog resource.
 	ProvisioningState *ResourceProvisioningState
+
+	// READ-ONLY; URI of the location where the test artifact is stored.
+	TestStoreURI *string
 }
 
 // ValidationTestRun - Validation Test Run represents execution instance(s) of a Validation Test instance under execution
@@ -595,14 +589,6 @@ type ValidationTestRunListResult struct {
 
 // ValidationTestRunProperties - Validation Test Run properties.
 type ValidationTestRunProperties struct {
-	// Validation test run inputs json, conforming to the input contract declared by `ValidationTestInput` on the corresponding
-	// validation test.
-	// This value is returned as-is in get responses, so it must not contain credentials or other secrets.
-	InputsJSON *string
-
-	// The name of the validation test (ValidationTest resource name, not an ARM resource ID) in the validation test catalog.
-	TestID *string
-
 	// READ-ONLY; The completion time of the test run.
 	CompletedAt *time.Time
 
@@ -611,6 +597,11 @@ type ValidationTestRunProperties struct {
 
 	// READ-ONLY; Detailed failure information when the test fails.
 	FailureDetails []*ValidationTestFailureDetails
+
+	// READ-ONLY; Validation test run inputs json, conforming to the input contract declared by `ValidationTestInput` on the corresponding
+	// validation test.
+	// This value is returned as-is in get responses, so it must not contain credentials or other secrets.
+	InputsJSON *string
 
 	// READ-ONLY; Detailed pass information when the test passes.
 	PassDetails []*ValidationTestPassDetails
@@ -626,6 +617,9 @@ type ValidationTestRunProperties struct {
 
 	// READ-ONLY; The overall status of the test run.
 	Status *ValidationTestRunStatus
+
+	// READ-ONLY; The resource ID of the validation test in the validation test catalog.
+	TestID *string
 }
 
 // ValidationTestVersion - Validation test version catalog entry.
@@ -657,33 +651,34 @@ type ValidationTestVersionListResult struct {
 
 // ValidationTestVersionProperties - Validation test version catalog properties.
 type ValidationTestVersionProperties struct {
-	// Audience visibility of this validation test version.
+	// READ-ONLY; Audience visibility of this validation test version.
 	Audience *CatalogAudience
 
-	// The names of the validation test categories (ValidationTestCategory resource names, not ARM resource IDs) associated with
-	// this test version.
+	// READ-ONLY; The names of the validation test categories (ValidationTestCategory resource names, not ARM resource IDs) associated
+	// with this test version.
 	CategoryIDs []*string
 
-	// SHA-256 hash of the version content used for integrity and deduplication.
+	// READ-ONLY; SHA-256 hash of the version content used for integrity and deduplication.
 	ContentHash *string
 
-	// Validation test description.
+	// READ-ONLY; Validation test description.
 	Description *string
 
-	// Declared input contract for this validation test version.
+	// READ-ONLY; Display name of the validation test version.
+	DisplayName *string
+
+	// READ-ONLY; Declared input contract for this validation test version.
 	Inputs []*ValidationTestInput
 
-	// Overall state of the validation test.
-	OverallState *ValidationTestOverallState
-
-	// Owners of the validation test version definition, expressed as email aliases or Microsoft Entra object IDs.
+	// READ-ONLY; Owners of the validation test version definition, expressed as team or distribution list aliases.
+	// Individual user aliases and directory object identifiers are not published in this field.
 	// Only catalog publishers set this value through an internal publishing process; end users of the validation
 	// service consume catalog entries read-only through Get/List and cannot modify it.
 	Owners []*string
 
-	// URI of the location where the test artifact is stored.
-	TestStoreURI *string
-
 	// READ-ONLY; Provisioning state of the validation test version catalog resource.
 	ProvisioningState *ResourceProvisioningState
+
+	// READ-ONLY; URI of the location where the test artifact is stored.
+	TestStoreURI *string
 }

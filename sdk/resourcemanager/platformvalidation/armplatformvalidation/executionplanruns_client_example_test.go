@@ -19,21 +19,13 @@ func ExampleExecutionPlanRunsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armplatformvalidation.NewClientFactory("7BB14EC4-B6DC-4C0C-807F-C3562C790F07", cred, nil)
+	clientFactory, err := armplatformvalidation.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewExecutionPlanRunsClient().BeginCreateOrUpdate(ctx, "rgvalidate", "cvtest01", "veptest01", "veprun01", armplatformvalidation.ExecutionPlanRun{
+	poller, err := clientFactory.NewExecutionPlanRunsClient().BeginCreateOrUpdate(ctx, "rgvalidate", "cvtest01", "contoso-linux-cert", "run-001", armplatformvalidation.ExecutionPlanRun{
 		Properties: &armplatformvalidation.ExecutionPlanRunProperties{
-			Description: to.Ptr("zwakqazgtploz"),
-			TestRunSummary: &armplatformvalidation.TestRunSummary{
-				TotalTests:    to.Ptr[int32](27),
-				PassedTests:   to.Ptr[int32](20),
-				FailedTests:   to.Ptr[int32](7),
-				SkippedTests:  to.Ptr[int32](28),
-				OverallResult: to.Ptr(armplatformvalidation.TestRunOverallResult("nqfuimmdejv")),
-				Message:       to.Ptr("uegkxcspkfwsuqihbcv"),
-			},
+			Description: to.Ptr("Run the Contoso Linux image certification plan."),
 		},
 	}, nil)
 	if err != nil {
@@ -49,35 +41,43 @@ func ExampleExecutionPlanRunsClient_BeginCreateOrUpdate() {
 	// res = armplatformvalidation.ExecutionPlanRunsClientCreateOrUpdateResponse{
 	// 	ExecutionPlanRun: armplatformvalidation.ExecutionPlanRun{
 	// 		Properties: &armplatformvalidation.ExecutionPlanRunProperties{
-	// 			Description: to.Ptr("zwakqazgtploz"),
+	// 			Description: to.Ptr("Run the Contoso Linux image certification plan."),
 	// 			Status: to.Ptr(armplatformvalidation.ExecutionPlanRunStatusSucceeded),
-	// 			StartedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 24, 870000000, time.UTC)),
-	// 			CompletedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 24, 870000000, time.UTC)),
-	// 			ReportedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 24, 870000000, time.UTC)),
+	// 			StartedAt: to.Ptr(time.Date(2026, time.September, 9, 11, 58, 5, 0, time.UTC)),
+	// 			CompletedAt: to.Ptr(time.Date(2026, time.September, 9, 12, 0, 0, 0, time.UTC)),
+	// 			ReportedAt: to.Ptr(time.Date(2026, time.September, 9, 12, 0, 5, 0, time.UTC)),
 	// 			TestRunSummary: &armplatformvalidation.TestRunSummary{
-	// 				TotalTests: to.Ptr[int32](27),
-	// 				PassedTests: to.Ptr[int32](20),
-	// 				FailedTests: to.Ptr[int32](7),
-	// 				SkippedTests: to.Ptr[int32](28),
-	// 				OverallResult: to.Ptr(armplatformvalidation.TestRunOverallResult("nqfuimmdejv")),
-	// 				Message: to.Ptr("uegkxcspkfwsuqihbcv"),
+	// 				TotalTests: to.Ptr[int32](9),
+	// 				PassedTests: to.Ptr[int32](8),
+	// 				FailedTests: to.Ptr[int32](0),
+	// 				SkippedTests: to.Ptr[int32](1),
+	// 				OverallResult: to.Ptr(armplatformvalidation.TestRunOverallResultPassed),
+	// 				Message: to.Ptr("Eight tests passed. The data-disk-size test was skipped because no data disks were supplied."),
 	// 			},
-	// 			PlanConfigurationSnapshot: to.Ptr("khqjepetldrskjhr"),
+	// 			PlanConfigurationSnapshot: to.Ptr("{\"apiVersion\":\"microsoft.PlatformValidation/validationExecutionPlan.v0\",\"kind\":\"ValidationExecutionPlan\",\"metadata\":{\"name\":\"contoso-linux-cert\"},\"parameters\":{\"certificationPackageReference\":{\"osType\":\"Linux\",\"vmGenerationType\":\"V1\",\"architectureType\":\"X64\",\"recommendedVMSizes\":[\"Standard_D4s_v3\"],\"storageProfile\":{\"osDiskImage\":{\"sourceVhdUri\":\"https://contoso.blob.core.windows.net/vhds/img.vhd?<sas>\"},\"dataDiskImages\":[]},\"additionalProperties\":{}}},\"authoring\":{\"steps\":[{\"name\":\"os-disk-size\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/os-disk-size/versions/1.0.0\"},{\"name\":\"data-disk-size\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/data-disk-size/versions/1.0.0\"},{\"name\":\"malware-defender\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/malware-defender/versions/1.0.0\"},{\"name\":\"malware-esrp\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/malware-esrp/versions/1.0.0\"},{\"name\":\"linux-quality-validation\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/linux-quality-validation/versions/1.0.0\",\"inputs\":{\"concurrency\":1,\"testSuite\":[{\"testNames\":[\"smoke_test\",\"validate_netvsc_reload\"]}]}}]}}"),
 	// 			TestRunIDs: []*string{
-	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/veptest01/executionPlanRuns/veprun01/validationTestRuns/testrun01"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/vm-boot-test-run"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/os-disk-size-run"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/data-disk-size-run"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/disk-multiple-mb-run"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/vhd-first-one-mb-run"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/vhd-footer-run"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/malware-defender-run"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/vulnerability-run"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/linux-quality-run"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armplatformvalidation.ExecutionPlanRunProvisioningStateSucceeded),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/veptest01/executionPlanRuns/veprun01"),
-	// 		Name: to.Ptr("etwdoyajfzse"),
-	// 		Type: to.Ptr("yuaunlfwkyjbttdzlgppwpbe"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001"),
+	// 		Name: to.Ptr("run-001"),
+	// 		Type: to.Ptr("Microsoft.PlatformValidation/cloudValidations/validationExecutionPlans/executionPlanRuns"),
 	// 		SystemData: &armplatformvalidation.SystemData{
-	// 			CreatedBy: to.Ptr("btefmdbwflkxmnojvapnl"),
-	// 			CreatedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("ppdavpxjfyg"),
-	// 			LastModifiedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("11111111-1111-4111-8111-111111111111"),
+	// 			CreatedByType: to.Ptr(armplatformvalidation.CreatedByTypeApplication),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.September, 9, 11, 58, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("11111111-1111-4111-8111-111111111111"),
+	// 			LastModifiedByType: to.Ptr(armplatformvalidation.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.September, 9, 12, 0, 5, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -90,7 +90,7 @@ func ExampleExecutionPlanRunsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armplatformvalidation.NewClientFactory("7BB14EC4-B6DC-4C0C-807F-C3562C790F07", cred, nil)
+	clientFactory, err := armplatformvalidation.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -111,11 +111,11 @@ func ExampleExecutionPlanRunsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armplatformvalidation.NewClientFactory("7BB14EC4-B6DC-4C0C-807F-C3562C790F07", cred, nil)
+	clientFactory, err := armplatformvalidation.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewExecutionPlanRunsClient().Get(ctx, "rgvalidate", "cvtest01", "veptest01", "veprun01", nil)
+	res, err := clientFactory.NewExecutionPlanRunsClient().Get(ctx, "rgvalidate", "cvtest01", "contoso-linux-cert", "run-001", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -125,35 +125,43 @@ func ExampleExecutionPlanRunsClient_Get() {
 	// res = armplatformvalidation.ExecutionPlanRunsClientGetResponse{
 	// 	ExecutionPlanRun: armplatformvalidation.ExecutionPlanRun{
 	// 		Properties: &armplatformvalidation.ExecutionPlanRunProperties{
-	// 			Description: to.Ptr("zwakqazgtploz"),
+	// 			Description: to.Ptr("Run the Contoso Linux image certification plan."),
 	// 			Status: to.Ptr(armplatformvalidation.ExecutionPlanRunStatusSucceeded),
-	// 			StartedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 24, 870000000, time.UTC)),
-	// 			CompletedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 24, 870000000, time.UTC)),
-	// 			ReportedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 24, 870000000, time.UTC)),
+	// 			StartedAt: to.Ptr(time.Date(2026, time.September, 9, 11, 58, 5, 0, time.UTC)),
+	// 			CompletedAt: to.Ptr(time.Date(2026, time.September, 9, 12, 0, 0, 0, time.UTC)),
+	// 			ReportedAt: to.Ptr(time.Date(2026, time.September, 9, 12, 0, 5, 0, time.UTC)),
 	// 			TestRunSummary: &armplatformvalidation.TestRunSummary{
-	// 				TotalTests: to.Ptr[int32](27),
-	// 				PassedTests: to.Ptr[int32](20),
-	// 				FailedTests: to.Ptr[int32](7),
-	// 				SkippedTests: to.Ptr[int32](28),
-	// 				OverallResult: to.Ptr(armplatformvalidation.TestRunOverallResult("nqfuimmdejv")),
-	// 				Message: to.Ptr("uegkxcspkfwsuqihbcv"),
+	// 				TotalTests: to.Ptr[int32](9),
+	// 				PassedTests: to.Ptr[int32](8),
+	// 				FailedTests: to.Ptr[int32](0),
+	// 				SkippedTests: to.Ptr[int32](1),
+	// 				OverallResult: to.Ptr(armplatformvalidation.TestRunOverallResultPassed),
+	// 				Message: to.Ptr("Eight tests passed. The data-disk-size test was skipped because no data disks were supplied."),
 	// 			},
-	// 			PlanConfigurationSnapshot: to.Ptr("khqjepetldrskjhr"),
+	// 			PlanConfigurationSnapshot: to.Ptr("{\"apiVersion\":\"microsoft.PlatformValidation/validationExecutionPlan.v0\",\"kind\":\"ValidationExecutionPlan\",\"metadata\":{\"name\":\"contoso-linux-cert\"},\"parameters\":{\"certificationPackageReference\":{\"osType\":\"Linux\",\"vmGenerationType\":\"V1\",\"architectureType\":\"X64\",\"recommendedVMSizes\":[\"Standard_D4s_v3\"],\"storageProfile\":{\"osDiskImage\":{\"sourceVhdUri\":\"https://contoso.blob.core.windows.net/vhds/img.vhd?<sas>\"},\"dataDiskImages\":[]},\"additionalProperties\":{}}},\"authoring\":{\"steps\":[{\"name\":\"os-disk-size\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/os-disk-size/versions/1.0.0\"},{\"name\":\"data-disk-size\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/data-disk-size/versions/1.0.0\"},{\"name\":\"malware-defender\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/malware-defender/versions/1.0.0\"},{\"name\":\"malware-esrp\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/malware-esrp/versions/1.0.0\"},{\"name\":\"linux-quality-validation\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/linux-quality-validation/versions/1.0.0\",\"inputs\":{\"concurrency\":1,\"testSuite\":[{\"testNames\":[\"smoke_test\",\"validate_netvsc_reload\"]}]}}]}}"),
 	// 			TestRunIDs: []*string{
-	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/veptest01/executionPlanRuns/veprun01/validationTestRuns/testrun01"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/vm-boot-test-run"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/os-disk-size-run"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/data-disk-size-run"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/disk-multiple-mb-run"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/vhd-first-one-mb-run"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/vhd-footer-run"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/malware-defender-run"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/vulnerability-run"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/linux-quality-run"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armplatformvalidation.ExecutionPlanRunProvisioningStateSucceeded),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/veptest01/executionPlanRuns/veprun01"),
-	// 		Name: to.Ptr("etwdoyajfzse"),
-	// 		Type: to.Ptr("yuaunlfwkyjbttdzlgppwpbe"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001"),
+	// 		Name: to.Ptr("run-001"),
+	// 		Type: to.Ptr("Microsoft.PlatformValidation/cloudValidations/validationExecutionPlans/executionPlanRuns"),
 	// 		SystemData: &armplatformvalidation.SystemData{
-	// 			CreatedBy: to.Ptr("btefmdbwflkxmnojvapnl"),
-	// 			CreatedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("ppdavpxjfyg"),
-	// 			LastModifiedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("11111111-1111-4111-8111-111111111111"),
+	// 			CreatedByType: to.Ptr(armplatformvalidation.CreatedByTypeApplication),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.September, 9, 11, 58, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("11111111-1111-4111-8111-111111111111"),
+	// 			LastModifiedByType: to.Ptr(armplatformvalidation.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.September, 9, 12, 0, 5, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -166,11 +174,11 @@ func ExampleExecutionPlanRunsClient_NewListByExecutionPlanPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armplatformvalidation.NewClientFactory("7BB14EC4-B6DC-4C0C-807F-C3562C790F07", cred, nil)
+	clientFactory, err := armplatformvalidation.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewExecutionPlanRunsClient().NewListByExecutionPlanPager("rgvalidate", "cvtest01", "veptest01", nil)
+	pager := clientFactory.NewExecutionPlanRunsClient().NewListByExecutionPlanPager("rgvalidate", "cvtest01", "contoso-linux-cert", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -186,39 +194,47 @@ func ExampleExecutionPlanRunsClient_NewListByExecutionPlanPager() {
 		// 		Value: []*armplatformvalidation.ExecutionPlanRun{
 		// 			{
 		// 				Properties: &armplatformvalidation.ExecutionPlanRunProperties{
-		// 					Description: to.Ptr("zwakqazgtploz"),
+		// 					Description: to.Ptr("Run the Contoso Linux image certification plan."),
 		// 					Status: to.Ptr(armplatformvalidation.ExecutionPlanRunStatusSucceeded),
-		// 					StartedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 24, 870000000, time.UTC)),
-		// 					CompletedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 24, 870000000, time.UTC)),
-		// 					ReportedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 24, 870000000, time.UTC)),
+		// 					StartedAt: to.Ptr(time.Date(2026, time.September, 9, 11, 58, 5, 0, time.UTC)),
+		// 					CompletedAt: to.Ptr(time.Date(2026, time.September, 9, 12, 0, 0, 0, time.UTC)),
+		// 					ReportedAt: to.Ptr(time.Date(2026, time.September, 9, 12, 0, 5, 0, time.UTC)),
 		// 					TestRunSummary: &armplatformvalidation.TestRunSummary{
-		// 						TotalTests: to.Ptr[int32](27),
-		// 						PassedTests: to.Ptr[int32](20),
-		// 						FailedTests: to.Ptr[int32](7),
-		// 						SkippedTests: to.Ptr[int32](28),
-		// 						OverallResult: to.Ptr(armplatformvalidation.TestRunOverallResult("nqfuimmdejv")),
-		// 						Message: to.Ptr("uegkxcspkfwsuqihbcv"),
+		// 						TotalTests: to.Ptr[int32](9),
+		// 						PassedTests: to.Ptr[int32](8),
+		// 						FailedTests: to.Ptr[int32](0),
+		// 						SkippedTests: to.Ptr[int32](1),
+		// 						OverallResult: to.Ptr(armplatformvalidation.TestRunOverallResultPassed),
+		// 						Message: to.Ptr("Eight tests passed. The data-disk-size test was skipped because no data disks were supplied."),
 		// 					},
-		// 					PlanConfigurationSnapshot: to.Ptr("khqjepetldrskjhr"),
+		// 					PlanConfigurationSnapshot: to.Ptr("{\"apiVersion\":\"microsoft.PlatformValidation/validationExecutionPlan.v0\",\"kind\":\"ValidationExecutionPlan\",\"metadata\":{\"name\":\"contoso-linux-cert\"},\"parameters\":{\"certificationPackageReference\":{\"osType\":\"Linux\",\"vmGenerationType\":\"V1\",\"architectureType\":\"X64\",\"recommendedVMSizes\":[\"Standard_D4s_v3\"],\"storageProfile\":{\"osDiskImage\":{\"sourceVhdUri\":\"https://contoso.blob.core.windows.net/vhds/img.vhd?<sas>\"},\"dataDiskImages\":[]},\"additionalProperties\":{}}},\"authoring\":{\"steps\":[{\"name\":\"os-disk-size\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/os-disk-size/versions/1.0.0\"},{\"name\":\"data-disk-size\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/data-disk-size/versions/1.0.0\"},{\"name\":\"malware-defender\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/malware-defender/versions/1.0.0\"},{\"name\":\"malware-esrp\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/malware-esrp/versions/1.0.0\"},{\"name\":\"linux-quality-validation\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/linux-quality-validation/versions/1.0.0\",\"inputs\":{\"concurrency\":1,\"testSuite\":[{\"testNames\":[\"smoke_test\",\"validate_netvsc_reload\"]}]}}]}}"),
 		// 					TestRunIDs: []*string{
-		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/veptest01/executionPlanRuns/veprun01/validationTestRuns/testrun01"),
+		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/vm-boot-test-run"),
+		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/os-disk-size-run"),
+		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/data-disk-size-run"),
+		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/disk-multiple-mb-run"),
+		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/vhd-first-one-mb-run"),
+		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/vhd-footer-run"),
+		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/malware-defender-run"),
+		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/vulnerability-run"),
+		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001/validationTestRuns/linux-quality-run"),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armplatformvalidation.ExecutionPlanRunProvisioningStateSucceeded),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/veptest01/executionPlanRuns/veprun01"),
-		// 				Name: to.Ptr("etwdoyajfzse"),
-		// 				Type: to.Ptr("yuaunlfwkyjbttdzlgppwpbe"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns/run-001"),
+		// 				Name: to.Ptr("run-001"),
+		// 				Type: to.Ptr("Microsoft.PlatformValidation/cloudValidations/validationExecutionPlans/executionPlanRuns"),
 		// 				SystemData: &armplatformvalidation.SystemData{
-		// 					CreatedBy: to.Ptr("btefmdbwflkxmnojvapnl"),
-		// 					CreatedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("ppdavpxjfyg"),
-		// 					LastModifiedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
+		// 					CreatedBy: to.Ptr("11111111-1111-4111-8111-111111111111"),
+		// 					CreatedByType: to.Ptr(armplatformvalidation.CreatedByTypeApplication),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.September, 9, 11, 58, 0, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("11111111-1111-4111-8111-111111111111"),
+		// 					LastModifiedByType: to.Ptr(armplatformvalidation.CreatedByTypeApplication),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.September, 9, 12, 0, 5, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/contoso-linux-cert/executionPlanRuns?api-version=2026-08-01-preview&$skiptoken=cGFnZT0y"),
 		// 	},
 		// }
 	}

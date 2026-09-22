@@ -41,24 +41,6 @@ func PossibleCatalogAudienceValues() []CatalogAudience {
 	}
 }
 
-// CloudValidationOverallState - The Overall states of the validation resource.
-type CloudValidationOverallState string
-
-const (
-	// CloudValidationOverallStateDisabled - The resource is in disabled state.
-	CloudValidationOverallStateDisabled CloudValidationOverallState = "Disabled"
-	// CloudValidationOverallStateEnabled - The resource is in enabled state.
-	CloudValidationOverallStateEnabled CloudValidationOverallState = "Enabled"
-)
-
-// PossibleCloudValidationOverallStateValues returns the possible values for the CloudValidationOverallState const type.
-func PossibleCloudValidationOverallStateValues() []CloudValidationOverallState {
-	return []CloudValidationOverallState{
-		CloudValidationOverallStateDisabled,
-		CloudValidationOverallStateEnabled,
-	}
-}
-
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 
@@ -249,24 +231,6 @@ func PossibleTestRunOverallResultValues() []TestRunOverallResult {
 	}
 }
 
-// ValidationExecutionPlanOverallState - The Overall states of the validation execution plan.
-type ValidationExecutionPlanOverallState string
-
-const (
-	// ValidationExecutionPlanOverallStateDisabled - The resource is in disabled state.
-	ValidationExecutionPlanOverallStateDisabled ValidationExecutionPlanOverallState = "Disabled"
-	// ValidationExecutionPlanOverallStateEnabled - The resource is in enabled state.
-	ValidationExecutionPlanOverallStateEnabled ValidationExecutionPlanOverallState = "Enabled"
-)
-
-// PossibleValidationExecutionPlanOverallStateValues returns the possible values for the ValidationExecutionPlanOverallState const type.
-func PossibleValidationExecutionPlanOverallStateValues() []ValidationExecutionPlanOverallState {
-	return []ValidationExecutionPlanOverallState{
-		ValidationExecutionPlanOverallStateDisabled,
-		ValidationExecutionPlanOverallStateEnabled,
-	}
-}
-
 // ValidationExecutionPlanProvisioningState - The execution plan resource provisioning state.
 type ValidationExecutionPlanProvisioningState string
 
@@ -321,30 +285,6 @@ func PossibleValidationTestInputDataTypeValues() []ValidationTestInputDataType {
 		ValidationTestInputDataTypeNumber,
 		ValidationTestInputDataTypeObject,
 		ValidationTestInputDataTypeString,
-	}
-}
-
-// ValidationTestOverallState - The overall state of a validation test or test version.
-type ValidationTestOverallState string
-
-const (
-	// ValidationTestOverallStateActive - The validation test definition is active.
-	ValidationTestOverallStateActive ValidationTestOverallState = "Active"
-	// ValidationTestOverallStateDisabled - The validation test definition is disabled.
-	ValidationTestOverallStateDisabled ValidationTestOverallState = "Disabled"
-	// ValidationTestOverallStateDraft - The validation test definition is in draft state.
-	ValidationTestOverallStateDraft ValidationTestOverallState = "Draft"
-	// ValidationTestOverallStatePublished - The validation test definition is published.
-	ValidationTestOverallStatePublished ValidationTestOverallState = "Published"
-)
-
-// PossibleValidationTestOverallStateValues returns the possible values for the ValidationTestOverallState const type.
-func PossibleValidationTestOverallStateValues() []ValidationTestOverallState {
-	return []ValidationTestOverallState{
-		ValidationTestOverallStateActive,
-		ValidationTestOverallStateDisabled,
-		ValidationTestOverallStateDraft,
-		ValidationTestOverallStatePublished,
 	}
 }
 

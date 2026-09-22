@@ -118,7 +118,7 @@ func (v *ValidationExecutionPlansServerTransport) dispatchBeginCreateOrUpdate(re
 	}
 	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PlatformValidation/cloudValidations/(?P<cloudValidationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validationExecutionPlans/(?P<validationExecutionPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.PlatformValidation/cloudValidations/(?P<cloudValidationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validationExecutionPlans/(?P<validationExecutionPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -170,7 +170,7 @@ func (v *ValidationExecutionPlansServerTransport) dispatchBeginDelete(req *http.
 	}
 	beginDelete := v.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PlatformValidation/cloudValidations/(?P<cloudValidationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validationExecutionPlans/(?P<validationExecutionPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.PlatformValidation/cloudValidations/(?P<cloudValidationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validationExecutionPlans/(?P<validationExecutionPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -216,7 +216,7 @@ func (v *ValidationExecutionPlansServerTransport) dispatchGet(req *http.Request)
 	if v.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PlatformValidation/cloudValidations/(?P<cloudValidationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validationExecutionPlans/(?P<validationExecutionPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.PlatformValidation/cloudValidations/(?P<cloudValidationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validationExecutionPlans/(?P<validationExecutionPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -255,7 +255,7 @@ func (v *ValidationExecutionPlansServerTransport) dispatchNewListByResourceGroup
 	}
 	newListByResourceGroupPager := v.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PlatformValidation/cloudValidations/(?P<cloudValidationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validationExecutionPlans`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.PlatformValidation/cloudValidations/(?P<cloudValidationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validationExecutionPlans`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -304,7 +304,7 @@ func (v *ValidationExecutionPlansServerTransport) dispatchBeginUpdate(req *http.
 	}
 	beginUpdate := v.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PlatformValidation/cloudValidations/(?P<cloudValidationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validationExecutionPlans/(?P<validationExecutionPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.PlatformValidation/cloudValidations/(?P<cloudValidationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validationExecutionPlans/(?P<validationExecutionPlanName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

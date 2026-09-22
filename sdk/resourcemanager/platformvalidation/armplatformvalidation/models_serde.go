@@ -101,7 +101,6 @@ func (c CloudValidationProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "description", c.Description)
 	populate(objectMap, "error", c.Error)
 	populate(objectMap, "managedOnBehalfOfConfiguration", c.ManagedOnBehalfOfConfiguration)
-	populate(objectMap, "overallState", c.OverallState)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
 	return json.Marshal(objectMap)
 }
@@ -123,9 +122,6 @@ func (c *CloudValidationProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "managedOnBehalfOfConfiguration":
 			err = unpopulate(val, "ManagedOnBehalfOfConfiguration", &c.ManagedOnBehalfOfConfiguration)
-			delete(rawMsg, key)
-		case "overallState":
-			err = unpopulate(val, "OverallState", &c.OverallState)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &c.ProvisioningState)
@@ -173,7 +169,6 @@ func (c *CloudValidationUpdate) UnmarshalJSON(data []byte) error {
 func (c CloudValidationUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "description", c.Description)
-	populate(objectMap, "overallState", c.OverallState)
 	return json.Marshal(objectMap)
 }
 
@@ -188,9 +183,6 @@ func (c *CloudValidationUpdateProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "description":
 			err = unpopulate(val, "Description", &c.Description)
-			delete(rawMsg, key)
-		case "overallState":
-			err = unpopulate(val, "OverallState", &c.OverallState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -818,7 +810,6 @@ func (v ValidationExecutionPlanProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "description", v.Description)
 	populate(objectMap, "error", v.Error)
-	populate(objectMap, "overallState", v.OverallState)
 	populate(objectMap, "planConfigurationJson", v.PlanConfigurationJSON)
 	populate(objectMap, "planConfigurationUri", v.PlanConfigurationURI)
 	populate(objectMap, "provisioningState", v.ProvisioningState)
@@ -839,9 +830,6 @@ func (v *ValidationExecutionPlanProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "error":
 			err = unpopulate(val, "Error", &v.Error)
-			delete(rawMsg, key)
-		case "overallState":
-			err = unpopulate(val, "OverallState", &v.OverallState)
 			delete(rawMsg, key)
 		case "planConfigurationJson":
 			err = unpopulate(val, "PlanConfigurationJSON", &v.PlanConfigurationJSON)
@@ -895,7 +883,6 @@ func (v *ValidationExecutionPlanUpdate) UnmarshalJSON(data []byte) error {
 func (v ValidationExecutionPlanUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "description", v.Description)
-	populate(objectMap, "overallState", v.OverallState)
 	populate(objectMap, "planConfigurationJson", v.PlanConfigurationJSON)
 	populate(objectMap, "planConfigurationUri", v.PlanConfigurationURI)
 	return json.Marshal(objectMap)
@@ -912,9 +899,6 @@ func (v *ValidationExecutionPlanUpdateProperties) UnmarshalJSON(data []byte) err
 		switch key {
 		case "description":
 			err = unpopulate(val, "Description", &v.Description)
-			delete(rawMsg, key)
-		case "overallState":
-			err = unpopulate(val, "OverallState", &v.OverallState)
 			delete(rawMsg, key)
 		case "planConfigurationJson":
 			err = unpopulate(val, "PlanConfigurationJSON", &v.PlanConfigurationJSON)
@@ -1284,10 +1268,10 @@ func (v ValidationTestProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "categoryIds", v.CategoryIDs)
 	populate(objectMap, "currentVersion", v.CurrentVersion)
 	populate(objectMap, "description", v.Description)
+	populate(objectMap, "displayName", v.DisplayName)
 	populate(objectMap, "inputs", v.Inputs)
 	populateTime[datetime.RFC3339](objectMap, "lastPublishedAt", v.LastPublishedAt, true)
 	populate(objectMap, "latestPublishedVersion", v.LatestPublishedVersion)
-	populate(objectMap, "overallState", v.OverallState)
 	populate(objectMap, "owners", v.Owners)
 	populate(objectMap, "provisioningState", v.ProvisioningState)
 	populate(objectMap, "testStoreUri", v.TestStoreURI)
@@ -1315,6 +1299,9 @@ func (v *ValidationTestProperties) UnmarshalJSON(data []byte) error {
 		case "description":
 			err = unpopulate(val, "Description", &v.Description)
 			delete(rawMsg, key)
+		case "displayName":
+			err = unpopulate(val, "DisplayName", &v.DisplayName)
+			delete(rawMsg, key)
 		case "inputs":
 			err = unpopulate(val, "Inputs", &v.Inputs)
 			delete(rawMsg, key)
@@ -1323,9 +1310,6 @@ func (v *ValidationTestProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "latestPublishedVersion":
 			err = unpopulate(val, "LatestPublishedVersion", &v.LatestPublishedVersion)
-			delete(rawMsg, key)
-		case "overallState":
-			err = unpopulate(val, "OverallState", &v.OverallState)
 			delete(rawMsg, key)
 		case "owners":
 			err = unpopulate(val, "Owners", &v.Owners)
@@ -1562,8 +1546,8 @@ func (v ValidationTestVersionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "categoryIds", v.CategoryIDs)
 	populate(objectMap, "contentHash", v.ContentHash)
 	populate(objectMap, "description", v.Description)
+	populate(objectMap, "displayName", v.DisplayName)
 	populate(objectMap, "inputs", v.Inputs)
-	populate(objectMap, "overallState", v.OverallState)
 	populate(objectMap, "owners", v.Owners)
 	populate(objectMap, "provisioningState", v.ProvisioningState)
 	populate(objectMap, "testStoreUri", v.TestStoreURI)
@@ -1591,11 +1575,11 @@ func (v *ValidationTestVersionProperties) UnmarshalJSON(data []byte) error {
 		case "description":
 			err = unpopulate(val, "Description", &v.Description)
 			delete(rawMsg, key)
+		case "displayName":
+			err = unpopulate(val, "DisplayName", &v.DisplayName)
+			delete(rawMsg, key)
 		case "inputs":
 			err = unpopulate(val, "Inputs", &v.Inputs)
-			delete(rawMsg, key)
-		case "overallState":
-			err = unpopulate(val, "OverallState", &v.OverallState)
 			delete(rawMsg, key)
 		case "owners":
 			err = unpopulate(val, "Owners", &v.Owners)

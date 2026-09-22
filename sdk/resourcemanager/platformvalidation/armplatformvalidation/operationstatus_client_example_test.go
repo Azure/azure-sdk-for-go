@@ -18,11 +18,11 @@ func ExampleOperationStatusClient_Get_operationStatusGetMaximumSet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armplatformvalidation.NewClientFactory("7BB14EC4-B6DC-4C0C-807F-C3562C790F07", cred, nil)
+	clientFactory, err := armplatformvalidation.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewOperationStatusClient().Get(ctx, "obkgllzbzclv", "mewjfcrlycxuylboqxenpnsxxgcncx", nil)
+	res, err := clientFactory.NewOperationStatusClient().Get(ctx, "southcentralus", "11111111-1111-4111-8111-111111111111", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -31,24 +31,24 @@ func ExampleOperationStatusClient_Get_operationStatusGetMaximumSet() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armplatformvalidation.OperationStatusClientGetResponse{
 	// 	OperationStatusResult: armplatformvalidation.OperationStatusResult{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/operationStatuses/op001"),
-	// 		ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/operationStatuses/op001"),
-	// 		Name: to.Ptr("njecdrmeqnecqmkimulsa"),
-	// 		Status: to.Ptr("gixxdnqounmhzppbfbdiwmfcnhq"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/operationStatuses/11111111-1111-4111-8111-111111111111"),
+	// 		ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/operationStatuses/11111111-1111-4111-8111-111111111111"),
+	// 		Name: to.Ptr("11111111-1111-4111-8111-111111111111"),
+	// 		Status: to.Ptr("Failed"),
 	// 		PercentComplete: to.Ptr[float64](52),
 	// 		StartTime: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 23, 647000000, time.UTC)),
 	// 		EndTime: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 23, 647000000, time.UTC)),
 	// 		Operations: []*armplatformvalidation.OperationStatusResult{
 	// 		},
 	// 		Error: &armplatformvalidation.ErrorDetail{
-	// 			Code: to.Ptr("gqhpfe"),
-	// 			Message: to.Ptr("ui"),
-	// 			Target: to.Ptr("kuxmqccesoiqrrmhcshtudcd"),
+	// 			Code: to.Ptr("ValidationOperationFailed"),
+	// 			Message: to.Ptr("The validation operation failed while executing the execution plan."),
+	// 			Target: to.Ptr("targetEndpoint"),
 	// 			Details: []*armplatformvalidation.ErrorDetail{
 	// 			},
 	// 			AdditionalInfo: []*armplatformvalidation.ErrorAdditionalInfo{
 	// 				{
-	// 					Type: to.Ptr("gqfbixyfpsljaenfrgrnquq"),
+	// 					Type: to.Ptr("ValidationDiagnostics"),
 	// 					Info: map[string]any{
 	// 					},
 	// 				},
@@ -65,11 +65,11 @@ func ExampleOperationStatusClient_Get_operationStatusGetMaximumSetGeneratedByMin
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armplatformvalidation.NewClientFactory("7BB14EC4-B6DC-4C0C-807F-C3562C790F07", cred, nil)
+	clientFactory, err := armplatformvalidation.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewOperationStatusClient().Get(ctx, "obkgllzbzclv", "mewjfcrlycxuylboqxenpnsxxgcncx", nil)
+	res, err := clientFactory.NewOperationStatusClient().Get(ctx, "southcentralus", "11111111-1111-4111-8111-111111111111", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -78,7 +78,7 @@ func ExampleOperationStatusClient_Get_operationStatusGetMaximumSetGeneratedByMin
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armplatformvalidation.OperationStatusClientGetResponse{
 	// 	OperationStatusResult: armplatformvalidation.OperationStatusResult{
-	// 		Status: to.Ptr("gixxdnqounmhzppbfbdiwmfcnhq"),
+	// 		Status: to.Ptr("Failed"),
 	// 	},
 	// }
 }

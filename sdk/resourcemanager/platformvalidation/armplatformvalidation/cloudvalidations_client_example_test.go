@@ -19,19 +19,18 @@ func ExampleCloudValidationsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armplatformvalidation.NewClientFactory("7BB14EC4-B6DC-4C0C-807F-C3562C790F07", cred, nil)
+	clientFactory, err := armplatformvalidation.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewCloudValidationsClient().BeginCreateOrUpdate(ctx, "rgvalidate", "cvtest01", armplatformvalidation.CloudValidation{
 		Properties: &armplatformvalidation.CloudValidationProperties{
-			Description:  to.Ptr("ezutdlxrzaemjqpqpandwfixfkfk"),
-			OverallState: to.Ptr(armplatformvalidation.CloudValidationOverallStateEnabled),
+			Description: to.Ptr("Cloud validation that groups platform validation execution plans for the target subscription."),
 		},
 		Tags: map[string]*string{
-			"key2277": to.Ptr("hspkpujzhlthqsisfkvwgsfajnxws"),
+			"environment": to.Ptr("production"),
 		},
-		Location: to.Ptr("byryro"),
+		Location: to.Ptr("southcentralus"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,9 +45,8 @@ func ExampleCloudValidationsClient_BeginCreateOrUpdate() {
 	// res = armplatformvalidation.CloudValidationsClientCreateOrUpdateResponse{
 	// 	CloudValidation: armplatformvalidation.CloudValidation{
 	// 		Properties: &armplatformvalidation.CloudValidationProperties{
-	// 			Description: to.Ptr("ezutdlxrzaemjqpqpandwfixfkfk"),
+	// 			Description: to.Ptr("Cloud validation that groups platform validation execution plans for the target subscription."),
 	// 			ProvisioningState: to.Ptr(armplatformvalidation.ProvisioningStateSucceeded),
-	// 			OverallState: to.Ptr(armplatformvalidation.CloudValidationOverallStateEnabled),
 	// 			ManagedOnBehalfOfConfiguration: &armplatformvalidation.ManagedOnBehalfOfConfiguration{
 	// 				MoboBrokerResources: []*armplatformvalidation.MoboBrokerResource{
 	// 					{
@@ -58,17 +56,17 @@ func ExampleCloudValidationsClient_BeginCreateOrUpdate() {
 	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key2277": to.Ptr("hspkpujzhlthqsisfkvwgsfajnxws"),
+	// 			"environment": to.Ptr("production"),
 	// 		},
-	// 		Location: to.Ptr("byryro"),
+	// 		Location: to.Ptr("southcentralus"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01"),
-	// 		Name: to.Ptr("drfvjzemlxpztmdjosttbxz"),
-	// 		Type: to.Ptr("wkkcxzjvmoomyaqwhyddilwsibir"),
+	// 		Name: to.Ptr("cvtest01"),
+	// 		Type: to.Ptr("Microsoft.PlatformValidation/cloudValidations"),
 	// 		SystemData: &armplatformvalidation.SystemData{
-	// 			CreatedBy: to.Ptr("btefmdbwflkxmnojvapnl"),
+	// 			CreatedBy: to.Ptr("user@example.com"),
 	// 			CreatedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("ppdavpxjfyg"),
+	// 			LastModifiedBy: to.Ptr("user@example.com"),
 	// 			LastModifiedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
 	// 		},
@@ -83,7 +81,7 @@ func ExampleCloudValidationsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armplatformvalidation.NewClientFactory("7BB14EC4-B6DC-4C0C-807F-C3562C790F07", cred, nil)
+	clientFactory, err := armplatformvalidation.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -104,7 +102,7 @@ func ExampleCloudValidationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armplatformvalidation.NewClientFactory("7BB14EC4-B6DC-4C0C-807F-C3562C790F07", cred, nil)
+	clientFactory, err := armplatformvalidation.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -118,9 +116,8 @@ func ExampleCloudValidationsClient_Get() {
 	// res = armplatformvalidation.CloudValidationsClientGetResponse{
 	// 	CloudValidation: armplatformvalidation.CloudValidation{
 	// 		Properties: &armplatformvalidation.CloudValidationProperties{
-	// 			Description: to.Ptr("ezutdlxrzaemjqpqpandwfixfkfk"),
+	// 			Description: to.Ptr("Cloud validation that groups platform validation execution plans for the target subscription."),
 	// 			ProvisioningState: to.Ptr(armplatformvalidation.ProvisioningStateSucceeded),
-	// 			OverallState: to.Ptr(armplatformvalidation.CloudValidationOverallStateEnabled),
 	// 			ManagedOnBehalfOfConfiguration: &armplatformvalidation.ManagedOnBehalfOfConfiguration{
 	// 				MoboBrokerResources: []*armplatformvalidation.MoboBrokerResource{
 	// 					{
@@ -130,17 +127,17 @@ func ExampleCloudValidationsClient_Get() {
 	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key2277": to.Ptr("hspkpujzhlthqsisfkvwgsfajnxws"),
+	// 			"environment": to.Ptr("production"),
 	// 		},
-	// 		Location: to.Ptr("byryro"),
+	// 		Location: to.Ptr("southcentralus"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01"),
-	// 		Name: to.Ptr("drfvjzemlxpztmdjosttbxz"),
-	// 		Type: to.Ptr("wkkcxzjvmoomyaqwhyddilwsibir"),
+	// 		Name: to.Ptr("cvtest01"),
+	// 		Type: to.Ptr("Microsoft.PlatformValidation/cloudValidations"),
 	// 		SystemData: &armplatformvalidation.SystemData{
-	// 			CreatedBy: to.Ptr("btefmdbwflkxmnojvapnl"),
+	// 			CreatedBy: to.Ptr("user@example.com"),
 	// 			CreatedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("ppdavpxjfyg"),
+	// 			LastModifiedBy: to.Ptr("user@example.com"),
 	// 			LastModifiedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
 	// 		},
@@ -155,7 +152,7 @@ func ExampleCloudValidationsClient_NewListByResourceGroupPager_cloudValidationsL
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armplatformvalidation.NewClientFactory("7BB14EC4-B6DC-4C0C-807F-C3562C790F07", cred, nil)
+	clientFactory, err := armplatformvalidation.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -175,9 +172,8 @@ func ExampleCloudValidationsClient_NewListByResourceGroupPager_cloudValidationsL
 		// 		Value: []*armplatformvalidation.CloudValidation{
 		// 			{
 		// 				Properties: &armplatformvalidation.CloudValidationProperties{
-		// 					Description: to.Ptr("ezutdlxrzaemjqpqpandwfixfkfk"),
+		// 					Description: to.Ptr("Cloud validation that groups platform validation execution plans for the target subscription."),
 		// 					ProvisioningState: to.Ptr(armplatformvalidation.ProvisioningStateSucceeded),
-		// 					OverallState: to.Ptr(armplatformvalidation.CloudValidationOverallStateEnabled),
 		// 					ManagedOnBehalfOfConfiguration: &armplatformvalidation.ManagedOnBehalfOfConfiguration{
 		// 						MoboBrokerResources: []*armplatformvalidation.MoboBrokerResource{
 		// 							{
@@ -187,23 +183,23 @@ func ExampleCloudValidationsClient_NewListByResourceGroupPager_cloudValidationsL
 		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
-		// 					"key2277": to.Ptr("hspkpujzhlthqsisfkvwgsfajnxws"),
+		// 					"environment": to.Ptr("production"),
 		// 				},
-		// 				Location: to.Ptr("byryro"),
+		// 				Location: to.Ptr("southcentralus"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01"),
-		// 				Name: to.Ptr("drfvjzemlxpztmdjosttbxz"),
-		// 				Type: to.Ptr("wkkcxzjvmoomyaqwhyddilwsibir"),
+		// 				Name: to.Ptr("cvtest01"),
+		// 				Type: to.Ptr("Microsoft.PlatformValidation/cloudValidations"),
 		// 				SystemData: &armplatformvalidation.SystemData{
-		// 					CreatedBy: to.Ptr("btefmdbwflkxmnojvapnl"),
+		// 					CreatedBy: to.Ptr("user@example.com"),
 		// 					CreatedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
 		// 					CreatedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("ppdavpxjfyg"),
+		// 					LastModifiedBy: to.Ptr("user@example.com"),
 		// 					LastModifiedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
 		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/ajosj"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.PlatformValidation/validationTests?api-version=2026-08-01-preview&$skiptoken=cD0yMDI2LTA3LTAx"),
 		// 	},
 		// }
 	}
@@ -216,7 +212,7 @@ func ExampleCloudValidationsClient_NewListByResourceGroupPager_cloudValidationsL
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armplatformvalidation.NewClientFactory("7BB14EC4-B6DC-4C0C-807F-C3562C790F07", cred, nil)
+	clientFactory, err := armplatformvalidation.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -235,7 +231,7 @@ func ExampleCloudValidationsClient_NewListByResourceGroupPager_cloudValidationsL
 		// 	CloudValidationListResult: armplatformvalidation.CloudValidationListResult{
 		// 		Value: []*armplatformvalidation.CloudValidation{
 		// 			{
-		// 				Location: to.Ptr("eastus"),
+		// 				Location: to.Ptr("southcentralus"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgplatformvalidation/providers/Microsoft.PlatformValidation/cloudValidations/cloudvalidation1"),
 		// 				Name: to.Ptr("cloudvalidation1"),
 		// 				Type: to.Ptr("Microsoft.PlatformValidation/cloudValidations"),
@@ -253,7 +249,7 @@ func ExampleCloudValidationsClient_NewListBySubscriptionPager_cloudValidationsLi
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armplatformvalidation.NewClientFactory("7BB14EC4-B6DC-4C0C-807F-C3562C790F07", cred, nil)
+	clientFactory, err := armplatformvalidation.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -273,9 +269,8 @@ func ExampleCloudValidationsClient_NewListBySubscriptionPager_cloudValidationsLi
 		// 		Value: []*armplatformvalidation.CloudValidation{
 		// 			{
 		// 				Properties: &armplatformvalidation.CloudValidationProperties{
-		// 					Description: to.Ptr("ezutdlxrzaemjqpqpandwfixfkfk"),
+		// 					Description: to.Ptr("Cloud validation that groups platform validation execution plans for the target subscription."),
 		// 					ProvisioningState: to.Ptr(armplatformvalidation.ProvisioningStateSucceeded),
-		// 					OverallState: to.Ptr(armplatformvalidation.CloudValidationOverallStateEnabled),
 		// 					ManagedOnBehalfOfConfiguration: &armplatformvalidation.ManagedOnBehalfOfConfiguration{
 		// 						MoboBrokerResources: []*armplatformvalidation.MoboBrokerResource{
 		// 							{
@@ -285,23 +280,23 @@ func ExampleCloudValidationsClient_NewListBySubscriptionPager_cloudValidationsLi
 		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
-		// 					"key2277": to.Ptr("hspkpujzhlthqsisfkvwgsfajnxws"),
+		// 					"environment": to.Ptr("production"),
 		// 				},
-		// 				Location: to.Ptr("byryro"),
+		// 				Location: to.Ptr("southcentralus"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01"),
-		// 				Name: to.Ptr("drfvjzemlxpztmdjosttbxz"),
-		// 				Type: to.Ptr("wkkcxzjvmoomyaqwhyddilwsibir"),
+		// 				Name: to.Ptr("cvtest01"),
+		// 				Type: to.Ptr("Microsoft.PlatformValidation/cloudValidations"),
 		// 				SystemData: &armplatformvalidation.SystemData{
-		// 					CreatedBy: to.Ptr("btefmdbwflkxmnojvapnl"),
+		// 					CreatedBy: to.Ptr("user@example.com"),
 		// 					CreatedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
 		// 					CreatedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("ppdavpxjfyg"),
+		// 					LastModifiedBy: to.Ptr("user@example.com"),
 		// 					LastModifiedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
 		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/ajosj"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.PlatformValidation/validationTests?api-version=2026-08-01-preview&$skiptoken=cD0yMDI2LTA3LTAx"),
 		// 	},
 		// }
 	}
@@ -314,7 +309,7 @@ func ExampleCloudValidationsClient_NewListBySubscriptionPager_cloudValidationsLi
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armplatformvalidation.NewClientFactory("7BB14EC4-B6DC-4C0C-807F-C3562C790F07", cred, nil)
+	clientFactory, err := armplatformvalidation.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -333,7 +328,7 @@ func ExampleCloudValidationsClient_NewListBySubscriptionPager_cloudValidationsLi
 		// 	CloudValidationListResult: armplatformvalidation.CloudValidationListResult{
 		// 		Value: []*armplatformvalidation.CloudValidation{
 		// 			{
-		// 				Location: to.Ptr("eastus"),
+		// 				Location: to.Ptr("southcentralus"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgplatformvalidation/providers/Microsoft.PlatformValidation/cloudValidations/cloudvalidation1"),
 		// 				Name: to.Ptr("cloudvalidation1"),
 		// 				Type: to.Ptr("Microsoft.PlatformValidation/cloudValidations"),
@@ -351,17 +346,16 @@ func ExampleCloudValidationsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armplatformvalidation.NewClientFactory("7BB14EC4-B6DC-4C0C-807F-C3562C790F07", cred, nil)
+	clientFactory, err := armplatformvalidation.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewCloudValidationsClient().BeginUpdate(ctx, "rgvalidate", "cvtest01", armplatformvalidation.CloudValidationUpdate{
 		Properties: &armplatformvalidation.CloudValidationUpdateProperties{
-			Description:  to.Ptr("ezutdlxrzaemjqpqpandwfixfkfk"),
-			OverallState: to.Ptr(armplatformvalidation.CloudValidationOverallStateEnabled),
+			Description: to.Ptr("Cloud validation that groups platform validation execution plans for the target subscription."),
 		},
 		Tags: map[string]*string{
-			"key3330": to.Ptr("hklihtouujxhnfrm"),
+			"cost-center": to.Ptr("platform-validation"),
 		},
 	}, nil)
 	if err != nil {
@@ -377,9 +371,8 @@ func ExampleCloudValidationsClient_BeginUpdate() {
 	// res = armplatformvalidation.CloudValidationsClientUpdateResponse{
 	// 	CloudValidation: armplatformvalidation.CloudValidation{
 	// 		Properties: &armplatformvalidation.CloudValidationProperties{
-	// 			Description: to.Ptr("ezutdlxrzaemjqpqpandwfixfkfk"),
+	// 			Description: to.Ptr("Cloud validation that groups platform validation execution plans for the target subscription."),
 	// 			ProvisioningState: to.Ptr(armplatformvalidation.ProvisioningStateSucceeded),
-	// 			OverallState: to.Ptr(armplatformvalidation.CloudValidationOverallStateEnabled),
 	// 			ManagedOnBehalfOfConfiguration: &armplatformvalidation.ManagedOnBehalfOfConfiguration{
 	// 				MoboBrokerResources: []*armplatformvalidation.MoboBrokerResource{
 	// 					{
@@ -389,17 +382,17 @@ func ExampleCloudValidationsClient_BeginUpdate() {
 	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key2277": to.Ptr("hspkpujzhlthqsisfkvwgsfajnxws"),
+	// 			"environment": to.Ptr("production"),
 	// 		},
-	// 		Location: to.Ptr("byryro"),
+	// 		Location: to.Ptr("southcentralus"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01"),
-	// 		Name: to.Ptr("drfvjzemlxpztmdjosttbxz"),
-	// 		Type: to.Ptr("wkkcxzjvmoomyaqwhyddilwsibir"),
+	// 		Name: to.Ptr("cvtest01"),
+	// 		Type: to.Ptr("Microsoft.PlatformValidation/cloudValidations"),
 	// 		SystemData: &armplatformvalidation.SystemData{
-	// 			CreatedBy: to.Ptr("btefmdbwflkxmnojvapnl"),
+	// 			CreatedBy: to.Ptr("user@example.com"),
 	// 			CreatedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("ppdavpxjfyg"),
+	// 			LastModifiedBy: to.Ptr("user@example.com"),
 	// 			LastModifiedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
 	// 		},

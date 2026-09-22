@@ -20,7 +20,7 @@ import (
 // GoalTemplatesClient contains the methods for the GoalTemplates group.
 // Don't use this type directly, use NewGoalTemplatesClient() instead.
 //
-// Generated from API version 2026-04-01-preview
+// Generated from API version 2026-08-31-preview
 type GoalTemplatesClient struct {
 	internal *arm.Client
 }
@@ -39,7 +39,9 @@ func NewGoalTemplatesClient(credential azcore.TokenCredential, options *arm.Clie
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create a GoalTemplate
+// BeginCreateOrUpdate - Creates or updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and
+// is removed in 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency, requireRegionalResiliency)
+// and read resource posture from GoalResource (zonalResiliency, regionalResiliency) instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - serviceGroupName - The name of the service group.
 //   - goalTemplateName - The name of the goalTemplate
@@ -63,7 +65,9 @@ func (client *GoalTemplatesClient) BeginCreateOrUpdate(ctx context.Context, serv
 	}
 }
 
-// CreateOrUpdate - Create a GoalTemplate
+// CreateOrUpdate - Creates or updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed
+// in 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency, requireRegionalResiliency)
+// and read resource posture from GoalResource (zonalResiliency, regionalResiliency) instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GoalTemplatesClient) createOrUpdate(ctx context.Context, serviceGroupName string, goalTemplateName string, resource GoalTemplate, options *GoalTemplatesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -101,7 +105,7 @@ func (client *GoalTemplatesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -111,7 +115,9 @@ func (client *GoalTemplatesClient) createOrUpdateCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// BeginDelete - Delete a GoalTemplate
+// BeginDelete - Deletes a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in 2026-09-30-preview.
+// Set resiliency intent directly on the GoalAssignment (requireZonalResiliency, requireRegionalResiliency) and read resource
+// posture from GoalResource (zonalResiliency, regionalResiliency) instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - serviceGroupName - The name of the service group.
 //   - goalTemplateName - The name of the goalTemplate
@@ -134,7 +140,9 @@ func (client *GoalTemplatesClient) BeginDelete(ctx context.Context, serviceGroup
 	}
 }
 
-// Delete - Delete a GoalTemplate
+// Delete - Deletes a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in 2026-09-30-preview.
+// Set resiliency intent directly on the GoalAssignment (requireZonalResiliency, requireRegionalResiliency) and read resource
+// posture from GoalResource (zonalResiliency, regionalResiliency) instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GoalTemplatesClient) deleteOperation(ctx context.Context, serviceGroupName string, goalTemplateName string, options *GoalTemplatesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,12 +180,14 @@ func (client *GoalTemplatesClient) deleteCreateRequest(ctx context.Context, serv
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// Get - Get a GoalTemplate
+// Get - Gets a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in 2026-09-30-preview.
+// Set resiliency intent directly on the GoalAssignment (requireZonalResiliency, requireRegionalResiliency) and read resource
+// posture from GoalResource (zonalResiliency, regionalResiliency) instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - serviceGroupName - The name of the service group.
 //   - goalTemplateName - The name of the goalTemplate
@@ -215,7 +225,7 @@ func (client *GoalTemplatesClient) getCreateRequest(ctx context.Context, service
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -233,7 +243,9 @@ func (client *GoalTemplatesClient) getHandleResponse(resp *http.Response, succes
 	return result, nil
 }
 
-// NewListPager - List GoalTemplate resources by tenant
+// NewListPager - Lists the goal templates of a service group. Deprecated: the GoalTemplate resource type is deprecated and
+// is removed in 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency, requireRegionalResiliency)
+// and read resource posture from GoalResource (zonalResiliency, regionalResiliency) instead.
 //   - serviceGroupName - The name of the service group.
 //   - options - GoalTemplatesClientListOptions contains the optional parameters for the GoalTemplatesClient.NewListPager method.
 func (client *GoalTemplatesClient) NewListPager(serviceGroupName string, options *GoalTemplatesClientListOptions) *runtime.Pager[GoalTemplatesClientListResponse] {
@@ -287,7 +299,7 @@ func (client *GoalTemplatesClient) listCreateRequest(ctx context.Context, servic
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260401Preview)
+		reqQP.Set("api-version", version20260831Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -306,7 +318,9 @@ func (client *GoalTemplatesClient) listHandleResponse(resp *http.Response, succe
 	return result, nil
 }
 
-// BeginUpdate - Update a GoalTemplate
+// BeginUpdate - Updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in 2026-09-30-preview.
+// Set resiliency intent directly on the GoalAssignment (requireZonalResiliency, requireRegionalResiliency) and read resource
+// posture from GoalResource (zonalResiliency, regionalResiliency) instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - serviceGroupName - The name of the service group.
 //   - goalTemplateName - The name of the goalTemplate
@@ -330,7 +344,9 @@ func (client *GoalTemplatesClient) BeginUpdate(ctx context.Context, serviceGroup
 	}
 }
 
-// Update - Update a GoalTemplate
+// Update - Updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in 2026-09-30-preview.
+// Set resiliency intent directly on the GoalAssignment (requireZonalResiliency, requireRegionalResiliency) and read resource
+// posture from GoalResource (zonalResiliency, regionalResiliency) instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GoalTemplatesClient) update(ctx context.Context, serviceGroupName string, goalTemplateName string, properties GoalTemplate, options *GoalTemplatesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
@@ -368,7 +384,7 @@ func (client *GoalTemplatesClient) updateCreateRequest(ctx context.Context, serv
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

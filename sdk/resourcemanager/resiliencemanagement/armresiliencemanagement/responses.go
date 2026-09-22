@@ -38,10 +38,23 @@ type DrillRunsClientFailOverResponse struct {
 	// placeholder for future response values
 }
 
+// DrillRunsClientGenerateReportResponse contains the response from method DrillRunsClient.BeginGenerateReport.
+type DrillRunsClientGenerateReportResponse struct {
+	// Public, read-only summary of report generation for a Drill Run. Exposes status and pointers only - the report content and
+	// internal storage locations are never surfaced.
+	DrillReportSummary
+}
+
 // DrillRunsClientGetResponse contains the response from method DrillRunsClient.Get.
 type DrillRunsClientGetResponse struct {
 	// DrillRun resource.
 	DrillRun
+}
+
+// DrillRunsClientListReportDownloadURLResponse contains the response from method DrillRunsClient.BeginListReportDownloadURL.
+type DrillRunsClientListReportDownloadURLResponse struct {
+	// Response containing a short-lived, read-only download URL for a Drill Run report.
+	ListReportDownloadURLResponse
 }
 
 // DrillRunsClientListResponse contains the response from method DrillRunsClient.NewListPager.

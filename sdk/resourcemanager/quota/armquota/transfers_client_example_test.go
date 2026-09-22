@@ -80,7 +80,6 @@ func ExampleTransfersClient_BeginCreateOrUpdate_quotaTransfersCreateOrUpdateDono
 			DisplayName:               to.Ptr("Move 50 Dv5 vCPU to recipient"),
 			Comment:                   to.Ptr("Backfill for new prod fleet rollout."),
 			DestinationSubscriptionID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-000000000002"),
-			BillingAccountID:          to.Ptr("1234567890"),
 			ResourceName:              to.Ptr("standardDv5Family"),
 			Amount:                    to.Ptr[int64](50),
 			AutoApprove:               to.Ptr(false),
@@ -137,7 +136,6 @@ func ExampleTransfersClient_BeginCreateOrUpdate_quotaTransfersCreateOrUpdateAuto
 		Properties: &armquota.TransferProperties{
 			DisplayName:               to.Ptr("Move 25 Dv5 vCPU - auto approved"),
 			DestinationSubscriptionID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-000000000002"),
-			BillingAccountID:          to.Ptr("1234567890"),
 			ResourceName:              to.Ptr("standardDv5Family"),
 			Amount:                    to.Ptr[int64](25),
 			AutoApprove:               to.Ptr(true),

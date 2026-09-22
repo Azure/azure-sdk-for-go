@@ -929,9 +929,6 @@ type TransferProperties struct {
 	// REQUIRED; Amount to transfer in the resource's native unit (e.g. vCPU count).
 	Amount *int64
 
-	// REQUIRED; Billing account id both donor and recipient subscriptions must roll up to.
-	BillingAccountID *string
-
 	// REQUIRED; Recipient subscription id. Must differ from the donor subscription.
 	DestinationSubscriptionID *string
 
@@ -955,6 +952,9 @@ type TransferProperties struct {
 	// READ-ONLY; Approval record. Populated when `transferStatus` is `Accepted` or `Completed`.
 	// Mutually exclusive with `cancellation`.
 	Approval *ApprovalRecord
+
+	// READ-ONLY; Billing account id both donor and recipient subscriptions must roll up to.
+	BillingAccountID *string
 
 	// READ-ONLY; Cancellation record. Populated when `transferStatus` is `Cancelled`.
 	// Mutually exclusive with `approval`.

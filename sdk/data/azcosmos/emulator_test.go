@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -188,7 +189,17 @@ func emulatorContainer(t *testing.T) *ContainerClient {
 // uniqueItemID keeps tests from colliding with each other or with a previous run.
 func uniqueItemID(t *testing.T) string {
 	t.Helper()
-	return fmt.Sprintf("%s-%d", t.Name(), time.Now().UnixNano())
+	name := strings.NewReplacer("/", "-", "\\", "-", "?", "-", "#", "-").Replace(t.Name())
+	return fmt.Sprintf("%s-%d", name, time.Now().UnixNano())
+}
+
+func TestEmulatorUniqueItemIDIsResourceSafe(t *testing.T) {
+	t.Run("subtest", func(t *testing.T) {
+		id := uniqueItemID(t)
+		for _, invalid := range []string{"/", "\\", "?", "#"} {
+			require.NotContains(t, id, invalid)
+		}
+	})
 }
 
 func trackEmulatorItem(t *testing.T, container *ContainerClient, pk PartitionKey, id string) {
@@ -371,7 +382,9 @@ func TestEmulatorReplaceAndUpsertItem(t *testing.T) {
 		})
 		require.NoError(t, err)
 		require.Equal(t, replaced.ETag, read.ETag)
-		require.JSONEq(t, string(replacement), string(read.Value))
+		requireItemFields(t, read.Value, map[string]any{
+			"id": id, "pk": id, "value": "replaced",
+		})
 	})
 
 	t.Run("upsert existing and missing", func(t *testing.T) {
@@ -393,7 +406,9 @@ func TestEmulatorReplaceAndUpsertItem(t *testing.T) {
 		require.Positive(t, upserted.RequestCharge)
 		require.NotEmpty(t, upserted.ActivityID)
 		require.NotEmpty(t, upserted.ETag)
-		require.JSONEq(t, string(updated), string(upserted.Value))
+		requireItemFields(t, upserted.Value, map[string]any{
+			"id": existingID, "pk": existingID, "version": float64(2),
+		})
 
 		missingID := uniqueItemID(t)
 		missingPK := NewPartitionKeyString(missingID)
@@ -406,7 +421,9 @@ func TestEmulatorReplaceAndUpsertItem(t *testing.T) {
 
 		read, err := container.ReadItem(ctx, missingPK, missingID, nil)
 		require.NoError(t, err)
-		require.JSONEq(t, string(missing), string(read.Value))
+		requireItemFields(t, read.Value, map[string]any{
+			"id": missingID, "pk": missingID, "version": float64(1),
+		})
 	})
 }
 
@@ -485,7 +502,7 @@ func TestEmulatorDeleteItem(t *testing.T) {
 	_, err = container.ReadItem(ctx, pk, id, nil)
 	requireWireError(t, err, CodeNotFound, 404)
 	_, err = container.DeleteItem(ctx, pk, id, nil)
-	requireWireError(t, err, CodeNotFound, 404)
+	requireWireStatus(t, err, CodeNotFound, 404)
 }
 
 func TestEmulatorPatchItem(t *testing.T) {
@@ -532,6 +549,8 @@ func TestEmulatorPatchItem(t *testing.T) {
 	require.InDelta(t, 3, value["count"], 0)
 	require.Equal(t, "move-me", value["moved"])
 	require.NotContains(t, value, "source")
+	require.Contains(t, value, "_azsdkPatchTracking",
+		"unsafe automatic PATCH records retry deduplication state on the item")
 }
 
 func TestEmulatorPatchContentResponse(t *testing.T) {
@@ -569,7 +588,7 @@ func TestEmulatorPatchContentResponse(t *testing.T) {
 	}
 }
 
-func TestEmulatorPatchMoreThanTenOperationsUsesAutomaticStrategy(t *testing.T) {
+func TestEmulatorPatchMoreThanTenOperations(t *testing.T) {
 	container := emulatorContainer(t)
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
@@ -591,8 +610,6 @@ func TestEmulatorPatchMoreThanTenOperationsUsesAutomaticStrategy(t *testing.T) {
 	for i := range 11 {
 		require.InDelta(t, i, value[fmt.Sprintf("value%d", i)], 0)
 	}
-	require.Contains(t, value, "_azsdkPatchTracking",
-		"client-side automatic PATCH records retry deduplication state on the item")
 }
 
 func TestEmulatorNewItemOperationsReportMissingItems(t *testing.T) {
@@ -604,11 +621,11 @@ func TestEmulatorNewItemOperationsReportMissingItems(t *testing.T) {
 	require.NoError(t, operations.AppendSet("/value", 1))
 
 	_, err := container.ReplaceItem(t.Context(), pk, id, item, nil)
-	requireWireError(t, err, CodeNotFound, 404)
+	requireWireStatus(t, err, CodeNotFound, 404)
 	_, err = container.DeleteItem(t.Context(), pk, id, nil)
-	requireWireError(t, err, CodeNotFound, 404)
+	requireWireStatus(t, err, CodeNotFound, 404)
 	_, err = container.PatchItem(t.Context(), pk, id, operations, nil)
-	requireWireError(t, err, CodeNotFound, 404)
+	requireWireStatus(t, err, CodeNotFound, 404)
 }
 
 func TestEmulatorConcurrentItemWriteOperations(t *testing.T) {
@@ -672,13 +689,34 @@ func TestEmulatorConcurrentItemWriteOperations(t *testing.T) {
 
 func requireWireError(t *testing.T, err error, code Code, status int) {
 	t.Helper()
+	cosmosErr := requireWireErrorDetails(t, err, code, status)
+	require.Positive(t, cosmosErr.RequestCharge)
+}
+
+func requireWireStatus(t *testing.T, err error, code Code, status int) {
+	t.Helper()
+	require.NotNil(t, requireWireErrorDetails(t, err, code, status))
+}
+
+func requireWireErrorDetails(t *testing.T, err error, code Code, status int) *Error {
+	t.Helper()
 	var cosmosErr *Error
 	require.ErrorAs(t, err, &cosmosErr)
 	require.Equal(t, code, cosmosErr.Code)
 	require.Equal(t, status, cosmosErr.StatusCode)
 	require.True(t, cosmosErr.FromWire)
-	require.Positive(t, cosmosErr.RequestCharge)
 	require.NotEmpty(t, cosmosErr.ActivityID)
+	return cosmosErr
+}
+
+func requireItemFields(t *testing.T, body []byte, expected map[string]any) {
+	t.Helper()
+
+	var item map[string]any
+	require.NoError(t, json.Unmarshal(body, &item))
+	for name, value := range expected {
+		require.Equal(t, value, item[name], "item field %q", name)
+	}
 }
 
 func requirePatchPreconditionError(t *testing.T, err error) {

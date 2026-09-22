@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironmentsCertificates_CheckNameAvailability.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsCertificates_CheckNameAvailability.json
 func ExampleConnectedEnvironmentsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,14 +35,12 @@ func ExampleConnectedEnvironmentsClient_CheckNameAvailability() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappcontainers.ConnectedEnvironmentsClientCheckNameAvailabilityResponse{
 	// 	CheckNameAvailabilityResponse: armappcontainers.CheckNameAvailabilityResponse{
-	// 		Message: to.Ptr(""),
 	// 		NameAvailable: to.Ptr(true),
-	// 		Reason: to.Ptr(armappcontainers.CheckNameAvailabilityReason("None")),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironments_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironments_CreateOrUpdate.json
 func ExampleConnectedEnvironmentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +87,7 @@ func ExampleConnectedEnvironmentsClient_BeginCreateOrUpdate() {
 	// 			CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 	// 				CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 	// 				DNSSuffix: to.Ptr("www.my-name.com"),
-	// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+	// 				ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
 	// 				SubjectName: to.Ptr("CN=www.my-name.com"),
 	// 				Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
 	// 			},
@@ -103,7 +101,7 @@ func ExampleConnectedEnvironmentsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironments_Delete.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironments_Delete.json
 func ExampleConnectedEnvironmentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +127,7 @@ func ExampleConnectedEnvironmentsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironments_Get.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironments_Get.json
 func ExampleConnectedEnvironmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +159,7 @@ func ExampleConnectedEnvironmentsClient_Get() {
 	// 			CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 	// 				CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 	// 				DNSSuffix: to.Ptr("www.my-name.com"),
-	// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+	// 				ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
 	// 				SubjectName: to.Ptr("CN=www.my-name.com"),
 	// 				Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
 	// 			},
@@ -175,7 +173,7 @@ func ExampleConnectedEnvironmentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironments_ListByResourceGroup.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironments_ListByResourceGroup.json
 func ExampleConnectedEnvironmentsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +211,7 @@ func ExampleConnectedEnvironmentsClient_NewListByResourceGroupPager() {
 		// 					CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 		// 						CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 		// 						DNSSuffix: to.Ptr("www.my-name.com"),
-		// 						ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+		// 						ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
 		// 						SubjectName: to.Ptr("CN=www.my-name.com"),
 		// 						Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
 		// 					},
@@ -237,7 +235,7 @@ func ExampleConnectedEnvironmentsClient_NewListByResourceGroupPager() {
 		// 					CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 		// 						CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 		// 						DNSSuffix: to.Ptr("www.my-name2.com"),
-		// 						ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+		// 						ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
 		// 						SubjectName: to.Ptr("CN=www.my-name2.com"),
 		// 						Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
 		// 					},
@@ -254,7 +252,7 @@ func ExampleConnectedEnvironmentsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironments_ListBySubscription.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironments_ListBySubscription.json
 func ExampleConnectedEnvironmentsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +286,7 @@ func ExampleConnectedEnvironmentsClient_NewListBySubscriptionPager() {
 		// 					CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 		// 						CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 		// 						DNSSuffix: to.Ptr("www.my-name.com"),
-		// 						ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+		// 						ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
 		// 						SubjectName: to.Ptr("CN=www.my-name.com"),
 		// 						Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
 		// 					},
@@ -308,7 +306,7 @@ func ExampleConnectedEnvironmentsClient_NewListBySubscriptionPager() {
 		// 					CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 		// 						CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 		// 						DNSSuffix: to.Ptr("www.my-name2.com"),
-		// 						ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+		// 						ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
 		// 						SubjectName: to.Ptr("CN=www.my-name2.com"),
 		// 						Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
 		// 					},
@@ -325,7 +323,7 @@ func ExampleConnectedEnvironmentsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironments_Patch.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironments_Patch.json
 func ExampleConnectedEnvironmentsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -358,7 +356,7 @@ func ExampleConnectedEnvironmentsClient_Update() {
 	// 			CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 	// 				CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 	// 				DNSSuffix: to.Ptr("www.my-name.com"),
-	// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+	// 				ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
 	// 				SubjectName: to.Ptr("CN=www.my-name.com"),
 	// 				Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
 	// 			},

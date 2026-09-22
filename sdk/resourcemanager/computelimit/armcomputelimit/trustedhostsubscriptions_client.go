@@ -30,6 +30,9 @@ type TrustedHostSubscriptionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTrustedHostSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TrustedHostSubscriptionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,19 +68,14 @@ func (client *TrustedHostSubscriptionsClient) Create(ctx context.Context, locati
 	if err != nil {
 		return TrustedHostSubscriptionsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return TrustedHostSubscriptionsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
 func (client *TrustedHostSubscriptionsClient) createCreateRequest(ctx context.Context, location string, hostSubscriptionID string, resource TrustedHostSubscription, _ *TrustedHostSubscriptionsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/trustedHostSubscriptions/{hostSubscriptionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -104,8 +102,11 @@ func (client *TrustedHostSubscriptionsClient) createCreateRequest(ctx context.Co
 }
 
 // createHandleResponse handles the Create response.
-func (client *TrustedHostSubscriptionsClient) createHandleResponse(resp *http.Response) (TrustedHostSubscriptionsClientCreateResponse, error) {
+func (client *TrustedHostSubscriptionsClient) createHandleResponse(resp *http.Response, successCodes ...int) (TrustedHostSubscriptionsClientCreateResponse, error) {
 	result := TrustedHostSubscriptionsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TrustedHostSubscription); err != nil {
 		return TrustedHostSubscriptionsClientCreateResponse{}, err
 	}
@@ -133,8 +134,7 @@ func (client *TrustedHostSubscriptionsClient) Delete(ctx context.Context, locati
 		return TrustedHostSubscriptionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return TrustedHostSubscriptionsClientDeleteResponse{}, err
+		return TrustedHostSubscriptionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TrustedHostSubscriptionsClientDeleteResponse{}, nil
 }
@@ -143,7 +143,7 @@ func (client *TrustedHostSubscriptionsClient) Delete(ctx context.Context, locati
 func (client *TrustedHostSubscriptionsClient) deleteCreateRequest(ctx context.Context, location string, hostSubscriptionID string, _ *TrustedHostSubscriptionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/trustedHostSubscriptions/{hostSubscriptionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -184,19 +184,14 @@ func (client *TrustedHostSubscriptionsClient) Get(ctx context.Context, location 
 	if err != nil {
 		return TrustedHostSubscriptionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TrustedHostSubscriptionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *TrustedHostSubscriptionsClient) getCreateRequest(ctx context.Context, location string, hostSubscriptionID string, _ *TrustedHostSubscriptionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/trustedHostSubscriptions/{hostSubscriptionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -219,8 +214,11 @@ func (client *TrustedHostSubscriptionsClient) getCreateRequest(ctx context.Conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *TrustedHostSubscriptionsClient) getHandleResponse(resp *http.Response) (TrustedHostSubscriptionsClientGetResponse, error) {
+func (client *TrustedHostSubscriptionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (TrustedHostSubscriptionsClientGetResponse, error) {
 	result := TrustedHostSubscriptionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TrustedHostSubscription); err != nil {
 		return TrustedHostSubscriptionsClientGetResponse{}, err
 	}
@@ -242,43 +240,57 @@ func (client *TrustedHostSubscriptionsClient) NewListBySubscriptionLocationResou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionLocationResourceCreateRequest(ctx, location, options)
-			}, nil)
+			req, err := client.listBySubscriptionLocationResourceCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
 				return TrustedHostSubscriptionsClientListBySubscriptionLocationResourceResponse{}, err
 			}
-			return client.listBySubscriptionLocationResourceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TrustedHostSubscriptionsClientListBySubscriptionLocationResourceResponse{}, err
+			}
+			return client.listBySubscriptionLocationResourceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionLocationResourceCreateRequest creates the ListBySubscriptionLocationResource request.
-func (client *TrustedHostSubscriptionsClient) listBySubscriptionLocationResourceCreateRequest(ctx context.Context, location string, _ *TrustedHostSubscriptionsClientListBySubscriptionLocationResourceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/trustedHostSubscriptions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *TrustedHostSubscriptionsClient) listBySubscriptionLocationResourceCreateRequest(ctx context.Context, location string, nextLink string, _ *TrustedHostSubscriptionsClientListBySubscriptionLocationResourceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/trustedHostSubscriptions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260731)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260731)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionLocationResourceHandleResponse handles the ListBySubscriptionLocationResource response.
-func (client *TrustedHostSubscriptionsClient) listBySubscriptionLocationResourceHandleResponse(resp *http.Response) (TrustedHostSubscriptionsClientListBySubscriptionLocationResourceResponse, error) {
+func (client *TrustedHostSubscriptionsClient) listBySubscriptionLocationResourceHandleResponse(resp *http.Response, successCodes ...int) (TrustedHostSubscriptionsClientListBySubscriptionLocationResourceResponse, error) {
 	result := TrustedHostSubscriptionsClientListBySubscriptionLocationResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TrustedHostSubscriptionListResult); err != nil {
 		return TrustedHostSubscriptionsClientListBySubscriptionLocationResourceResponse{}, err
 	}

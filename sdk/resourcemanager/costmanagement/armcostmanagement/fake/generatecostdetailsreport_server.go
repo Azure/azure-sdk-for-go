@@ -95,7 +95,7 @@ func (g *GenerateCostDetailsReportServerTransport) dispatchBeginCreateOperation(
 	}
 	beginCreateOperation := g.beginCreateOperation.get(req)
 	if beginCreateOperation == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/generateCostDetailsReport`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.CostManagement/generateCostDetailsReport`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -105,10 +105,7 @@ func (g *GenerateCostDetailsReportServerTransport) dispatchBeginCreateOperation(
 		if err != nil {
 			return nil, err
 		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		respr, errRespr := g.srv.BeginCreateOperation(req.Context(), scopeParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
@@ -139,16 +136,13 @@ func (g *GenerateCostDetailsReportServerTransport) dispatchBeginGetOperationResu
 	}
 	beginGetOperationResults := g.beginGetOperationResults.get(req)
 	if beginGetOperationResults == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/costDetailsOperationResults/(?P<operationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.CostManagement/costDetailsOperationResults/(?P<operationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		operationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("operationId")])
 		if err != nil {
 			return nil, err

@@ -30,7 +30,7 @@ func ExampleOrdersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armedgeorder.OrdersClientGetResponse{
-	// 	OrderResource: &armedgeorder.OrderResource{
+	// 	OrderResource: armedgeorder.OrderResource{
 	// 		Name: to.Ptr("TestOrderName3"),
 	// 		Type: to.Ptr("Microsoft.EdgeOrder/orders"),
 	// 		ID: to.Ptr("/subscriptions/eb5dc900-6186-49d8-b7d7-febd866fdc1d/resourceGroups/YourResourceGroupName/providers/Microsoft.EdgeOrder/locations/eastus/orders/TestOrderName3"),
@@ -38,7 +38,7 @@ func ExampleOrdersClient_Get() {
 	// 			CurrentStage: &armedgeorder.StageDetails{
 	// 				StageName: to.Ptr(armedgeorder.StageNameInReview),
 	// 				StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T11:35:20.8521455+05:30"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2022, time.March, 4, 6, 5, 20, 852145500, time.UTC)),
 	// 			},
 	// 			OrderItemIDs: []*string{
 	// 				to.Ptr("/subscriptions/eb5dc900-6186-49d8-b7d7-febd866fdc1d/resourceGroups/YourResourceGroupName/providers/Microsoft.EdgeOrder/orderItems/TestOrderItemName3"),
@@ -47,18 +47,18 @@ func ExampleOrdersClient_Get() {
 	// 				{
 	// 					StageName: to.Ptr(armedgeorder.StageNamePlaced),
 	// 					StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T11:30:30.2717243+05:30"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2022, time.March, 4, 6, 0, 30, 271724300, time.UTC)),
 	// 				},
 	// 				{
 	// 					StageName: to.Ptr(armedgeorder.StageNameInReview),
 	// 					StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T11:35:20.8521455+05:30"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2022, time.March, 4, 6, 5, 20, 852145500, time.UTC)),
 	// 				},
 	// 			},
 	// 		},
 	// 		SystemData: &armedgeorder.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -97,7 +97,7 @@ func ExampleOrdersClient_NewListByResourceGroupPager() {
 		// 					CurrentStage: &armedgeorder.StageDetails{
 		// 						StageName: to.Ptr(armedgeorder.StageNamePlaced),
 		// 						StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T10:55:46.9437439+05:30"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 25, 46, 943743900, time.UTC)),
 		// 					},
 		// 					OrderItemIDs: []*string{
 		// 						to.Ptr("/subscriptions/eb5dc900-6186-49d8-b7d7-febd866fdc1d/resourceGroups/YourResourceGroupName/providers/Microsoft.EdgeOrder/orderItems/TestOrderItemName1"),
@@ -106,7 +106,7 @@ func ExampleOrdersClient_NewListByResourceGroupPager() {
 		// 						{
 		// 							StageName: to.Ptr(armedgeorder.StageNamePlaced),
 		// 							StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T10:55:46.9437439+05:30"); return t}()),
+		// 							StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 25, 46, 943743900, time.UTC)),
 		// 						},
 		// 						{
 		// 							StageName: to.Ptr(armedgeorder.StageNameInReview),
@@ -115,8 +115,8 @@ func ExampleOrdersClient_NewListByResourceGroupPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armedgeorder.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -127,7 +127,7 @@ func ExampleOrdersClient_NewListByResourceGroupPager() {
 		// 					CurrentStage: &armedgeorder.StageDetails{
 		// 						StageName: to.Ptr(armedgeorder.StageNamePlaced),
 		// 						StageStatus: to.Ptr(armedgeorder.StageStatusInProgress),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T10:58:46.5241979+05:30"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 28, 46, 524197900, time.UTC)),
 		// 					},
 		// 					OrderItemIDs: []*string{
 		// 						to.Ptr("/subscriptions/eb5dc900-6186-49d8-b7d7-febd866fdc1d/resourceGroups/YourResourceGroupName/providers/Microsoft.EdgeOrder/orderItems/TestOrderItemName2"),
@@ -144,8 +144,8 @@ func ExampleOrdersClient_NewListByResourceGroupPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armedgeorder.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -187,7 +187,7 @@ func ExampleOrdersClient_NewListBySubscriptionPager() {
 		// 					CurrentStage: &armedgeorder.StageDetails{
 		// 						StageName: to.Ptr(armedgeorder.StageNamePlaced),
 		// 						StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T10:55:46.9437439+05:30"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 25, 46, 943743900, time.UTC)),
 		// 					},
 		// 					OrderItemIDs: []*string{
 		// 						to.Ptr("/subscriptions/eb5dc900-6186-49d8-b7d7-febd866fdc1d/resourceGroups/YourResourceGroupName/providers/Microsoft.EdgeOrder/orderItems/TestOrderItemName1"),
@@ -196,7 +196,7 @@ func ExampleOrdersClient_NewListBySubscriptionPager() {
 		// 						{
 		// 							StageName: to.Ptr(armedgeorder.StageNamePlaced),
 		// 							StageStatus: to.Ptr(armedgeorder.StageStatusSucceeded),
-		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T10:55:46.9437439+05:30"); return t}()),
+		// 							StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 25, 46, 943743900, time.UTC)),
 		// 						},
 		// 						{
 		// 							StageName: to.Ptr(armedgeorder.StageNameInReview),
@@ -205,8 +205,8 @@ func ExampleOrdersClient_NewListBySubscriptionPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armedgeorder.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -217,7 +217,7 @@ func ExampleOrdersClient_NewListBySubscriptionPager() {
 		// 					CurrentStage: &armedgeorder.StageDetails{
 		// 						StageName: to.Ptr(armedgeorder.StageNamePlaced),
 		// 						StageStatus: to.Ptr(armedgeorder.StageStatusInProgress),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-04T10:58:46.5241979+05:30"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2022, time.March, 4, 5, 28, 46, 524197900, time.UTC)),
 		// 					},
 		// 					OrderItemIDs: []*string{
 		// 						to.Ptr("/subscriptions/eb5dc900-6186-49d8-b7d7-febd866fdc1d/resourceGroups/YourResourceGroupName/providers/Microsoft.EdgeOrder/orderItems/TestOrderItemName2"),
@@ -234,8 +234,8 @@ func ExampleOrdersClient_NewListBySubscriptionPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armedgeorder.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

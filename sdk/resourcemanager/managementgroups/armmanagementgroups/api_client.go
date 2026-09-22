@@ -55,12 +55,7 @@ func (client *APIClient) CheckNameAvailability(ctx context.Context, checkNameAva
 	if err != nil {
 		return APIClientCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return APIClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -82,8 +77,11 @@ func (client *APIClient) checkNameAvailabilityCreateRequest(ctx context.Context,
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *APIClient) checkNameAvailabilityHandleResponse(resp *http.Response) (APIClientCheckNameAvailabilityResponse, error) {
+func (client *APIClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (APIClientCheckNameAvailabilityResponse, error) {
 	result := APIClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
 		return APIClientCheckNameAvailabilityResponse{}, err
 	}
@@ -107,12 +105,7 @@ func (client *APIClient) StartTenantBackfill(ctx context.Context, options *APICl
 	if err != nil {
 		return APIClientStartTenantBackfillResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return APIClientStartTenantBackfillResponse{}, err
-	}
-	resp, err := client.startTenantBackfillHandleResponse(httpResp)
-	return resp, err
+	return client.startTenantBackfillHandleResponse(httpResp, http.StatusOK)
 }
 
 // startTenantBackfillCreateRequest creates the StartTenantBackfill request.
@@ -130,8 +123,11 @@ func (client *APIClient) startTenantBackfillCreateRequest(ctx context.Context, _
 }
 
 // startTenantBackfillHandleResponse handles the StartTenantBackfill response.
-func (client *APIClient) startTenantBackfillHandleResponse(resp *http.Response) (APIClientStartTenantBackfillResponse, error) {
+func (client *APIClient) startTenantBackfillHandleResponse(resp *http.Response, successCodes ...int) (APIClientStartTenantBackfillResponse, error) {
 	result := APIClientStartTenantBackfillResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TenantBackfillStatusResult); err != nil {
 		return APIClientStartTenantBackfillResponse{}, err
 	}
@@ -156,12 +152,7 @@ func (client *APIClient) TenantBackfillStatus(ctx context.Context, options *APIC
 	if err != nil {
 		return APIClientTenantBackfillStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return APIClientTenantBackfillStatusResponse{}, err
-	}
-	resp, err := client.tenantBackfillStatusHandleResponse(httpResp)
-	return resp, err
+	return client.tenantBackfillStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // tenantBackfillStatusCreateRequest creates the TenantBackfillStatus request.
@@ -179,8 +170,11 @@ func (client *APIClient) tenantBackfillStatusCreateRequest(ctx context.Context, 
 }
 
 // tenantBackfillStatusHandleResponse handles the TenantBackfillStatus response.
-func (client *APIClient) tenantBackfillStatusHandleResponse(resp *http.Response) (APIClientTenantBackfillStatusResponse, error) {
+func (client *APIClient) tenantBackfillStatusHandleResponse(resp *http.Response, successCodes ...int) (APIClientTenantBackfillStatusResponse, error) {
 	result := APIClientTenantBackfillStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TenantBackfillStatusResult); err != nil {
 		return APIClientTenantBackfillStatusResponse{}, err
 	}

@@ -163,8 +163,8 @@ func ExampleAmlFilesystemsClient_BeginCreateOrUpdate() {
 	// 					{
 	// 						FilesystemPath: to.Ptr("/"),
 	// 						Status: &armstoragecache.AmlFilesystemArchiveStatus{
-	// 							LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
-	// 							LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+	// 							LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+	// 							LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
 	// 							State: to.Ptr(armstoragecache.ArchiveStatusTypeCompleted),
 	// 						},
 	// 					},
@@ -293,8 +293,8 @@ func ExampleAmlFilesystemsClient_Get() {
 	// 					{
 	// 						FilesystemPath: to.Ptr("/"),
 	// 						Status: &armstoragecache.AmlFilesystemArchiveStatus{
-	// 							LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
-	// 							LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+	// 							LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+	// 							LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
 	// 							State: to.Ptr(armstoragecache.ArchiveStatusTypeCompleted),
 	// 						},
 	// 					},
@@ -403,8 +403,8 @@ func ExampleAmlFilesystemsClient_NewListPager() {
 		// 							{
 		// 								FilesystemPath: to.Ptr("/"),
 		// 								Status: &armstoragecache.AmlFilesystemArchiveStatus{
-		// 									LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
-		// 									LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+		// 									LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 									LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
 		// 									State: to.Ptr(armstoragecache.ArchiveStatusTypeCompleted),
 		// 								},
 		// 							},
@@ -485,8 +485,8 @@ func ExampleAmlFilesystemsClient_NewListPager() {
 		// 							{
 		// 								FilesystemPath: to.Ptr("/"),
 		// 								Status: &armstoragecache.AmlFilesystemArchiveStatus{
-		// 									LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
-		// 									LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+		// 									LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 									LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
 		// 									State: to.Ptr(armstoragecache.ArchiveStatusTypeCompleted),
 		// 								},
 		// 							},
@@ -598,8 +598,8 @@ func ExampleAmlFilesystemsClient_NewListByResourceGroupPager() {
 		// 							{
 		// 								FilesystemPath: to.Ptr("/"),
 		// 								Status: &armstoragecache.AmlFilesystemArchiveStatus{
-		// 									LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
-		// 									LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+		// 									LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 									LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
 		// 									State: to.Ptr(armstoragecache.ArchiveStatusTypeCompleted),
 		// 								},
 		// 							},
@@ -680,8 +680,8 @@ func ExampleAmlFilesystemsClient_NewListByResourceGroupPager() {
 		// 							{
 		// 								FilesystemPath: to.Ptr("/"),
 		// 								Status: &armstoragecache.AmlFilesystemArchiveStatus{
-		// 									LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
-		// 									LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+		// 									LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 									LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
 		// 									State: to.Ptr(armstoragecache.ArchiveStatusTypeCompleted),
 		// 								},
 		// 							},
@@ -813,8 +813,8 @@ func ExampleAmlFilesystemsClient_BeginUpdate() {
 	// 					{
 	// 						FilesystemPath: to.Ptr("/"),
 	// 						Status: &armstoragecache.AmlFilesystemArchiveStatus{
-	// 							LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
-	// 							LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+	// 							LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+	// 							LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
 	// 							State: to.Ptr(armstoragecache.ArchiveStatusTypeCompleted),
 	// 						},
 	// 					},

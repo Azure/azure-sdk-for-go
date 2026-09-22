@@ -5,7 +5,7 @@
 package armenclave
 
 const (
-	version20260301Preview string = "2026-03-01-preview"
+	version20260401 string = "2026-04-01"
 )
 
 // ActionPerformed - Specifies the action performed by the approver

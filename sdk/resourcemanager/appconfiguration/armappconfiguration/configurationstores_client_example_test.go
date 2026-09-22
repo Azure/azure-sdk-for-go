@@ -49,7 +49,7 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreate() {
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armappconfiguration.ConfigurationStoreProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
 	// 				AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModeLocal),
 	// 				PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
@@ -71,10 +71,10 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreate() {
 	// 			Name: to.Ptr("Standard"),
 	// 		},
 	// 		SystemData: &armappconfiguration.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("foo@contoso.com"),
 	// 			CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("foo@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
 	// 		},
@@ -125,7 +125,7 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithA
 	// 		Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
 	// 		Properties: &armappconfiguration.ConfigurationStoreProperties{
 	// 			ProvisioningState: to.Ptr(armappconfiguration.ProvisioningStateSucceeded),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			Endpoint: to.Ptr("https://contoso.azconfig.io"),
 	// 			Encryption: &armappconfiguration.EncryptionProperties{
 	// 				KeyVaultProperties: &armappconfiguration.KeyVaultProperties{
@@ -147,10 +147,10 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithA
 	// 		SystemData: &armappconfiguration.SystemData{
 	// 			CreatedBy: to.Ptr("foo@contoso.com"),
 	// 			CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("foo@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 		},
 	// 		SKU: &armappconfiguration.SKU{
 	// 			Name: to.Ptr("Standard"),
@@ -205,7 +205,7 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithD
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armappconfiguration.ConfigurationStoreProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
 	// 				AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
 	// 				PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationEnabled),
@@ -224,10 +224,10 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithD
 	// 			Name: to.Ptr("Standard"),
 	// 		},
 	// 		SystemData: &armappconfiguration.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("foo@contoso.com"),
 	// 			CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("foo@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
 	// 		},
@@ -291,7 +291,7 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithI
 	// 		},
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armappconfiguration.ConfigurationStoreProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
 	// 				AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModeLocal),
 	// 				PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
@@ -313,10 +313,10 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithI
 	// 			Name: to.Ptr("Standard"),
 	// 		},
 	// 		SystemData: &armappconfiguration.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("foo@contoso.com"),
 	// 			CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("foo@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
 	// 		},
@@ -368,7 +368,7 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithL
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armappconfiguration.ConfigurationStoreProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
 	// 				AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
 	// 				PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
@@ -390,10 +390,10 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithL
 	// 			Name: to.Ptr("Standard"),
 	// 		},
 	// 		SystemData: &armappconfiguration.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("foo@contoso.com"),
 	// 			CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("foo@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
 	// 		},
@@ -445,7 +445,7 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithT
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armappconfiguration.ConfigurationStoreProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
 	// 				AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModeLocal),
 	// 				PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
@@ -469,10 +469,10 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithT
 	// 			Name: to.Ptr("Standard"),
 	// 		},
 	// 		SystemData: &armappconfiguration.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("foo@contoso.com"),
 	// 			CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("foo@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
 	// 		},
@@ -539,7 +539,7 @@ func ExampleConfigurationStoresClient_Get() {
 	// 		},
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armappconfiguration.ConfigurationStoreProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
 	// 				AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
 	// 				PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
@@ -562,10 +562,10 @@ func ExampleConfigurationStoresClient_Get() {
 	// 			Name: to.Ptr("Standard"),
 	// 		},
 	// 		SystemData: &armappconfiguration.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("foo@contoso.com"),
 	// 			CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("foo@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
 	// 		},
@@ -600,10 +600,10 @@ func ExampleConfigurationStoresClient_GetDeleted() {
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/providers/Microsoft.AppConfiguration/locations/westus/deletedConfigurationStores/contoso"),
 	// 		Properties: &armappconfiguration.DeletedConfigurationStoreProperties{
 	// 			ConfigurationStoreID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
-	// 			DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-01T00:00:59Z"); return t}()),
+	// 			DeletionDate: to.Ptr(time.Date(2017, time.January, 1, 0, 0, 59, 0, time.UTC)),
 	// 			Location: to.Ptr("westus"),
 	// 			PurgeProtectionEnabled: to.Ptr(true),
-	// 			ScheduledPurgeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-01T00:00:59Z"); return t}()),
+	// 			ScheduledPurgeDate: to.Ptr(time.Date(2017, time.April, 1, 0, 0, 59, 0, time.UTC)),
 	// 			Tags: map[string]*string{
 	// 			},
 	// 		},
@@ -647,7 +647,7 @@ func ExampleConfigurationStoresClient_NewListPager() {
 		// 				},
 		// 				Location: to.Ptr("westus"),
 		// 				Properties: &armappconfiguration.ConfigurationStoreProperties{
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 		// 					DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
 		// 						AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
 		// 						PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
@@ -670,10 +670,10 @@ func ExampleConfigurationStoresClient_NewListPager() {
 		// 					Name: to.Ptr("Standard"),
 		// 				},
 		// 				SystemData: &armappconfiguration.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("foo@contoso.com"),
 		// 					CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("foo@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
 		// 				},
@@ -691,7 +691,7 @@ func ExampleConfigurationStoresClient_NewListPager() {
 		// 				},
 		// 				Location: to.Ptr("westus"),
 		// 				Properties: &armappconfiguration.ConfigurationStoreProperties{
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T23:06:59+00:00"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2018, time.April, 24, 23, 6, 59, 0, time.UTC)),
 		// 					DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
 		// 						AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
 		// 						PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
@@ -714,10 +714,10 @@ func ExampleConfigurationStoresClient_NewListPager() {
 		// 					Name: to.Ptr("Standard"),
 		// 				},
 		// 				SystemData: &armappconfiguration.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("foo@contoso.com"),
 		// 					CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("foo@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
 		// 				},
@@ -761,7 +761,7 @@ func ExampleConfigurationStoresClient_NewListByResourceGroupPager() {
 		// 				ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
 		// 				Location: to.Ptr("westus"),
 		// 				Properties: &armappconfiguration.ConfigurationStoreProperties{
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 		// 					DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
 		// 						AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
 		// 						PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
@@ -784,10 +784,10 @@ func ExampleConfigurationStoresClient_NewListByResourceGroupPager() {
 		// 					Name: to.Ptr("Standard"),
 		// 				},
 		// 				SystemData: &armappconfiguration.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("foo@contoso.com"),
 		// 					CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("foo@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
 		// 				},
@@ -800,7 +800,7 @@ func ExampleConfigurationStoresClient_NewListByResourceGroupPager() {
 		// 				ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso2"),
 		// 				Location: to.Ptr("westus"),
 		// 				Properties: &armappconfiguration.ConfigurationStoreProperties{
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T23:06:59+00:00"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2018, time.April, 24, 23, 6, 59, 0, time.UTC)),
 		// 					DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
 		// 						AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
 		// 						PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
@@ -823,10 +823,10 @@ func ExampleConfigurationStoresClient_NewListByResourceGroupPager() {
 		// 					Name: to.Ptr("Standard"),
 		// 				},
 		// 				SystemData: &armappconfiguration.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("foo@contoso.com"),
 		// 					CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("foo@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
 		// 				},
@@ -871,10 +871,10 @@ func ExampleConfigurationStoresClient_NewListDeletedPager() {
 		// 				ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/providers/Microsoft.AppConfiguration/locations/westus/deletedConfigurationStores/contoso"),
 		// 				Properties: &armappconfiguration.DeletedConfigurationStoreProperties{
 		// 					ConfigurationStoreID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
-		// 					DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-01T00:00:59Z"); return t}()),
+		// 					DeletionDate: to.Ptr(time.Date(2017, time.January, 1, 0, 0, 59, 0, time.UTC)),
 		// 					Location: to.Ptr("westus"),
 		// 					PurgeProtectionEnabled: to.Ptr(true),
-		// 					ScheduledPurgeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-01T00:00:59Z"); return t}()),
+		// 					ScheduledPurgeDate: to.Ptr(time.Date(2017, time.April, 1, 0, 0, 59, 0, time.UTC)),
 		// 					Tags: map[string]*string{
 		// 					},
 		// 				},
@@ -914,7 +914,7 @@ func ExampleConfigurationStoresClient_NewListKeysPager() {
 		// 				Name: to.Ptr("Primary"),
 		// 				ConnectionString: to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
 		// 				ID: to.Ptr("439AD01B4BE67DB1"),
-		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:54+00:00"); return t}()),
+		// 				LastModified: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 54, 0, time.UTC)),
 		// 				ReadOnly: to.Ptr(false),
 		// 				Value: to.Ptr("000000000000000000000000000000000000000000000000000000"),
 		// 			},
@@ -922,7 +922,7 @@ func ExampleConfigurationStoresClient_NewListKeysPager() {
 		// 				Name: to.Ptr("Secondary"),
 		// 				ConnectionString: to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
 		// 				ID: to.Ptr("CB45E100456857B9"),
-		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:54+00:00"); return t}()),
+		// 				LastModified: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 54, 0, time.UTC)),
 		// 				ReadOnly: to.Ptr(false),
 		// 				Value: to.Ptr("000000000000000000000000000000000000000000000000000000"),
 		// 			},
@@ -930,7 +930,7 @@ func ExampleConfigurationStoresClient_NewListKeysPager() {
 		// 				Name: to.Ptr("Primary Read Only"),
 		// 				ConnectionString: to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
 		// 				ID: to.Ptr("B3AC55B7E71431A9"),
-		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:54+00:00"); return t}()),
+		// 				LastModified: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 54, 0, time.UTC)),
 		// 				ReadOnly: to.Ptr(true),
 		// 				Value: to.Ptr("000000000000000000000000000000000000000000000000000000"),
 		// 			},
@@ -938,7 +938,7 @@ func ExampleConfigurationStoresClient_NewListKeysPager() {
 		// 				Name: to.Ptr("Secondary Read Only"),
 		// 				ConnectionString: to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
 		// 				ID: to.Ptr("E2AF6A9A89DCC177"),
-		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:54+00:00"); return t}()),
+		// 				LastModified: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 54, 0, time.UTC)),
 		// 				ReadOnly: to.Ptr(true),
 		// 				Value: to.Ptr("000000000000000000000000000000000000000000000000000000"),
 		// 			},
@@ -999,7 +999,7 @@ func ExampleConfigurationStoresClient_RegenerateKey() {
 	// 		Name: to.Ptr("Primary"),
 	// 		ConnectionString: to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
 	// 		ID: to.Ptr("439AD01B4BE67DB1"),
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-26T22:59:24.2370906+00:00"); return t}()),
+	// 		LastModified: to.Ptr(time.Date(2018, time.April, 26, 22, 59, 24, 237090600, time.UTC)),
 	// 		ReadOnly: to.Ptr(false),
 	// 		Value: to.Ptr("000000000000000000000000000000000000000000000000000000"),
 	// 	},
@@ -1042,7 +1042,7 @@ func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdate() {
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armappconfiguration.ConfigurationStoreProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
 	// 				AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
 	// 				PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
@@ -1065,10 +1065,10 @@ func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdate() {
 	// 			Name: to.Ptr("Standard"),
 	// 		},
 	// 		SystemData: &armappconfiguration.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("foo@contoso.com"),
 	// 			CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("foo@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
 	// 		},
@@ -1115,7 +1115,7 @@ func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdateDisab
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armappconfiguration.ConfigurationStoreProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
 	// 				AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
 	// 				PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
@@ -1138,10 +1138,10 @@ func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdateDisab
 	// 			Name: to.Ptr("Standard"),
 	// 		},
 	// 		SystemData: &armappconfiguration.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("foo@contoso.com"),
 	// 			CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("foo@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
 	// 		},
@@ -1204,7 +1204,7 @@ func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdateWithI
 	// 		},
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armappconfiguration.ConfigurationStoreProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
 	// 				AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
 	// 				PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
@@ -1227,10 +1227,10 @@ func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdateWithI
 	// 			Name: to.Ptr("Standard"),
 	// 		},
 	// 		SystemData: &armappconfiguration.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("foo@contoso.com"),
 	// 			CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("foo@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
 	// 		},

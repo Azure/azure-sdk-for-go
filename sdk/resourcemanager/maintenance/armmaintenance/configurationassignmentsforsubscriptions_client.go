@@ -30,6 +30,9 @@ type ConfigurationAssignmentsForSubscriptionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConfigurationAssignmentsForSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationAssignmentsForSubscriptionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) CreateOrUpdate(ctx
 	if err != nil {
 		return ConfigurationAssignmentsForSubscriptionsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ConfigurationAssignmentsForSubscriptionsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ConfigurationAssignmentsForSubscriptionsClient) createOrUpdateCreateRequest(ctx context.Context, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, _ *ConfigurationAssignmentsForSubscriptionsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if configurationAssignmentName == "" {
@@ -96,8 +94,11 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) createOrUpdateCrea
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ConfigurationAssignmentsForSubscriptionsClient) createOrUpdateHandleResponse(resp *http.Response) (ConfigurationAssignmentsForSubscriptionsClientCreateOrUpdateResponse, error) {
+func (client *ConfigurationAssignmentsForSubscriptionsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationAssignmentsForSubscriptionsClientCreateOrUpdateResponse, error) {
 	result := ConfigurationAssignmentsForSubscriptionsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationAssignment); err != nil {
 		return ConfigurationAssignmentsForSubscriptionsClientCreateOrUpdateResponse{}, err
 	}
@@ -123,19 +124,14 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) Delete(ctx context
 	if err != nil {
 		return ConfigurationAssignmentsForSubscriptionsClientDeleteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ConfigurationAssignmentsForSubscriptionsClientDeleteResponse{}, err
-	}
-	resp, err := client.deleteHandleResponse(httpResp)
-	return resp, err
+	return client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
 }
 
 // deleteCreateRequest creates the Delete request.
 func (client *ConfigurationAssignmentsForSubscriptionsClient) deleteCreateRequest(ctx context.Context, configurationAssignmentName string, _ *ConfigurationAssignmentsForSubscriptionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if configurationAssignmentName == "" {
@@ -154,8 +150,11 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) deleteCreateReques
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *ConfigurationAssignmentsForSubscriptionsClient) deleteHandleResponse(resp *http.Response) (ConfigurationAssignmentsForSubscriptionsClientDeleteResponse, error) {
+func (client *ConfigurationAssignmentsForSubscriptionsClient) deleteHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationAssignmentsForSubscriptionsClientDeleteResponse, error) {
 	result := ConfigurationAssignmentsForSubscriptionsClientDeleteResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationAssignment); err != nil {
 		return ConfigurationAssignmentsForSubscriptionsClientDeleteResponse{}, err
 	}
@@ -181,19 +180,14 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) Get(ctx context.Co
 	if err != nil {
 		return ConfigurationAssignmentsForSubscriptionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConfigurationAssignmentsForSubscriptionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ConfigurationAssignmentsForSubscriptionsClient) getCreateRequest(ctx context.Context, configurationAssignmentName string, _ *ConfigurationAssignmentsForSubscriptionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if configurationAssignmentName == "" {
@@ -212,8 +206,11 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) getCreateRequest(c
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConfigurationAssignmentsForSubscriptionsClient) getHandleResponse(resp *http.Response) (ConfigurationAssignmentsForSubscriptionsClientGetResponse, error) {
+func (client *ConfigurationAssignmentsForSubscriptionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationAssignmentsForSubscriptionsClientGetResponse, error) {
 	result := ConfigurationAssignmentsForSubscriptionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationAssignment); err != nil {
 		return ConfigurationAssignmentsForSubscriptionsClientGetResponse{}, err
 	}
@@ -240,19 +237,14 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) Update(ctx context
 	if err != nil {
 		return ConfigurationAssignmentsForSubscriptionsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConfigurationAssignmentsForSubscriptionsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *ConfigurationAssignmentsForSubscriptionsClient) updateCreateRequest(ctx context.Context, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, _ *ConfigurationAssignmentsForSubscriptionsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if configurationAssignmentName == "" {
@@ -275,8 +267,11 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) updateCreateReques
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ConfigurationAssignmentsForSubscriptionsClient) updateHandleResponse(resp *http.Response) (ConfigurationAssignmentsForSubscriptionsClientUpdateResponse, error) {
+func (client *ConfigurationAssignmentsForSubscriptionsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationAssignmentsForSubscriptionsClientUpdateResponse, error) {
 	result := ConfigurationAssignmentsForSubscriptionsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationAssignment); err != nil {
 		return ConfigurationAssignmentsForSubscriptionsClientUpdateResponse{}, err
 	}

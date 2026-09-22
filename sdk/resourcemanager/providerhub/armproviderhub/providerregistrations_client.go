@@ -18,6 +18,8 @@ import (
 
 // ProviderRegistrationsClient contains the methods for the ProviderRegistrations group.
 // Don't use this type directly, use NewProviderRegistrationsClient() instead.
+//
+// Generated from API version 2025-10-01
 type ProviderRegistrationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type ProviderRegistrationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProviderRegistrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProviderRegistrationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,8 +46,6 @@ func NewProviderRegistrationsClient(subscriptionID string, credential azcore.Tok
 
 // BeginCreateOrUpdate - Creates or updates the provider registration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - properties - The provider registration properties supplied to the CreateOrUpdate operation.
 //   - options - ProviderRegistrationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ProviderRegistrationsClient.BeginCreateOrUpdate
@@ -66,8 +69,6 @@ func (client *ProviderRegistrationsClient) BeginCreateOrUpdate(ctx context.Conte
 
 // CreateOrUpdate - Creates or updates the provider registration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *ProviderRegistrationsClient) createOrUpdate(ctx context.Context, providerNamespace string, properties ProviderRegistration, options *ProviderRegistrationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProviderRegistrationsClient.BeginCreateOrUpdate"
@@ -83,8 +84,7 @@ func (client *ProviderRegistrationsClient) createOrUpdate(ctx context.Context, p
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -93,7 +93,7 @@ func (client *ProviderRegistrationsClient) createOrUpdate(ctx context.Context, p
 func (client *ProviderRegistrationsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, properties ProviderRegistration, _ *ProviderRegistrationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
@@ -105,8 +105,8 @@ func (client *ProviderRegistrationsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -117,8 +117,6 @@ func (client *ProviderRegistrationsClient) createOrUpdateCreateRequest(ctx conte
 
 // Delete - Deletes a provider registration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - options - ProviderRegistrationsClientDeleteOptions contains the optional parameters for the ProviderRegistrationsClient.Delete
 //     method.
@@ -137,8 +135,7 @@ func (client *ProviderRegistrationsClient) Delete(ctx context.Context, providerN
 		return ProviderRegistrationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ProviderRegistrationsClientDeleteResponse{}, err
+		return ProviderRegistrationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ProviderRegistrationsClientDeleteResponse{}, nil
 }
@@ -147,7 +144,7 @@ func (client *ProviderRegistrationsClient) Delete(ctx context.Context, providerN
 func (client *ProviderRegistrationsClient) deleteCreateRequest(ctx context.Context, providerNamespace string, _ *ProviderRegistrationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
@@ -159,15 +156,13 @@ func (client *ProviderRegistrationsClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // GenerateOperations - Generates the operations api for the given provider.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - options - ProviderRegistrationsClientGenerateOperationsOptions contains the optional parameters for the ProviderRegistrationsClient.GenerateOperations
 //     method.
@@ -185,19 +180,14 @@ func (client *ProviderRegistrationsClient) GenerateOperations(ctx context.Contex
 	if err != nil {
 		return ProviderRegistrationsClientGenerateOperationsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProviderRegistrationsClientGenerateOperationsResponse{}, err
-	}
-	resp, err := client.generateOperationsHandleResponse(httpResp)
-	return resp, err
+	return client.generateOperationsHandleResponse(httpResp, http.StatusOK)
 }
 
 // generateOperationsCreateRequest creates the GenerateOperations request.
 func (client *ProviderRegistrationsClient) generateOperationsCreateRequest(ctx context.Context, providerNamespace string, _ *ProviderRegistrationsClientGenerateOperationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/generateOperations"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
@@ -209,15 +199,18 @@ func (client *ProviderRegistrationsClient) generateOperationsCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // generateOperationsHandleResponse handles the GenerateOperations response.
-func (client *ProviderRegistrationsClient) generateOperationsHandleResponse(resp *http.Response) (ProviderRegistrationsClientGenerateOperationsResponse, error) {
+func (client *ProviderRegistrationsClient) generateOperationsHandleResponse(resp *http.Response, successCodes ...int) (ProviderRegistrationsClientGenerateOperationsResponse, error) {
 	result := ProviderRegistrationsClientGenerateOperationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationsDefinitionArray); err != nil {
 		return ProviderRegistrationsClientGenerateOperationsResponse{}, err
 	}
@@ -226,8 +219,6 @@ func (client *ProviderRegistrationsClient) generateOperationsHandleResponse(resp
 
 // Get - Gets the provider registration details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - options - ProviderRegistrationsClientGetOptions contains the optional parameters for the ProviderRegistrationsClient.Get
 //     method.
@@ -245,19 +236,14 @@ func (client *ProviderRegistrationsClient) Get(ctx context.Context, providerName
 	if err != nil {
 		return ProviderRegistrationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProviderRegistrationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ProviderRegistrationsClient) getCreateRequest(ctx context.Context, providerNamespace string, _ *ProviderRegistrationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
@@ -269,15 +255,18 @@ func (client *ProviderRegistrationsClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProviderRegistrationsClient) getHandleResponse(resp *http.Response) (ProviderRegistrationsClientGetResponse, error) {
+func (client *ProviderRegistrationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ProviderRegistrationsClientGetResponse, error) {
 	result := ProviderRegistrationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderRegistration); err != nil {
 		return ProviderRegistrationsClientGetResponse{}, err
 	}
@@ -285,8 +274,6 @@ func (client *ProviderRegistrationsClient) getHandleResponse(resp *http.Response
 }
 
 // NewListPager - Gets the list of the provider registrations in the subscription.
-//
-// Generated from API version 2024-09-01
 //   - options - ProviderRegistrationsClientListOptions contains the optional parameters for the ProviderRegistrationsClient.NewListPager
 //     method.
 func (client *ProviderRegistrationsClient) NewListPager(options *ProviderRegistrationsClientListOptions) *runtime.Pager[ProviderRegistrationsClientListResponse] {
@@ -300,39 +287,53 @@ func (client *ProviderRegistrationsClient) NewListPager(options *ProviderRegistr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ProviderRegistrationsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProviderRegistrationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ProviderRegistrationsClient) listCreateRequest(ctx context.Context, _ *ProviderRegistrationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ProviderRegistrationsClient) listCreateRequest(ctx context.Context, nextLink string, _ *ProviderRegistrationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251001)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ProviderRegistrationsClient) listHandleResponse(resp *http.Response) (ProviderRegistrationsClientListResponse, error) {
+func (client *ProviderRegistrationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ProviderRegistrationsClientListResponse, error) {
 	result := ProviderRegistrationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderRegistrationArrayResponseWithContinuation); err != nil {
 		return ProviderRegistrationsClientListResponse{}, err
 	}

@@ -60,7 +60,7 @@ func ExampleManagementClient_Predict() {
 	// 			Category: to.Ptr(armadvisor.CategoryCost),
 	// 			Impact: to.Ptr(armadvisor.ImpactLow),
 	// 			ImpactedField: to.Ptr("Microsoft.Compute/virtualMachines"),
-	// 			LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-14T14:47:18.436Z"); return t}()),
+	// 			LastUpdated: to.Ptr(time.Date(2022, time.February, 14, 14, 47, 18, 436000000, time.UTC)),
 	// 			ShortDescription: &armadvisor.ShortDescription{
 	// 				Solution: to.Ptr("We recommend using 8 instances of type Standard_Dv2."),
 	// 			},

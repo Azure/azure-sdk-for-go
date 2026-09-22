@@ -54,12 +54,7 @@ func (client *SellerResourceClient) List(ctx context.Context, body SellerResourc
 	if err != nil {
 		return SellerResourceClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SellerResourceClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -81,8 +76,11 @@ func (client *SellerResourceClient) listCreateRequest(ctx context.Context, body 
 }
 
 // listHandleResponse handles the List response.
-func (client *SellerResourceClient) listHandleResponse(resp *http.Response) (SellerResourceClientListResponse, error) {
+func (client *SellerResourceClient) listHandleResponse(resp *http.Response, successCodes ...int) (SellerResourceClientListResponse, error) {
 	result := SellerResourceClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MaccArray); err != nil {
 		return SellerResourceClientListResponse{}, err
 	}

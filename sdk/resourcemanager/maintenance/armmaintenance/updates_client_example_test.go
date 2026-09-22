@@ -40,7 +40,7 @@ func ExampleUpdatesClient_NewListPager() {
 		// 				ImpactDurationInSec: to.Ptr[int32](1440),
 		// 				ImpactType: to.Ptr(armmaintenance.ImpactType("Reboot")),
 		// 				MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeResource),
-		// 				NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-09T06:17:44.235Z"); return t}()),
+		// 				NotBefore: to.Ptr(time.Date(2018, time.October, 9, 6, 17, 44, 235000000, time.UTC)),
 		// 				Properties: &armmaintenance.UpdateProperties{
 		// 					ResourceID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Compute/virtualMachineScaleSets/smdtest1"),
 		// 				},
@@ -81,7 +81,7 @@ func ExampleUpdatesClient_NewListParentPager() {
 		// 				ImpactDurationInSec: to.Ptr[int32](1440),
 		// 				ImpactType: to.Ptr(armmaintenance.ImpactType("Reboot")),
 		// 				MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeResource),
-		// 				NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-09T06:17:44.235Z"); return t}()),
+		// 				NotBefore: to.Ptr(time.Date(2018, time.October, 9, 6, 17, 44, 235000000, time.UTC)),
 		// 				Properties: &armmaintenance.UpdateProperties{
 		// 					ResourceID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Compute/virtualMachineScaleSets/smdtest1/virtualMachines/1"),
 		// 				},

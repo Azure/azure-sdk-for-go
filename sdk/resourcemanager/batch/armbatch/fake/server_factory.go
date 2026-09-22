@@ -82,37 +82,37 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "AccountClient":
-		initServer(s, &s.trAccountServer, func() *AccountServerTransport { return NewAccountServerTransport(&s.srv.AccountServer) })
+		initServer(&s.trMu, &s.trAccountServer, func() *AccountServerTransport { return NewAccountServerTransport(&s.srv.AccountServer) })
 		resp, err = s.trAccountServer.Do(req)
 	case "ApplicationClient":
-		initServer(s, &s.trApplicationServer, func() *ApplicationServerTransport { return NewApplicationServerTransport(&s.srv.ApplicationServer) })
+		initServer(&s.trMu, &s.trApplicationServer, func() *ApplicationServerTransport { return NewApplicationServerTransport(&s.srv.ApplicationServer) })
 		resp, err = s.trApplicationServer.Do(req)
 	case "ApplicationPackageClient":
-		initServer(s, &s.trApplicationPackageServer, func() *ApplicationPackageServerTransport {
+		initServer(&s.trMu, &s.trApplicationPackageServer, func() *ApplicationPackageServerTransport {
 			return NewApplicationPackageServerTransport(&s.srv.ApplicationPackageServer)
 		})
 		resp, err = s.trApplicationPackageServer.Do(req)
 	case "LocationClient":
-		initServer(s, &s.trLocationServer, func() *LocationServerTransport { return NewLocationServerTransport(&s.srv.LocationServer) })
+		initServer(&s.trMu, &s.trLocationServer, func() *LocationServerTransport { return NewLocationServerTransport(&s.srv.LocationServer) })
 		resp, err = s.trLocationServer.Do(req)
 	case "NetworkSecurityPerimeterClient":
-		initServer(s, &s.trNetworkSecurityPerimeterServer, func() *NetworkSecurityPerimeterServerTransport {
+		initServer(&s.trMu, &s.trNetworkSecurityPerimeterServer, func() *NetworkSecurityPerimeterServerTransport {
 			return NewNetworkSecurityPerimeterServerTransport(&s.srv.NetworkSecurityPerimeterServer)
 		})
 		resp, err = s.trNetworkSecurityPerimeterServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "PoolClient":
-		initServer(s, &s.trPoolServer, func() *PoolServerTransport { return NewPoolServerTransport(&s.srv.PoolServer) })
+		initServer(&s.trMu, &s.trPoolServer, func() *PoolServerTransport { return NewPoolServerTransport(&s.srv.PoolServer) })
 		resp, err = s.trPoolServer.Do(req)
 	case "PrivateEndpointConnectionClient":
-		initServer(s, &s.trPrivateEndpointConnectionServer, func() *PrivateEndpointConnectionServerTransport {
+		initServer(&s.trMu, &s.trPrivateEndpointConnectionServer, func() *PrivateEndpointConnectionServerTransport {
 			return NewPrivateEndpointConnectionServerTransport(&s.srv.PrivateEndpointConnectionServer)
 		})
 		resp, err = s.trPrivateEndpointConnectionServer.Do(req)
 	case "PrivateLinkResourceClient":
-		initServer(s, &s.trPrivateLinkResourceServer, func() *PrivateLinkResourceServerTransport {
+		initServer(&s.trMu, &s.trPrivateLinkResourceServer, func() *PrivateLinkResourceServerTransport {
 			return NewPrivateLinkResourceServerTransport(&s.srv.PrivateLinkResourceServer)
 		})
 		resp, err = s.trPrivateLinkResourceServer.Do(req)
@@ -125,12 +125,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

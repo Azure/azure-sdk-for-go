@@ -30,6 +30,9 @@ type ExposureControlClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewExposureControlClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExposureControlClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *ExposureControlClient) GetFeatureValue(ctx context.Context, locati
 	if err != nil {
 		return ExposureControlClientGetFeatureValueResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExposureControlClientGetFeatureValueResponse{}, err
-	}
-	resp, err := client.getFeatureValueHandleResponse(httpResp)
-	return resp, err
+	return client.getFeatureValueHandleResponse(httpResp, http.StatusOK)
 }
 
 // getFeatureValueCreateRequest creates the GetFeatureValue request.
 func (client *ExposureControlClient) getFeatureValueCreateRequest(ctx context.Context, locationID string, exposureControlRequest ExposureControlRequest, _ *ExposureControlClientGetFeatureValueOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/locations/{locationId}/getFeatureValue"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if locationID == "" {
@@ -96,8 +94,11 @@ func (client *ExposureControlClient) getFeatureValueCreateRequest(ctx context.Co
 }
 
 // getFeatureValueHandleResponse handles the GetFeatureValue response.
-func (client *ExposureControlClient) getFeatureValueHandleResponse(resp *http.Response) (ExposureControlClientGetFeatureValueResponse, error) {
+func (client *ExposureControlClient) getFeatureValueHandleResponse(resp *http.Response, successCodes ...int) (ExposureControlClientGetFeatureValueResponse, error) {
 	result := ExposureControlClientGetFeatureValueResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExposureControlResponse); err != nil {
 		return ExposureControlClientGetFeatureValueResponse{}, err
 	}
@@ -125,19 +126,14 @@ func (client *ExposureControlClient) GetFeatureValueByFactory(ctx context.Contex
 	if err != nil {
 		return ExposureControlClientGetFeatureValueByFactoryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExposureControlClientGetFeatureValueByFactoryResponse{}, err
-	}
-	resp, err := client.getFeatureValueByFactoryHandleResponse(httpResp)
-	return resp, err
+	return client.getFeatureValueByFactoryHandleResponse(httpResp, http.StatusOK)
 }
 
 // getFeatureValueByFactoryCreateRequest creates the GetFeatureValueByFactory request.
 func (client *ExposureControlClient) getFeatureValueByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, exposureControlRequest ExposureControlRequest, _ *ExposureControlClientGetFeatureValueByFactoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getFeatureValue"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -164,8 +160,11 @@ func (client *ExposureControlClient) getFeatureValueByFactoryCreateRequest(ctx c
 }
 
 // getFeatureValueByFactoryHandleResponse handles the GetFeatureValueByFactory response.
-func (client *ExposureControlClient) getFeatureValueByFactoryHandleResponse(resp *http.Response) (ExposureControlClientGetFeatureValueByFactoryResponse, error) {
+func (client *ExposureControlClient) getFeatureValueByFactoryHandleResponse(resp *http.Response, successCodes ...int) (ExposureControlClientGetFeatureValueByFactoryResponse, error) {
 	result := ExposureControlClientGetFeatureValueByFactoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExposureControlResponse); err != nil {
 		return ExposureControlClientGetFeatureValueByFactoryResponse{}, err
 	}
@@ -193,19 +192,14 @@ func (client *ExposureControlClient) QueryFeatureValuesByFactory(ctx context.Con
 	if err != nil {
 		return ExposureControlClientQueryFeatureValuesByFactoryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExposureControlClientQueryFeatureValuesByFactoryResponse{}, err
-	}
-	resp, err := client.queryFeatureValuesByFactoryHandleResponse(httpResp)
-	return resp, err
+	return client.queryFeatureValuesByFactoryHandleResponse(httpResp, http.StatusOK)
 }
 
 // queryFeatureValuesByFactoryCreateRequest creates the QueryFeatureValuesByFactory request.
 func (client *ExposureControlClient) queryFeatureValuesByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, exposureControlBatchRequest ExposureControlBatchRequest, _ *ExposureControlClientQueryFeatureValuesByFactoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/queryFeaturesValue"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -232,8 +226,11 @@ func (client *ExposureControlClient) queryFeatureValuesByFactoryCreateRequest(ct
 }
 
 // queryFeatureValuesByFactoryHandleResponse handles the QueryFeatureValuesByFactory response.
-func (client *ExposureControlClient) queryFeatureValuesByFactoryHandleResponse(resp *http.Response) (ExposureControlClientQueryFeatureValuesByFactoryResponse, error) {
+func (client *ExposureControlClient) queryFeatureValuesByFactoryHandleResponse(resp *http.Response, successCodes ...int) (ExposureControlClientQueryFeatureValuesByFactoryResponse, error) {
 	result := ExposureControlClientQueryFeatureValuesByFactoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExposureControlBatchResponse); err != nil {
 		return ExposureControlClientQueryFeatureValuesByFactoryResponse{}, err
 	}

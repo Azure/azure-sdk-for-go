@@ -30,6 +30,9 @@ type FactoriesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFactoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FactoriesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *FactoriesClient) ConfigureFactoryRepo(ctx context.Context, locatio
 	if err != nil {
 		return FactoriesClientConfigureFactoryRepoResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FactoriesClientConfigureFactoryRepoResponse{}, err
-	}
-	resp, err := client.configureFactoryRepoHandleResponse(httpResp)
-	return resp, err
+	return client.configureFactoryRepoHandleResponse(httpResp, http.StatusOK)
 }
 
 // configureFactoryRepoCreateRequest creates the ConfigureFactoryRepo request.
 func (client *FactoriesClient) configureFactoryRepoCreateRequest(ctx context.Context, locationID string, factoryRepoUpdate FactoryRepoUpdate, _ *FactoriesClientConfigureFactoryRepoOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/locations/{locationId}/configureFactoryRepo"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if locationID == "" {
@@ -96,8 +94,11 @@ func (client *FactoriesClient) configureFactoryRepoCreateRequest(ctx context.Con
 }
 
 // configureFactoryRepoHandleResponse handles the ConfigureFactoryRepo response.
-func (client *FactoriesClient) configureFactoryRepoHandleResponse(resp *http.Response) (FactoriesClientConfigureFactoryRepoResponse, error) {
+func (client *FactoriesClient) configureFactoryRepoHandleResponse(resp *http.Response, successCodes ...int) (FactoriesClientConfigureFactoryRepoResponse, error) {
 	result := FactoriesClientConfigureFactoryRepoResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Factory); err != nil {
 		return FactoriesClientConfigureFactoryRepoResponse{}, err
 	}
@@ -125,19 +126,14 @@ func (client *FactoriesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return FactoriesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FactoriesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *FactoriesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, factory Factory, options *FactoriesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -167,8 +163,11 @@ func (client *FactoriesClient) createOrUpdateCreateRequest(ctx context.Context, 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *FactoriesClient) createOrUpdateHandleResponse(resp *http.Response) (FactoriesClientCreateOrUpdateResponse, error) {
+func (client *FactoriesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (FactoriesClientCreateOrUpdateResponse, error) {
 	result := FactoriesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Factory); err != nil {
 		return FactoriesClientCreateOrUpdateResponse{}, err
 	}
@@ -195,8 +194,7 @@ func (client *FactoriesClient) Delete(ctx context.Context, resourceGroupName str
 		return FactoriesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return FactoriesClientDeleteResponse{}, err
+		return FactoriesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return FactoriesClientDeleteResponse{}, nil
 }
@@ -205,7 +203,7 @@ func (client *FactoriesClient) Delete(ctx context.Context, resourceGroupName str
 func (client *FactoriesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, _ *FactoriesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -245,19 +243,14 @@ func (client *FactoriesClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return FactoriesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNotModified) {
-		err = runtime.NewResponseError(httpResp)
-		return FactoriesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusNotModified)
 }
 
 // getCreateRequest creates the Get request.
 func (client *FactoriesClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *FactoriesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -283,8 +276,11 @@ func (client *FactoriesClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *FactoriesClient) getHandleResponse(resp *http.Response) (FactoriesClientGetResponse, error) {
+func (client *FactoriesClient) getHandleResponse(resp *http.Response, successCodes ...int) (FactoriesClientGetResponse, error) {
 	result := FactoriesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Factory); err != nil {
 		return FactoriesClientGetResponse{}, err
 	}
@@ -312,19 +308,14 @@ func (client *FactoriesClient) GetDataPlaneAccess(ctx context.Context, resourceG
 	if err != nil {
 		return FactoriesClientGetDataPlaneAccessResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FactoriesClientGetDataPlaneAccessResponse{}, err
-	}
-	resp, err := client.getDataPlaneAccessHandleResponse(httpResp)
-	return resp, err
+	return client.getDataPlaneAccessHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDataPlaneAccessCreateRequest creates the GetDataPlaneAccess request.
 func (client *FactoriesClient) getDataPlaneAccessCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, policy UserAccessPolicy, _ *FactoriesClientGetDataPlaneAccessOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getDataPlaneAccess"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -351,8 +342,11 @@ func (client *FactoriesClient) getDataPlaneAccessCreateRequest(ctx context.Conte
 }
 
 // getDataPlaneAccessHandleResponse handles the GetDataPlaneAccess response.
-func (client *FactoriesClient) getDataPlaneAccessHandleResponse(resp *http.Response) (FactoriesClientGetDataPlaneAccessResponse, error) {
+func (client *FactoriesClient) getDataPlaneAccessHandleResponse(resp *http.Response, successCodes ...int) (FactoriesClientGetDataPlaneAccessResponse, error) {
 	result := FactoriesClientGetDataPlaneAccessResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessPolicyResponse); err != nil {
 		return FactoriesClientGetDataPlaneAccessResponse{}, err
 	}
@@ -380,19 +374,14 @@ func (client *FactoriesClient) GetGitHubAccessToken(ctx context.Context, resourc
 	if err != nil {
 		return FactoriesClientGetGitHubAccessTokenResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FactoriesClientGetGitHubAccessTokenResponse{}, err
-	}
-	resp, err := client.getGitHubAccessTokenHandleResponse(httpResp)
-	return resp, err
+	return client.getGitHubAccessTokenHandleResponse(httpResp, http.StatusOK)
 }
 
 // getGitHubAccessTokenCreateRequest creates the GetGitHubAccessToken request.
 func (client *FactoriesClient) getGitHubAccessTokenCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, gitHubAccessTokenRequest GitHubAccessTokenRequest, _ *FactoriesClientGetGitHubAccessTokenOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getGitHubAccessToken"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -419,8 +408,11 @@ func (client *FactoriesClient) getGitHubAccessTokenCreateRequest(ctx context.Con
 }
 
 // getGitHubAccessTokenHandleResponse handles the GetGitHubAccessToken response.
-func (client *FactoriesClient) getGitHubAccessTokenHandleResponse(resp *http.Response) (FactoriesClientGetGitHubAccessTokenResponse, error) {
+func (client *FactoriesClient) getGitHubAccessTokenHandleResponse(resp *http.Response, successCodes ...int) (FactoriesClientGetGitHubAccessTokenResponse, error) {
 	result := FactoriesClientGetGitHubAccessTokenResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GitHubAccessTokenResponse); err != nil {
 		return FactoriesClientGetGitHubAccessTokenResponse{}, err
 	}
@@ -440,39 +432,53 @@ func (client *FactoriesClient) NewListPager(options *FactoriesClientListOptions)
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return FactoriesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FactoriesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *FactoriesClient) listCreateRequest(ctx context.Context, _ *FactoriesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/factories"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *FactoriesClient) listCreateRequest(ctx context.Context, nextLink string, _ *FactoriesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/factories"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20180601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *FactoriesClient) listHandleResponse(resp *http.Response) (FactoriesClientListResponse, error) {
+func (client *FactoriesClient) listHandleResponse(resp *http.Response, successCodes ...int) (FactoriesClientListResponse, error) {
 	result := FactoriesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FactoryListResponse); err != nil {
 		return FactoriesClientListResponse{}, err
 	}
@@ -494,43 +500,57 @@ func (client *FactoriesClient) NewListByResourceGroupPager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return FactoriesClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FactoriesClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *FactoriesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *FactoriesClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *FactoriesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *FactoriesClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20180601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *FactoriesClient) listByResourceGroupHandleResponse(resp *http.Response) (FactoriesClientListByResourceGroupResponse, error) {
+func (client *FactoriesClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (FactoriesClientListByResourceGroupResponse, error) {
 	result := FactoriesClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FactoryListResponse); err != nil {
 		return FactoriesClientListByResourceGroupResponse{}, err
 	}
@@ -557,19 +577,14 @@ func (client *FactoriesClient) Update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return FactoriesClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FactoriesClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *FactoriesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, factoryUpdateParameters FactoryUpdateParameters, _ *FactoriesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -596,8 +611,11 @@ func (client *FactoriesClient) updateCreateRequest(ctx context.Context, resource
 }
 
 // updateHandleResponse handles the Update response.
-func (client *FactoriesClient) updateHandleResponse(resp *http.Response) (FactoriesClientUpdateResponse, error) {
+func (client *FactoriesClient) updateHandleResponse(resp *http.Response, successCodes ...int) (FactoriesClientUpdateResponse, error) {
 	result := FactoriesClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Factory); err != nil {
 		return FactoriesClientUpdateResponse{}, err
 	}

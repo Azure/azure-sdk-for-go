@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/SyncAgentCreate.json
+// Generated from example definition: 2026-08-01-preview/SyncAgentCreate.json
 func ExampleSyncAgentsClient_BeginCreateOrUpdate_createANewSyncAgent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleSyncAgentsClient_BeginCreateOrUpdate_createANewSyncAgent() {
 	// 		Type: to.Ptr("Microsoft.Sql/servers/syncAgents"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-Onebox/providers/Microsoft.Sql/servers/syncagentcrud-8475/syncAgents/syncagentcrud-3187"),
 	// 		Properties: &armsql.SyncAgentProperties{
-	// 			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T23:59:59.9999999Z"); return t}()),
+	// 			ExpiryTime: to.Ptr(time.Date(9999, time.December, 31, 23, 59, 59, 999999900, time.UTC)),
 	// 			IsUpToDate: to.Ptr(true),
 	// 			State: to.Ptr(armsql.SyncAgentStateNeverConnected),
 	// 			SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-Onebox/providers/Microsoft.Sql/servers/syncagentcrud-8475/databases/sync"),
@@ -54,7 +54,7 @@ func ExampleSyncAgentsClient_BeginCreateOrUpdate_createANewSyncAgent() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncAgentUpdate.json
+// Generated from example definition: 2026-08-01-preview/SyncAgentUpdate.json
 func ExampleSyncAgentsClient_BeginCreateOrUpdate_updateASyncAgent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleSyncAgentsClient_BeginCreateOrUpdate_updateASyncAgent() {
 	// 		Type: to.Ptr("Microsoft.Sql/servers/syncAgents"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-Onebox/providers/Microsoft.Sql/servers/syncagentcrud-8475/syncAgents/syncagentcrud-3187"),
 	// 		Properties: &armsql.SyncAgentProperties{
-	// 			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T23:59:59.9999999Z"); return t}()),
+	// 			ExpiryTime: to.Ptr(time.Date(9999, time.December, 31, 23, 59, 59, 999999900, time.UTC)),
 	// 			IsUpToDate: to.Ptr(true),
 	// 			State: to.Ptr(armsql.SyncAgentStateNeverConnected),
 	// 			SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-Onebox/providers/Microsoft.Sql/servers/syncagentcrud-8475/databases/sync"),
@@ -96,7 +96,7 @@ func ExampleSyncAgentsClient_BeginCreateOrUpdate_updateASyncAgent() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncAgentDelete.json
+// Generated from example definition: 2026-08-01-preview/SyncAgentDelete.json
 func ExampleSyncAgentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleSyncAgentsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncAgentGenerateKey.json
+// Generated from example definition: 2026-08-01-preview/SyncAgentGenerateKey.json
 func ExampleSyncAgentsClient_GenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleSyncAgentsClient_GenerateKey() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncAgentGet.json
+// Generated from example definition: 2026-08-01-preview/SyncAgentGet.json
 func ExampleSyncAgentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func ExampleSyncAgentsClient_Get() {
 	// 		Type: to.Ptr("Microsoft.Sql/servers/syncAgents"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-Onebox/providers/Microsoft.Sql/servers/syncagentcrud-8475/syncAgents/syncagentcrud-3187"),
 	// 		Properties: &armsql.SyncAgentProperties{
-	// 			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T23:59:59.9999999Z"); return t}()),
+	// 			ExpiryTime: to.Ptr(time.Date(9999, time.December, 31, 23, 59, 59, 999999900, time.UTC)),
 	// 			IsUpToDate: to.Ptr(true),
 	// 			State: to.Ptr(armsql.SyncAgentStateNeverConnected),
 	// 			SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-Onebox/providers/Microsoft.Sql/servers/syncagentcrud-8475/databases/sync"),
@@ -181,7 +181,7 @@ func ExampleSyncAgentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncAgentListByServer.json
+// Generated from example definition: 2026-08-01-preview/SyncAgentListByServer.json
 func ExampleSyncAgentsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +211,7 @@ func ExampleSyncAgentsClient_NewListByServerPager() {
 		// 				Type: to.Ptr("Microsoft.Sql/servers/syncAgents"),
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-Onebox/providers/Microsoft.Sql/servers/syncagentcrud-8475/syncAgents/syncagentcrud-3187"),
 		// 				Properties: &armsql.SyncAgentProperties{
-		// 					ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T23:59:59.9999999Z"); return t}()),
+		// 					ExpiryTime: to.Ptr(time.Date(9999, time.December, 31, 23, 59, 59, 999999900, time.UTC)),
 		// 					IsUpToDate: to.Ptr(true),
 		// 					State: to.Ptr(armsql.SyncAgentStateNeverConnected),
 		// 					SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-Onebox/providers/Microsoft.Sql/servers/syncagentcrud-8475/databases/sync"),
@@ -224,7 +224,7 @@ func ExampleSyncAgentsClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncAgentGetLinkedDatabases.json
+// Generated from example definition: 2026-08-01-preview/SyncAgentGetLinkedDatabases.json
 func ExampleSyncAgentsClient_NewListLinkedDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/NetworkManagerSecurityAdminConfigurationPut.json
+// Generated from example definition: 2026-01-01/NetworkManagerSecurityAdminConfigurationPut.json
 func ExampleSecurityAdminConfigurationsClient_CreateOrUpdate_createNetworkManagerSecurityAdminConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleSecurityAdminConfigurationsClient_CreateOrUpdate_createNetworkManage
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerSecurityAdminConfigurationPut_ManualAggregation.json
+// Generated from example definition: 2026-01-01/NetworkManagerSecurityAdminConfigurationPut_ManualAggregation.json
 func ExampleSecurityAdminConfigurationsClient_CreateOrUpdate_createManualModeSecurityAdminConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleSecurityAdminConfigurationsClient_CreateOrUpdate_createManualModeSec
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerSecurityAdminConfigurationDelete.json
+// Generated from example definition: 2026-01-01/NetworkManagerSecurityAdminConfigurationDelete.json
 func ExampleSecurityAdminConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExampleSecurityAdminConfigurationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerSecurityAdminConfigurationGet.json
+// Generated from example definition: 2026-01-01/NetworkManagerSecurityAdminConfigurationGet.json
 func ExampleSecurityAdminConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +177,7 @@ func ExampleSecurityAdminConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerSecurityAdminConfigurationList.json
+// Generated from example definition: 2026-01-01/NetworkManagerSecurityAdminConfigurationList.json
 func ExampleSecurityAdminConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

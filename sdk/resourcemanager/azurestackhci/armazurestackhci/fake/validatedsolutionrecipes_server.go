@@ -92,7 +92,7 @@ func (v *ValidatedSolutionRecipesServerTransport) dispatchGet(req *http.Request)
 	if v.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validatedSolutionRecipes/(?P<validatedSolutionRecipeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validatedSolutionRecipes/(?P<validatedSolutionRecipeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -127,7 +127,7 @@ func (v *ValidatedSolutionRecipesServerTransport) dispatchNewListBySubscriptionL
 	}
 	newListBySubscriptionLocationResourcePager := v.newListBySubscriptionLocationResourcePager.get(req)
 	if newListBySubscriptionLocationResourcePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validatedSolutionRecipes`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validatedSolutionRecipes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

@@ -30,6 +30,9 @@ type DeletedAutomationAccountsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDeletedAutomationAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeletedAutomationAccountsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -59,19 +62,14 @@ func (client *DeletedAutomationAccountsClient) ListBySubscription(ctx context.Co
 	if err != nil {
 		return DeletedAutomationAccountsClientListBySubscriptionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeletedAutomationAccountsClientListBySubscriptionResponse{}, err
-	}
-	resp, err := client.listBySubscriptionHandleResponse(httpResp)
-	return resp, err
+	return client.listBySubscriptionHandleResponse(httpResp, http.StatusOK)
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *DeletedAutomationAccountsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *DeletedAutomationAccountsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Automation/deletedAutomationAccounts"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -86,8 +84,11 @@ func (client *DeletedAutomationAccountsClient) listBySubscriptionCreateRequest(c
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *DeletedAutomationAccountsClient) listBySubscriptionHandleResponse(resp *http.Response) (DeletedAutomationAccountsClientListBySubscriptionResponse, error) {
+func (client *DeletedAutomationAccountsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (DeletedAutomationAccountsClientListBySubscriptionResponse, error) {
 	result := DeletedAutomationAccountsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedAutomationAccountListResult); err != nil {
 		return DeletedAutomationAccountsClientListBySubscriptionResponse{}, err
 	}

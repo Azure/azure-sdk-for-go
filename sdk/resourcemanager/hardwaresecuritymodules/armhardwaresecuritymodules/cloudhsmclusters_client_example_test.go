@@ -42,9 +42,9 @@ func ExampleCloudHsmClustersClient_BeginBackup() {
 	// 	BackupResult: armhardwaresecuritymodules.BackupResult{
 	// 		Properties: &armhardwaresecuritymodules.BackupResultProperties{
 	// 			AzureStorageBlobContainerURI: to.Ptr("https://myaccount.blob.core.windows.net/sascontainer/sasContainer"),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+	// 			EndTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 	// 			JobID: to.Ptr("572a45927fc240e1ac075de27371680b"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 	// 			Status: to.Ptr(armhardwaresecuritymodules.BackupRestoreOperationStatusInProgress),
 	// 			StatusDetails: to.Ptr("Backup operation is in progress"),
 	// 		},
@@ -120,10 +120,10 @@ func ExampleCloudHsmClustersClient_BeginCreateOrUpdate() {
 	// 			Family: to.Ptr(armhardwaresecuritymodules.CloudHsmClusterSKUFamilyB),
 	// 		},
 	// 		SystemData: &armhardwaresecuritymodules.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("CHsmUser1"),
 	// 			CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("CHsmUser2"),
 	// 			LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 	// 		},
@@ -201,10 +201,10 @@ func ExampleCloudHsmClustersClient_Get() {
 	// 			Family: to.Ptr(armhardwaresecuritymodules.CloudHsmClusterSKUFamilyB),
 	// 		},
 	// 		SystemData: &armhardwaresecuritymodules.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("CHsmUser1"),
 	// 			CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("CHsmUser2"),
 	// 			LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 	// 		},
@@ -268,10 +268,10 @@ func ExampleCloudHsmClustersClient_NewListByResourceGroupPager() {
 		// 					Family: to.Ptr(armhardwaresecuritymodules.CloudHsmClusterSKUFamilyB),
 		// 				},
 		// 				SystemData: &armhardwaresecuritymodules.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("CHsmUser1"),
 		// 					CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("CHsmUser2"),
 		// 					LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 		// 				},
@@ -305,10 +305,10 @@ func ExampleCloudHsmClustersClient_NewListByResourceGroupPager() {
 		// 					Family: to.Ptr(armhardwaresecuritymodules.CloudHsmClusterSKUFamilyB),
 		// 				},
 		// 				SystemData: &armhardwaresecuritymodules.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("CHsmUser1"),
 		// 					CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("CHsmUser2"),
 		// 					LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 		// 				},
@@ -373,10 +373,10 @@ func ExampleCloudHsmClustersClient_NewListBySubscriptionPager() {
 		// 					Family: to.Ptr(armhardwaresecuritymodules.CloudHsmClusterSKUFamilyB),
 		// 				},
 		// 				SystemData: &armhardwaresecuritymodules.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("CHsmUser1"),
 		// 					CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("CHsmUser2"),
 		// 					LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 		// 				},
@@ -411,10 +411,10 @@ func ExampleCloudHsmClustersClient_NewListBySubscriptionPager() {
 		// 					Family: to.Ptr(armhardwaresecuritymodules.CloudHsmClusterSKUFamilyB),
 		// 				},
 		// 				SystemData: &armhardwaresecuritymodules.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("CHsmUser1"),
 		// 					CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("CHsmUser2"),
 		// 					LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 		// 				},
@@ -457,9 +457,9 @@ func ExampleCloudHsmClustersClient_BeginRestore() {
 	// res = armhardwaresecuritymodules.CloudHsmClustersClientRestoreResponse{
 	// 	RestoreResult: armhardwaresecuritymodules.RestoreResult{
 	// 		Properties: &armhardwaresecuritymodules.BackupRestoreBaseResultProperties{
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+	// 			EndTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 	// 			JobID: to.Ptr("572a45927fc240e1ac075de27371680b"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 	// 			Status: to.Ptr(armhardwaresecuritymodules.BackupRestoreOperationStatusInProgress),
 	// 			StatusDetails: to.Ptr("Restore operation is in progress"),
 	// 		},
@@ -528,10 +528,10 @@ func ExampleCloudHsmClustersClient_BeginUpdate() {
 	// 			Family: to.Ptr(armhardwaresecuritymodules.CloudHsmClusterSKUFamilyB),
 	// 		},
 	// 		SystemData: &armhardwaresecuritymodules.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("CHsmUser1"),
 	// 			CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("CHsmUser2"),
 	// 			LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 	// 		},
@@ -574,9 +574,9 @@ func ExampleCloudHsmClustersClient_BeginValidateBackupProperties() {
 	// 	BackupResult: armhardwaresecuritymodules.BackupResult{
 	// 		Properties: &armhardwaresecuritymodules.BackupResultProperties{
 	// 			AzureStorageBlobContainerURI: to.Ptr("https://myaccount.blob.core.windows.net/sascontainer/sasContainer"),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+	// 			EndTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 	// 			JobID: to.Ptr("572a45927fc240e1ac075de27371680b"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 	// 			Status: to.Ptr(armhardwaresecuritymodules.BackupRestoreOperationStatusInProgress),
 	// 			StatusDetails: to.Ptr("Backup operation is in progress"),
 	// 		},
@@ -613,9 +613,9 @@ func ExampleCloudHsmClustersClient_BeginValidateRestoreProperties() {
 	// res = armhardwaresecuritymodules.CloudHsmClustersClientValidateRestorePropertiesResponse{
 	// 	RestoreResult: armhardwaresecuritymodules.RestoreResult{
 	// 		Properties: &armhardwaresecuritymodules.BackupRestoreBaseResultProperties{
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+	// 			EndTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 	// 			JobID: to.Ptr("572a45927fc240e1ac075de27371680b"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 	// 			Status: to.Ptr(armhardwaresecuritymodules.BackupRestoreOperationStatusInProgress),
 	// 			StatusDetails: to.Ptr("Restore operation is in progress"),
 	// 		},

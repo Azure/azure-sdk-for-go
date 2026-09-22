@@ -17,6 +17,7 @@ type runSummary struct {
 	DurationSeconds  int     `json:"durationSeconds"`
 	WarmupSeconds    int     `json:"warmupSeconds"`
 	Parallel         int     `json:"parallel"`
+	Iterations       int     `json:"iterations"`
 	TotalOperations  int64   `json:"totalOperations"`
 	OpsPerSecond     float64 `json:"opsPerSecond"`
 	SecondsPerOp     float64 `json:"secondsPerOp"`
@@ -77,6 +78,7 @@ func writeCSV(path string, summary runSummary) error {
 		{"durationSeconds", fmt.Sprintf("%d", summary.DurationSeconds)},
 		{"warmupSeconds", fmt.Sprintf("%d", summary.WarmupSeconds)},
 		{"parallel", fmt.Sprintf("%d", summary.Parallel)},
+		{"iterations", fmt.Sprintf("%d", summary.Iterations)},
 		{"totalOperations", fmt.Sprintf("%d", summary.TotalOperations)},
 		{"opsPerSecond", fmt.Sprintf("%.6f", summary.OpsPerSecond)},
 		{"secondsPerOp", fmt.Sprintf("%.6f", summary.SecondsPerOp)},
@@ -119,6 +121,7 @@ func renderText(summary runSummary) string {
 		fmt.Sprintf("Duration(s): %d", summary.DurationSeconds),
 		fmt.Sprintf("Warmup(s): %d", summary.WarmupSeconds),
 		fmt.Sprintf("Parallel: %d", summary.Parallel),
+		fmt.Sprintf("Iterations: %d", summary.Iterations),
 		fmt.Sprintf("TotalOperations: %d", summary.TotalOperations),
 		fmt.Sprintf("OpsPerSecond: %.6f", summary.OpsPerSecond),
 		fmt.Sprintf("SecondsPerOp: %.6f", summary.SecondsPerOp),
@@ -160,6 +163,7 @@ func renderMarkdown(summary runSummary) string {
 		fmt.Sprintf("| Duration (s) | %d |", summary.DurationSeconds),
 		fmt.Sprintf("| Warmup (s) | %d |", summary.WarmupSeconds),
 		fmt.Sprintf("| Parallel | %d |", summary.Parallel),
+		fmt.Sprintf("| Iterations | %d |", summary.Iterations),
 		fmt.Sprintf("| Total Operations | %d |", summary.TotalOperations),
 		fmt.Sprintf("| Ops/s | %.6f |", summary.OpsPerSecond),
 		fmt.Sprintf("| Seconds/op | %.6f |", summary.SecondsPerOp),
@@ -205,6 +209,7 @@ func newRunSummary(testName string, totalOperations int64, opsPerSecond float64,
 		DurationSeconds:  duration,
 		WarmupSeconds:    warmUpDuration,
 		Parallel:         parallelInstances,
+		Iterations:       iterations,
 		TotalOperations:  totalOperations,
 		OpsPerSecond:     opsPerSecond,
 		SecondsPerOp:     secondsPerOp,

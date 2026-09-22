@@ -30,6 +30,9 @@ type ClusterRecoveryPointClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewClusterRecoveryPointClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClusterRecoveryPointClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,19 +70,14 @@ func (client *ClusterRecoveryPointClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return ClusterRecoveryPointClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClusterRecoveryPointClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ClusterRecoveryPointClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicationProtectionClusterName string, recoveryPointName string, _ *ClusterRecoveryPointClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionClusters/{replicationProtectionClusterName}/recoveryPoints/{recoveryPointName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -118,8 +116,11 @@ func (client *ClusterRecoveryPointClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *ClusterRecoveryPointClient) getHandleResponse(resp *http.Response) (ClusterRecoveryPointClientGetResponse, error) {
+func (client *ClusterRecoveryPointClient) getHandleResponse(resp *http.Response, successCodes ...int) (ClusterRecoveryPointClientGetResponse, error) {
 	result := ClusterRecoveryPointClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterRecoveryPoint); err != nil {
 		return ClusterRecoveryPointClientGetResponse{}, err
 	}

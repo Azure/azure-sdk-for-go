@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironmentsCertificate_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsCertificate_CreateOrUpdate.json
 func ExampleConnectedEnvironmentsCertificatesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,8 +46,8 @@ func ExampleConnectedEnvironmentsCertificatesClient_BeginCreateOrUpdate() {
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/connectedEnvironments/testcontainerenv/certififcates/certificate-firendly-name"),
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armappcontainers.CertificateProperties{
-	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
-	// 			IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
+	// 			ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
+	// 			IssueDate: to.Ptr(time.Date(2021, time.November, 6, 4, 0, 0, 0, time.UTC)),
 	// 			Issuer: to.Ptr("Issuer Name"),
 	// 			ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
 	// 			SubjectAlternativeNames: []*string{
@@ -61,7 +61,7 @@ func ExampleConnectedEnvironmentsCertificatesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironmentsCertificate_Delete.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsCertificate_Delete.json
 func ExampleConnectedEnvironmentsCertificatesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleConnectedEnvironmentsCertificatesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironmentsCertificate_Get.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsCertificate_Get.json
 func ExampleConnectedEnvironmentsCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,8 +107,8 @@ func ExampleConnectedEnvironmentsCertificatesClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/connectedEnvironments/testcontainerenv/certificates/certificate-firendly-name"),
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armappcontainers.CertificateProperties{
-	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
-	// 			IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
+	// 			ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
+	// 			IssueDate: to.Ptr(time.Date(2021, time.November, 6, 4, 0, 0, 0, time.UTC)),
 	// 			Issuer: to.Ptr("Issuer Name"),
 	// 			ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
 	// 			SubjectAlternativeNames: []*string{
@@ -122,7 +122,7 @@ func ExampleConnectedEnvironmentsCertificatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironmentsCertificates_ListByConnectedEnvironment.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsCertificates_ListByConnectedEnvironment.json
 func ExampleConnectedEnvironmentsCertificatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,8 +153,8 @@ func ExampleConnectedEnvironmentsCertificatesClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/connectedEnvironments/testcontainerenv/certificates/certificate-firendly-name"),
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armappcontainers.CertificateProperties{
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
-		// 					IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
+		// 					IssueDate: to.Ptr(time.Date(2021, time.November, 6, 4, 0, 0, 0, time.UTC)),
 		// 					Issuer: to.Ptr("Issuer Name"),
 		// 					ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
 		// 					SubjectAlternativeNames: []*string{
@@ -171,8 +171,8 @@ func ExampleConnectedEnvironmentsCertificatesClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/connectedEnvironments/testcontainerenv/certificates/certificate-firendly-name"),
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armappcontainers.CertificateProperties{
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
-		// 					IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
+		// 					IssueDate: to.Ptr(time.Date(2021, time.November, 6, 4, 0, 0, 0, time.UTC)),
 		// 					Issuer: to.Ptr("Issuer Name"),
 		// 					ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
 		// 					SubjectAlternativeNames: []*string{
@@ -189,7 +189,7 @@ func ExampleConnectedEnvironmentsCertificatesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironmentsCertificates_Patch.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsCertificates_Patch.json
 func ExampleConnectedEnvironmentsCertificatesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,8 +222,8 @@ func ExampleConnectedEnvironmentsCertificatesClient_BeginUpdate() {
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/connectedEnvironments/testcontainerenv/certificates/certificate-firendly-name"),
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armappcontainers.CertificateProperties{
-	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
-	// 			IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
+	// 			ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
+	// 			IssueDate: to.Ptr(time.Date(2021, time.November, 6, 4, 0, 0, 0, time.UTC)),
 	// 			Issuer: to.Ptr("Issuer Name"),
 	// 			ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
 	// 			SubjectAlternativeNames: []*string{

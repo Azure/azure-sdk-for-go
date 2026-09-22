@@ -26,8 +26,8 @@ func ExampleAccountsClient_BeginAddPaymentTerms() {
 	}
 	poller, err := clientFactory.NewAccountsClient().BeginAddPaymentTerms(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", []*armbilling.PaymentTerm{
 		{
-			EndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-25T22:39:34.2606750Z"); return t }()),
-			StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-05T22:39:34.2606750Z"); return t }()),
+			EndDate:   to.Ptr(time.Date(2023, time.January, 25, 22, 39, 34, 260675000, time.UTC)),
+			StartDate: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
 			Term:      to.Ptr("net10"),
 		},
 	}, nil)
@@ -56,8 +56,8 @@ func ExampleAccountsClient_BeginAddPaymentTerms() {
 	// 			PrimaryBillingTenantID: to.Ptr("20000000-0000-0000-0000-000000000001"),
 	// 		},
 	// 		SystemData: &armbilling.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-04T22:39:34.2606750Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-05T22:39:34.2606750Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.January, 4, 22, 39, 34, 260675000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -74,7 +74,7 @@ func ExampleAccountsClient_BeginCancelPaymentTerms() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAccountsClient().BeginCancelPaymentTerms(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-05T22:39:34.2606750Z"); return t }(), nil)
+	poller, err := clientFactory.NewAccountsClient().BeginCancelPaymentTerms(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC), nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -100,8 +100,8 @@ func ExampleAccountsClient_BeginCancelPaymentTerms() {
 	// 			PrimaryBillingTenantID: to.Ptr("20000000-0000-0000-0000-000000000001"),
 	// 		},
 	// 		SystemData: &armbilling.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-04T22:39:34.2606750Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-05T22:39:34.2606750Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.January, 4, 22, 39, 34, 260675000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -128,7 +128,7 @@ func ExampleAccountsClient_ConfirmTransition() {
 	// res = armbilling.AccountsClientConfirmTransitionResponse{
 	// 	TransitionDetails: armbilling.TransitionDetails{
 	// 		AnniversaryDay: to.Ptr[int32](12),
-	// 		TransitionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-17T00:00:00Z"); return t}()),
+	// 		TransitionDate: to.Ptr(time.Date(2021, time.May, 17, 0, 0, 0, 0, time.UTC)),
 	// 	},
 	// }
 }
@@ -167,10 +167,10 @@ func ExampleAccountsClient_Get_billingAccountWithExpandForPoNumber() {
 	// 				Cloud: to.Ptr("Azure Commercial"),
 	// 				CountryCode: to.Ptr("US"),
 	// 				Currency: to.Ptr("USD"),
-	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-31T17:32:28Z"); return t}()),
+	// 				EndDate: to.Ptr(time.Date(2019, time.May, 31, 17, 32, 28, 0, time.UTC)),
 	// 				ExtendedTermOption: to.Ptr(armbilling.ExtendedTermOptionOptedOut),
 	// 				PoNumber: to.Ptr("poNumber123"),
-	// 				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T17:32:28Z"); return t}()),
+	// 				StartDate: to.Ptr(time.Date(2018, time.May, 1, 17, 32, 28, 0, time.UTC)),
 	// 				SupportCoverage: to.Ptr("1/26/2021 - 6/30/2021"),
 	// 				SupportLevel: to.Ptr(armbilling.SupportLevelStandard),
 	// 				Language: to.Ptr("en"),
@@ -178,8 +178,8 @@ func ExampleAccountsClient_Get_billingAccountWithExpandForPoNumber() {
 	// 			HasReadAccess: to.Ptr(true),
 	// 		},
 	// 		SystemData: &armbilling.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-04T22:39:34.2606750Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-05T22:39:34.2606750Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.January, 4, 22, 39, 34, 260675000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -224,8 +224,8 @@ func ExampleAccountsClient_Get_billingAccountWithRegistrationNumberWithDefaultTy
 	// 			},
 	// 		},
 	// 		SystemData: &armbilling.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-04T22:39:34.2606750Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-05T22:39:34.2606750Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.January, 4, 22, 39, 34, 260675000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -271,8 +271,8 @@ func ExampleAccountsClient_Get_billingAccountWithRegistrationNumberWithType() {
 	// 			},
 	// 		},
 	// 		SystemData: &armbilling.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-04T22:39:34.2606750Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-05T22:39:34.2606750Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.January, 4, 22, 39, 34, 260675000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -311,8 +311,8 @@ func ExampleAccountsClient_Get_billingAccountsGet() {
 	// 			PrimaryBillingTenantID: to.Ptr("20000000-0000-0000-0000-000000000001"),
 	// 		},
 	// 		SystemData: &armbilling.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-04T22:39:34.2606750Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-05T22:39:34.2606750Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.January, 4, 22, 39, 34, 260675000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -349,7 +349,7 @@ func ExampleAccountsClient_Get_billingAccountsGetEa() {
 	// 				Cloud: to.Ptr("Azure Commercial"),
 	// 				CountryCode: to.Ptr("US"),
 	// 				Currency: to.Ptr("USD"),
-	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-31T17:32:28Z"); return t}()),
+	// 				EndDate: to.Ptr(time.Date(2019, time.May, 31, 17, 32, 28, 0, time.UTC)),
 	// 				ExtendedTermOption: to.Ptr(armbilling.ExtendedTermOptionOptedOut),
 	// 				IndirectRelationshipInfo: &armbilling.EnrollmentDetailsIndirectRelationshipInfo{
 	// 					BillingAccountName: to.Ptr("pcn.12345"),
@@ -358,7 +358,7 @@ func ExampleAccountsClient_Get_billingAccountsGetEa() {
 	// 				},
 	// 				InvoiceRecipient: to.Ptr("abc@contoso.com"),
 	// 				MarkupStatus: to.Ptr(armbilling.MarkupStatusPublished),
-	// 				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T17:32:28Z"); return t}()),
+	// 				StartDate: to.Ptr(time.Date(2018, time.May, 1, 17, 32, 28, 0, time.UTC)),
 	// 				SupportCoverage: to.Ptr("1/26/2021 - 6/30/2021"),
 	// 				SupportLevel: to.Ptr(armbilling.SupportLevelStandard),
 	// 				Language: to.Ptr("en"),
@@ -419,8 +419,8 @@ func ExampleAccountsClient_Get_billingAccountsGetWithExpand() {
 	// 			},
 	// 		},
 	// 		SystemData: &armbilling.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-04T22:39:34.2606750Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-05T22:39:34.2606750Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.January, 4, 22, 39, 34, 260675000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -509,8 +509,8 @@ func ExampleAccountsClient_NewListPager_billingAccountsList() {
 		// 					PrimaryBillingTenantID: to.Ptr("20000000-0000-0000-0000-000000000001"),
 		// 				},
 		// 				SystemData: &armbilling.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-04T22:39:34.2606750Z"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-05T22:39:34.2606750Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.January, 4, 22, 39, 34, 260675000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -527,8 +527,8 @@ func ExampleAccountsClient_NewListPager_billingAccountsList() {
 		// 					PrimaryBillingTenantID: to.Ptr("20000000-0000-0000-0000-000000000001"),
 		// 				},
 		// 				SystemData: &armbilling.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-04T22:39:34.2606750Z"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-05T22:39:34.2606750Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.January, 4, 22, 39, 34, 260675000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -545,8 +545,8 @@ func ExampleAccountsClient_NewListPager_billingAccountsList() {
 		// 					PrimaryBillingTenantID: to.Ptr("20000000-0000-0000-0000-000000000001"),
 		// 				},
 		// 				SystemData: &armbilling.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-04T22:39:34.2606750Z"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-05T22:39:34.2606750Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.January, 4, 22, 39, 34, 260675000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -563,8 +563,8 @@ func ExampleAccountsClient_NewListPager_billingAccountsList() {
 		// 					PrimaryBillingTenantID: to.Ptr("20000000-0000-0000-0000-000000000001"),
 		// 				},
 		// 				SystemData: &armbilling.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-04T22:39:34.2606750Z"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-05T22:39:34.2606750Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.January, 4, 22, 39, 34, 260675000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -615,10 +615,10 @@ func ExampleAccountsClient_NewListPager_billingAccountsListWithExpandForPoNumber
 		// 						Cloud: to.Ptr("Azure Commercial"),
 		// 						CountryCode: to.Ptr("US"),
 		// 						Currency: to.Ptr("USD"),
-		// 						EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-31T17:32:28Z"); return t}()),
+		// 						EndDate: to.Ptr(time.Date(2019, time.May, 31, 17, 32, 28, 0, time.UTC)),
 		// 						ExtendedTermOption: to.Ptr(armbilling.ExtendedTermOptionOptedOut),
 		// 						PoNumber: to.Ptr("poNumber123"),
-		// 						StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T17:32:28Z"); return t}()),
+		// 						StartDate: to.Ptr(time.Date(2018, time.May, 1, 17, 32, 28, 0, time.UTC)),
 		// 						SupportCoverage: to.Ptr("1/26/2021 - 6/30/2021"),
 		// 						SupportLevel: to.Ptr(armbilling.SupportLevelStandard),
 		// 						Language: to.Ptr("en"),
@@ -634,8 +634,8 @@ func ExampleAccountsClient_NewListPager_billingAccountsListWithExpandForPoNumber
 		// 					},
 		// 				},
 		// 				SystemData: &armbilling.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-04T22:39:34.2606750Z"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-05T22:39:34.2606750Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.January, 4, 22, 39, 34, 260675000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -741,10 +741,10 @@ func ExampleAccountsClient_BeginUpdate_billingAccountUpdateWithPoNumber() {
 	// 				Cloud: to.Ptr("Azure Commercial"),
 	// 				CountryCode: to.Ptr("US"),
 	// 				Currency: to.Ptr("USD"),
-	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-31T17:32:28Z"); return t}()),
+	// 				EndDate: to.Ptr(time.Date(2019, time.May, 31, 17, 32, 28, 0, time.UTC)),
 	// 				ExtendedTermOption: to.Ptr(armbilling.ExtendedTermOptionOptedOut),
 	// 				PoNumber: to.Ptr("poNumber123"),
-	// 				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T17:32:28Z"); return t}()),
+	// 				StartDate: to.Ptr(time.Date(2018, time.May, 1, 17, 32, 28, 0, time.UTC)),
 	// 				SupportCoverage: to.Ptr("1/26/2021 - 6/30/2021"),
 	// 				SupportLevel: to.Ptr(armbilling.SupportLevelStandard),
 	// 				Language: to.Ptr("en"),
@@ -761,8 +761,8 @@ func ExampleAccountsClient_BeginUpdate_billingAccountUpdateWithPoNumber() {
 	// 			},
 	// 		},
 	// 		SystemData: &armbilling.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-04T22:39:34.2606750Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-05T22:39:34.2606750Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.January, 4, 22, 39, 34, 260675000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -826,8 +826,8 @@ func ExampleAccountsClient_BeginUpdate_billingAccountsUpdate() {
 	// 			},
 	// 		},
 	// 		SystemData: &armbilling.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-04T22:39:34.2606750Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-05T22:39:34.2606750Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.January, 4, 22, 39, 34, 260675000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -846,8 +846,8 @@ func ExampleAccountsClient_ValidatePaymentTerms_paymentTermInvalid() {
 	}
 	res, err := clientFactory.NewAccountsClient().ValidatePaymentTerms(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", []*armbilling.PaymentTerm{
 		{
-			EndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-25T22:39:34.2606750Z"); return t }()),
-			StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-05T22:39:34.2606750Z"); return t }()),
+			EndDate:   to.Ptr(time.Date(2023, time.January, 25, 22, 39, 34, 260675000, time.UTC)),
+			StartDate: to.Ptr(time.Date(2023, time.February, 5, 22, 39, 34, 260675000, time.UTC)),
 			Term:      to.Ptr("net10"),
 		},
 	}, nil)
@@ -883,8 +883,8 @@ func ExampleAccountsClient_ValidatePaymentTerms_paymentTermValid() {
 	}
 	res, err := clientFactory.NewAccountsClient().ValidatePaymentTerms(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", []*armbilling.PaymentTerm{
 		{
-			EndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-25T22:39:34.2606750Z"); return t }()),
-			StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-05T22:39:34.2606750Z"); return t }()),
+			EndDate:   to.Ptr(time.Date(2023, time.January, 25, 22, 39, 34, 260675000, time.UTC)),
+			StartDate: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
 			Term:      to.Ptr("net10"),
 		},
 	}, nil)

@@ -77,7 +77,7 @@ func ExampleServersClient_BeginCreate_createANewServer() {
 	// 			AvailabilityZone: to.Ptr("1"),
 	// 			Backup: &armmysqlflexibleservers.Backup{
 	// 				BackupRetentionDays: to.Ptr[int32](7),
-	// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T06:11:38.4150019+00:00"); return t}()),
+	// 				EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 6, 11, 38, 415001900, time.UTC)),
 	// 				GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 	// 			},
 	// 			DatabasePort: to.Ptr[int32](3306),
@@ -160,7 +160,7 @@ func ExampleServersClient_BeginCreate_createAReplicaServer() {
 	// 			AvailabilityZone: to.Ptr("3"),
 	// 			Backup: &armmysqlflexibleservers.Backup{
 	// 				BackupRetentionDays: to.Ptr[int32](7),
-	// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-24T08:19:18.5729164+00:00"); return t}()),
+	// 				EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 24, 8, 19, 18, 572916400, time.UTC)),
 	// 				GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 	// 			},
 	// 			DatabasePort: to.Ptr[int32](3306),
@@ -281,7 +281,7 @@ func ExampleServersClient_BeginCreate_createAServerWithByok() {
 	// 			AvailabilityZone: to.Ptr("1"),
 	// 			Backup: &armmysqlflexibleservers.Backup{
 	// 				BackupRetentionDays: to.Ptr[int32](7),
-	// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T06:11:38.4150019+00:00"); return t}()),
+	// 				EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 6, 11, 38, 415001900, time.UTC)),
 	// 				GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 	// 			},
 	// 			DatabasePort: to.Ptr[int32](3306),
@@ -390,7 +390,7 @@ func ExampleServersClient_BeginCreate_createAServerWithNonDefaultDatabasePort() 
 	// 			AvailabilityZone: to.Ptr("1"),
 	// 			Backup: &armmysqlflexibleservers.Backup{
 	// 				BackupRetentionDays: to.Ptr[int32](7),
-	// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T06:11:38.4150019+00:00"); return t}()),
+	// 				EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 6, 11, 38, 415001900, time.UTC)),
 	// 				GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 	// 			},
 	// 			DatabasePort: to.Ptr[int32](8888),
@@ -449,7 +449,7 @@ func ExampleServersClient_BeginCreate_createAServerAsAPointInTimeRestore() {
 		Location: to.Ptr("SoutheastAsia"),
 		Properties: &armmysqlflexibleservers.ServerProperties{
 			CreateMode:             to.Ptr(armmysqlflexibleservers.CreateModePointInTimeRestore),
-			RestorePointInTime:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-24T00:00:37.467Z"); return t }()),
+			RestorePointInTime:     to.Ptr(time.Date(2021, time.June, 24, 0, 0, 37, 467000000, time.UTC)),
 			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/SourceResourceGroup/providers/Microsoft.DBforMySQL/flexibleServers/sourceserver"),
 		},
 		SKU: &armmysqlflexibleservers.MySQLServerSKU{
@@ -482,7 +482,7 @@ func ExampleServersClient_BeginCreate_createAServerAsAPointInTimeRestore() {
 	// 			Backup: &armmysqlflexibleservers.Backup{
 	// 				BackupIntervalHours: to.Ptr[int32](24),
 	// 				BackupRetentionDays: to.Ptr[int32](7),
-	// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-24T00:15:24.00+00:00"); return t}()),
+	// 				EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 24, 0, 15, 24, 0, time.UTC)),
 	// 				GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 	// 			},
 	// 			DatabasePort: to.Ptr[int32](3306),
@@ -587,7 +587,7 @@ func ExampleServersClient_BeginDetachVNet() {
 	// 			Backup: &armmysqlflexibleservers.Backup{
 	// 				BackupIntervalHours: to.Ptr[int32](24),
 	// 				BackupRetentionDays: to.Ptr[int32](7),
-	// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T06:11:38.4150019+00:00"); return t}()),
+	// 				EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 6, 11, 38, 415001900, time.UTC)),
 	// 				GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 	// 			},
 	// 			DatabasePort: to.Ptr[int32](3306),
@@ -689,7 +689,7 @@ func ExampleServersClient_Get_getAServer() {
 	// 			Backup: &armmysqlflexibleservers.Backup{
 	// 				BackupIntervalHours: to.Ptr[int32](24),
 	// 				BackupRetentionDays: to.Ptr[int32](7),
-	// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T06:11:38.4150019+00:00"); return t}()),
+	// 				EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 6, 11, 38, 415001900, time.UTC)),
 	// 				GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 	// 			},
 	// 			DatabasePort: to.Ptr[int32](3306),
@@ -766,7 +766,7 @@ func ExampleServersClient_Get_getAServerWithVnet() {
 	// 			Backup: &armmysqlflexibleservers.Backup{
 	// 				BackupIntervalHours: to.Ptr[int32](24),
 	// 				BackupRetentionDays: to.Ptr[int32](7),
-	// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T06:11:38.4150019+00:00"); return t}()),
+	// 				EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 6, 11, 38, 415001900, time.UTC)),
 	// 				GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 	// 			},
 	// 			DatabasePort: to.Ptr[int32](3306),
@@ -849,7 +849,7 @@ func ExampleServersClient_NewListPager() {
 		// 					Backup: &armmysqlflexibleservers.Backup{
 		// 						BackupIntervalHours: to.Ptr[int32](24),
 		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T07:08:17.4259886+00:00"); return t}()),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 7, 8, 17, 425988600, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 		// 					},
 		// 					DatabasePort: to.Ptr[int32](3306),
@@ -903,7 +903,7 @@ func ExampleServersClient_NewListPager() {
 		// 					Backup: &armmysqlflexibleservers.Backup{
 		// 						BackupIntervalHours: to.Ptr[int32](24),
 		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T07:08:17.4259886+00:00"); return t}()),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 7, 8, 17, 425988600, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 		// 					},
 		// 					DatabasePort: to.Ptr[int32](3306),
@@ -957,7 +957,7 @@ func ExampleServersClient_NewListPager() {
 		// 					Backup: &armmysqlflexibleservers.Backup{
 		// 						BackupIntervalHours: to.Ptr[int32](24),
 		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-24T06:28:19.0611667+00:00"); return t}()),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 24, 6, 28, 19, 61166700, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 		// 					},
 		// 					DatabasePort: to.Ptr[int32](3306),
@@ -1042,7 +1042,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 					Backup: &armmysqlflexibleservers.Backup{
 		// 						BackupIntervalHours: to.Ptr[int32](24),
 		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T07:08:17.4259886+00:00"); return t}()),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 7, 8, 17, 425988600, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 		// 					},
 		// 					DatabasePort: to.Ptr[int32](3306),
@@ -1096,7 +1096,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 					Backup: &armmysqlflexibleservers.Backup{
 		// 						BackupIntervalHours: to.Ptr[int32](24),
 		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T07:08:17.4259886+00:00"); return t}()),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 7, 8, 17, 425988600, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 		// 					},
 		// 					DatabasePort: to.Ptr[int32](3306),
@@ -1150,7 +1150,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 					Backup: &armmysqlflexibleservers.Backup{
 		// 						BackupIntervalHours: to.Ptr[int32](24),
 		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-24T06:28:19.0611667+00:00"); return t}()),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 24, 6, 28, 19, 61166700, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 		// 					},
 		// 					DatabasePort: to.Ptr[int32](3306),
@@ -1345,7 +1345,7 @@ func ExampleServersClient_BeginUpdate_updateServerToOptInVirtualCanary() {
 	// 			Backup: &armmysqlflexibleservers.Backup{
 	// 				BackupIntervalHours: to.Ptr[int32](24),
 	// 				BackupRetentionDays: to.Ptr[int32](7),
-	// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T06:11:38.4150019+00:00"); return t}()),
+	// 				EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 6, 11, 38, 415001900, time.UTC)),
 	// 				GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 	// 			},
 	// 			DatabasePort: to.Ptr[int32](3306),
@@ -1430,7 +1430,7 @@ func ExampleServersClient_BeginUpdate_updateServerToOptOutVirtualCanary() {
 	// 			Backup: &armmysqlflexibleservers.Backup{
 	// 				BackupIntervalHours: to.Ptr[int32](24),
 	// 				BackupRetentionDays: to.Ptr[int32](7),
-	// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T06:11:38.4150019+00:00"); return t}()),
+	// 				EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 6, 11, 38, 415001900, time.UTC)),
 	// 				GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 	// 			},
 	// 			DatabasePort: to.Ptr[int32](3306),
@@ -1522,7 +1522,7 @@ func ExampleServersClient_BeginUpdate_updateAServer() {
 	// 			Backup: &armmysqlflexibleservers.Backup{
 	// 				BackupIntervalHours: to.Ptr[int32](24),
 	// 				BackupRetentionDays: to.Ptr[int32](7),
-	// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T06:11:38.4150019+00:00"); return t}()),
+	// 				EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 6, 11, 38, 415001900, time.UTC)),
 	// 				GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 	// 			},
 	// 			DatabasePort: to.Ptr[int32](3306),
@@ -1619,7 +1619,7 @@ func ExampleServersClient_BeginUpdate_updateServerWithByok() {
 	// 			Backup: &armmysqlflexibleservers.Backup{
 	// 				BackupIntervalHours: to.Ptr[int32](24),
 	// 				BackupRetentionDays: to.Ptr[int32](7),
-	// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T06:11:38.4150019+00:00"); return t}()),
+	// 				EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 6, 11, 38, 415001900, time.UTC)),
 	// 				GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 	// 			},
 	// 			DatabasePort: to.Ptr[int32](3306),
@@ -1710,7 +1710,7 @@ func ExampleServersClient_BeginUpdate_updateServerCustomerMaintenanceWindow() {
 	// 			Backup: &armmysqlflexibleservers.Backup{
 	// 				BackupIntervalHours: to.Ptr[int32](24),
 	// 				BackupRetentionDays: to.Ptr[int32](7),
-	// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T06:11:38.4150019+00:00"); return t}()),
+	// 				EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 6, 11, 38, 415001900, time.UTC)),
 	// 				GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 	// 			},
 	// 			DatabasePort: to.Ptr[int32](3306),

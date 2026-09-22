@@ -30,6 +30,9 @@ type NodeReportsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNodeReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NodeReportsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *NodeReportsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return NodeReportsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NodeReportsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *NodeReportsClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, reportID string, _ *NodeReportsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodes/{nodeId}/reports/{reportId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -105,8 +103,11 @@ func (client *NodeReportsClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *NodeReportsClient) getHandleResponse(resp *http.Response) (NodeReportsClientGetResponse, error) {
+func (client *NodeReportsClient) getHandleResponse(resp *http.Response, successCodes ...int) (NodeReportsClientGetResponse, error) {
 	result := NodeReportsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscNodeReport); err != nil {
 		return NodeReportsClientGetResponse{}, err
 	}
@@ -134,19 +135,14 @@ func (client *NodeReportsClient) GetContent(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return NodeReportsClientGetContentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NodeReportsClientGetContentResponse{}, err
-	}
-	resp, err := client.getContentHandleResponse(httpResp)
-	return resp, err
+	return client.getContentHandleResponse(httpResp, http.StatusOK)
 }
 
 // getContentCreateRequest creates the GetContent request.
 func (client *NodeReportsClient) getContentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, reportID string, _ *NodeReportsClientGetContentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodes/{nodeId}/reports/{reportId}/content"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -177,8 +173,11 @@ func (client *NodeReportsClient) getContentCreateRequest(ctx context.Context, re
 }
 
 // getContentHandleResponse handles the GetContent response.
-func (client *NodeReportsClient) getContentHandleResponse(resp *http.Response) (NodeReportsClientGetContentResponse, error) {
+func (client *NodeReportsClient) getContentHandleResponse(resp *http.Response, successCodes ...int) (NodeReportsClientGetContentResponse, error) {
 	result := NodeReportsClientGetContentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return NodeReportsClientGetContentResponse{}, err
@@ -205,54 +204,68 @@ func (client *NodeReportsClient) NewListByNodePager(resourceGroupName string, au
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByNodeCreateRequest(ctx, resourceGroupName, automationAccountName, nodeID, options)
-			}, nil)
+			req, err := client.listByNodeCreateRequest(ctx, resourceGroupName, automationAccountName, nodeID, nextLink, options)
 			if err != nil {
 				return NodeReportsClientListByNodeResponse{}, err
 			}
-			return client.listByNodeHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NodeReportsClientListByNodeResponse{}, err
+			}
+			return client.listByNodeHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByNodeCreateRequest creates the ListByNode request.
-func (client *NodeReportsClient) listByNodeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, options *NodeReportsClientListByNodeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodes/{nodeId}/reports"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NodeReportsClient) listByNodeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, nextLink string, options *NodeReportsClientListByNodeOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodes/{nodeId}/reports"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if automationAccountName == "" {
+			return nil, errors.New("parameter automationAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+		if nodeID == "" {
+			return nil, errors.New("parameter nodeID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{nodeId}", url.PathEscape(nodeID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if automationAccountName == "" {
-		return nil, errors.New("parameter automationAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	if nodeID == "" {
-		return nil, errors.New("parameter nodeID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{nodeId}", url.PathEscape(nodeID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20241023)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20241023)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByNodeHandleResponse handles the ListByNode response.
-func (client *NodeReportsClient) listByNodeHandleResponse(resp *http.Response) (NodeReportsClientListByNodeResponse, error) {
+func (client *NodeReportsClient) listByNodeHandleResponse(resp *http.Response, successCodes ...int) (NodeReportsClientListByNodeResponse, error) {
 	result := NodeReportsClientListByNodeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscNodeReportListResult); err != nil {
 		return NodeReportsClientListByNodeResponse{}, err
 	}

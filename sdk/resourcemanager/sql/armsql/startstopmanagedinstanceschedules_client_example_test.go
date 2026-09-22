@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/StartStopManagedInstanceScheduleCreateOrUpdateMax.json
+// Generated from example definition: 2026-08-01-preview/StartStopManagedInstanceScheduleCreateOrUpdateMax.json
 func ExampleStartStopManagedInstanceSchedulesClient_CreateOrUpdate_createsOrUpdatesTheManagedInstanceSStartStopScheduleWithAllOptionalParametersSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,10 +75,10 @@ func ExampleStartStopManagedInstanceSchedulesClient_CreateOrUpdate_createsOrUpda
 	// 			TimeZoneID: to.Ptr("Central European Standard Time"),
 	// 		},
 	// 		SystemData: &armsql.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-26T04:41:33.937Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 26, 4, 41, 33, 937000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armsql.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-27T04:41:33.937Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 27, 4, 41, 33, 937000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armsql.CreatedByTypeUser),
 	// 		},
@@ -86,7 +86,7 @@ func ExampleStartStopManagedInstanceSchedulesClient_CreateOrUpdate_createsOrUpda
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/StartStopManagedInstanceScheduleCreateOrUpdateMin.json
+// Generated from example definition: 2026-08-01-preview/StartStopManagedInstanceScheduleCreateOrUpdateMin.json
 func ExampleStartStopManagedInstanceSchedulesClient_CreateOrUpdate_createsOrUpdatesTheManagedInstanceSStartStopScheduleWithNoOptionalParametersSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,10 +147,10 @@ func ExampleStartStopManagedInstanceSchedulesClient_CreateOrUpdate_createsOrUpda
 	// 			TimeZoneID: to.Ptr("UTC"),
 	// 		},
 	// 		SystemData: &armsql.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-26T04:41:33.937Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 26, 4, 41, 33, 937000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armsql.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-27T04:41:33.937Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 27, 4, 41, 33, 937000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armsql.CreatedByTypeUser),
 	// 		},
@@ -158,7 +158,7 @@ func ExampleStartStopManagedInstanceSchedulesClient_CreateOrUpdate_createsOrUpda
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/StartStopManagedInstanceScheduleDelete.json
+// Generated from example definition: 2026-08-01-preview/StartStopManagedInstanceScheduleDelete.json
 func ExampleStartStopManagedInstanceSchedulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -180,7 +180,7 @@ func ExampleStartStopManagedInstanceSchedulesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/StartStopManagedInstanceScheduleGet.json
+// Generated from example definition: 2026-08-01-preview/StartStopManagedInstanceScheduleGet.json
 func ExampleStartStopManagedInstanceSchedulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -224,10 +224,10 @@ func ExampleStartStopManagedInstanceSchedulesClient_Get() {
 	// 			TimeZoneID: to.Ptr("Central European Standard Time"),
 	// 		},
 	// 		SystemData: &armsql.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-26T04:41:33.937Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 26, 4, 41, 33, 937000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armsql.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-27T04:41:33.937Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 27, 4, 41, 33, 937000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armsql.CreatedByTypeUser),
 	// 		},
@@ -235,7 +235,7 @@ func ExampleStartStopManagedInstanceSchedulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/StartStopManagedInstanceScheduleList.json
+// Generated from example definition: 2026-08-01-preview/StartStopManagedInstanceScheduleList.json
 func ExampleStartStopManagedInstanceSchedulesClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,10 +285,10 @@ func ExampleStartStopManagedInstanceSchedulesClient_NewListByInstancePager() {
 		// 					TimeZoneID: to.Ptr("Central European Standard Time"),
 		// 				},
 		// 				SystemData: &armsql.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-26T04:41:33.937Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 26, 4, 41, 33, 937000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armsql.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-27T04:41:33.937Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.August, 27, 4, 41, 33, 937000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armsql.CreatedByTypeUser),
 		// 				},

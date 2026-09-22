@@ -54,45 +54,59 @@ func (client *BenefitUtilizationSummariesClient) NewListByBillingAccountIDPager(
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByBillingAccountIDCreateRequest(ctx, billingAccountID, options)
-			}, nil)
+			req, err := client.listByBillingAccountIDCreateRequest(ctx, billingAccountID, nextLink, options)
 			if err != nil {
 				return BenefitUtilizationSummariesClientListByBillingAccountIDResponse{}, err
 			}
-			return client.listByBillingAccountIDHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BenefitUtilizationSummariesClientListByBillingAccountIDResponse{}, err
+			}
+			return client.listByBillingAccountIDHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByBillingAccountIDCreateRequest creates the ListByBillingAccountID request.
-func (client *BenefitUtilizationSummariesClient) listByBillingAccountIDCreateRequest(ctx context.Context, billingAccountID string, options *BenefitUtilizationSummariesClientListByBillingAccountIDOptions) (*policy.Request, error) {
-	urlPath := "/providers/microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/benefitUtilizationSummaries"
-	if billingAccountID == "" {
-		return nil, errors.New("parameter billingAccountID cannot be empty")
+func (client *BenefitUtilizationSummariesClient) listByBillingAccountIDCreateRequest(ctx context.Context, billingAccountID string, nextLink string, options *BenefitUtilizationSummariesClientListByBillingAccountIDOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/benefitUtilizationSummaries"
+		if billingAccountID == "" {
+			return nil, errors.New("parameter billingAccountID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301)
-	if options != nil && options.Filter != nil {
-		reqQP.Set("filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250301)
+		if options != nil && options.Filter != nil {
+			reqQP.Set("filter", *options.Filter)
+		}
+		if options != nil && options.GrainParameter != nil {
+			reqQP.Set("grainParameter", string(*options.GrainParameter))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.GrainParameter != nil {
-		reqQP.Set("grainParameter", string(*options.GrainParameter))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByBillingAccountIDHandleResponse handles the ListByBillingAccountID response.
-func (client *BenefitUtilizationSummariesClient) listByBillingAccountIDHandleResponse(resp *http.Response) (BenefitUtilizationSummariesClientListByBillingAccountIDResponse, error) {
+func (client *BenefitUtilizationSummariesClient) listByBillingAccountIDHandleResponse(resp *http.Response, successCodes ...int) (BenefitUtilizationSummariesClientListByBillingAccountIDResponse, error) {
 	result := BenefitUtilizationSummariesClientListByBillingAccountIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BenefitUtilizationSummariesListResult); err != nil {
 		return BenefitUtilizationSummariesClientListByBillingAccountIDResponse{}, err
 	}
@@ -116,49 +130,63 @@ func (client *BenefitUtilizationSummariesClient) NewListByBillingProfileIDPager(
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByBillingProfileIDCreateRequest(ctx, billingAccountID, billingProfileID, options)
-			}, nil)
+			req, err := client.listByBillingProfileIDCreateRequest(ctx, billingAccountID, billingProfileID, nextLink, options)
 			if err != nil {
 				return BenefitUtilizationSummariesClientListByBillingProfileIDResponse{}, err
 			}
-			return client.listByBillingProfileIDHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BenefitUtilizationSummariesClientListByBillingProfileIDResponse{}, err
+			}
+			return client.listByBillingProfileIDHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByBillingProfileIDCreateRequest creates the ListByBillingProfileID request.
-func (client *BenefitUtilizationSummariesClient) listByBillingProfileIDCreateRequest(ctx context.Context, billingAccountID string, billingProfileID string, options *BenefitUtilizationSummariesClientListByBillingProfileIDOptions) (*policy.Request, error) {
-	urlPath := "/providers/microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.CostManagement/benefitUtilizationSummaries"
-	if billingAccountID == "" {
-		return nil, errors.New("parameter billingAccountID cannot be empty")
+func (client *BenefitUtilizationSummariesClient) listByBillingProfileIDCreateRequest(ctx context.Context, billingAccountID string, billingProfileID string, nextLink string, options *BenefitUtilizationSummariesClientListByBillingProfileIDOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.CostManagement/benefitUtilizationSummaries"
+		if billingAccountID == "" {
+			return nil, errors.New("parameter billingAccountID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
+		if billingProfileID == "" {
+			return nil, errors.New("parameter billingProfileID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingProfileId}", url.PathEscape(billingProfileID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
-	if billingProfileID == "" {
-		return nil, errors.New("parameter billingProfileID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingProfileId}", url.PathEscape(billingProfileID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301)
-	if options != nil && options.Filter != nil {
-		reqQP.Set("filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250301)
+		if options != nil && options.Filter != nil {
+			reqQP.Set("filter", *options.Filter)
+		}
+		if options != nil && options.GrainParameter != nil {
+			reqQP.Set("grainParameter", string(*options.GrainParameter))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.GrainParameter != nil {
-		reqQP.Set("grainParameter", string(*options.GrainParameter))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByBillingProfileIDHandleResponse handles the ListByBillingProfileID response.
-func (client *BenefitUtilizationSummariesClient) listByBillingProfileIDHandleResponse(resp *http.Response) (BenefitUtilizationSummariesClientListByBillingProfileIDResponse, error) {
+func (client *BenefitUtilizationSummariesClient) listByBillingProfileIDHandleResponse(resp *http.Response, successCodes ...int) (BenefitUtilizationSummariesClientListByBillingProfileIDResponse, error) {
 	result := BenefitUtilizationSummariesClientListByBillingProfileIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BenefitUtilizationSummariesListResult); err != nil {
 		return BenefitUtilizationSummariesClientListByBillingProfileIDResponse{}, err
 	}
@@ -181,49 +209,63 @@ func (client *BenefitUtilizationSummariesClient) NewListBySavingsPlanIDPager(sav
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySavingsPlanIDCreateRequest(ctx, savingsPlanOrderID, savingsPlanID, options)
-			}, nil)
+			req, err := client.listBySavingsPlanIDCreateRequest(ctx, savingsPlanOrderID, savingsPlanID, nextLink, options)
 			if err != nil {
 				return BenefitUtilizationSummariesClientListBySavingsPlanIDResponse{}, err
 			}
-			return client.listBySavingsPlanIDHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BenefitUtilizationSummariesClientListBySavingsPlanIDResponse{}, err
+			}
+			return client.listBySavingsPlanIDHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySavingsPlanIDCreateRequest creates the ListBySavingsPlanID request.
-func (client *BenefitUtilizationSummariesClient) listBySavingsPlanIDCreateRequest(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, options *BenefitUtilizationSummariesClientListBySavingsPlanIDOptions) (*policy.Request, error) {
-	urlPath := "/providers/microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans/{savingsPlanId}/providers/Microsoft.CostManagement/benefitUtilizationSummaries"
-	if savingsPlanOrderID == "" {
-		return nil, errors.New("parameter savingsPlanOrderID cannot be empty")
+func (client *BenefitUtilizationSummariesClient) listBySavingsPlanIDCreateRequest(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, nextLink string, options *BenefitUtilizationSummariesClientListBySavingsPlanIDOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans/{savingsPlanId}/providers/Microsoft.CostManagement/benefitUtilizationSummaries"
+		if savingsPlanOrderID == "" {
+			return nil, errors.New("parameter savingsPlanOrderID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{savingsPlanOrderId}", url.PathEscape(savingsPlanOrderID))
+		if savingsPlanID == "" {
+			return nil, errors.New("parameter savingsPlanID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{savingsPlanId}", url.PathEscape(savingsPlanID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{savingsPlanOrderId}", url.PathEscape(savingsPlanOrderID))
-	if savingsPlanID == "" {
-		return nil, errors.New("parameter savingsPlanID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{savingsPlanId}", url.PathEscape(savingsPlanID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20250301)
+		if options != nil && options.GrainParameter != nil {
+			reqQP.Set("grainParameter", string(*options.GrainParameter))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250301)
-	if options != nil && options.GrainParameter != nil {
-		reqQP.Set("grainParameter", string(*options.GrainParameter))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySavingsPlanIDHandleResponse handles the ListBySavingsPlanID response.
-func (client *BenefitUtilizationSummariesClient) listBySavingsPlanIDHandleResponse(resp *http.Response) (BenefitUtilizationSummariesClientListBySavingsPlanIDResponse, error) {
+func (client *BenefitUtilizationSummariesClient) listBySavingsPlanIDHandleResponse(resp *http.Response, successCodes ...int) (BenefitUtilizationSummariesClientListBySavingsPlanIDResponse, error) {
 	result := BenefitUtilizationSummariesClientListBySavingsPlanIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BenefitUtilizationSummariesListResult); err != nil {
 		return BenefitUtilizationSummariesClientListBySavingsPlanIDResponse{}, err
 	}
@@ -245,45 +287,59 @@ func (client *BenefitUtilizationSummariesClient) NewListBySavingsPlanOrderPager(
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySavingsPlanOrderCreateRequest(ctx, savingsPlanOrderID, options)
-			}, nil)
+			req, err := client.listBySavingsPlanOrderCreateRequest(ctx, savingsPlanOrderID, nextLink, options)
 			if err != nil {
 				return BenefitUtilizationSummariesClientListBySavingsPlanOrderResponse{}, err
 			}
-			return client.listBySavingsPlanOrderHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BenefitUtilizationSummariesClientListBySavingsPlanOrderResponse{}, err
+			}
+			return client.listBySavingsPlanOrderHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySavingsPlanOrderCreateRequest creates the ListBySavingsPlanOrder request.
-func (client *BenefitUtilizationSummariesClient) listBySavingsPlanOrderCreateRequest(ctx context.Context, savingsPlanOrderID string, options *BenefitUtilizationSummariesClientListBySavingsPlanOrderOptions) (*policy.Request, error) {
-	urlPath := "/providers/microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/providers/Microsoft.CostManagement/benefitUtilizationSummaries"
-	if savingsPlanOrderID == "" {
-		return nil, errors.New("parameter savingsPlanOrderID cannot be empty")
+func (client *BenefitUtilizationSummariesClient) listBySavingsPlanOrderCreateRequest(ctx context.Context, savingsPlanOrderID string, nextLink string, options *BenefitUtilizationSummariesClientListBySavingsPlanOrderOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/providers/Microsoft.CostManagement/benefitUtilizationSummaries"
+		if savingsPlanOrderID == "" {
+			return nil, errors.New("parameter savingsPlanOrderID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{savingsPlanOrderId}", url.PathEscape(savingsPlanOrderID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{savingsPlanOrderId}", url.PathEscape(savingsPlanOrderID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20250301)
+		if options != nil && options.GrainParameter != nil {
+			reqQP.Set("grainParameter", string(*options.GrainParameter))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250301)
-	if options != nil && options.GrainParameter != nil {
-		reqQP.Set("grainParameter", string(*options.GrainParameter))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySavingsPlanOrderHandleResponse handles the ListBySavingsPlanOrder response.
-func (client *BenefitUtilizationSummariesClient) listBySavingsPlanOrderHandleResponse(resp *http.Response) (BenefitUtilizationSummariesClientListBySavingsPlanOrderResponse, error) {
+func (client *BenefitUtilizationSummariesClient) listBySavingsPlanOrderHandleResponse(resp *http.Response, successCodes ...int) (BenefitUtilizationSummariesClientListBySavingsPlanOrderResponse, error) {
 	result := BenefitUtilizationSummariesClientListBySavingsPlanOrderResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BenefitUtilizationSummariesListResult); err != nil {
 		return BenefitUtilizationSummariesClientListBySavingsPlanOrderResponse{}, err
 	}

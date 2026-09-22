@@ -309,6 +309,49 @@ func (s *SKUMixPlacementBase) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type SKUMixPlacementCapacityLimit.
+func (s SKUMixPlacementCapacityLimit) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "limit", s.Limit)
+	populate(objectMap, "name", s.Name)
+	populate(objectMap, "priority", s.Priority)
+	populate(objectMap, "reason", s.Reason)
+	populate(objectMap, "zone", s.Zone)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SKUMixPlacementCapacityLimit.
+func (s *SKUMixPlacementCapacityLimit) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "limit":
+			err = unpopulate(val, "Limit", &s.Limit)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &s.Name)
+			delete(rawMsg, key)
+		case "priority":
+			err = unpopulate(val, "Priority", &s.Priority)
+			delete(rawMsg, key)
+		case "reason":
+			err = unpopulate(val, "Reason", &s.Reason)
+			delete(rawMsg, key)
+		case "zone":
+			err = unpopulate(val, "Zone", &s.Zone)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type SKUMixPlacementCapacityProfile.
 func (s SKUMixPlacementCapacityProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -363,7 +406,6 @@ func (s *SKUMixPlacementCapacityProfile) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SKUMixPlacementDeploymentChoice.
 func (s SKUMixPlacementDeploymentChoice) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "id", s.ID)
 	populate(objectMap, "skuSplit", s.SKUSplit)
 	populate(objectMap, "score", s.Score)
 	return json.Marshal(objectMap)
@@ -378,9 +420,6 @@ func (s *SKUMixPlacementDeploymentChoice) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "id":
-			err = unpopulate(val, "ID", &s.ID)
-			delete(rawMsg, key)
 		case "skuSplit":
 			err = unpopulate(val, "SKUSplit", &s.SKUSplit)
 			delete(rawMsg, key)
@@ -426,7 +465,6 @@ func (s *SKUMixPlacementInstanceDescription) UnmarshalJSON(data []byte) error {
 func (s SKUMixPlacementItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "capacity", s.Capacity)
-	populate(objectMap, "capacityMax", s.CapacityMax)
 	populate(objectMap, "name", s.Name)
 	populate(objectMap, "priority", s.Priority)
 	populate(objectMap, "zone", s.Zone)
@@ -444,9 +482,6 @@ func (s *SKUMixPlacementItem) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "capacity":
 			err = unpopulate(val, "Capacity", &s.Capacity)
-			delete(rawMsg, key)
-		case "capacityMax":
-			err = unpopulate(val, "CapacityMax", &s.CapacityMax)
 			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &s.Name)
@@ -530,9 +565,11 @@ func (s *SKUMixPlacementRequest) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SKUMixPlacementResponse.
 func (s SKUMixPlacementResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "capacityLimits", s.CapacityLimits)
+	populate(objectMap, "id", s.ID)
 	populate(objectMap, "partialFulfillmentReason", s.PartialFulfillmentReason)
 	populate(objectMap, "placementChoices", s.PlacementChoices)
-	populateTime[datetime.RFC3339](objectMap, "validUntil", s.ValidUntil)
+	populateTime[datetime.RFC3339](objectMap, "validUntil", s.ValidUntil, true)
 	return json.Marshal(objectMap)
 }
 
@@ -545,6 +582,12 @@ func (s *SKUMixPlacementResponse) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "capacityLimits":
+			err = unpopulate(val, "CapacityLimits", &s.CapacityLimits)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, "ID", &s.ID)
+			delete(rawMsg, key)
 		case "partialFulfillmentReason":
 			err = unpopulate(val, "PartialFulfillmentReason", &s.PartialFulfillmentReason)
 			delete(rawMsg, key)
@@ -771,10 +814,10 @@ func (s *SpotPlacementScoresResponse) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt, true)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt, true)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -825,13 +868,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
-func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time, utc bool) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {
 		m[k] = nil
 	} else if !reflect.ValueOf(t).IsNil() {
-		newTime := T(*t)
+		tt := *t
+		if utc {
+			tt = tt.UTC()
+		}
+		newTime := T(tt)
 		m[k] = (*T)(&newTime)
 	}
 }
@@ -841,7 +888,7 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	return nil
 }
@@ -852,7 +899,7 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 	}
 	var aux T
 	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	newTime := time.Time(aux)
 	*t = &newTime

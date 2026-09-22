@@ -35,8 +35,8 @@ func ExampleJobClient_Get() {
 	// 		Properties: &armrecoveryservicesdatareplication.JobModelProperties{
 	// 			DisplayName: to.Ptr("dhopzytkd"),
 	// 			State: to.Ptr(armrecoveryservicesdatareplication.JobStatePending),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:59.269Z"); return t}()),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:59.269Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 59, 269000000, time.UTC)),
+	// 			EndTime: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 59, 269000000, time.UTC)),
 	// 			ObjectID: to.Ptr("wvtmwiyxqrpqvljzn"),
 	// 			ObjectName: to.Ptr("ieieqaw"),
 	// 			ObjectInternalID: to.Ptr("ahbtlwmbeivmlbj"),
@@ -53,8 +53,8 @@ func ExampleJobClient_Get() {
 	// 				{
 	// 					TaskName: to.Ptr("flkzfbbpngqbbjsdqysqfon"),
 	// 					State: to.Ptr(armrecoveryservicesdatareplication.TaskStatePending),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:59.269Z"); return t}()),
-	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:59.269Z"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 59, 269000000, time.UTC)),
+	// 					EndTime: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 59, 269000000, time.UTC)),
 	// 					CustomProperties: &armrecoveryservicesdatareplication.TaskModelCustomProperties{
 	// 						InstanceType: to.Ptr("aaqgqvnhskxpsbnrdekxaghweon"),
 	// 					},
@@ -65,7 +65,7 @@ func ExampleJobClient_Get() {
 	// 					Code: to.Ptr("ndcxzieiuwoxoklilcvjmglml"),
 	// 					Type: to.Ptr("iyktxohrtrkshbjdhboscsu"),
 	// 					Severity: to.Ptr("ldgmfmbzmjtqjg"),
-	// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:59.269Z"); return t}()),
+	// 					CreationTime: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 59, 269000000, time.UTC)),
 	// 					Message: to.Ptr("ltuufmxomfecqeyvzrfjqlelytkdwr"),
 	// 					Causes: to.Ptr("iffxig"),
 	// 					Recommendation: to.Ptr("brridkskflo"),
@@ -83,10 +83,10 @@ func ExampleJobClient_Get() {
 	// 		SystemData: &armrecoveryservicesdatareplication.SystemData{
 	// 			CreatedBy: to.Ptr("jurgsdagntjg"),
 	// 			CreatedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("zowfl")),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:59.270Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 59, 270000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("vuw"),
 	// 			LastModifiedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("h")),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:59.270Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 59, 270000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -122,8 +122,8 @@ func ExampleJobClient_NewListPager() {
 		// 				Properties: &armrecoveryservicesdatareplication.JobModelProperties{
 		// 					DisplayName: to.Ptr("dhopzytkd"),
 		// 					State: to.Ptr(armrecoveryservicesdatareplication.JobStatePending),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:59.269Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:59.269Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 59, 269000000, time.UTC)),
+		// 					EndTime: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 59, 269000000, time.UTC)),
 		// 					ObjectID: to.Ptr("wvtmwiyxqrpqvljzn"),
 		// 					ObjectName: to.Ptr("ieieqaw"),
 		// 					ObjectInternalID: to.Ptr("ahbtlwmbeivmlbj"),
@@ -140,8 +140,8 @@ func ExampleJobClient_NewListPager() {
 		// 						{
 		// 							TaskName: to.Ptr("flkzfbbpngqbbjsdqysqfon"),
 		// 							State: to.Ptr(armrecoveryservicesdatareplication.TaskStatePending),
-		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:59.269Z"); return t}()),
-		// 							EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:59.269Z"); return t}()),
+		// 							StartTime: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 59, 269000000, time.UTC)),
+		// 							EndTime: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 59, 269000000, time.UTC)),
 		// 							CustomProperties: &armrecoveryservicesdatareplication.TaskModelCustomProperties{
 		// 								InstanceType: to.Ptr("aaqgqvnhskxpsbnrdekxaghweon"),
 		// 							},
@@ -152,7 +152,7 @@ func ExampleJobClient_NewListPager() {
 		// 							Code: to.Ptr("ndcxzieiuwoxoklilcvjmglml"),
 		// 							Type: to.Ptr("iyktxohrtrkshbjdhboscsu"),
 		// 							Severity: to.Ptr("ldgmfmbzmjtqjg"),
-		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:59.269Z"); return t}()),
+		// 							CreationTime: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 59, 269000000, time.UTC)),
 		// 							Message: to.Ptr("ltuufmxomfecqeyvzrfjqlelytkdwr"),
 		// 							Causes: to.Ptr("iffxig"),
 		// 							Recommendation: to.Ptr("brridkskflo"),
@@ -170,10 +170,10 @@ func ExampleJobClient_NewListPager() {
 		// 				SystemData: &armrecoveryservicesdatareplication.SystemData{
 		// 					CreatedBy: to.Ptr("jurgsdagntjg"),
 		// 					CreatedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("zowfl")),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:59.270Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 59, 270000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("vuw"),
 		// 					LastModifiedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("h")),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:59.270Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 59, 270000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

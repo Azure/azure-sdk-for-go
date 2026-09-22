@@ -153,9 +153,10 @@ type EventHandler struct {
 
 	// Gets or sets the matching pattern for event names.
 	// There are 3 kinds of patterns supported:
-	// 1. "*", it matches any event name
-	// 2. Combine multiple events with ",", for example "event1,event2", it matches event "event1" and "event2"
-	// 3. A single event name, for example, "event1", it matches "event1"
+	//
+	//  1. "*", it matches any event name
+	//  2. Combine multiple events with ",", for example "event1,event2", it matches event "event1" and "event2"
+	//  3. A single event name, for example, "event1", it matches "event1"
 	UserEventPattern *string
 }
 
@@ -218,9 +219,10 @@ type EventNameFilter struct {
 
 	// Gets or sets a matching pattern for event names.
 	// There are 3 kinds of patterns supported:
-	// 1. "*", it matches any event name
-	// 2. Combine multiple events with ",", for example "event1,event2", it matches events "event1" and "event2"
-	// 3. A single event name, for example, "event1", it matches "event1"
+	//
+	//  1. "*", it matches any event name
+	//  2. Combine multiple events with ",", for example "event1,event2", it matches events "event1" and "event2"
+	//  3. A single event name, for example, "event1", it matches "event1"
 	UserEventPattern *string
 }
 

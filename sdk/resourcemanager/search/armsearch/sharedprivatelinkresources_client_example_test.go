@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/CreateOrUpdateSharedPrivateLinkResource.json
+// Generated from example definition: 2026-09-01-preview/CreateOrUpdateSharedPrivateLinkResource.json
 func ExampleSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,13 +35,13 @@ func ExampleSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.SharedPrivateLinkResourcesClientCreateOrUpdateResponse{
-	// 	SharedPrivateLinkResource: &armsearch.SharedPrivateLinkResource{
+	// 	SharedPrivateLinkResource: armsearch.SharedPrivateLinkResource{
 	// 		Name: to.Ptr("testResource"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices/sharedPrivateLinkResources"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/sharedPrivateLinkResources/testResource"),
@@ -55,7 +55,7 @@ func ExampleSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/DeleteSharedPrivateLinkResource.json
+// Generated from example definition: 2026-09-01-preview/DeleteSharedPrivateLinkResource.json
 func ExampleSharedPrivateLinkResourcesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,11 +72,11 @@ func ExampleSharedPrivateLinkResourcesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/GetSharedPrivateLinkResource.json
+// Generated from example definition: 2026-09-01-preview/GetSharedPrivateLinkResource.json
 func ExampleSharedPrivateLinkResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleSharedPrivateLinkResourcesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.SharedPrivateLinkResourcesClientGetResponse{
-	// 	SharedPrivateLinkResource: &armsearch.SharedPrivateLinkResource{
+	// 	SharedPrivateLinkResource: armsearch.SharedPrivateLinkResource{
 	// 		Name: to.Ptr("testResource"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices/sharedPrivateLinkResources"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/sharedPrivateLinkResources/testResource"),
@@ -109,7 +109,7 @@ func ExampleSharedPrivateLinkResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ListSharedPrivateLinkResourcesByService.json
+// Generated from example definition: 2026-09-01-preview/ListSharedPrivateLinkResourcesByService.json
 func ExampleSharedPrivateLinkResourcesClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

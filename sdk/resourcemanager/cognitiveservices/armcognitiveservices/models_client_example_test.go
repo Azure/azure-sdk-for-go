@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/ListLocationModels.json
+// Generated from example definition: 2026-07-15-preview/ListLocationModels.json
 func ExampleModelsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,9 +69,9 @@ func ExampleModelsClient_NewListPager() {
 		// 						},
 		// 					},
 		// 					SystemData: &armcognitiveservices.SystemData{
-		// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-07T00:00:00Z"); return t}()),
+		// 						CreatedAt: to.Ptr(time.Date(2021, time.October, 7, 0, 0, 0, 0, time.UTC)),
 		// 						CreatedBy: to.Ptr("Microsoft"),
-		// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-07T00:00:00Z"); return t}()),
+		// 						LastModifiedAt: to.Ptr(time.Date(2021, time.October, 7, 0, 0, 0, 0, time.UTC)),
 		// 						LastModifiedBy: to.Ptr("Microsoft"),
 		// 					},
 		// 					Version: to.Ptr("1"),
@@ -104,14 +104,14 @@ func ExampleModelsClient_NewListPager() {
 		// 								Minimum: to.Ptr[int32](300),
 		// 								Step: to.Ptr[int32](100),
 		// 							},
-		// 							DeprecationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-30T00:00:00Z"); return t}()),
+		// 							DeprecationDate: to.Ptr(time.Date(2025, time.September, 30, 0, 0, 0, 0, time.UTC)),
 		// 							UsageName: to.Ptr("OpenAI.Provisioned.Dalle"),
 		// 						},
 		// 					},
 		// 					SystemData: &armcognitiveservices.SystemData{
-		// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-11T00:00:00Z"); return t}()),
+		// 						CreatedAt: to.Ptr(time.Date(2023, time.August, 11, 0, 0, 0, 0, time.UTC)),
 		// 						CreatedBy: to.Ptr("Microsoft"),
-		// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-11T00:00:00Z"); return t}()),
+		// 						LastModifiedAt: to.Ptr(time.Date(2023, time.August, 11, 0, 0, 0, 0, time.UTC)),
 		// 						LastModifiedBy: to.Ptr("Microsoft"),
 		// 					},
 		// 					Version: to.Ptr("3.0"),
@@ -143,7 +143,7 @@ func ExampleModelsClient_NewListPager() {
 		// 								Default: to.Ptr[int32](120),
 		// 								Maximum: to.Ptr[int32](1000000),
 		// 							},
-		// 							DeprecationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-13T00:00:00Z"); return t}()),
+		// 							DeprecationDate: to.Ptr(time.Date(2025, time.February, 13, 0, 0, 0, 0, time.UTC)),
 		// 							UsageName: to.Ptr("OpenAI.Standard.gpt-35-turbo"),
 		// 						},
 		// 						{
@@ -154,15 +154,15 @@ func ExampleModelsClient_NewListPager() {
 		// 								Minimum: to.Ptr[int32](300),
 		// 								Step: to.Ptr[int32](100),
 		// 							},
-		// 							DeprecationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T00:00:00Z"); return t}()),
+		// 							DeprecationDate: to.Ptr(time.Date(2025, time.May, 15, 0, 0, 0, 0, time.UTC)),
 		// 							UsageName: to.Ptr("OpenAI.Provisioned.gpt-35-turbo"),
 		// 						},
 		// 					},
 		// 					SystemData: &armcognitiveservices.SystemData{
-		// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-09T00:00:00Z"); return t}()),
+		// 						CreatedAt: to.Ptr(time.Date(2023, time.March, 9, 0, 0, 0, 0, time.UTC)),
 		// 						CreatedBy: to.Ptr("Microsoft"),
 		// 						CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
-		// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-06T00:00:00Z"); return t}()),
+		// 						LastModifiedAt: to.Ptr(time.Date(2023, time.July, 6, 0, 0, 0, 0, time.UTC)),
 		// 						LastModifiedBy: to.Ptr("Microsoft"),
 		// 						LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
 		// 					},
@@ -191,7 +191,7 @@ func ExampleModelsClient_NewListPager() {
 		// 					MaxCapacity: to.Ptr[int32](50),
 		// 					ModelCatalogAssetID: to.Ptr("azureml://registries/azure-openai/models/gpt-4o/versions/2024-05-13"),
 		// 					ReplacementConfig: &armcognitiveservices.ReplacementConfig{
-		// 						AutoUpgradeStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-26T07:00:00Z"); return t}()),
+		// 						AutoUpgradeStartDate: to.Ptr(time.Date(2025, time.March, 26, 7, 0, 0, 0, time.UTC)),
 		// 						TargetModelName: to.Ptr("gpt-4.1"),
 		// 						TargetModelVersion: to.Ptr("2025-04-14"),
 		// 						UpgradeOnExpiryLeadTimeDays: to.Ptr[int32](7),
@@ -209,9 +209,9 @@ func ExampleModelsClient_NewListPager() {
 		// 						},
 		// 					},
 		// 					SystemData: &armcognitiveservices.SystemData{
-		// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-05-13T00:00:00Z"); return t}()),
+		// 						CreatedAt: to.Ptr(time.Date(2024, time.May, 13, 0, 0, 0, 0, time.UTC)),
 		// 						CreatedBy: to.Ptr("Microsoft"),
-		// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-15T00:00:00Z"); return t}()),
+		// 						LastModifiedAt: to.Ptr(time.Date(2024, time.December, 15, 0, 0, 0, 0, time.UTC)),
 		// 						LastModifiedBy: to.Ptr("Microsoft"),
 		// 					},
 		// 					Version: to.Ptr("2024-05-13"),
@@ -244,10 +244,10 @@ func ExampleModelsClient_NewListPager() {
 		// 						},
 		// 					},
 		// 					SystemData: &armcognitiveservices.SystemData{
-		// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-01T00:00:00Z"); return t}()),
+		// 						CreatedAt: to.Ptr(time.Date(2024, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 						CreatedBy: to.Ptr("Microsoft"),
 		// 						CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
-		// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-16T04:45:33.9367873Z"); return t}()),
+		// 						LastModifiedAt: to.Ptr(time.Date(2025, time.April, 16, 4, 45, 33, 936787300, time.UTC)),
 		// 						LastModifiedBy: to.Ptr("MaaSModelConverter"),
 		// 						LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
 		// 					},
@@ -302,9 +302,9 @@ func ExampleModelsClient_NewListPager() {
 		// 						},
 		// 					},
 		// 					SystemData: &armcognitiveservices.SystemData{
-		// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-06T00:00:00Z"); return t}()),
+		// 						CreatedAt: to.Ptr(time.Date(2024, time.August, 6, 0, 0, 0, 0, time.UTC)),
 		// 						CreatedBy: to.Ptr("Microsoft"),
-		// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00Z"); return t}()),
+		// 						LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 		// 						LastModifiedBy: to.Ptr("Microsoft"),
 		// 					},
 		// 					Version: to.Ptr("2024-08-06"),

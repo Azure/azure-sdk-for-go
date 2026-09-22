@@ -10,13 +10,14 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"net/http"
 	"net/url"
 	"sort"
 	"strings"
 	"sync/atomic"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -274,7 +275,10 @@ func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, er
 
 			// Join the sorted key values separated by ','
 			// Then prepend "keyName:"; then add this string to the buffer
-			cr.WriteString("\n" + strings.ToLower(paramName) + ":" + strings.Join(paramValues, ","))
+			cr.WriteString("\n")
+			cr.WriteString(strings.ToLower(paramName))
+			cr.WriteString(":")
+			cr.WriteString(strings.Join(paramValues, ","))
 		}
 	}
 	return cr.String(), nil

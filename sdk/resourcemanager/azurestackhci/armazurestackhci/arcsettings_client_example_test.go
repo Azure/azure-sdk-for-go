@@ -45,7 +45,7 @@ func ExampleArcSettingsClient_ConsentAndInstallDefaultExtensions() {
 	// 			DefaultExtensions: []*armazurestackhci.DefaultExtensionDetails{
 	// 				{
 	// 					Category: to.Ptr("Telemetry"),
-	// 					ConsentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:18:19.1234567Z"); return t}()),
+	// 					ConsentTime: to.Ptr(time.Date(2023, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 				},
 	// 			},
 	// 			PerNodeDetails: []*armazurestackhci.PerNodeState{
@@ -63,10 +63,10 @@ func ExampleArcSettingsClient_ConsentAndInstallDefaultExtensions() {
 	// 			ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armazurestackhci.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
 	// 		},
@@ -107,7 +107,7 @@ func ExampleArcSettingsClient_Create() {
 	// 			DefaultExtensions: []*armazurestackhci.DefaultExtensionDetails{
 	// 				{
 	// 					Category: to.Ptr("Telemetry"),
-	// 					ConsentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:18:19.1234567Z"); return t}()),
+	// 					ConsentTime: to.Ptr(time.Date(2023, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 				},
 	// 			},
 	// 			PerNodeDetails: []*armazurestackhci.PerNodeState{
@@ -125,10 +125,10 @@ func ExampleArcSettingsClient_Create() {
 	// 			ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armazurestackhci.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
 	// 		},
@@ -216,10 +216,10 @@ func ExampleArcSettingsClient_GeneratePassword() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.ArcSettingsClientGeneratePasswordResponse{
 	// 	PasswordCredential: armazurestackhci.PasswordCredential{
-	// 		EndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2121-02-17T16:24:23.6264377+05:30"); return t}()),
+	// 		EndDateTime: to.Ptr(time.Date(2121, time.February, 17, 10, 54, 23, 626437700, time.UTC)),
 	// 		KeyID: to.Ptr("00000000-2d47-4fb2-8ed2-fed71a5c197b"),
 	// 		SecretText: to.Ptr("secretText"),
-	// 		StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-17T16:24:23.6264005+05:30"); return t}()),
+	// 		StartDateTime: to.Ptr(time.Date(2022, time.February, 17, 10, 54, 23, 626400500, time.UTC)),
 	// 	},
 	// }
 }
@@ -261,7 +261,7 @@ func ExampleArcSettingsClient_Get() {
 	// 			DefaultExtensions: []*armazurestackhci.DefaultExtensionDetails{
 	// 				{
 	// 					Category: to.Ptr("Telemetry"),
-	// 					ConsentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:18:19.1234567Z"); return t}()),
+	// 					ConsentTime: to.Ptr(time.Date(2023, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 				},
 	// 				{
 	// 					Category: to.Ptr("Supportability"),
@@ -282,10 +282,10 @@ func ExampleArcSettingsClient_Get() {
 	// 			ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armazurestackhci.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
 	// 		},
@@ -362,7 +362,7 @@ func ExampleArcSettingsClient_NewListByClusterPager() {
 		// 					DefaultExtensions: []*armazurestackhci.DefaultExtensionDetails{
 		// 						{
 		// 							Category: to.Ptr("Telemetry"),
-		// 							ConsentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:18:19.1234567Z"); return t}()),
+		// 							ConsentTime: to.Ptr(time.Date(2023, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 		// 						},
 		// 						{
 		// 							Category: to.Ptr("Supportability"),
@@ -383,10 +383,10 @@ func ExampleArcSettingsClient_NewListByClusterPager() {
 		// 					ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
 		// 				},
 		// 				SystemData: &armazurestackhci.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T17:18:19.1234567Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-02T17:18:19.1234567Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user2"),
 		// 					LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
 		// 				},
@@ -445,7 +445,7 @@ func ExampleArcSettingsClient_BeginReconcile() {
 	// 			DefaultExtensions: []*armazurestackhci.DefaultExtensionDetails{
 	// 				{
 	// 					Category: to.Ptr("Telemetry"),
-	// 					ConsentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:18:19.1234567Z"); return t}()),
+	// 					ConsentTime: to.Ptr(time.Date(2023, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 				},
 	// 				{
 	// 					Category: to.Ptr("Supportability"),
@@ -468,10 +468,10 @@ func ExampleArcSettingsClient_BeginReconcile() {
 	// 			ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armazurestackhci.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
 	// 		},
@@ -528,7 +528,7 @@ func ExampleArcSettingsClient_Update() {
 	// 			DefaultExtensions: []*armazurestackhci.DefaultExtensionDetails{
 	// 				{
 	// 					Category: to.Ptr("Telemetry"),
-	// 					ConsentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:18:19.1234567Z"); return t}()),
+	// 					ConsentTime: to.Ptr(time.Date(2023, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 				},
 	// 				{
 	// 					Category: to.Ptr("Supportability"),
@@ -549,10 +549,10 @@ func ExampleArcSettingsClient_Update() {
 	// 			ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armazurestackhci.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
 	// 		},

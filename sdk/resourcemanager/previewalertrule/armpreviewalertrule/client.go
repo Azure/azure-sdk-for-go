@@ -56,12 +56,7 @@ func (client *Client) PreviewAlertRule(ctx context.Context, resourceID string, p
 	if err != nil {
 		return ClientPreviewAlertRuleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientPreviewAlertRuleResponse{}, err
-	}
-	resp, err := client.previewAlertRuleHandleResponse(httpResp)
-	return resp, err
+	return client.previewAlertRuleHandleResponse(httpResp, http.StatusOK)
 }
 
 // previewAlertRuleCreateRequest creates the PreviewAlertRule request.
@@ -87,8 +82,11 @@ func (client *Client) previewAlertRuleCreateRequest(ctx context.Context, resourc
 }
 
 // previewAlertRuleHandleResponse handles the PreviewAlertRule response.
-func (client *Client) previewAlertRuleHandleResponse(resp *http.Response) (ClientPreviewAlertRuleResponse, error) {
+func (client *Client) previewAlertRuleHandleResponse(resp *http.Response, successCodes ...int) (ClientPreviewAlertRuleResponse, error) {
 	result := ClientPreviewAlertRuleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Response); err != nil {
 		return ClientPreviewAlertRuleResponse{}, err
 	}

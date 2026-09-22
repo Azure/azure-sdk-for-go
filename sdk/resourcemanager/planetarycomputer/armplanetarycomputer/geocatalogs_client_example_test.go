@@ -76,10 +76,10 @@ func ExampleGeoCatalogsClient_BeginCreate() {
 	// 		SystemData: &armplanetarycomputer.SystemData{
 	// 			CreatedBy: to.Ptr("Catalog User"),
 	// 			CreatedByType: to.Ptr(armplanetarycomputer.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-10T18:34:22.271Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.October, 10, 18, 34, 22, 271000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("Catalog User"),
 	// 			LastModifiedByType: to.Ptr(armplanetarycomputer.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-10T18:34:22.271Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.October, 10, 18, 34, 22, 271000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -151,10 +151,10 @@ func ExampleGeoCatalogsClient_Get() {
 	// 		SystemData: &armplanetarycomputer.SystemData{
 	// 			CreatedBy: to.Ptr("Catalog User"),
 	// 			CreatedByType: to.Ptr(armplanetarycomputer.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-10T18:34:22.271Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.October, 10, 18, 34, 22, 271000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("Catalog User"),
 	// 			LastModifiedByType: to.Ptr(armplanetarycomputer.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-10T18:34:22.271Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.October, 10, 18, 34, 22, 271000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -211,10 +211,10 @@ func ExampleGeoCatalogsClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armplanetarycomputer.SystemData{
 		// 					CreatedBy: to.Ptr("Catalog User"),
 		// 					CreatedByType: to.Ptr(armplanetarycomputer.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-10T18:34:22.271Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.October, 10, 18, 34, 22, 271000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("Catalog User"),
 		// 					LastModifiedByType: to.Ptr(armplanetarycomputer.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-10T18:34:22.271Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.October, 10, 18, 34, 22, 271000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -275,10 +275,10 @@ func ExampleGeoCatalogsClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armplanetarycomputer.SystemData{
 		// 					CreatedBy: to.Ptr("Catalog User"),
 		// 					CreatedByType: to.Ptr(armplanetarycomputer.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-10T18:34:22.271Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.October, 10, 18, 34, 22, 271000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("Catalog User"),
 		// 					LastModifiedByType: to.Ptr(armplanetarycomputer.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-10T18:34:22.271Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.October, 10, 18, 34, 22, 271000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -347,10 +347,10 @@ func ExampleGeoCatalogsClient_BeginUpdate() {
 	// 		SystemData: &armplanetarycomputer.SystemData{
 	// 			CreatedBy: to.Ptr("Catalog User"),
 	// 			CreatedByType: to.Ptr(armplanetarycomputer.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-10T18:34:22.271Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.October, 10, 18, 34, 22, 271000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("Catalog User"),
 	// 			LastModifiedByType: to.Ptr(armplanetarycomputer.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-10T18:34:22.271Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.October, 10, 18, 34, 22, 271000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

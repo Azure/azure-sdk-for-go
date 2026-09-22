@@ -30,6 +30,9 @@ type CatalogImageDefinitionBuildClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCatalogImageDefinitionBuildClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CatalogImageDefinitionBuildClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -84,8 +87,7 @@ func (client *CatalogImageDefinitionBuildClient) cancel(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -94,7 +96,7 @@ func (client *CatalogImageDefinitionBuildClient) cancel(ctx context.Context, res
 func (client *CatalogImageDefinitionBuildClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, imageDefinitionName string, buildName string, _ *CatalogImageDefinitionBuildClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/imageDefinitions/{imageDefinitionName}/builds/{buildName}/cancel"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -150,19 +152,14 @@ func (client *CatalogImageDefinitionBuildClient) Get(ctx context.Context, resour
 	if err != nil {
 		return CatalogImageDefinitionBuildClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CatalogImageDefinitionBuildClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *CatalogImageDefinitionBuildClient) getCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, imageDefinitionName string, buildName string, _ *CatalogImageDefinitionBuildClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/imageDefinitions/{imageDefinitionName}/builds/{buildName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -197,8 +194,11 @@ func (client *CatalogImageDefinitionBuildClient) getCreateRequest(ctx context.Co
 }
 
 // getHandleResponse handles the Get response.
-func (client *CatalogImageDefinitionBuildClient) getHandleResponse(resp *http.Response) (CatalogImageDefinitionBuildClientGetResponse, error) {
+func (client *CatalogImageDefinitionBuildClient) getHandleResponse(resp *http.Response, successCodes ...int) (CatalogImageDefinitionBuildClientGetResponse, error) {
 	result := CatalogImageDefinitionBuildClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageDefinitionBuild); err != nil {
 		return CatalogImageDefinitionBuildClientGetResponse{}, err
 	}
@@ -228,19 +228,14 @@ func (client *CatalogImageDefinitionBuildClient) GetBuildDetails(ctx context.Con
 	if err != nil {
 		return CatalogImageDefinitionBuildClientGetBuildDetailsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CatalogImageDefinitionBuildClientGetBuildDetailsResponse{}, err
-	}
-	resp, err := client.getBuildDetailsHandleResponse(httpResp)
-	return resp, err
+	return client.getBuildDetailsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getBuildDetailsCreateRequest creates the GetBuildDetails request.
 func (client *CatalogImageDefinitionBuildClient) getBuildDetailsCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, imageDefinitionName string, buildName string, _ *CatalogImageDefinitionBuildClientGetBuildDetailsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/imageDefinitions/{imageDefinitionName}/builds/{buildName}/getBuildDetails"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -275,8 +270,11 @@ func (client *CatalogImageDefinitionBuildClient) getBuildDetailsCreateRequest(ct
 }
 
 // getBuildDetailsHandleResponse handles the GetBuildDetails response.
-func (client *CatalogImageDefinitionBuildClient) getBuildDetailsHandleResponse(resp *http.Response) (CatalogImageDefinitionBuildClientGetBuildDetailsResponse, error) {
+func (client *CatalogImageDefinitionBuildClient) getBuildDetailsHandleResponse(resp *http.Response, successCodes ...int) (CatalogImageDefinitionBuildClientGetBuildDetailsResponse, error) {
 	result := CatalogImageDefinitionBuildClientGetBuildDetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageDefinitionBuildDetails); err != nil {
 		return CatalogImageDefinitionBuildClientGetBuildDetailsResponse{}, err
 	}

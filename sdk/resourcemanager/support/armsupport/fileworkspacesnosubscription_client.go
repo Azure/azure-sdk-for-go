@@ -57,12 +57,7 @@ func (client *FileWorkspacesNoSubscriptionClient) Create(ctx context.Context, fi
 	if err != nil {
 		return FileWorkspacesNoSubscriptionClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return FileWorkspacesNoSubscriptionClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
@@ -84,8 +79,11 @@ func (client *FileWorkspacesNoSubscriptionClient) createCreateRequest(ctx contex
 }
 
 // createHandleResponse handles the Create response.
-func (client *FileWorkspacesNoSubscriptionClient) createHandleResponse(resp *http.Response) (FileWorkspacesNoSubscriptionClientCreateResponse, error) {
+func (client *FileWorkspacesNoSubscriptionClient) createHandleResponse(resp *http.Response, successCodes ...int) (FileWorkspacesNoSubscriptionClientCreateResponse, error) {
 	result := FileWorkspacesNoSubscriptionClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileWorkspaceDetails); err != nil {
 		return FileWorkspacesNoSubscriptionClientCreateResponse{}, err
 	}
@@ -111,12 +109,7 @@ func (client *FileWorkspacesNoSubscriptionClient) Get(ctx context.Context, fileW
 	if err != nil {
 		return FileWorkspacesNoSubscriptionClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FileWorkspacesNoSubscriptionClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -138,8 +131,11 @@ func (client *FileWorkspacesNoSubscriptionClient) getCreateRequest(ctx context.C
 }
 
 // getHandleResponse handles the Get response.
-func (client *FileWorkspacesNoSubscriptionClient) getHandleResponse(resp *http.Response) (FileWorkspacesNoSubscriptionClientGetResponse, error) {
+func (client *FileWorkspacesNoSubscriptionClient) getHandleResponse(resp *http.Response, successCodes ...int) (FileWorkspacesNoSubscriptionClientGetResponse, error) {
 	result := FileWorkspacesNoSubscriptionClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileWorkspaceDetails); err != nil {
 		return FileWorkspacesNoSubscriptionClientGetResponse{}, err
 	}

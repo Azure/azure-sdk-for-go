@@ -45,10 +45,10 @@ func ExampleOrganizationClient_BeginActivateResource_organizationActivateResourc
 	// 		SystemData: &armconfluent.SystemData{
 	// 			CreatedBy: to.Ptr("john.doe@contoso.com"),
 	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-22T20:14:01.830Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 22, 20, 14, 1, 830000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("john.doe@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-22T20:14:01.830Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 22, 20, 14, 1, 830000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -138,7 +138,7 @@ func ExampleOrganizationClient_BeginCreate() {
 	// res = armconfluent.OrganizationClientCreateResponse{
 	// 	OrganizationResource: armconfluent.OrganizationResource{
 	// 		Properties: &armconfluent.OrganizationResourceProperties{
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.430Z"); return t}()),
+	// 			CreatedTime: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 430000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armconfluent.ProvisionStateAccepted),
 	// 			OrganizationID: to.Ptr("rcmkel"),
 	// 			SsoURL: to.Ptr("anhodmdyanjbkwvtkngyxvwdxupng"),
@@ -175,10 +175,10 @@ func ExampleOrganizationClient_BeginCreate() {
 	// 		SystemData: &armconfluent.SystemData{
 	// 			CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -380,7 +380,7 @@ func ExampleOrganizationClient_Get() {
 	// res = armconfluent.OrganizationClientGetResponse{
 	// 	OrganizationResource: armconfluent.OrganizationResource{
 	// 		Properties: &armconfluent.OrganizationResourceProperties{
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.430Z"); return t}()),
+	// 			CreatedTime: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 430000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armconfluent.ProvisionStateAccepted),
 	// 			OrganizationID: to.Ptr("rcmkel"),
 	// 			SsoURL: to.Ptr("anhodmdyanjbkwvtkngyxvwdxupng"),
@@ -417,10 +417,10 @@ func ExampleOrganizationClient_Get() {
 	// 		SystemData: &armconfluent.SystemData{
 	// 			CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -573,10 +573,10 @@ func ExampleOrganizationClient_GetClusterByID() {
 	// 		SystemData: &armconfluent.SystemData{
 	// 			CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -621,10 +621,10 @@ func ExampleOrganizationClient_GetEnvironmentByID() {
 	// 		SystemData: &armconfluent.SystemData{
 	// 			CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -761,7 +761,7 @@ func ExampleOrganizationClient_BeginLinkSaaS() {
 	// res = armconfluent.OrganizationClientLinkSaaSResponse{
 	// 	OrganizationResource: armconfluent.OrganizationResource{
 	// 		Properties: &armconfluent.OrganizationResourceProperties{
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-22T20:14:01.830Z"); return t}()),
+	// 			CreatedTime: to.Ptr(time.Date(2021, time.July, 22, 20, 14, 1, 830000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armconfluent.ProvisionStateSucceeded),
 	// 			OrganizationID: to.Ptr("org-12345"),
 	// 			SsoURL: to.Ptr("https://confluent.cloud/login/sso/contoso"),
@@ -792,10 +792,10 @@ func ExampleOrganizationClient_BeginLinkSaaS() {
 	// 		SystemData: &armconfluent.SystemData{
 	// 			CreatedBy: to.Ptr("john.doe@contoso.com"),
 	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-22T20:14:01.830Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 22, 20, 14, 1, 830000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("john.doe@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-22T20:14:01.830Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 22, 20, 14, 1, 830000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -828,7 +828,7 @@ func ExampleOrganizationClient_NewListByResourceGroupPager() {
 		// 		Value: []*armconfluent.OrganizationResource{
 		// 			{
 		// 				Properties: &armconfluent.OrganizationResourceProperties{
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.430Z"); return t}()),
+		// 					CreatedTime: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 430000000, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armconfluent.ProvisionStateAccepted),
 		// 					OrganizationID: to.Ptr("rcmkel"),
 		// 					SsoURL: to.Ptr("anhodmdyanjbkwvtkngyxvwdxupng"),
@@ -865,10 +865,10 @@ func ExampleOrganizationClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armconfluent.SystemData{
 		// 					CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 		// 					CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 		// 					LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -905,7 +905,7 @@ func ExampleOrganizationClient_NewListBySubscriptionPager() {
 		// 		Value: []*armconfluent.OrganizationResource{
 		// 			{
 		// 				Properties: &armconfluent.OrganizationResourceProperties{
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.430Z"); return t}()),
+		// 					CreatedTime: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 430000000, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armconfluent.ProvisionStateAccepted),
 		// 					OrganizationID: to.Ptr("rcmkel"),
 		// 					SsoURL: to.Ptr("anhodmdyanjbkwvtkngyxvwdxupng"),
@@ -942,10 +942,10 @@ func ExampleOrganizationClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armconfluent.SystemData{
 		// 					CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 		// 					CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 		// 					LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -1034,10 +1034,10 @@ func ExampleOrganizationClient_NewListClustersPager() {
 		// 				SystemData: &armconfluent.SystemData{
 		// 					CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 		// 					CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 		// 					LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -1094,10 +1094,10 @@ func ExampleOrganizationClient_NewListEnvironmentsPager() {
 		// 				SystemData: &armconfluent.SystemData{
 		// 					CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 		// 					CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 		// 					LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -1306,7 +1306,7 @@ func ExampleOrganizationClient_Update() {
 	// res = armconfluent.OrganizationClientUpdateResponse{
 	// 	OrganizationResource: armconfluent.OrganizationResource{
 	// 		Properties: &armconfluent.OrganizationResourceProperties{
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.430Z"); return t}()),
+	// 			CreatedTime: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 430000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armconfluent.ProvisionStateAccepted),
 	// 			OrganizationID: to.Ptr("rcmkel"),
 	// 			SsoURL: to.Ptr("anhodmdyanjbkwvtkngyxvwdxupng"),
@@ -1343,10 +1343,10 @@ func ExampleOrganizationClient_Update() {
 	// 		SystemData: &armconfluent.SystemData{
 	// 			CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

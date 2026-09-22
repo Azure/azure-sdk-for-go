@@ -30,6 +30,9 @@ type OutboundNetworkDependenciesEndpointsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOutboundNetworkDependenciesEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OutboundNetworkDependenciesEndpointsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,19 +67,14 @@ func (client *OutboundNetworkDependenciesEndpointsClient) List(ctx context.Conte
 	if err != nil {
 		return OutboundNetworkDependenciesEndpointsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OutboundNetworkDependenciesEndpointsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
 func (client *OutboundNetworkDependenciesEndpointsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *OutboundNetworkDependenciesEndpointsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/outboundNetworkDependenciesEndpoints"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -99,8 +97,11 @@ func (client *OutboundNetworkDependenciesEndpointsClient) listCreateRequest(ctx 
 }
 
 // listHandleResponse handles the List response.
-func (client *OutboundNetworkDependenciesEndpointsClient) listHandleResponse(resp *http.Response) (OutboundNetworkDependenciesEndpointsClientListResponse, error) {
+func (client *OutboundNetworkDependenciesEndpointsClient) listHandleResponse(resp *http.Response, successCodes ...int) (OutboundNetworkDependenciesEndpointsClientListResponse, error) {
 	result := OutboundNetworkDependenciesEndpointsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OutboundEnvironmentEndpointArray); err != nil {
 		return OutboundNetworkDependenciesEndpointsClientListResponse{}, err
 	}

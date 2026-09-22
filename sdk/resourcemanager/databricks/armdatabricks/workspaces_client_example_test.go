@@ -69,7 +69,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate_revertCustomerManagedKeyCmkEncr
 	// 				Oid: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 				Puid: to.Ptr("33333333"),
 	// 			},
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-20T00:10:29.2858439Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2020, time.February, 20, 0, 10, 29, 285843900, time.UTC)),
 	// 			IsUcEnabled: to.Ptr(true),
 	// 			ManagedResourceGroupID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG"),
 	// 			Parameters: &armdatabricks.WorkspaceCustomParameters{
@@ -181,7 +181,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate_enableCustomerManagedKeyCmkEncr
 	// 				Oid: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 				Puid: to.Ptr("33333333"),
 	// 			},
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-20T00:10:29.2858439Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2020, time.February, 20, 0, 10, 29, 285843900, time.UTC)),
 	// 			IsUcEnabled: to.Ptr(true),
 	// 			ManagedResourceGroupID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG"),
 	// 			Parameters: &armdatabricks.WorkspaceCustomParameters{
@@ -288,7 +288,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate_createAWorkspaceWhichIsReadyFor
 	// 				Oid: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 				Puid: to.Ptr("33333333"),
 	// 			},
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-20T00:10:29.2858439Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2020, time.February, 20, 0, 10, 29, 285843900, time.UTC)),
 	// 			ManagedResourceGroupID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG"),
 	// 			ProvisioningState: to.Ptr(armdatabricks.ProvisioningStateSucceeded),
 	// 			StorageAccountIdentity: &armdatabricks.ManagedIdentityConfiguration{
@@ -374,7 +374,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate_createOrUpdateWorkspace() {
 	// 				Oid: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 				Puid: to.Ptr("33333333"),
 	// 			},
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-20T00:10:29.2858439Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2020, time.February, 20, 0, 10, 29, 285843900, time.UTC)),
 	// 			DefaultCatalog: &armdatabricks.DefaultCatalogProperties{
 	// 				InitialName: to.Ptr(""),
 	// 				InitialType: to.Ptr(armdatabricks.InitialTypeUnityCatalog),
@@ -447,7 +447,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate_createOrUpdateServerlessWorkspa
 	// 				Oid: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 				Puid: to.Ptr("33333333"),
 	// 			},
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-20T00:10:29.2858439Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2020, time.February, 20, 0, 10, 29, 285843900, time.UTC)),
 	// 			DefaultCatalog: &armdatabricks.DefaultCatalogProperties{
 	// 				InitialName: to.Ptr(""),
 	// 				InitialType: to.Ptr(armdatabricks.InitialTypeUnityCatalog),
@@ -545,7 +545,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate_createOrUpdateWorkspaceWithCust
 	// 				Oid: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 				Puid: to.Ptr("33333333"),
 	// 			},
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-20T00:10:29.2858439Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2020, time.February, 20, 0, 10, 29, 285843900, time.UTC)),
 	// 			DefaultCatalog: &armdatabricks.DefaultCatalogProperties{
 	// 				InitialName: to.Ptr(""),
 	// 				InitialType: to.Ptr(armdatabricks.InitialTypeHiveMetastore),
@@ -648,7 +648,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate_createOrUpdateAWorkspaceWithEnh
 	// 				Oid: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 				Puid: to.Ptr("33333333"),
 	// 			},
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T00:10:29.2858439Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2023, time.August, 24, 0, 10, 29, 285843900, time.UTC)),
 	// 			EnhancedSecurityCompliance: &armdatabricks.EnhancedSecurityComplianceDefinition{
 	// 				AutomaticClusterUpdate: &armdatabricks.AutomaticClusterUpdateDefinition{
 	// 					Value: to.Ptr(armdatabricks.AutomaticClusterUpdateValueEnabled),
@@ -745,7 +745,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate_createAWorkspaceWithCustomerMan
 	// 				Oid: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 				Puid: to.Ptr("33333333"),
 	// 			},
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-20T00:10:29.2858439Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2020, time.February, 20, 0, 10, 29, 285843900, time.UTC)),
 	// 			DiskEncryptionSetID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG/providers/Microsoft.Compute/diskEncryptionSets/myDiskEncryptionSet"),
 	// 			Encryption: &armdatabricks.WorkspacePropertiesEncryption{
 	// 				Entities: &armdatabricks.EncryptionEntitiesDefinition{
@@ -849,7 +849,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate_updateAWorkspaceWithCustomerMan
 	// 				Oid: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 				Puid: to.Ptr("33333333"),
 	// 			},
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-20T00:10:29.2858439Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2020, time.February, 20, 0, 10, 29, 285843900, time.UTC)),
 	// 			DiskEncryptionSetID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG/providers/Microsoft.Compute/diskEncryptionSets/myDiskEncryptionSet"),
 	// 			Encryption: &armdatabricks.WorkspacePropertiesEncryption{
 	// 				Entities: &armdatabricks.EncryptionEntitiesDefinition{
@@ -980,7 +980,7 @@ func ExampleWorkspacesClient_Get_getAWorkspaceWithEnhancedSecurityComplianceAddO
 	// 				Oid: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 				Puid: to.Ptr("33333333"),
 	// 			},
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T00:10:29.2858439Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2023, time.August, 24, 0, 10, 29, 285843900, time.UTC)),
 	// 			EnhancedSecurityCompliance: &armdatabricks.EnhancedSecurityComplianceDefinition{
 	// 				AutomaticClusterUpdate: &armdatabricks.AutomaticClusterUpdateDefinition{
 	// 					Value: to.Ptr(armdatabricks.AutomaticClusterUpdateValueEnabled),
@@ -1052,7 +1052,7 @@ func ExampleWorkspacesClient_Get_getAWorkspace() {
 	// 				Oid: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 				Puid: to.Ptr("33333333"),
 	// 			},
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-20T00:10:29.2858439Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2020, time.February, 20, 0, 10, 29, 285843900, time.UTC)),
 	// 			IsUcEnabled: to.Ptr(true),
 	// 			ManagedResourceGroupID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG"),
 	// 			ProvisioningState: to.Ptr(armdatabricks.ProvisioningStateSucceeded),
@@ -1109,7 +1109,7 @@ func ExampleWorkspacesClient_Get_getAWorkspaceWithCustomParameters() {
 	// 				Oid: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 				Puid: to.Ptr("33333333"),
 	// 			},
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-20T00:10:29.2858439Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2020, time.February, 20, 0, 10, 29, 285843900, time.UTC)),
 	// 			IsUcEnabled: to.Ptr(false),
 	// 			ManagedResourceGroupID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG"),
 	// 			Parameters: &armdatabricks.WorkspaceCustomParameters{
@@ -1200,7 +1200,7 @@ func ExampleWorkspacesClient_Get_getAWorkspaceWithCustomerManagedKeyCmkEncryptio
 	// 				Oid: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 				Puid: to.Ptr("33333333"),
 	// 			},
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-20T00:10:29.2858439Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2020, time.February, 20, 0, 10, 29, 285843900, time.UTC)),
 	// 			DiskEncryptionSetID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG/providers/Microsoft.Compute/diskEncryptionSets/myDiskEncryptionSet"),
 	// 			Encryption: &armdatabricks.WorkspacePropertiesEncryption{
 	// 				Entities: &armdatabricks.EncryptionEntitiesDefinition{
@@ -1282,7 +1282,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 		// 						Oid: to.Ptr("22222222-2222-2222-2222-222222222222"),
 		// 						Puid: to.Ptr("33333333"),
 		// 					},
-		// 					CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-20T00:10:29.2858439Z"); return t}()),
+		// 					CreatedDateTime: to.Ptr(time.Date(2020, time.February, 20, 0, 10, 29, 285843900, time.UTC)),
 		// 					ManagedResourceGroupID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG"),
 		// 					ProvisioningState: to.Ptr(armdatabricks.ProvisioningStateSucceeded),
 		// 					UIDefinitionURI: to.Ptr("https://path/to/workspaceCreateUiDefinition.json"),
@@ -1316,7 +1316,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 		// 						Oid: to.Ptr("22222222-2222-2222-2222-222222222222"),
 		// 						Puid: to.Ptr("33333333"),
 		// 					},
-		// 					CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-20T00:10:29.2858439Z"); return t}()),
+		// 					CreatedDateTime: to.Ptr(time.Date(2020, time.February, 20, 0, 10, 29, 285843900, time.UTC)),
 		// 					IsUcEnabled: to.Ptr(true),
 		// 					ManagedResourceGroupID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG"),
 		// 					ProvisioningState: to.Ptr(armdatabricks.ProvisioningStateSucceeded),
@@ -1382,7 +1382,7 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		// 						Oid: to.Ptr("22222222-2222-2222-2222-222222222222"),
 		// 						Puid: to.Ptr("33333333"),
 		// 					},
-		// 					CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-20T00:10:29.2858439Z"); return t}()),
+		// 					CreatedDateTime: to.Ptr(time.Date(2020, time.February, 20, 0, 10, 29, 285843900, time.UTC)),
 		// 					IsUcEnabled: to.Ptr(true),
 		// 					ManagedResourceGroupID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG"),
 		// 					ProvisioningState: to.Ptr(armdatabricks.ProvisioningStateSucceeded),
@@ -1417,7 +1417,7 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		// 						Oid: to.Ptr("22222222-2222-2222-2222-222222222222"),
 		// 						Puid: to.Ptr("33333333"),
 		// 					},
-		// 					CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-20T00:10:29.2858439Z"); return t}()),
+		// 					CreatedDateTime: to.Ptr(time.Date(2020, time.February, 20, 0, 10, 29, 285843900, time.UTC)),
 		// 					IsUcEnabled: to.Ptr(false),
 		// 					ManagedResourceGroupID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG"),
 		// 					ProvisioningState: to.Ptr(armdatabricks.ProvisioningStateSucceeded),
@@ -1484,7 +1484,7 @@ func ExampleWorkspacesClient_BeginUpdate() {
 	// 				Oid: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 				Puid: to.Ptr("33333333"),
 	// 			},
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-20T00:10:29.2858439Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2020, time.February, 20, 0, 10, 29, 285843900, time.UTC)),
 	// 			IsUcEnabled: to.Ptr(true),
 	// 			ManagedResourceGroupID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG"),
 	// 			ProvisioningState: to.Ptr(armdatabricks.ProvisioningStateSucceeded),

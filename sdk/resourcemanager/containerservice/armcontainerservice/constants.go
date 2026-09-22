@@ -5,7 +5,7 @@
 package armcontainerservice
 
 const (
-	version20260502Preview string = "2026-05-02-preview"
+	version20260602Preview string = "2026-06-02-preview"
 )
 
 // AccelerationMode - Enable advanced network acceleration options. This allows users to configure acceleration using BPF
@@ -123,6 +123,22 @@ func PossibleAgentPoolModeValues() []AgentPoolMode {
 		AgentPoolModeManagedSystem,
 		AgentPoolModeSystem,
 		AgentPoolModeUser,
+	}
+}
+
+// AgentPoolNICPublicIPAddressVersion - IP version of the public IP allocated for a secondary NIC. `IPv4` is the only accepted
+// value.
+type AgentPoolNICPublicIPAddressVersion string
+
+const (
+	// AgentPoolNICPublicIPAddressVersionIPv4 - The public IP allocated for the NIC will be IPv4.
+	AgentPoolNICPublicIPAddressVersionIPv4 AgentPoolNICPublicIPAddressVersion = "IPv4"
+)
+
+// PossibleAgentPoolNICPublicIPAddressVersionValues returns the possible values for the AgentPoolNICPublicIPAddressVersion const type.
+func PossibleAgentPoolNICPublicIPAddressVersionValues() []AgentPoolNICPublicIPAddressVersion {
+	return []AgentPoolNICPublicIPAddressVersion{
+		AgentPoolNICPublicIPAddressVersionIPv4,
 	}
 }
 
@@ -364,10 +380,9 @@ func PossibleConnectionStatusValues() []ConnectionStatus {
 	}
 }
 
-// ContainerNetworkLogs - Configures container network logs ingestion with Azure Monitor. Which network logs to ingest is
-// controlled by the CRD found in the following links. No network logs are ingested by default. More information on container
-// network logs can be found at https://aka.ms/ContainerNetworkLogsDoc. More information on configuring container network
-// log can be found at https://aka.ms/acns/howtoenablecnl. If not specified, the default is Disabled.
+// ContainerNetworkLogs - Allowed values for container network logs ingestion with Azure Monitor. When `Enabled`, the specific
+// log types ingested are controlled by the associated CRD; defaults to `Disabled`. See https://aka.ms/ContainerNetworkLogsDoc
+// and https://aka.ms/acns/howtoenablecnl for details.
 type ContainerNetworkLogs string
 
 const (
@@ -430,6 +445,24 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// DRANETMode - The DRANET mode for the agent pool.
+type DRANETMode string
+
+const (
+	// DRANETModeManaged - DRANET is managed by AKS.
+	DRANETModeManaged DRANETMode = "Managed"
+	// DRANETModeUnmanaged - DRANET is not managed by AKS.
+	DRANETModeUnmanaged DRANETMode = "Unmanaged"
+)
+
+// PossibleDRANETModeValues returns the possible values for the DRANETMode const type.
+func PossibleDRANETModeValues() []DRANETMode {
+	return []DRANETMode{
+		DRANETModeManaged,
+		DRANETModeUnmanaged,
 	}
 }
 
@@ -1019,6 +1052,25 @@ func PossibleLocalDNSStateValues() []LocalDNSState {
 	}
 }
 
+// ManagedClusterNATGatewaySKU - The SKU of a managed cluster NAT Gateway.
+type ManagedClusterNATGatewaySKU string
+
+const (
+	// ManagedClusterNATGatewaySKUStandard - Use a Standard SKU NAT Gateway.
+	ManagedClusterNATGatewaySKUStandard ManagedClusterNATGatewaySKU = "Standard"
+	// ManagedClusterNATGatewaySKUStandardV2 - Use a StandardV2 SKU NAT Gateway. This is the default for new clusters in regions
+	// where it is available.
+	ManagedClusterNATGatewaySKUStandardV2 ManagedClusterNATGatewaySKU = "StandardV2"
+)
+
+// PossibleManagedClusterNATGatewaySKUValues returns the possible values for the ManagedClusterNATGatewaySKU const type.
+func PossibleManagedClusterNATGatewaySKUValues() []ManagedClusterNATGatewaySKU {
+	return []ManagedClusterNATGatewaySKU{
+		ManagedClusterNATGatewaySKUStandard,
+		ManagedClusterNATGatewaySKUStandardV2,
+	}
+}
+
 // ManagedClusterPodIdentityProvisioningState - The current provisioning state of the pod identity.
 type ManagedClusterPodIdentityProvisioningState string
 
@@ -1477,6 +1529,25 @@ func PossibleNodeProvisioningModeValues() []NodeProvisioningMode {
 	}
 }
 
+// NvidiaDriverMode - NVIDIA GPU resource allocation mode.
+type NvidiaDriverMode string
+
+const (
+	// NvidiaDriverModeDRA - NVIDIA Device Resource Allocation (DRA) driver is installed on the nodes for resource allocation
+	// and scheduling.
+	NvidiaDriverModeDRA NvidiaDriverMode = "DRA"
+	// NvidiaDriverModeDevicePlugin - NVIDIA Kubernetes device plugin is installed on the nodes for resource allocation and scheduling.
+	NvidiaDriverModeDevicePlugin NvidiaDriverMode = "DevicePlugin"
+)
+
+// PossibleNvidiaDriverModeValues returns the possible values for the NvidiaDriverMode const type.
+func PossibleNvidiaDriverModeValues() []NvidiaDriverMode {
+	return []NvidiaDriverMode{
+		NvidiaDriverModeDRA,
+		NvidiaDriverModeDevicePlugin,
+	}
+}
+
 // OSDiskType - The OS disk type to be used for machines in the agent pool. The default is 'Ephemeral' if the VM supports
 // it and has a cache disk larger than the requested OSDiskSizeGB. Otherwise, defaults to 'Managed'. May not be changed after
 // creation. For more information see [Ephemeral OS](https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os).
@@ -1534,6 +1605,8 @@ const (
 	// OSSKUUbuntu2404 - Use Ubuntu2404 as the OS for node images, however, Ubuntu 24.04 may not be supported for all nodepools.
 	// For limitations and supported kubernetes versions, see see https://aka.ms/aks/supported-ubuntu-versions
 	OSSKUUbuntu2404 OSSKU = "Ubuntu2404"
+	// OSSKUUbuntu2604 - Use Ubuntu2604 as the OS for node images. For limitations and supported Kubernetes versions, see https://aka.ms/aks/supported-ubuntu-versions
+	OSSKUUbuntu2604 OSSKU = "Ubuntu2604"
 	// OSSKUWindows2019 - Use Windows2019 as the OS for node images. Unsupported for system node pools. Windows2019 only supports
 	// Windows2019 containers; it cannot run Windows2022 containers and vice versa.
 	OSSKUWindows2019 OSSKU = "Windows2019"
@@ -1560,6 +1633,7 @@ func PossibleOSSKUValues() []OSSKU {
 		OSSKUUbuntu,
 		OSSKUUbuntu2204,
 		OSSKUUbuntu2404,
+		OSSKUUbuntu2604,
 		OSSKUWindows2019,
 		OSSKUWindows2022,
 		OSSKUWindows2025,
@@ -1619,8 +1693,6 @@ const (
 	OutboundTypeLoadBalancer OutboundType = "loadBalancer"
 	// OutboundTypeManagedNATGateway - The AKS-managed NAT gateway is used for egress.
 	OutboundTypeManagedNATGateway OutboundType = "managedNATGateway"
-	// OutboundTypeManagedNATGatewayV2 - The AKS-managed NAT gateway V2 is used for egress.
-	OutboundTypeManagedNATGatewayV2 OutboundType = "managedNATGatewayV2"
 	// OutboundTypeNone - The AKS cluster is not set with any outbound-type. All AKS nodes follows Azure VM default outbound behavior.
 	// Please refer to https://azure.microsoft.com/en-us/updates/default-outbound-access-for-vms-in-azure-will-be-retired-transition-to-a-new-method-of-internet-access/
 	OutboundTypeNone OutboundType = "none"
@@ -1637,7 +1709,6 @@ func PossibleOutboundTypeValues() []OutboundType {
 	return []OutboundType{
 		OutboundTypeLoadBalancer,
 		OutboundTypeManagedNATGateway,
-		OutboundTypeManagedNATGatewayV2,
 		OutboundTypeNone,
 		OutboundTypeUserAssignedNATGateway,
 		OutboundTypeUserDefinedRouting,

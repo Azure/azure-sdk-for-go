@@ -31,6 +31,9 @@ type PaymentHsmClusterPrivateEndpointConnectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPaymentHsmClusterPrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PaymentHsmClusterPrivateEndpointConnectionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,19 +68,14 @@ func (client *PaymentHsmClusterPrivateEndpointConnectionsClient) Create(ctx cont
 	if err != nil {
 		return PaymentHsmClusterPrivateEndpointConnectionsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return PaymentHsmClusterPrivateEndpointConnectionsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
 func (client *PaymentHsmClusterPrivateEndpointConnectionsClient) createCreateRequest(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, peConnectionName string, properties PaymentHsmClusterPrivateEndpointConnection, _ *PaymentHsmClusterPrivateEndpointConnectionsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}/privateEndpointConnections/{peConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -108,8 +106,11 @@ func (client *PaymentHsmClusterPrivateEndpointConnectionsClient) createCreateReq
 }
 
 // createHandleResponse handles the Create response.
-func (client *PaymentHsmClusterPrivateEndpointConnectionsClient) createHandleResponse(resp *http.Response) (PaymentHsmClusterPrivateEndpointConnectionsClientCreateResponse, error) {
+func (client *PaymentHsmClusterPrivateEndpointConnectionsClient) createHandleResponse(resp *http.Response, successCodes ...int) (PaymentHsmClusterPrivateEndpointConnectionsClientCreateResponse, error) {
 	result := PaymentHsmClusterPrivateEndpointConnectionsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PaymentHsmClusterPrivateEndpointConnection); err != nil {
 		return PaymentHsmClusterPrivateEndpointConnectionsClientCreateResponse{}, err
 	}
@@ -158,8 +159,7 @@ func (client *PaymentHsmClusterPrivateEndpointConnectionsClient) deleteOperation
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -168,7 +168,7 @@ func (client *PaymentHsmClusterPrivateEndpointConnectionsClient) deleteOperation
 func (client *PaymentHsmClusterPrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, peConnectionName string, _ *PaymentHsmClusterPrivateEndpointConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}/privateEndpointConnections/{peConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -215,19 +215,14 @@ func (client *PaymentHsmClusterPrivateEndpointConnectionsClient) Get(ctx context
 	if err != nil {
 		return PaymentHsmClusterPrivateEndpointConnectionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PaymentHsmClusterPrivateEndpointConnectionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *PaymentHsmClusterPrivateEndpointConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, peConnectionName string, _ *PaymentHsmClusterPrivateEndpointConnectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}/privateEndpointConnections/{peConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -254,8 +249,11 @@ func (client *PaymentHsmClusterPrivateEndpointConnectionsClient) getCreateReques
 }
 
 // getHandleResponse handles the Get response.
-func (client *PaymentHsmClusterPrivateEndpointConnectionsClient) getHandleResponse(resp *http.Response) (PaymentHsmClusterPrivateEndpointConnectionsClientGetResponse, error) {
+func (client *PaymentHsmClusterPrivateEndpointConnectionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (PaymentHsmClusterPrivateEndpointConnectionsClientGetResponse, error) {
 	result := PaymentHsmClusterPrivateEndpointConnectionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PaymentHsmClusterPrivateEndpointConnection); err != nil {
 		return PaymentHsmClusterPrivateEndpointConnectionsClientGetResponse{}, err
 	}
@@ -280,47 +278,61 @@ func (client *PaymentHsmClusterPrivateEndpointConnectionsClient) NewListByPaymen
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByPaymentHsmClusterCreateRequest(ctx, resourceGroupName, paymentHsmClusterName, options)
-			}, nil)
+			req, err := client.listByPaymentHsmClusterCreateRequest(ctx, resourceGroupName, paymentHsmClusterName, nextLink, options)
 			if err != nil {
 				return PaymentHsmClusterPrivateEndpointConnectionsClientListByPaymentHsmClusterResponse{}, err
 			}
-			return client.listByPaymentHsmClusterHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PaymentHsmClusterPrivateEndpointConnectionsClientListByPaymentHsmClusterResponse{}, err
+			}
+			return client.listByPaymentHsmClusterHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByPaymentHsmClusterCreateRequest creates the ListByPaymentHsmCluster request.
-func (client *PaymentHsmClusterPrivateEndpointConnectionsClient) listByPaymentHsmClusterCreateRequest(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, _ *PaymentHsmClusterPrivateEndpointConnectionsClientListByPaymentHsmClusterOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}/privateEndpointConnections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PaymentHsmClusterPrivateEndpointConnectionsClient) listByPaymentHsmClusterCreateRequest(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, nextLink string, _ *PaymentHsmClusterPrivateEndpointConnectionsClientListByPaymentHsmClusterOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}/privateEndpointConnections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if paymentHsmClusterName == "" {
+			return nil, errors.New("parameter paymentHsmClusterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{paymentHsmClusterName}", url.PathEscape(paymentHsmClusterName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if paymentHsmClusterName == "" {
-		return nil, errors.New("parameter paymentHsmClusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{paymentHsmClusterName}", url.PathEscape(paymentHsmClusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByPaymentHsmClusterHandleResponse handles the ListByPaymentHsmCluster response.
-func (client *PaymentHsmClusterPrivateEndpointConnectionsClient) listByPaymentHsmClusterHandleResponse(resp *http.Response) (PaymentHsmClusterPrivateEndpointConnectionsClientListByPaymentHsmClusterResponse, error) {
+func (client *PaymentHsmClusterPrivateEndpointConnectionsClient) listByPaymentHsmClusterHandleResponse(resp *http.Response, successCodes ...int) (PaymentHsmClusterPrivateEndpointConnectionsClientListByPaymentHsmClusterResponse, error) {
 	result := PaymentHsmClusterPrivateEndpointConnectionsClientListByPaymentHsmClusterResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PaymentHsmClusterPrivateEndpointConnectionListResult); err != nil {
 		return PaymentHsmClusterPrivateEndpointConnectionsClientListByPaymentHsmClusterResponse{}, err
 	}

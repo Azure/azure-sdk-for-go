@@ -91,7 +91,7 @@ func ExampleRegistriesClient_ScheduleRun_registriesScheduleRun() {
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/run"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/runs/0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 		Properties: &armcontainerregistrytasks.RunProperties{
-	// 			LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T05:13:51.617Z"); return t}()),
+	// 			LastUpdatedTime: to.Ptr(time.Date(2018, time.January, 25, 5, 13, 51, 617000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistrytasks.ProvisioningStateSucceeded),
 	// 			RunID: to.Ptr("0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 			Status: to.Ptr(armcontainerregistrytasks.RunStatusSucceeded),
@@ -146,7 +146,7 @@ func ExampleRegistriesClient_ScheduleRun_registriesScheduleRunEncodedTaskRun() {
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/run"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/runs/0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 		Properties: &armcontainerregistrytasks.RunProperties{
-	// 			LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T05:13:51.617Z"); return t}()),
+	// 			LastUpdatedTime: to.Ptr(time.Date(2018, time.January, 25, 5, 13, 51, 617000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistrytasks.ProvisioningStateSucceeded),
 	// 			RunID: to.Ptr("0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 			Status: to.Ptr(armcontainerregistrytasks.RunStatusSucceeded),
@@ -202,7 +202,7 @@ func ExampleRegistriesClient_ScheduleRun_registriesScheduleRunFileTaskRun() {
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/run"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/runs/0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 		Properties: &armcontainerregistrytasks.RunProperties{
-	// 			LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T05:13:51.617Z"); return t}()),
+	// 			LastUpdatedTime: to.Ptr(time.Date(2018, time.January, 25, 5, 13, 51, 617000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistrytasks.ProvisioningStateSucceeded),
 	// 			RunID: to.Ptr("0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 			Status: to.Ptr(armcontainerregistrytasks.RunStatusSucceeded),
@@ -270,7 +270,7 @@ func ExampleRegistriesClient_ScheduleRun_registriesScheduleRunTaskWithCustomCred
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/run"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/runs/0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 		Properties: &armcontainerregistrytasks.RunProperties{
-	// 			LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T05:13:51.617Z"); return t}()),
+	// 			LastUpdatedTime: to.Ptr(time.Date(2018, time.January, 25, 5, 13, 51, 617000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistrytasks.ProvisioningStateSucceeded),
 	// 			RunID: to.Ptr("0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 			Status: to.Ptr(armcontainerregistrytasks.RunStatusSucceeded),
@@ -335,7 +335,7 @@ func ExampleRegistriesClient_ScheduleRun_registriesScheduleRunTask() {
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/run"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/runs/0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 		Properties: &armcontainerregistrytasks.RunProperties{
-	// 			LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T05:13:51.617Z"); return t}()),
+	// 			LastUpdatedTime: to.Ptr(time.Date(2018, time.January, 25, 5, 13, 51, 617000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistrytasks.ProvisioningStateSucceeded),
 	// 			RunID: to.Ptr("0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 			Status: to.Ptr(armcontainerregistrytasks.RunStatusSucceeded),
@@ -425,7 +425,7 @@ func ExampleRegistriesClient_ScheduleRun_registriesScheduleRunWithCustomCredenti
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/run"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/runs/0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 		Properties: &armcontainerregistrytasks.RunProperties{
-	// 			LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T05:13:51.617Z"); return t}()),
+	// 			LastUpdatedTime: to.Ptr(time.Date(2018, time.January, 25, 5, 13, 51, 617000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistrytasks.ProvisioningStateSucceeded),
 	// 			RunID: to.Ptr("0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 			Status: to.Ptr(armcontainerregistrytasks.RunStatusSucceeded),
@@ -488,7 +488,7 @@ func ExampleRegistriesClient_ScheduleRun_registriesScheduleRunWithLogTemplate() 
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/run"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/runs/0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 		Properties: &armcontainerregistrytasks.RunProperties{
-	// 			LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T05:13:51.617Z"); return t}()),
+	// 			LastUpdatedTime: to.Ptr(time.Date(2018, time.January, 25, 5, 13, 51, 617000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistrytasks.ProvisioningStateSucceeded),
 	// 			RunID: to.Ptr("0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 			Status: to.Ptr(armcontainerregistrytasks.RunStatusSucceeded),

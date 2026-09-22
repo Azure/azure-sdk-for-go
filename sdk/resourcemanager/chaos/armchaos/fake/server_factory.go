@@ -27,6 +27,9 @@ type ServerFactory struct {
 	// CapabilityTypesServer contains the fakes for client CapabilityTypesClient
 	CapabilityTypesServer CapabilityTypesServer
 
+	// ConnectionsServer contains the fakes for client ConnectionsClient
+	ConnectionsServer ConnectionsServer
+
 	// DiscoveredResourcesServer contains the fakes for client DiscoveredResourcesClient
 	DiscoveredResourcesServer DiscoveredResourcesServer
 
@@ -79,6 +82,7 @@ type ServerFactoryTransport struct {
 	trActionsServer                *ActionsServerTransport
 	trCapabilitiesServer           *CapabilitiesServerTransport
 	trCapabilityTypesServer        *CapabilityTypesServerTransport
+	trConnectionsServer            *ConnectionsServerTransport
 	trDiscoveredResourcesServer    *DiscoveredResourcesServerTransport
 	trExperimentsServer            *ExperimentsServerTransport
 	trOperationStatusesServer      *OperationStatusesServerTransport
@@ -121,6 +125,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewCapabilityTypesServerTransport(&s.srv.CapabilityTypesServer)
 		})
 		resp, err = s.trCapabilityTypesServer.Do(req)
+	case "ConnectionsClient":
+		initServer(&s.trMu, &s.trConnectionsServer, func() *ConnectionsServerTransport { return NewConnectionsServerTransport(&s.srv.ConnectionsServer) })
+		resp, err = s.trConnectionsServer.Do(req)
 	case "DiscoveredResourcesClient":
 		initServer(&s.trMu, &s.trDiscoveredResourcesServer, func() *DiscoveredResourcesServerTransport {
 			return NewDiscoveredResourcesServerTransport(&s.srv.DiscoveredResourcesServer)

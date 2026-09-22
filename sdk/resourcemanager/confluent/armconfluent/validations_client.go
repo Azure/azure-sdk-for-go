@@ -30,6 +30,9 @@ type ValidationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewValidationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ValidationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,19 +67,14 @@ func (client *ValidationsClient) ValidateOrganization(ctx context.Context, resou
 	if err != nil {
 		return ValidationsClientValidateOrganizationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ValidationsClientValidateOrganizationResponse{}, err
-	}
-	resp, err := client.validateOrganizationHandleResponse(httpResp)
-	return resp, err
+	return client.validateOrganizationHandleResponse(httpResp, http.StatusOK)
 }
 
 // validateOrganizationCreateRequest creates the ValidateOrganization request.
 func (client *ValidationsClient) validateOrganizationCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body OrganizationResource, _ *ValidationsClientValidateOrganizationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/validations/{organizationName}/orgvalidate"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -103,8 +101,11 @@ func (client *ValidationsClient) validateOrganizationCreateRequest(ctx context.C
 }
 
 // validateOrganizationHandleResponse handles the ValidateOrganization response.
-func (client *ValidationsClient) validateOrganizationHandleResponse(resp *http.Response) (ValidationsClientValidateOrganizationResponse, error) {
+func (client *ValidationsClient) validateOrganizationHandleResponse(resp *http.Response, successCodes ...int) (ValidationsClientValidateOrganizationResponse, error) {
 	result := ValidationsClientValidateOrganizationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OrganizationResource); err != nil {
 		return ValidationsClientValidateOrganizationResponse{}, err
 	}
@@ -134,19 +135,14 @@ func (client *ValidationsClient) ValidateOrganizationV2(ctx context.Context, res
 	if err != nil {
 		return ValidationsClientValidateOrganizationV2Response{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ValidationsClientValidateOrganizationV2Response{}, err
-	}
-	resp, err := client.validateOrganizationV2HandleResponse(httpResp)
-	return resp, err
+	return client.validateOrganizationV2HandleResponse(httpResp, http.StatusOK)
 }
 
 // validateOrganizationV2CreateRequest creates the ValidateOrganizationV2 request.
 func (client *ValidationsClient) validateOrganizationV2CreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body OrganizationResource, _ *ValidationsClientValidateOrganizationV2Options) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/validations/{organizationName}/orgvalidateV2"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -173,8 +169,11 @@ func (client *ValidationsClient) validateOrganizationV2CreateRequest(ctx context
 }
 
 // validateOrganizationV2HandleResponse handles the ValidateOrganizationV2 response.
-func (client *ValidationsClient) validateOrganizationV2HandleResponse(resp *http.Response) (ValidationsClientValidateOrganizationV2Response, error) {
+func (client *ValidationsClient) validateOrganizationV2HandleResponse(resp *http.Response, successCodes ...int) (ValidationsClientValidateOrganizationV2Response, error) {
 	result := ValidationsClientValidateOrganizationV2Response{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidationResponse); err != nil {
 		return ValidationsClientValidateOrganizationV2Response{}, err
 	}

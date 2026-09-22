@@ -134,7 +134,7 @@ func (p *ProtectionGroupsServerTransport) dispatchBackup(req *http.Request) (*ht
 	if p.srv.Backup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Backup not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionGroups/(?P<protectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backup`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionGroups/(?P<protectionGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backup`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -177,7 +177,7 @@ func (p *ProtectionGroupsServerTransport) dispatchBeginCreateOrupdate(req *http.
 	}
 	beginCreateOrupdate := p.beginCreateOrupdate.get(req)
 	if beginCreateOrupdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionGroups/(?P<protectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionGroups/(?P<protectionGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -229,7 +229,7 @@ func (p *ProtectionGroupsServerTransport) dispatchBeginDelete(req *http.Request)
 	}
 	beginDelete := p.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionGroups/(?P<protectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionGroups/(?P<protectionGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -275,7 +275,7 @@ func (p *ProtectionGroupsServerTransport) dispatchGet(req *http.Request) (*http.
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionGroups/(?P<protectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionGroups/(?P<protectionGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -314,7 +314,7 @@ func (p *ProtectionGroupsServerTransport) dispatchNewListByCloudAccountPager(req
 	}
 	newListByCloudAccountPager := p.newListByCloudAccountPager.get(req)
 	if newListByCloudAccountPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionGroups`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -353,7 +353,7 @@ func (p *ProtectionGroupsServerTransport) dispatchRestore(req *http.Request) (*h
 	if p.srv.Restore == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Restore not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionGroups/(?P<protectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restore`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionGroups/(?P<protectionGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restore`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -394,7 +394,7 @@ func (p *ProtectionGroupsServerTransport) dispatchResumeBackup(req *http.Request
 	if p.srv.ResumeBackup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ResumeBackup not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionGroups/(?P<protectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resumeBackup`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionGroups/(?P<protectionGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resumeBackup`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -433,7 +433,7 @@ func (p *ProtectionGroupsServerTransport) dispatchBeginStopBackup(req *http.Requ
 	}
 	beginStopBackup := p.beginStopBackup.get(req)
 	if beginStopBackup == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionGroups/(?P<protectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stopBackup`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionGroups/(?P<protectionGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stopBackup`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

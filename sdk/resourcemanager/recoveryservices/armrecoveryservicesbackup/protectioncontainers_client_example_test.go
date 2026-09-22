@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/AzureWorkload/ProtectionContainers_Get.json
+// Generated from example definition: 2026-08-01/AzureWorkload/ProtectionContainers_Get.json
 func ExampleProtectionContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,13 +71,12 @@ func ExampleProtectionContainersClient_Get() {
 	// 			},
 	// 			FriendlyName: to.Ptr("testSQL"),
 	// 			SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/testSQL"),
-	// 			SourceLocation: to.Ptr("westus"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AzureStorage/ProtectionContainers_Inquire.json
+// Generated from example definition: 2026-08-01/AzureStorage/ProtectionContainers_Inquire.json
 func ExampleProtectionContainersClient_Inquire() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +93,7 @@ func ExampleProtectionContainersClient_Inquire() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/Common/RefreshContainers.json
+// Generated from example definition: 2026-08-01/Common/RefreshContainers.json
 func ExampleProtectionContainersClient_Refresh() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +110,7 @@ func ExampleProtectionContainersClient_Refresh() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/AzureStorage/ProtectionContainers_ReRegister_SwitchToSAMI.json
+// Generated from example definition: 2026-08-01/AzureStorage/ProtectionContainers_ReRegister_SwitchToSAMI.json
 func ExampleProtectionContainersClient_BeginRegister_reRegisterAzureStorageProtectionContainersSwitchingToSystemAssignedManagedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,7 +167,7 @@ func ExampleProtectionContainersClient_BeginRegister_reRegisterAzureStorageProte
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AzureStorage/ProtectionContainers_ReRegister_SwitchToUAMI.json
+// Generated from example definition: 2026-08-01/AzureStorage/ProtectionContainers_ReRegister_SwitchToUAMI.json
 func ExampleProtectionContainersClient_BeginRegister_reRegisterAzureStorageProtectionContainersSwitchingToUserAssignedManagedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +226,7 @@ func ExampleProtectionContainersClient_BeginRegister_reRegisterAzureStorageProte
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AzureStorage/ProtectionContainers_Register.json
+// Generated from example definition: 2026-08-01/AzureStorage/ProtectionContainers_Register.json
 func ExampleProtectionContainersClient_BeginRegister_registerAzureStorageProtectionContainers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,7 +274,7 @@ func ExampleProtectionContainersClient_BeginRegister_registerAzureStorageProtect
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AzureStorage/ProtectionContainers_Register_WithSAMI.json
+// Generated from example definition: 2026-08-01/AzureStorage/ProtectionContainers_Register_WithSAMI.json
 func ExampleProtectionContainersClient_BeginRegister_registerAzureStorageProtectionContainersWithSystemAssignedManagedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -331,7 +330,7 @@ func ExampleProtectionContainersClient_BeginRegister_registerAzureStorageProtect
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AzureStorage/ProtectionContainers_Register_WithUAMI.json
+// Generated from example definition: 2026-08-01/AzureStorage/ProtectionContainers_Register_WithUAMI.json
 func ExampleProtectionContainersClient_BeginRegister_registerAzureStorageProtectionContainersWithUserAssignedManagedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,7 +388,7 @@ func ExampleProtectionContainersClient_BeginRegister_registerAzureStorageProtect
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AzureWorkload/ProtectionContainers_Unregister.json
+// Generated from example definition: 2026-08-01/AzureWorkload/ProtectionContainers_Unregister.json
 func ExampleProtectionContainersClient_Unregister() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -30,6 +30,9 @@ type ManagementClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -60,8 +63,7 @@ func (client *ManagementClient) CheckAmlFSSubnets(ctx context.Context, options *
 		return ManagementClientCheckAmlFSSubnetsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagementClientCheckAmlFSSubnetsResponse{}, err
+		return ManagementClientCheckAmlFSSubnetsResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ManagementClientCheckAmlFSSubnetsResponse{}, nil
 }
@@ -70,7 +72,7 @@ func (client *ManagementClient) CheckAmlFSSubnets(ctx context.Context, options *
 func (client *ManagementClient) checkAmlFSSubnetsCreateRequest(ctx context.Context, options *ManagementClientCheckAmlFSSubnetsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/checkAmlFSSubnets"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -108,19 +110,14 @@ func (client *ManagementClient) GetRequiredAmlFSSubnetsSize(ctx context.Context,
 	if err != nil {
 		return ManagementClientGetRequiredAmlFSSubnetsSizeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagementClientGetRequiredAmlFSSubnetsSizeResponse{}, err
-	}
-	resp, err := client.getRequiredAmlFSSubnetsSizeHandleResponse(httpResp)
-	return resp, err
+	return client.getRequiredAmlFSSubnetsSizeHandleResponse(httpResp, http.StatusOK)
 }
 
 // getRequiredAmlFSSubnetsSizeCreateRequest creates the GetRequiredAmlFSSubnetsSize request.
 func (client *ManagementClient) getRequiredAmlFSSubnetsSizeCreateRequest(ctx context.Context, options *ManagementClientGetRequiredAmlFSSubnetsSizeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/getRequiredAmlFSSubnetsSize"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -142,8 +139,11 @@ func (client *ManagementClient) getRequiredAmlFSSubnetsSizeCreateRequest(ctx con
 }
 
 // getRequiredAmlFSSubnetsSizeHandleResponse handles the GetRequiredAmlFSSubnetsSize response.
-func (client *ManagementClient) getRequiredAmlFSSubnetsSizeHandleResponse(resp *http.Response) (ManagementClientGetRequiredAmlFSSubnetsSizeResponse, error) {
+func (client *ManagementClient) getRequiredAmlFSSubnetsSizeHandleResponse(resp *http.Response, successCodes ...int) (ManagementClientGetRequiredAmlFSSubnetsSizeResponse, error) {
 	result := ManagementClientGetRequiredAmlFSSubnetsSizeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RequiredAmlFilesystemSubnetsSize); err != nil {
 		return ManagementClientGetRequiredAmlFSSubnetsSizeResponse{}, err
 	}

@@ -500,7 +500,7 @@ func TestEmulatorDeleteItem(t *testing.T) {
 	require.Nil(t, deleted.Value)
 
 	_, err = container.ReadItem(ctx, pk, id, nil)
-	requireWireError(t, err, CodeNotFound, 404)
+	requireWireStatus(t, err, CodeNotFound, 404)
 	_, err = container.DeleteItem(ctx, pk, id, nil)
 	requireWireStatus(t, err, CodeNotFound, 404)
 }

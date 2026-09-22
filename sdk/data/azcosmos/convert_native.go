@@ -157,6 +157,21 @@ func (s ReadConsistencyStrategy) toNative() (C.int32_t, bool) {
 	}
 }
 
+// toNative maps a PATCH strategy onto the driver's discriminant. The second result is false for
+// the unset strategy, which leaves the driver's default in place.
+func (s PatchStrategy) toNative() (C.int32_t, bool) {
+	switch s {
+	case PatchStrategyAuto:
+		return C.COSMOS_PATCH_STRATEGY_AUTO, true
+	case PatchStrategyClientSide:
+		return C.COSMOS_PATCH_STRATEGY_CLIENT_SIDE, true
+	case PatchStrategyServerSide:
+		return C.COSMOS_PATCH_STRATEGY_SERVER_SIDE, true
+	default:
+		return 0, false
+	}
+}
+
 // The inspectors below read back what the converters wrote, in Go types. They exist because cgo is
 // not permitted in _test.go files, so a test cannot dereference these structs itself — without
 // them the converters could only be tested by observing their effect on a live service.
@@ -246,6 +261,12 @@ func defaultNativeOperationOptions() nativeOperationOptions {
 
 // nativeReadConsistencyStrategy reports the discriminant a strategy maps to, in Go types.
 func nativeReadConsistencyStrategy(s ReadConsistencyStrategy) (int32, bool) {
+	value, ok := s.toNative()
+	return int32(value), ok
+}
+
+// nativePatchStrategy reports the discriminant a strategy maps to, in Go types.
+func nativePatchStrategy(s PatchStrategy) (int32, bool) {
 	value, ok := s.toNative()
 	return int32(value), ok
 }

@@ -23,6 +23,10 @@ _Static_assert(COSMOS_OPERATION_KIND_PATCH_ITEM == 24, "patch-item operation dis
 _Static_assert(COSMOS_PRECONDITION_KIND_NONE == 0, "no-precondition discriminant changed");
 _Static_assert(COSMOS_PRECONDITION_KIND_IF_MATCH == 1, "if-match precondition discriminant changed");
 _Static_assert(COSMOS_PRECONDITION_KIND_IF_NONE_MATCH == 2, "if-none-match precondition discriminant changed");
+_Static_assert(COSMOS_PATCH_STRATEGY_UNSET == 0, "unset PATCH strategy discriminant changed");
+_Static_assert(COSMOS_PATCH_STRATEGY_AUTO == 1, "automatic PATCH strategy discriminant changed");
+_Static_assert(COSMOS_PATCH_STRATEGY_CLIENT_SIDE == 2, "client-side PATCH strategy discriminant changed");
+_Static_assert(COSMOS_PATCH_STRATEGY_SERVER_SIDE == 3, "server-side PATCH strategy discriminant changed");
 
 _Static_assert(sizeof(cosmos_string_view_t) == 16, "cosmos_string_view_t ABI size changed");
 _Static_assert(_Alignof(cosmos_string_view_t) == 8, "cosmos_string_view_t ABI alignment changed");

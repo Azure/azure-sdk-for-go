@@ -588,27 +588,52 @@ func TestEmulatorPatchContentResponse(t *testing.T) {
 	}
 }
 
-func TestEmulatorPatchMoreThanTenOperations(t *testing.T) {
-	container := emulatorContainer(t)
-	id := uniqueItemID(t)
-	pk := NewPartitionKeyString(id)
-	trackEmulatorItem(t, container, pk, id)
-	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
-	require.NoError(t, err)
-	_, err = container.CreateItem(t.Context(), pk, id, item, nil)
-	require.NoError(t, err)
+func TestEmulatorPatchStrategies(t *testing.T) {
+	for _, tt := range []struct {
+		name         string
+		strategy     PatchStrategy
+		wantTooLarge bool
+	}{
+		{"unset uses automatic", PatchStrategyUnset, false},
+		{"explicit automatic", PatchStrategyAuto, false},
+		{"client side", PatchStrategyClientSide, false},
+		{"server side preserves service limit", PatchStrategyServerSide, true},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			container := emulatorContainer(t)
+			id := uniqueItemID(t)
+			pk := NewPartitionKeyString(id)
+			trackEmulatorItem(t, container, pk, id)
+			item, err := json.Marshal(map[string]any{"id": id, "pk": id})
+			require.NoError(t, err)
+			_, err = container.CreateItem(t.Context(), pk, id, item, nil)
+			require.NoError(t, err)
 
-	var operations PatchOperations
-	for i := range 11 {
-		require.NoError(t, operations.AppendSet(fmt.Sprintf("/value%d", i), i))
-	}
-	response, err := container.PatchItem(t.Context(), pk, id, operations, nil)
-	require.NoError(t, err)
+			var operations PatchOperations
+			for i := range 11 {
+				require.NoError(t, operations.AppendSet(fmt.Sprintf("/value%d", i), i))
+			}
+			response, err := container.PatchItem(t.Context(), pk, id, operations, &PatchItemOptions{
+				Strategy: tt.strategy,
+			})
+			if tt.wantTooLarge {
+				requireWireStatus(t, err, CodeBadRequest, 400)
 
-	var value map[string]any
-	require.NoError(t, json.Unmarshal(response.Value, &value))
-	for i := range 11 {
-		require.InDelta(t, i, value[fmt.Sprintf("value%d", i)], 0)
+				response, err = container.ReadItem(t.Context(), pk, id, nil)
+				require.NoError(t, err)
+				var value map[string]any
+				require.NoError(t, json.Unmarshal(response.Value, &value))
+				require.NotContains(t, value, "value0", "a rejected server PATCH must not modify the item")
+				return
+			}
+			require.NoError(t, err)
+
+			var value map[string]any
+			require.NoError(t, json.Unmarshal(response.Value, &value))
+			for i := range 11 {
+				require.InDelta(t, i, value[fmt.Sprintf("value%d", i)], 0)
+			}
+		})
 	}
 }
 

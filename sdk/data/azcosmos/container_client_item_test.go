@@ -376,6 +376,29 @@ func TestReadItemRejectsUnknownConsistencyStrategy(t *testing.T) {
 	requireNotDriverUnavailable(t, err)
 }
 
+func TestPatchStrategyUnsetIsNotAuto(t *testing.T) {
+	require.NotEqual(t, PatchStrategyUnset, PatchStrategyAuto)
+
+	var zero PatchStrategy
+	require.Equal(t, PatchStrategyUnset, zero, "the zero value must mean inherit")
+}
+
+func TestPatchItemRejectsUnknownStrategy(t *testing.T) {
+	container := newTestContainer(t)
+
+	response, err := container.PatchItem(
+		context.Background(),
+		NewPartitionKeyString("pk"),
+		"item-1",
+		validPatchOperations(t),
+		&PatchItemOptions{Strategy: PatchStrategy("Automatic")},
+	)
+
+	require.Equal(t, ItemResponse{}, response)
+	require.ErrorContains(t, err, "unknown patch strategy")
+	requireNotDriverUnavailable(t, err)
+}
+
 func TestItemOperationsRejectNULSessionToken(t *testing.T) {
 	container := newTestContainer(t)
 	token := SessionToken("1:2\x00:3")

@@ -36,14 +36,15 @@ const (
 // It exists so that the operation methods stay free of build tags: they populate this, and whether
 // it reaches the driver or a not-implemented stub is decided by which build is selected.
 type itemRequest struct {
-	kind         operationKind
-	databaseID   string
-	containerID  string
-	itemID       string
-	partitionKey PartitionKey
-	body         []byte
-	sessionToken SessionToken
-	options      OperationOptions
+	kind          operationKind
+	databaseID    string
+	containerID   string
+	itemID        string
+	partitionKey  PartitionKey
+	body          []byte
+	sessionToken  SessionToken
+	options       OperationOptions
+	patchStrategy PatchStrategy
 
 	preconditionKind preconditionKind
 	preconditionETag string

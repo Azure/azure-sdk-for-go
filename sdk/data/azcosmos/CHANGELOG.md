@@ -19,6 +19,8 @@
 * Added `ContainerClient.ReplaceItem`, `ContainerClient.UpsertItem`, `ContainerClient.DeleteItem`,
   and `ContainerClient.PatchItem`. Patch operations support add, set, replace, remove, increment,
   and move through the owned `PatchOperations` builder.
+* Added `PatchItemOptions.Strategy` to select automatic, client-side, or server-side PATCH
+  execution.
 * Added the Cosmos driver binding for cgo builds on `linux/amd64` and `darwin/arm64`. `ReadItem` and
   `CreateItem` run against the driver, including `LatestCommitted` reads; `Client.Initialize`
   eagerly fills account and routing caches, and token credentials are supported.

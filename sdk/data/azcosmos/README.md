@@ -65,7 +65,9 @@ One limit applies to the driver-backed build today: v1's WebAssembly support doe
 `PatchOperations` owns a JSON snapshot of each value when it is appended and supports `add`, `set`,
 `replace`, `remove`, `incr`, and `move`. Paths use RFC 6901 JSON Pointer syntax. There is no
 Go-side ten-operation limit: the driver automatically chooses a server PATCH or a client-side
-read-modify-write execution strategy.
+read-modify-write execution strategy by default. `PatchItemOptions.Strategy` can explicitly select
+automatic, client-side, or server-side execution. Explicit server-side execution does not fall
+back to read-modify-write when a request exceeds the service limit.
 
 Client-side execution of a patch that is not intrinsically retry-safe permanently adds the
 `_azsdkPatchTracking` property to the item. The driver uses it to deduplicate retries within one

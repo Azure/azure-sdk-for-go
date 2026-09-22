@@ -26,10 +26,11 @@ type patchOperation struct {
 // to caller-owned maps, slices, or byte buffers do not change the patch. Copying PatchOperations
 // also produces an independent builder: appending to either copy does not change the other.
 //
-// Patch execution uses the driver's automatic strategy. Operations that are not intrinsically
-// retry-safe can use a client-side read-modify-write path, which permanently adds the internal
-// _azsdkPatchTracking property to the item. A stable tracking ID across separate PatchItem calls
-// is not exposed yet, so deduplication applies only within one call.
+// Patch execution uses the driver's automatic strategy by default; [PatchItemOptions.Strategy] can
+// select an explicit strategy. Operations that are not intrinsically retry-safe can use a
+// client-side read-modify-write path, which permanently adds the internal _azsdkPatchTracking
+// property to the item. A stable tracking ID across separate PatchItem calls is not exposed yet,
+// so deduplication applies only within one call.
 type PatchOperations struct {
 	operations []patchOperation
 	err        error

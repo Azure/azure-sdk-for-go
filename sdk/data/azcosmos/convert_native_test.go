@@ -179,6 +179,26 @@ func TestReadConsistencyStrategyToNativeIsInjective(t *testing.T) {
 	}
 }
 
+func TestPatchStrategyToNativeIsInjective(t *testing.T) {
+	unset, ok := nativePatchStrategy(PatchStrategyUnset)
+	require.False(t, ok, "unset leaves the driver's default in place")
+	require.Zero(t, unset)
+
+	seen := make(map[int32]PatchStrategy)
+	for _, strategy := range []PatchStrategy{
+		PatchStrategyAuto,
+		PatchStrategyClientSide,
+		PatchStrategyServerSide,
+	} {
+		value, ok := nativePatchStrategy(strategy)
+		require.True(t, ok, "%q should map", strategy)
+
+		previous, duplicated := seen[value]
+		require.False(t, duplicated, "%q and %q both map to %d", previous, strategy, value)
+		seen[value] = strategy
+	}
+}
+
 // The request struct is built as a Go composite literal, so every field it does not name takes
 // Go's zero value. That is correct for the fields whose unset value is zero and wrong for the ones
 // whose is not: the driver rejects a zero max-item-count outright, with an invalid-option-value
@@ -242,6 +262,29 @@ func TestItemRequestToNativeCarriesItemOperationFields(t *testing.T) {
 			require.Equal(t, int32(tt.preconditionKind), request.preconditionKind)
 			require.Equal(t, tt.preconditionETag, request.preconditionETag)
 			require.Equal(t, int32(2), request.contentResponseWrite)
+		})
+	}
+}
+
+func TestPatchItemRequestToNativeCarriesStrategy(t *testing.T) {
+	for _, strategy := range []PatchStrategy{
+		PatchStrategyUnset,
+		PatchStrategyAuto,
+		PatchStrategyClientSide,
+		PatchStrategyServerSide,
+	} {
+		t.Run(string(strategy), func(t *testing.T) {
+			want, _ := nativePatchStrategy(strategy)
+			request, release := inspectNativeItemRequest(itemRequest{
+				kind:          operationKindPatchItem,
+				itemID:        "item-1",
+				partitionKey:  NewPartitionKeyString("pk"),
+				body:          []byte(`{"operations":[{"op":"set","path":"/value","value":1}]}`),
+				patchStrategy: strategy,
+			})
+			t.Cleanup(release)
+
+			require.Equal(t, want, request.patchStrategy)
 		})
 	}
 }

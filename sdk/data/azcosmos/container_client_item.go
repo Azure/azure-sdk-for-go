@@ -97,6 +97,10 @@ type PatchItemOptions struct {
 
 	// IfMatchETag makes the patch conditional on the item still having this ETag.
 	IfMatchETag *azcore.ETag
+
+	// Strategy selects how the driver executes the patch. The zero value inherits the strategy
+	// configured for the driver, runtime, or environment.
+	Strategy PatchStrategy
 }
 
 // ReadItem reads a single item.
@@ -307,9 +311,9 @@ func (c *ContainerClient) DeleteItem(ctx context.Context, partitionKey Partition
 // contain at least one operation. options may be nil. PatchItem returns the updated item by default
 // unless content responses are explicitly disabled.
 //
-// The driver automatically chooses server-side PATCH or client-side read-modify-write execution.
-// Client-side execution can permanently add the internal _azsdkPatchTracking property described
-// by [PatchOperations].
+// The driver chooses server-side PATCH or client-side read-modify-write execution by default.
+// options can select an explicit strategy. Client-side execution can permanently add the internal
+// _azsdkPatchTracking property described by [PatchOperations].
 func (c *ContainerClient) PatchItem(ctx context.Context, partitionKey PartitionKey, id string, operations PatchOperations, options *PatchItemOptions) (ItemResponse, error) {
 	if err := validateItemWriteArguments(partitionKey, id, nil, false); err != nil {
 		return ItemResponse{}, err
@@ -320,6 +324,9 @@ func (c *ContainerClient) PatchItem(ctx context.Context, partitionKey PartitionK
 	}
 	if options != nil {
 		if err := validateItemWriteOptions(options.SessionToken, options.IfMatchETag); err != nil {
+			return ItemResponse{}, err
+		}
+		if err := options.Strategy.validate(); err != nil {
 			return ItemResponse{}, err
 		}
 	}
@@ -335,6 +342,7 @@ func (c *ContainerClient) PatchItem(ctx context.Context, partitionKey PartitionK
 	if options != nil {
 		req.options = options.Operation
 		req.sessionToken = options.SessionToken
+		req.patchStrategy = options.Strategy
 		setIfMatchPrecondition(&req, options.IfMatchETag)
 	}
 	return c.executeItem(ctx, req, true)

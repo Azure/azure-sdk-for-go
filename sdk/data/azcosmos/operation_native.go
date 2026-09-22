@@ -239,6 +239,9 @@ func buildNativeItemRequest(req itemRequest, container *C.cosmos_container_ref_t
 
 	options, freeOptions := req.options.toNative()
 	releases = append(releases, freeOptions)
+	if strategy, ok := req.patchStrategy.toNative(); ok {
+		options.patch_strategy = strategy
+	}
 	request.options = options
 
 	return request, func() {
@@ -259,6 +262,7 @@ type nativeItemRequest struct {
 	preconditionKind     int32
 	preconditionETag     string
 	contentResponseWrite int32
+	patchStrategy        int32
 }
 
 // inspectNativeItemRequest converts a request and reads it back before releasing its C memory.
@@ -278,6 +282,7 @@ func inspectNativeItemRequest(req itemRequest) (nativeItemRequest, func()) {
 	}
 	if request.options != nil {
 		converted.contentResponseWrite = int32(request.options.content_response_on_write)
+		converted.patchStrategy = int32(request.options.patch_strategy)
 	}
 	return converted, release
 }

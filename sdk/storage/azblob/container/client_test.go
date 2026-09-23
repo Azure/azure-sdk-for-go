@@ -4072,4 +4072,3 @@ func TestContainerGetSASURLPreservesCustomQueryParams(t *testing.T) {
 	_require.Contains(sasURL, "customparam=value")
 	_require.Contains(sasURL, "sig=")
 }
-

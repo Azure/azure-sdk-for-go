@@ -11,6 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"unicode/utf8"
 )
 
 type patchOperation struct {
@@ -143,6 +144,9 @@ func (p PatchOperations) marshal() ([]byte, error) {
 }
 
 func validatePatchPath(path string) error {
+	if !utf8.ValidString(path) {
+		return errors.New("path must contain valid UTF-8")
+	}
 	if path == "" || path[0] != '/' {
 		return errors.New("path must be a non-empty RFC 6901 JSON pointer beginning with '/'")
 	}

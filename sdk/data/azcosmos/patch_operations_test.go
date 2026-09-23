@@ -106,6 +106,18 @@ func TestPatchOperationsValidateBothMovePaths(t *testing.T) {
 	require.ErrorContains(t, invalidDestination.AppendMove("/source", "destination"), "move path")
 }
 
+func TestPatchOperationsRejectInvalidUTF8Paths(t *testing.T) {
+	invalidPath := string([]byte{'/', 0xff})
+
+	var destination PatchOperations
+	require.ErrorContains(t, destination.AppendSet(invalidPath, 1), "valid UTF-8")
+
+	var source PatchOperations
+	err := source.AppendMove(invalidPath, "/destination")
+	require.ErrorContains(t, err, "source path")
+	require.ErrorContains(t, err, "valid UTF-8")
+}
+
 func TestPatchOperationsIncrementRequiresJSONNumber(t *testing.T) {
 	for _, value := range []any{int64(-2), uint64(3), float64(4.5), json.Number("6e2")} {
 		t.Run("valid", func(t *testing.T) {

@@ -10,6 +10,11 @@
         "name": "East US",
         "gatewayPort": 0,
         "regionId": 0
+      },
+      {
+        "name": "West US",
+        "gatewayPort": 0,
+        "regionId": 1
       }
     ],
     "replication": {

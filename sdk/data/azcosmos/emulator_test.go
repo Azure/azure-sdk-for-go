@@ -10,6 +10,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
+	"net/http"
+	"net/url"
 	"os"
 	"sync"
 	"sync/atomic"
@@ -91,6 +94,29 @@ func emulatorConfiguration(t *testing.T) (endpoint, databaseID, containerID stri
 		containerID = "items"
 	}
 	return
+}
+
+func setEmulatorReplication(t *testing.T, region Region, action string) {
+	t.Helper()
+
+	managementEndpoint := os.Getenv("AZCOSMOS_MANAGEMENT_ENDPOINT")
+	if managementEndpoint == "" {
+		t.Skip("set AZCOSMOS_MANAGEMENT_ENDPOINT to test multi-region routing")
+	}
+	endpoint, err := url.JoinPath(managementEndpoint, "regions", string(region), "replication", action)
+	require.NoError(t, err)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	request, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint, nil)
+	require.NoError(t, err)
+	response, err := http.DefaultClient.Do(request)
+	require.NoError(t, err)
+
+	body, err := io.ReadAll(response.Body)
+	require.NoError(t, err)
+	require.NoError(t, response.Body.Close())
+	require.Equal(t, http.StatusOK, response.StatusCode, string(body))
 }
 
 type recordingTokenCredential struct {
@@ -478,12 +504,50 @@ func TestEmulatorOperationContentResponseOverridesTheClient(t *testing.T) {
 	}), "the operation asked for no content and the client asked for content")
 }
 
-// Preferred regions name the account's only region, so this proves the driver accepted the order
-// rather than that it routed anywhere in particular; a single-region emulator cannot show more.
-func TestEmulatorPreferredRegions(t *testing.T) {
-	container := emulatorContainerWithOptions(t, &ClientOptions{Routing: PreferredRegions(RegionEastUS)})
+// Pausing replication makes a new item visible in East US but absent from West US. Eventual reads
+// can then prove which region each routing strategy selected, rather than only proving that the
+// driver accepted its preferred-region list.
+func TestEmulatorRoutingStrategiesRouteReads(t *testing.T) {
+	const westUSManagementName Region = "West US"
+	setEmulatorReplication(t, westUSManagementName, "pause")
+	t.Cleanup(func() { setEmulatorReplication(t, westUSManagementName, "resume") })
 
-	createForClientOptions(t, container, nil)
+	writer := emulatorContainerWithOptions(t, &ClientOptions{
+		Routing: PreferredRegions(RegionEastUS),
+	})
+	id := uniqueItemID(t)
+	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
+	require.NoError(t, err)
+	_, err = writer.CreateItem(t.Context(), NewPartitionKeyString(id), id, item, nil)
+	require.NoError(t, err)
+
+	for _, tt := range []struct {
+		name       string
+		routing    RoutingStrategy
+		wantExists bool
+	}{
+		{"preferred East US", PreferredRegions(RegionEastUS), true},
+		{"preferred West US", PreferredRegions(RegionWestUS), false},
+		{"proximity to West US", ProximityTo(RegionWestUS), false},
+		{"unknown proximity", ProximityTo("not-a-real-region"), true},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			container := emulatorContainerWithOptions(t, &ClientOptions{Routing: tt.routing})
+			response, err := container.ReadItem(t.Context(), NewPartitionKeyString(id), id, &ReadItemOptions{
+				Operation: OperationOptions{ConsistencyStrategy: ReadConsistencyStrategyEventual},
+			})
+			if tt.wantExists {
+				require.NoError(t, err)
+				require.NotEmpty(t, response.Value)
+				return
+			}
+
+			var cosmosErr *Error
+			require.ErrorAs(t, err, &cosmosErr)
+			require.Equal(t, CodeNotFound, cosmosErr.Code,
+				"the item exists in East US, so not found proves the read reached stale West US")
+		})
+	}
 }
 
 // An application ID reaches the driver through the runtime's user-agent suffix, which the driver

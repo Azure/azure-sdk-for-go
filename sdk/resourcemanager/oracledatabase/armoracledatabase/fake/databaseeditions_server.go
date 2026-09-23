@@ -19,36 +19,36 @@ import (
 	"slices"
 )
 
-// DNSPrivateViewsServer is a fake server for instances of the armoracledatabase.DNSPrivateViewsClient type.
-type DNSPrivateViewsServer struct {
-	// Get is the fake for method DNSPrivateViewsClient.Get
+// DatabaseEditionsServer is a fake server for instances of the armoracledatabase.DatabaseEditionsClient type.
+type DatabaseEditionsServer struct {
+	// Get is the fake for method DatabaseEditionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, location string, dnsprivateviewocid string, options *armoracledatabase.DNSPrivateViewsClientGetOptions) (resp azfake.Responder[armoracledatabase.DNSPrivateViewsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, location string, databaseeditionname string, options *armoracledatabase.DatabaseEditionsClientGetOptions) (resp azfake.Responder[armoracledatabase.DatabaseEditionsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByLocationPager is the fake for method DNSPrivateViewsClient.NewListByLocationPager
+	// NewListByLocationPager is the fake for method DatabaseEditionsClient.NewListByLocationPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByLocationPager func(location string, options *armoracledatabase.DNSPrivateViewsClientListByLocationOptions) (resp azfake.PagerResponder[armoracledatabase.DNSPrivateViewsClientListByLocationResponse])
+	NewListByLocationPager func(location string, options *armoracledatabase.DatabaseEditionsClientListByLocationOptions) (resp azfake.PagerResponder[armoracledatabase.DatabaseEditionsClientListByLocationResponse])
 }
 
-// NewDNSPrivateViewsServerTransport creates a new instance of DNSPrivateViewsServerTransport with the provided implementation.
-// The returned DNSPrivateViewsServerTransport instance is connected to an instance of armoracledatabase.DNSPrivateViewsClient via the
+// NewDatabaseEditionsServerTransport creates a new instance of DatabaseEditionsServerTransport with the provided implementation.
+// The returned DatabaseEditionsServerTransport instance is connected to an instance of armoracledatabase.DatabaseEditionsClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewDNSPrivateViewsServerTransport(srv *DNSPrivateViewsServer) *DNSPrivateViewsServerTransport {
-	return &DNSPrivateViewsServerTransport{
+func NewDatabaseEditionsServerTransport(srv *DatabaseEditionsServer) *DatabaseEditionsServerTransport {
+	return &DatabaseEditionsServerTransport{
 		srv:                    srv,
-		newListByLocationPager: newTracker[azfake.PagerResponder[armoracledatabase.DNSPrivateViewsClientListByLocationResponse]](),
+		newListByLocationPager: newTracker[azfake.PagerResponder[armoracledatabase.DatabaseEditionsClientListByLocationResponse]](),
 	}
 }
 
-// DNSPrivateViewsServerTransport connects instances of armoracledatabase.DNSPrivateViewsClient to instances of DNSPrivateViewsServer.
-// Don't use this type directly, use NewDNSPrivateViewsServerTransport instead.
-type DNSPrivateViewsServerTransport struct {
-	srv                    *DNSPrivateViewsServer
-	newListByLocationPager *tracker[azfake.PagerResponder[armoracledatabase.DNSPrivateViewsClientListByLocationResponse]]
+// DatabaseEditionsServerTransport connects instances of armoracledatabase.DatabaseEditionsClient to instances of DatabaseEditionsServer.
+// Don't use this type directly, use NewDatabaseEditionsServerTransport instead.
+type DatabaseEditionsServerTransport struct {
+	srv                    *DatabaseEditionsServer
+	newListByLocationPager *tracker[azfake.PagerResponder[armoracledatabase.DatabaseEditionsClientListByLocationResponse]]
 }
 
-// Do implements the policy.Transporter interface for DNSPrivateViewsServerTransport.
-func (d *DNSPrivateViewsServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for DatabaseEditionsServerTransport.
+func (d *DatabaseEditionsServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -58,19 +58,19 @@ func (d *DNSPrivateViewsServerTransport) Do(req *http.Request) (*http.Response, 
 	return d.dispatchToMethodFake(req, method)
 }
 
-func (d *DNSPrivateViewsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (d *DatabaseEditionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
-		if dnsPrivateViewsServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = dnsPrivateViewsServerTransportInterceptor.Do(req)
+		if databaseEditionsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = databaseEditionsServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "DNSPrivateViewsClient.Get":
+			case "DatabaseEditionsClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
-			case "DNSPrivateViewsClient.NewListByLocationPager":
+			case "DatabaseEditionsClient.NewListByLocationPager":
 				res.resp, res.err = d.dispatchNewListByLocationPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -88,11 +88,11 @@ func (d *DNSPrivateViewsServerTransport) dispatchToMethodFake(req *http.Request,
 	}
 }
 
-func (d *DNSPrivateViewsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (d *DatabaseEditionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dnsPrivateViews/(?P<dnsprivateviewocid>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseEditions/(?P<databaseeditionname>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -102,11 +102,11 @@ func (d *DNSPrivateViewsServerTransport) dispatchGet(req *http.Request) (*http.R
 	if err != nil {
 		return nil, err
 	}
-	dnsprivateviewocidParam, err := url.PathUnescape(matches[regex.SubexpIndex("dnsprivateviewocid")])
+	databaseeditionnameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseeditionname")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.Get(req.Context(), locationParam, dnsprivateviewocidParam, nil)
+	respr, errRespr := d.srv.Get(req.Context(), locationParam, databaseeditionnameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -114,20 +114,20 @@ func (d *DNSPrivateViewsServerTransport) dispatchGet(req *http.Request) (*http.R
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DNSPrivateView, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatabaseEdition, req)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-func (d *DNSPrivateViewsServerTransport) dispatchNewListByLocationPager(req *http.Request) (*http.Response, error) {
+func (d *DatabaseEditionsServerTransport) dispatchNewListByLocationPager(req *http.Request) (*http.Response, error) {
 	if d.srv.NewListByLocationPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByLocationPager not implemented")}
 	}
 	newListByLocationPager := d.newListByLocationPager.get(req)
 	if newListByLocationPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dnsPrivateViews`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseEditions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -140,7 +140,7 @@ func (d *DNSPrivateViewsServerTransport) dispatchNewListByLocationPager(req *htt
 		resp := d.srv.NewListByLocationPager(locationParam, nil)
 		newListByLocationPager = &resp
 		d.newListByLocationPager.add(req, newListByLocationPager)
-		server.PagerResponderInjectNextLinks(newListByLocationPager, req, func(page *armoracledatabase.DNSPrivateViewsClientListByLocationResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListByLocationPager, req, func(page *armoracledatabase.DatabaseEditionsClientListByLocationResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -158,8 +158,8 @@ func (d *DNSPrivateViewsServerTransport) dispatchNewListByLocationPager(req *htt
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to DNSPrivateViewsServerTransport
-var dnsPrivateViewsServerTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to DatabaseEditionsServerTransport
+var databaseEditionsServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

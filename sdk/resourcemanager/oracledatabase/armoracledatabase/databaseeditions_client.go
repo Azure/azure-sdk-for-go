@@ -16,20 +16,20 @@ import (
 	"strings"
 )
 
-// AutonomousDatabaseVersionsClient contains the methods for the AutonomousDatabaseVersions group.
-// Don't use this type directly, use NewAutonomousDatabaseVersionsClient() instead.
+// DatabaseEditionsClient contains the methods for the DatabaseEditions group.
+// Don't use this type directly, use NewDatabaseEditionsClient() instead.
 //
 // Generated from API version 2026-06-01
-type AutonomousDatabaseVersionsClient struct {
+type DatabaseEditionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewAutonomousDatabaseVersionsClient creates a new instance of AutonomousDatabaseVersionsClient with the specified values.
+// NewDatabaseEditionsClient creates a new instance of DatabaseEditionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewAutonomousDatabaseVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AutonomousDatabaseVersionsClient, error) {
+func NewDatabaseEditionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseEditionsClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,39 +37,38 @@ func NewAutonomousDatabaseVersionsClient(subscriptionID string, credential azcor
 	if err != nil {
 		return nil, err
 	}
-	client := &AutonomousDatabaseVersionsClient{
+	client := &DatabaseEditionsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// Get - Get a AutonomousDbVersion
+// Get - Get a DatabaseEdition
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - location - The name of the Azure region.
-//   - autonomousdbversionsname - AutonomousDbVersion name
-//   - options - AutonomousDatabaseVersionsClientGetOptions contains the optional parameters for the AutonomousDatabaseVersionsClient.Get
-//     method.
-func (client *AutonomousDatabaseVersionsClient) Get(ctx context.Context, location string, autonomousdbversionsname string, options *AutonomousDatabaseVersionsClientGetOptions) (AutonomousDatabaseVersionsClientGetResponse, error) {
+//   - databaseeditionname - DatabaseEdition name
+//   - options - DatabaseEditionsClientGetOptions contains the optional parameters for the DatabaseEditionsClient.Get method.
+func (client *DatabaseEditionsClient) Get(ctx context.Context, location string, databaseeditionname string, options *DatabaseEditionsClientGetOptions) (DatabaseEditionsClientGetResponse, error) {
 	var err error
-	const operationName = "AutonomousDatabaseVersionsClient.Get"
+	const operationName = "DatabaseEditionsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, location, autonomousdbversionsname, options)
+	req, err := client.getCreateRequest(ctx, location, databaseeditionname, options)
 	if err != nil {
-		return AutonomousDatabaseVersionsClientGetResponse{}, err
+		return DatabaseEditionsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AutonomousDatabaseVersionsClientGetResponse{}, err
+		return DatabaseEditionsClientGetResponse{}, err
 	}
 	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AutonomousDatabaseVersionsClient) getCreateRequest(ctx context.Context, location string, autonomousdbversionsname string, _ *AutonomousDatabaseVersionsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/autonomousDbVersions/{autonomousdbversionsname}"
+func (client *DatabaseEditionsClient) getCreateRequest(ctx context.Context, location string, databaseeditionname string, _ *DatabaseEditionsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/databaseEditions/{databaseeditionname}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -78,10 +77,10 @@ func (client *AutonomousDatabaseVersionsClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if autonomousdbversionsname == "" {
-		return nil, errors.New("parameter autonomousdbversionsname cannot be empty")
+	if databaseeditionname == "" {
+		return nil, errors.New("parameter databaseeditionname cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{autonomousdbversionsname}", url.PathEscape(autonomousdbversionsname))
+	urlPath = strings.ReplaceAll(urlPath, "{databaseeditionname}", url.PathEscape(databaseeditionname))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -94,39 +93,39 @@ func (client *AutonomousDatabaseVersionsClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *AutonomousDatabaseVersionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AutonomousDatabaseVersionsClientGetResponse, error) {
-	result := AutonomousDatabaseVersionsClientGetResponse{}
+func (client *DatabaseEditionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DatabaseEditionsClientGetResponse, error) {
+	result := DatabaseEditionsClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AutonomousDbVersion); err != nil {
-		return AutonomousDatabaseVersionsClientGetResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseEdition); err != nil {
+		return DatabaseEditionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByLocationPager - List AutonomousDbVersion resources by SubscriptionLocationResource
+// NewListByLocationPager - List DatabaseEdition resources by SubscriptionLocationResource
 //   - location - The name of the Azure region.
-//   - options - AutonomousDatabaseVersionsClientListByLocationOptions contains the optional parameters for the AutonomousDatabaseVersionsClient.NewListByLocationPager
+//   - options - DatabaseEditionsClientListByLocationOptions contains the optional parameters for the DatabaseEditionsClient.NewListByLocationPager
 //     method.
-func (client *AutonomousDatabaseVersionsClient) NewListByLocationPager(location string, options *AutonomousDatabaseVersionsClientListByLocationOptions) *runtime.Pager[AutonomousDatabaseVersionsClientListByLocationResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AutonomousDatabaseVersionsClientListByLocationResponse]{
-		More: func(page AutonomousDatabaseVersionsClientListByLocationResponse) bool {
+func (client *DatabaseEditionsClient) NewListByLocationPager(location string, options *DatabaseEditionsClientListByLocationOptions) *runtime.Pager[DatabaseEditionsClientListByLocationResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DatabaseEditionsClientListByLocationResponse]{
+		More: func(page DatabaseEditionsClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AutonomousDatabaseVersionsClientListByLocationResponse) (AutonomousDatabaseVersionsClientListByLocationResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AutonomousDatabaseVersionsClient.NewListByLocationPager")
+		Fetcher: func(ctx context.Context, page *DatabaseEditionsClientListByLocationResponse) (DatabaseEditionsClientListByLocationResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DatabaseEditionsClient.NewListByLocationPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listByLocationCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
-				return AutonomousDatabaseVersionsClientListByLocationResponse{}, err
+				return DatabaseEditionsClientListByLocationResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return AutonomousDatabaseVersionsClientListByLocationResponse{}, err
+				return DatabaseEditionsClientListByLocationResponse{}, err
 			}
 			return client.listByLocationHandleResponse(resp, http.StatusOK)
 		},
@@ -135,12 +134,12 @@ func (client *AutonomousDatabaseVersionsClient) NewListByLocationPager(location 
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *AutonomousDatabaseVersionsClient) listByLocationCreateRequest(ctx context.Context, location string, nextLink string, _ *AutonomousDatabaseVersionsClientListByLocationOptions) (*policy.Request, error) {
+func (client *DatabaseEditionsClient) listByLocationCreateRequest(ctx context.Context, location string, nextLink string, _ *DatabaseEditionsClientListByLocationOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/autonomousDbVersions"
+		urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/databaseEditions"
 		if client.subscriptionID == "" {
 			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
@@ -166,13 +165,13 @@ func (client *AutonomousDatabaseVersionsClient) listByLocationCreateRequest(ctx 
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *AutonomousDatabaseVersionsClient) listByLocationHandleResponse(resp *http.Response, successCodes ...int) (AutonomousDatabaseVersionsClientListByLocationResponse, error) {
-	result := AutonomousDatabaseVersionsClientListByLocationResponse{}
+func (client *DatabaseEditionsClient) listByLocationHandleResponse(resp *http.Response, successCodes ...int) (DatabaseEditionsClientListByLocationResponse, error) {
+	result := DatabaseEditionsClientListByLocationResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AutonomousDbVersionListResult); err != nil {
-		return AutonomousDatabaseVersionsClientListByLocationResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseEditionListResult); err != nil {
+		return DatabaseEditionsClientListByLocationResponse{}, err
 	}
 	return result, nil
 }

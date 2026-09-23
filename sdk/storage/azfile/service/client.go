@@ -264,16 +264,22 @@ func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.A
 	}
 
 	endpoint := s.URL()
-	if !strings.HasSuffix(endpoint, "/") {
-		// add a trailing slash to be consistent with the portal
-		endpoint += "/"
-	}
 	// endpoint may already contain a query string in unusual cases (e.g. a custom endpoint
-	// with pre-existing query parameters). Use the correct separator to avoid emitting a
-	// second "?", which would otherwise produce a malformed URL.
+	// with pre-existing query parameters). Split it off before normalizing the account path
+	// so the trailing slash is appended to the path and not the query value, then restore
+	// the query string before appending the SAS.
+	path, rawQuery, hasQuery := strings.Cut(endpoint, "?")
+	if !strings.HasSuffix(path, "/") {
+		// add a trailing slash to be consistent with the portal
+		path += "/"
+	}
+	endpoint = path
+	if hasQuery {
+		endpoint += "?" + rawQuery
+	}
 	if encoded := qps.Encode(); encoded != "" {
 		separator := "?"
-		if strings.Contains(endpoint, "?") {
+		if hasQuery {
 			separator = "&"
 		}
 		endpoint += separator + encoded

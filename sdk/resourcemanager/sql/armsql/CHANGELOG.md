@@ -1,5 +1,38 @@
 # Release History
 
+## 2.0.0-beta.9 (2026-09-09)
+### Breaking Changes
+
+- `PrivateEndpointProvisioningStateApproving`, `PrivateEndpointProvisioningStateDropping`, `PrivateEndpointProvisioningStateReady`, `PrivateEndpointProvisioningStateRejecting` from enum `PrivateEndpointProvisioningState` has been removed
+
+### Features Added
+
+- New value `PrivateEndpointProvisioningStateCanceled`, `PrivateEndpointProvisioningStateCreated`, `PrivateEndpointProvisioningStateInProgress`, `PrivateEndpointProvisioningStateSucceeded` added to enum type `PrivateEndpointProvisioningState`
+- New value `ServerNetworkAccessFlagSecuredByPerimeter` added to enum type `ServerNetworkAccessFlag`
+- New enum type `ImmutabilityStatus` with values `ImmutabilityStatusDisabled`, `ImmutabilityStatusEnabled`, `ImmutabilityStatusLocked`
+- New enum type `LinkModeType` with values `LinkModeTypeMultiDatabase`, `LinkModeTypeSingleDatabase`
+- New enum type `ManagedInstanceAdministratorPrincipalType` with values `ManagedInstanceAdministratorPrincipalTypeApplication`, `ManagedInstanceAdministratorPrincipalTypeGroup`, `ManagedInstanceAdministratorPrincipalTypeUser`
+- New struct `EndpointTrustedRootCertificateInfo`
+- New field `ImmutabilityStatus`, `LockImmutability` in struct `BackupShortTermRetentionPolicyProperties`
+- New field `RequiredFields` in struct `DatabaseBlobAuditingPolicyProperties`
+- New field `OriginalResourceGroup`, `ScheduledPurgeTime` in struct `DeletedServerProperties`
+- New field `LinkMode`, `MostRecentError`, `MostRecentErrorMessage`, `MostRecentErrorTime` in struct `DistributedAvailabilityGroupProperties`
+- New field `TrustedRootCertificates` in struct `EndpointCertificateProperties`
+- New field `RequiredFields` in struct `ExtendedDatabaseBlobAuditingPolicyProperties`
+- New field `RequiredFields` in struct `ExtendedServerBlobAuditingPolicyProperties`
+- New field `Skiptoken`, `Top` in struct `LongTermRetentionBackupsClientListByLocationOptions`
+- New field `Skiptoken`, `Top` in struct `LongTermRetentionBackupsClientListByResourceGroupLocationOptions`
+- New field `Skiptoken`, `Top` in struct `LongTermRetentionBackupsClientListByResourceGroupServerOptions`
+- New field `Skiptoken`, `Top` in struct `LongTermRetentionBackupsClientListByServerOptions`
+- New field `ImmutabilityStatus`, `LockImmutability` in struct `ManagedBackupShortTermRetentionPolicyProperties`
+- New field `PrincipalType` in struct `ManagedInstanceAdministratorProperties`
+- New field `IsBackupImmutable`, `LegalHoldImmutability`, `TimeBasedImmutability`, `TimeBasedImmutabilityMode` in struct `ManagedInstanceLongTermRetentionBackupProperties`
+- New field `TimeBasedImmutability`, `TimeBasedImmutabilityMode` in struct `ManagedInstanceLongTermRetentionPolicyProperties`
+- New field `Skiptoken`, `Top` in struct `RestorableDroppedDatabasesClientListByServerOptions`
+- New field `RequiredFields` in struct `ServerBlobAuditingPolicyProperties`
+- New field `NextResetTime`, `ResourceName` in struct `ServerUsageProperties`
+
+
 ## 2.0.0-beta.8 (2026-05-10)
 ### Breaking Changes
 

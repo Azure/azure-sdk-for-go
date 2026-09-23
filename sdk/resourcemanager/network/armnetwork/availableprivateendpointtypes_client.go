@@ -19,7 +19,7 @@ import (
 // AvailablePrivateEndpointTypesClient contains the methods for the AvailablePrivateEndpointTypes group.
 // Don't use this type directly, use NewAvailablePrivateEndpointTypesClient() instead.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-01-01
 type AvailablePrivateEndpointTypesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -98,7 +98,7 @@ func (client *AvailablePrivateEndpointTypesClient) listCreateRequest(ctx context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
+		reqQP.Set("api-version", version20260101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -176,7 +176,7 @@ func (client *AvailablePrivateEndpointTypesClient) listByResourceGroupCreateRequ
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
+		reqQP.Set("api-version", version20260101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

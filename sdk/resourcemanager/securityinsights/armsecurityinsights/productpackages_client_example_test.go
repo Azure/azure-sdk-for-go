@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/contentPackages/GetProductPackages.json
+// Generated from example definition: 2025-10-01-preview/contentPackages/GetProductPackages.json
 func ExampleProductPackagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleProductPackagesClient_NewListPager() {
 		// 								Version: to.Ptr("2.0.0"),
 		// 							},
 		// 						},
-		// 						Operator: to.Ptr(armsecurityinsights.Operator("AND")),
+		// 						Operator: to.Ptr(armsecurityinsights.MetadataDependencyOperatorAND),
 		// 					},
 		// 					DisplayName: to.Ptr("str"),
 		// 					FirstPublishDate: to.Ptr(time.Date(2022, time.April, 1, 0, 0, 0, 0, time.UTC)),

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/NetworkManagerStaticMemberPut.json
+// Generated from example definition: 2026-01-01/NetworkManagerStaticMemberPut.json
 func ExampleStaticMembersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleStaticMembersClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerStaticMemberDelete.json
+// Generated from example definition: 2026-01-01/NetworkManagerStaticMemberDelete.json
 func ExampleStaticMembersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleStaticMembersClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerStaticMemberGet.json
+// Generated from example definition: 2026-01-01/NetworkManagerStaticMemberGet.json
 func ExampleStaticMembersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleStaticMembersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerStaticMemberList.json
+// Generated from example definition: 2026-01-01/NetworkManagerStaticMemberList.json
 func ExampleStaticMembersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

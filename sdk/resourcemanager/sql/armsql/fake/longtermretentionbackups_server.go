@@ -769,11 +769,24 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByLocationPager
 			return nil, err
 		}
 		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
+		skiptokenParam := getOptional(qp.Get("$skiptoken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
 		var options *armsql.LongTermRetentionBackupsClientListByLocationOptions
-		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil {
+		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil || skiptokenParam != nil || topParam != nil {
 			options = &armsql.LongTermRetentionBackupsClientListByLocationOptions{
 				OnlyLatestPerDatabase: onlyLatestPerDatabaseParam,
 				DatabaseState:         databaseStateParam,
+				Skiptoken:             skiptokenParam,
+				Top:                   topParam,
 			}
 		}
 		resp := l.srv.NewListByLocationPager(locationNameParam, options)
@@ -885,11 +898,24 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByResourceGroup
 			return nil, err
 		}
 		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
+		skiptokenParam := getOptional(qp.Get("$skiptoken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
 		var options *armsql.LongTermRetentionBackupsClientListByResourceGroupLocationOptions
-		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil {
+		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil || skiptokenParam != nil || topParam != nil {
 			options = &armsql.LongTermRetentionBackupsClientListByResourceGroupLocationOptions{
 				OnlyLatestPerDatabase: onlyLatestPerDatabaseParam,
 				DatabaseState:         databaseStateParam,
+				Skiptoken:             skiptokenParam,
+				Top:                   topParam,
 			}
 		}
 		resp := l.srv.NewListByResourceGroupLocationPager(resourceGroupNameParam, locationNameParam, options)
@@ -943,11 +969,24 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByResourceGroup
 			return nil, err
 		}
 		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
+		skiptokenParam := getOptional(qp.Get("$skiptoken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
 		var options *armsql.LongTermRetentionBackupsClientListByResourceGroupServerOptions
-		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil {
+		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil || skiptokenParam != nil || topParam != nil {
 			options = &armsql.LongTermRetentionBackupsClientListByResourceGroupServerOptions{
 				OnlyLatestPerDatabase: onlyLatestPerDatabaseParam,
 				DatabaseState:         databaseStateParam,
+				Skiptoken:             skiptokenParam,
+				Top:                   topParam,
 			}
 		}
 		resp := l.srv.NewListByResourceGroupServerPager(resourceGroupNameParam, locationNameParam, longTermRetentionServerNameParam, options)
@@ -997,11 +1036,24 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByServerPager(r
 			return nil, err
 		}
 		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
+		skiptokenParam := getOptional(qp.Get("$skiptoken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
 		var options *armsql.LongTermRetentionBackupsClientListByServerOptions
-		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil {
+		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil || skiptokenParam != nil || topParam != nil {
 			options = &armsql.LongTermRetentionBackupsClientListByServerOptions{
 				OnlyLatestPerDatabase: onlyLatestPerDatabaseParam,
 				DatabaseState:         databaseStateParam,
+				Skiptoken:             skiptokenParam,
+				Top:                   topParam,
 			}
 		}
 		resp := l.srv.NewListByServerPager(locationNameParam, longTermRetentionServerNameParam, options)

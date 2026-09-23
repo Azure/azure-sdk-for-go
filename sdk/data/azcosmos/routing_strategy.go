@@ -3,6 +3,18 @@
 
 package azcosmos
 
+import (
+	"strings"
+	"unicode"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+)
+
+//go:generate go run ./internal/generate/regionproximity
+
+// EventRouting entries contain information about regional routing configuration and fallback.
+const EventRouting log.Event = "CosmosRouting"
+
 // RoutingStrategy decides the order in which a client considers the account's regions.
 //
 // It orders regions, it does not restrict them: once failover exhausts the order, the client may
@@ -13,6 +25,7 @@ package azcosmos
 // account, which is rarely what a latency-sensitive application wants.
 type RoutingStrategy struct {
 	proximityTo      Region
+	proximitySet     bool
 	preferredRegions []Region
 }
 
@@ -21,10 +34,11 @@ type RoutingStrategy struct {
 //
 // The estimates are built into the SDK and may not match the round-trip times actually observed.
 //
-// It is not supported yet: a client configured with it fails to construct rather than silently
-// leaving the order to the account. Use [PreferredRegions] until it is.
+// An unrecognized region leaves the order to the account and writes a CosmosRouting warning. Some
+// exported [Region] constants are unrecognized because the shared proximity dataset has no
+// estimates for them yet.
 func ProximityTo(region Region) RoutingStrategy {
-	return RoutingStrategy{proximityTo: region}
+	return RoutingStrategy{proximityTo: region, proximitySet: true}
 }
 
 // PreferredRegions orders regions explicitly, most preferred first.
@@ -39,28 +53,24 @@ func (r RoutingStrategy) clone() RoutingStrategy {
 	return r
 }
 
-// newProximityRoutingUnsupportedError is returned when a client is created with [ProximityTo].
-//
-// Resolving a region to an order is a client-side table lookup, not something the driver does: the
-// C ABI takes a region list, so the SDK has to supply one. The Rust SDK's table is ~10k generated
-// lines and has not been ported yet, so asking for proximity routing fails rather than quietly
-// leaving the order to the account.
-//
-// It is reported when the client is constructed: resolving the order needs no driver, so there is
-// no reason to defer it to the first operation.
-func newProximityRoutingUnsupportedError() *Error {
-	return &Error{
-		Code: CodeClientError,
-		Message: "ProximityTo is not supported yet; list the regions explicitly with PreferredRegions, " +
-			"most preferred first",
-	}
-}
-
 // preferredRegionOrder resolves the strategy to the region order the driver takes. The zero value
 // resolves to none, which leaves the order to the account.
 func (r RoutingStrategy) preferredRegionOrder() ([]Region, error) {
-	if r.proximityTo != "" {
-		return nil, newProximityRoutingUnsupportedError()
+	if r.proximitySet {
+		normalized := Region(strings.ToLower(strings.Map(func(value rune) rune {
+			if unicode.IsSpace(value) {
+				return -1
+			}
+			return value
+		}, string(r.proximityTo))))
+		regions, ok := proximityRegionOrderBySource[normalized]
+		if !ok {
+			log.Writef(EventRouting,
+				"unrecognized application region %q; falling back to account-defined region order",
+				r.proximityTo)
+			return nil, nil
+		}
+		return append([]Region(nil), regions...), nil
 	}
 	return r.preferredRegions, nil
 }

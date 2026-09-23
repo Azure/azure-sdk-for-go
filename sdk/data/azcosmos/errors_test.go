@@ -268,14 +268,10 @@ func TestNotImplementedIsRetrievableAsError(t *testing.T) {
 	require.Zero(t, cosmosErr.StatusCode)
 }
 
-func TestPackageErrorsAreFresh(t *testing.T) {
+func TestDriverUnavailableErrorsAreFresh(t *testing.T) {
 	driverErr := newDriverUnavailableError()
 	driverErr.Message = "mutated"
 	require.NotEqual(t, driverErr.Message, newDriverUnavailableError().Message)
-
-	routingErr := newProximityRoutingUnsupportedError()
-	routingErr.Message = "mutated"
-	require.NotEqual(t, routingErr.Message, newProximityRoutingUnsupportedError().Message)
 }
 
 func TestCloneErrorCopiesMutableState(t *testing.T) {

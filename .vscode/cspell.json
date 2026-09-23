@@ -9,6 +9,9 @@
       "en_US",
       "en-gb"
     ],
+    "import": [
+        "../sdk/data/azcosmos/cspell.json"
+    ],
     "ignorePaths": [
         "eng/common/**",
         "eng/pipelines/**",

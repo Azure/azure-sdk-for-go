@@ -172,8 +172,11 @@ extends:
                 if grep -q '"event":"ready"' "$(Agent.TempDirectory)/emulator-ready.json" 2>/dev/null; then
                   endpoint=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['accountEndpoint'])" \
                     "$(Agent.TempDirectory)/emulator-ready.json")
+                  management_endpoint=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['managementEndpoint'])" \
+                    "$(Agent.TempDirectory)/emulator-ready.json")
                   echo "emulator ready at $endpoint"
                   echo "##vso[task.setvariable variable=EmulatorEndpoint]$endpoint"
+                  echo "##vso[task.setvariable variable=EmulatorManagementEndpoint]$management_endpoint"
                   exit 0
                 fi
                 sleep 1
@@ -199,4 +202,5 @@ extends:
               EnvVars:
                 EMULATOR: 'true'
                 AZCOSMOS_ENDPOINT: $(EmulatorEndpoint)
+                AZCOSMOS_MANAGEMENT_ENDPOINT: $(EmulatorManagementEndpoint)
                 CGO_ENABLED: '1'

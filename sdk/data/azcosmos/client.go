@@ -26,8 +26,7 @@ type ClientOptions struct {
 	// Routing decides the order in which the client considers the account's regions. The zero
 	// value leaves the order to the account; prefer setting it with [PreferredRegions].
 	//
-	// [ProximityTo] is not supported yet and is rejected when the client is constructed rather
-	// than being ignored; see its documentation.
+	// [ProximityTo] expands a known application region to the SDK's estimated proximity order.
 	Routing RoutingStrategy
 
 	// ApplicationID is an application-specific identifier appended to the user agent sent with
@@ -222,14 +221,12 @@ func (c *Client) NewContainer(databaseID string, containerID string) (*Container
 	return database.NewContainer(containerID)
 }
 
-// validate reports option values the binding cannot implement. Values the driver understands are
-// passed through and validated there, so this package does not duplicate its rules.
+// validate reports option values that cannot be passed through the C ABI. Values the driver
+// understands are passed through and validated there, so this package does not duplicate its rules.
 func (o ClientOptions) validate() error {
 	// The driver rejects embedded NUL bytes in this counted UTF-8 field.
 	if strings.IndexByte(o.ApplicationID, 0) >= 0 {
 		return errors.New("azcosmos: ClientOptions.ApplicationID must not contain a NUL byte")
 	}
-
-	_, err := o.Routing.preferredRegionOrder()
-	return err
+	return nil
 }

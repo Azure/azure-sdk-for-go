@@ -1262,7 +1262,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlIfUnmodifiedSinceTrue() {
 			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
-		}},
+		},
 	}
 
 	_, err = dirClient.SetAccessControl(context.Background(), opts)
@@ -1382,7 +1382,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlIfETagMatchFalse() {
 			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
 				IfNoneMatch: etag,
 			},
-		}},
+		},
 	}
 
 	_, err = dirClient.SetAccessControl(context.Background(), opts)
@@ -1770,7 +1770,7 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfUnmodifiedSinceTrue() {
 			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
-		}},
+		},
 	}
 
 	getACLResp, err := dirClient.GetAccessControl(context.Background(), opts)
@@ -1838,7 +1838,7 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfETagMatch() {
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	resp, err := dirClient.Create(context.Background(), nil)
+	resp, err := dirClient.Create(context.Background(), createOpts)
 	_require.NoError(err)
 	_require.NotNil(resp)
 	etag := resp.ETag
@@ -1876,7 +1876,7 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfETagMatchFalse() {
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	resp, err := dirClient.Create(context.Background(), nil)
+	resp, err := dirClient.Create(context.Background(), createOpts)
 	_require.NoError(err)
 	_require.NotNil(resp)
 
@@ -1886,7 +1886,7 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfETagMatchFalse() {
 			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
 				IfNoneMatch: etag,
 			},
-		}},
+		},
 	}
 
 	_, err = dirClient.GetAccessControl(context.Background(), opts)
@@ -3797,6 +3797,108 @@ func (s *UnrecordedTestSuite) TestDirGetSetTagsDirIdentitySas() {
 		ExpiryTime:     time.Now().UTC().Add(15 * time.Minute),
 		FileSystemName: filesystemName,
 		DirectoryPath:  dirName,
+		Permissions:    perms.String(),
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	sasURL := dirClient.DFSURL() + "?" + sasQueryParams.Encode()
+	sasClient, err := directory.NewClientWithNoCredential(sasURL, nil)
+	_require.NoError(err)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	_, err = sasClient.SetTags(context.Background(), tags, nil)
+	_require.NoError(err)
+
+	getTagsResp, err := sasClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, len(tags))
+	tagMap := make(map[string]string)
+	for _, tag := range getTagsResp.BlobTagSet {
+		tagMap[*tag.Key] = *tag.Value
+	}
+	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
+	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
+}
+
+type captureTransport struct {
+	req *http.Request
+}
+
+func (c *captureTransport) Do(req *http.Request) (*http.Response, error) {
+	c.req = req
+	return &http.Response{
+		Request:    req,
+		Status:     "Created",
+		StatusCode: http.StatusCreated,
+		Header:     http.Header{},
+		Body:       http.NoBody,
+	}, nil
+}
+
+func TestDirectoryRenameEncodesSourcePath(t *testing.T) {
+	_require := require.New(t)
+	ct := &captureTransport{}
+
+	srcURL := "https://fake.dfs.core.windows.net/myfs/my%20dir"
+	dClient, err := directory.NewClientWithNoCredential(srcURL, &directory.ClientOptions{
+		ClientOptions: policy.ClientOptions{Transport: ct},
+	})
+	_require.NoError(err)
+
+	_, err = dClient.Rename(context.Background(), "renameddir", nil)
+	_require.NoError(err)
+	_require.NotNil(ct.req)
+
+	renameSourceVals := ct.req.Header["x-ms-rename-source"] //nolint:staticcheck // SA1008: the generated client stores this header under a non-canonical key, so it must be read with the same raw key.
+	_require.NotEmpty(renameSourceVals)
+	renameSource := renameSourceVals[0]
+	_require.Contains(renameSource, "my%20dir")
+	_require.NotContains(renameSource, "my dir")
+}
+
+func (s *UnrecordedTestSuite) TestDirGetSetTagsFileSystemIdentitySas() {
+	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Datalake tags is in public preview and not GA yet")
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".dfs.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient := testcommon.CreateNewDir(context.Background(), _require, dirName, fsClient)
+
+	// Get user delegation key
+	currentTime := time.Now().UTC().Add(-10 * time.Second)
+	expiryTime := currentTime.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(currentTime.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiryTime.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	perms := sas.FileSystemPermissions{Read: true, Write: true, Tag: true}
+	sasQueryParams, err := sas.DatalakeSignatureValues{
+		Protocol:       sas.ProtocolHTTPS,
+		StartTime:      time.Now().UTC().Add(-10 * time.Second),
+		ExpiryTime:     time.Now().UTC().Add(15 * time.Minute),
+		FileSystemName: filesystemName,
 		Permissions:    perms.String(),
 	}.SignWithUserDelegation(udc)
 	_require.NoError(err)

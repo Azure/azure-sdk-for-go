@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/UsagePlans_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/UsagePlans_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleUsagePlansClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleUsagePlansClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/UsagePlans_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/UsagePlans_Delete_MaximumSet_Gen.json
 func ExampleUsagePlansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleUsagePlansClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/UsagePlans_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/UsagePlans_Get_MaximumSet_Gen.json
 func ExampleUsagePlansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleUsagePlansClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/UsagePlans_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/UsagePlans_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleUsagePlansClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +184,7 @@ func ExampleUsagePlansClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/UsagePlans_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/UsagePlans_ListBySubscription_MaximumSet_Gen.json
 func ExampleUsagePlansClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,7 +237,7 @@ func ExampleUsagePlansClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/UsagePlans_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/UsagePlans_Update_MaximumSet_Gen.json
 func ExampleUsagePlansClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/RecoveryJobResources_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryJobResources_Get_MaximumSet_Gen.json
 func ExampleRecoveryJobResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExampleRecoveryJobResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryJobResources_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryJobResources_List_MaximumSet_Gen.json
 func ExampleRecoveryJobResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

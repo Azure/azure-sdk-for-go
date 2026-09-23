@@ -38,6 +38,8 @@ Create a `MIGRATION.md` file in the directory of the new module. Here is an exam
 
 ### Step 2: Release the Module with a Deprecation Message
 
+You need write access to the Azure SDK for Go repository to complete this step. If you don't have write access, follow [Get access to Azure SDKs](https://eng.ms/docs/products/azure-developer-experience/onboard/access) to request it.
+
 Create a PR containing the final patch release of the module that includes the deprecation message. The deprecation message should also include migration instructions. Here is an example of the [final patch release](https://github.com/Azure/azure-sdk-for-go/pull/22578/files) for the `azingest` module.
 
 The deprecation message should be included in the following files:

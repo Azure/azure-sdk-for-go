@@ -12,7 +12,8 @@ import (
 
 //go:generate go run ./internal/generate/regionproximity
 
-const eventRouting log.Event = "CosmosRouting"
+// EventRouting entries contain information about regional routing configuration and fallback.
+const EventRouting log.Event = "CosmosRouting"
 
 // RoutingStrategy decides the order in which a client considers the account's regions.
 //
@@ -24,6 +25,7 @@ const eventRouting log.Event = "CosmosRouting"
 // account, which is rarely what a latency-sensitive application wants.
 type RoutingStrategy struct {
 	proximityTo      Region
+	proximitySet     bool
 	preferredRegions []Region
 }
 
@@ -36,7 +38,7 @@ type RoutingStrategy struct {
 // exported [Region] constants are unrecognized because the shared proximity dataset has no
 // estimates for them yet.
 func ProximityTo(region Region) RoutingStrategy {
-	return RoutingStrategy{proximityTo: region}
+	return RoutingStrategy{proximityTo: region, proximitySet: true}
 }
 
 // PreferredRegions orders regions explicitly, most preferred first.
@@ -54,7 +56,7 @@ func (r RoutingStrategy) clone() RoutingStrategy {
 // preferredRegionOrder resolves the strategy to the region order the driver takes. The zero value
 // resolves to none, which leaves the order to the account.
 func (r RoutingStrategy) preferredRegionOrder() ([]Region, error) {
-	if r.proximityTo != "" {
+	if r.proximitySet {
 		normalized := Region(strings.ToLower(strings.Map(func(value rune) rune {
 			if unicode.IsSpace(value) {
 				return -1
@@ -63,7 +65,7 @@ func (r RoutingStrategy) preferredRegionOrder() ([]Region, error) {
 		}, string(r.proximityTo))))
 		regions, ok := proximityRegionOrderBySource[normalized]
 		if !ok {
-			log.Writef(eventRouting,
+			log.Writef(EventRouting,
 				"unrecognized application region %q; falling back to account-defined region order",
 				r.proximityTo)
 			return nil, nil

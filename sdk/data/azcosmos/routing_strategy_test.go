@@ -41,6 +41,7 @@ func TestProximityTo(t *testing.T) {
 	strategy := ProximityTo(RegionEastUS)
 
 	require.Equal(t, RegionEastUS, strategy.proximityTo)
+	require.True(t, strategy.proximitySet)
 	require.Empty(t, strategy.preferredRegions)
 }
 
@@ -49,6 +50,7 @@ func TestPreferredRegions(t *testing.T) {
 	strategy := PreferredRegions(regions...)
 
 	require.Empty(t, strategy.proximityTo)
+	require.False(t, strategy.proximitySet)
 	require.Equal(t, regions, strategy.preferredRegions)
 
 	regions[0] = RegionNorthEurope
@@ -59,6 +61,7 @@ func TestRoutingStrategyZeroValue(t *testing.T) {
 	var strategy RoutingStrategy
 
 	require.Empty(t, strategy.proximityTo)
+	require.False(t, strategy.proximitySet)
 	require.Empty(t, strategy.preferredRegions)
 }
 
@@ -170,7 +173,7 @@ func TestProximityRegionOrderCannotBeMutated(t *testing.T) {
 func TestProximityToUnknownRegionLeavesAccountOrder(t *testing.T) {
 	var event azlog.Event
 	var message string
-	azlog.SetEvents(eventRouting)
+	azlog.SetEvents(EventRouting)
 	azlog.SetListener(func(receivedEvent azlog.Event, receivedMessage string) {
 		event = receivedEvent
 		message = receivedMessage
@@ -183,8 +186,29 @@ func TestProximityToUnknownRegionLeavesAccountOrder(t *testing.T) {
 	regions, err := ProximityTo("not-a-real-region").preferredRegionOrder()
 	require.NoError(t, err)
 	require.Empty(t, regions)
-	require.Equal(t, eventRouting, event)
+	require.Equal(t, EventRouting, event)
 	require.Contains(t, message, `unrecognized application region "not-a-real-region"`)
+	require.Contains(t, message, "falling back to account-defined region order")
+}
+
+func TestProximityToEmptyRegionLeavesAccountOrder(t *testing.T) {
+	var event azlog.Event
+	var message string
+	azlog.SetEvents(EventRouting)
+	azlog.SetListener(func(receivedEvent azlog.Event, receivedMessage string) {
+		event = receivedEvent
+		message = receivedMessage
+	})
+	t.Cleanup(func() {
+		azlog.SetListener(nil)
+		azlog.SetEvents()
+	})
+
+	regions, err := ProximityTo("").preferredRegionOrder()
+	require.NoError(t, err)
+	require.Empty(t, regions)
+	require.Equal(t, EventRouting, event)
+	require.Contains(t, message, `unrecognized application region ""`)
 	require.Contains(t, message, "falling back to account-defined region order")
 }
 

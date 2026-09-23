@@ -1,13 +1,25 @@
 {
   "version": "0.2",
+  "ignorePaths": [
+    "region_proximity.go"
+  ],
   "words": [
+    "azlog",
+    "EASTUS",
     "enableaadauthentication",
+    "itemdb",
     "LINUXVMIMAGE",
+    "myaccount",
     "noexplorer",
     "nohup",
     "noui",
+    "testin",
     "tlsv",
+    "USDOD",
+    "USGOV",
+    "USSTG",
     "WINDOWSVMIMAGE",
+    "Writef",
     "Wtle"
   ]
 }

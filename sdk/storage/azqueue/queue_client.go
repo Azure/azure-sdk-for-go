@@ -5,6 +5,7 @@ package azqueue
 
 import (
 	"context"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -236,7 +237,17 @@ func (q *QueueClient) GetSASURL(permissions sas.QueuePermissions, expiry time.Ti
 		return "", err
 	}
 
-	endpoint := q.URL() + "?" + qps.Encode()
+	// q.URL() may already contain a query string in unusual cases (e.g. a custom endpoint
+	// with pre-existing query parameters). Use the correct separator to avoid emitting a
+	// second "?", which would otherwise produce a malformed URL.
+	endpoint := q.URL()
+	if encoded := qps.Encode(); encoded != "" {
+		separator := "?"
+		if strings.Contains(endpoint, "?") {
+			separator = "&"
+		}
+		endpoint += separator + encoded
+	}
 
 	return endpoint, nil
 }

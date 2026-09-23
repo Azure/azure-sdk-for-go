@@ -221,7 +221,16 @@ func (s *ServiceClient) GetSASURL(resources sas.AccountResourceTypes, permission
 		// add a trailing slash to be consistent with the portal
 		endpoint += "/"
 	}
-	endpoint += "?" + qps.Encode()
+	// endpoint may already contain a query string in unusual cases (e.g. a custom endpoint
+	// with pre-existing query parameters). Use the correct separator to avoid emitting a
+	// second "?", which would otherwise produce a malformed URL.
+	if encoded := qps.Encode(); encoded != "" {
+		separator := "?"
+		if strings.Contains(endpoint, "?") {
+			separator = "&"
+		}
+		endpoint += separator + encoded
+	}
 
 	return endpoint, nil
 }

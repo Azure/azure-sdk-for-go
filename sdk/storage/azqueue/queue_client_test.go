@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
+	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -1683,3 +1685,28 @@ func (s *UnrecordedTestSuite) TestQueueClientGetPropertiesApproximateMessagesCou
 	_require.GreaterOrEqual(*count, int64(1))
 	_require.IsType(int64(0), *count)
 }
+
+// TestQueueClientGetSASURLPreservesCustomQueryParams is a regression test for GetSASURL()
+// appending a duplicated "?" to the resulting URL when the client's URL already contained a
+// query string (e.g. a customer-provided endpoint with pre-existing custom query parameters),
+// which previously produced a malformed SAS URL.
+func TestQueueClientGetSASURLPreservesCustomQueryParams(t *testing.T) {
+	_require := require.New(t)
+	const accountName = "fakestorageaccount"
+	// base64-encoded fake key; not a real secret.
+	const accountKey = "PSA7dl59RwZBFEBhBEtdrsq/g7VpjMFeSPzdC4SoBiQI3xVLg2y8HRoAF3PidfB8/i9v67QCNSAdVdJdKrmqSw=="
+	cred, err := azqueue.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	queueURL := fmt.Sprintf("https://%s.queue.core.windows.net/queue?customparam=value", accountName)
+	queueClient, err := azqueue.NewQueueClientWithSharedKeyCredential(queueURL, cred, nil)
+	_require.NoError(err)
+
+	sasURL, err := queueClient.GetSASURL(sas.QueuePermissions{Read: true}, time.Now().Add(time.Hour), nil)
+	_require.NoError(err)
+
+	_require.Equal(1, strings.Count(sasURL, "?"), "SAS URL must not contain a duplicated '?': %s", sasURL)
+	_require.Contains(sasURL, "customparam=value")
+	_require.Contains(sasURL, "sig=")
+}
+

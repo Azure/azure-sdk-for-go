@@ -391,7 +391,17 @@ func (fs *Client) GetSASURL(permissions sas.FileSystemPermissions, expiry time.T
 		return "", err
 	}
 
-	endpoint := fs.BlobURL() + "?" + qps.Encode()
+	// fs.BlobURL() may already contain a query string in unusual cases (e.g. a custom
+	// endpoint with pre-existing query parameters). Use the correct separator to avoid
+	// emitting a second "?", which would otherwise produce a malformed URL.
+	endpoint := fs.BlobURL()
+	if encoded := qps.Encode(); encoded != "" {
+		separator := "?"
+		if strings.Contains(endpoint, "?") {
+			separator = "&"
+		}
+		endpoint += separator + encoded
+	}
 
 	return endpoint, nil
 }

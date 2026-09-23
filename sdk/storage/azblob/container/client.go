@@ -365,7 +365,17 @@ func (c *Client) GetSASURL(permissions sas.ContainerPermissions, expiry time.Tim
 		return "", err
 	}
 
-	endpoint := c.URL() + "?" + qps.Encode()
+	// c.URL() may already contain a query string in unusual cases (e.g. a custom endpoint
+	// with pre-existing query parameters). Use the correct separator to avoid emitting a
+	// second "?", which would otherwise produce a malformed URL.
+	endpoint := c.URL()
+	if encoded := qps.Encode(); encoded != "" {
+		separator := "?"
+		if strings.Contains(endpoint, "?") {
+			separator = "&"
+		}
+		endpoint += separator + encoded
+	}
 
 	return endpoint, nil
 }

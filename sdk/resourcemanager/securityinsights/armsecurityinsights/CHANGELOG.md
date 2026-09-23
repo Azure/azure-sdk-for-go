@@ -1,5 +1,24 @@
 # Release History
 
+## 2.0.0-beta.6 (2026-08-19)
+### Breaking Changes
+
+- Type of `JobProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*JobProvisioningState`
+- Type of `MetadataDependencies.Operator` has been changed from `*Operator` to `*MetadataDependencyOperator`
+- Type of `PullRequest.State` has been changed from `*State` to `*PullRequestState`
+- Type of `WatchlistProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*WatchlistProvisioningState`
+- Type of `WorkspaceManagerAssignmentProperties.LastJobProvisioningState` has been changed from `*ProvisioningState` to `*JobProvisioningState`
+- Field `AlertRuleClassification` of struct `AlertRuleClientTriggerRuleRunResponse` has been removed
+
+### Features Added
+
+- New enum type `JobProvisioningState` with values `JobProvisioningStateCanceled`, `JobProvisioningStateFailed`, `JobProvisioningStateInProgress`, `JobProvisioningStateSucceeded`
+- New enum type `MetadataDependencyOperator` with values `MetadataDependencyOperatorAND`, `MetadataDependencyOperatorOR`
+- New enum type `PullRequestState` with values `PullRequestStateClosed`, `PullRequestStateOpen`
+- New enum type `WatchlistProvisioningState` with values `WatchlistProvisioningStateCanceled`, `WatchlistProvisioningStateDeleting`, `WatchlistProvisioningStateFailed`, `WatchlistProvisioningStateInProgress`, `WatchlistProvisioningStateNew`, `WatchlistProvisioningStateSucceeded`, `WatchlistProvisioningStateUploading`
+- New anonymous field `Watchlist` in struct `WatchlistsClientDeleteResponse`
+
+
 ## 2.0.0-beta.5 (2026-05-13)
 ### Breaking Changes
 

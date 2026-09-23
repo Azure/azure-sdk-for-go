@@ -157,6 +157,70 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
+// PaymentHsmClusterPrivateEndpointConnectionsClientCreateResponse contains the response from method PaymentHsmClusterPrivateEndpointConnectionsClient.Create.
+type PaymentHsmClusterPrivateEndpointConnectionsClientCreateResponse struct {
+	// The private endpoint connection resource.
+	PaymentHsmClusterPrivateEndpointConnection
+}
+
+// PaymentHsmClusterPrivateEndpointConnectionsClientDeleteResponse contains the response from method PaymentHsmClusterPrivateEndpointConnectionsClient.BeginDelete.
+type PaymentHsmClusterPrivateEndpointConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PaymentHsmClusterPrivateEndpointConnectionsClientGetResponse contains the response from method PaymentHsmClusterPrivateEndpointConnectionsClient.Get.
+type PaymentHsmClusterPrivateEndpointConnectionsClientGetResponse struct {
+	// The private endpoint connection resource.
+	PaymentHsmClusterPrivateEndpointConnection
+}
+
+// PaymentHsmClusterPrivateEndpointConnectionsClientListByPaymentHsmClusterResponse contains the response from method PaymentHsmClusterPrivateEndpointConnectionsClient.NewListByPaymentHsmClusterPager.
+type PaymentHsmClusterPrivateEndpointConnectionsClientListByPaymentHsmClusterResponse struct {
+	// The response of a PaymentHsmClusterPrivateEndpointConnection list operation.
+	PaymentHsmClusterPrivateEndpointConnectionListResult
+}
+
+// PaymentHsmClusterPrivateLinkResourcesClientListByPaymentHsmClusterResponse contains the response from method PaymentHsmClusterPrivateLinkResourcesClient.NewListByPaymentHsmClusterPager.
+type PaymentHsmClusterPrivateLinkResourcesClientListByPaymentHsmClusterResponse struct {
+	// A list of private link resources.
+	PrivateLinkResourceListResult
+}
+
+// PaymentHsmClustersClientCreateOrUpdateResponse contains the response from method PaymentHsmClustersClient.BeginCreateOrUpdate.
+type PaymentHsmClustersClientCreateOrUpdateResponse struct {
+	// Resource information with extended details.
+	PaymentHsmCluster
+}
+
+// PaymentHsmClustersClientDeleteResponse contains the response from method PaymentHsmClustersClient.BeginDelete.
+type PaymentHsmClustersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PaymentHsmClustersClientGetResponse contains the response from method PaymentHsmClustersClient.Get.
+type PaymentHsmClustersClientGetResponse struct {
+	// Resource information with extended details.
+	PaymentHsmCluster
+}
+
+// PaymentHsmClustersClientListByResourceGroupResponse contains the response from method PaymentHsmClustersClient.NewListByResourceGroupPager.
+type PaymentHsmClustersClientListByResourceGroupResponse struct {
+	// The response of a PaymentHsmCluster list operation.
+	PaymentHsmClusterListResult
+}
+
+// PaymentHsmClustersClientListBySubscriptionResponse contains the response from method PaymentHsmClustersClient.NewListBySubscriptionPager.
+type PaymentHsmClustersClientListBySubscriptionResponse struct {
+	// The response of a PaymentHsmCluster list operation.
+	PaymentHsmClusterListResult
+}
+
+// PaymentHsmClustersClientUpdateResponse contains the response from method PaymentHsmClustersClient.BeginUpdate.
+type PaymentHsmClustersClientUpdateResponse struct {
+	// Resource information with extended details.
+	PaymentHsmCluster
+}
+
 // PrivateEndpointConnectionsClientListByCloudHsmClusterResponse contains the response from method PrivateEndpointConnectionsClient.NewListByCloudHsmClusterPager.
 type PrivateEndpointConnectionsClientListByCloudHsmClusterResponse struct {
 	// The response of a PrivateEndpointConnection list operation.

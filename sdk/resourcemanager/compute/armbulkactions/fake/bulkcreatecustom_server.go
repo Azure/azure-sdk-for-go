@@ -49,6 +49,10 @@ type BulkCreateCustomServer struct {
 	// NewListBySubscriptionPager is the fake for method BulkCreateCustomClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(location string, options *armbulkactions.BulkCreateCustomClientListBySubscriptionOptions) (resp azfake.PagerResponder[armbulkactions.BulkCreateCustomClientListBySubscriptionResponse])
+
+	// NewVirtualMachinesGetOperationStatusPager is the fake for method BulkCreateCustomClient.NewVirtualMachinesGetOperationStatusPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewVirtualMachinesGetOperationStatusPager func(resourceGroupName string, location string, name string, options *armbulkactions.BulkCreateCustomClientVirtualMachinesGetOperationStatusOptions) (resp azfake.PagerResponder[armbulkactions.BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse])
 }
 
 // NewBulkCreateCustomServerTransport creates a new instance of BulkCreateCustomServerTransport with the provided implementation.
@@ -62,18 +66,20 @@ func NewBulkCreateCustomServerTransport(srv *BulkCreateCustomServer) *BulkCreate
 		beginDelete:                 newTracker[azfake.PollerResponder[armbulkactions.BulkCreateCustomClientDeleteResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armbulkactions.BulkCreateCustomClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armbulkactions.BulkCreateCustomClientListBySubscriptionResponse]](),
+		newVirtualMachinesGetOperationStatusPager: newTracker[azfake.PagerResponder[armbulkactions.BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse]](),
 	}
 }
 
 // BulkCreateCustomServerTransport connects instances of armbulkactions.BulkCreateCustomClient to instances of BulkCreateCustomServer.
 // Don't use this type directly, use NewBulkCreateCustomServerTransport instead.
 type BulkCreateCustomServerTransport struct {
-	srv                         *BulkCreateCustomServer
-	beginCancel                 *tracker[azfake.PollerResponder[armbulkactions.BulkCreateCustomClientCancelResponse]]
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armbulkactions.BulkCreateCustomClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armbulkactions.BulkCreateCustomClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armbulkactions.BulkCreateCustomClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armbulkactions.BulkCreateCustomClientListBySubscriptionResponse]]
+	srv                                       *BulkCreateCustomServer
+	beginCancel                               *tracker[azfake.PollerResponder[armbulkactions.BulkCreateCustomClientCancelResponse]]
+	beginCreateOrUpdate                       *tracker[azfake.PollerResponder[armbulkactions.BulkCreateCustomClientCreateOrUpdateResponse]]
+	beginDelete                               *tracker[azfake.PollerResponder[armbulkactions.BulkCreateCustomClientDeleteResponse]]
+	newListByResourceGroupPager               *tracker[azfake.PagerResponder[armbulkactions.BulkCreateCustomClientListByResourceGroupResponse]]
+	newListBySubscriptionPager                *tracker[azfake.PagerResponder[armbulkactions.BulkCreateCustomClientListBySubscriptionResponse]]
+	newVirtualMachinesGetOperationStatusPager *tracker[azfake.PagerResponder[armbulkactions.BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse]]
 }
 
 // Do implements the policy.Transporter interface for BulkCreateCustomServerTransport.
@@ -111,6 +117,8 @@ func (b *BulkCreateCustomServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = b.dispatchNewListByResourceGroupPager(req)
 			case "BulkCreateCustomClient.NewListBySubscriptionPager":
 				res.resp, res.err = b.dispatchNewListBySubscriptionPager(req)
+			case "BulkCreateCustomClient.NewVirtualMachinesGetOperationStatusPager":
+				res.resp, res.err = b.dispatchNewVirtualMachinesGetOperationStatusPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -133,7 +141,7 @@ func (b *BulkCreateCustomServerTransport) dispatchBeginCancel(req *http.Request)
 	}
 	beginCancel := b.beginCancel.get(req)
 	if beginCancel == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bulkCreateCustom/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/bulkCreateCustom/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -181,7 +189,7 @@ func (b *BulkCreateCustomServerTransport) dispatchBeginCreateOrUpdate(req *http.
 	}
 	beginCreateOrUpdate := b.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bulkCreateCustom/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/bulkCreateCustom/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -233,7 +241,7 @@ func (b *BulkCreateCustomServerTransport) dispatchBeginDelete(req *http.Request)
 	}
 	beginDelete := b.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bulkCreateCustom/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/bulkCreateCustom/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -290,7 +298,7 @@ func (b *BulkCreateCustomServerTransport) dispatchGet(req *http.Request) (*http.
 	if b.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bulkCreateCustom/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/bulkCreateCustom/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -327,7 +335,7 @@ func (b *BulkCreateCustomServerTransport) dispatchGetAsyncOperationStatus(req *h
 	if b.srv.GetAsyncOperationStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAsyncOperationStatus not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bulkCreateCustom/asyncOperations/(?P<asyncOperationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/bulkCreateCustom/asyncOperations/(?P<asyncOperationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -362,7 +370,7 @@ func (b *BulkCreateCustomServerTransport) dispatchNewListByResourceGroupPager(re
 	}
 	newListByResourceGroupPager := b.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bulkCreateCustom`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/bulkCreateCustom`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -403,7 +411,7 @@ func (b *BulkCreateCustomServerTransport) dispatchNewListBySubscriptionPager(req
 	}
 	newListBySubscriptionPager := b.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bulkCreateCustom`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/bulkCreateCustom`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -430,6 +438,51 @@ func (b *BulkCreateCustomServerTransport) dispatchNewListBySubscriptionPager(req
 	}
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		b.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (b *BulkCreateCustomServerTransport) dispatchNewVirtualMachinesGetOperationStatusPager(req *http.Request) (*http.Response, error) {
+	if b.srv.NewVirtualMachinesGetOperationStatusPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewVirtualMachinesGetOperationStatusPager not implemented")}
+	}
+	newVirtualMachinesGetOperationStatusPager := b.newVirtualMachinesGetOperationStatusPager.get(req)
+	if newVirtualMachinesGetOperationStatusPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/bulkCreateCustom/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachinesGetOperationStatus`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		resp := b.srv.NewVirtualMachinesGetOperationStatusPager(resourceGroupNameParam, locationParam, nameParam, nil)
+		newVirtualMachinesGetOperationStatusPager = &resp
+		b.newVirtualMachinesGetOperationStatusPager.add(req, newVirtualMachinesGetOperationStatusPager)
+		server.PagerResponderInjectNextLinks(newVirtualMachinesGetOperationStatusPager, req, func(page *armbulkactions.BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newVirtualMachinesGetOperationStatusPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		b.newVirtualMachinesGetOperationStatusPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newVirtualMachinesGetOperationStatusPager) {
+		b.newVirtualMachinesGetOperationStatusPager.remove(req)
 	}
 	return resp, nil
 }

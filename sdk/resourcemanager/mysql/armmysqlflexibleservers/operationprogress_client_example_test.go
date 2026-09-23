@@ -40,7 +40,7 @@ func ExampleOperationProgressClient_Get_operationProgressGetBackupAndExport() {
 	// 			DatasourceSizeInBytes: to.Ptr[int64](1024),
 	// 			ObjectType: to.Ptr(armmysqlflexibleservers.ObjectTypeBackupAndExportResponse),
 	// 		},
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-29T07:34:02.328326Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2023, time.November, 29, 7, 34, 2, 328326000, time.UTC)),
 	// 		Status: to.Ptr("InProgress"),
 	// 	},
 	// }
@@ -70,10 +70,10 @@ func ExampleOperationProgressClient_Get_operationProgressGetImportFromStorage() 
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/providers/Microsoft.DBforMySQL/locations/westus/operationProgress/00000000-0000-0000-0000-000000000000"),
 	// 		PercentComplete: to.Ptr[float64](10),
 	// 		Properties: &armmysqlflexibleservers.ImportFromStorageResponseType{
-	// 			EstimatedCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-29T08:34:02.328326Z"); return t}()),
+	// 			EstimatedCompletionTime: to.Ptr(time.Date(2023, time.November, 29, 8, 34, 2, 328326000, time.UTC)),
 	// 			ObjectType: to.Ptr(armmysqlflexibleservers.ObjectTypeImportFromStorageResponse),
 	// 		},
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-29T07:34:02.328326Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2023, time.November, 29, 7, 34, 2, 328326000, time.UTC)),
 	// 		Status: to.Ptr("InProgress"),
 	// 	},
 	// }

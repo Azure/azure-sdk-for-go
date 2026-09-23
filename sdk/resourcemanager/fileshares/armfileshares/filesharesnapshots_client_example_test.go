@@ -94,10 +94,10 @@ func ExampleFileShareSnapshotsClient_GetFileShareSnapshot() {
 	// 		SystemData: &armfileshares.SystemData{
 	// 			CreatedBy: to.Ptr("moat"),
 	// 			CreatedByType: to.Ptr(armfileshares.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-23T12:37:53.955Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("dxukcadzapywjcgnxsqchaa"),
 	// 			LastModifiedByType: to.Ptr(armfileshares.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-23T12:37:53.955Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -142,10 +142,10 @@ func ExampleFileShareSnapshotsClient_NewListByFileSharePager_fileShareSnapshotLi
 		// 				SystemData: &armfileshares.SystemData{
 		// 					CreatedBy: to.Ptr("moat"),
 		// 					CreatedByType: to.Ptr(armfileshares.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-23T12:37:53.955Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("dxukcadzapywjcgnxsqchaa"),
 		// 					LastModifiedByType: to.Ptr(armfileshares.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-23T12:37:53.955Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -229,10 +229,10 @@ func ExampleFileShareSnapshotsClient_BeginUpdateFileShareSnapshot() {
 	// 		SystemData: &armfileshares.SystemData{
 	// 			CreatedBy: to.Ptr("moat"),
 	// 			CreatedByType: to.Ptr(armfileshares.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-23T12:37:53.955Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("dxukcadzapywjcgnxsqchaa"),
 	// 			LastModifiedByType: to.Ptr(armfileshares.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-23T12:37:53.955Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

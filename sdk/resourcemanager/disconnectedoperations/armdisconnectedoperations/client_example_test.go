@@ -71,13 +71,13 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 				Current: &armdisconnectedoperations.BillingPeriod{
 	// 					Cores: to.Ptr[int32](12),
 	// 					PricingModel: to.Ptr(armdisconnectedoperations.PricingModelTrial),
-	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-11-01"); return t}()),
-	// 					EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-12-31"); return t}()),
+	// 					StartDate: to.Ptr(time.Date(2025, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 					EndDate: to.Ptr(time.Date(2025, time.December, 31, 0, 0, 0, 0, time.UTC)),
 	// 				},
 	// 				Upcoming: &armdisconnectedoperations.BillingPeriod{
 	// 					Cores: to.Ptr[int32](12),
 	// 					PricingModel: to.Ptr(armdisconnectedoperations.PricingModelAnnual),
-	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-01-01"); return t}()),
+	// 					StartDate: to.Ptr(time.Date(2026, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 				},
 	// 			},
 	// 			BenefitPlans: &armdisconnectedoperations.BenefitPlans{
@@ -95,10 +95,10 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armdisconnectedoperations.SystemData{
 	// 			CreatedBy: to.Ptr("kuqdoz"),
 	// 			CreatedByType: to.Ptr(armdisconnectedoperations.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-05T20:03:12.507Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.December, 5, 20, 3, 12, 507000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("oxaiifvhjvngkllxgultcvbghtyyx"),
 	// 			LastModifiedByType: to.Ptr(armdisconnectedoperations.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-05T20:03:12.507Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.December, 5, 20, 3, 12, 507000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -159,13 +159,13 @@ func ExampleClient_Get() {
 	// 				Current: &armdisconnectedoperations.BillingPeriod{
 	// 					Cores: to.Ptr[int32](12),
 	// 					PricingModel: to.Ptr(armdisconnectedoperations.PricingModelTrial),
-	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-11-01"); return t}()),
-	// 					EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-12-31"); return t}()),
+	// 					StartDate: to.Ptr(time.Date(2025, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 					EndDate: to.Ptr(time.Date(2025, time.December, 31, 0, 0, 0, 0, time.UTC)),
 	// 				},
 	// 				Upcoming: &armdisconnectedoperations.BillingPeriod{
 	// 					Cores: to.Ptr[int32](12),
 	// 					PricingModel: to.Ptr(armdisconnectedoperations.PricingModelAnnual),
-	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-01-01"); return t}()),
+	// 					StartDate: to.Ptr(time.Date(2026, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 				},
 	// 			},
 	// 			BenefitPlans: &armdisconnectedoperations.BenefitPlans{
@@ -183,10 +183,10 @@ func ExampleClient_Get() {
 	// 		SystemData: &armdisconnectedoperations.SystemData{
 	// 			CreatedBy: to.Ptr("kuqdoz"),
 	// 			CreatedByType: to.Ptr(armdisconnectedoperations.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-05T20:03:12.507Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.December, 5, 20, 3, 12, 507000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("oxaiifvhjvngkllxgultcvbghtyyx"),
 	// 			LastModifiedByType: to.Ptr(armdisconnectedoperations.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-05T20:03:12.507Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.December, 5, 20, 3, 12, 507000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -232,13 +232,13 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 						Current: &armdisconnectedoperations.BillingPeriod{
 		// 							Cores: to.Ptr[int32](12),
 		// 							PricingModel: to.Ptr(armdisconnectedoperations.PricingModelTrial),
-		// 							StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-11-01"); return t}()),
-		// 							EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-12-31"); return t}()),
+		// 							StartDate: to.Ptr(time.Date(2025, time.November, 1, 0, 0, 0, 0, time.UTC)),
+		// 							EndDate: to.Ptr(time.Date(2025, time.December, 31, 0, 0, 0, 0, time.UTC)),
 		// 						},
 		// 						Upcoming: &armdisconnectedoperations.BillingPeriod{
 		// 							Cores: to.Ptr[int32](12),
 		// 							PricingModel: to.Ptr(armdisconnectedoperations.PricingModelAnnual),
-		// 							StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-01-01"); return t}()),
+		// 							StartDate: to.Ptr(time.Date(2026, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 						},
 		// 					},
 		// 					BenefitPlans: &armdisconnectedoperations.BenefitPlans{
@@ -256,10 +256,10 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armdisconnectedoperations.SystemData{
 		// 					CreatedBy: to.Ptr("kuqdoz"),
 		// 					CreatedByType: to.Ptr(armdisconnectedoperations.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-05T20:03:12.507Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.December, 5, 20, 3, 12, 507000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("oxaiifvhjvngkllxgultcvbghtyyx"),
 		// 					LastModifiedByType: to.Ptr(armdisconnectedoperations.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-05T20:03:12.507Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.December, 5, 20, 3, 12, 507000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -309,13 +309,13 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 						Current: &armdisconnectedoperations.BillingPeriod{
 		// 							Cores: to.Ptr[int32](12),
 		// 							PricingModel: to.Ptr(armdisconnectedoperations.PricingModelTrial),
-		// 							StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-11-01"); return t}()),
-		// 							EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-12-31"); return t}()),
+		// 							StartDate: to.Ptr(time.Date(2025, time.November, 1, 0, 0, 0, 0, time.UTC)),
+		// 							EndDate: to.Ptr(time.Date(2025, time.December, 31, 0, 0, 0, 0, time.UTC)),
 		// 						},
 		// 						Upcoming: &armdisconnectedoperations.BillingPeriod{
 		// 							Cores: to.Ptr[int32](12),
 		// 							PricingModel: to.Ptr(armdisconnectedoperations.PricingModelAnnual),
-		// 							StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-01-01"); return t}()),
+		// 							StartDate: to.Ptr(time.Date(2026, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 						},
 		// 					},
 		// 					BenefitPlans: &armdisconnectedoperations.BenefitPlans{
@@ -333,10 +333,10 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armdisconnectedoperations.SystemData{
 		// 					CreatedBy: to.Ptr("kuqdoz"),
 		// 					CreatedByType: to.Ptr(armdisconnectedoperations.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-05T20:03:12.507Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.December, 5, 20, 3, 12, 507000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("oxaiifvhjvngkllxgultcvbghtyyx"),
 		// 					LastModifiedByType: to.Ptr(armdisconnectedoperations.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-05T20:03:12.507Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.December, 5, 20, 3, 12, 507000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -379,13 +379,13 @@ func ExampleClient_ListDeploymentManifest() {
 	// 			Current: &armdisconnectedoperations.BillingPeriod{
 	// 				Cores: to.Ptr[int32](12),
 	// 				PricingModel: to.Ptr(armdisconnectedoperations.PricingModelTrial),
-	// 				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-11-01"); return t}()),
-	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-12-31"); return t}()),
+	// 				StartDate: to.Ptr(time.Date(2025, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 				EndDate: to.Ptr(time.Date(2025, time.December, 31, 0, 0, 0, 0, time.UTC)),
 	// 			},
 	// 			Upcoming: &armdisconnectedoperations.BillingPeriod{
 	// 				Cores: to.Ptr[int32](12),
 	// 				PricingModel: to.Ptr(armdisconnectedoperations.PricingModelAnnual),
-	// 				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-01-01"); return t}()),
+	// 				StartDate: to.Ptr(time.Date(2026, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			},
 	// 		},
 	// 		BenefitPlans: &armdisconnectedoperations.BenefitPlans{
@@ -439,13 +439,13 @@ func ExampleClient_Update() {
 	// 				Current: &armdisconnectedoperations.BillingPeriod{
 	// 					Cores: to.Ptr[int32](12),
 	// 					PricingModel: to.Ptr(armdisconnectedoperations.PricingModelTrial),
-	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-11-01"); return t}()),
-	// 					EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-12-31"); return t}()),
+	// 					StartDate: to.Ptr(time.Date(2025, time.November, 1, 0, 0, 0, 0, time.UTC)),
+	// 					EndDate: to.Ptr(time.Date(2025, time.December, 31, 0, 0, 0, 0, time.UTC)),
 	// 				},
 	// 				Upcoming: &armdisconnectedoperations.BillingPeriod{
 	// 					Cores: to.Ptr[int32](12),
 	// 					PricingModel: to.Ptr(armdisconnectedoperations.PricingModelAnnual),
-	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-01-01"); return t}()),
+	// 					StartDate: to.Ptr(time.Date(2026, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 				},
 	// 			},
 	// 			BenefitPlans: &armdisconnectedoperations.BenefitPlans{
@@ -464,10 +464,10 @@ func ExampleClient_Update() {
 	// 		SystemData: &armdisconnectedoperations.SystemData{
 	// 			CreatedBy: to.Ptr("kuqdoz"),
 	// 			CreatedByType: to.Ptr(armdisconnectedoperations.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-05T20:03:12.507Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.December, 5, 20, 3, 12, 507000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("oxaiifvhjvngkllxgultcvbghtyyx"),
 	// 			LastModifiedByType: to.Ptr(armdisconnectedoperations.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-05T20:03:12.507Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.December, 5, 20, 3, 12, 507000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

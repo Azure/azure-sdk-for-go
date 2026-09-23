@@ -145,7 +145,7 @@ func (e *EntitiesServerTransport) dispatchAddDataAnnotation(req *http.Request) (
 	if e.srv.AddDataAnnotation == nil {
 		return nil, &nonRetriableError{errors.New("fake for method AddDataAnnotation not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/addDataAnnotation`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/entities/(?P<entityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/addDataAnnotation`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -188,7 +188,7 @@ func (e *EntitiesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 	}
 	beginCreateOrUpdate := e.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/entities/(?P<entityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -240,7 +240,7 @@ func (e *EntitiesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	}
 	beginDelete := e.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/entities/(?P<entityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -286,7 +286,7 @@ func (e *EntitiesServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/entities/(?P<entityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -323,7 +323,7 @@ func (e *EntitiesServerTransport) dispatchGetDataAnnotations(req *http.Request) 
 	if e.srv.GetDataAnnotations == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetDataAnnotations not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getDataAnnotations`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/entities/(?P<entityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getDataAnnotations`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -364,7 +364,7 @@ func (e *EntitiesServerTransport) dispatchGetHistory(req *http.Request) (*http.R
 	if e.srv.GetHistory == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetHistory not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getHistory`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/entities/(?P<entityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getHistory`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -405,7 +405,7 @@ func (e *EntitiesServerTransport) dispatchGetSignalHistory(req *http.Request) (*
 	if e.srv.GetSignalHistory == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSignalHistory not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getSignalHistory`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/entities/(?P<entityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getSignalHistory`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -446,7 +446,7 @@ func (e *EntitiesServerTransport) dispatchGetSignalRecommendations(req *http.Req
 	if e.srv.GetSignalRecommendations == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSignalRecommendations not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getSignalRecommendations`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/entities/(?P<entityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getSignalRecommendations`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -483,7 +483,7 @@ func (e *EntitiesServerTransport) dispatchIngestHealthReport(req *http.Request) 
 	if e.srv.IngestHealthReport == nil {
 		return nil, &nonRetriableError{errors.New("fake for method IngestHealthReport not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ingestHealthReport`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/entities/(?P<entityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ingestHealthReport`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -526,7 +526,7 @@ func (e *EntitiesServerTransport) dispatchNewListByHealthModelPager(req *http.Re
 	}
 	newListByHealthModelPager := e.newListByHealthModelPager.get(req)
 	if newListByHealthModelPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/entities`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

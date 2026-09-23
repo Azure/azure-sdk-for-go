@@ -30,6 +30,9 @@ type VirtualEndpointsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewVirtualEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualEndpointsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -84,8 +87,7 @@ func (client *VirtualEndpointsClient) create(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -94,7 +96,7 @@ func (client *VirtualEndpointsClient) create(ctx context.Context, resourceGroupN
 func (client *VirtualEndpointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, virtualEndpointName string, parameters VirtualEndpoint, _ *VirtualEndpointsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/virtualendpoints/{virtualEndpointName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -164,8 +166,7 @@ func (client *VirtualEndpointsClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -174,7 +175,7 @@ func (client *VirtualEndpointsClient) deleteOperation(ctx context.Context, resou
 func (client *VirtualEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, virtualEndpointName string, _ *VirtualEndpointsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/virtualendpoints/{virtualEndpointName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -219,19 +220,14 @@ func (client *VirtualEndpointsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return VirtualEndpointsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VirtualEndpointsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *VirtualEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, virtualEndpointName string, _ *VirtualEndpointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/virtualendpoints/{virtualEndpointName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -258,8 +254,11 @@ func (client *VirtualEndpointsClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualEndpointsClient) getHandleResponse(resp *http.Response) (VirtualEndpointsClientGetResponse, error) {
+func (client *VirtualEndpointsClient) getHandleResponse(resp *http.Response, successCodes ...int) (VirtualEndpointsClientGetResponse, error) {
 	result := VirtualEndpointsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualEndpoint); err != nil {
 		return VirtualEndpointsClientGetResponse{}, err
 	}
@@ -282,47 +281,61 @@ func (client *VirtualEndpointsClient) NewListByServerPager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-			}, nil)
+			req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, nextLink, options)
 			if err != nil {
 				return VirtualEndpointsClientListByServerResponse{}, err
 			}
-			return client.listByServerHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VirtualEndpointsClientListByServerResponse{}, err
+			}
+			return client.listByServerHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *VirtualEndpointsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, _ *VirtualEndpointsClientListByServerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/virtualendpoints"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *VirtualEndpointsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, nextLink string, _ *VirtualEndpointsClientListByServerOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/virtualendpoints"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serverName == "" {
+			return nil, errors.New("parameter serverName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260401Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *VirtualEndpointsClient) listByServerHandleResponse(resp *http.Response) (VirtualEndpointsClientListByServerResponse, error) {
+func (client *VirtualEndpointsClient) listByServerHandleResponse(resp *http.Response, successCodes ...int) (VirtualEndpointsClientListByServerResponse, error) {
 	result := VirtualEndpointsClientListByServerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualEndpointsList); err != nil {
 		return VirtualEndpointsClientListByServerResponse{}, err
 	}
@@ -372,8 +385,7 @@ func (client *VirtualEndpointsClient) update(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -382,7 +394,7 @@ func (client *VirtualEndpointsClient) update(ctx context.Context, resourceGroupN
 func (client *VirtualEndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, virtualEndpointName string, parameters VirtualEndpointResourceForPatch, _ *VirtualEndpointsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/virtualendpoints/{virtualEndpointName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

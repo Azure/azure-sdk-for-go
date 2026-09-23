@@ -30,6 +30,9 @@ type DisasterRecoveryConfigsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDisasterRecoveryConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DisasterRecoveryConfigsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,8 +66,7 @@ func (client *DisasterRecoveryConfigsClient) BreakPairing(ctx context.Context, r
 		return DisasterRecoveryConfigsClientBreakPairingResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DisasterRecoveryConfigsClientBreakPairingResponse{}, err
+		return DisasterRecoveryConfigsClientBreakPairingResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DisasterRecoveryConfigsClientBreakPairingResponse{}, nil
 }
@@ -73,7 +75,7 @@ func (client *DisasterRecoveryConfigsClient) BreakPairing(ctx context.Context, r
 func (client *DisasterRecoveryConfigsClient) breakPairingCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, _ *DisasterRecoveryConfigsClientBreakPairingOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/breakPairing"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -119,19 +121,14 @@ func (client *DisasterRecoveryConfigsClient) CheckNameAvailability(ctx context.C
 	if err != nil {
 		return DisasterRecoveryConfigsClientCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DisasterRecoveryConfigsClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
 func (client *DisasterRecoveryConfigsClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters CheckNameAvailabilityParameter, _ *DisasterRecoveryConfigsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/checkNameAvailability"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -158,8 +155,11 @@ func (client *DisasterRecoveryConfigsClient) checkNameAvailabilityCreateRequest(
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *DisasterRecoveryConfigsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (DisasterRecoveryConfigsClientCheckNameAvailabilityResponse, error) {
+func (client *DisasterRecoveryConfigsClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (DisasterRecoveryConfigsClientCheckNameAvailabilityResponse, error) {
 	result := DisasterRecoveryConfigsClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
 		return DisasterRecoveryConfigsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -188,19 +188,14 @@ func (client *DisasterRecoveryConfigsClient) CreateOrUpdate(ctx context.Context,
 	if err != nil {
 		return DisasterRecoveryConfigsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return DisasterRecoveryConfigsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *DisasterRecoveryConfigsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, parameters ArmDisasterRecovery, _ *DisasterRecoveryConfigsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -231,8 +226,11 @@ func (client *DisasterRecoveryConfigsClient) createOrUpdateCreateRequest(ctx con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DisasterRecoveryConfigsClient) createOrUpdateHandleResponse(resp *http.Response) (DisasterRecoveryConfigsClientCreateOrUpdateResponse, error) {
+func (client *DisasterRecoveryConfigsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (DisasterRecoveryConfigsClientCreateOrUpdateResponse, error) {
 	result := DisasterRecoveryConfigsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ArmDisasterRecovery); err != nil {
 		return DisasterRecoveryConfigsClientCreateOrUpdateResponse{}, err
 	}
@@ -261,8 +259,7 @@ func (client *DisasterRecoveryConfigsClient) Delete(ctx context.Context, resourc
 		return DisasterRecoveryConfigsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return DisasterRecoveryConfigsClientDeleteResponse{}, err
+		return DisasterRecoveryConfigsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DisasterRecoveryConfigsClientDeleteResponse{}, nil
 }
@@ -271,7 +268,7 @@ func (client *DisasterRecoveryConfigsClient) Delete(ctx context.Context, resourc
 func (client *DisasterRecoveryConfigsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, _ *DisasterRecoveryConfigsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -318,8 +315,7 @@ func (client *DisasterRecoveryConfigsClient) FailOver(ctx context.Context, resou
 		return DisasterRecoveryConfigsClientFailOverResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DisasterRecoveryConfigsClientFailOverResponse{}, err
+		return DisasterRecoveryConfigsClientFailOverResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DisasterRecoveryConfigsClientFailOverResponse{}, nil
 }
@@ -328,7 +324,7 @@ func (client *DisasterRecoveryConfigsClient) FailOver(ctx context.Context, resou
 func (client *DisasterRecoveryConfigsClient) failOverCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, _ *DisasterRecoveryConfigsClientFailOverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/failover"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -374,19 +370,14 @@ func (client *DisasterRecoveryConfigsClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return DisasterRecoveryConfigsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DisasterRecoveryConfigsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *DisasterRecoveryConfigsClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, _ *DisasterRecoveryConfigsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -413,8 +404,11 @@ func (client *DisasterRecoveryConfigsClient) getCreateRequest(ctx context.Contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *DisasterRecoveryConfigsClient) getHandleResponse(resp *http.Response) (DisasterRecoveryConfigsClientGetResponse, error) {
+func (client *DisasterRecoveryConfigsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DisasterRecoveryConfigsClientGetResponse, error) {
 	result := DisasterRecoveryConfigsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ArmDisasterRecovery); err != nil {
 		return DisasterRecoveryConfigsClientGetResponse{}, err
 	}
@@ -443,19 +437,14 @@ func (client *DisasterRecoveryConfigsClient) GetAuthorizationRule(ctx context.Co
 	if err != nil {
 		return DisasterRecoveryConfigsClientGetAuthorizationRuleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DisasterRecoveryConfigsClientGetAuthorizationRuleResponse{}, err
-	}
-	resp, err := client.getAuthorizationRuleHandleResponse(httpResp)
-	return resp, err
+	return client.getAuthorizationRuleHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAuthorizationRuleCreateRequest creates the GetAuthorizationRule request.
 func (client *DisasterRecoveryConfigsClient) getAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, _ *DisasterRecoveryConfigsClientGetAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/authorizationRules/{authorizationRuleName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -486,8 +475,11 @@ func (client *DisasterRecoveryConfigsClient) getAuthorizationRuleCreateRequest(c
 }
 
 // getAuthorizationRuleHandleResponse handles the GetAuthorizationRule response.
-func (client *DisasterRecoveryConfigsClient) getAuthorizationRuleHandleResponse(resp *http.Response) (DisasterRecoveryConfigsClientGetAuthorizationRuleResponse, error) {
+func (client *DisasterRecoveryConfigsClient) getAuthorizationRuleHandleResponse(resp *http.Response, successCodes ...int) (DisasterRecoveryConfigsClientGetAuthorizationRuleResponse, error) {
 	result := DisasterRecoveryConfigsClientGetAuthorizationRuleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
 		return DisasterRecoveryConfigsClientGetAuthorizationRuleResponse{}, err
 	}
@@ -510,47 +502,61 @@ func (client *DisasterRecoveryConfigsClient) NewListPager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, namespaceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, namespaceName, nextLink, options)
 			if err != nil {
 				return DisasterRecoveryConfigsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DisasterRecoveryConfigsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *DisasterRecoveryConfigsClient) listCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *DisasterRecoveryConfigsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DisasterRecoveryConfigsClient) listCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, _ *DisasterRecoveryConfigsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if namespaceName == "" {
+			return nil, errors.New("parameter namespaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DisasterRecoveryConfigsClient) listHandleResponse(resp *http.Response) (DisasterRecoveryConfigsClientListResponse, error) {
+func (client *DisasterRecoveryConfigsClient) listHandleResponse(resp *http.Response, successCodes ...int) (DisasterRecoveryConfigsClientListResponse, error) {
 	result := DisasterRecoveryConfigsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ArmDisasterRecoveryListResult); err != nil {
 		return DisasterRecoveryConfigsClientListResponse{}, err
 	}
@@ -574,51 +580,65 @@ func (client *DisasterRecoveryConfigsClient) NewListAuthorizationRulesPager(reso
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, alias, options)
-			}, nil)
+			req, err := client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, alias, nextLink, options)
 			if err != nil {
 				return DisasterRecoveryConfigsClientListAuthorizationRulesResponse{}, err
 			}
-			return client.listAuthorizationRulesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DisasterRecoveryConfigsClientListAuthorizationRulesResponse{}, err
+			}
+			return client.listAuthorizationRulesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
-func (client *DisasterRecoveryConfigsClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, _ *DisasterRecoveryConfigsClientListAuthorizationRulesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/authorizationRules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DisasterRecoveryConfigsClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, nextLink string, _ *DisasterRecoveryConfigsClientListAuthorizationRulesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/authorizationRules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if namespaceName == "" {
+			return nil, errors.New("parameter namespaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+		if alias == "" {
+			return nil, errors.New("parameter alias cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{alias}", url.PathEscape(alias))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if alias == "" {
-		return nil, errors.New("parameter alias cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{alias}", url.PathEscape(alias))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAuthorizationRulesHandleResponse handles the ListAuthorizationRules response.
-func (client *DisasterRecoveryConfigsClient) listAuthorizationRulesHandleResponse(resp *http.Response) (DisasterRecoveryConfigsClientListAuthorizationRulesResponse, error) {
+func (client *DisasterRecoveryConfigsClient) listAuthorizationRulesHandleResponse(resp *http.Response, successCodes ...int) (DisasterRecoveryConfigsClientListAuthorizationRulesResponse, error) {
 	result := DisasterRecoveryConfigsClientListAuthorizationRulesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRuleListResult); err != nil {
 		return DisasterRecoveryConfigsClientListAuthorizationRulesResponse{}, err
 	}
@@ -647,19 +667,14 @@ func (client *DisasterRecoveryConfigsClient) ListKeys(ctx context.Context, resou
 	if err != nil {
 		return DisasterRecoveryConfigsClientListKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DisasterRecoveryConfigsClientListKeysResponse{}, err
-	}
-	resp, err := client.listKeysHandleResponse(httpResp)
-	return resp, err
+	return client.listKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // listKeysCreateRequest creates the ListKeys request.
 func (client *DisasterRecoveryConfigsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, _ *DisasterRecoveryConfigsClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/authorizationRules/{authorizationRuleName}/listKeys"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -690,8 +705,11 @@ func (client *DisasterRecoveryConfigsClient) listKeysCreateRequest(ctx context.C
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *DisasterRecoveryConfigsClient) listKeysHandleResponse(resp *http.Response) (DisasterRecoveryConfigsClientListKeysResponse, error) {
+func (client *DisasterRecoveryConfigsClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (DisasterRecoveryConfigsClientListKeysResponse, error) {
 	result := DisasterRecoveryConfigsClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return DisasterRecoveryConfigsClientListKeysResponse{}, err
 	}

@@ -95,10 +95,10 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armplaywright.SystemData{
 	// 			CreatedBy: to.Ptr("userId1001"),
 	// 			CreatedByType: to.Ptr(armplaywright.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-28T12:32:33Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.September, 28, 12, 32, 33, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("userId1001"),
 	// 			LastModifiedByType: to.Ptr(armplaywright.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-28T12:32:33Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.September, 28, 12, 32, 33, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -164,10 +164,10 @@ func ExampleWorkspacesClient_Get() {
 	// 		SystemData: &armplaywright.SystemData{
 	// 			CreatedBy: to.Ptr("userId1001"),
 	// 			CreatedByType: to.Ptr(armplaywright.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-28T12:32:33Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.September, 28, 12, 32, 33, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("userId1001"),
 	// 			LastModifiedByType: to.Ptr(armplaywright.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-28T12:32:33Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.September, 28, 12, 32, 33, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -218,10 +218,10 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armplaywright.SystemData{
 		// 					CreatedBy: to.Ptr("userId1001"),
 		// 					CreatedByType: to.Ptr(armplaywright.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-28T12:32:33Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.September, 28, 12, 32, 33, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("userId1001"),
 		// 					LastModifiedByType: to.Ptr(armplaywright.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-28T12:32:33Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.September, 28, 12, 32, 33, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -275,10 +275,10 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armplaywright.SystemData{
 		// 					CreatedBy: to.Ptr("userId1001"),
 		// 					CreatedByType: to.Ptr(armplaywright.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-28T12:32:33Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.September, 28, 12, 32, 33, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("userId1001"),
 		// 					LastModifiedByType: to.Ptr(armplaywright.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-28T12:32:33Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.September, 28, 12, 32, 33, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -336,10 +336,10 @@ func ExampleWorkspacesClient_Update() {
 	// 		SystemData: &armplaywright.SystemData{
 	// 			CreatedBy: to.Ptr("userId1001"),
 	// 			CreatedByType: to.Ptr(armplaywright.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-28T12:32:33Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.September, 28, 12, 32, 33, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("userId1001"),
 	// 			LastModifiedByType: to.Ptr(armplaywright.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-28T12:32:33Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.September, 28, 12, 32, 33, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }

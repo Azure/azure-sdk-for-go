@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // UsagesServer is a fake server for instances of the armsearch.UsagesClient type.
@@ -53,9 +54,7 @@ func (u *UsagesServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (u *UsagesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +70,7 @@ func (u *UsagesServerTransport) dispatchToMethodFake(req *http.Request, method s
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -91,7 +87,7 @@ func (u *UsagesServerTransport) dispatchNewListBySubscriptionPager(req *http.Req
 	}
 	newListBySubscriptionPager := u.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Search/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Search/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/usages`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -119,7 +115,7 @@ func (u *UsagesServerTransport) dispatchNewListBySubscriptionPager(req *http.Req
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		u.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

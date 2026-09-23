@@ -36,8 +36,8 @@ func ExampleWorkspaceQuotasClient_Get() {
 	// 		Type: to.Ptr("Microsoft.LoadTestService/PlaywrightWorkspaces/Quotas"),
 	// 		Properties: &armplaywright.WorkspaceQuotaProperties{
 	// 			FreeTrial: &armplaywright.WorkspaceFreeTrialProperties{
-	// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-31T10:19:36.081Z"); return t}()),
-	// 				ExpiryAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-31T10:19:36.081Z"); return t}()),
+	// 				CreatedAt: to.Ptr(time.Date(2025, time.May, 31, 10, 19, 36, 81000000, time.UTC)),
+	// 				ExpiryAt: to.Ptr(time.Date(2026, time.March, 31, 10, 19, 36, 81000000, time.UTC)),
 	// 				AllocatedValue: to.Ptr[int32](10),
 	// 				UsedValue: to.Ptr[float32](10),
 	// 				PercentageUsed: to.Ptr[float32](100),
@@ -79,8 +79,8 @@ func ExampleWorkspaceQuotasClient_NewListByPlaywrightWorkspacePager() {
 		// 				Type: to.Ptr("Microsoft.LoadTestService/PlaywrightWorkspaces/Quotas"),
 		// 				Properties: &armplaywright.WorkspaceQuotaProperties{
 		// 					FreeTrial: &armplaywright.WorkspaceFreeTrialProperties{
-		// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-31T10:19:36.081Z"); return t}()),
-		// 						ExpiryAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-31T10:19:36.081Z"); return t}()),
+		// 						CreatedAt: to.Ptr(time.Date(2025, time.May, 31, 10, 19, 36, 81000000, time.UTC)),
+		// 						ExpiryAt: to.Ptr(time.Date(2026, time.March, 31, 10, 19, 36, 81000000, time.UTC)),
 		// 						AllocatedValue: to.Ptr[int32](10),
 		// 						UsedValue: to.Ptr[float32](10),
 		// 						PercentageUsed: to.Ptr[float32](100),

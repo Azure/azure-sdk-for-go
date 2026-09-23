@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-03-01-preview/RegistryCheckNameAvailable.json
+// Generated from example definition: 2026-09-01-preview/RegistryCheckNameAvailable.json
 func ExampleRegistriesClient_CheckNameAvailability_registryCheckNameAvailable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleRegistriesClient_CheckNameAvailability_registryCheckNameAvailable() 
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/RegistryCheckNameNotAvailable.json
+// Generated from example definition: 2026-09-01-preview/RegistryCheckNameNotAvailable.json
 func ExampleRegistriesClient_CheckNameAvailability_registryCheckNameNotAvailable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleRegistriesClient_CheckNameAvailability_registryCheckNameNotAvailable
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/RegistryCreate.json
+// Generated from example definition: 2026-09-01-preview/RegistryCreate.json
 func ExampleRegistriesClient_BeginCreate_registryCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreate() {
 	// 		},
 	// 		Properties: &armcontainerregistry.RegistryProperties{
 	// 			LoginServer: to.Ptr("myregistry.azurecr.io"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:38:26.1537861Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2021, time.June, 15, 21, 38, 26, 153786100, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 			AdminUserEnabled: to.Ptr(true),
 	// 			NetworkRuleSet: &armcontainerregistry.NetworkRuleSet{
@@ -144,7 +144,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreate() {
 	// 				},
 	// 				RetentionPolicy: &armcontainerregistry.RetentionPolicy{
 	// 					Days: to.Ptr[int32](7),
-	// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:40:12.8506835+00:00"); return t}()),
+	// 					LastUpdatedTime: to.Ptr(time.Date(2021, time.June, 15, 21, 40, 12, 850683500, time.UTC)),
 	// 					Status: to.Ptr(armcontainerregistry.PolicyStatusDisabled),
 	// 				},
 	// 				ExportPolicy: &armcontainerregistry.ExportPolicy{
@@ -177,7 +177,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/RegistryCreateAbac.json
+// Generated from example definition: 2026-09-01-preview/RegistryCreateAbac.json
 func ExampleRegistriesClient_BeginCreate_registryCreateAbac() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +225,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateAbac() {
 	// 		},
 	// 		Properties: &armcontainerregistry.RegistryProperties{
 	// 			LoginServer: to.Ptr("myregistry.azurecr.io"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:38:26.1537861Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2021, time.June, 15, 21, 38, 26, 153786100, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 			AdminUserEnabled: to.Ptr(true),
 	// 			NetworkRuleSet: &armcontainerregistry.NetworkRuleSet{
@@ -245,7 +245,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateAbac() {
 	// 				},
 	// 				RetentionPolicy: &armcontainerregistry.RetentionPolicy{
 	// 					Days: to.Ptr[int32](7),
-	// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:40:12.8506835+00:00"); return t}()),
+	// 					LastUpdatedTime: to.Ptr(time.Date(2021, time.June, 15, 21, 40, 12, 850683500, time.UTC)),
 	// 					Status: to.Ptr(armcontainerregistry.PolicyStatusDisabled),
 	// 				},
 	// 				ExportPolicy: &armcontainerregistry.ExportPolicy{
@@ -278,7 +278,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateAbac() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/RegistryCreateDomainNameLabelScope.json
+// Generated from example definition: 2026-09-01-preview/RegistryCreateDomainNameLabelScope.json
 func ExampleRegistriesClient_BeginCreate_registryCreateDomainNameLabelScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -326,7 +326,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateDomainNameLabelScope() {
 	// 		},
 	// 		Properties: &armcontainerregistry.RegistryProperties{
 	// 			LoginServer: to.Ptr("myRegistry-a1b2c3d4e5f6.azurecr.io"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:38:26.1537861Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2021, time.June, 15, 21, 38, 26, 153786100, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 			AdminUserEnabled: to.Ptr(false),
 	// 			NetworkRuleSet: &armcontainerregistry.NetworkRuleSet{
@@ -346,7 +346,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateDomainNameLabelScope() {
 	// 				},
 	// 				RetentionPolicy: &armcontainerregistry.RetentionPolicy{
 	// 					Days: to.Ptr[int32](7),
-	// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:40:12.8506835+00:00"); return t}()),
+	// 					LastUpdatedTime: to.Ptr(time.Date(2021, time.June, 15, 21, 40, 12, 850683500, time.UTC)),
 	// 					Status: to.Ptr(armcontainerregistry.PolicyStatusDisabled),
 	// 				},
 	// 				ExportPolicy: &armcontainerregistry.ExportPolicy{
@@ -379,7 +379,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateDomainNameLabelScope() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/RegistryCreateZoneRedundant.json
+// Generated from example definition: 2026-09-01-preview/RegistryCreateZoneRedundant.json
 func ExampleRegistriesClient_BeginCreate_registryCreateZoneRedundant() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -427,7 +427,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateZoneRedundant() {
 	// 		},
 	// 		Properties: &armcontainerregistry.RegistryProperties{
 	// 			LoginServer: to.Ptr("myregistry.azurecr.io"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:38:26.1537861Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2021, time.June, 15, 21, 38, 26, 153786100, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 			AdminUserEnabled: to.Ptr(false),
 	// 			NetworkRuleSet: &armcontainerregistry.NetworkRuleSet{
@@ -447,7 +447,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateZoneRedundant() {
 	// 				},
 	// 				RetentionPolicy: &armcontainerregistry.RetentionPolicy{
 	// 					Days: to.Ptr[int32](7),
-	// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:40:12.8506835+00:00"); return t}()),
+	// 					LastUpdatedTime: to.Ptr(time.Date(2021, time.June, 15, 21, 40, 12, 850683500, time.UTC)),
 	// 					Status: to.Ptr(armcontainerregistry.PolicyStatusDisabled),
 	// 				},
 	// 				ExportPolicy: &armcontainerregistry.ExportPolicy{
@@ -480,7 +480,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateZoneRedundant() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/RegistryDelete.json
+// Generated from example definition: 2026-09-01-preview/RegistryDelete.json
 func ExampleRegistriesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -506,7 +506,7 @@ func ExampleRegistriesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/RegistryGenerateCredentials.json
+// Generated from example definition: 2026-09-01-preview/RegistryGenerateCredentials.json
 func ExampleRegistriesClient_BeginGenerateCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -519,7 +519,7 @@ func ExampleRegistriesClient_BeginGenerateCredentials() {
 	}
 	poller, err := clientFactory.NewRegistriesClient().BeginGenerateCredentials(ctx, "myResourceGroup", "myRegistry", armcontainerregistry.GenerateCredentialsParameters{
 		TokenID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/myToken"),
-		Expiry:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T15:59:59.0707808Z"); return t }()),
+		Expiry:  to.Ptr(time.Date(2020, time.December, 31, 15, 59, 59, 70780800, time.UTC)),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -536,12 +536,12 @@ func ExampleRegistriesClient_BeginGenerateCredentials() {
 	// 		Username: to.Ptr("myToken"),
 	// 		Passwords: []*armcontainerregistry.TokenPassword{
 	// 			{
-	// 				Expiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T15:59:59.0707808Z"); return t}()),
+	// 				Expiry: to.Ptr(time.Date(2020, time.December, 31, 15, 59, 59, 70780800, time.UTC)),
 	// 				Name: to.Ptr(armcontainerregistry.TokenPasswordNamePassword1),
 	// 				Value: to.Ptr("00000000000000000000000000000000"),
 	// 			},
 	// 			{
-	// 				Expiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T15:59:59.0707808Z"); return t}()),
+	// 				Expiry: to.Ptr(time.Date(2020, time.December, 31, 15, 59, 59, 70780800, time.UTC)),
 	// 				Name: to.Ptr(armcontainerregistry.TokenPasswordNamePassword2),
 	// 				Value: to.Ptr("00000000000000000000000000000000"),
 	// 			},
@@ -550,7 +550,7 @@ func ExampleRegistriesClient_BeginGenerateCredentials() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/RegistryGet.json
+// Generated from example definition: 2026-09-01-preview/RegistryGet.json
 func ExampleRegistriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -583,7 +583,7 @@ func ExampleRegistriesClient_Get() {
 	// 		},
 	// 		Properties: &armcontainerregistry.RegistryProperties{
 	// 			LoginServer: to.Ptr("myregistry.azurecr.io"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:38:26.1537861Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2021, time.June, 15, 21, 38, 26, 153786100, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 			AdminUserEnabled: to.Ptr(false),
 	// 			NetworkRuleSet: &armcontainerregistry.NetworkRuleSet{
@@ -603,7 +603,7 @@ func ExampleRegistriesClient_Get() {
 	// 				},
 	// 				RetentionPolicy: &armcontainerregistry.RetentionPolicy{
 	// 					Days: to.Ptr[int32](7),
-	// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:40:12.8506835+00:00"); return t}()),
+	// 					LastUpdatedTime: to.Ptr(time.Date(2021, time.June, 15, 21, 40, 12, 850683500, time.UTC)),
 	// 					Status: to.Ptr(armcontainerregistry.PolicyStatusDisabled),
 	// 				},
 	// 				ExportPolicy: &armcontainerregistry.ExportPolicy{
@@ -636,7 +636,7 @@ func ExampleRegistriesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/RegistryGetPrivateLinkResource.json
+// Generated from example definition: 2026-09-01-preview/RegistryGetPrivateLinkResource.json
 func ExampleRegistriesClient_GetPrivateLinkResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -673,7 +673,7 @@ func ExampleRegistriesClient_GetPrivateLinkResource() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ImportImageByManifestDigest.json
+// Generated from example definition: 2026-09-01-preview/ImportImageByManifestDigest.json
 func ExampleRegistriesClient_BeginImportImage_importImageByManifestDigest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -711,7 +711,7 @@ func ExampleRegistriesClient_BeginImportImage_importImageByManifestDigest() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ImportImageByTag.json
+// Generated from example definition: 2026-09-01-preview/ImportImageByTag.json
 func ExampleRegistriesClient_BeginImportImage_importImageByTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -749,7 +749,7 @@ func ExampleRegistriesClient_BeginImportImage_importImageByTag() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ImportImageFromPublicRegistry.json
+// Generated from example definition: 2026-09-01-preview/ImportImageFromPublicRegistry.json
 func ExampleRegistriesClient_BeginImportImage_importImageFromPublicRegistry() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -787,7 +787,7 @@ func ExampleRegistriesClient_BeginImportImage_importImageFromPublicRegistry() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/RegistryList.json
+// Generated from example definition: 2026-09-01-preview/RegistryList.json
 func ExampleRegistriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -826,7 +826,7 @@ func ExampleRegistriesClient_NewListPager() {
 		// 				},
 		// 				Properties: &armcontainerregistry.RegistryProperties{
 		// 					LoginServer: to.Ptr("myregistry.azurecr.io"),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:38:26.1537861Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2021, time.June, 15, 21, 38, 26, 153786100, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 		// 					AdminUserEnabled: to.Ptr(false),
 		// 					NetworkRuleSet: &armcontainerregistry.NetworkRuleSet{
@@ -846,7 +846,7 @@ func ExampleRegistriesClient_NewListPager() {
 		// 						},
 		// 						RetentionPolicy: &armcontainerregistry.RetentionPolicy{
 		// 							Days: to.Ptr[int32](7),
-		// 							LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:40:12.8506835+00:00"); return t}()),
+		// 							LastUpdatedTime: to.Ptr(time.Date(2021, time.June, 15, 21, 40, 12, 850683500, time.UTC)),
 		// 							Status: to.Ptr(armcontainerregistry.PolicyStatusDisabled),
 		// 						},
 		// 						ExportPolicy: &armcontainerregistry.ExportPolicy{
@@ -882,7 +882,7 @@ func ExampleRegistriesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/RegistryListByResourceGroup.json
+// Generated from example definition: 2026-09-01-preview/RegistryListByResourceGroup.json
 func ExampleRegistriesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -921,7 +921,7 @@ func ExampleRegistriesClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				Properties: &armcontainerregistry.RegistryProperties{
 		// 					LoginServer: to.Ptr("myregistry.azurecr.io"),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:38:26.1537861Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2021, time.June, 15, 21, 38, 26, 153786100, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 		// 					AdminUserEnabled: to.Ptr(false),
 		// 					NetworkRuleSet: &armcontainerregistry.NetworkRuleSet{
@@ -941,7 +941,7 @@ func ExampleRegistriesClient_NewListByResourceGroupPager() {
 		// 						},
 		// 						RetentionPolicy: &armcontainerregistry.RetentionPolicy{
 		// 							Days: to.Ptr[int32](7),
-		// 							LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:40:12.8506835+00:00"); return t}()),
+		// 							LastUpdatedTime: to.Ptr(time.Date(2021, time.June, 15, 21, 40, 12, 850683500, time.UTC)),
 		// 							Status: to.Ptr(armcontainerregistry.PolicyStatusDisabled),
 		// 						},
 		// 						ExportPolicy: &armcontainerregistry.ExportPolicy{
@@ -977,7 +977,7 @@ func ExampleRegistriesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/RegistryListCredentials.json
+// Generated from example definition: 2026-09-01-preview/RegistryListCredentials.json
 func ExampleRegistriesClient_ListCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1012,7 +1012,7 @@ func ExampleRegistriesClient_ListCredentials() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/RegistryListPrivateLinkResources.json
+// Generated from example definition: 2026-09-01-preview/RegistryListPrivateLinkResources.json
 func ExampleRegistriesClient_NewListPrivateLinkResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1058,7 +1058,7 @@ func ExampleRegistriesClient_NewListPrivateLinkResourcesPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/RegistryListUsages.json
+// Generated from example definition: 2026-09-01-preview/RegistryListUsages.json
 func ExampleRegistriesClient_ListUsages() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1096,7 +1096,7 @@ func ExampleRegistriesClient_ListUsages() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/RegistryRegenerateCredential.json
+// Generated from example definition: 2026-09-01-preview/RegistryRegenerateCredential.json
 func ExampleRegistriesClient_RegenerateCredential() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1133,7 +1133,7 @@ func ExampleRegistriesClient_RegenerateCredential() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/RegistryUpdate.json
+// Generated from example definition: 2026-09-01-preview/RegistryUpdate.json
 func ExampleRegistriesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1181,7 +1181,7 @@ func ExampleRegistriesClient_BeginUpdate() {
 	// 		},
 	// 		Properties: &armcontainerregistry.RegistryProperties{
 	// 			LoginServer: to.Ptr("myregistry.azurecr.io"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:38:26.1537861Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2021, time.June, 15, 21, 38, 26, 153786100, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 			AdminUserEnabled: to.Ptr(true),
 	// 			NetworkRuleSet: &armcontainerregistry.NetworkRuleSet{
@@ -1201,7 +1201,7 @@ func ExampleRegistriesClient_BeginUpdate() {
 	// 				},
 	// 				RetentionPolicy: &armcontainerregistry.RetentionPolicy{
 	// 					Days: to.Ptr[int32](7),
-	// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T21:40:12.8506835+00:00"); return t}()),
+	// 					LastUpdatedTime: to.Ptr(time.Date(2021, time.June, 15, 21, 40, 12, 850683500, time.UTC)),
 	// 					Status: to.Ptr(armcontainerregistry.PolicyStatusDisabled),
 	// 				},
 	// 				ExportPolicy: &armcontainerregistry.ExportPolicy{

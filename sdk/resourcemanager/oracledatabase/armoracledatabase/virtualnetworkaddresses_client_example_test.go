@@ -51,7 +51,7 @@ func ExampleVirtualNetworkAddressesClient_BeginCreateOrUpdate_createVirtualNetwo
 	// 			LifecycleDetails: to.Ptr("success"),
 	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
 	// 			LifecycleState: to.Ptr(armoracledatabase.VirtualNetworkAddressLifecycleStateAvailable),
-	// 			TimeAssigned: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-22T00:27:02.119Z"); return t}()),
+	// 			TimeAssigned: to.Ptr(time.Date(2023, time.October, 22, 0, 27, 2, 119000000, time.UTC)),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1/virtualNetworkAddresses/hostname1"),
 	// 		Name: to.Ptr("ulvgmxoovnoov"),
@@ -59,10 +59,10 @@ func ExampleVirtualNetworkAddressesClient_BeginCreateOrUpdate_createVirtualNetwo
 	// 		SystemData: &armoracledatabase.SystemData{
 	// 			CreatedBy: to.Ptr("sqehacivpuim"),
 	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
 	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -135,7 +135,7 @@ func ExampleVirtualNetworkAddressesClient_BeginCreateOrUpdate_virtualNetworkAddr
 	// 			LifecycleDetails: to.Ptr("success"),
 	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
 	// 			LifecycleState: to.Ptr(armoracledatabase.VirtualNetworkAddressLifecycleStateAvailable),
-	// 			TimeAssigned: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-22T00:27:02.119Z"); return t}()),
+	// 			TimeAssigned: to.Ptr(time.Date(2023, time.October, 22, 0, 27, 2, 119000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -232,7 +232,7 @@ func ExampleVirtualNetworkAddressesClient_Get_getVirtualNetworkAddressGeneratedB
 	// 			LifecycleDetails: to.Ptr("success"),
 	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
 	// 			LifecycleState: to.Ptr(armoracledatabase.VirtualNetworkAddressLifecycleStateAvailable),
-	// 			TimeAssigned: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-22T00:27:02.119Z"); return t}()),
+	// 			TimeAssigned: to.Ptr(time.Date(2023, time.October, 22, 0, 27, 2, 119000000, time.UTC)),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1/virtualNetworkAddresses/hostname1"),
 	// 		Name: to.Ptr("ulvgmxoovnoov"),
@@ -240,10 +240,10 @@ func ExampleVirtualNetworkAddressesClient_Get_getVirtualNetworkAddressGeneratedB
 	// 		SystemData: &armoracledatabase.SystemData{
 	// 			CreatedBy: to.Ptr("sqehacivpuim"),
 	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
 	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -304,14 +304,14 @@ func ExampleVirtualNetworkAddressesClient_Get_virtualNetworkAddressesGet() {
 	// 			LifecycleDetails: to.Ptr("success"),
 	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
 	// 			LifecycleState: to.Ptr(armoracledatabase.VirtualNetworkAddressLifecycleStateAvailable),
-	// 			TimeAssigned: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-22T00:27:02.119Z"); return t}()),
+	// 			TimeAssigned: to.Ptr(time.Date(2023, time.October, 22, 0, 27, 2, 119000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-01/virtualNetworkAddresses_listByParent.json
-func ExampleVirtualNetworkAddressesClient_NewListByCloudVMClusterPager() {
+// Generated from example definition: 2025-09-01/VirtualNetworkAddresses_ListByParent_MaximumSet_Gen.json
+func ExampleVirtualNetworkAddressesClient_NewListByCloudVMClusterPager_listVirtualNetworkAddressesByVMClusterGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -321,7 +321,7 @@ func ExampleVirtualNetworkAddressesClient_NewListByCloudVMClusterPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVirtualNetworkAddressesClient().NewListByCloudVMClusterPager("rg000", "cluster1", nil)
+	pager := clientFactory.NewVirtualNetworkAddressesClient().NewListByCloudVMClusterPager("rgopenapi", "Replace this value with a string matching RegExp .*", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -346,8 +346,52 @@ func ExampleVirtualNetworkAddressesClient_NewListByCloudVMClusterPager() {
 		// 					LifecycleDetails: to.Ptr("success"),
 		// 					ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
 		// 					LifecycleState: to.Ptr(armoracledatabase.VirtualNetworkAddressLifecycleStateAvailable),
-		// 					TimeAssigned: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-22T00:27:02.119Z"); return t}()),
+		// 					TimeAssigned: to.Ptr(time.Date(2023, time.October, 22, 0, 27, 2, 119000000, time.UTC)),
 		// 				},
+		// 				Name: to.Ptr("xhlq"),
+		// 				SystemData: &armoracledatabase.SystemData{
+		// 					CreatedBy: to.Ptr("sqehacivpuim"),
+		// 					CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+		// 					LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-09-01/VirtualNetworkAddresses_ListByParent_MinimumSet_Gen.json
+func ExampleVirtualNetworkAddressesClient_NewListByCloudVMClusterPager_listVirtualNetworkAddressesByVMClusterGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualNetworkAddressesClient().NewListByCloudVMClusterPager("rgopenapi", "Replace this value with a string matching RegExp .*", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoracledatabase.VirtualNetworkAddressesClientListByCloudVMClusterResponse{
+		// 	VirtualNetworkAddressListResult: armoracledatabase.VirtualNetworkAddressListResult{
+		// 		Value: []*armoracledatabase.VirtualNetworkAddress{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1/virtualNetworkAddresses/hostname1"),
 		// 			},
 		// 		},
 		// 	},

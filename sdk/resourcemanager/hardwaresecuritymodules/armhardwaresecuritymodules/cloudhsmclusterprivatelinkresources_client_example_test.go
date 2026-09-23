@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-31/CloudHsmClusterPrivateLinkResource_ListByCloudHsmCluster_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmClusterPrivateLinkResource_ListByCloudHsmCluster_MaximumSet_Gen.json
 func ExampleCloudHsmClusterPrivateLinkResourcesClient_NewListByCloudHsmClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_Backup_Pending_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_Backup_Pending_MaximumSet_Gen.json
 func ExampleCloudHsmClusterBackupStatusClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,9 +33,9 @@ func ExampleCloudHsmClusterBackupStatusClient_Get() {
 	// 	BackupResult: armhardwaresecuritymodules.BackupResult{
 	// 		Properties: &armhardwaresecuritymodules.BackupResultProperties{
 	// 			AzureStorageBlobContainerURI: to.Ptr("https://myaccount.blob.core.windows.net/sascontainer/sasContainer"),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+	// 			EndTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 	// 			JobID: to.Ptr("572a45927fc240e1ac075de27371680b"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 	// 			Status: to.Ptr(armhardwaresecuritymodules.BackupRestoreOperationStatusInProgress),
 	// 			StatusDetails: to.Ptr("Backup operation is in progress"),
 	// 		},

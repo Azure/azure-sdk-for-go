@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_AttachResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/ScheduledActions_AttachResources_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_BeginAttachResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,7 +27,18 @@ func ExampleScheduledActionsClient_BeginAttachResources() {
 	poller, err := clientFactory.NewScheduledActionsClient().BeginAttachResources(ctx, "rgcompute", "myScheduledAction", armbulkactions.ResourceAttachRequest{
 		Resources: []*armbulkactions.ScheduledActionResourceInput{
 			{
-				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm"),
+				NotificationSettings: []*armbulkactions.NotificationProperties{
+					{
+						Destination: to.Ptr("admin@contoso.com"),
+						Type:        to.Ptr(armbulkactions.NotificationTypeEmail),
+						Language:    to.Ptr(armbulkactions.LanguageEnUs),
+						Disabled:    to.Ptr(true),
+					},
+				},
+			},
+			{
+				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2"),
 				NotificationSettings: []*armbulkactions.NotificationProperties{
 					{
 						Destination: to.Ptr("admin@contoso.com"),
@@ -51,11 +62,15 @@ func ExampleScheduledActionsClient_BeginAttachResources() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbulkactions.ScheduledActionsClientAttachResourcesResponse{
 	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
-	// 		TotalResources: to.Ptr[int32](11),
+	// 		TotalResources: to.Ptr[int32](2),
 	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
 	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+	// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusFailed),
 	// 				Error: &armbulkactions.Error{
 	// 					Code: to.Ptr("InternalServerError"),
 	// 					Message: to.Ptr("An internal error occurred."),
@@ -72,7 +87,7 @@ func ExampleScheduledActionsClient_BeginAttachResources() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_CancelNextOccurrence_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/ScheduledActions_CancelNextOccurrence_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_BeginCancelNextOccurrence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +100,8 @@ func ExampleScheduledActionsClient_BeginCancelNextOccurrence() {
 	}
 	poller, err := clientFactory.NewScheduledActionsClient().BeginCancelNextOccurrence(ctx, "rgcompute", "myScheduledAction", armbulkactions.CancelOccurrenceRequest{
 		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+			to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm"),
+			to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2"),
 		},
 	}, nil)
 	if err != nil {
@@ -100,11 +116,15 @@ func ExampleScheduledActionsClient_BeginCancelNextOccurrence() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbulkactions.ScheduledActionsClientCancelNextOccurrenceResponse{
 	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
-	// 		TotalResources: to.Ptr[int32](11),
+	// 		TotalResources: to.Ptr[int32](2),
 	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
 	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+	// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusFailed),
 	// 				Error: &armbulkactions.Error{
 	// 					Code: to.Ptr("InternalServerError"),
 	// 					Message: to.Ptr("An internal error occurred."),
@@ -121,7 +141,7 @@ func ExampleScheduledActionsClient_BeginCancelNextOccurrence() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/ScheduledActions_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,28 +156,21 @@ func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 		Properties: &armbulkactions.ScheduledActionProperties{
 			ResourceType: to.Ptr(armbulkactions.ResourceTypeVirtualMachine),
 			ActionType:   to.Ptr(armbulkactions.ScheduledActionTypeStart),
-			StartTime:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t }()),
-			EndTime:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t }()),
+			StartTime:    to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 281000000, time.UTC)),
+			EndTime:      to.Ptr(time.Date(2026, time.April, 17, 0, 23, 55, 281000000, time.UTC)),
 			Schedule: &armbulkactions.ScheduledActionsSchedule{
-				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t }()),
+				ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 19, 0, 0, 0, time.UTC)),
 				TimeZone:      to.Ptr("America/Los_Angeles"),
 				RequestedWeekDays: []*armbulkactions.WeekDay{
-					to.Ptr(armbulkactions.WeekDayMonday),
+					to.Ptr(armbulkactions.WeekDayAll),
 				},
 				RequestedMonths: []*armbulkactions.Month{
-					to.Ptr(armbulkactions.MonthJanuary),
+					to.Ptr(armbulkactions.MonthAll),
 				},
 				RequestedDaysOfTheMonth: []*int32{
+					to.Ptr[int32](1),
 					to.Ptr[int32](15),
 				},
-				ExecutionParameters: &armbulkactions.RecurringScheduledActionsExecutionParameters{
-					OptimizationPreference: to.Ptr(armbulkactions.OptimizationPreferenceCost),
-					RetryPolicy: &armbulkactions.RecurringScheduledActionsRetryPolicy{
-						RetryCount:           to.Ptr[int32](17),
-						RetryWindowInMinutes: to.Ptr[int32](29),
-					},
-				},
-				DeadlineType: to.Ptr(armbulkactions.RecurringScheduledActionsDeadlineTypeUnknown),
 			},
 			NotificationSettings: []*armbulkactions.NotificationProperties{
 				{
@@ -167,7 +180,7 @@ func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 					Disabled:    to.Ptr(true),
 				},
 			},
-			Disabled: to.Ptr(true),
+			Disabled: to.Ptr(false),
 		},
 		Tags: map[string]*string{
 			"key2102": to.Ptr("myTagValue"),
@@ -189,28 +202,28 @@ func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 	// 		Properties: &armbulkactions.ScheduledActionProperties{
 	// 			ResourceType: to.Ptr(armbulkactions.ResourceTypeVirtualMachine),
 	// 			ActionType: to.Ptr(armbulkactions.ScheduledActionTypeStart),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 281000000, time.UTC)),
+	// 			EndTime: to.Ptr(time.Date(2026, time.April, 17, 0, 23, 55, 281000000, time.UTC)),
 	// 			Schedule: &armbulkactions.ScheduledActionsSchedule{
-	// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
+	// 				ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 19, 0, 0, 0, time.UTC)),
 	// 				TimeZone: to.Ptr("America/Los_Angeles"),
 	// 				RequestedWeekDays: []*armbulkactions.WeekDay{
-	// 					to.Ptr(armbulkactions.WeekDayMonday),
+	// 					to.Ptr(armbulkactions.WeekDayAll),
 	// 				},
 	// 				RequestedMonths: []*armbulkactions.Month{
-	// 					to.Ptr(armbulkactions.MonthJanuary),
+	// 					to.Ptr(armbulkactions.MonthAll),
 	// 				},
 	// 				RequestedDaysOfTheMonth: []*int32{
+	// 					to.Ptr[int32](1),
 	// 					to.Ptr[int32](15),
 	// 				},
-	// 				ExecutionParameters: &armbulkactions.RecurringScheduledActionsExecutionParameters{
-	// 					OptimizationPreference: to.Ptr(armbulkactions.OptimizationPreferenceCost),
-	// 					RetryPolicy: &armbulkactions.RecurringScheduledActionsRetryPolicy{
+	// 				ExecutionParameters: &armbulkactions.ScheduledActionsExecutionParameters{
+	// 					RetryPolicy: &armbulkactions.ScheduledActionsRetryPolicy{
 	// 						RetryCount: to.Ptr[int32](17),
 	// 						RetryWindowInMinutes: to.Ptr[int32](29),
 	// 					},
 	// 				},
-	// 				DeadlineType: to.Ptr(armbulkactions.RecurringScheduledActionsDeadlineTypeUnknown),
+	// 				DeadlineType: to.Ptr(armbulkactions.ScheduledActionsDeadlineTypeInitiateAt),
 	// 			},
 	// 			NotificationSettings: []*armbulkactions.NotificationProperties{
 	// 				{
@@ -220,8 +233,8 @@ func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 	// 					Disabled: to.Ptr(true),
 	// 				},
 	// 			},
-	// 			Disabled: to.Ptr(true),
-	// 			ProvisioningState: to.Ptr(armbulkactions.RecurringScheduledActionsProvisioningStateSucceeded),
+	// 			Disabled: to.Ptr(false),
+	// 			ProvisioningState: to.Ptr(armbulkactions.ScheduledActionsProvisioningStateSucceeded),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"key2102": to.Ptr("myTagValue"),
@@ -233,16 +246,16 @@ func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armbulkactions.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/ScheduledActions_Delete_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -263,7 +276,7 @@ func ExampleScheduledActionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_DetachResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/ScheduledActions_DetachResources_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_BeginDetachResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -276,7 +289,8 @@ func ExampleScheduledActionsClient_BeginDetachResources() {
 	}
 	poller, err := clientFactory.NewScheduledActionsClient().BeginDetachResources(ctx, "rgcompute", "myScheduledAction", armbulkactions.ResourceDetachRequest{
 		Resources: []*string{
-			to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+			to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm"),
+			to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2"),
 		},
 	}, nil)
 	if err != nil {
@@ -291,11 +305,15 @@ func ExampleScheduledActionsClient_BeginDetachResources() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbulkactions.ScheduledActionsClientDetachResourcesResponse{
 	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
-	// 		TotalResources: to.Ptr[int32](11),
+	// 		TotalResources: to.Ptr[int32](2),
 	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
 	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+	// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusFailed),
 	// 				Error: &armbulkactions.Error{
 	// 					Code: to.Ptr("InternalServerError"),
 	// 					Message: to.Ptr("An internal error occurred."),
@@ -312,7 +330,7 @@ func ExampleScheduledActionsClient_BeginDetachResources() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_Disable_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/ScheduledActions_Disable_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_BeginDisable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -333,7 +351,7 @@ func ExampleScheduledActionsClient_BeginDisable() {
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_Enable_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/ScheduledActions_Enable_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_BeginEnable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -354,7 +372,7 @@ func ExampleScheduledActionsClient_BeginEnable() {
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/ScheduledActions_Get_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -377,10 +395,10 @@ func ExampleScheduledActionsClient_Get() {
 	// 		Properties: &armbulkactions.ScheduledActionProperties{
 	// 			ResourceType: to.Ptr(armbulkactions.ResourceTypeVirtualMachine),
 	// 			ActionType: to.Ptr(armbulkactions.ScheduledActionTypeStart),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 281000000, time.UTC)),
+	// 			EndTime: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 286000000, time.UTC)),
 	// 			Schedule: &armbulkactions.ScheduledActionsSchedule{
-	// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
+	// 				ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 19, 0, 0, 0, time.UTC)),
 	// 				TimeZone: to.Ptr("America/Los_Angeles"),
 	// 				RequestedWeekDays: []*armbulkactions.WeekDay{
 	// 					to.Ptr(armbulkactions.WeekDayMonday),
@@ -391,14 +409,13 @@ func ExampleScheduledActionsClient_Get() {
 	// 				RequestedDaysOfTheMonth: []*int32{
 	// 					to.Ptr[int32](15),
 	// 				},
-	// 				ExecutionParameters: &armbulkactions.RecurringScheduledActionsExecutionParameters{
-	// 					OptimizationPreference: to.Ptr(armbulkactions.OptimizationPreferenceCost),
-	// 					RetryPolicy: &armbulkactions.RecurringScheduledActionsRetryPolicy{
+	// 				ExecutionParameters: &armbulkactions.ScheduledActionsExecutionParameters{
+	// 					RetryPolicy: &armbulkactions.ScheduledActionsRetryPolicy{
 	// 						RetryCount: to.Ptr[int32](17),
 	// 						RetryWindowInMinutes: to.Ptr[int32](29),
 	// 					},
 	// 				},
-	// 				DeadlineType: to.Ptr(armbulkactions.RecurringScheduledActionsDeadlineTypeUnknown),
+	// 				DeadlineType: to.Ptr(armbulkactions.ScheduledActionsDeadlineTypeInitiateAt),
 	// 			},
 	// 			NotificationSettings: []*armbulkactions.NotificationProperties{
 	// 				{
@@ -409,7 +426,7 @@ func ExampleScheduledActionsClient_Get() {
 	// 				},
 	// 			},
 	// 			Disabled: to.Ptr(true),
-	// 			ProvisioningState: to.Ptr(armbulkactions.RecurringScheduledActionsProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armbulkactions.ScheduledActionsProvisioningStateSucceeded),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"key2102": to.Ptr("myTagValue"),
@@ -421,16 +438,16 @@ func ExampleScheduledActionsClient_Get() {
 	// 		SystemData: &armbulkactions.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/ScheduledActions_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -459,10 +476,10 @@ func ExampleScheduledActionsClient_NewListByResourceGroupPager() {
 		// 				Properties: &armbulkactions.ScheduledActionProperties{
 		// 					ResourceType: to.Ptr(armbulkactions.ResourceTypeVirtualMachine),
 		// 					ActionType: to.Ptr(armbulkactions.ScheduledActionTypeStart),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 281000000, time.UTC)),
+		// 					EndTime: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 286000000, time.UTC)),
 		// 					Schedule: &armbulkactions.ScheduledActionsSchedule{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
+		// 						ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 19, 0, 0, 0, time.UTC)),
 		// 						TimeZone: to.Ptr("America/Los_Angeles"),
 		// 						RequestedWeekDays: []*armbulkactions.WeekDay{
 		// 							to.Ptr(armbulkactions.WeekDayMonday),
@@ -473,14 +490,13 @@ func ExampleScheduledActionsClient_NewListByResourceGroupPager() {
 		// 						RequestedDaysOfTheMonth: []*int32{
 		// 							to.Ptr[int32](15),
 		// 						},
-		// 						ExecutionParameters: &armbulkactions.RecurringScheduledActionsExecutionParameters{
-		// 							OptimizationPreference: to.Ptr(armbulkactions.OptimizationPreferenceCost),
-		// 							RetryPolicy: &armbulkactions.RecurringScheduledActionsRetryPolicy{
+		// 						ExecutionParameters: &armbulkactions.ScheduledActionsExecutionParameters{
+		// 							RetryPolicy: &armbulkactions.ScheduledActionsRetryPolicy{
 		// 								RetryCount: to.Ptr[int32](17),
 		// 								RetryWindowInMinutes: to.Ptr[int32](29),
 		// 							},
 		// 						},
-		// 						DeadlineType: to.Ptr(armbulkactions.RecurringScheduledActionsDeadlineTypeUnknown),
+		// 						DeadlineType: to.Ptr(armbulkactions.ScheduledActionsDeadlineTypeInitiateAt),
 		// 					},
 		// 					NotificationSettings: []*armbulkactions.NotificationProperties{
 		// 						{
@@ -491,7 +507,7 @@ func ExampleScheduledActionsClient_NewListByResourceGroupPager() {
 		// 						},
 		// 					},
 		// 					Disabled: to.Ptr(true),
-		// 					ProvisioningState: to.Ptr(armbulkactions.RecurringScheduledActionsProvisioningStateSucceeded),
+		// 					ProvisioningState: to.Ptr(armbulkactions.ScheduledActionsProvisioningStateSucceeded),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"key2102": to.Ptr("myTagValue"),
@@ -503,20 +519,20 @@ func ExampleScheduledActionsClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armbulkactions.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/scheduledActions?api-version=2026-09-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/ScheduledActions_ListBySubscription_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -545,10 +561,10 @@ func ExampleScheduledActionsClient_NewListBySubscriptionPager() {
 		// 				Properties: &armbulkactions.ScheduledActionProperties{
 		// 					ResourceType: to.Ptr(armbulkactions.ResourceTypeVirtualMachine),
 		// 					ActionType: to.Ptr(armbulkactions.ScheduledActionTypeStart),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 281000000, time.UTC)),
+		// 					EndTime: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 286000000, time.UTC)),
 		// 					Schedule: &armbulkactions.ScheduledActionsSchedule{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
+		// 						ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 19, 0, 0, 0, time.UTC)),
 		// 						TimeZone: to.Ptr("America/Los_Angeles"),
 		// 						RequestedWeekDays: []*armbulkactions.WeekDay{
 		// 							to.Ptr(armbulkactions.WeekDayMonday),
@@ -559,14 +575,13 @@ func ExampleScheduledActionsClient_NewListBySubscriptionPager() {
 		// 						RequestedDaysOfTheMonth: []*int32{
 		// 							to.Ptr[int32](15),
 		// 						},
-		// 						ExecutionParameters: &armbulkactions.RecurringScheduledActionsExecutionParameters{
-		// 							OptimizationPreference: to.Ptr(armbulkactions.OptimizationPreferenceCost),
-		// 							RetryPolicy: &armbulkactions.RecurringScheduledActionsRetryPolicy{
+		// 						ExecutionParameters: &armbulkactions.ScheduledActionsExecutionParameters{
+		// 							RetryPolicy: &armbulkactions.ScheduledActionsRetryPolicy{
 		// 								RetryCount: to.Ptr[int32](17),
 		// 								RetryWindowInMinutes: to.Ptr[int32](29),
 		// 							},
 		// 						},
-		// 						DeadlineType: to.Ptr(armbulkactions.RecurringScheduledActionsDeadlineTypeUnknown),
+		// 						DeadlineType: to.Ptr(armbulkactions.ScheduledActionsDeadlineTypeInitiateAt),
 		// 					},
 		// 					NotificationSettings: []*armbulkactions.NotificationProperties{
 		// 						{
@@ -577,7 +592,7 @@ func ExampleScheduledActionsClient_NewListBySubscriptionPager() {
 		// 						},
 		// 					},
 		// 					Disabled: to.Ptr(true),
-		// 					ProvisioningState: to.Ptr(armbulkactions.RecurringScheduledActionsProvisioningStateSucceeded),
+		// 					ProvisioningState: to.Ptr(armbulkactions.ScheduledActionsProvisioningStateSucceeded),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"key2102": to.Ptr("myTagValue"),
@@ -589,20 +604,20 @@ func ExampleScheduledActionsClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armbulkactions.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/providers/Microsoft.Compute/scheduledActions?api-version=2026-09-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_ListResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/ScheduledActions_ListResources_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_NewListResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -642,13 +657,13 @@ func ExampleScheduledActionsClient_NewListResourcesPager() {
 		// 				Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/awac"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/scheduledActions/myScheduledAction/resources?api-version=2026-09-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_PatchResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/ScheduledActions_PatchResources_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_PatchResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -662,7 +677,18 @@ func ExampleScheduledActionsClient_PatchResources() {
 	res, err := clientFactory.NewScheduledActionsClient().PatchResources(ctx, "rgcompute", "myScheduledAction", armbulkactions.ResourcePatchRequest{
 		Resources: []*armbulkactions.ScheduledActionResourceInput{
 			{
-				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm"),
+				NotificationSettings: []*armbulkactions.NotificationProperties{
+					{
+						Destination: to.Ptr("admin@contoso.com"),
+						Type:        to.Ptr(armbulkactions.NotificationTypeEmail),
+						Language:    to.Ptr(armbulkactions.LanguageEnUs),
+						Disabled:    to.Ptr(true),
+					},
+				},
+			},
+			{
+				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2"),
 				NotificationSettings: []*armbulkactions.NotificationProperties{
 					{
 						Destination: to.Ptr("admin@contoso.com"),
@@ -682,11 +708,15 @@ func ExampleScheduledActionsClient_PatchResources() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbulkactions.ScheduledActionsClientPatchResourcesResponse{
 	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
-	// 		TotalResources: to.Ptr[int32](11),
+	// 		TotalResources: to.Ptr[int32](2),
 	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
 	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+	// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusFailed),
 	// 				Error: &armbulkactions.Error{
 	// 					Code: to.Ptr("InternalServerError"),
 	// 					Message: to.Ptr("An internal error occurred."),
@@ -703,7 +733,7 @@ func ExampleScheduledActionsClient_PatchResources() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_TriggerManualOccurrence_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/ScheduledActions_TriggerManualOccurrence_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_BeginTriggerManualOccurrence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -728,13 +758,17 @@ func ExampleScheduledActionsClient_BeginTriggerManualOccurrence() {
 	// res = armbulkactions.ScheduledActionsClientTriggerManualOccurrenceResponse{
 	// 	Occurrence: armbulkactions.Occurrence{
 	// 		Properties: &armbulkactions.OccurrenceProperties{
-	// 			ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:59.243Z"); return t}()),
+	// 			ScheduledTime: to.Ptr(time.Date(2026, time.August, 5, 0, 30, 0, 0, time.UTC)),
 	// 			ResultSummary: &armbulkactions.OccurrenceResultSummary{
 	// 				Total: to.Ptr[int32](25),
 	// 				Statuses: []*armbulkactions.ResourceResultSummary{
 	// 					{
 	// 						Code: to.Ptr("Succeeded"),
-	// 						Count: to.Ptr[int32](4),
+	// 						Count: to.Ptr[int32](24),
+	// 					},
+	// 					{
+	// 						Code: to.Ptr("Failed"),
+	// 						Count: to.Ptr[int32](1),
 	// 						ErrorDetails: &armbulkactions.Error{
 	// 							Code: to.Ptr("InternalServerError"),
 	// 							Message: to.Ptr("An internal error occurred."),
@@ -748,24 +782,24 @@ func ExampleScheduledActionsClient_BeginTriggerManualOccurrence() {
 	// 					},
 	// 				},
 	// 			},
-	// 			ProvisioningState: to.Ptr(armbulkactions.OccurrenceStateCreated),
+	// 			ProvisioningState: to.Ptr(armbulkactions.OccurrenceStateFailed),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.Compute/scheduledActions/myScheduledAction"),
+	// 		ID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/scheduledActions/myScheduledAction/occurrences/67b5bada-4772-43fc-8dbb-402476d98a45"),
 	// 		Name: to.Ptr("67b5bada-4772-43fc-8dbb-402476d98a45"),
 	// 		Type: to.Ptr("Microsoft.Compute/scheduledActions/occurrences"),
 	// 		SystemData: &armbulkactions.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.August, 5, 0, 23, 55, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.August, 5, 0, 31, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-06-preview/ScheduledActions_Update_MaximumSet_Gen.json
 func ExampleScheduledActionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -780,10 +814,10 @@ func ExampleScheduledActionsClient_BeginUpdate() {
 		Properties: &armbulkactions.ScheduledActionUpdateProperties{
 			ResourceType: to.Ptr(armbulkactions.ResourceTypeVirtualMachine),
 			ActionType:   to.Ptr(armbulkactions.ScheduledActionTypeStart),
-			StartTime:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:58.149Z"); return t }()),
-			EndTime:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:58.149Z"); return t }()),
+			StartTime:    to.Ptr(time.Date(2025, time.April, 17, 0, 23, 58, 149000000, time.UTC)),
+			EndTime:      to.Ptr(time.Date(2025, time.April, 17, 0, 23, 58, 149000000, time.UTC)),
 			Schedule: &armbulkactions.ScheduledActionsScheduleUpdate{
-				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t }()),
+				ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 19, 0, 0, 0, time.UTC)),
 				TimeZone:      to.Ptr("America/Los_Angeles"),
 				RequestedWeekDays: []*armbulkactions.WeekDay{
 					to.Ptr(armbulkactions.WeekDayMonday),
@@ -794,14 +828,13 @@ func ExampleScheduledActionsClient_BeginUpdate() {
 				RequestedDaysOfTheMonth: []*int32{
 					to.Ptr[int32](15),
 				},
-				ExecutionParameters: &armbulkactions.RecurringScheduledActionsExecutionParameters{
-					OptimizationPreference: to.Ptr(armbulkactions.OptimizationPreferenceCost),
-					RetryPolicy: &armbulkactions.RecurringScheduledActionsRetryPolicy{
+				ExecutionParameters: &armbulkactions.ScheduledActionsExecutionParameters{
+					RetryPolicy: &armbulkactions.ScheduledActionsRetryPolicy{
 						RetryCount:           to.Ptr[int32](17),
 						RetryWindowInMinutes: to.Ptr[int32](29),
 					},
 				},
-				DeadlineType: to.Ptr(armbulkactions.RecurringScheduledActionsDeadlineTypeUnknown),
+				DeadlineType: to.Ptr(armbulkactions.ScheduledActionsDeadlineTypeInitiateAt),
 			},
 			NotificationSettings: []*armbulkactions.NotificationProperties{
 				{

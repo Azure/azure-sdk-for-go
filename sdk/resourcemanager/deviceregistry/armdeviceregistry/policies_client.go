@@ -30,6 +30,9 @@ type PoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PoliciesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -85,8 +88,7 @@ func (client *PoliciesClient) activateBringYourOwnRoot(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -95,7 +97,7 @@ func (client *PoliciesClient) activateBringYourOwnRoot(ctx context.Context, reso
 func (client *PoliciesClient) activateBringYourOwnRootCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, body ActivateBringYourOwnRootRequest, _ *PoliciesClientBeginActivateBringYourOwnRootOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}/activateBringYourOwnRoot"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -166,8 +168,7 @@ func (client *PoliciesClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -176,7 +177,7 @@ func (client *PoliciesClient) createOrUpdate(ctx context.Context, resourceGroupN
 func (client *PoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, resource Policy, _ *PoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -246,8 +247,7 @@ func (client *PoliciesClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -256,7 +256,7 @@ func (client *PoliciesClient) deleteOperation(ctx context.Context, resourceGroup
 func (client *PoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, _ *PoliciesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -301,19 +301,14 @@ func (client *PoliciesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return PoliciesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PoliciesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *PoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, _ *PoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -340,8 +335,11 @@ func (client *PoliciesClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *PoliciesClient) getHandleResponse(resp *http.Response) (PoliciesClientGetResponse, error) {
+func (client *PoliciesClient) getHandleResponse(resp *http.Response, successCodes ...int) (PoliciesClientGetResponse, error) {
 	result := PoliciesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Policy); err != nil {
 		return PoliciesClientGetResponse{}, err
 	}
@@ -364,55 +362,67 @@ func (client *PoliciesClient) NewListByResourceGroupPager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, namespaceName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, namespaceName, nextLink, options)
 			if err != nil {
 				return PoliciesClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PoliciesClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *PoliciesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *PoliciesClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PoliciesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, _ *PoliciesClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if namespaceName == "" {
+			return nil, errors.New("parameter namespaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *PoliciesClient) listByResourceGroupHandleResponse(resp *http.Response) (PoliciesClientListByResourceGroupResponse, error) {
+func (client *PoliciesClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (PoliciesClientListByResourceGroupResponse, error) {
 	result := PoliciesClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyListResult); err != nil {
 		return PoliciesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginRevokeIssuer - A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - policyName - The name of the Policy proxy resource.
@@ -435,7 +445,7 @@ func (client *PoliciesClient) BeginRevokeIssuer(ctx context.Context, resourceGro
 	}
 }
 
-// RevokeIssuer - A long-running resource action.
+// RevokeIssuer -
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PoliciesClient) revokeIssuer(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, options *PoliciesClientBeginRevokeIssuerOptions) (*http.Response, error) {
 	var err error
@@ -452,8 +462,7 @@ func (client *PoliciesClient) revokeIssuer(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -462,7 +471,7 @@ func (client *PoliciesClient) revokeIssuer(ctx context.Context, resourceGroupNam
 func (client *PoliciesClient) revokeIssuerCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, _ *PoliciesClientBeginRevokeIssuerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}/revokeIssuer"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -528,8 +537,7 @@ func (client *PoliciesClient) update(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -538,7 +546,7 @@ func (client *PoliciesClient) update(ctx context.Context, resourceGroupName stri
 func (client *PoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, properties PolicyUpdate, _ *PoliciesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

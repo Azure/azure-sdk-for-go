@@ -110,7 +110,7 @@ func (c *CostAllocationRulesServerTransport) dispatchCheckNameAvailability(req *
 	if c.srv.CheckNameAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
 	}
-	const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/costAllocationRules/checkNameAvailability`
+	const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/costAllocationRules/checkNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -143,7 +143,7 @@ func (c *CostAllocationRulesServerTransport) dispatchCreateOrUpdate(req *http.Re
 	if c.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/costAllocationRules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/costAllocationRules/(?P<ruleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -180,7 +180,7 @@ func (c *CostAllocationRulesServerTransport) dispatchDelete(req *http.Request) (
 	if c.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/costAllocationRules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/costAllocationRules/(?P<ruleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -213,7 +213,7 @@ func (c *CostAllocationRulesServerTransport) dispatchGet(req *http.Request) (*ht
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/costAllocationRules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/costAllocationRules/(?P<ruleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -248,7 +248,7 @@ func (c *CostAllocationRulesServerTransport) dispatchNewListPager(req *http.Requ
 	}
 	newListPager := c.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/costAllocationRules`
+		const regexStr = `/providers/microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/costAllocationRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

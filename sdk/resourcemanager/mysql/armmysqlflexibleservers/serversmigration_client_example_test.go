@@ -44,7 +44,7 @@ func ExampleServersMigrationClient_BeginCutoverMigration() {
 	// 			AvailabilityZone: to.Ptr("3"),
 	// 			Backup: &armmysqlflexibleservers.Backup{
 	// 				BackupRetentionDays: to.Ptr[int32](7),
-	// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T06:11:38.4150019+00:00"); return t}()),
+	// 				EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 6, 11, 38, 415001900, time.UTC)),
 	// 				GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 	// 			},
 	// 			FullVersion: to.Ptr("5.7.44"),

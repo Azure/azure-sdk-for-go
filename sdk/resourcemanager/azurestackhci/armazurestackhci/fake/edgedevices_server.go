@@ -118,7 +118,7 @@ func (e *EdgeDevicesServerTransport) dispatchBeginCreateOrUpdate(req *http.Reque
 	}
 	beginCreateOrUpdate := e.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/edgeDevices/(?P<edgeDeviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.AzureStackHCI/edgeDevices/(?P<edgeDeviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -132,10 +132,7 @@ func (e *EdgeDevicesServerTransport) dispatchBeginCreateOrUpdate(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		edgeDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeDeviceName")])
 		if err != nil {
 			return nil, err
@@ -170,16 +167,13 @@ func (e *EdgeDevicesServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	}
 	beginDelete := e.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/edgeDevices/(?P<edgeDeviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.AzureStackHCI/edgeDevices/(?P<edgeDeviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		edgeDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeDeviceName")])
 		if err != nil {
 			return nil, err
@@ -212,16 +206,13 @@ func (e *EdgeDevicesServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/edgeDevices/(?P<edgeDeviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.AzureStackHCI/edgeDevices/(?P<edgeDeviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	edgeDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeDeviceName")])
 	if err != nil {
 		return nil, err
@@ -247,16 +238,13 @@ func (e *EdgeDevicesServerTransport) dispatchNewListPager(req *http.Request) (*h
 	}
 	newListPager := e.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/edgeDevices`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.AzureStackHCI/edgeDevices`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		resp := e.srv.NewListPager(resourceURIParam, nil)
 		newListPager = &resp
 		e.newListPager.add(req, newListPager)
@@ -284,7 +272,7 @@ func (e *EdgeDevicesServerTransport) dispatchBeginValidate(req *http.Request) (*
 	}
 	beginValidate := e.beginValidate.get(req)
 	if beginValidate == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/edgeDevices/(?P<edgeDeviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.AzureStackHCI/edgeDevices/(?P<edgeDeviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -294,10 +282,7 @@ func (e *EdgeDevicesServerTransport) dispatchBeginValidate(req *http.Request) (*
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		edgeDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeDeviceName")])
 		if err != nil {
 			return nil, err

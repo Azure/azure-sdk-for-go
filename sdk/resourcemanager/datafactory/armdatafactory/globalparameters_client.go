@@ -30,6 +30,9 @@ type GlobalParametersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGlobalParametersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GlobalParametersClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *GlobalParametersClient) CreateOrUpdate(ctx context.Context, resour
 	if err != nil {
 		return GlobalParametersClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GlobalParametersClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *GlobalParametersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, globalParameterName string, defaultParam GlobalParameterResource, _ *GlobalParametersClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/globalParameters/{globalParameterName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -106,8 +104,11 @@ func (client *GlobalParametersClient) createOrUpdateCreateRequest(ctx context.Co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *GlobalParametersClient) createOrUpdateHandleResponse(resp *http.Response) (GlobalParametersClientCreateOrUpdateResponse, error) {
+func (client *GlobalParametersClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (GlobalParametersClientCreateOrUpdateResponse, error) {
 	result := GlobalParametersClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GlobalParameterResource); err != nil {
 		return GlobalParametersClientCreateOrUpdateResponse{}, err
 	}
@@ -135,8 +136,7 @@ func (client *GlobalParametersClient) Delete(ctx context.Context, resourceGroupN
 		return GlobalParametersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return GlobalParametersClientDeleteResponse{}, err
+		return GlobalParametersClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return GlobalParametersClientDeleteResponse{}, nil
 }
@@ -145,7 +145,7 @@ func (client *GlobalParametersClient) Delete(ctx context.Context, resourceGroupN
 func (client *GlobalParametersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, globalParameterName string, _ *GlobalParametersClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/globalParameters/{globalParameterName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -190,19 +190,14 @@ func (client *GlobalParametersClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return GlobalParametersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GlobalParametersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *GlobalParametersClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, globalParameterName string, _ *GlobalParametersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/globalParameters/{globalParameterName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -229,8 +224,11 @@ func (client *GlobalParametersClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *GlobalParametersClient) getHandleResponse(resp *http.Response) (GlobalParametersClientGetResponse, error) {
+func (client *GlobalParametersClient) getHandleResponse(resp *http.Response, successCodes ...int) (GlobalParametersClientGetResponse, error) {
 	result := GlobalParametersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GlobalParameterResource); err != nil {
 		return GlobalParametersClientGetResponse{}, err
 	}
@@ -253,47 +251,61 @@ func (client *GlobalParametersClient) NewListByFactoryPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
-			}, nil)
+			req, err := client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, nextLink, options)
 			if err != nil {
 				return GlobalParametersClientListByFactoryResponse{}, err
 			}
-			return client.listByFactoryHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GlobalParametersClientListByFactoryResponse{}, err
+			}
+			return client.listByFactoryHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByFactoryCreateRequest creates the ListByFactory request.
-func (client *GlobalParametersClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, _ *GlobalParametersClientListByFactoryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/globalParameters"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *GlobalParametersClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, nextLink string, _ *GlobalParametersClientListByFactoryOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/globalParameters"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if factoryName == "" {
+			return nil, errors.New("parameter factoryName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if factoryName == "" {
-		return nil, errors.New("parameter factoryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20180601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByFactoryHandleResponse handles the ListByFactory response.
-func (client *GlobalParametersClient) listByFactoryHandleResponse(resp *http.Response) (GlobalParametersClientListByFactoryResponse, error) {
+func (client *GlobalParametersClient) listByFactoryHandleResponse(resp *http.Response, successCodes ...int) (GlobalParametersClientListByFactoryResponse, error) {
 	result := GlobalParametersClientListByFactoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GlobalParameterListResponse); err != nil {
 		return GlobalParametersClientListByFactoryResponse{}, err
 	}

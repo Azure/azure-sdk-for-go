@@ -268,7 +268,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginCreateUpdateGremlinDataba
 	}
 	beginCreateUpdateGremlinDatabase := g.beginCreateUpdateGremlinDatabase.get(req)
 	if beginCreateUpdateGremlinDatabase == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -320,7 +320,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginCreateUpdateGremlinGraph(
 	}
 	beginCreateUpdateGremlinGraph := g.beginCreateUpdateGremlinGraph.get(req)
 	if beginCreateUpdateGremlinGraph == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/graphs/(?P<graphName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/graphs/(?P<graphName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -376,7 +376,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginCreateUpdateGremlinRoleAs
 	}
 	beginCreateUpdateGremlinRoleAssignment := g.beginCreateUpdateGremlinRoleAssignment.get(req)
 	if beginCreateUpdateGremlinRoleAssignment == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinRoleAssignments/(?P<roleAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinRoleAssignments/(?P<roleAssignmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -428,7 +428,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginCreateUpdateGremlinRoleDe
 	}
 	beginCreateUpdateGremlinRoleDefinition := g.beginCreateUpdateGremlinRoleDefinition.get(req)
 	if beginCreateUpdateGremlinRoleDefinition == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinRoleDefinitions/(?P<roleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinRoleDefinitions/(?P<roleDefinitionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -480,7 +480,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginDeleteGremlinDatabase(req
 	}
 	beginDeleteGremlinDatabase := g.beginDeleteGremlinDatabase.get(req)
 	if beginDeleteGremlinDatabase == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -528,7 +528,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginDeleteGremlinGraph(req *h
 	}
 	beginDeleteGremlinGraph := g.beginDeleteGremlinGraph.get(req)
 	if beginDeleteGremlinGraph == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/graphs/(?P<graphName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/graphs/(?P<graphName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -580,7 +580,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginDeleteGremlinRoleAssignme
 	}
 	beginDeleteGremlinRoleAssignment := g.beginDeleteGremlinRoleAssignment.get(req)
 	if beginDeleteGremlinRoleAssignment == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinRoleAssignments/(?P<roleAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinRoleAssignments/(?P<roleAssignmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -628,7 +628,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginDeleteGremlinRoleDefiniti
 	}
 	beginDeleteGremlinRoleDefinition := g.beginDeleteGremlinRoleDefinition.get(req)
 	if beginDeleteGremlinRoleDefinition == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinRoleDefinitions/(?P<roleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinRoleDefinitions/(?P<roleDefinitionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -674,7 +674,7 @@ func (g *GremlinResourcesServerTransport) dispatchGetGremlinDatabase(req *http.R
 	if g.srv.GetGremlinDatabase == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetGremlinDatabase not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -711,7 +711,7 @@ func (g *GremlinResourcesServerTransport) dispatchGetGremlinDatabaseThroughput(r
 	if g.srv.GetGremlinDatabaseThroughput == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetGremlinDatabaseThroughput not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -748,7 +748,7 @@ func (g *GremlinResourcesServerTransport) dispatchGetGremlinGraph(req *http.Requ
 	if g.srv.GetGremlinGraph == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetGremlinGraph not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/graphs/(?P<graphName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/graphs/(?P<graphName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -789,7 +789,7 @@ func (g *GremlinResourcesServerTransport) dispatchGetGremlinGraphThroughput(req 
 	if g.srv.GetGremlinGraphThroughput == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetGremlinGraphThroughput not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/graphs/(?P<graphName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/graphs/(?P<graphName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -830,7 +830,7 @@ func (g *GremlinResourcesServerTransport) dispatchGetGremlinRoleAssignment(req *
 	if g.srv.GetGremlinRoleAssignment == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetGremlinRoleAssignment not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinRoleAssignments/(?P<roleAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinRoleAssignments/(?P<roleAssignmentId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -867,7 +867,7 @@ func (g *GremlinResourcesServerTransport) dispatchGetGremlinRoleDefinition(req *
 	if g.srv.GetGremlinRoleDefinition == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetGremlinRoleDefinition not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinRoleDefinitions/(?P<roleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinRoleDefinitions/(?P<roleDefinitionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -906,7 +906,7 @@ func (g *GremlinResourcesServerTransport) dispatchNewListGremlinDatabasesPager(r
 	}
 	newListGremlinDatabasesPager := g.newListGremlinDatabasesPager.get(req)
 	if newListGremlinDatabasesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -947,7 +947,7 @@ func (g *GremlinResourcesServerTransport) dispatchNewListGremlinGraphsPager(req 
 	}
 	newListGremlinGraphsPager := g.newListGremlinGraphsPager.get(req)
 	if newListGremlinGraphsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/graphs`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/graphs`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -992,7 +992,7 @@ func (g *GremlinResourcesServerTransport) dispatchNewListGremlinRoleAssignmentsP
 	}
 	newListGremlinRoleAssignmentsPager := g.newListGremlinRoleAssignmentsPager.get(req)
 	if newListGremlinRoleAssignmentsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinRoleAssignments`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinRoleAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1033,7 +1033,7 @@ func (g *GremlinResourcesServerTransport) dispatchNewListGremlinRoleDefinitionsP
 	}
 	newListGremlinRoleDefinitionsPager := g.newListGremlinRoleDefinitionsPager.get(req)
 	if newListGremlinRoleDefinitionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinRoleDefinitions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinRoleDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1074,7 +1074,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginMigrateGremlinDatabaseToA
 	}
 	beginMigrateGremlinDatabaseToAutoscale := g.beginMigrateGremlinDatabaseToAutoscale.get(req)
 	if beginMigrateGremlinDatabaseToAutoscale == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/migrateToAutoscale`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToAutoscale`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1122,7 +1122,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginMigrateGremlinDatabaseToM
 	}
 	beginMigrateGremlinDatabaseToManualThroughput := g.beginMigrateGremlinDatabaseToManualThroughput.get(req)
 	if beginMigrateGremlinDatabaseToManualThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/migrateToManualThroughput`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToManualThroughput`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1170,7 +1170,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginMigrateGremlinGraphToAuto
 	}
 	beginMigrateGremlinGraphToAutoscale := g.beginMigrateGremlinGraphToAutoscale.get(req)
 	if beginMigrateGremlinGraphToAutoscale == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/graphs/(?P<graphName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/migrateToAutoscale`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/graphs/(?P<graphName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToAutoscale`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -1222,7 +1222,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginMigrateGremlinGraphToManu
 	}
 	beginMigrateGremlinGraphToManualThroughput := g.beginMigrateGremlinGraphToManualThroughput.get(req)
 	if beginMigrateGremlinGraphToManualThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/graphs/(?P<graphName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/migrateToManualThroughput`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/graphs/(?P<graphName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToManualThroughput`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -1274,7 +1274,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginRetrieveContinuousBackupI
 	}
 	beginRetrieveContinuousBackupInformation := g.beginRetrieveContinuousBackupInformation.get(req)
 	if beginRetrieveContinuousBackupInformation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/graphs/(?P<graphName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retrieveContinuousBackupInformation`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/graphs/(?P<graphName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retrieveContinuousBackupInformation`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -1330,7 +1330,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginUpdateGremlinDatabaseThro
 	}
 	beginUpdateGremlinDatabaseThroughput := g.beginUpdateGremlinDatabaseThroughput.get(req)
 	if beginUpdateGremlinDatabaseThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1382,7 +1382,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginUpdateGremlinGraphThrough
 	}
 	beginUpdateGremlinGraphThroughput := g.beginUpdateGremlinGraphThroughput.get(req)
 	if beginUpdateGremlinGraphThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/graphs/(?P<graphName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gremlinDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/graphs/(?P<graphName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {

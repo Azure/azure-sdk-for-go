@@ -19,7 +19,7 @@ import (
 // IdentityBindingsClient contains the methods for the IdentityBindings group.
 // Don't use this type directly, use NewIdentityBindingsClient() instead.
 //
-// Generated from API version 2026-05-02-preview
+// Generated from API version 2026-06-02-preview
 type IdentityBindingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type IdentityBindingsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewIdentityBindingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IdentityBindingsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -83,8 +86,7 @@ func (client *IdentityBindingsClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -93,7 +95,7 @@ func (client *IdentityBindingsClient) createOrUpdate(ctx context.Context, resour
 func (client *IdentityBindingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, parameters IdentityBinding, _ *IdentityBindingsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/identityBindings/{identityBindingName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -113,7 +115,7 @@ func (client *IdentityBindingsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -164,8 +166,7 @@ func (client *IdentityBindingsClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -174,7 +175,7 @@ func (client *IdentityBindingsClient) deleteOperation(ctx context.Context, resou
 func (client *IdentityBindingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, _ *IdentityBindingsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/identityBindings/{identityBindingName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -194,7 +195,7 @@ func (client *IdentityBindingsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -219,19 +220,14 @@ func (client *IdentityBindingsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return IdentityBindingsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IdentityBindingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *IdentityBindingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, _ *IdentityBindingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/identityBindings/{identityBindingName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -251,15 +247,18 @@ func (client *IdentityBindingsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *IdentityBindingsClient) getHandleResponse(resp *http.Response) (IdentityBindingsClientGetResponse, error) {
+func (client *IdentityBindingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (IdentityBindingsClientGetResponse, error) {
 	result := IdentityBindingsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IdentityBinding); err != nil {
 		return IdentityBindingsClientGetResponse{}, err
 	}
@@ -282,47 +281,61 @@ func (client *IdentityBindingsClient) NewListByManagedClusterPager(resourceGroup
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByManagedClusterCreateRequest(ctx, resourceGroupName, resourceName, options)
-			}, nil)
+			req, err := client.listByManagedClusterCreateRequest(ctx, resourceGroupName, resourceName, nextLink, options)
 			if err != nil {
 				return IdentityBindingsClientListByManagedClusterResponse{}, err
 			}
-			return client.listByManagedClusterHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return IdentityBindingsClientListByManagedClusterResponse{}, err
+			}
+			return client.listByManagedClusterHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByManagedClusterCreateRequest creates the ListByManagedCluster request.
-func (client *IdentityBindingsClient) listByManagedClusterCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *IdentityBindingsClientListByManagedClusterOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/identityBindings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *IdentityBindingsClient) listByManagedClusterCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, nextLink string, _ *IdentityBindingsClientListByManagedClusterOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/identityBindings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if resourceName == "" {
+			return nil, errors.New("parameter resourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260602Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByManagedClusterHandleResponse handles the ListByManagedCluster response.
-func (client *IdentityBindingsClient) listByManagedClusterHandleResponse(resp *http.Response) (IdentityBindingsClientListByManagedClusterResponse, error) {
+func (client *IdentityBindingsClient) listByManagedClusterHandleResponse(resp *http.Response, successCodes ...int) (IdentityBindingsClientListByManagedClusterResponse, error) {
 	result := IdentityBindingsClientListByManagedClusterResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IdentityBindingListResult); err != nil {
 		return IdentityBindingsClientListByManagedClusterResponse{}, err
 	}

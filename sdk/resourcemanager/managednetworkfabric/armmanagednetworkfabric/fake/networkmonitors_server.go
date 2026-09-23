@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // NetworkMonitorsServer is a fake server for instances of the armmanagednetworkfabric.NetworkMonitorsClient type.
@@ -88,9 +89,7 @@ func (n *NetworkMonitorsServerTransport) Do(req *http.Request) (*http.Response, 
 }
 
 func (n *NetworkMonitorsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -118,10 +117,7 @@ func (n *NetworkMonitorsServerTransport) dispatchToMethodFake(req *http.Request,
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -138,7 +134,7 @@ func (n *NetworkMonitorsServerTransport) dispatchBeginCreate(req *http.Request) 
 	}
 	beginCreate := n.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkMonitors/(?P<networkMonitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkMonitors/(?P<networkMonitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -169,7 +165,7 @@ func (n *NetworkMonitorsServerTransport) dispatchBeginCreate(req *http.Request) 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		n.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -186,7 +182,7 @@ func (n *NetworkMonitorsServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	beginDelete := n.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkMonitors/(?P<networkMonitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkMonitors/(?P<networkMonitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -213,7 +209,7 @@ func (n *NetworkMonitorsServerTransport) dispatchBeginDelete(req *http.Request) 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		n.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -228,7 +224,7 @@ func (n *NetworkMonitorsServerTransport) dispatchGet(req *http.Request) (*http.R
 	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkMonitors/(?P<networkMonitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkMonitors/(?P<networkMonitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -247,7 +243,7 @@ func (n *NetworkMonitorsServerTransport) dispatchGet(req *http.Request) (*http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkMonitor, req)
@@ -263,7 +259,7 @@ func (n *NetworkMonitorsServerTransport) dispatchNewListByResourceGroupPager(req
 	}
 	newListByResourceGroupPager := n.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkMonitors`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkMonitors`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -284,7 +280,7 @@ func (n *NetworkMonitorsServerTransport) dispatchNewListByResourceGroupPager(req
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		n.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -300,7 +296,7 @@ func (n *NetworkMonitorsServerTransport) dispatchNewListBySubscriptionPager(req 
 	}
 	newListBySubscriptionPager := n.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkMonitors`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkMonitors`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -317,7 +313,7 @@ func (n *NetworkMonitorsServerTransport) dispatchNewListBySubscriptionPager(req 
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		n.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -333,7 +329,7 @@ func (n *NetworkMonitorsServerTransport) dispatchBeginUpdate(req *http.Request) 
 	}
 	beginUpdate := n.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkMonitors/(?P<networkMonitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkMonitors/(?P<networkMonitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -364,7 +360,7 @@ func (n *NetworkMonitorsServerTransport) dispatchBeginUpdate(req *http.Request) 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -381,7 +377,7 @@ func (n *NetworkMonitorsServerTransport) dispatchBeginUpdateAdministrativeState(
 	}
 	beginUpdateAdministrativeState := n.beginUpdateAdministrativeState.get(req)
 	if beginUpdateAdministrativeState == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkMonitors/(?P<networkMonitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateAdministrativeState`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkMonitors/(?P<networkMonitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateAdministrativeState`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -412,7 +408,7 @@ func (n *NetworkMonitorsServerTransport) dispatchBeginUpdateAdministrativeState(
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginUpdateAdministrativeState.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

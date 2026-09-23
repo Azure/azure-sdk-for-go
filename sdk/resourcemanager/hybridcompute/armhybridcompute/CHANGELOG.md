@@ -1,22 +1,94 @@
 # Release History
 
-## 3.0.0-beta.1 (2026-07-13)
+## 3.0.0 (2026-07-24)
 ### Breaking Changes
 
 - Type of `Machine.Identity` has been changed from `*Identity` to `*ManagedServiceIdentity`
 - Type of `MachineUpdate.Identity` has been changed from `*Identity` to `*ManagedServiceIdentity`
+- Operation `*MachinesClient.Delete` has been changed to LRO, use `*MachinesClient.BeginDelete` instead.
 - Struct `Identity` has been removed
 
 ### Features Added
 
 - New value `LicenseTargetWindowsServer2016` added to enum type `LicenseTarget`
+- New value `StatusTypesAwaitingConnection` added to enum type `StatusTypes`
+- New enum type `ExecutionState` with values `ExecutionStateCanceled`, `ExecutionStateFailed`, `ExecutionStatePending`, `ExecutionStateRunning`, `ExecutionStateSucceeded`, `ExecutionStateTimedOut`, `ExecutionStateUnknown`
+- New enum type `ExtensionsStatusLevelTypes` with values `ExtensionsStatusLevelTypesError`, `ExtensionsStatusLevelTypesInfo`, `ExtensionsStatusLevelTypesWarning`
+- New enum type `GatewayType` with values `GatewayTypePublic`
+- New enum type `IdentityKeyStore` with values `IdentityKeyStoreDefault`, `IdentityKeyStoreTPM`
 - New enum type `MachineStatusReason` with values `MachineStatusReasonCloned`
 - New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New enum type `ServiceExtensionPublicNetworkAccess` with values `ServiceExtensionPublicNetworkAccessDisabled`, `ServiceExtensionPublicNetworkAccessEnabled`
+- New function `*ClientFactory.NewExtensionMetadataV2Client() *ExtensionMetadataV2Client`
+- New function `*ClientFactory.NewExtensionPublisherClient() *ExtensionPublisherClient`
+- New function `*ClientFactory.NewExtensionTypeClient() *ExtensionTypeClient`
+- New function `*ClientFactory.NewGatewaysClient() *GatewaysClient`
+- New function `*ClientFactory.NewMachineRunCommandsClient() *MachineRunCommandsClient`
+- New function `*ClientFactory.NewSettingsClient() *SettingsClient`
+- New function `NewExtensionMetadataV2Client(credential azcore.TokenCredential, options *arm.ClientOptions) (*ExtensionMetadataV2Client, error)`
+- New function `*ExtensionMetadataV2Client.Get(ctx context.Context, location string, publisher string, extensionType string, version string, options *ExtensionMetadataV2ClientGetOptions) (ExtensionMetadataV2ClientGetResponse, error)`
+- New function `*ExtensionMetadataV2Client.NewListPager(location string, publisher string, extensionType string, options *ExtensionMetadataV2ClientListOptions) *runtime.Pager[ExtensionMetadataV2ClientListResponse]`
+- New function `NewExtensionPublisherClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ExtensionPublisherClient, error)`
+- New function `*ExtensionPublisherClient.NewListPager(location string, options *ExtensionPublisherClientListOptions) *runtime.Pager[ExtensionPublisherClientListResponse]`
+- New function `NewExtensionTypeClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ExtensionTypeClient, error)`
+- New function `*ExtensionTypeClient.NewListPager(location string, publisher string, options *ExtensionTypeClientListOptions) *runtime.Pager[ExtensionTypeClientListResponse]`
+- New function `NewGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GatewaysClient, error)`
+- New function `*GatewaysClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, parameters Gateway, options *GatewaysClientBeginCreateOrUpdateOptions) (*runtime.Poller[GatewaysClientCreateOrUpdateResponse], error)`
+- New function `*GatewaysClient.BeginDelete(ctx context.Context, resourceGroupName string, gatewayName string, options *GatewaysClientBeginDeleteOptions) (*runtime.Poller[GatewaysClientDeleteResponse], error)`
+- New function `*GatewaysClient.Get(ctx context.Context, resourceGroupName string, gatewayName string, options *GatewaysClientGetOptions) (GatewaysClientGetResponse, error)`
+- New function `*GatewaysClient.NewListByResourceGroupPager(resourceGroupName string, options *GatewaysClientListByResourceGroupOptions) *runtime.Pager[GatewaysClientListByResourceGroupResponse]`
+- New function `*GatewaysClient.NewListBySubscriptionPager(options *GatewaysClientListBySubscriptionOptions) *runtime.Pager[GatewaysClientListBySubscriptionResponse]`
+- New function `*GatewaysClient.Update(ctx context.Context, resourceGroupName string, gatewayName string, parameters GatewayUpdate, options *GatewaysClientUpdateOptions) (GatewaysClientUpdateResponse, error)`
+- New function `NewMachineRunCommandsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MachineRunCommandsClient, error)`
+- New function `*MachineRunCommandsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, machineName string, runCommandName string, runCommandProperties MachineRunCommand, options *MachineRunCommandsClientBeginCreateOrUpdateOptions) (*runtime.Poller[MachineRunCommandsClientCreateOrUpdateResponse], error)`
+- New function `*MachineRunCommandsClient.BeginDelete(ctx context.Context, resourceGroupName string, machineName string, runCommandName string, options *MachineRunCommandsClientBeginDeleteOptions) (*runtime.Poller[MachineRunCommandsClientDeleteResponse], error)`
+- New function `*MachineRunCommandsClient.Get(ctx context.Context, resourceGroupName string, machineName string, runCommandName string, options *MachineRunCommandsClientGetOptions) (MachineRunCommandsClientGetResponse, error)`
+- New function `*MachineRunCommandsClient.NewListPager(resourceGroupName string, machineName string, options *MachineRunCommandsClientListOptions) *runtime.Pager[MachineRunCommandsClientListResponse]`
+- New function `*ManagementClient.BeginSetupExtensions(ctx context.Context, resourceGroupName string, machineName string, extensions SetupExtensionRequest, options *ManagementClientBeginSetupExtensionsOptions) (*runtime.Poller[ManagementClientSetupExtensionsResponse], error)`
+- New function `NewSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SettingsClient, error)`
+- New function `*SettingsClient.Get(ctx context.Context, resourceGroupName string, baseProvider string, baseResourceType string, baseResourceName string, settingsResourceName string, options *SettingsClientGetOptions) (SettingsClientGetResponse, error)`
+- New function `*SettingsClient.Patch(ctx context.Context, resourceGroupName string, baseProvider string, baseResourceType string, baseResourceName string, settingsResourceName string, parameters Settings, options *SettingsClientPatchOptions) (SettingsClientPatchResponse, error)`
+- New function `*SettingsClient.Update(ctx context.Context, resourceGroupName string, baseProvider string, baseResourceType string, baseResourceName string, settingsResourceName string, parameters Settings, options *SettingsClientUpdateOptions) (SettingsClientUpdateResponse, error)`
+- New struct `Disk`
+- New struct `ExtensionPublisher`
+- New struct `ExtensionPublisherListResult`
+- New struct `ExtensionType`
+- New struct `ExtensionTypeListResult`
+- New struct `ExtensionValueListResultV2`
+- New struct `ExtensionValueV2`
+- New struct `ExtensionValueV2Properties`
+- New struct `ExtensionsResourceStatus`
+- New struct `FirmwareProfile`
+- New struct `Gateway`
+- New struct `GatewayProperties`
+- New struct `GatewayUpdate`
+- New struct `GatewayUpdateProperties`
+- New struct `GatewaysListResult`
+- New struct `HardwareProfile`
+- New struct `MachineRunCommand`
+- New struct `MachineRunCommandInstanceView`
+- New struct `MachineRunCommandProperties`
+- New struct `MachineRunCommandScriptSource`
+- New struct `MachineRunCommandsListResult`
 - New struct `ManagedServiceIdentity`
+- New struct `Processor`
+- New struct `RunCommandInputParameter`
+- New struct `RunCommandManagedIdentity`
+- New struct `ServiceExtension`
+- New struct `Settings`
+- New struct `SettingsGatewayProperties`
+- New struct `SettingsProperties`
+- New struct `SetupExtensionRequest`
+- New struct `StorageProfile`
 - New struct `UserAssignedIdentity`
-- New field `GatewayBypass` in struct `GatewayProperties`
-- New field `GatewayBypass` in struct `GatewayUpdateProperties`
-- New field `StatusReason` in struct `MachineProperties`
+- New field `NextLink` in struct `ExtensionValueListResult`
+- New field `FirmwareProfile`, `HardwareProfile`, `HardwareResourceID`, `IdentityKeyStore`, `StatusReason`, `StorageProfile`, `TpmEkCertificate` in struct `MachineProperties`
+- New field `IdentityKeyStore`, `TpmEkCertificate` in struct `MachineUpdateProperties`
+- New field `ID`, `MacAddress`, `Name` in struct `NetworkInterface`
+- New field `SystemData` in struct `NetworkSecurityPerimeterConfiguration`
+- New field `NextLink` in struct `OperationListResult`
+- New field `ServiceExtensions` in struct `PrivateLinkScopeProperties`
+- New field `PatchNameMasksToExclude`, `PatchNameMasksToInclude` in struct `WindowsParameters`
 
 
 ## 2.1.0-beta.3 (2026-05-20)

@@ -21,6 +21,10 @@ import (
 
 // StoragePoolsServer is a fake server for instances of the armpurestorageblock.StoragePoolsClient type.
 type StoragePoolsServer struct {
+	// ConfigurePlatformConsoleAuth is the fake for method StoragePoolsClient.ConfigurePlatformConsoleAuth
+	// HTTP status codes to indicate success: http.StatusOK
+	ConfigurePlatformConsoleAuth func(ctx context.Context, resourceGroupName string, storagePoolName string, config armpurestorageblock.PlatformConsoleAuthConfigClassification, options *armpurestorageblock.StoragePoolsClientConfigurePlatformConsoleAuthOptions) (resp azfake.Responder[armpurestorageblock.StoragePoolsClientConfigurePlatformConsoleAuthResponse], errResp azfake.ErrorResponder)
+
 	// BeginCreate is the fake for method StoragePoolsClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreate func(ctx context.Context, resourceGroupName string, storagePoolName string, resource armpurestorageblock.StoragePool, options *armpurestorageblock.StoragePoolsClientBeginCreateOptions) (resp azfake.PollerResponder[armpurestorageblock.StoragePoolsClientCreateResponse], errResp azfake.ErrorResponder)
@@ -64,6 +68,10 @@ type StoragePoolsServer struct {
 	// NewListBySubscriptionPager is the fake for method StoragePoolsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armpurestorageblock.StoragePoolsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armpurestorageblock.StoragePoolsClientListBySubscriptionResponse])
+
+	// ListPlatformConsoleActivationCode is the fake for method StoragePoolsClient.ListPlatformConsoleActivationCode
+	// HTTP status codes to indicate success: http.StatusOK
+	ListPlatformConsoleActivationCode func(ctx context.Context, resourceGroupName string, storagePoolName string, options *armpurestorageblock.StoragePoolsClientListPlatformConsoleActivationCodeOptions) (resp azfake.Responder[armpurestorageblock.StoragePoolsClientListPlatformConsoleActivationCodeResponse], errResp azfake.ErrorResponder)
 
 	// BeginRepairAvsConnection is the fake for method StoragePoolsClient.BeginRepairAvsConnection
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -128,6 +136,8 @@ func (s *StoragePoolsServerTransport) dispatchToMethodFake(req *http.Request, me
 		}
 		if !intercepted {
 			switch method {
+			case "StoragePoolsClient.ConfigurePlatformConsoleAuth":
+				res.resp, res.err = s.dispatchConfigurePlatformConsoleAuth(req)
 			case "StoragePoolsClient.BeginCreate":
 				res.resp, res.err = s.dispatchBeginCreate(req)
 			case "StoragePoolsClient.BeginDelete":
@@ -150,6 +160,8 @@ func (s *StoragePoolsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
 			case "StoragePoolsClient.NewListBySubscriptionPager":
 				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
+			case "StoragePoolsClient.ListPlatformConsoleActivationCode":
+				res.resp, res.err = s.dispatchListPlatformConsoleActivationCode(req)
 			case "StoragePoolsClient.BeginRepairAvsConnection":
 				res.resp, res.err = s.dispatchBeginRepairAvsConnection(req)
 			case "StoragePoolsClient.BeginUpdate":
@@ -170,13 +182,54 @@ func (s *StoragePoolsServerTransport) dispatchToMethodFake(req *http.Request, me
 	}
 }
 
+func (s *StoragePoolsServerTransport) dispatchConfigurePlatformConsoleAuth(req *http.Request) (*http.Response, error) {
+	if s.srv.ConfigurePlatformConsoleAuth == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ConfigurePlatformConsoleAuth not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurePlatformConsoleAuth`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	raw, err := readRequestBody(req)
+	if err != nil {
+		return nil, err
+	}
+	body, err := unmarshalPlatformConsoleAuthConfigClassification(raw)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	storagePoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storagePoolName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.ConfigurePlatformConsoleAuth(req.Context(), resourceGroupNameParam, storagePoolNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PlatformConsoleAuthResultClassification, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (s *StoragePoolsServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginCreate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
 	beginCreate := s.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -224,7 +277,7 @@ func (s *StoragePoolsServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	}
 	beginDelete := s.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -268,7 +321,7 @@ func (s *StoragePoolsServerTransport) dispatchBeginDisableAvsConnection(req *htt
 	}
 	beginDisableAvsConnection := s.beginDisableAvsConnection.get(req)
 	if beginDisableAvsConnection == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disableAvsConnection`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/disableAvsConnection`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -312,7 +365,7 @@ func (s *StoragePoolsServerTransport) dispatchBeginEnableAvsConnection(req *http
 	}
 	beginEnableAvsConnection := s.beginEnableAvsConnection.get(req)
 	if beginEnableAvsConnection == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enableAvsConnection`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/enableAvsConnection`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -360,7 +413,7 @@ func (s *StoragePoolsServerTransport) dispatchBeginFinalizeAvsConnection(req *ht
 	}
 	beginFinalizeAvsConnection := s.beginFinalizeAvsConnection.get(req)
 	if beginFinalizeAvsConnection == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/finalizeAvsConnection`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/finalizeAvsConnection`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -406,7 +459,7 @@ func (s *StoragePoolsServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -439,7 +492,7 @@ func (s *StoragePoolsServerTransport) dispatchGetAvsConnection(req *http.Request
 	if s.srv.GetAvsConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAvsConnection not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getAvsConnection`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getAvsConnection`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -472,7 +525,7 @@ func (s *StoragePoolsServerTransport) dispatchGetAvsStatus(req *http.Request) (*
 	if s.srv.GetAvsStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAvsStatus not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getAvsStatus`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getAvsStatus`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -505,7 +558,7 @@ func (s *StoragePoolsServerTransport) dispatchGetHealthStatus(req *http.Request)
 	if s.srv.GetHealthStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetHealthStatus not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getHealthStatus`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getHealthStatus`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -540,7 +593,7 @@ func (s *StoragePoolsServerTransport) dispatchNewListByResourceGroupPager(req *h
 	}
 	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -577,7 +630,7 @@ func (s *StoragePoolsServerTransport) dispatchNewListBySubscriptionPager(req *ht
 	}
 	newListBySubscriptionPager := s.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -604,13 +657,46 @@ func (s *StoragePoolsServerTransport) dispatchNewListBySubscriptionPager(req *ht
 	return resp, nil
 }
 
+func (s *StoragePoolsServerTransport) dispatchListPlatformConsoleActivationCode(req *http.Request) (*http.Response, error) {
+	if s.srv.ListPlatformConsoleActivationCode == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListPlatformConsoleActivationCode not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listPlatformConsoleActivationCode`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	storagePoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storagePoolName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.ListPlatformConsoleActivationCode(req.Context(), resourceGroupNameParam, storagePoolNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PlatformConsoleActivationCode, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (s *StoragePoolsServerTransport) dispatchBeginRepairAvsConnection(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginRepairAvsConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRepairAvsConnection not implemented")}
 	}
 	beginRepairAvsConnection := s.beginRepairAvsConnection.get(req)
 	if beginRepairAvsConnection == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/repairAvsConnection`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/repairAvsConnection`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -654,7 +740,7 @@ func (s *StoragePoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*h
 	}
 	beginUpdate := s.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

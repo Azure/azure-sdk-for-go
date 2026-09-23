@@ -30,6 +30,9 @@ type AmlFilesystemsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAmlFilesystemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AmlFilesystemsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,8 +64,7 @@ func (client *AmlFilesystemsClient) Archive(ctx context.Context, resourceGroupNa
 		return AmlFilesystemsClientArchiveResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AmlFilesystemsClientArchiveResponse{}, err
+		return AmlFilesystemsClientArchiveResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return AmlFilesystemsClientArchiveResponse{}, nil
 }
@@ -71,7 +73,7 @@ func (client *AmlFilesystemsClient) Archive(ctx context.Context, resourceGroupNa
 func (client *AmlFilesystemsClient) archiveCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, options *AmlFilesystemsClientArchiveOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/archive"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -120,8 +122,7 @@ func (client *AmlFilesystemsClient) CancelArchive(ctx context.Context, resourceG
 		return AmlFilesystemsClientCancelArchiveResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AmlFilesystemsClientCancelArchiveResponse{}, err
+		return AmlFilesystemsClientCancelArchiveResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return AmlFilesystemsClientCancelArchiveResponse{}, nil
 }
@@ -130,7 +131,7 @@ func (client *AmlFilesystemsClient) CancelArchive(ctx context.Context, resourceG
 func (client *AmlFilesystemsClient) cancelArchiveCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, _ *AmlFilesystemsClientCancelArchiveOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/cancelArchive"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -193,8 +194,7 @@ func (client *AmlFilesystemsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -203,7 +203,7 @@ func (client *AmlFilesystemsClient) createOrUpdate(ctx context.Context, resource
 func (client *AmlFilesystemsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, amlFilesystem AmlFilesystem, _ *AmlFilesystemsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -269,8 +269,7 @@ func (client *AmlFilesystemsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -279,7 +278,7 @@ func (client *AmlFilesystemsClient) deleteOperation(ctx context.Context, resourc
 func (client *AmlFilesystemsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, _ *AmlFilesystemsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -319,19 +318,14 @@ func (client *AmlFilesystemsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return AmlFilesystemsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AmlFilesystemsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *AmlFilesystemsClient) getCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, _ *AmlFilesystemsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -354,8 +348,11 @@ func (client *AmlFilesystemsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *AmlFilesystemsClient) getHandleResponse(resp *http.Response) (AmlFilesystemsClientGetResponse, error) {
+func (client *AmlFilesystemsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AmlFilesystemsClientGetResponse, error) {
 	result := AmlFilesystemsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AmlFilesystem); err != nil {
 		return AmlFilesystemsClientGetResponse{}, err
 	}
@@ -375,39 +372,53 @@ func (client *AmlFilesystemsClient) NewListPager(options *AmlFilesystemsClientLi
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return AmlFilesystemsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AmlFilesystemsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AmlFilesystemsClient) listCreateRequest(ctx context.Context, _ *AmlFilesystemsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/amlFilesystems"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AmlFilesystemsClient) listCreateRequest(ctx context.Context, nextLink string, _ *AmlFilesystemsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/amlFilesystems"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AmlFilesystemsClient) listHandleResponse(resp *http.Response) (AmlFilesystemsClientListResponse, error) {
+func (client *AmlFilesystemsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AmlFilesystemsClientListResponse, error) {
 	result := AmlFilesystemsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AmlFilesystemsListResult); err != nil {
 		return AmlFilesystemsClientListResponse{}, err
 	}
@@ -429,43 +440,57 @@ func (client *AmlFilesystemsClient) NewListByResourceGroupPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return AmlFilesystemsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AmlFilesystemsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AmlFilesystemsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *AmlFilesystemsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AmlFilesystemsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *AmlFilesystemsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AmlFilesystemsClient) listByResourceGroupHandleResponse(resp *http.Response) (AmlFilesystemsClientListByResourceGroupResponse, error) {
+func (client *AmlFilesystemsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (AmlFilesystemsClientListByResourceGroupResponse, error) {
 	result := AmlFilesystemsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AmlFilesystemsListResult); err != nil {
 		return AmlFilesystemsClientListByResourceGroupResponse{}, err
 	}
@@ -515,8 +540,7 @@ func (client *AmlFilesystemsClient) update(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -525,7 +549,7 @@ func (client *AmlFilesystemsClient) update(ctx context.Context, resourceGroupNam
 func (client *AmlFilesystemsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, amlFilesystem AmlFilesystemUpdate, _ *AmlFilesystemsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

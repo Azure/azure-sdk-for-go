@@ -30,6 +30,9 @@ type SQLMigrationServicesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSQLMigrationServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SQLMigrationServicesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -82,8 +85,7 @@ func (client *SQLMigrationServicesClient) createOrUpdate(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -92,7 +94,7 @@ func (client *SQLMigrationServicesClient) createOrUpdate(ctx context.Context, re
 func (client *SQLMigrationServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, parameters SQLMigrationService, _ *SQLMigrationServicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -158,8 +160,7 @@ func (client *SQLMigrationServicesClient) deleteOperation(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -168,7 +169,7 @@ func (client *SQLMigrationServicesClient) deleteOperation(ctx context.Context, r
 func (client *SQLMigrationServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, _ *SQLMigrationServicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -210,19 +211,14 @@ func (client *SQLMigrationServicesClient) DeleteNode(ctx context.Context, resour
 	if err != nil {
 		return SQLMigrationServicesClientDeleteNodeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SQLMigrationServicesClientDeleteNodeResponse{}, err
-	}
-	resp, err := client.deleteNodeHandleResponse(httpResp)
-	return resp, err
+	return client.deleteNodeHandleResponse(httpResp, http.StatusOK)
 }
 
 // deleteNodeCreateRequest creates the DeleteNode request.
 func (client *SQLMigrationServicesClient) deleteNodeCreateRequest(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, parameters DeleteNode, _ *SQLMigrationServicesClientDeleteNodeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}/deleteNode"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -249,8 +245,11 @@ func (client *SQLMigrationServicesClient) deleteNodeCreateRequest(ctx context.Co
 }
 
 // deleteNodeHandleResponse handles the DeleteNode response.
-func (client *SQLMigrationServicesClient) deleteNodeHandleResponse(resp *http.Response) (SQLMigrationServicesClientDeleteNodeResponse, error) {
+func (client *SQLMigrationServicesClient) deleteNodeHandleResponse(resp *http.Response, successCodes ...int) (SQLMigrationServicesClientDeleteNodeResponse, error) {
 	result := SQLMigrationServicesClientDeleteNodeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeleteNode); err != nil {
 		return SQLMigrationServicesClientDeleteNodeResponse{}, err
 	}
@@ -277,19 +276,14 @@ func (client *SQLMigrationServicesClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return SQLMigrationServicesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SQLMigrationServicesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *SQLMigrationServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, _ *SQLMigrationServicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -312,8 +306,11 @@ func (client *SQLMigrationServicesClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *SQLMigrationServicesClient) getHandleResponse(resp *http.Response) (SQLMigrationServicesClientGetResponse, error) {
+func (client *SQLMigrationServicesClient) getHandleResponse(resp *http.Response, successCodes ...int) (SQLMigrationServicesClientGetResponse, error) {
 	result := SQLMigrationServicesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLMigrationService); err != nil {
 		return SQLMigrationServicesClientGetResponse{}, err
 	}
@@ -340,19 +337,14 @@ func (client *SQLMigrationServicesClient) ListAuthKeys(ctx context.Context, reso
 	if err != nil {
 		return SQLMigrationServicesClientListAuthKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SQLMigrationServicesClientListAuthKeysResponse{}, err
-	}
-	resp, err := client.listAuthKeysHandleResponse(httpResp)
-	return resp, err
+	return client.listAuthKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // listAuthKeysCreateRequest creates the ListAuthKeys request.
 func (client *SQLMigrationServicesClient) listAuthKeysCreateRequest(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, _ *SQLMigrationServicesClientListAuthKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}/listAuthKeys"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -375,8 +367,11 @@ func (client *SQLMigrationServicesClient) listAuthKeysCreateRequest(ctx context.
 }
 
 // listAuthKeysHandleResponse handles the ListAuthKeys response.
-func (client *SQLMigrationServicesClient) listAuthKeysHandleResponse(resp *http.Response) (SQLMigrationServicesClientListAuthKeysResponse, error) {
+func (client *SQLMigrationServicesClient) listAuthKeysHandleResponse(resp *http.Response, successCodes ...int) (SQLMigrationServicesClientListAuthKeysResponse, error) {
 	result := SQLMigrationServicesClientListAuthKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthenticationKeys); err != nil {
 		return SQLMigrationServicesClientListAuthKeysResponse{}, err
 	}
@@ -398,43 +393,57 @@ func (client *SQLMigrationServicesClient) NewListByResourceGroupPager(resourceGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return SQLMigrationServicesClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SQLMigrationServicesClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *SQLMigrationServicesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *SQLMigrationServicesClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SQLMigrationServicesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *SQLMigrationServicesClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *SQLMigrationServicesClient) listByResourceGroupHandleResponse(resp *http.Response) (SQLMigrationServicesClientListByResourceGroupResponse, error) {
+func (client *SQLMigrationServicesClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (SQLMigrationServicesClientListByResourceGroupResponse, error) {
 	result := SQLMigrationServicesClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLMigrationListResult); err != nil {
 		return SQLMigrationServicesClientListByResourceGroupResponse{}, err
 	}
@@ -455,39 +464,53 @@ func (client *SQLMigrationServicesClient) NewListBySubscriptionPager(options *SQ
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return SQLMigrationServicesClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SQLMigrationServicesClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *SQLMigrationServicesClient) listBySubscriptionCreateRequest(ctx context.Context, _ *SQLMigrationServicesClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/sqlMigrationServices"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SQLMigrationServicesClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *SQLMigrationServicesClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/sqlMigrationServices"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *SQLMigrationServicesClient) listBySubscriptionHandleResponse(resp *http.Response) (SQLMigrationServicesClientListBySubscriptionResponse, error) {
+func (client *SQLMigrationServicesClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (SQLMigrationServicesClientListBySubscriptionResponse, error) {
 	result := SQLMigrationServicesClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLMigrationListResult); err != nil {
 		return SQLMigrationServicesClientListBySubscriptionResponse{}, err
 	}
@@ -510,47 +533,61 @@ func (client *SQLMigrationServicesClient) NewListMigrationsPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listMigrationsCreateRequest(ctx, resourceGroupName, sqlMigrationServiceName, options)
-			}, nil)
+			req, err := client.listMigrationsCreateRequest(ctx, resourceGroupName, sqlMigrationServiceName, nextLink, options)
 			if err != nil {
 				return SQLMigrationServicesClientListMigrationsResponse{}, err
 			}
-			return client.listMigrationsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SQLMigrationServicesClientListMigrationsResponse{}, err
+			}
+			return client.listMigrationsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listMigrationsCreateRequest creates the ListMigrations request.
-func (client *SQLMigrationServicesClient) listMigrationsCreateRequest(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, _ *SQLMigrationServicesClientListMigrationsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}/listMigrations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SQLMigrationServicesClient) listMigrationsCreateRequest(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, nextLink string, _ *SQLMigrationServicesClientListMigrationsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}/listMigrations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if sqlMigrationServiceName == "" {
+			return nil, errors.New("parameter sqlMigrationServiceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{sqlMigrationServiceName}", url.PathEscape(sqlMigrationServiceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if sqlMigrationServiceName == "" {
-		return nil, errors.New("parameter sqlMigrationServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{sqlMigrationServiceName}", url.PathEscape(sqlMigrationServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listMigrationsHandleResponse handles the ListMigrations response.
-func (client *SQLMigrationServicesClient) listMigrationsHandleResponse(resp *http.Response) (SQLMigrationServicesClientListMigrationsResponse, error) {
+func (client *SQLMigrationServicesClient) listMigrationsHandleResponse(resp *http.Response, successCodes ...int) (SQLMigrationServicesClientListMigrationsResponse, error) {
 	result := SQLMigrationServicesClientListMigrationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseMigrationListResult); err != nil {
 		return SQLMigrationServicesClientListMigrationsResponse{}, err
 	}
@@ -578,19 +615,14 @@ func (client *SQLMigrationServicesClient) ListMonitoringData(ctx context.Context
 	if err != nil {
 		return SQLMigrationServicesClientListMonitoringDataResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SQLMigrationServicesClientListMonitoringDataResponse{}, err
-	}
-	resp, err := client.listMonitoringDataHandleResponse(httpResp)
-	return resp, err
+	return client.listMonitoringDataHandleResponse(httpResp, http.StatusOK)
 }
 
 // listMonitoringDataCreateRequest creates the ListMonitoringData request.
 func (client *SQLMigrationServicesClient) listMonitoringDataCreateRequest(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, _ *SQLMigrationServicesClientListMonitoringDataOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}/listMonitoringData"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -613,8 +645,11 @@ func (client *SQLMigrationServicesClient) listMonitoringDataCreateRequest(ctx co
 }
 
 // listMonitoringDataHandleResponse handles the ListMonitoringData response.
-func (client *SQLMigrationServicesClient) listMonitoringDataHandleResponse(resp *http.Response) (SQLMigrationServicesClientListMonitoringDataResponse, error) {
+func (client *SQLMigrationServicesClient) listMonitoringDataHandleResponse(resp *http.Response, successCodes ...int) (SQLMigrationServicesClientListMonitoringDataResponse, error) {
 	result := SQLMigrationServicesClientListMonitoringDataResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeMonitoringData); err != nil {
 		return SQLMigrationServicesClientListMonitoringDataResponse{}, err
 	}
@@ -642,19 +677,14 @@ func (client *SQLMigrationServicesClient) RegenerateAuthKeys(ctx context.Context
 	if err != nil {
 		return SQLMigrationServicesClientRegenerateAuthKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SQLMigrationServicesClientRegenerateAuthKeysResponse{}, err
-	}
-	resp, err := client.regenerateAuthKeysHandleResponse(httpResp)
-	return resp, err
+	return client.regenerateAuthKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // regenerateAuthKeysCreateRequest creates the RegenerateAuthKeys request.
 func (client *SQLMigrationServicesClient) regenerateAuthKeysCreateRequest(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, parameters RegenAuthKeys, _ *SQLMigrationServicesClientRegenerateAuthKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}/regenerateAuthKeys"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -681,8 +711,11 @@ func (client *SQLMigrationServicesClient) regenerateAuthKeysCreateRequest(ctx co
 }
 
 // regenerateAuthKeysHandleResponse handles the RegenerateAuthKeys response.
-func (client *SQLMigrationServicesClient) regenerateAuthKeysHandleResponse(resp *http.Response) (SQLMigrationServicesClientRegenerateAuthKeysResponse, error) {
+func (client *SQLMigrationServicesClient) regenerateAuthKeysHandleResponse(resp *http.Response, successCodes ...int) (SQLMigrationServicesClientRegenerateAuthKeysResponse, error) {
 	result := SQLMigrationServicesClientRegenerateAuthKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegenAuthKeys); err != nil {
 		return SQLMigrationServicesClientRegenerateAuthKeysResponse{}, err
 	}
@@ -730,8 +763,7 @@ func (client *SQLMigrationServicesClient) update(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -740,7 +772,7 @@ func (client *SQLMigrationServicesClient) update(ctx context.Context, resourceGr
 func (client *SQLMigrationServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, parameters SQLMigrationServiceUpdate, _ *SQLMigrationServicesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

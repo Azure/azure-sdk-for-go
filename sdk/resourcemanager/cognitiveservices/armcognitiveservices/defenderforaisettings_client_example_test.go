@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/PutDefenderForAISetting.json
+// Generated from example definition: 2026-07-15-preview/PutDefenderForAISetting.json
 func ExampleDefenderForAISettingsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,10 +44,10 @@ func ExampleDefenderForAISettingsClient_CreateOrUpdate() {
 	// 			State: to.Ptr(armcognitiveservices.DefenderForAISettingStateEnabled),
 	// 		},
 	// 		SystemData: &armcognitiveservices.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("xxx@microsoft.com"),
 	// 			CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("xxx@microsoft.com"),
 	// 			LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
 	// 		},
@@ -55,7 +55,7 @@ func ExampleDefenderForAISettingsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/GetDefenderForAISetting.json
+// Generated from example definition: 2026-07-15-preview/GetDefenderForAISetting.json
 func ExampleDefenderForAISettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,10 +83,10 @@ func ExampleDefenderForAISettingsClient_Get() {
 	// 			State: to.Ptr(armcognitiveservices.DefenderForAISettingStateEnabled),
 	// 		},
 	// 		SystemData: &armcognitiveservices.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("xxx@microsoft.com"),
 	// 			CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("xxx@microsoft.com"),
 	// 			LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
 	// 		},
@@ -94,7 +94,7 @@ func ExampleDefenderForAISettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ListDefenderForAISetting.json
+// Generated from example definition: 2026-07-15-preview/ListDefenderForAISetting.json
 func ExampleDefenderForAISettingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,10 +128,10 @@ func ExampleDefenderForAISettingsClient_NewListPager() {
 		// 					State: to.Ptr(armcognitiveservices.DefenderForAISettingStateEnabled),
 		// 				},
 		// 				SystemData: &armcognitiveservices.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("xxx@microsoft.com"),
 		// 					CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("xxx@microsoft.com"),
 		// 					LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
 		// 				},
@@ -142,7 +142,7 @@ func ExampleDefenderForAISettingsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/UpdateDefenderForAISetting.json
+// Generated from example definition: 2026-07-15-preview/UpdateDefenderForAISetting.json
 func ExampleDefenderForAISettingsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,10 +174,10 @@ func ExampleDefenderForAISettingsClient_Update() {
 	// 			State: to.Ptr(armcognitiveservices.DefenderForAISettingStateEnabled),
 	// 		},
 	// 		SystemData: &armcognitiveservices.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("xxx@microsoft.com"),
 	// 			CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("xxx@microsoft.com"),
 	// 			LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
 	// 		},

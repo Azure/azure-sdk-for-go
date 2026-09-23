@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-16-preview/extension/ExtensionMetadata_Get.json
+// Generated from example definition: 2026-07-15/extension/ExtensionMetadata_Get.json
 func ExampleExtensionMetadataClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleExtensionMetadataClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/extension/ExtensionMetadata_List.json
+// Generated from example definition: 2026-07-15/extension/ExtensionMetadata_List.json
 func ExampleExtensionMetadataClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

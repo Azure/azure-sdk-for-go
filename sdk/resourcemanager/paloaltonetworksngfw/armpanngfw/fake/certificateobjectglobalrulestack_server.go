@@ -110,7 +110,7 @@ func (c *CertificateObjectGlobalRulestackServerTransport) dispatchBeginCreateOrU
 	}
 	beginCreateOrUpdate := c.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/certificates/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/certificates/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -158,7 +158,7 @@ func (c *CertificateObjectGlobalRulestackServerTransport) dispatchBeginDelete(re
 	}
 	beginDelete := c.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/certificates/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/certificates/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -200,7 +200,7 @@ func (c *CertificateObjectGlobalRulestackServerTransport) dispatchGet(req *http.
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/certificates/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/certificates/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -235,7 +235,7 @@ func (c *CertificateObjectGlobalRulestackServerTransport) dispatchNewListPager(r
 	}
 	newListPager := c.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/certificates`
+		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/certificates`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-05-15-preview/ProjectConnection/create.json
+// Generated from example definition: 2026-07-15-preview/ProjectConnection/create.json
 func ExampleProjectConnectionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleProjectConnectionsClient_Create() {
 		Properties: &armcognitiveservices.NoneAuthTypeConnectionProperties{
 			AuthType:   to.Ptr(armcognitiveservices.ConnectionAuthTypeNone),
 			Category:   to.Ptr(armcognitiveservices.ConnectionCategoryContainerRegistry),
-			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-15T14:30:00Z"); return t }()),
+			ExpiryTime: to.Ptr(time.Date(2024, time.March, 15, 14, 30, 0, 0, time.UTC)),
 			Target:     to.Ptr("[target url]"),
 		},
 	}, nil)
@@ -46,14 +46,14 @@ func ExampleProjectConnectionsClient_Create() {
 	// 		Properties: &armcognitiveservices.NoneAuthTypeConnectionProperties{
 	// 			AuthType: to.Ptr(armcognitiveservices.ConnectionAuthTypeNone),
 	// 			Category: to.Ptr(armcognitiveservices.ConnectionCategoryContainerRegistry),
-	// 			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-15T14:30:00Z"); return t}()),
+	// 			ExpiryTime: to.Ptr(time.Date(2024, time.March, 15, 14, 30, 0, 0, time.UTC)),
 	// 			Target: to.Ptr("[target url]"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ProjectConnection/delete.json
+// Generated from example definition: 2026-07-15-preview/ProjectConnection/delete.json
 func ExampleProjectConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleProjectConnectionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ProjectConnection/get.json
+// Generated from example definition: 2026-07-15-preview/ProjectConnection/get.json
 func ExampleProjectConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,14 +101,14 @@ func ExampleProjectConnectionsClient_Get() {
 	// 		Properties: &armcognitiveservices.NoneAuthTypeConnectionProperties{
 	// 			AuthType: to.Ptr(armcognitiveservices.ConnectionAuthTypeNone),
 	// 			Category: to.Ptr(armcognitiveservices.ConnectionCategoryContainerRegistry),
-	// 			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-15T14:30:00Z"); return t}()),
+	// 			ExpiryTime: to.Ptr(time.Date(2024, time.March, 15, 14, 30, 0, 0, time.UTC)),
 	// 			Target: to.Ptr("[target url]"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ProjectConnection/list.json
+// Generated from example definition: 2026-07-15-preview/ProjectConnection/list.json
 func ExampleProjectConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +142,7 @@ func ExampleProjectConnectionsClient_NewListPager() {
 		// 				Properties: &armcognitiveservices.PATAuthTypeConnectionProperties{
 		// 					AuthType: to.Ptr(armcognitiveservices.ConnectionAuthTypePAT),
 		// 					Category: to.Ptr(armcognitiveservices.ConnectionCategoryContainerRegistry),
-		// 					ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-15T14:30:00Z"); return t}()),
+		// 					ExpiryTime: to.Ptr(time.Date(2024, time.March, 15, 14, 30, 0, 0, time.UTC)),
 		// 					Target: to.Ptr("[target url]"),
 		// 				},
 		// 			},
@@ -162,7 +162,7 @@ func ExampleProjectConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/ProjectConnection/update.json
+// Generated from example definition: 2026-07-15-preview/ProjectConnection/update.json
 func ExampleProjectConnectionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +181,7 @@ func ExampleProjectConnectionsClient_Update() {
 				AccessKeyID:     to.Ptr("some_string"),
 				SecretAccessKey: to.Ptr("some_string"),
 			},
-			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T00:00:00Z"); return t }()),
+			ExpiryTime: to.Ptr(time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC)),
 			Metadata:   map[string]*string{},
 			Target:     to.Ptr("some_string"),
 		},
@@ -200,7 +200,7 @@ func ExampleProjectConnectionsClient_Update() {
 	// 		Properties: &armcognitiveservices.AccessKeyAuthTypeConnectionProperties{
 	// 			AuthType: to.Ptr(armcognitiveservices.ConnectionAuthTypeAccessKey),
 	// 			Category: to.Ptr(armcognitiveservices.ConnectionCategoryADLSGen2),
-	// 			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T00:00:00Z"); return t}()),
+	// 			ExpiryTime: to.Ptr(time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			Metadata: map[string]*string{
 	// 			},
 	// 			Target: to.Ptr("some_string"),

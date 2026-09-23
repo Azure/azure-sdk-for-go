@@ -30,6 +30,9 @@ type SourceControlClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSourceControlClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SourceControlClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *SourceControlClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return SourceControlClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return SourceControlClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *SourceControlClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, parameters SourceControlCreateOrUpdateParameters, _ *SourceControlClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -106,8 +104,11 @@ func (client *SourceControlClient) createOrUpdateCreateRequest(ctx context.Conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SourceControlClient) createOrUpdateHandleResponse(resp *http.Response) (SourceControlClientCreateOrUpdateResponse, error) {
+func (client *SourceControlClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (SourceControlClientCreateOrUpdateResponse, error) {
 	result := SourceControlClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControl); err != nil {
 		return SourceControlClientCreateOrUpdateResponse{}, err
 	}
@@ -135,8 +136,7 @@ func (client *SourceControlClient) Delete(ctx context.Context, resourceGroupName
 		return SourceControlClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SourceControlClientDeleteResponse{}, err
+		return SourceControlClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SourceControlClientDeleteResponse{}, nil
 }
@@ -145,7 +145,7 @@ func (client *SourceControlClient) Delete(ctx context.Context, resourceGroupName
 func (client *SourceControlClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, _ *SourceControlClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -190,19 +190,14 @@ func (client *SourceControlClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return SourceControlClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SourceControlClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *SourceControlClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, _ *SourceControlClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -229,8 +224,11 @@ func (client *SourceControlClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *SourceControlClient) getHandleResponse(resp *http.Response) (SourceControlClientGetResponse, error) {
+func (client *SourceControlClient) getHandleResponse(resp *http.Response, successCodes ...int) (SourceControlClientGetResponse, error) {
 	result := SourceControlClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControl); err != nil {
 		return SourceControlClientGetResponse{}, err
 	}
@@ -253,50 +251,64 @@ func (client *SourceControlClient) NewListByAutomationAccountPager(resourceGroup
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
-			}, nil)
+			req, err := client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, nextLink, options)
 			if err != nil {
 				return SourceControlClientListByAutomationAccountResponse{}, err
 			}
-			return client.listByAutomationAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SourceControlClientListByAutomationAccountResponse{}, err
+			}
+			return client.listByAutomationAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *SourceControlClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *SourceControlClientListByAutomationAccountOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SourceControlClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nextLink string, options *SourceControlClientListByAutomationAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if automationAccountName == "" {
+			return nil, errors.New("parameter automationAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if automationAccountName == "" {
-		return nil, errors.New("parameter automationAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20241023)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20241023)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *SourceControlClient) listByAutomationAccountHandleResponse(resp *http.Response) (SourceControlClientListByAutomationAccountResponse, error) {
+func (client *SourceControlClient) listByAutomationAccountHandleResponse(resp *http.Response, successCodes ...int) (SourceControlClientListByAutomationAccountResponse, error) {
 	result := SourceControlClientListByAutomationAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlListResult); err != nil {
 		return SourceControlClientListByAutomationAccountResponse{}, err
 	}
@@ -324,19 +336,14 @@ func (client *SourceControlClient) Update(ctx context.Context, resourceGroupName
 	if err != nil {
 		return SourceControlClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SourceControlClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *SourceControlClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, parameters SourceControlUpdateParameters, _ *SourceControlClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -367,8 +374,11 @@ func (client *SourceControlClient) updateCreateRequest(ctx context.Context, reso
 }
 
 // updateHandleResponse handles the Update response.
-func (client *SourceControlClient) updateHandleResponse(resp *http.Response) (SourceControlClientUpdateResponse, error) {
+func (client *SourceControlClient) updateHandleResponse(resp *http.Response, successCodes ...int) (SourceControlClientUpdateResponse, error) {
 	result := SourceControlClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControl); err != nil {
 		return SourceControlClientUpdateResponse{}, err
 	}

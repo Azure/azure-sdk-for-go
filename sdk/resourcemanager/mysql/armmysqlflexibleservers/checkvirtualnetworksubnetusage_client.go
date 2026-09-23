@@ -30,6 +30,9 @@ type CheckVirtualNetworkSubnetUsageClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCheckVirtualNetworkSubnetUsageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CheckVirtualNetworkSubnetUsageClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *CheckVirtualNetworkSubnetUsageClient) Execute(ctx context.Context,
 	if err != nil {
 		return CheckVirtualNetworkSubnetUsageClientExecuteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CheckVirtualNetworkSubnetUsageClientExecuteResponse{}, err
-	}
-	resp, err := client.executeHandleResponse(httpResp)
-	return resp, err
+	return client.executeHandleResponse(httpResp, http.StatusOK)
 }
 
 // executeCreateRequest creates the Execute request.
 func (client *CheckVirtualNetworkSubnetUsageClient) executeCreateRequest(ctx context.Context, locationName string, parameters VirtualNetworkSubnetUsageParameter, _ *CheckVirtualNetworkSubnetUsageClientExecuteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/checkVirtualNetworkSubnetUsage"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if locationName == "" {
@@ -96,8 +94,11 @@ func (client *CheckVirtualNetworkSubnetUsageClient) executeCreateRequest(ctx con
 }
 
 // executeHandleResponse handles the Execute response.
-func (client *CheckVirtualNetworkSubnetUsageClient) executeHandleResponse(resp *http.Response) (CheckVirtualNetworkSubnetUsageClientExecuteResponse, error) {
+func (client *CheckVirtualNetworkSubnetUsageClient) executeHandleResponse(resp *http.Response, successCodes ...int) (CheckVirtualNetworkSubnetUsageClientExecuteResponse, error) {
 	result := CheckVirtualNetworkSubnetUsageClientExecuteResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkSubnetUsageResult); err != nil {
 		return CheckVirtualNetworkSubnetUsageClientExecuteResponse{}, err
 	}

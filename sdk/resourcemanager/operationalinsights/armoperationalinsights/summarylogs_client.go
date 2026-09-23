@@ -30,6 +30,9 @@ type SummaryLogsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSummaryLogsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SummaryLogsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -84,8 +87,7 @@ func (client *SummaryLogsClient) createOrUpdate(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -94,7 +96,7 @@ func (client *SummaryLogsClient) createOrUpdate(ctx context.Context, resourceGro
 func (client *SummaryLogsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, parameters SummaryLogs, _ *SummaryLogsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/summaryLogs/{summaryLogsName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -165,8 +167,7 @@ func (client *SummaryLogsClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -175,7 +176,7 @@ func (client *SummaryLogsClient) deleteOperation(ctx context.Context, resourceGr
 func (client *SummaryLogsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, _ *SummaryLogsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/summaryLogs/{summaryLogsName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -220,19 +221,14 @@ func (client *SummaryLogsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return SummaryLogsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SummaryLogsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *SummaryLogsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, _ *SummaryLogsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/summaryLogs/{summaryLogsName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -259,8 +255,11 @@ func (client *SummaryLogsClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *SummaryLogsClient) getHandleResponse(resp *http.Response) (SummaryLogsClientGetResponse, error) {
+func (client *SummaryLogsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SummaryLogsClientGetResponse, error) {
 	result := SummaryLogsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SummaryLogs); err != nil {
 		return SummaryLogsClientGetResponse{}, err
 	}
@@ -283,47 +282,61 @@ func (client *SummaryLogsClient) NewListByWorkspacePager(resourceGroupName strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
-			}, nil)
+			req, err := client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, nextLink, options)
 			if err != nil {
 				return SummaryLogsClientListByWorkspaceResponse{}, err
 			}
-			return client.listByWorkspaceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SummaryLogsClientListByWorkspaceResponse{}, err
+			}
+			return client.listByWorkspaceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *SummaryLogsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *SummaryLogsClientListByWorkspaceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/summaryLogs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SummaryLogsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, nextLink string, _ *SummaryLogsClientListByWorkspaceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/summaryLogs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250701)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
-func (client *SummaryLogsClient) listByWorkspaceHandleResponse(resp *http.Response) (SummaryLogsClientListByWorkspaceResponse, error) {
+func (client *SummaryLogsClient) listByWorkspaceHandleResponse(resp *http.Response, successCodes ...int) (SummaryLogsClientListByWorkspaceResponse, error) {
 	result := SummaryLogsClientListByWorkspaceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SummaryLogsListResult); err != nil {
 		return SummaryLogsClientListByWorkspaceResponse{}, err
 	}
@@ -373,8 +386,7 @@ func (client *SummaryLogsClient) retryBin(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -383,7 +395,7 @@ func (client *SummaryLogsClient) retryBin(ctx context.Context, resourceGroupName
 func (client *SummaryLogsClient) retryBinCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, parameters SummaryLogsRetryBin, _ *SummaryLogsClientBeginRetryBinOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/summaryLogs/{summaryLogsName}/retrybin"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -453,8 +465,7 @@ func (client *SummaryLogsClient) start(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -463,7 +474,7 @@ func (client *SummaryLogsClient) start(ctx context.Context, resourceGroupName st
 func (client *SummaryLogsClient) startCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, _ *SummaryLogsClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/summaryLogs/{summaryLogsName}/start"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -509,8 +520,7 @@ func (client *SummaryLogsClient) Stop(ctx context.Context, resourceGroupName str
 		return SummaryLogsClientStopResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SummaryLogsClientStopResponse{}, err
+		return SummaryLogsClientStopResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SummaryLogsClientStopResponse{}, nil
 }
@@ -519,7 +529,7 @@ func (client *SummaryLogsClient) Stop(ctx context.Context, resourceGroupName str
 func (client *SummaryLogsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, summaryLogsName string, _ *SummaryLogsClientStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/summaryLogs/{summaryLogsName}/stop"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

@@ -286,7 +286,7 @@ func ExampleDatabasesClient_Get_kustoSuspendedDatabasesGet() {
 	// 			ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
 	// 			SoftDeletePeriod: to.Ptr("P1D"),
 	// 			SuspensionDetails: &armkusto.SuspensionDetails{
-	// 				SuspensionStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-16T15:06:54.2757906Z"); return t}()),
+	// 				SuspensionStartDate: to.Ptr(time.Date(2023, time.April, 16, 15, 6, 54, 275790600, time.UTC)),
 	// 			},
 	// 		},
 	// 	},
@@ -381,7 +381,7 @@ func ExampleDatabasesClient_NewListByClusterPager() {
 		// 					ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
 		// 					SoftDeletePeriod: to.Ptr("P1D"),
 		// 					SuspensionDetails: &armkusto.SuspensionDetails{
-		// 						SuspensionStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-16T15:06:54.2757906Z"); return t}()),
+		// 						SuspensionStartDate: to.Ptr(time.Date(2023, time.April, 16, 15, 6, 54, 275790600, time.UTC)),
 		// 					},
 		// 				},
 		// 			},

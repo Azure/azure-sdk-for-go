@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultRulesClientVersion string = "2025-06-01"
-
 // RulesClient contains the methods for the Rules group.
 // Don't use this type directly, use NewRulesClient() instead.
 //
@@ -32,6 +30,9 @@ type RulesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RulesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -87,8 +88,7 @@ func (client *RulesClient) create(ctx context.Context, resourceGroupName string,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -97,7 +97,7 @@ func (client *RulesClient) create(ctx context.Context, resourceGroupName string,
 func (client *RulesClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, ruleName string, rule Rule, _ *RulesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -121,7 +121,7 @@ func (client *RulesClient) createCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultRulesClientVersion)
+	reqQP.Set("api-version", version20250601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -174,8 +174,7 @@ func (client *RulesClient) deleteOperation(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -184,7 +183,7 @@ func (client *RulesClient) deleteOperation(ctx context.Context, resourceGroupNam
 func (client *RulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, ruleName string, _ *RulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -208,7 +207,7 @@ func (client *RulesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultRulesClientVersion)
+	reqQP.Set("api-version", version20250601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -235,19 +234,14 @@ func (client *RulesClient) Get(ctx context.Context, resourceGroupName string, pr
 	if err != nil {
 		return RulesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RulesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *RulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, ruleName string, _ *RulesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -271,15 +265,18 @@ func (client *RulesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultRulesClientVersion)
+	reqQP.Set("api-version", version20250601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RulesClient) getHandleResponse(resp *http.Response) (RulesClientGetResponse, error) {
+func (client *RulesClient) getHandleResponse(resp *http.Response, successCodes ...int) (RulesClientGetResponse, error) {
 	result := RulesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Rule); err != nil {
 		return RulesClientGetResponse{}, err
 	}
@@ -303,51 +300,65 @@ func (client *RulesClient) NewListByRuleSetPager(resourceGroupName string, profi
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByRuleSetCreateRequest(ctx, resourceGroupName, profileName, ruleSetName, options)
-			}, nil)
+			req, err := client.listByRuleSetCreateRequest(ctx, resourceGroupName, profileName, ruleSetName, nextLink, options)
 			if err != nil {
 				return RulesClientListByRuleSetResponse{}, err
 			}
-			return client.listByRuleSetHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RulesClientListByRuleSetResponse{}, err
+			}
+			return client.listByRuleSetHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByRuleSetCreateRequest creates the ListByRuleSet request.
-func (client *RulesClient) listByRuleSetCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, _ *RulesClientListByRuleSetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/rules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RulesClient) listByRuleSetCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, nextLink string, _ *RulesClientListByRuleSetOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/rules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if profileName == "" {
+			return nil, errors.New("parameter profileName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
+		if ruleSetName == "" {
+			return nil, errors.New("parameter ruleSetName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{ruleSetName}", url.PathEscape(ruleSetName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if profileName == "" {
-		return nil, errors.New("parameter profileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	if ruleSetName == "" {
-		return nil, errors.New("parameter ruleSetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ruleSetName}", url.PathEscape(ruleSetName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultRulesClientVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByRuleSetHandleResponse handles the ListByRuleSet response.
-func (client *RulesClient) listByRuleSetHandleResponse(resp *http.Response) (RulesClientListByRuleSetResponse, error) {
+func (client *RulesClient) listByRuleSetHandleResponse(resp *http.Response, successCodes ...int) (RulesClientListByRuleSetResponse, error) {
 	result := RulesClientListByRuleSetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RuleListResult); err != nil {
 		return RulesClientListByRuleSetResponse{}, err
 	}
@@ -397,8 +408,7 @@ func (client *RulesClient) update(ctx context.Context, resourceGroupName string,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -407,7 +417,7 @@ func (client *RulesClient) update(ctx context.Context, resourceGroupName string,
 func (client *RulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, ruleName string, ruleUpdateProperties RuleUpdateParameters, _ *RulesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -431,7 +441,7 @@ func (client *RulesClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultRulesClientVersion)
+	reqQP.Set("api-version", version20250601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

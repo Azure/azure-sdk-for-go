@@ -30,6 +30,9 @@ type FabricAgentClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFabricAgentClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FabricAgentClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -82,8 +85,7 @@ func (client *FabricAgentClient) create(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -92,7 +94,7 @@ func (client *FabricAgentClient) create(ctx context.Context, resourceGroupName s
 func (client *FabricAgentClient) createCreateRequest(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, resource FabricAgentModel, _ *FabricAgentClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -162,8 +164,7 @@ func (client *FabricAgentClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -172,7 +173,7 @@ func (client *FabricAgentClient) deleteOperation(ctx context.Context, resourceGr
 func (client *FabricAgentClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, _ *FabricAgentClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -217,19 +218,14 @@ func (client *FabricAgentClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return FabricAgentClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FabricAgentClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *FabricAgentClient) getCreateRequest(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, _ *FabricAgentClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -256,8 +252,11 @@ func (client *FabricAgentClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *FabricAgentClient) getHandleResponse(resp *http.Response) (FabricAgentClientGetResponse, error) {
+func (client *FabricAgentClient) getHandleResponse(resp *http.Response, successCodes ...int) (FabricAgentClientGetResponse, error) {
 	result := FabricAgentClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FabricAgentModel); err != nil {
 		return FabricAgentClientGetResponse{}, err
 	}
@@ -279,47 +278,61 @@ func (client *FabricAgentClient) NewListPager(resourceGroupName string, fabricNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, fabricName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, fabricName, nextLink, options)
 			if err != nil {
 				return FabricAgentClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FabricAgentClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *FabricAgentClient) listCreateRequest(ctx context.Context, resourceGroupName string, fabricName string, _ *FabricAgentClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *FabricAgentClient) listCreateRequest(ctx context.Context, resourceGroupName string, fabricName string, nextLink string, _ *FabricAgentClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if fabricName == "" {
+			return nil, errors.New("parameter fabricName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if fabricName == "" {
-		return nil, errors.New("parameter fabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *FabricAgentClient) listHandleResponse(resp *http.Response) (FabricAgentClientListResponse, error) {
+func (client *FabricAgentClient) listHandleResponse(resp *http.Response, successCodes ...int) (FabricAgentClientListResponse, error) {
 	result := FabricAgentClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FabricAgentModelListResult); err != nil {
 		return FabricAgentClientListResponse{}, err
 	}

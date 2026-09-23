@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/TagRules_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/TagRules_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleTagRulesClient_BeginCreateOrUpdate_tagRulesCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,10 +90,10 @@ func ExampleTagRulesClient_BeginCreateOrUpdate_tagRulesCreateOrUpdateMaximumSetG
 	// 			ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
 	// 		},
 	// 		SystemData: &armnewrelicobservability.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-02T00:39:52.964Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.September, 2, 0, 39, 52, 964000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("wqrkemruqrvclsoevdftfeof"),
 	// 			CreatedByType: to.Ptr(armnewrelicobservability.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-02T00:39:52.964Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.September, 2, 0, 39, 52, 964000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("usdyoriebtakpdotcfp"),
 	// 			LastModifiedByType: to.Ptr(armnewrelicobservability.CreatedByTypeUser),
 	// 		},
@@ -101,7 +101,7 @@ func ExampleTagRulesClient_BeginCreateOrUpdate_tagRulesCreateOrUpdateMaximumSetG
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/TagRules_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01/TagRules_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleTagRulesClient_BeginCreateOrUpdate_tagRulesCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExampleTagRulesClient_BeginCreateOrUpdate_tagRulesCreateOrUpdateMinimumSetG
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/TagRules_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/TagRules_Delete_MaximumSet_Gen.json
 func ExampleTagRulesClient_BeginDelete_tagRulesDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +160,7 @@ func ExampleTagRulesClient_BeginDelete_tagRulesDeleteMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/TagRules_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01/TagRules_Delete_MinimumSet_Gen.json
 func ExampleTagRulesClient_BeginDelete_tagRulesDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,7 +186,7 @@ func ExampleTagRulesClient_BeginDelete_tagRulesDeleteMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/TagRules_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/TagRules_Get_MaximumSet_Gen.json
 func ExampleTagRulesClient_Get_tagRulesGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,10 +235,10 @@ func ExampleTagRulesClient_Get_tagRulesGetMaximumSetGen() {
 	// 			ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
 	// 		},
 	// 		SystemData: &armnewrelicobservability.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-02T00:39:52.964Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.September, 2, 0, 39, 52, 964000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("wqrkemruqrvclsoevdftfeof"),
 	// 			CreatedByType: to.Ptr(armnewrelicobservability.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-02T00:39:52.964Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.September, 2, 0, 39, 52, 964000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("usdyoriebtakpdotcfp"),
 	// 			LastModifiedByType: to.Ptr(armnewrelicobservability.CreatedByTypeUser),
 	// 		},
@@ -246,7 +246,7 @@ func ExampleTagRulesClient_Get_tagRulesGetMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/TagRules_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01/TagRules_Get_MinimumSet_Gen.json
 func ExampleTagRulesClient_Get_tagRulesGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +273,7 @@ func ExampleTagRulesClient_Get_tagRulesGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/TagRules_ListByNewRelicMonitorResource_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/TagRules_ListByNewRelicMonitorResource_MaximumSet_Gen.json
 func ExampleTagRulesClient_NewListByNewRelicMonitorResourcePager_tagRulesListByNewRelicMonitorResourceMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -329,10 +329,10 @@ func ExampleTagRulesClient_NewListByNewRelicMonitorResourcePager_tagRulesListByN
 		// 					ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
 		// 				},
 		// 				SystemData: &armnewrelicobservability.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-02T00:39:52.964Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.September, 2, 0, 39, 52, 964000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("wqrkemruqrvclsoevdftfeof"),
 		// 					CreatedByType: to.Ptr(armnewrelicobservability.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-02T00:39:52.964Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.September, 2, 0, 39, 52, 964000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("usdyoriebtakpdotcfp"),
 		// 					LastModifiedByType: to.Ptr(armnewrelicobservability.CreatedByTypeUser),
 		// 				},
@@ -343,7 +343,7 @@ func ExampleTagRulesClient_NewListByNewRelicMonitorResourcePager_tagRulesListByN
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/TagRules_ListByNewRelicMonitorResource_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01/TagRules_ListByNewRelicMonitorResource_MinimumSet_Gen.json
 func ExampleTagRulesClient_NewListByNewRelicMonitorResourcePager_tagRulesListByNewRelicMonitorResourceMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -379,7 +379,7 @@ func ExampleTagRulesClient_NewListByNewRelicMonitorResourcePager_tagRulesListByN
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/TagRules_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/TagRules_Update_MaximumSet_Gen.json
 func ExampleTagRulesClient_Update_tagRulesUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -453,10 +453,10 @@ func ExampleTagRulesClient_Update_tagRulesUpdateMaximumSetGen() {
 	// 			ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
 	// 		},
 	// 		SystemData: &armnewrelicobservability.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-02T00:39:52.964Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.September, 2, 0, 39, 52, 964000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("wqrkemruqrvclsoevdftfeof"),
 	// 			CreatedByType: to.Ptr(armnewrelicobservability.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-02T00:39:52.964Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.September, 2, 0, 39, 52, 964000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("usdyoriebtakpdotcfp"),
 	// 			LastModifiedByType: to.Ptr(armnewrelicobservability.CreatedByTypeUser),
 	// 		},
@@ -464,7 +464,7 @@ func ExampleTagRulesClient_Update_tagRulesUpdateMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/TagRules_Update_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01/TagRules_Update_MinimumSet_Gen.json
 func ExampleTagRulesClient_Update_tagRulesUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

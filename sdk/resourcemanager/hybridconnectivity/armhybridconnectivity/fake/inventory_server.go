@@ -92,16 +92,13 @@ func (i *InventoryServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inventory/(?P<inventoryId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inventory/(?P<inventoryId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	solutionConfigurationParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionConfiguration")])
 	if err != nil {
 		return nil, err
@@ -131,16 +128,13 @@ func (i *InventoryServerTransport) dispatchNewListBySolutionConfigurationPager(r
 	}
 	newListBySolutionConfigurationPager := i.newListBySolutionConfigurationPager.get(req)
 	if newListBySolutionConfigurationPager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inventory`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inventory`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		solutionConfigurationParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionConfiguration")])
 		if err != nil {
 			return nil, err

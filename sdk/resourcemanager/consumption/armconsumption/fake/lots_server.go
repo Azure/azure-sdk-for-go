@@ -103,7 +103,7 @@ func (l *LotsServerTransport) dispatchNewListByBillingAccountPager(req *http.Req
 	}
 	newListByBillingAccountPager := l.newListByBillingAccountPager.get(req)
 	if newListByBillingAccountPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Consumption/lots`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Consumption/lots`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -148,7 +148,7 @@ func (l *LotsServerTransport) dispatchNewListByBillingProfilePager(req *http.Req
 	}
 	newListByBillingProfilePager := l.newListByBillingProfilePager.get(req)
 	if newListByBillingProfilePager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Consumption/lots`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Consumption/lots`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -189,7 +189,7 @@ func (l *LotsServerTransport) dispatchNewListByCustomerPager(req *http.Request) 
 	}
 	newListByCustomerPager := l.newListByCustomerPager.get(req)
 	if newListByCustomerPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Consumption/lots`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customers/(?P<customerId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Consumption/lots`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

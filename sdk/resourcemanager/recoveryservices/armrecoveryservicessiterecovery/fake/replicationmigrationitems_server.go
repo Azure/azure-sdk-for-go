@@ -174,7 +174,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchBeginCreate(req *http
 	}
 	beginCreate := r.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationMigrationItems/(?P<migrationItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationProtectionContainers/(?P<protectionContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationMigrationItems/(?P<migrationItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -234,7 +234,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchBeginDelete(req *http
 	}
 	beginDelete := r.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationMigrationItems/(?P<migrationItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationProtectionContainers/(?P<protectionContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationMigrationItems/(?P<migrationItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -296,7 +296,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchGet(req *http.Request
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationMigrationItems/(?P<migrationItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationProtectionContainers/(?P<protectionContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationMigrationItems/(?P<migrationItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -343,7 +343,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchNewListPager(req *htt
 	}
 	newListPager := r.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationMigrationItems`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationMigrationItems`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -396,7 +396,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchNewListByReplicationP
 	}
 	newListByReplicationProtectionContainersPager := r.newListByReplicationProtectionContainersPager.get(req)
 	if newListByReplicationProtectionContainersPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationMigrationItems`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationProtectionContainers/(?P<protectionContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationMigrationItems`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -457,7 +457,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchBeginMigrate(req *htt
 	}
 	beginMigrate := r.beginMigrate.get(req)
 	if beginMigrate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationMigrationItems/(?P<migrationItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/migrate`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationProtectionContainers/(?P<protectionContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationMigrationItems/(?P<migrationItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/migrate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -517,7 +517,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchBeginPauseReplication
 	}
 	beginPauseReplication := r.beginPauseReplication.get(req)
 	if beginPauseReplication == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationMigrationItems/(?P<migrationItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/pauseReplication`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationProtectionContainers/(?P<protectionContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationMigrationItems/(?P<migrationItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/pauseReplication`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -577,7 +577,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchBeginResumeReplicatio
 	}
 	beginResumeReplication := r.beginResumeReplication.get(req)
 	if beginResumeReplication == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationMigrationItems/(?P<migrationItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resumeReplication`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationProtectionContainers/(?P<protectionContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationMigrationItems/(?P<migrationItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resumeReplication`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -637,7 +637,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchBeginResync(req *http
 	}
 	beginResync := r.beginResync.get(req)
 	if beginResync == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationMigrationItems/(?P<migrationItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resync`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationProtectionContainers/(?P<protectionContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationMigrationItems/(?P<migrationItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resync`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -697,7 +697,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchBeginTestMigrate(req 
 	}
 	beginTestMigrate := r.beginTestMigrate.get(req)
 	if beginTestMigrate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationMigrationItems/(?P<migrationItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/testMigrate`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationProtectionContainers/(?P<protectionContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationMigrationItems/(?P<migrationItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/testMigrate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -757,7 +757,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchBeginTestMigrateClean
 	}
 	beginTestMigrateCleanup := r.beginTestMigrateCleanup.get(req)
 	if beginTestMigrateCleanup == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationMigrationItems/(?P<migrationItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/testMigrateCleanup`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationProtectionContainers/(?P<protectionContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationMigrationItems/(?P<migrationItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/testMigrateCleanup`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -817,7 +817,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchBeginUpdate(req *http
 	}
 	beginUpdate := r.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationMigrationItems/(?P<migrationItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationProtectionContainers/(?P<protectionContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationMigrationItems/(?P<migrationItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {

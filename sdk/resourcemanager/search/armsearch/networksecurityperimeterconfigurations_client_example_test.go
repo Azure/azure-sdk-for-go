@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/NetworkSecurityPerimeterConfigurationsGet.json
+// Generated from example definition: 2026-09-01-preview/NetworkSecurityPerimeterConfigurationsGet.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.NetworkSecurityPerimeterConfigurationsClientGetResponse{
-	// 	NetworkSecurityPerimeterConfiguration: &armsearch.NetworkSecurityPerimeterConfiguration{
+	// 	NetworkSecurityPerimeterConfiguration: armsearch.NetworkSecurityPerimeterConfiguration{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/networkSecurityPerimeterConfigurations/00000001-2222-3333-4444-111144444444.assoc1"),
 	// 		Name: to.Ptr("00000001-2222-3333-4444-111144444444.assoc1"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices/networkSecurityPerimeterConfigurations"),
@@ -65,7 +65,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/NetworkSecurityPerimeterConfigurationsListByService.json
+// Generated from example definition: 2026-09-01-preview/NetworkSecurityPerimeterConfigurationsListByService.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListByServicePager()
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/NetworkSecurityPerimeterConfigurationsReconcile.json
+// Generated from example definition: 2026-09-01-preview/NetworkSecurityPerimeterConfigurationsReconcile.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_BeginReconcile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,6 +145,6 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_BeginReconcile() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

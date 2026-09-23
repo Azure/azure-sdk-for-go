@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Networkcloud module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud/v2
 ```
 
 ## Authorization

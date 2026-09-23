@@ -31,6 +31,9 @@ type RecordSetsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRecordSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecordSetsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,19 +68,14 @@ func (client *RecordSetsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 	if err != nil {
 		return RecordSetsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return RecordSetsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *RecordSetsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, parameters RecordSet, options *RecordSetsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}/{relativeRecordSetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -118,8 +116,11 @@ func (client *RecordSetsClient) createOrUpdateCreateRequest(ctx context.Context,
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *RecordSetsClient) createOrUpdateHandleResponse(resp *http.Response) (RecordSetsClientCreateOrUpdateResponse, error) {
+func (client *RecordSetsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (RecordSetsClientCreateOrUpdateResponse, error) {
 	result := RecordSetsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSet); err != nil {
 		return RecordSetsClientCreateOrUpdateResponse{}, err
 	}
@@ -148,8 +149,7 @@ func (client *RecordSetsClient) Delete(ctx context.Context, resourceGroupName st
 		return RecordSetsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return RecordSetsClientDeleteResponse{}, err
+		return RecordSetsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return RecordSetsClientDeleteResponse{}, nil
 }
@@ -158,7 +158,7 @@ func (client *RecordSetsClient) Delete(ctx context.Context, resourceGroupName st
 func (client *RecordSetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, options *RecordSetsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}/{relativeRecordSetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -211,19 +211,14 @@ func (client *RecordSetsClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return RecordSetsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RecordSetsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *RecordSetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, _ *RecordSetsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}/{relativeRecordSetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -254,8 +249,11 @@ func (client *RecordSetsClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *RecordSetsClient) getHandleResponse(resp *http.Response) (RecordSetsClientGetResponse, error) {
+func (client *RecordSetsClient) getHandleResponse(resp *http.Response, successCodes ...int) (RecordSetsClientGetResponse, error) {
 	result := RecordSetsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSet); err != nil {
 		return RecordSetsClientGetResponse{}, err
 	}
@@ -277,53 +275,67 @@ func (client *RecordSetsClient) NewListPager(resourceGroupName string, privateZo
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, privateZoneName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, privateZoneName, nextLink, options)
 			if err != nil {
 				return RecordSetsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RecordSetsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *RecordSetsClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, options *RecordSetsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/aLL"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RecordSetsClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, nextLink string, options *RecordSetsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/aLL"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if privateZoneName == "" {
+			return nil, errors.New("parameter privateZoneName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{privateZoneName}", url.PathEscape(privateZoneName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if privateZoneName == "" {
-		return nil, errors.New("parameter privateZoneName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateZoneName}", url.PathEscape(privateZoneName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Recordsetnamesuffix != nil {
-		reqQP.Set("$recordsetnamesuffix", *options.Recordsetnamesuffix)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Recordsetnamesuffix != nil {
+			reqQP.Set("$recordsetnamesuffix", *options.Recordsetnamesuffix)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20240601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20240601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RecordSetsClient) listHandleResponse(resp *http.Response) (RecordSetsClientListResponse, error) {
+func (client *RecordSetsClient) listHandleResponse(resp *http.Response, successCodes ...int) (RecordSetsClientListResponse, error) {
 	result := RecordSetsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSetListResult); err != nil {
 		return RecordSetsClientListResponse{}, err
 	}
@@ -347,57 +359,71 @@ func (client *RecordSetsClient) NewListByTypePager(resourceGroupName string, pri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByTypeCreateRequest(ctx, resourceGroupName, privateZoneName, recordType, options)
-			}, nil)
+			req, err := client.listByTypeCreateRequest(ctx, resourceGroupName, privateZoneName, recordType, nextLink, options)
 			if err != nil {
 				return RecordSetsClientListByTypeResponse{}, err
 			}
-			return client.listByTypeHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RecordSetsClientListByTypeResponse{}, err
+			}
+			return client.listByTypeHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByTypeCreateRequest creates the ListByType request.
-func (client *RecordSetsClient) listByTypeCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, options *RecordSetsClientListByTypeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RecordSetsClient) listByTypeCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, nextLink string, options *RecordSetsClientListByTypeOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if privateZoneName == "" {
+			return nil, errors.New("parameter privateZoneName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{privateZoneName}", url.PathEscape(privateZoneName))
+		if recordType == "" {
+			return nil, errors.New("parameter recordType cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{recordType}", url.PathEscape(string(recordType)))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if privateZoneName == "" {
-		return nil, errors.New("parameter privateZoneName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateZoneName}", url.PathEscape(privateZoneName))
-	if recordType == "" {
-		return nil, errors.New("parameter recordType cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{recordType}", url.PathEscape(string(recordType)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Recordsetnamesuffix != nil {
-		reqQP.Set("$recordsetnamesuffix", *options.Recordsetnamesuffix)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Recordsetnamesuffix != nil {
+			reqQP.Set("$recordsetnamesuffix", *options.Recordsetnamesuffix)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20240601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20240601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByTypeHandleResponse handles the ListByType response.
-func (client *RecordSetsClient) listByTypeHandleResponse(resp *http.Response) (RecordSetsClientListByTypeResponse, error) {
+func (client *RecordSetsClient) listByTypeHandleResponse(resp *http.Response, successCodes ...int) (RecordSetsClientListByTypeResponse, error) {
 	result := RecordSetsClientListByTypeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSetListResult); err != nil {
 		return RecordSetsClientListByTypeResponse{}, err
 	}
@@ -426,19 +452,14 @@ func (client *RecordSetsClient) Update(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return RecordSetsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RecordSetsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *RecordSetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, parameters RecordSet, options *RecordSetsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}/{relativeRecordSetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -476,8 +497,11 @@ func (client *RecordSetsClient) updateCreateRequest(ctx context.Context, resourc
 }
 
 // updateHandleResponse handles the Update response.
-func (client *RecordSetsClient) updateHandleResponse(resp *http.Response) (RecordSetsClientUpdateResponse, error) {
+func (client *RecordSetsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (RecordSetsClientUpdateResponse, error) {
 	result := RecordSetsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSet); err != nil {
 		return RecordSetsClientUpdateResponse{}, err
 	}

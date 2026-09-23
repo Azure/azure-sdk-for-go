@@ -104,7 +104,7 @@ func (m *MemberCapOverridesServerTransport) dispatchCreateOrUpdate(req *http.Req
 	if m.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedLimitCaps/(?P<vmFamilyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/memberCapOverrides/(?P<memberSubscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedLimitCaps/(?P<vmFamilyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/memberCapOverrides/(?P<memberSubscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -145,7 +145,7 @@ func (m *MemberCapOverridesServerTransport) dispatchDelete(req *http.Request) (*
 	if m.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedLimitCaps/(?P<vmFamilyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/memberCapOverrides/(?P<memberSubscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedLimitCaps/(?P<vmFamilyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/memberCapOverrides/(?P<memberSubscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -182,7 +182,7 @@ func (m *MemberCapOverridesServerTransport) dispatchGet(req *http.Request) (*htt
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedLimitCaps/(?P<vmFamilyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/memberCapOverrides/(?P<memberSubscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedLimitCaps/(?P<vmFamilyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/memberCapOverrides/(?P<memberSubscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -221,7 +221,7 @@ func (m *MemberCapOverridesServerTransport) dispatchNewListByParentPager(req *ht
 	}
 	newListByParentPager := m.newListByParentPager.get(req)
 	if newListByParentPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedLimitCaps/(?P<vmFamilyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/memberCapOverrides`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeLimit/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedLimitCaps/(?P<vmFamilyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/memberCapOverrides`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

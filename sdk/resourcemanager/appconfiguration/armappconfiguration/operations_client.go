@@ -30,6 +30,9 @@ type OperationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -60,19 +63,14 @@ func (client *OperationsClient) CheckNameAvailability(ctx context.Context, check
 	if err != nil {
 		return OperationsClientCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OperationsClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
 func (client *OperationsClient) checkNameAvailabilityCreateRequest(ctx context.Context, checkNameAvailabilityParameters CheckNameAvailabilityParameters, _ *OperationsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/checkNameAvailability"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -91,8 +89,11 @@ func (client *OperationsClient) checkNameAvailabilityCreateRequest(ctx context.C
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *OperationsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (OperationsClientCheckNameAvailabilityResponse, error) {
+func (client *OperationsClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (OperationsClientCheckNameAvailabilityResponse, error) {
 	result := OperationsClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailabilityStatus); err != nil {
 		return OperationsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -112,38 +113,52 @@ func (client *OperationsClient) NewListPager(options *OperationsClientListOption
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return OperationsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OperationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *OperationsClient) listCreateRequest(ctx context.Context, options *OperationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.AppConfiguration/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *OperationsClient) listCreateRequest(ctx context.Context, nextLink string, options *OperationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.AppConfiguration/operations"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		reqQP.Set("api-version", version20250801Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *OperationsClient) listHandleResponse(resp *http.Response) (OperationsClientListResponse, error) {
+func (client *OperationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (OperationsClientListResponse, error) {
 	result := OperationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationDefinitionListResult); err != nil {
 		return OperationsClientListResponse{}, err
 	}
@@ -170,19 +185,14 @@ func (client *OperationsClient) RegionalCheckNameAvailability(ctx context.Contex
 	if err != nil {
 		return OperationsClientRegionalCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OperationsClientRegionalCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.regionalCheckNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.regionalCheckNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // regionalCheckNameAvailabilityCreateRequest creates the RegionalCheckNameAvailability request.
 func (client *OperationsClient) regionalCheckNameAvailabilityCreateRequest(ctx context.Context, location string, checkNameAvailabilityParameters CheckNameAvailabilityParameters, _ *OperationsClientRegionalCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/locations/{location}/checkNameAvailability"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -205,8 +215,11 @@ func (client *OperationsClient) regionalCheckNameAvailabilityCreateRequest(ctx c
 }
 
 // regionalCheckNameAvailabilityHandleResponse handles the RegionalCheckNameAvailability response.
-func (client *OperationsClient) regionalCheckNameAvailabilityHandleResponse(resp *http.Response) (OperationsClientRegionalCheckNameAvailabilityResponse, error) {
+func (client *OperationsClient) regionalCheckNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (OperationsClientRegionalCheckNameAvailabilityResponse, error) {
 	result := OperationsClientRegionalCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailabilityStatus); err != nil {
 		return OperationsClientRegionalCheckNameAvailabilityResponse{}, err
 	}

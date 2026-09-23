@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironments_Get1.json
+// Generated from example definition: 2026-07-01/ManagedEnvironments_Get1.json
 func ExampleManagedEnvironmentsDiagnosticsClient_GetRoot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,15 +36,10 @@ func ExampleManagedEnvironmentsDiagnosticsClient_GetRoot() {
 	// 		ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/jlaw-demo1"),
 	// 		Location: to.Ptr("North Central US"),
 	// 		Properties: &armappcontainers.ManagedEnvironmentProperties{
-	// 			AvailabilityZones: []*string{
-	// 				to.Ptr("1"),
-	// 				to.Ptr("2"),
-	// 				to.Ptr("3"),
-	// 			},
 	// 			CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 	// 				CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 	// 				DNSSuffix: to.Ptr("www.my-name.com"),
-	// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+	// 				ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
 	// 				SubjectName: to.Ptr("CN=www.my-name.com"),
 	// 				Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
 	// 			},
@@ -81,7 +76,6 @@ func ExampleManagedEnvironmentsDiagnosticsClient_GetRoot() {
 	// 			WorkloadProfiles: []*armappcontainers.WorkloadProfile{
 	// 				{
 	// 					Name: to.Ptr("My-GP-01"),
-	// 					EnableFips: to.Ptr(true),
 	// 					MaximumCount: to.Ptr[int32](12),
 	// 					MinimumCount: to.Ptr[int32](3),
 	// 					WorkloadProfileType: to.Ptr("GeneralPurpose"),

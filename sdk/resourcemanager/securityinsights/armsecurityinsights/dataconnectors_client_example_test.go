@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/ConnectAPIPolling.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/ConnectAPIPolling.json
 func ExampleDataConnectorsClient_Connect_connectAnApiPollingDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleDataConnectorsClient_Connect_connectAnApiPollingDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/ConnectAPIPollingV2Logs.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/ConnectAPIPollingV2Logs.json
 func ExampleDataConnectorsClient_Connect_connectAnApiPollingV2LogsDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleDataConnectorsClient_Connect_connectAnApiPollingV2LogsDataConnector(
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CreateAPIPolling.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CreateAPIPolling.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAApiPollingDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -338,7 +338,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAApiPollingDataC
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CreateDynamics365DataConnetor.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CreateDynamics365DataConnetor.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesADynamics365DataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -386,7 +386,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesADynamics365Data
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CreateGenericUI.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CreateGenericUI.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAGenericUiDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -687,7 +687,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAGenericUiDataCo
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CreateGoogleCloudPlatform.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CreateGoogleCloudPlatform.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAGcpDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -756,7 +756,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAGcpDataConnecto
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CreateMicrosoftPurviewInformationProtectionDataConnetor.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CreateMicrosoftPurviewInformationProtectionDataConnetor.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnMicrosoftPurviewInformationProtectionDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -804,7 +804,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnMicrosoftPurvi
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CreateMicrosoftThreatIntelligenceDataConnector.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CreateMicrosoftThreatIntelligenceDataConnector.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAMicrosoftThreatIntelligenceDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -820,7 +820,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAMicrosoftThreat
 		Properties: &armsecurityinsights.MSTIDataConnectorProperties{
 			DataTypes: &armsecurityinsights.MSTIDataConnectorDataTypes{
 				MicrosoftEmergingThreatFeed: &armsecurityinsights.MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed{
-					LookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1970-01-01T00:00:00.000Z"); return t }()),
+					LookbackPeriod: to.Ptr(time.Date(1970, time.January, 1, 0, 0, 0, 0, time.UTC)),
 					State:          to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 				},
 			},
@@ -843,7 +843,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAMicrosoftThreat
 	// 		Properties: &armsecurityinsights.MSTIDataConnectorProperties{
 	// 			DataTypes: &armsecurityinsights.MSTIDataConnectorDataTypes{
 	// 				MicrosoftEmergingThreatFeed: &armsecurityinsights.MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed{
-	// 					LookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1970-01-01T00:00:00.000Z"); return t}()),
+	// 					LookbackPeriod: to.Ptr(time.Date(1970, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
@@ -853,7 +853,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAMicrosoftThreat
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CreateMicrosoftThreatProtectionDataConnetor.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CreateMicrosoftThreatProtectionDataConnetor.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAMicrosoftThreatProtectionDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -917,7 +917,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAMicrosoftThreat
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CreateOffice365ProjectDataConnetor.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CreateOffice365ProjectDataConnetor.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOffice365ProjectDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -965,7 +965,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOffice365Proje
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CreateOfficeDataConnetor.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CreateOfficeDataConnetor.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOffice365DataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1025,7 +1025,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOffice365DataC
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CreateOfficePowerBIDataConnector.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CreateOfficePowerBIDataConnector.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOfficePowerBiDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1073,7 +1073,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOfficePowerBiD
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CreatePremiumMicrosoftDefenderForThreatIntelligenceDataConnector.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CreatePremiumMicrosoftDefenderForThreatIntelligenceDataConnector.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAPremiumMicrosoftDefenderForThreatIntelligenceDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1092,7 +1092,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAPremiumMicrosof
 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 				},
 			},
-			LookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1970-01-01T00:00:00.000Z"); return t }()),
+			LookbackPeriod: to.Ptr(time.Date(1970, time.January, 1, 0, 0, 0, 0, time.UTC)),
 			TenantID:       to.Ptr("e4afb3c4-813b-4e68-b6de-e5360866e798"),
 		},
 	}, nil)
@@ -1115,7 +1115,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAPremiumMicrosof
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
-	// 			LookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00Z"); return t}()),
+	// 			LookbackPeriod: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			RequiredSKUsPresent: to.Ptr(true),
 	// 			TenantID: to.Ptr("e4afb3c4-813b-4e68-b6de-e5360866e798"),
 	// 		},
@@ -1123,7 +1123,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAPremiumMicrosof
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CreatePurviewAuditDataConnector.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CreatePurviewAuditDataConnector.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAPurviewAuditDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1180,7 +1180,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAPurviewAuditDat
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CreateThreatIntelligenceDataConnector.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CreateThreatIntelligenceDataConnector.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnThreatIntelligencePlatformDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1200,7 +1200,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnThreatIntellig
 				},
 			},
 			TenantID:          to.Ptr("06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
-			TipLookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T13:00:30.123Z"); return t }()),
+			TipLookbackPeriod: to.Ptr(time.Date(2020, time.January, 1, 13, 0, 30, 123000000, time.UTC)),
 		},
 	}, nil)
 	if err != nil {
@@ -1223,13 +1223,13 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnThreatIntellig
 	// 				},
 	// 			},
 	// 			TenantID: to.Ptr("06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
-	// 			TipLookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T13:00:30.123Z"); return t}()),
+	// 			TipLookbackPeriod: to.Ptr(time.Date(2020, time.January, 1, 13, 0, 30, 123000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CreateThreatIntelligenceTaxiiDataConnector.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CreateThreatIntelligenceTaxiiDataConnector.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAThreatIntelligenceTaxiiDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1253,7 +1253,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAThreatIntellige
 			FriendlyName:        to.Ptr("testTaxii"),
 			Password:            to.Ptr("--"),
 			PollingFrequency:    to.Ptr(armsecurityinsights.PollingFrequencyOnceADay),
-			TaxiiLookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T13:00:30.123Z"); return t }()),
+			TaxiiLookbackPeriod: to.Ptr(time.Date(2020, time.January, 1, 13, 0, 30, 123000000, time.UTC)),
 			TaxiiServer:         to.Ptr("https://limo.anomali.com/api/v1/taxii2/feeds"),
 			TenantID:            to.Ptr("06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
 			UserName:            to.Ptr("--"),
@@ -1282,7 +1282,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAThreatIntellige
 	// 			},
 	// 			FriendlyName: to.Ptr("testTaxii"),
 	// 			PollingFrequency: to.Ptr(armsecurityinsights.PollingFrequencyOnceADay),
-	// 			TaxiiLookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T13:00:30.123Z"); return t}()),
+	// 			TaxiiLookbackPeriod: to.Ptr(time.Date(2020, time.January, 1, 13, 0, 30, 123000000, time.UTC)),
 	// 			TaxiiServer: to.Ptr("https://limo.anomali.com/api/v1/taxii2/feeds"),
 	// 			TenantID: to.Ptr("06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
 	// 			WorkspaceID: to.Ptr("28e5f051-34cb-4208-9037-693e5342a871"),
@@ -1291,7 +1291,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAThreatIntellige
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/DeleteAPIPolling.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/DeleteAPIPolling.json
 func ExampleDataConnectorsClient_Delete_deleteAApiPollingDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1313,7 +1313,7 @@ func ExampleDataConnectorsClient_Delete_deleteAApiPollingDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/DeleteGenericUI.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/DeleteGenericUI.json
 func ExampleDataConnectorsClient_Delete_deleteAGenericUiDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1335,7 +1335,7 @@ func ExampleDataConnectorsClient_Delete_deleteAGenericUiDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/DeleteGoogleCloudPlatform.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/DeleteGoogleCloudPlatform.json
 func ExampleDataConnectorsClient_Delete_deleteAGcpDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1357,7 +1357,7 @@ func ExampleDataConnectorsClient_Delete_deleteAGcpDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/DeleteMicrosoftPurviewInformationProtectionDataConnetor.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/DeleteMicrosoftPurviewInformationProtectionDataConnetor.json
 func ExampleDataConnectorsClient_Delete_deleteAnMicrosoftPurviewInformationProtectionDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1379,7 +1379,7 @@ func ExampleDataConnectorsClient_Delete_deleteAnMicrosoftPurviewInformationProte
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/DeleteMicrosoftThreatIntelligenceDataConnector.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/DeleteMicrosoftThreatIntelligenceDataConnector.json
 func ExampleDataConnectorsClient_Delete_deleteAnMicrosoftThreatIntelligenceDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1401,7 +1401,7 @@ func ExampleDataConnectorsClient_Delete_deleteAnMicrosoftThreatIntelligenceDataC
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/DeleteOffice365ProjectDataConnetor.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/DeleteOffice365ProjectDataConnetor.json
 func ExampleDataConnectorsClient_Delete_deleteAnOffice365ProjectDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1423,7 +1423,7 @@ func ExampleDataConnectorsClient_Delete_deleteAnOffice365ProjectDataConnector() 
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/DeleteOfficeDataConnetor.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/DeleteOfficeDataConnetor.json
 func ExampleDataConnectorsClient_Delete_deleteAnOffice365DataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1445,7 +1445,7 @@ func ExampleDataConnectorsClient_Delete_deleteAnOffice365DataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/DeleteOfficePowerBIDataConnetor.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/DeleteOfficePowerBIDataConnetor.json
 func ExampleDataConnectorsClient_Delete_deleteAnOfficePowerBiDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1467,7 +1467,7 @@ func ExampleDataConnectorsClient_Delete_deleteAnOfficePowerBiDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/DeletePremiumMicrosoftDefenderForThreatIntelligenceDataConnector.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/DeletePremiumMicrosoftDefenderForThreatIntelligenceDataConnector.json
 func ExampleDataConnectorsClient_Delete_deletesAPremiumMicrosoftDefenderForThreatIntelligenceDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1489,7 +1489,7 @@ func ExampleDataConnectorsClient_Delete_deletesAPremiumMicrosoftDefenderForThrea
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/DeletePurviewAuditDataConnector.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/DeletePurviewAuditDataConnector.json
 func ExampleDataConnectorsClient_Delete_deleteAPurviewAuditDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1511,7 +1511,7 @@ func ExampleDataConnectorsClient_Delete_deleteAPurviewAuditDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/DisconnectAPIPolling.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/DisconnectAPIPolling.json
 func ExampleDataConnectorsClient_Disconnect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1533,7 +1533,7 @@ func ExampleDataConnectorsClient_Disconnect() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetAPIPolling.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetAPIPolling.json
 func ExampleDataConnectorsClient_Get_getAApiPollingDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1676,7 +1676,7 @@ func ExampleDataConnectorsClient_Get_getAApiPollingDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetAmazonWebServicesCloudTrailById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetAmazonWebServicesCloudTrailById.json
 func ExampleDataConnectorsClient_Get_getAnAwsCloudTrailDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1713,7 +1713,7 @@ func ExampleDataConnectorsClient_Get_getAnAwsCloudTrailDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetAmazonWebServicesS3ById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetAmazonWebServicesS3ById.json
 func ExampleDataConnectorsClient_Get_getAnAwsS3DataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1754,7 +1754,7 @@ func ExampleDataConnectorsClient_Get_getAnAwsS3DataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetAzureActiveDirectoryById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetAzureActiveDirectoryById.json
 func ExampleDataConnectorsClient_Get_getAnAadipAzureActiveDirectoryIdentityProtectionDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1791,7 +1791,7 @@ func ExampleDataConnectorsClient_Get_getAnAadipAzureActiveDirectoryIdentityProte
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetAzureAdvancedThreatProtectionById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetAzureAdvancedThreatProtectionById.json
 func ExampleDataConnectorsClient_Get_getAnAatpDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1828,7 +1828,7 @@ func ExampleDataConnectorsClient_Get_getAnAatpDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetAzureSecurityCenterById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetAzureSecurityCenterById.json
 func ExampleDataConnectorsClient_Get_getAAscDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1865,7 +1865,7 @@ func ExampleDataConnectorsClient_Get_getAAscDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetDynamics365DataConnectorById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetDynamics365DataConnectorById.json
 func ExampleDataConnectorsClient_Get_getADynamics365DataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1902,7 +1902,7 @@ func ExampleDataConnectorsClient_Get_getADynamics365DataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetGenericUI.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetGenericUI.json
 func ExampleDataConnectorsClient_Get_getAGenericUiDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2067,7 +2067,7 @@ func ExampleDataConnectorsClient_Get_getAGenericUiDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetGoogleCloudPlatformById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetGoogleCloudPlatformById.json
 func ExampleDataConnectorsClient_Get_getAGcpDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2110,7 +2110,7 @@ func ExampleDataConnectorsClient_Get_getAGcpDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetIoTById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetIoTById.json
 func ExampleDataConnectorsClient_Get_getAIoTDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2147,7 +2147,7 @@ func ExampleDataConnectorsClient_Get_getAIoTDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetMicrosoftCloudAppSecurityById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetMicrosoftCloudAppSecurityById.json
 func ExampleDataConnectorsClient_Get_getAMcasDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2187,7 +2187,7 @@ func ExampleDataConnectorsClient_Get_getAMcasDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetMicrosoftDefenderAdvancedThreatProtectionById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetMicrosoftDefenderAdvancedThreatProtectionById.json
 func ExampleDataConnectorsClient_Get_getAMdatpDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2224,7 +2224,7 @@ func ExampleDataConnectorsClient_Get_getAMdatpDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetMicrosoftInsiderRiskManagementById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetMicrosoftInsiderRiskManagementById.json
 func ExampleDataConnectorsClient_Get_getAnOfficeIrmDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2261,7 +2261,7 @@ func ExampleDataConnectorsClient_Get_getAnOfficeIrmDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetMicrosoftPurviewInformationProtectionDataConnetorById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetMicrosoftPurviewInformationProtectionDataConnetorById.json
 func ExampleDataConnectorsClient_Get_getAMicrosoftPurviewInformationProtectionDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2298,7 +2298,7 @@ func ExampleDataConnectorsClient_Get_getAMicrosoftPurviewInformationProtectionDa
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetMicrosoftThreatIntelligenceById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetMicrosoftThreatIntelligenceById.json
 func ExampleDataConnectorsClient_Get_getAMicrosoftThreatIntelligenceDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2326,7 +2326,7 @@ func ExampleDataConnectorsClient_Get_getAMicrosoftThreatIntelligenceDataConnecto
 	// 		Properties: &armsecurityinsights.MSTIDataConnectorProperties{
 	// 			DataTypes: &armsecurityinsights.MSTIDataConnectorDataTypes{
 	// 				MicrosoftEmergingThreatFeed: &armsecurityinsights.MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed{
-	// 					LookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1970-01-01T00:00:00.000Z"); return t}()),
+	// 					LookbackPeriod: to.Ptr(time.Date(1970, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
@@ -2336,7 +2336,7 @@ func ExampleDataConnectorsClient_Get_getAMicrosoftThreatIntelligenceDataConnecto
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetMicrosoftThreatProtectionById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetMicrosoftThreatProtectionById.json
 func ExampleDataConnectorsClient_Get_getAMicrosoftThreatProtectionDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2381,7 +2381,7 @@ func ExampleDataConnectorsClient_Get_getAMicrosoftThreatProtectionDataConnector(
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetOffice365AdvancedThreatProtectionById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetOffice365AdvancedThreatProtectionById.json
 func ExampleDataConnectorsClient_Get_getAnOfficeAtpDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2418,7 +2418,7 @@ func ExampleDataConnectorsClient_Get_getAnOfficeAtpDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetOffice365ProjectDataConnetorById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetOffice365ProjectDataConnetorById.json
 func ExampleDataConnectorsClient_Get_getAnOffice365ProjectDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2455,7 +2455,7 @@ func ExampleDataConnectorsClient_Get_getAnOffice365ProjectDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetOfficeDataConnetorById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetOfficeDataConnetorById.json
 func ExampleDataConnectorsClient_Get_getAnOffice365DataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2498,7 +2498,7 @@ func ExampleDataConnectorsClient_Get_getAnOffice365DataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetOfficePowerBIDataConnetorById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetOfficePowerBIDataConnetorById.json
 func ExampleDataConnectorsClient_Get_getAnOffice365PowerBiDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2535,7 +2535,7 @@ func ExampleDataConnectorsClient_Get_getAnOffice365PowerBiDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetPremiumMicrosoftDefenderForThreatIntelligenceById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetPremiumMicrosoftDefenderForThreatIntelligenceById.json
 func ExampleDataConnectorsClient_Get_getAPremiumMicrosoftDefenderForThreatIntelligenceDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2566,7 +2566,7 @@ func ExampleDataConnectorsClient_Get_getAPremiumMicrosoftDefenderForThreatIntell
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
-	// 			LookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-26T22:16:07Z"); return t}()),
+	// 			LookbackPeriod: to.Ptr(time.Date(2023, time.December, 26, 22, 16, 7, 0, time.UTC)),
 	// 			RequiredSKUsPresent: to.Ptr(false),
 	// 			TenantID: to.Ptr("e4afb3c4-813b-4e68-b6de-e5360866e798"),
 	// 		},
@@ -2574,7 +2574,7 @@ func ExampleDataConnectorsClient_Get_getAPremiumMicrosoftDefenderForThreatIntell
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetPurviewAuditDataConnectorById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetPurviewAuditDataConnectorById.json
 func ExampleDataConnectorsClient_Get_getAPurviewAuditDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2613,7 +2613,7 @@ func ExampleDataConnectorsClient_Get_getAPurviewAuditDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetRestApiPollerById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetRestApiPollerById.json
 func ExampleDataConnectorsClient_Get_getARestApiPollerDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2681,7 +2681,7 @@ func ExampleDataConnectorsClient_Get_getARestApiPollerDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetThreatIntelligenceById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetThreatIntelligenceById.json
 func ExampleDataConnectorsClient_Get_getATiDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2713,13 +2713,13 @@ func ExampleDataConnectorsClient_Get_getATiDataConnector() {
 	// 				},
 	// 			},
 	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
-	// 			TipLookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T13:00:30.123Z"); return t}()),
+	// 			TipLookbackPeriod: to.Ptr(time.Date(2020, time.January, 1, 13, 0, 30, 123000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetThreatIntelligenceTaxiiById.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetThreatIntelligenceTaxiiById.json
 func ExampleDataConnectorsClient_Get_getATiTaxiiDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2754,7 +2754,7 @@ func ExampleDataConnectorsClient_Get_getATiTaxiiDataConnector() {
 	// 			FriendlyName: to.Ptr("My TI Taxii Connector"),
 	// 			Password: to.Ptr(""),
 	// 			PollingFrequency: to.Ptr(armsecurityinsights.PollingFrequencyOnceADay),
-	// 			TaxiiLookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T13:00:30.123Z"); return t}()),
+	// 			TaxiiLookbackPeriod: to.Ptr(time.Date(2020, time.January, 1, 13, 0, 30, 123000000, time.UTC)),
 	// 			TaxiiServer: to.Ptr("https://mytaxiiserver.com/taxiing/v2/api"),
 	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 			UserName: to.Ptr(""),
@@ -2764,7 +2764,7 @@ func ExampleDataConnectorsClient_Get_getATiTaxiiDataConnector() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/GetDataConnectors.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/GetDataConnectors.json
 func ExampleDataConnectorsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

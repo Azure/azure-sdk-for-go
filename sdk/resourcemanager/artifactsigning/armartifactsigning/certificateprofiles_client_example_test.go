@@ -217,14 +217,14 @@ func ExampleCertificateProfilesClient_RevokeCertificates() {
 	_, err = clientFactory.NewCertificateProfilesClient().RevokeCertificates(ctx, "MyResourceGroup", "MyAccount", "profileA", armartifactsigning.RevokeCertificateList{
 		RevokeCertificates: []*armartifactsigning.RevokeCertificate{
 			{
-				EffectiveAt:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25+00:00"); return t }()),
+				EffectiveAt:  to.Ptr(time.Date(2023, time.November, 12, 23, 40, 25, 0, time.UTC)),
 				Reason:       to.Ptr("KeyCompromised"),
 				Remarks:      to.Ptr("test"),
 				SerialNumber: to.Ptr("xxxxxxxxxxxxxxxxxx"),
 				Thumbprint:   to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
 			},
 			{
-				EffectiveAt:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25+00:00"); return t }()),
+				EffectiveAt:  to.Ptr(time.Date(2023, time.November, 12, 23, 40, 25, 0, time.UTC)),
 				Reason:       to.Ptr("KeyCompromised"),
 				Remarks:      to.Ptr("test"),
 				SerialNumber: to.Ptr("yyyyyyyyyyyyyyyyyy"),

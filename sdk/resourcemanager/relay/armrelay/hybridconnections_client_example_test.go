@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-01-01/HybridConnection/RelayHybridConnectionCreate.json
+// Generated from example definition: 2026-01-01/HybridConnection/RelayHybridConnectionCreate.json
 func ExampleHybridConnectionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,20 +35,20 @@ func ExampleHybridConnectionsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.HybridConnectionsClientCreateOrUpdateResponse{
-	// 	HybridConnection: &armrelay.HybridConnection{
+	// 	HybridConnection: armrelay.HybridConnection{
 	// 		Name: to.Ptr("example-Relay-Hybrid-01"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/HybridConnections"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-01/HybridConnections/example-Relay-Hybrid-01"),
 	// 		Properties: &armrelay.HybridConnectionProperties{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:34:49.4131724Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 49, 413172400, time.UTC)),
 	// 			RequiresClientAuthorization: to.Ptr(true),
-	// 			UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:34:49.4131724Z"); return t}()),
+	// 			UpdatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 49, 413172400, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleCreate.json
+// Generated from example definition: 2026-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleCreate.json
 func ExampleHybridConnectionsClient_CreateOrUpdateAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleHybridConnectionsClient_CreateOrUpdateAuthorizationRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.HybridConnectionsClientCreateOrUpdateAuthorizationRuleResponse{
-	// 	AuthorizationRule: &armrelay.AuthorizationRule{
+	// 	AuthorizationRule: armrelay.AuthorizationRule{
 	// 		Name: to.Ptr("example-RelayAuthRules-01"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/Hybridconnections/AuthorizationRules"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-01/HybridConnections/example-Relay-Hybrid-01/AuthorizationRules/example-RelayAuthRules-01"),
@@ -88,7 +88,7 @@ func ExampleHybridConnectionsClient_CreateOrUpdateAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/HybridConnection/RelayHybridconnectionDelete.json
+// Generated from example definition: 2026-01-01/HybridConnection/RelayHybridconnectionDelete.json
 func ExampleHybridConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleHybridConnectionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleDelete.json
+// Generated from example definition: 2026-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleDelete.json
 func ExampleHybridConnectionsClient_DeleteAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleHybridConnectionsClient_DeleteAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/HybridConnection/RelayHybridConnectionGet.json
+// Generated from example definition: 2026-01-01/HybridConnection/RelayHybridConnectionGet.json
 func ExampleHybridConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,22 +151,22 @@ func ExampleHybridConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.HybridConnectionsClientGetResponse{
-	// 	HybridConnection: &armrelay.HybridConnection{
+	// 	HybridConnection: armrelay.HybridConnection{
 	// 		Name: to.Ptr("example-Relay-Hybrid-01"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/HybridConnections"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-01/HybridConnections/example-Relay-Hybrid-01"),
 	// 		Properties: &armrelay.HybridConnectionProperties{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:34:49.4131724Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 49, 413172400, time.UTC)),
 	// 			ListenerCount: to.Ptr[int32](1),
 	// 			RequiresClientAuthorization: to.Ptr(true),
-	// 			UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:34:49.4131724Z"); return t}()),
+	// 			UpdatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 49, 413172400, time.UTC)),
 	// 			UserMetadata: to.Ptr("usermetadata is a placeholder to store user-defined string data for the HybridConnection endpoint.e.g. it can be used to store  descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored."),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleGet.json
+// Generated from example definition: 2026-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleGet.json
 func ExampleHybridConnectionsClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func ExampleHybridConnectionsClient_GetAuthorizationRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.HybridConnectionsClientGetAuthorizationRuleResponse{
-	// 	AuthorizationRule: &armrelay.AuthorizationRule{
+	// 	AuthorizationRule: armrelay.AuthorizationRule{
 	// 		Name: to.Ptr("example-RelayAuthRules-01"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/Hybridconnections/AuthorizationRules"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-01/HybridConnections/example-Relay-Hybrid-01/AuthorizationRules/example-RelayAuthRules-01"),
@@ -198,7 +198,7 @@ func ExampleHybridConnectionsClient_GetAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleListAll.json
+// Generated from example definition: 2026-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleListAll.json
 func ExampleHybridConnectionsClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,7 +240,7 @@ func ExampleHybridConnectionsClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: 2024-01-01/HybridConnection/RelayHybridConnectionListAll.json
+// Generated from example definition: 2026-01-01/HybridConnection/RelayHybridConnectionListAll.json
 func ExampleHybridConnectionsClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -270,10 +270,10 @@ func ExampleHybridConnectionsClient_NewListByNamespacePager() {
 		// 				Type: to.Ptr("Microsoft.Relay/Namespaces/HybridConnections"),
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-01/HybridConnections/example-Relay-Hybrid-01"),
 		// 				Properties: &armrelay.HybridConnectionProperties{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:34:49.4131724Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 49, 413172400, time.UTC)),
 		// 					ListenerCount: to.Ptr[int32](1),
 		// 					RequiresClientAuthorization: to.Ptr(true),
-		// 					UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:34:49.4131724Z"); return t}()),
+		// 					UpdatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 49, 413172400, time.UTC)),
 		// 					UserMetadata: to.Ptr("usermetadata is a placeholder to store user-defined string data for the HybridConnection endpoint.e.g. it can be used to store  descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored."),
 		// 				},
 		// 			},
@@ -283,7 +283,7 @@ func ExampleHybridConnectionsClient_NewListByNamespacePager() {
 	}
 }
 
-// Generated from example definition: 2024-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleListKey.json
+// Generated from example definition: 2026-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleListKey.json
 func ExampleHybridConnectionsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,7 +302,7 @@ func ExampleHybridConnectionsClient_ListKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.HybridConnectionsClientListKeysResponse{
-	// 	AccessKeys: &armrelay.AccessKeys{
+	// 	AccessKeys: armrelay.AccessKeys{
 	// 		KeyName: to.Ptr("example-RelayAuthRules-01"),
 	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://example-Relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=example-RelayAuthRules-01;SharedAccessKey=############################################"),
 	// 		PrimaryKey: to.Ptr("############################################"),
@@ -312,7 +312,7 @@ func ExampleHybridConnectionsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleRegenerateKey.json
+// Generated from example definition: 2026-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleRegenerateKey.json
 func ExampleHybridConnectionsClient_RegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -333,7 +333,7 @@ func ExampleHybridConnectionsClient_RegenerateKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.HybridConnectionsClientRegenerateKeysResponse{
-	// 	AccessKeys: &armrelay.AccessKeys{
+	// 	AccessKeys: armrelay.AccessKeys{
 	// 		KeyName: to.Ptr("example-RelayAuthRules-01"),
 	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://example-Relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=example-RelayAuthRules-01;SharedAccessKey=############################################"),
 	// 		PrimaryKey: to.Ptr("############################################"),

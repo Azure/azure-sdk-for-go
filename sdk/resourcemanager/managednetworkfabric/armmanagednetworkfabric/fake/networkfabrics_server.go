@@ -17,6 +17,7 @@ import (
 	"net/url"
 	"reflect"
 	"regexp"
+	"slices"
 )
 
 // NetworkFabricsServer is a fake server for instances of the armmanagednetworkfabric.NetworkFabricsClient type.
@@ -191,9 +192,7 @@ func (n *NetworkFabricsServerTransport) Do(req *http.Request) (*http.Response, e
 }
 
 func (n *NetworkFabricsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -255,10 +254,7 @@ func (n *NetworkFabricsServerTransport) dispatchToMethodFake(req *http.Request, 
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -275,7 +271,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginArmConfigurationDiff(req *h
 	}
 	beginArmConfigurationDiff := n.beginArmConfigurationDiff.get(req)
 	if beginArmConfigurationDiff == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/armConfigurationDiff`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/armConfigurationDiff`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -302,7 +298,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginArmConfigurationDiff(req *h
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginArmConfigurationDiff.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -319,7 +315,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginCommitBatchStatus(req *http
 	}
 	beginCommitBatchStatus := n.beginCommitBatchStatus.get(req)
 	if beginCommitBatchStatus == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/commitBatchStatus`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/commitBatchStatus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -350,7 +346,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginCommitBatchStatus(req *http
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginCommitBatchStatus.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -367,7 +363,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginCommitConfiguration(req *ht
 	}
 	beginCommitConfiguration := n.beginCommitConfiguration.get(req)
 	if beginCommitConfiguration == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/commitConfiguration`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/commitConfiguration`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -404,7 +400,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginCommitConfiguration(req *ht
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginCommitConfiguration.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -421,7 +417,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginCreate(req *http.Request) (
 	}
 	beginCreate := n.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -452,7 +448,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginCreate(req *http.Request) (
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		n.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -469,7 +465,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginDelete(req *http.Request) (
 	}
 	beginDelete := n.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -496,7 +492,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginDelete(req *http.Request) (
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		n.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -513,7 +509,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginDeprovision(req *http.Reque
 	}
 	beginDeprovision := n.beginDeprovision.get(req)
 	if beginDeprovision == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deprovision`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deprovision`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -540,7 +536,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginDeprovision(req *http.Reque
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginDeprovision.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -557,7 +553,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginDiscardCommitBatch(req *htt
 	}
 	beginDiscardCommitBatch := n.beginDiscardCommitBatch.get(req)
 	if beginDiscardCommitBatch == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/discardCommitBatch`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/discardCommitBatch`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -588,7 +584,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginDiscardCommitBatch(req *htt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginDiscardCommitBatch.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -603,7 +599,7 @@ func (n *NetworkFabricsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -622,7 +618,7 @@ func (n *NetworkFabricsServerTransport) dispatchGet(req *http.Request) (*http.Re
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkFabric, req)
@@ -638,7 +634,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginGetTopology(req *http.Reque
 	}
 	beginGetTopology := n.beginGetTopology.get(req)
 	if beginGetTopology == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getTopology`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getTopology`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -665,7 +661,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginGetTopology(req *http.Reque
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginGetTopology.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -682,7 +678,7 @@ func (n *NetworkFabricsServerTransport) dispatchNewListByResourceGroupPager(req 
 	}
 	newListByResourceGroupPager := n.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -703,7 +699,7 @@ func (n *NetworkFabricsServerTransport) dispatchNewListByResourceGroupPager(req 
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		n.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -719,7 +715,7 @@ func (n *NetworkFabricsServerTransport) dispatchNewListBySubscriptionPager(req *
 	}
 	newListBySubscriptionPager := n.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -736,7 +732,7 @@ func (n *NetworkFabricsServerTransport) dispatchNewListBySubscriptionPager(req *
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		n.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -752,7 +748,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginLockFabric(req *http.Reques
 	}
 	beginLockFabric := n.beginLockFabric.get(req)
 	if beginLockFabric == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/lockFabric`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/lockFabric`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -783,7 +779,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginLockFabric(req *http.Reques
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginLockFabric.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -800,7 +796,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginProvision(req *http.Request
 	}
 	beginProvision := n.beginProvision.get(req)
 	if beginProvision == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/provision`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/provision`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -827,7 +823,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginProvision(req *http.Request
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginProvision.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -844,7 +840,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginRefreshConfiguration(req *h
 	}
 	beginRefreshConfiguration := n.beginRefreshConfiguration.get(req)
 	if beginRefreshConfiguration == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/refreshConfiguration`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/refreshConfiguration`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -871,7 +867,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginRefreshConfiguration(req *h
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginRefreshConfiguration.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -888,7 +884,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginResyncCertificates(req *htt
 	}
 	beginResyncCertificates := n.beginResyncCertificates.get(req)
 	if beginResyncCertificates == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resyncCertificates`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resyncCertificates`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -915,7 +911,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginResyncCertificates(req *htt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginResyncCertificates.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -932,7 +928,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginResyncPasswords(req *http.R
 	}
 	beginResyncPasswords := n.beginResyncPasswords.get(req)
 	if beginResyncPasswords == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resyncPasswords`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resyncPasswords`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -959,7 +955,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginResyncPasswords(req *http.R
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginResyncPasswords.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -976,7 +972,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginRotateCertificates(req *htt
 	}
 	beginRotateCertificates := n.beginRotateCertificates.get(req)
 	if beginRotateCertificates == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rotateCertificates`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rotateCertificates`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1003,7 +999,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginRotateCertificates(req *htt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginRotateCertificates.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -1020,7 +1016,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginRotatePasswords(req *http.R
 	}
 	beginRotatePasswords := n.beginRotatePasswords.get(req)
 	if beginRotatePasswords == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rotatePasswords`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rotatePasswords`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1047,7 +1043,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginRotatePasswords(req *http.R
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginRotatePasswords.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -1064,7 +1060,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginUpdate(req *http.Request) (
 	}
 	beginUpdate := n.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1095,7 +1091,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginUpdate(req *http.Request) (
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -1112,7 +1108,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginUpdateInfraManagementBfdCon
 	}
 	beginUpdateInfraManagementBfdConfiguration := n.beginUpdateInfraManagementBfdConfiguration.get(req)
 	if beginUpdateInfraManagementBfdConfiguration == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateInfraManagementBfdConfiguration`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateInfraManagementBfdConfiguration`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1143,7 +1139,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginUpdateInfraManagementBfdCon
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginUpdateInfraManagementBfdConfiguration.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -1160,7 +1156,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginUpdateWorkloadManagementBfd
 	}
 	beginUpdateWorkloadManagementBfdConfiguration := n.beginUpdateWorkloadManagementBfdConfiguration.get(req)
 	if beginUpdateWorkloadManagementBfdConfiguration == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateWorkloadManagementBfdConfiguration`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateWorkloadManagementBfdConfiguration`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1191,7 +1187,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginUpdateWorkloadManagementBfd
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginUpdateWorkloadManagementBfdConfiguration.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -1208,7 +1204,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginUpgrade(req *http.Request) 
 	}
 	beginUpgrade := n.beginUpgrade.get(req)
 	if beginUpgrade == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/upgrade`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgrade`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1239,7 +1235,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginUpgrade(req *http.Request) 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginUpgrade.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -1256,7 +1252,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginValidateConfiguration(req *
 	}
 	beginValidateConfiguration := n.beginValidateConfiguration.get(req)
 	if beginValidateConfiguration == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateConfiguration`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validateConfiguration`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1287,7 +1283,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginValidateConfiguration(req *
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginValidateConfiguration.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -1304,7 +1300,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginViewDeviceConfiguration(req
 	}
 	beginViewDeviceConfiguration := n.beginViewDeviceConfiguration.get(req)
 	if beginViewDeviceConfiguration == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/viewDeviceConfiguration`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabrics/(?P<networkFabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/viewDeviceConfiguration`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1331,7 +1327,7 @@ func (n *NetworkFabricsServerTransport) dispatchBeginViewDeviceConfiguration(req
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginViewDeviceConfiguration.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

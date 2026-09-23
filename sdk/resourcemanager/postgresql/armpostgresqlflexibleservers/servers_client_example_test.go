@@ -94,7 +94,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerUsingARestoreOfAGe
 				PrimaryKeyURI:                   to.Ptr("https://exampleprimarykeyvault.vault.azure.net/keys/examplekey/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
 				PrimaryUserAssignedIdentityID:   to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleprimaryidentity"),
 			},
-			PointInTimeUTC:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:35:22.123456Z"); return t }()),
+			PointInTimeUTC:         to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123456000, time.UTC)),
 			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/examplesourceserver"),
 		},
 	}, nil)
@@ -136,7 +136,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerUsingARestoreOfAGe
 				PrimaryKeyURI:                   to.Ptr("https://exampleprimarykeyvault.vault.azure.net/keys/examplekey"),
 				PrimaryUserAssignedIdentityID:   to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleprimaryidentity"),
 			},
-			PointInTimeUTC:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:35:22.123456Z"); return t }()),
+			PointInTimeUTC:         to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123456000, time.UTC)),
 			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/examplesourceserver"),
 		},
 	}, nil)
@@ -271,7 +271,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerUsingAPointInTimeR
 		Location: to.Ptr("eastus"),
 		Properties: &armpostgresqlflexibleservers.ServerProperties{
 			CreateMode:             to.Ptr(armpostgresqlflexibleservers.CreateModePointInTimeRestore),
-			PointInTimeUTC:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:35:22.123456Z"); return t }()),
+			PointInTimeUTC:         to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123456000, time.UTC)),
 			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/examplesourceserver"),
 		},
 	}, nil)
@@ -339,7 +339,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerUsingABackupOfASer
 		Location: to.Ptr("eastus"),
 		Properties: &armpostgresqlflexibleservers.ServerProperties{
 			CreateMode:             to.Ptr(armpostgresqlflexibleservers.CreateModeReviveDropped),
-			PointInTimeUTC:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t }()),
+			PointInTimeUTC:         to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampledeletedserver"),
 		},
 	}, nil)
@@ -590,7 +590,7 @@ func ExampleServersClient_Get_getInformationAboutAnExistingServer() {
 	// 			AvailabilityZone: to.Ptr("1"),
 	// 			Backup: &armpostgresqlflexibleservers.Backup{
 	// 				BackupRetentionDays: to.Ptr[int32](7),
-	// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:35:22.123456Z"); return t}()),
+	// 				EarliestRestoreDate: to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123456000, time.UTC)),
 	// 				GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupEnabled),
 	// 			},
 	// 			DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -634,7 +634,7 @@ func ExampleServersClient_Get_getInformationAboutAnExistingServer() {
 	// 			Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
 	// 		},
 	// 		SystemData: &armpostgresqlflexibleservers.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -673,7 +673,7 @@ func ExampleServersClient_Get_getInformationAboutAnExistingServerThatIsnTIntegra
 	// 			AvailabilityZone: to.Ptr("1"),
 	// 			Backup: &armpostgresqlflexibleservers.Backup{
 	// 				BackupRetentionDays: to.Ptr[int32](7),
-	// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:35:22.123456Z"); return t}()),
+	// 				EarliestRestoreDate: to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123456000, time.UTC)),
 	// 				GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupDisabled),
 	// 			},
 	// 			FullyQualifiedDomainName: to.Ptr("exampleserver.postgres.database.azure.com"),
@@ -762,7 +762,7 @@ func ExampleServersClient_Get_getInformationAboutAnExistingServerThatIsIntegrate
 	// 			AvailabilityZone: to.Ptr("1"),
 	// 			Backup: &armpostgresqlflexibleservers.Backup{
 	// 				BackupRetentionDays: to.Ptr[int32](7),
-	// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:35:22.123456Z"); return t}()),
+	// 				EarliestRestoreDate: to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123456000, time.UTC)),
 	// 				GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupEnabled),
 	// 			},
 	// 			DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -807,7 +807,7 @@ func ExampleServersClient_Get_getInformationAboutAnExistingServerThatIsIntegrate
 	// 			Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
 	// 		},
 	// 		SystemData: &armpostgresqlflexibleservers.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"VnetServer": to.Ptr("1"),
@@ -857,7 +857,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 					AvailabilityZone: to.Ptr("1"),
 		// 					Backup: &armpostgresqlflexibleservers.Backup{
 		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:35:22.123456Z"); return t}()),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123456000, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupEnabled),
 		// 					},
 		// 					DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -902,7 +902,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 					Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
 		// 				},
 		// 				SystemData: &armpostgresqlflexibleservers.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"VnetServer": to.Ptr("1"),
@@ -934,7 +934,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 					AvailabilityZone: to.Ptr("1"),
 		// 					Backup: &armpostgresqlflexibleservers.Backup{
 		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T19:35:22.123456Z"); return t}()),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2025, time.June, 1, 19, 35, 22, 123456000, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupDisabled),
 		// 					},
 		// 					DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -981,7 +981,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 					Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
 		// 				},
 		// 				SystemData: &armpostgresqlflexibleservers.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T19:30:22.123456Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 1, 19, 30, 22, 123456000, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -1033,7 +1033,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 					AvailabilityZone: to.Ptr("1"),
 		// 					Backup: &armpostgresqlflexibleservers.Backup{
 		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:35:22.123456Z"); return t}()),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123456000, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupEnabled),
 		// 					},
 		// 					DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -1078,7 +1078,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 					Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
 		// 				},
 		// 				SystemData: &armpostgresqlflexibleservers.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"VnetServer": to.Ptr("1"),
@@ -1099,7 +1099,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 					AvailabilityZone: to.Ptr("2"),
 		// 					Backup: &armpostgresqlflexibleservers.Backup{
 		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T19:35:22.123456Z"); return t}()),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2025, time.June, 1, 19, 35, 22, 123456000, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupEnabled),
 		// 					},
 		// 					DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -1144,7 +1144,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 					Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
 		// 				},
 		// 				SystemData: &armpostgresqlflexibleservers.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T19:30:22.123456Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 1, 19, 30, 22, 123456000, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -1175,7 +1175,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 					AvailabilityZone: to.Ptr("1"),
 		// 					Backup: &armpostgresqlflexibleservers.Backup{
 		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:35:22.123456Z"); return t}()),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2025, time.June, 1, 20, 35, 22, 123456000, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupDisabled),
 		// 					},
 		// 					DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -1222,7 +1222,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 					Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
 		// 				},
 		// 				SystemData: &armpostgresqlflexibleservers.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -1241,7 +1241,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 					AvailabilityZone: to.Ptr("2"),
 		// 					Backup: &armpostgresqlflexibleservers.Backup{
 		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T21:35:22.123456Z"); return t}()),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2025, time.June, 1, 21, 35, 22, 123456000, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupDisabled),
 		// 					},
 		// 					DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -1285,7 +1285,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 					Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
 		// 				},
 		// 				SystemData: &armpostgresqlflexibleservers.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T21:30:22.123456Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 1, 21, 30, 22, 123456000, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -1421,7 +1421,7 @@ func ExampleServersClient_BeginStartMajorVersionUpgradePrecheck() {
 	// res = armpostgresqlflexibleservers.ServersClientStartMajorVersionUpgradePrecheckResponse{
 	// 	StartMajorVersionUpgradePrecheckResponse: armpostgresqlflexibleservers.StartMajorVersionUpgradePrecheckResponse{
 	// 		Name: to.Ptr("pppppppp-pppp-pppp-pppp-pppppppppppp"),
-	// 		CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-15T10:00:00Z"); return t}()),
+	// 		CreateTime: to.Ptr(time.Date(2026, time.April, 15, 10, 0, 0, 0, time.UTC)),
 	// 		Status: to.Ptr(armpostgresqlflexibleservers.MajorVersionUpgradePrecheckStatusSucceeded),
 	// 	},
 	// }

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-02-01-preview/CreateOrUpdateJobMax.json
+// Generated from example definition: 2026-08-01-preview/CreateOrUpdateJobMax.json
 func ExampleJobsClient_CreateOrUpdate_createAJobWithAllPropertiesSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,9 +30,9 @@ func ExampleJobsClient_CreateOrUpdate_createAJobWithAllPropertiesSpecified() {
 			Schedule: &armsql.JobSchedule{
 				Type:      to.Ptr(armsql.JobScheduleTypeRecurring),
 				Enabled:   to.Ptr(true),
-				EndTime:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-09-24T23:59:59Z"); return t }()),
+				EndTime:   to.Ptr(time.Date(2015, time.September, 24, 23, 59, 59, 0, time.UTC)),
 				Interval:  to.Ptr("PT5M"),
-				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-09-24T18:30:01Z"); return t }()),
+				StartTime: to.Ptr(time.Date(2015, time.September, 24, 18, 30, 1, 0, time.UTC)),
 			},
 		},
 	}, nil)
@@ -52,9 +52,9 @@ func ExampleJobsClient_CreateOrUpdate_createAJobWithAllPropertiesSpecified() {
 	// 			Schedule: &armsql.JobSchedule{
 	// 				Type: to.Ptr(armsql.JobScheduleTypeRecurring),
 	// 				Enabled: to.Ptr(true),
-	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-09-24T23:59:59Z"); return t}()),
+	// 				EndTime: to.Ptr(time.Date(2015, time.September, 24, 23, 59, 59, 0, time.UTC)),
 	// 				Interval: to.Ptr("PT5M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-09-24T18:30:01Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2015, time.September, 24, 18, 30, 1, 0, time.UTC)),
 	// 			},
 	// 			Version: to.Ptr[int32](0),
 	// 		},
@@ -62,7 +62,7 @@ func ExampleJobsClient_CreateOrUpdate_createAJobWithAllPropertiesSpecified() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateOrUpdateJobMin.json
+// Generated from example definition: 2026-08-01-preview/CreateOrUpdateJobMin.json
 func ExampleJobsClient_CreateOrUpdate_createAJobWithDefaultProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,8 +90,8 @@ func ExampleJobsClient_CreateOrUpdate_createAJobWithDefaultProperties() {
 	// 			Schedule: &armsql.JobSchedule{
 	// 				Type: to.Ptr(armsql.JobScheduleTypeOnce),
 	// 				Enabled: to.Ptr(false),
-	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T11:59:59Z"); return t}()),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00Z"); return t}()),
+	// 				EndTime: to.Ptr(time.Date(9999, time.December, 31, 11, 59, 59, 0, time.UTC)),
+	// 				StartTime: to.Ptr(time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			},
 	// 			Version: to.Ptr[int32](0),
 	// 		},
@@ -99,7 +99,7 @@ func ExampleJobsClient_CreateOrUpdate_createAJobWithDefaultProperties() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/DeleteJob.json
+// Generated from example definition: 2026-08-01-preview/DeleteJob.json
 func ExampleJobsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleJobsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/GetJob.json
+// Generated from example definition: 2026-08-01-preview/GetJob.json
 func ExampleJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,8 +149,8 @@ func ExampleJobsClient_Get() {
 	// 			Schedule: &armsql.JobSchedule{
 	// 				Type: to.Ptr(armsql.JobScheduleTypeOnce),
 	// 				Enabled: to.Ptr(true),
-	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-09-24T23:59:59Z"); return t}()),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-09-24T18:30:01Z"); return t}()),
+	// 				EndTime: to.Ptr(time.Date(2015, time.September, 24, 23, 59, 59, 0, time.UTC)),
+	// 				StartTime: to.Ptr(time.Date(2015, time.September, 24, 18, 30, 1, 0, time.UTC)),
 	// 			},
 	// 			Version: to.Ptr[int32](0),
 	// 		},
@@ -158,7 +158,7 @@ func ExampleJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ListJobsByAgent.json
+// Generated from example definition: 2026-08-01-preview/ListJobsByAgent.json
 func ExampleJobsClient_NewListByAgentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,9 +192,9 @@ func ExampleJobsClient_NewListByAgentPager() {
 		// 					Schedule: &armsql.JobSchedule{
 		// 						Type: to.Ptr(armsql.JobScheduleTypeRecurring),
 		// 						Enabled: to.Ptr(true),
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-09-24T23:59:59Z"); return t}()),
+		// 						EndTime: to.Ptr(time.Date(2015, time.September, 24, 23, 59, 59, 0, time.UTC)),
 		// 						Interval: to.Ptr("PT5M"),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-09-24T18:30:01Z"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2015, time.September, 24, 18, 30, 1, 0, time.UTC)),
 		// 					},
 		// 					Version: to.Ptr[int32](0),
 		// 				},
@@ -208,8 +208,8 @@ func ExampleJobsClient_NewListByAgentPager() {
 		// 					Schedule: &armsql.JobSchedule{
 		// 						Type: to.Ptr(armsql.JobScheduleTypeOnce),
 		// 						Enabled: to.Ptr(true),
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-27T06:00:00Z"); return t}()),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-01T03:45:00Z"); return t}()),
+		// 						EndTime: to.Ptr(time.Date(2017, time.December, 27, 6, 0, 0, 0, time.UTC)),
+		// 						StartTime: to.Ptr(time.Date(2017, time.July, 1, 3, 45, 0, 0, time.UTC)),
 		// 					},
 		// 					Version: to.Ptr[int32](1),
 		// 				},
@@ -223,8 +223,8 @@ func ExampleJobsClient_NewListByAgentPager() {
 		// 					Schedule: &armsql.JobSchedule{
 		// 						Type: to.Ptr(armsql.JobScheduleTypeOnce),
 		// 						Enabled: to.Ptr(false),
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-27T06:00:00Z"); return t}()),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-01T03:45:00Z"); return t}()),
+		// 						EndTime: to.Ptr(time.Date(2017, time.December, 27, 6, 0, 0, 0, time.UTC)),
+		// 						StartTime: to.Ptr(time.Date(2017, time.July, 1, 3, 45, 0, 0, time.UTC)),
 		// 					},
 		// 					Version: to.Ptr[int32](1),
 		// 				},

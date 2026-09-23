@@ -181,4 +181,10 @@ var (
 
 	// MissingParameters - Error is returned when at least one parameter should be set for any API.
 	MissingParameters = errors.New("at least one parameter should be set for SetAccessControl API")
+
+	// UnsupportedChecksum - Error is returned when a user-provided precomputed checksum (e.g. CRC64 or
+	// MD5) is supplied to a multipart upload (UploadBuffer, UploadFile, or UploadStream). A single
+	// precomputed checksum cannot validate the individual chunks of a multipart upload. Use computed
+	// CRC64 or structured message CRC64, both of which are validated per chunk.
+	UnsupportedChecksum = errors.New("for multi-part uploads, user generated checksums cannot be validated")
 )

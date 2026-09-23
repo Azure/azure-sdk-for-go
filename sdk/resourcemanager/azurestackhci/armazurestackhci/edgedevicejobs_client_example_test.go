@@ -27,9 +27,9 @@ func ExampleEdgeDeviceJobsClient_BeginCreateOrUpdate_edgeDeviceJobsCreateOrUpdat
 	poller, err := clientFactory.NewEdgeDeviceJobsClient().BeginCreateOrUpdate(ctx, "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1", "default", "collectLog", &armazurestackhci.HciEdgeDeviceJob{
 		Kind: to.Ptr(armazurestackhci.EdgeDeviceKindHCI),
 		Properties: &armazurestackhci.HciCollectLogJobProperties{
-			FromDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T10:43:27.9471574Z"); return t }()),
+			FromDate: to.Ptr(time.Date(2024, time.January, 29, 10, 43, 27, 947157400, time.UTC)),
 			JobType:  to.Ptr(armazurestackhci.HciEdgeDeviceJobTypeCollectLog),
-			ToDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T10:43:27.9471574Z"); return t }()),
+			ToDate:   to.Ptr(time.Date(2024, time.January, 29, 10, 43, 27, 947157400, time.UTC)),
 		},
 	}, nil)
 	if err != nil {
@@ -49,15 +49,15 @@ func ExampleEdgeDeviceJobsClient_BeginCreateOrUpdate_edgeDeviceJobsCreateOrUpdat
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1/providers/Microsoft.AzureStackHCI/edgeDevices/default/jobs/collectLog"),
 	// 		Kind: to.Ptr(armazurestackhci.EdgeDeviceKindHCI),
 	// 		Properties: &armazurestackhci.HciCollectLogJobProperties{
-	// 			FromDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T10:43:27.9471574Z"); return t}()),
+	// 			FromDate: to.Ptr(time.Date(2024, time.January, 29, 10, 43, 27, 947157400, time.UTC)),
 	// 			JobType: to.Ptr(armazurestackhci.HciEdgeDeviceJobTypeCollectLog),
-	// 			ToDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T10:43:27.9471574Z"); return t}()),
+	// 			ToDate: to.Ptr(time.Date(2024, time.January, 29, 10, 43, 27, 947157400, time.UTC)),
 	// 		},
 	// 		SystemData: &armazurestackhci.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-01T17:02:21.168Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.July, 1, 17, 2, 21, 168000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("zsnvvvbj"),
 	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-01T17:02:21.168Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.July, 1, 17, 2, 21, 168000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("qxlrx"),
 	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
 	// 		},
@@ -81,7 +81,7 @@ func ExampleEdgeDeviceJobsClient_BeginCreateOrUpdate_edgeDeviceJobsCreateOrUpdat
 		Properties: &armazurestackhci.HciRemoteSupportJobProperties{
 			Type:                to.Ptr(armazurestackhci.RemoteSupportTypeEnable),
 			AccessLevel:         to.Ptr(armazurestackhci.RemoteSupportAccessLevelDiagnostics),
-			ExpirationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T10:43:27.9471574Z"); return t }()),
+			ExpirationTimestamp: to.Ptr(time.Date(2024, time.January, 29, 10, 43, 27, 947157400, time.UTC)),
 			JobType:             to.Ptr(armazurestackhci.HciEdgeDeviceJobTypeRemoteSupport),
 		},
 	}, nil)
@@ -104,14 +104,14 @@ func ExampleEdgeDeviceJobsClient_BeginCreateOrUpdate_edgeDeviceJobsCreateOrUpdat
 	// 		Properties: &armazurestackhci.HciRemoteSupportJobProperties{
 	// 			Type: to.Ptr(armazurestackhci.RemoteSupportTypeEnable),
 	// 			AccessLevel: to.Ptr(armazurestackhci.RemoteSupportAccessLevelDiagnostics),
-	// 			ExpirationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T10:43:27.9471574Z"); return t}()),
+	// 			ExpirationTimestamp: to.Ptr(time.Date(2024, time.January, 29, 10, 43, 27, 947157400, time.UTC)),
 	// 			JobType: to.Ptr(armazurestackhci.HciEdgeDeviceJobTypeRemoteSupport),
 	// 		},
 	// 		SystemData: &armazurestackhci.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-01T17:02:21.168Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.July, 1, 17, 2, 21, 168000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("zsnvvvbj"),
 	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-01T17:02:21.168Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.July, 1, 17, 2, 21, 168000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("qxlrx"),
 	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
 	// 		},
@@ -167,14 +167,14 @@ func ExampleEdgeDeviceJobsClient_Get() {
 	// 		Properties: &armazurestackhci.HciRemoteSupportJobProperties{
 	// 			Type: to.Ptr(armazurestackhci.RemoteSupportTypeEnable),
 	// 			AccessLevel: to.Ptr(armazurestackhci.RemoteSupportAccessLevelDiagnostics),
-	// 			ExpirationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T10:43:27.9471574Z"); return t}()),
+	// 			ExpirationTimestamp: to.Ptr(time.Date(2024, time.January, 29, 10, 43, 27, 947157400, time.UTC)),
 	// 			JobType: to.Ptr(armazurestackhci.HciEdgeDeviceJobTypeRemoteSupport),
 	// 		},
 	// 		SystemData: &armazurestackhci.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-01T17:02:21.168Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.July, 1, 17, 2, 21, 168000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("zsnvvvbj"),
 	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-01T17:02:21.168Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.July, 1, 17, 2, 21, 168000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("qxlrx"),
 	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
 	// 		},
@@ -216,14 +216,14 @@ func ExampleEdgeDeviceJobsClient_NewListByEdgeDevicePager() {
 		// 				Properties: &armazurestackhci.HciRemoteSupportJobProperties{
 		// 					Type: to.Ptr(armazurestackhci.RemoteSupportTypeEnable),
 		// 					AccessLevel: to.Ptr(armazurestackhci.RemoteSupportAccessLevelDiagnostics),
-		// 					ExpirationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T10:43:27.9471574Z"); return t}()),
+		// 					ExpirationTimestamp: to.Ptr(time.Date(2024, time.January, 29, 10, 43, 27, 947157400, time.UTC)),
 		// 					JobType: to.Ptr(armazurestackhci.HciEdgeDeviceJobTypeRemoteSupport),
 		// 				},
 		// 				SystemData: &armazurestackhci.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-01T17:02:21.168Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.July, 1, 17, 2, 21, 168000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("zsnvvvbj"),
 		// 					CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-01T17:02:21.168Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.July, 1, 17, 2, 21, 168000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("qxlrx"),
 		// 					LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
 		// 				},

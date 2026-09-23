@@ -55,10 +55,10 @@ func ExampleCredentialsClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T19:38:09.5283958Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 9, 528395800, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T19:38:16.6634263Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 16, 663426300, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -118,10 +118,10 @@ func ExampleCredentialsClient_Get() {
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T19:38:09.5283958Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 9, 528395800, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T19:38:16.6634263Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 16, 663426300, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -166,10 +166,10 @@ func ExampleCredentialsClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armdeviceregistry.SystemData{
 		// 					CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 		// 					CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T19:38:09.5283958Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 9, 528395800, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 		// 					LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T19:38:16.6634263Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 16, 663426300, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -240,10 +240,10 @@ func ExampleCredentialsClient_BeginUpdate() {
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T19:38:09.5283958Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 9, 528395800, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T19:38:16.6634263Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 16, 663426300, time.UTC)),
 	// 		},
 	// 	},
 	// }

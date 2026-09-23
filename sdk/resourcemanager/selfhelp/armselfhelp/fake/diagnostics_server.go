@@ -93,7 +93,7 @@ func (d *DiagnosticsServerTransport) dispatchBeginCreate(req *http.Request) (*ht
 	}
 	beginCreate := d.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Help/diagnostics/(?P<diagnosticsResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Help/diagnostics/(?P<diagnosticsResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -103,10 +103,7 @@ func (d *DiagnosticsServerTransport) dispatchBeginCreate(req *http.Request) (*ht
 		if err != nil {
 			return nil, err
 		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		diagnosticsResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("diagnosticsResourceName")])
 		if err != nil {
 			return nil, err
@@ -139,16 +136,13 @@ func (d *DiagnosticsServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Help/diagnostics/(?P<diagnosticsResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Help/diagnostics/(?P<diagnosticsResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	diagnosticsResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("diagnosticsResourceName")])
 	if err != nil {
 		return nil, err

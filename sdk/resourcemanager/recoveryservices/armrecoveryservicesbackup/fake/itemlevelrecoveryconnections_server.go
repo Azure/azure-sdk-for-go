@@ -20,6 +20,10 @@ import (
 
 // ItemLevelRecoveryConnectionsServer is a fake server for instances of the armrecoveryservicesbackup.ItemLevelRecoveryConnectionsClient type.
 type ItemLevelRecoveryConnectionsServer struct {
+	// ListInstantItemRecoveryOperationResult is the fake for method ItemLevelRecoveryConnectionsClient.ListInstantItemRecoveryOperationResult
+	// HTTP status codes to indicate success: http.StatusOK
+	ListInstantItemRecoveryOperationResult func(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, body armrecoveryservicesbackup.InstantItemRecoveryOperationResultRequest, options *armrecoveryservicesbackup.ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultOptions) (resp azfake.Responder[armrecoveryservicesbackup.ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultResponse], errResp azfake.ErrorResponder)
+
 	// Provision is the fake for method ItemLevelRecoveryConnectionsClient.Provision
 	// HTTP status codes to indicate success: http.StatusAccepted
 	Provision func(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters armrecoveryservicesbackup.ILRRequestResource, options *armrecoveryservicesbackup.ItemLevelRecoveryConnectionsClientProvisionOptions) (resp azfake.Responder[armrecoveryservicesbackup.ItemLevelRecoveryConnectionsClientProvisionResponse], errResp azfake.ErrorResponder)
@@ -63,6 +67,8 @@ func (i *ItemLevelRecoveryConnectionsServerTransport) dispatchToMethodFake(req *
 		}
 		if !intercepted {
 			switch method {
+			case "ItemLevelRecoveryConnectionsClient.ListInstantItemRecoveryOperationResult":
+				res.resp, res.err = i.dispatchListInstantItemRecoveryOperationResult(req)
 			case "ItemLevelRecoveryConnectionsClient.Provision":
 				res.resp, res.err = i.dispatchProvision(req)
 			case "ItemLevelRecoveryConnectionsClient.Revoke":
@@ -83,11 +89,64 @@ func (i *ItemLevelRecoveryConnectionsServerTransport) dispatchToMethodFake(req *
 	}
 }
 
+func (i *ItemLevelRecoveryConnectionsServerTransport) dispatchListInstantItemRecoveryOperationResult(req *http.Request) (*http.Response, error) {
+	if i.srv.ListInstantItemRecoveryOperationResult == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListInstantItemRecoveryOperationResult not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionContainers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectedItems/(?P<protectedItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recoveryPoints/(?P<recoveryPointId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listInstantItemRecoveryOperationResult`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 8 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armrecoveryservicesbackup.InstantItemRecoveryOperationResultRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
+	if err != nil {
+		return nil, err
+	}
+	fabricNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fabricName")])
+	if err != nil {
+		return nil, err
+	}
+	containerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerName")])
+	if err != nil {
+		return nil, err
+	}
+	protectedItemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("protectedItemName")])
+	if err != nil {
+		return nil, err
+	}
+	recoveryPointIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPointId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.ListInstantItemRecoveryOperationResult(req.Context(), resourceGroupNameParam, vaultNameParam, fabricNameParam, containerNameParam, protectedItemNameParam, recoveryPointIDParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).InstantItemRecoveryTarget, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (i *ItemLevelRecoveryConnectionsServerTransport) dispatchProvision(req *http.Request) (*http.Response, error) {
 	if i.srv.Provision == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Provision not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionContainers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectedItems/(?P<protectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryPoints/(?P<recoveryPointId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/provisionInstantItemRecovery`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionContainers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectedItems/(?P<protectedItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recoveryPoints/(?P<recoveryPointId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/provisionInstantItemRecovery`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 8 {
@@ -140,7 +199,7 @@ func (i *ItemLevelRecoveryConnectionsServerTransport) dispatchRevoke(req *http.R
 	if i.srv.Revoke == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Revoke not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionContainers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectedItems/(?P<protectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryPoints/(?P<recoveryPointId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/revokeInstantItemRecovery`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionContainers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectedItems/(?P<protectedItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recoveryPoints/(?P<recoveryPointId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/revokeInstantItemRecovery`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 8 {

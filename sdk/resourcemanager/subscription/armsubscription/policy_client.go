@@ -11,10 +11,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
+	"strings"
 )
 
 // PolicyClient contains the methods for the Policy group.
 // Don't use this type directly, use NewPolicyClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type PolicyClient struct {
 	internal *arm.Client
 }
@@ -35,8 +38,6 @@ func NewPolicyClient(credential azcore.TokenCredential, options *arm.ClientOptio
 
 // AddUpdatePolicyForTenant - Create or Update Subscription tenant policy for user's tenant.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - options - PolicyClientAddUpdatePolicyForTenantOptions contains the optional parameters for the PolicyClient.AddUpdatePolicyForTenant
 //     method.
 func (client *PolicyClient) AddUpdatePolicyForTenant(ctx context.Context, body PutTenantPolicyRequestProperties, options *PolicyClientAddUpdatePolicyForTenantOptions) (PolicyClientAddUpdatePolicyForTenantResponse, error) {
@@ -53,12 +54,7 @@ func (client *PolicyClient) AddUpdatePolicyForTenant(ctx context.Context, body P
 	if err != nil {
 		return PolicyClientAddUpdatePolicyForTenantResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PolicyClientAddUpdatePolicyForTenantResponse{}, err
-	}
-	resp, err := client.addUpdatePolicyForTenantHandleResponse(httpResp)
-	return resp, err
+	return client.addUpdatePolicyForTenantHandleResponse(httpResp, http.StatusOK)
 }
 
 // addUpdatePolicyForTenantCreateRequest creates the AddUpdatePolicyForTenant request.
@@ -69,8 +65,8 @@ func (client *PolicyClient) addUpdatePolicyForTenantCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -80,8 +76,11 @@ func (client *PolicyClient) addUpdatePolicyForTenantCreateRequest(ctx context.Co
 }
 
 // addUpdatePolicyForTenantHandleResponse handles the AddUpdatePolicyForTenant response.
-func (client *PolicyClient) addUpdatePolicyForTenantHandleResponse(resp *http.Response) (PolicyClientAddUpdatePolicyForTenantResponse, error) {
+func (client *PolicyClient) addUpdatePolicyForTenantHandleResponse(resp *http.Response, successCodes ...int) (PolicyClientAddUpdatePolicyForTenantResponse, error) {
 	result := PolicyClientAddUpdatePolicyForTenantResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetTenantPolicyResponse); err != nil {
 		return PolicyClientAddUpdatePolicyForTenantResponse{}, err
 	}
@@ -90,8 +89,6 @@ func (client *PolicyClient) addUpdatePolicyForTenantHandleResponse(resp *http.Re
 
 // GetPolicyForTenant - Get the subscription tenant policy for the user's tenant.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - options - PolicyClientGetPolicyForTenantOptions contains the optional parameters for the PolicyClient.GetPolicyForTenant
 //     method.
 func (client *PolicyClient) GetPolicyForTenant(ctx context.Context, options *PolicyClientGetPolicyForTenantOptions) (PolicyClientGetPolicyForTenantResponse, error) {
@@ -108,12 +105,7 @@ func (client *PolicyClient) GetPolicyForTenant(ctx context.Context, options *Pol
 	if err != nil {
 		return PolicyClientGetPolicyForTenantResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PolicyClientGetPolicyForTenantResponse{}, err
-	}
-	resp, err := client.getPolicyForTenantHandleResponse(httpResp)
-	return resp, err
+	return client.getPolicyForTenantHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPolicyForTenantCreateRequest creates the GetPolicyForTenant request.
@@ -124,15 +116,18 @@ func (client *PolicyClient) getPolicyForTenantCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getPolicyForTenantHandleResponse handles the GetPolicyForTenant response.
-func (client *PolicyClient) getPolicyForTenantHandleResponse(resp *http.Response) (PolicyClientGetPolicyForTenantResponse, error) {
+func (client *PolicyClient) getPolicyForTenantHandleResponse(resp *http.Response, successCodes ...int) (PolicyClientGetPolicyForTenantResponse, error) {
 	result := PolicyClientGetPolicyForTenantResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetTenantPolicyResponse); err != nil {
 		return PolicyClientGetPolicyForTenantResponse{}, err
 	}
@@ -140,8 +135,6 @@ func (client *PolicyClient) getPolicyForTenantHandleResponse(resp *http.Response
 }
 
 // NewListPolicyForTenantPager - Get the subscription tenant policy for the user's tenant.
-//
-// Generated from API version 2025-11-01-preview
 //   - options - PolicyClientListPolicyForTenantOptions contains the optional parameters for the PolicyClient.NewListPolicyForTenantPager
 //     method.
 func (client *PolicyClient) NewListPolicyForTenantPager(options *PolicyClientListPolicyForTenantOptions) *runtime.Pager[PolicyClientListPolicyForTenantResponse] {
@@ -155,35 +148,49 @@ func (client *PolicyClient) NewListPolicyForTenantPager(options *PolicyClientLis
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listPolicyForTenantCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listPolicyForTenantCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return PolicyClientListPolicyForTenantResponse{}, err
 			}
-			return client.listPolicyForTenantHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PolicyClientListPolicyForTenantResponse{}, err
+			}
+			return client.listPolicyForTenantHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listPolicyForTenantCreateRequest creates the ListPolicyForTenant request.
-func (client *PolicyClient) listPolicyForTenantCreateRequest(ctx context.Context, _ *PolicyClientListPolicyForTenantOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Subscription/policies"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *PolicyClient) listPolicyForTenantCreateRequest(ctx context.Context, nextLink string, _ *PolicyClientListPolicyForTenantOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Subscription/policies"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listPolicyForTenantHandleResponse handles the ListPolicyForTenant response.
-func (client *PolicyClient) listPolicyForTenantHandleResponse(resp *http.Response) (PolicyClientListPolicyForTenantResponse, error) {
+func (client *PolicyClient) listPolicyForTenantHandleResponse(resp *http.Response, successCodes ...int) (PolicyClientListPolicyForTenantResponse, error) {
 	result := PolicyClientListPolicyForTenantResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetTenantPolicyListResponse); err != nil {
 		return PolicyClientListPolicyForTenantResponse{}, err
 	}

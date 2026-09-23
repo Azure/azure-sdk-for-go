@@ -117,7 +117,7 @@ func (o *OffersServerTransport) dispatchBeginGenerateAccessToken(req *http.Reque
 	}
 	beginGenerateAccessToken := o.beginGenerateAccessToken.get(req)
 	if beginGenerateAccessToken == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EdgeMarketplace/offers/(?P<offerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generateAccessToken`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.EdgeMarketplace/offers/(?P<offerId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/generateAccessToken`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -127,10 +127,7 @@ func (o *OffersServerTransport) dispatchBeginGenerateAccessToken(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		offerIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("offerId")])
 		if err != nil {
 			return nil, err
@@ -163,16 +160,13 @@ func (o *OffersServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 	if o.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EdgeMarketplace/offers/(?P<offerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.EdgeMarketplace/offers/(?P<offerId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	offerIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("offerId")])
 	if err != nil {
 		return nil, err
@@ -196,7 +190,7 @@ func (o *OffersServerTransport) dispatchGetAccessToken(req *http.Request) (*http
 	if o.srv.GetAccessToken == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAccessToken not implemented")}
 	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EdgeMarketplace/offers/(?P<offerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getAccessToken`
+	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.EdgeMarketplace/offers/(?P<offerId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getAccessToken`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -206,10 +200,7 @@ func (o *OffersServerTransport) dispatchGetAccessToken(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	offerIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("offerId")])
 	if err != nil {
 		return nil, err
@@ -235,17 +226,14 @@ func (o *OffersServerTransport) dispatchNewListPager(req *http.Request) (*http.R
 	}
 	newListPager := o.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EdgeMarketplace/offers`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.EdgeMarketplace/offers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
@@ -315,7 +303,7 @@ func (o *OffersServerTransport) dispatchNewListBySubscriptionPager(req *http.Req
 	}
 	newListBySubscriptionPager := o.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EdgeMarketplace/offers`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeMarketplace/offers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

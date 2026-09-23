@@ -111,7 +111,7 @@ func (r *RelationshipsServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 	}
 	beginCreateOrUpdate := r.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/relationships/(?P<relationshipName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/relationships/(?P<relationshipName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -163,7 +163,7 @@ func (r *RelationshipsServerTransport) dispatchBeginDelete(req *http.Request) (*
 	}
 	beginDelete := r.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/relationships/(?P<relationshipName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/relationships/(?P<relationshipName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -209,7 +209,7 @@ func (r *RelationshipsServerTransport) dispatchGet(req *http.Request) (*http.Res
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/relationships/(?P<relationshipName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/relationships/(?P<relationshipName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -248,7 +248,7 @@ func (r *RelationshipsServerTransport) dispatchNewListByHealthModelPager(req *ht
 	}
 	newListByHealthModelPager := r.newListByHealthModelPager.get(req)
 	if newListByHealthModelPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/relationships`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/relationships`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

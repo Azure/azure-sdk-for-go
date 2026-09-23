@@ -35,8 +35,8 @@ func ExampleOperationStatusClient_Get() {
 	// 		Name: to.Ptr("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
 	// 		Status: to.Ptr("Succeeded"),
 	// 		PercentComplete: to.Ptr[float64](100),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-21T13:27:03.8980869Z"); return t}()),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-21T13:28:03.8980869Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2022, time.November, 21, 13, 27, 3, 898086900, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2022, time.November, 21, 13, 28, 3, 898086900, time.UTC)),
 	// 	},
 	// }
 }

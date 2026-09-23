@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01/DeletedVaults_Get.json
+// Generated from example definition: 2026-07-01/DeletedVaults_Get.json
 func ExampleDeletedVaultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,14 +37,14 @@ func ExampleDeletedVaultsClient_Get() {
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/locations/deletedVaults"),
 	// 		Properties: &armrecoveryservices.DeletedVaultProperties{
 	// 			VaultID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/Default-RecoveryServices-ResourceGroup/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
-	// 			VaultDeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-20T09:49:46Z"); return t}()),
-	// 			PurgeAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-20T09:49:46Z"); return t}()),
+	// 			VaultDeletionTime: to.Ptr(time.Date(2024, time.September, 20, 9, 49, 46, 0, time.UTC)),
+	// 			PurgeAt: to.Ptr(time.Date(2024, time.October, 20, 9, 49, 46, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01/DeletedVaults_GetOperationStatus.json
+// Generated from example definition: 2026-07-01/DeletedVaults_GetOperationStatus.json
 func ExampleDeletedVaultsClient_GetOperationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,13 +67,13 @@ func ExampleDeletedVaultsClient_GetOperationStatus() {
 	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/providers/Microsoft.RecoveryServices/locations/westus/deletedVaults/swaggerExample/operations/YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA=="),
 	// 		Name: to.Ptr("YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA=="),
 	// 		Status: to.Ptr("Succeeded"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-20T09:49:44.0478496Z"); return t}()),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-20T09:49:46Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2024, time.September, 20, 9, 49, 44, 47849600, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2024, time.September, 20, 9, 49, 46, 0, time.UTC)),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01/DeletedVaults_ListBySubscriptionId.json
+// Generated from example definition: 2026-07-01/DeletedVaults_ListBySubscriptionId.json
 func ExampleDeletedVaultsClient_NewListBySubscriptionIDPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,8 +104,8 @@ func ExampleDeletedVaultsClient_NewListBySubscriptionIDPager() {
 		// 				Type: to.Ptr("Microsoft.RecoveryServices/locations/deletedVaults"),
 		// 				Properties: &armrecoveryservices.DeletedVaultProperties{
 		// 					VaultID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/Default-RecoveryServices-ResourceGroup/providers/Microsoft.RecoveryServices/vaults/swaggerExample1"),
-		// 					VaultDeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-20T09:49:46Z"); return t}()),
-		// 					PurgeAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-20T09:49:46Z"); return t}()),
+		// 					VaultDeletionTime: to.Ptr(time.Date(2024, time.September, 20, 9, 49, 46, 0, time.UTC)),
+		// 					PurgeAt: to.Ptr(time.Date(2024, time.October, 20, 9, 49, 46, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -114,8 +114,8 @@ func ExampleDeletedVaultsClient_NewListBySubscriptionIDPager() {
 		// 				Type: to.Ptr("Microsoft.RecoveryServices/locations/deletedVaults"),
 		// 				Properties: &armrecoveryservices.DeletedVaultProperties{
 		// 					VaultID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/Default-RecoveryServices-ResourceGroup/providers/Microsoft.RecoveryServices/vaults/swaggerExample2"),
-		// 					VaultDeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-20T09:49:46Z"); return t}()),
-		// 					PurgeAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-20T09:49:46Z"); return t}()),
+		// 					VaultDeletionTime: to.Ptr(time.Date(2024, time.September, 20, 9, 49, 46, 0, time.UTC)),
+		// 					PurgeAt: to.Ptr(time.Date(2024, time.October, 20, 9, 49, 46, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -124,7 +124,7 @@ func ExampleDeletedVaultsClient_NewListBySubscriptionIDPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01/DeletedVaults_Undelete.json
+// Generated from example definition: 2026-07-01/DeletedVaults_Undelete.json
 func ExampleDeletedVaultsClient_BeginUndelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

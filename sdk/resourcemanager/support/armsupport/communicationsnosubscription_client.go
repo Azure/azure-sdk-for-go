@@ -60,12 +60,7 @@ func (client *CommunicationsNoSubscriptionClient) CheckNameAvailability(ctx cont
 	if err != nil {
 		return CommunicationsNoSubscriptionClientCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CommunicationsNoSubscriptionClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -91,8 +86,11 @@ func (client *CommunicationsNoSubscriptionClient) checkNameAvailabilityCreateReq
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *CommunicationsNoSubscriptionClient) checkNameAvailabilityHandleResponse(resp *http.Response) (CommunicationsNoSubscriptionClientCheckNameAvailabilityResponse, error) {
+func (client *CommunicationsNoSubscriptionClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (CommunicationsNoSubscriptionClientCheckNameAvailabilityResponse, error) {
 	result := CommunicationsNoSubscriptionClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityOutput); err != nil {
 		return CommunicationsNoSubscriptionClientCheckNameAvailabilityResponse{}, err
 	}
@@ -141,8 +139,7 @@ func (client *CommunicationsNoSubscriptionClient) create(ctx context.Context, su
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -193,12 +190,7 @@ func (client *CommunicationsNoSubscriptionClient) Get(ctx context.Context, suppo
 	if err != nil {
 		return CommunicationsNoSubscriptionClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CommunicationsNoSubscriptionClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -224,8 +216,11 @@ func (client *CommunicationsNoSubscriptionClient) getCreateRequest(ctx context.C
 }
 
 // getHandleResponse handles the Get response.
-func (client *CommunicationsNoSubscriptionClient) getHandleResponse(resp *http.Response) (CommunicationsNoSubscriptionClientGetResponse, error) {
+func (client *CommunicationsNoSubscriptionClient) getHandleResponse(resp *http.Response, successCodes ...int) (CommunicationsNoSubscriptionClientGetResponse, error) {
 	result := CommunicationsNoSubscriptionClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CommunicationDetails); err != nil {
 		return CommunicationsNoSubscriptionClientGetResponse{}, err
 	}
@@ -251,45 +246,59 @@ func (client *CommunicationsNoSubscriptionClient) NewListPager(supportTicketName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, supportTicketName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, supportTicketName, nextLink, options)
 			if err != nil {
 				return CommunicationsNoSubscriptionClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CommunicationsNoSubscriptionClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *CommunicationsNoSubscriptionClient) listCreateRequest(ctx context.Context, supportTicketName string, options *CommunicationsNoSubscriptionClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Support/supportTickets/{supportTicketName}/communications"
-	if supportTicketName == "" {
-		return nil, errors.New("parameter supportTicketName cannot be empty")
+func (client *CommunicationsNoSubscriptionClient) listCreateRequest(ctx context.Context, supportTicketName string, nextLink string, options *CommunicationsNoSubscriptionClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Support/supportTickets/{supportTicketName}/communications"
+		if supportTicketName == "" {
+			return nil, errors.New("parameter supportTicketName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{supportTicketName}", url.PathEscape(supportTicketName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{supportTicketName}", url.PathEscape(supportTicketName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20240401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *CommunicationsNoSubscriptionClient) listHandleResponse(resp *http.Response) (CommunicationsNoSubscriptionClientListResponse, error) {
+func (client *CommunicationsNoSubscriptionClient) listHandleResponse(resp *http.Response, successCodes ...int) (CommunicationsNoSubscriptionClientListResponse, error) {
 	result := CommunicationsNoSubscriptionClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CommunicationsListResult); err != nil {
 		return CommunicationsNoSubscriptionClientListResponse{}, err
 	}

@@ -116,7 +116,7 @@ func (h *HybridRunbookWorkersServerTransport) dispatchCreate(req *http.Request) 
 	if h.srv.Create == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkerGroups/(?P<hybridRunbookWorkerGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkers/(?P<hybridRunbookWorkerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridRunbookWorkerGroups/(?P<hybridRunbookWorkerGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridRunbookWorkers/(?P<hybridRunbookWorkerId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -161,7 +161,7 @@ func (h *HybridRunbookWorkersServerTransport) dispatchDelete(req *http.Request) 
 	if h.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkerGroups/(?P<hybridRunbookWorkerGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkers/(?P<hybridRunbookWorkerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridRunbookWorkerGroups/(?P<hybridRunbookWorkerGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridRunbookWorkers/(?P<hybridRunbookWorkerId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -202,7 +202,7 @@ func (h *HybridRunbookWorkersServerTransport) dispatchGet(req *http.Request) (*h
 	if h.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkerGroups/(?P<hybridRunbookWorkerGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkers/(?P<hybridRunbookWorkerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridRunbookWorkerGroups/(?P<hybridRunbookWorkerGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridRunbookWorkers/(?P<hybridRunbookWorkerId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -245,7 +245,7 @@ func (h *HybridRunbookWorkersServerTransport) dispatchNewListByHybridRunbookWork
 	}
 	newListByHybridRunbookWorkerGroupPager := h.newListByHybridRunbookWorkerGroupPager.get(req)
 	if newListByHybridRunbookWorkerGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkerGroups/(?P<hybridRunbookWorkerGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkers`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridRunbookWorkerGroups/(?P<hybridRunbookWorkerGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridRunbookWorkers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -296,7 +296,7 @@ func (h *HybridRunbookWorkersServerTransport) dispatchMove(req *http.Request) (*
 	if h.srv.Move == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Move not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkerGroups/(?P<hybridRunbookWorkerGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkers/(?P<hybridRunbookWorkerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/move`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridRunbookWorkerGroups/(?P<hybridRunbookWorkerGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridRunbookWorkers/(?P<hybridRunbookWorkerId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/move`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -341,7 +341,7 @@ func (h *HybridRunbookWorkersServerTransport) dispatchPatch(req *http.Request) (
 	if h.srv.Patch == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Patch not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkerGroups/(?P<hybridRunbookWorkerGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkers/(?P<hybridRunbookWorkerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridRunbookWorkerGroups/(?P<hybridRunbookWorkerGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridRunbookWorkers/(?P<hybridRunbookWorkerId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {

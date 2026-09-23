@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/interconnectBlockExamples/InterconnectBlocks_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/interconnectBlockExamples/InterconnectBlocks_CreateOrUpdate.json
 func ExampleInterconnectBlocksClient_BeginCreateOrUpdate_createOrUpdateAnInterconnectBlockWithASpecificZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,15 +72,15 @@ func ExampleInterconnectBlocksClient_BeginCreateOrUpdate_createOrUpdateAnInterco
 	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup"),
 	// 			},
 	// 			InterconnectBlockID: to.Ptr("{GUID}"),
-	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+	// 			ProvisioningTime: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Creating"),
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01/interconnectBlockExamples/InterconnectBlocks_CreateOrUpdate_AnyZone.json
+// Generated from example definition: 2026-04-01/interconnectBlockExamples/InterconnectBlocks_CreateOrUpdate_AnyZone.json
 func ExampleInterconnectBlocksClient_BeginCreateOrUpdate_createOrUpdateAnInterconnectBlockWithAutomaticZonePlacement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,15 +140,15 @@ func ExampleInterconnectBlocksClient_BeginCreateOrUpdate_createOrUpdateAnInterco
 	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup"),
 	// 			},
 	// 			InterconnectBlockID: to.Ptr("{GUID}"),
-	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+	// 			ProvisioningTime: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Creating"),
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01/interconnectBlockExamples/InterconnectBlocks_Delete.json
+// Generated from example definition: 2026-04-01/interconnectBlockExamples/InterconnectBlocks_Delete.json
 func ExampleInterconnectBlocksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +174,7 @@ func ExampleInterconnectBlocksClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/interconnectBlockExamples/InterconnectBlocks_Get.json
+// Generated from example definition: 2026-04-01/interconnectBlockExamples/InterconnectBlocks_Get.json
 func ExampleInterconnectBlocksClient_Get_getAnInterconnectBlock() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExampleInterconnectBlocksClient_Get_getAnInterconnectBlock() {
 	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup"),
 	// 			},
 	// 			InterconnectBlockID: to.Ptr("{GUID}"),
-	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+	// 			ProvisioningTime: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 	// 			VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
@@ -223,13 +223,13 @@ func ExampleInterconnectBlocksClient_Get_getAnInterconnectBlock() {
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01/interconnectBlockExamples/InterconnectBlocks_Get_InstanceView.json
+// Generated from example definition: 2026-04-01/interconnectBlockExamples/InterconnectBlocks_Get_InstanceView.json
 func ExampleInterconnectBlocksClient_Get_getAnInterconnectBlockWithInstanceView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -269,7 +269,7 @@ func ExampleInterconnectBlocksClient_Get_getAnInterconnectBlockWithInstanceView(
 	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup"),
 	// 			},
 	// 			InterconnectBlockID: to.Ptr("{GUID}"),
-	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+	// 			ProvisioningTime: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 	// 			VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
@@ -289,13 +289,13 @@ func ExampleInterconnectBlocksClient_Get_getAnInterconnectBlockWithInstanceView(
 	// 					},
 	// 				},
 	// 			},
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01/interconnectBlockExamples/InterconnectBlocks_ListByResourceGroup.json
+// Generated from example definition: 2026-04-01/interconnectBlockExamples/InterconnectBlocks_ListByResourceGroup.json
 func ExampleInterconnectBlocksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,7 +340,7 @@ func ExampleInterconnectBlocksClient_NewListByResourceGroupPager() {
 		// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup1"),
 		// 					},
 		// 					InterconnectBlockID: to.Ptr("{GUID}"),
-		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+		// 					ProvisioningTime: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
@@ -350,7 +350,7 @@ func ExampleInterconnectBlocksClient_NewListByResourceGroupPager() {
 		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+		// 					TimeCreated: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -373,14 +373,14 @@ func ExampleInterconnectBlocksClient_NewListByResourceGroupPager() {
 		// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup2"),
 		// 					},
 		// 					InterconnectBlockID: to.Ptr("{GUID}"),
-		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+		// 					ProvisioningTime: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM3"),
 		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+		// 					TimeCreated: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -389,7 +389,7 @@ func ExampleInterconnectBlocksClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/interconnectBlockExamples/InterconnectBlocks_ListBySubscription.json
+// Generated from example definition: 2026-04-01/interconnectBlockExamples/InterconnectBlocks_ListBySubscription.json
 func ExampleInterconnectBlocksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -434,7 +434,7 @@ func ExampleInterconnectBlocksClient_NewListBySubscriptionPager() {
 		// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup1/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup1"),
 		// 					},
 		// 					InterconnectBlockID: to.Ptr("{GUID}"),
-		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+		// 					ProvisioningTime: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup1/providers/Microsoft.Compute/virtualMachines/myVM1"),
@@ -444,7 +444,7 @@ func ExampleInterconnectBlocksClient_NewListBySubscriptionPager() {
 		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+		// 					TimeCreated: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -467,14 +467,14 @@ func ExampleInterconnectBlocksClient_NewListBySubscriptionPager() {
 		// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup2/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup2"),
 		// 					},
 		// 					InterconnectBlockID: to.Ptr("{GUID}"),
-		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+		// 					ProvisioningTime: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup2/providers/Microsoft.Compute/virtualMachines/myVM3"),
 		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+		// 					TimeCreated: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -483,7 +483,7 @@ func ExampleInterconnectBlocksClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/interconnectBlockExamples/InterconnectBlocks_Update.json
+// Generated from example definition: 2026-04-01/interconnectBlockExamples/InterconnectBlocks_Update.json
 func ExampleInterconnectBlocksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -534,9 +534,9 @@ func ExampleInterconnectBlocksClient_BeginUpdate() {
 	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup"),
 	// 			},
 	// 			InterconnectBlockID: to.Ptr("{GUID}"),
-	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+	// 			ProvisioningTime: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Updating"),
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 	// 		},
 	// 	},
 	// }

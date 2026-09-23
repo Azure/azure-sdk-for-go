@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/AvsVmVolumes_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/AvsVmVolumes_Delete_MaximumSet_Gen.json
 func ExampleAvsVMVolumesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleAvsVMVolumesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/AvsVmVolumes_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/AvsVmVolumes_Get_MaximumSet_Gen.json
 func ExampleAvsVMVolumesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,16 +88,16 @@ func ExampleAvsVMVolumesClient_Get() {
 	// 		SystemData: &armpurestorageblock.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/AvsVmVolumes_ListByAvsVm_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/AvsVmVolumes_ListByAvsVm_MaximumSet_Gen.json
 func ExampleAvsVMVolumesClient_NewListByAvsVMPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,10 +158,10 @@ func ExampleAvsVMVolumesClient_NewListByAvsVMPager() {
 		// 				SystemData: &armpurestorageblock.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -171,7 +171,7 @@ func ExampleAvsVMVolumesClient_NewListByAvsVMPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/AvsVmVolumes_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/AvsVmVolumes_Update_MaximumSet_Gen.json
 func ExampleAvsVMVolumesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -236,10 +236,10 @@ func ExampleAvsVMVolumesClient_BeginUpdate() {
 	// 		SystemData: &armpurestorageblock.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

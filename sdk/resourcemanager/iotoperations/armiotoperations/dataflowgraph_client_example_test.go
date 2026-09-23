@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/DataflowGraph_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/DataflowGraph_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleDataflowGraphClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -226,7 +226,7 @@ func ExampleDataflowGraphClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/DataflowGraph_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/DataflowGraph_Delete_MaximumSet_Gen.json
 func ExampleDataflowGraphClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +247,7 @@ func ExampleDataflowGraphClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/DataflowGraph_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/DataflowGraph_Get_MaximumSet_Gen.json
 func ExampleDataflowGraphClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -364,7 +364,7 @@ func ExampleDataflowGraphClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/DataflowGraph_ListByDataflowProfile_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/DataflowGraph_ListByDataflowProfile_MaximumSet_Gen.json
 func ExampleDataflowGraphClient_NewListByDataflowProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

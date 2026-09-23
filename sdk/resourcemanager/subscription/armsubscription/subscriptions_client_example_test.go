@@ -70,16 +70,16 @@ func ExampleSubscriptionsClient_GetTargetDirectory() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsubscription.SubscriptionsClientGetTargetDirectoryResponse{
-	// 	TargetDirectoryResult: &armsubscription.TargetDirectoryResult{
+	// 	TargetDirectoryResult: armsubscription.TargetDirectoryResult{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Subscription/changeTenantRequest"),
 	// 		ID: to.Ptr("/subscriptions/ebe4f8fd-d8b3-4867-bcf4-b2407edd196d/providers/Microsoft.Subscription/changeTenantRequest/default"),
 	// 		Properties: &armsubscription.TargetDirectoryResultProperties{
 	// 			AcceptedDate: nil,
-	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-18T17:57:40.0278346Z"); return t}()),
+	// 			CreatedDate: to.Ptr(time.Date(2024, time.July, 18, 17, 57, 40, 27834600, time.UTC)),
 	// 			DestinationOwnerID: to.Ptr("b11a05c8-6acc-435e-9a51-2140dea093a5"),
 	// 			DestinationTenantID: to.Ptr("45ffe2da-b7a4-460f-9e4c-51afd47b94cb"),
-	// 			ExpiresOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-19T17:57:40.0278346Z"); return t}()),
+	// 			ExpiresOn: to.Ptr(time.Date(2024, time.July, 19, 17, 57, 40, 27834600, time.UTC)),
 	// 			SourceOwnerEmail: to.Ptr("alice@contso.com"),
 	// 			SourceOwnerID: to.Ptr("c0ef74e0-9a85-49cc-b4a3-69c5c0d29703"),
 	// 			SourceTenantID: to.Ptr("f3a0f89e-12ab-4bcd-8e9f-0123456789ab"),
@@ -121,10 +121,10 @@ func ExampleSubscriptionsClient_NewListTargetDirectoryPager() {
 		// 				ID: to.Ptr("/subscriptions/ebe4f8fd-d8b3-4867-bcf4-b2407edd196d/providers/Microsoft.Subscription/changeTenantRequest/default"),
 		// 				Properties: &armsubscription.TargetDirectoryResultProperties{
 		// 					AcceptedDate: nil,
-		// 					CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-18T17:57:40.0278346Z"); return t}()),
+		// 					CreatedDate: to.Ptr(time.Date(2024, time.July, 18, 17, 57, 40, 27834600, time.UTC)),
 		// 					DestinationOwnerID: to.Ptr("b11a05c8-6acc-435e-9a51-2140dea093a5"),
 		// 					DestinationTenantID: to.Ptr("45ffe2da-b7a4-460f-9e4c-51afd47b94cb"),
-		// 					ExpiresOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-19T17:57:40.0278346Z"); return t}()),
+		// 					ExpiresOn: to.Ptr(time.Date(2024, time.July, 19, 17, 57, 40, 27834600, time.UTC)),
 		// 					SourceOwnerEmail: to.Ptr("alice@contso.com"),
 		// 					SourceOwnerID: to.Ptr("45ffe2da-b7a4-460f-9e4c-51afd47b94cd"),
 		// 					SourceTenantID: to.Ptr("f3a0f89e-12ab-4bcd-8e9f-0123456789ab"),
@@ -162,16 +162,16 @@ func ExampleSubscriptionsClient_PutTargetDirectory() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsubscription.SubscriptionsClientPutTargetDirectoryResponse{
-	// 	TargetDirectoryResult: &armsubscription.TargetDirectoryResult{
+	// 	TargetDirectoryResult: armsubscription.TargetDirectoryResult{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Subscription/changeTenantRequest"),
 	// 		ID: to.Ptr("/subscriptions/ecce7b25-862b-44a2-9e21-a1baa50618eb/providers/Microsoft.Subscription/changeTenantRequest/default"),
 	// 		Properties: &armsubscription.TargetDirectoryResultProperties{
 	// 			AcceptedDate: nil,
-	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-18T17:57:40.0278346Z"); return t}()),
+	// 			CreatedDate: to.Ptr(time.Date(2024, time.July, 18, 17, 57, 40, 27834600, time.UTC)),
 	// 			DestinationOwnerID: to.Ptr("b11a05c8-6acc-435e-9a51-2140dea093a5"),
 	// 			DestinationTenantID: to.Ptr("45ffe2da-b7a4-460f-9e4c-51afd47b94cb"),
-	// 			ExpiresOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-19T17:57:40.0278346Z"); return t}()),
+	// 			ExpiresOn: to.Ptr(time.Date(2024, time.July, 19, 17, 57, 40, 27834600, time.UTC)),
 	// 			SourceOwnerEmail: to.Ptr("alice@contso.com"),
 	// 			SourceOwnerID: to.Ptr("c0ef74e0-9a85-49cc-b4a3-69c5c0d29703"),
 	// 			SourceTenantID: to.Ptr("f3a0f89e-12ab-4bcd-8e9f-0123456789ab"),
@@ -201,12 +201,12 @@ func ExampleSubscriptionsClient_TargetDirectoryStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsubscription.SubscriptionsClientTargetDirectoryStatusResponse{
-	// 	TargetDirectoryResultProperties: &armsubscription.TargetDirectoryResultProperties{
+	// 	TargetDirectoryResultProperties: armsubscription.TargetDirectoryResultProperties{
 	// 		AcceptedDate: nil,
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-18T17:57:40.0278346Z"); return t}()),
+	// 		CreatedDate: to.Ptr(time.Date(2024, time.July, 18, 17, 57, 40, 27834600, time.UTC)),
 	// 		DestinationOwnerID: to.Ptr("b11a05c8-6acc-435e-9a51-2140dea093a5"),
 	// 		DestinationTenantID: to.Ptr("45ffe2da-b7a4-460f-9e4c-51afd47b94cb"),
-	// 		ExpiresOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-19T17:57:40.0278346Z"); return t}()),
+	// 		ExpiresOn: to.Ptr(time.Date(2024, time.July, 19, 17, 57, 40, 27834600, time.UTC)),
 	// 		SourceOwnerEmail: to.Ptr("alice@contso.com"),
 	// 		SourceOwnerID: to.Ptr("c0ef74e0-9a85-49cc-b4a3-69c5c0d29703"),
 	// 		SourceTenantID: to.Ptr("f3a0f89e-12ab-4bcd-8e9f-0123456789ab"),

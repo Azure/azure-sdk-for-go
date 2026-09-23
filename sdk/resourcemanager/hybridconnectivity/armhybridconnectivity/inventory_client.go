@@ -58,12 +58,7 @@ func (client *InventoryClient) Get(ctx context.Context, resourceURI string, solu
 	if err != nil {
 		return InventoryClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return InventoryClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -93,8 +88,11 @@ func (client *InventoryClient) getCreateRequest(ctx context.Context, resourceURI
 }
 
 // getHandleResponse handles the Get response.
-func (client *InventoryClient) getHandleResponse(resp *http.Response) (InventoryClientGetResponse, error) {
+func (client *InventoryClient) getHandleResponse(resp *http.Response, successCodes ...int) (InventoryClientGetResponse, error) {
 	result := InventoryClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InventoryResource); err != nil {
 		return InventoryClientGetResponse{}, err
 	}
@@ -117,43 +115,57 @@ func (client *InventoryClient) NewListBySolutionConfigurationPager(resourceURI s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySolutionConfigurationCreateRequest(ctx, resourceURI, solutionConfiguration, options)
-			}, nil)
+			req, err := client.listBySolutionConfigurationCreateRequest(ctx, resourceURI, solutionConfiguration, nextLink, options)
 			if err != nil {
 				return InventoryClientListBySolutionConfigurationResponse{}, err
 			}
-			return client.listBySolutionConfigurationHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return InventoryClientListBySolutionConfigurationResponse{}, err
+			}
+			return client.listBySolutionConfigurationHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySolutionConfigurationCreateRequest creates the ListBySolutionConfiguration request.
-func (client *InventoryClient) listBySolutionConfigurationCreateRequest(ctx context.Context, resourceURI string, solutionConfiguration string, _ *InventoryClientListBySolutionConfigurationOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}/inventory"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
+func (client *InventoryClient) listBySolutionConfigurationCreateRequest(ctx context.Context, resourceURI string, solutionConfiguration string, nextLink string, _ *InventoryClientListBySolutionConfigurationOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}/inventory"
+		if resourceURI == "" {
+			return nil, errors.New("parameter resourceURI cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+		if solutionConfiguration == "" {
+			return nil, errors.New("parameter solutionConfiguration cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{solutionConfiguration}", url.PathEscape(solutionConfiguration))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	if solutionConfiguration == "" {
-		return nil, errors.New("parameter solutionConfiguration cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{solutionConfiguration}", url.PathEscape(solutionConfiguration))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241201)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySolutionConfigurationHandleResponse handles the ListBySolutionConfiguration response.
-func (client *InventoryClient) listBySolutionConfigurationHandleResponse(resp *http.Response) (InventoryClientListBySolutionConfigurationResponse, error) {
+func (client *InventoryClient) listBySolutionConfigurationHandleResponse(resp *http.Response, successCodes ...int) (InventoryClientListBySolutionConfigurationResponse, error) {
 	result := InventoryClientListBySolutionConfigurationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InventoryResourceListResult); err != nil {
 		return InventoryClientListBySolutionConfigurationResponse{}, err
 	}

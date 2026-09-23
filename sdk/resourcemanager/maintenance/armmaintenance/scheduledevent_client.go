@@ -30,6 +30,9 @@ type ScheduledEventClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScheduledEventClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScheduledEventClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,19 +68,14 @@ func (client *ScheduledEventClient) Acknowledge(ctx context.Context, resourceGro
 	if err != nil {
 		return ScheduledEventClientAcknowledgeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ScheduledEventClientAcknowledgeResponse{}, err
-	}
-	resp, err := client.acknowledgeHandleResponse(httpResp)
-	return resp, err
+	return client.acknowledgeHandleResponse(httpResp, http.StatusOK)
 }
 
 // acknowledgeCreateRequest creates the Acknowledge request.
 func (client *ScheduledEventClient) acknowledgeCreateRequest(ctx context.Context, resourceGroupName string, resourceType string, resourceName string, scheduledEventID string, _ *ScheduledEventClientAcknowledgeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Compute/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/scheduledevents/{scheduledEventId}/acknowledge"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -108,8 +106,11 @@ func (client *ScheduledEventClient) acknowledgeCreateRequest(ctx context.Context
 }
 
 // acknowledgeHandleResponse handles the Acknowledge response.
-func (client *ScheduledEventClient) acknowledgeHandleResponse(resp *http.Response) (ScheduledEventClientAcknowledgeResponse, error) {
+func (client *ScheduledEventClient) acknowledgeHandleResponse(resp *http.Response, successCodes ...int) (ScheduledEventClientAcknowledgeResponse, error) {
 	result := ScheduledEventClientAcknowledgeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScheduledEventApproveResponse); err != nil {
 		return ScheduledEventClientAcknowledgeResponse{}, err
 	}

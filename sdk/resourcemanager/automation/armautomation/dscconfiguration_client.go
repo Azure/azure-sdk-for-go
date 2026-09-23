@@ -31,6 +31,9 @@ type DscConfigurationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDscConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DscConfigurationClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,19 +67,14 @@ func (client *DscConfigurationClient) CreateOrUpdate(ctx context.Context, resour
 	if err != nil {
 		return DscConfigurationClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return DscConfigurationClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *DscConfigurationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, parameters DscConfigurationCreateOrUpdateParameters, _ *DscConfigurationClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations/{configurationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -107,8 +105,11 @@ func (client *DscConfigurationClient) createOrUpdateCreateRequest(ctx context.Co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DscConfigurationClient) createOrUpdateHandleResponse(resp *http.Response) (DscConfigurationClientCreateOrUpdateResponse, error) {
+func (client *DscConfigurationClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (DscConfigurationClientCreateOrUpdateResponse, error) {
 	result := DscConfigurationClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfiguration); err != nil {
 		return DscConfigurationClientCreateOrUpdateResponse{}, err
 	}
@@ -136,8 +137,7 @@ func (client *DscConfigurationClient) Delete(ctx context.Context, resourceGroupN
 		return DscConfigurationClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return DscConfigurationClientDeleteResponse{}, err
+		return DscConfigurationClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DscConfigurationClientDeleteResponse{}, nil
 }
@@ -146,7 +146,7 @@ func (client *DscConfigurationClient) Delete(ctx context.Context, resourceGroupN
 func (client *DscConfigurationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, _ *DscConfigurationClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations/{configurationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -191,19 +191,14 @@ func (client *DscConfigurationClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return DscConfigurationClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DscConfigurationClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *DscConfigurationClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, _ *DscConfigurationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations/{configurationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -230,8 +225,11 @@ func (client *DscConfigurationClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *DscConfigurationClient) getHandleResponse(resp *http.Response) (DscConfigurationClientGetResponse, error) {
+func (client *DscConfigurationClient) getHandleResponse(resp *http.Response, successCodes ...int) (DscConfigurationClientGetResponse, error) {
 	result := DscConfigurationClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfiguration); err != nil {
 		return DscConfigurationClientGetResponse{}, err
 	}
@@ -259,19 +257,14 @@ func (client *DscConfigurationClient) GetContent(ctx context.Context, resourceGr
 	if err != nil {
 		return DscConfigurationClientGetContentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DscConfigurationClientGetContentResponse{}, err
-	}
-	resp, err := client.getContentHandleResponse(httpResp)
-	return resp, err
+	return client.getContentHandleResponse(httpResp, http.StatusOK)
 }
 
 // getContentCreateRequest creates the GetContent request.
 func (client *DscConfigurationClient) getContentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, _ *DscConfigurationClientGetContentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations/{configurationName}/content"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -298,8 +291,11 @@ func (client *DscConfigurationClient) getContentCreateRequest(ctx context.Contex
 }
 
 // getContentHandleResponse handles the GetContent response.
-func (client *DscConfigurationClient) getContentHandleResponse(resp *http.Response) (DscConfigurationClientGetContentResponse, error) {
+func (client *DscConfigurationClient) getContentHandleResponse(resp *http.Response, successCodes ...int) (DscConfigurationClientGetContentResponse, error) {
 	result := DscConfigurationClientGetContentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return DscConfigurationClientGetContentResponse{}, err
@@ -325,59 +321,73 @@ func (client *DscConfigurationClient) NewListByAutomationAccountPager(resourceGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
-			}, nil)
+			req, err := client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, nextLink, options)
 			if err != nil {
 				return DscConfigurationClientListByAutomationAccountResponse{}, err
 			}
-			return client.listByAutomationAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DscConfigurationClientListByAutomationAccountResponse{}, err
+			}
+			return client.listByAutomationAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *DscConfigurationClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *DscConfigurationClientListByAutomationAccountOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DscConfigurationClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nextLink string, options *DscConfigurationClientListByAutomationAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if automationAccountName == "" {
+			return nil, errors.New("parameter automationAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if automationAccountName == "" {
-		return nil, errors.New("parameter automationAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Inlinecount != nil {
+			reqQP.Set("$inlinecount", *options.Inlinecount)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20241023)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Inlinecount != nil {
-		reqQP.Set("$inlinecount", *options.Inlinecount)
-	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20241023)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *DscConfigurationClient) listByAutomationAccountHandleResponse(resp *http.Response) (DscConfigurationClientListByAutomationAccountResponse, error) {
+func (client *DscConfigurationClient) listByAutomationAccountHandleResponse(resp *http.Response, successCodes ...int) (DscConfigurationClientListByAutomationAccountResponse, error) {
 	result := DscConfigurationClientListByAutomationAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfigurationListResult); err != nil {
 		return DscConfigurationClientListByAutomationAccountResponse{}, err
 	}
@@ -405,19 +415,14 @@ func (client *DscConfigurationClient) Update(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DscConfigurationClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DscConfigurationClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *DscConfigurationClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, parameters DscConfigurationUpdateParameters, _ *DscConfigurationClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations/{configurationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -448,8 +453,11 @@ func (client *DscConfigurationClient) updateCreateRequest(ctx context.Context, r
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DscConfigurationClient) updateHandleResponse(resp *http.Response) (DscConfigurationClientUpdateResponse, error) {
+func (client *DscConfigurationClient) updateHandleResponse(resp *http.Response, successCodes ...int) (DscConfigurationClientUpdateResponse, error) {
 	result := DscConfigurationClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfiguration); err != nil {
 		return DscConfigurationClientUpdateResponse{}, err
 	}

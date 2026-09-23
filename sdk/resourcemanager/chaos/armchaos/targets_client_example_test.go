@@ -7,11 +7,11 @@ package armchaos_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/Targets_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01-preview/Targets_CreateOrUpdate.json
 func ExampleTargetsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,14 +39,14 @@ func ExampleTargetsClient_CreateOrUpdate() {
 	// 		Properties: map[string]any{
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Targets_Delete.json
+// Generated from example definition: 2026-08-01-preview/Targets_Delete.json
 func ExampleTargetsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleTargetsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Targets_Get.json
+// Generated from example definition: 2026-08-01-preview/Targets_Get.json
 func ExampleTargetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,14 +102,14 @@ func ExampleTargetsClient_Get() {
 	// 			},
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Targets_List.json
+// Generated from example definition: 2026-08-01-preview/Targets_List.json
 func ExampleTargetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func ExampleTargetsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armchaos.TargetsClientListResponse{
 		// 	TargetListResult: armchaos.TargetListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets?continuationToken=&api-version=2026-05-01-preview"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets?continuationToken=&api-version=2026-08-01-preview"),
 		// 		Value: []*armchaos.Target{
 		// 			{
 		// 				Name: to.Ptr("Microsoft-Agent"),
@@ -150,8 +150,8 @@ func ExampleTargetsClient_NewListPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/PrivateAccesses_CreateOrUpdate_Create_Or_Update_A_Private_Access_Resource.json
+// Generated from example definition: 2026-08-01-preview/PrivateAccesses_CreateOrUpdate_Create_Or_Update_A_Private_Access_Resource.json
 func ExamplePrivateAccessesClient_BeginCreateOrUpdate_createOrUpdateAPrivateAccessResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,14 +47,14 @@ func ExamplePrivateAccessesClient_BeginCreateOrUpdate_createOrUpdateAPrivateAcce
 	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateUpdating),
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/PrivateAccesses_CreateOrUpdate_Create_Or_Update_A_Private_Access_Resource_With_Public_Network_Access.json
+// Generated from example definition: 2026-08-01-preview/PrivateAccesses_CreateOrUpdate_Create_Or_Update_A_Private_Access_Resource_With_Public_Network_Access.json
 func ExamplePrivateAccessesClient_BeginCreateOrUpdate_createOrUpdateAPrivateAccessResourceWithPublicNetworkAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,14 +92,14 @@ func ExamplePrivateAccessesClient_BeginCreateOrUpdate_createOrUpdateAPrivateAcce
 	// 			PublicNetworkAccess: to.Ptr(armchaos.PublicNetworkAccessOptionEnabled),
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/PrivateAccesses_Delete.json
+// Generated from example definition: 2026-08-01-preview/PrivateAccesses_Delete.json
 func ExamplePrivateAccessesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExamplePrivateAccessesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/PrivateAccesses_DeleteAPrivateEndpointConnection.json
+// Generated from example definition: 2026-08-01-preview/PrivateAccesses_DeleteAPrivateEndpointConnection.json
 func ExamplePrivateAccessesClient_BeginDeleteAPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +141,7 @@ func ExamplePrivateAccessesClient_BeginDeleteAPrivateEndpointConnection() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/PrivateAccesses_Get_Get_A_Private_Access_Resource.json
+// Generated from example definition: 2026-08-01-preview/PrivateAccesses_Get_Get_A_Private_Access_Resource.json
 func ExamplePrivateAccessesClient_Get_getAPrivateAccessResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,14 +168,14 @@ func ExamplePrivateAccessesClient_Get_getAPrivateAccessResource() {
 	// 		Properties: &armchaos.PrivateAccessProperties{
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/PrivateAccesses_Get_Get_A_Private_Access_Resource_With_Private_Endpoint.json
+// Generated from example definition: 2026-08-01-preview/PrivateAccesses_Get_Get_A_Private_Access_Resource_With_Private_Endpoint.json
 func ExamplePrivateAccessesClient_Get_getAPrivateAccessResourceWithPrivateEndpoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,14 +221,14 @@ func ExamplePrivateAccessesClient_Get_getAPrivateAccessResourceWithPrivateEndpoi
 	// 			PublicNetworkAccess: to.Ptr(armchaos.PublicNetworkAccessOptionEnabled),
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/PrivateAccesses_GetAPrivateEndpointConnection.json
+// Generated from example definition: 2026-08-01-preview/PrivateAccesses_GetAPrivateEndpointConnection.json
 func ExamplePrivateAccessesClient_GetAPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -266,7 +266,7 @@ func ExamplePrivateAccessesClient_GetAPrivateEndpointConnection() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/PrivateAccesses_GetPrivateLinkResources.json
+// Generated from example definition: 2026-08-01-preview/PrivateAccesses_GetPrivateLinkResources.json
 func ExamplePrivateAccessesClient_GetPrivateLinkResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,7 +307,7 @@ func ExamplePrivateAccessesClient_GetPrivateLinkResources() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/PrivateAccesses_List.json
+// Generated from example definition: 2026-08-01-preview/PrivateAccesses_List.json
 func ExamplePrivateAccessesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -331,7 +331,7 @@ func ExamplePrivateAccessesClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armchaos.PrivateAccessesClientListResponse{
 		// 	PrivateAccessListResult: armchaos.PrivateAccessListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/myResourceGroup/providers/Microsoft.Chaos/privateAccesses?continuationToken=&api-version=2026-05-01-preview"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/myResourceGroup/providers/Microsoft.Chaos/privateAccesses?continuationToken=&api-version=2026-08-01-preview"),
 		// 		Value: []*armchaos.PrivateAccess{
 		// 			{
 		// 				Name: to.Ptr("myPrivateAccess2"),
@@ -341,8 +341,8 @@ func ExamplePrivateAccessesClient_NewListPager() {
 		// 				Properties: &armchaos.PrivateAccessProperties{
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -371,8 +371,8 @@ func ExamplePrivateAccessesClient_NewListPager() {
 		// 					PublicNetworkAccess: to.Ptr(armchaos.PublicNetworkAccessOptionEnabled),
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-01T00:00:00.0Z"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-01T00:00:00.0Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.August, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -381,7 +381,7 @@ func ExamplePrivateAccessesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/PrivateAccesses_ListAll.json
+// Generated from example definition: 2026-08-01-preview/PrivateAccesses_ListAll.json
 func ExamplePrivateAccessesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -405,7 +405,7 @@ func ExamplePrivateAccessesClient_NewListAllPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armchaos.PrivateAccessesClientListAllResponse{
 		// 	PrivateAccessListResult: armchaos.PrivateAccessListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/privateAccesses?continuationToken=&api-version=2026-05-01-preview"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/privateAccesses?continuationToken=&api-version=2026-08-01-preview"),
 		// 		Value: []*armchaos.PrivateAccess{
 		// 			{
 		// 				Name: to.Ptr("myPrivateAccess2"),
@@ -415,8 +415,8 @@ func ExamplePrivateAccessesClient_NewListAllPager() {
 		// 				Properties: &armchaos.PrivateAccessProperties{
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -445,8 +445,8 @@ func ExamplePrivateAccessesClient_NewListAllPager() {
 		// 					PublicNetworkAccess: to.Ptr(armchaos.PublicNetworkAccessOptionDisabled),
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-01T00:00:00.0Z"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-01T00:00:00.0Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.August, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -455,7 +455,7 @@ func ExamplePrivateAccessesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/PrivateAccesses_ListPrivateEndpointConnections.json
+// Generated from example definition: 2026-08-01-preview/PrivateAccesses_ListPrivateEndpointConnections.json
 func ExamplePrivateAccessesClient_NewListPrivateEndpointConnectionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -502,7 +502,7 @@ func ExamplePrivateAccessesClient_NewListPrivateEndpointConnectionsPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/PrivateAccesses_Update.json
+// Generated from example definition: 2026-08-01-preview/PrivateAccesses_Update.json
 func ExamplePrivateAccessesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -539,8 +539,8 @@ func ExamplePrivateAccessesClient_BeginUpdate() {
 	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"tag1": to.Ptr("value1"),

@@ -82,7 +82,7 @@ func (h *HeatMapServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	if h.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/trafficmanagerprofiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/heatMaps/(?P<heatMapType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/trafficmanagerprofiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/heatMaps/(?P<heatMapType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

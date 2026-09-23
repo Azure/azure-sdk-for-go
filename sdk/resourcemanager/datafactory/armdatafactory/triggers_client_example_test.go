@@ -42,10 +42,10 @@ func ExampleTriggersClient_CreateOrUpdate_triggersCreate() {
 			},
 			TypeProperties: &armdatafactory.ScheduleTriggerTypeProperties{
 				Recurrence: &armdatafactory.ScheduleTriggerRecurrence{
-					EndTime:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:55:13.8441801Z"); return t }()),
+					EndTime:   to.Ptr(time.Date(2018, time.June, 16, 0, 55, 13, 844180100, time.UTC)),
 					Frequency: to.Ptr(armdatafactory.RecurrenceFrequencyMinute),
 					Interval:  to.Ptr[int32](4),
-					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:39:13.8441801Z"); return t }()),
+					StartTime: to.Ptr(time.Date(2018, time.June, 16, 0, 39, 13, 844180100, time.UTC)),
 					TimeZone:  to.Ptr("UTC"),
 				},
 			},
@@ -81,10 +81,10 @@ func ExampleTriggersClient_CreateOrUpdate_triggersCreate() {
 	// 			RuntimeState: to.Ptr(armdatafactory.TriggerRuntimeStateStopped),
 	// 			TypeProperties: &armdatafactory.ScheduleTriggerTypeProperties{
 	// 				Recurrence: &armdatafactory.ScheduleTriggerRecurrence{
-	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:55:13.8441801Z"); return t}()),
+	// 					EndTime: to.Ptr(time.Date(2018, time.June, 16, 0, 55, 13, 844180100, time.UTC)),
 	// 					Frequency: to.Ptr(armdatafactory.RecurrenceFrequencyMinute),
 	// 					Interval: to.Ptr[int32](4),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:39:13.8441801Z"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2018, time.June, 16, 0, 39, 13, 844180100, time.UTC)),
 	// 					TimeZone: to.Ptr("UTC"),
 	// 				},
 	// 			},
@@ -123,10 +123,10 @@ func ExampleTriggersClient_CreateOrUpdate_triggersUpdate() {
 			},
 			TypeProperties: &armdatafactory.ScheduleTriggerTypeProperties{
 				Recurrence: &armdatafactory.ScheduleTriggerRecurrence{
-					EndTime:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:55:14.905167Z"); return t }()),
+					EndTime:   to.Ptr(time.Date(2018, time.June, 16, 0, 55, 14, 905167000, time.UTC)),
 					Frequency: to.Ptr(armdatafactory.RecurrenceFrequencyMinute),
 					Interval:  to.Ptr[int32](4),
-					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:39:14.905167Z"); return t }()),
+					StartTime: to.Ptr(time.Date(2018, time.June, 16, 0, 39, 14, 905167000, time.UTC)),
 					TimeZone:  to.Ptr("UTC"),
 				},
 			},
@@ -163,10 +163,10 @@ func ExampleTriggersClient_CreateOrUpdate_triggersUpdate() {
 	// 			RuntimeState: to.Ptr(armdatafactory.TriggerRuntimeStateStopped),
 	// 			TypeProperties: &armdatafactory.ScheduleTriggerTypeProperties{
 	// 				Recurrence: &armdatafactory.ScheduleTriggerRecurrence{
-	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:55:14.905167Z"); return t}()),
+	// 					EndTime: to.Ptr(time.Date(2018, time.June, 16, 0, 55, 14, 905167000, time.UTC)),
 	// 					Frequency: to.Ptr(armdatafactory.RecurrenceFrequencyMinute),
 	// 					Interval: to.Ptr[int32](4),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:39:14.905167Z"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2018, time.June, 16, 0, 39, 14, 905167000, time.UTC)),
 	// 					TimeZone: to.Ptr("UTC"),
 	// 				},
 	// 			},
@@ -239,10 +239,10 @@ func ExampleTriggersClient_Get() {
 	// 			RuntimeState: to.Ptr(armdatafactory.TriggerRuntimeStateStopped),
 	// 			TypeProperties: &armdatafactory.ScheduleTriggerTypeProperties{
 	// 				Recurrence: &armdatafactory.ScheduleTriggerRecurrence{
-	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-22T18:48:52.5281747Z"); return t}()),
+	// 					EndTime: to.Ptr(time.Date(2019, time.April, 22, 18, 48, 52, 528174700, time.UTC)),
 	// 					Frequency: to.Ptr(armdatafactory.RecurrenceFrequencyMinute),
 	// 					Interval: to.Ptr[int32](4),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-22T18:32:52.527912Z"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2019, time.April, 22, 18, 32, 52, 527912000, time.UTC)),
 	// 					TimeZone: to.Ptr("UTC"),
 	// 				},
 	// 			},
@@ -326,10 +326,10 @@ func ExampleTriggersClient_NewListByFactoryPager() {
 		// 					RuntimeState: to.Ptr(armdatafactory.TriggerRuntimeStateStarted),
 		// 					TypeProperties: &armdatafactory.ScheduleTriggerTypeProperties{
 		// 						Recurrence: &armdatafactory.ScheduleTriggerRecurrence{
-		// 							EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:55:14.905167Z"); return t}()),
+		// 							EndTime: to.Ptr(time.Date(2018, time.June, 16, 0, 55, 14, 905167000, time.UTC)),
 		// 							Frequency: to.Ptr(armdatafactory.RecurrenceFrequencyMinute),
 		// 							Interval: to.Ptr[int32](4),
-		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:39:14.905167Z"); return t}()),
+		// 							StartTime: to.Ptr(time.Date(2018, time.June, 16, 0, 39, 14, 905167000, time.UTC)),
 		// 							TimeZone: to.Ptr("UTC"),
 		// 						},
 		// 					},
@@ -373,8 +373,8 @@ func ExampleTriggersClient_QueryByFactory() {
 	// 					Description: to.Ptr("Example description"),
 	// 					TypeProperties: &armdatafactory.RerunTumblingWindowTriggerTypeProperties{
 	// 						ParentTrigger: "exampleTrigger",
-	// 						RequestedEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:55:14.905167Z"); return t}()),
-	// 						RequestedStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:39:14.905167Z"); return t}()),
+	// 						RequestedEndTime: to.Ptr(time.Date(2018, time.June, 16, 0, 55, 14, 905167000, time.UTC)),
+	// 						RequestedStartTime: to.Ptr(time.Date(2018, time.June, 16, 0, 39, 14, 905167000, time.UTC)),
 	// 						RerunConcurrency: to.Ptr[int32](4),
 	// 					},
 	// 				},

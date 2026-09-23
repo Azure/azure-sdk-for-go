@@ -30,6 +30,9 @@ type IotConnectorFhirDestinationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewIotConnectorFhirDestinationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IotConnectorFhirDestinationClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -84,8 +87,7 @@ func (client *IotConnectorFhirDestinationClient) createOrUpdate(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -94,7 +96,7 @@ func (client *IotConnectorFhirDestinationClient) createOrUpdate(ctx context.Cont
 func (client *IotConnectorFhirDestinationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, fhirDestinationName string, iotFhirDestination IotFhirDestination, _ *IotConnectorFhirDestinationClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}/fhirdestinations/{fhirDestinationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -170,8 +172,7 @@ func (client *IotConnectorFhirDestinationClient) deleteOperation(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -180,7 +181,7 @@ func (client *IotConnectorFhirDestinationClient) deleteOperation(ctx context.Con
 func (client *IotConnectorFhirDestinationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, fhirDestinationName string, _ *IotConnectorFhirDestinationClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}/fhirdestinations/{fhirDestinationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -231,19 +232,14 @@ func (client *IotConnectorFhirDestinationClient) Get(ctx context.Context, resour
 	if err != nil {
 		return IotConnectorFhirDestinationClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IotConnectorFhirDestinationClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *IotConnectorFhirDestinationClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, fhirDestinationName string, _ *IotConnectorFhirDestinationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}/fhirdestinations/{fhirDestinationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -274,8 +270,11 @@ func (client *IotConnectorFhirDestinationClient) getCreateRequest(ctx context.Co
 }
 
 // getHandleResponse handles the Get response.
-func (client *IotConnectorFhirDestinationClient) getHandleResponse(resp *http.Response) (IotConnectorFhirDestinationClientGetResponse, error) {
+func (client *IotConnectorFhirDestinationClient) getHandleResponse(resp *http.Response, successCodes ...int) (IotConnectorFhirDestinationClientGetResponse, error) {
 	result := IotConnectorFhirDestinationClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IotFhirDestination); err != nil {
 		return IotConnectorFhirDestinationClientGetResponse{}, err
 	}

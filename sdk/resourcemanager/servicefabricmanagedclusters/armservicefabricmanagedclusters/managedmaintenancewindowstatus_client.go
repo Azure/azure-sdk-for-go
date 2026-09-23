@@ -30,6 +30,9 @@ type ManagedMaintenanceWindowStatusClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedMaintenanceWindowStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedMaintenanceWindowStatusClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *ManagedMaintenanceWindowStatusClient) Get(ctx context.Context, res
 	if err != nil {
 		return ManagedMaintenanceWindowStatusClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedMaintenanceWindowStatusClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ManagedMaintenanceWindowStatusClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *ManagedMaintenanceWindowStatusClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/getMaintenanceWindowStatus"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -96,8 +94,11 @@ func (client *ManagedMaintenanceWindowStatusClient) getCreateRequest(ctx context
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedMaintenanceWindowStatusClient) getHandleResponse(resp *http.Response) (ManagedMaintenanceWindowStatusClientGetResponse, error) {
+func (client *ManagedMaintenanceWindowStatusClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedMaintenanceWindowStatusClientGetResponse, error) {
 	result := ManagedMaintenanceWindowStatusClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedMaintenanceWindowStatus); err != nil {
 		return ManagedMaintenanceWindowStatusClientGetResponse{}, err
 	}

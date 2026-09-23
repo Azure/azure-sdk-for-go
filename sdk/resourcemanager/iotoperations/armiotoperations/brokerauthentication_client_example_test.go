@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/BrokerAuthentication_CreateOrUpdate_Complex.json
+// Generated from example definition: 2026-07-01/BrokerAuthentication_CreateOrUpdate_Complex.json
 func ExampleBrokerAuthenticationClient_BeginCreateOrUpdate_brokerAuthenticationCreateOrUpdateComplex() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,16 +130,16 @@ func ExampleBrokerAuthenticationClient_BeginCreateOrUpdate_brokerAuthenticationC
 	// 		SystemData: &armiotoperations.SystemData{
 	// 			CreatedBy: to.Ptr("contosouser"),
 	// 			CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.August, 9, 18, 13, 29, 389000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("contosouser"),
 	// 			LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.August, 9, 18, 13, 29, 389000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01/BrokerAuthentication_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/BrokerAuthentication_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleBrokerAuthenticationClient_BeginCreateOrUpdate_brokerAuthenticationCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -249,16 +249,16 @@ func ExampleBrokerAuthenticationClient_BeginCreateOrUpdate_brokerAuthenticationC
 	// 		SystemData: &armiotoperations.SystemData{
 	// 			CreatedBy: to.Ptr("contosouser"),
 	// 			CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.August, 9, 18, 13, 29, 389000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("contosouser"),
 	// 			LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.August, 9, 18, 13, 29, 389000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01/BrokerAuthentication_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/BrokerAuthentication_Delete_MaximumSet_Gen.json
 func ExampleBrokerAuthenticationClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -279,7 +279,7 @@ func ExampleBrokerAuthenticationClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/BrokerAuthentication_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/BrokerAuthentication_Get_MaximumSet_Gen.json
 func ExampleBrokerAuthenticationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,16 +345,16 @@ func ExampleBrokerAuthenticationClient_Get() {
 	// 		SystemData: &armiotoperations.SystemData{
 	// 			CreatedBy: to.Ptr("contosouser"),
 	// 			CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.August, 9, 18, 13, 29, 389000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("contosouser"),
 	// 			LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.August, 9, 18, 13, 29, 389000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01/BrokerAuthentication_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/BrokerAuthentication_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleBrokerAuthenticationClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -426,10 +426,10 @@ func ExampleBrokerAuthenticationClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armiotoperations.SystemData{
 		// 					CreatedBy: to.Ptr("contosouser"),
 		// 					CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.August, 9, 18, 13, 29, 389000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("contosouser"),
 		// 					LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.August, 9, 18, 13, 29, 389000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

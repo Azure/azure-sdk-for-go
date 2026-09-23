@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 )
 
@@ -93,9 +94,7 @@ func (o *OrderItemsServerTransport) Do(req *http.Request) (*http.Response, error
 }
 
 func (o *OrderItemsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -125,10 +124,7 @@ func (o *OrderItemsServerTransport) dispatchToMethodFake(req *http.Request, meth
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -143,7 +139,7 @@ func (o *OrderItemsServerTransport) dispatchCancel(req *http.Request) (*http.Res
 	if o.srv.Cancel == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Cancel not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EdgeOrder/orderItems/(?P<orderItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/orderItems/(?P<orderItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -166,7 +162,7 @@ func (o *OrderItemsServerTransport) dispatchCancel(req *http.Request) (*http.Res
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -182,7 +178,7 @@ func (o *OrderItemsServerTransport) dispatchBeginCreate(req *http.Request) (*htt
 	}
 	beginCreate := o.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EdgeOrder/orderItems/(?P<orderItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/orderItems/(?P<orderItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -213,7 +209,7 @@ func (o *OrderItemsServerTransport) dispatchBeginCreate(req *http.Request) (*htt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		o.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -230,7 +226,7 @@ func (o *OrderItemsServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	}
 	beginDelete := o.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EdgeOrder/orderItems/(?P<orderItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/orderItems/(?P<orderItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -257,7 +253,7 @@ func (o *OrderItemsServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		o.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -272,7 +268,7 @@ func (o *OrderItemsServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	if o.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EdgeOrder/orderItems/(?P<orderItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/orderItems/(?P<orderItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -287,11 +283,7 @@ func (o *OrderItemsServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	if err != nil {
 		return nil, err
 	}
-	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
-	if err != nil {
-		return nil, err
-	}
-	expandParam := getOptional(expandUnescaped)
+	expandParam := getOptional(qp.Get("$expand"))
 	var options *armedgeorder.OrderItemsClientGetOptions
 	if expandParam != nil {
 		options = &armedgeorder.OrderItemsClientGetOptions{
@@ -303,7 +295,7 @@ func (o *OrderItemsServerTransport) dispatchGet(req *http.Request) (*http.Respon
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OrderItemResource, req)
@@ -319,7 +311,7 @@ func (o *OrderItemsServerTransport) dispatchNewListByResourceGroupPager(req *htt
 	}
 	newListByResourceGroupPager := o.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EdgeOrder/orderItems`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/orderItems`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -330,26 +322,10 @@ func (o *OrderItemsServerTransport) dispatchNewListByResourceGroupPager(req *htt
 		if err != nil {
 			return nil, err
 		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
-		if err != nil {
-			return nil, err
-		}
-		expandParam := getOptional(expandUnescaped)
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
-		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		filterParam := getOptional(qp.Get("$filter"))
+		expandParam := getOptional(qp.Get("$expand"))
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -379,7 +355,7 @@ func (o *OrderItemsServerTransport) dispatchNewListByResourceGroupPager(req *htt
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		o.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -395,33 +371,17 @@ func (o *OrderItemsServerTransport) dispatchNewListBySubscriptionPager(req *http
 	}
 	newListBySubscriptionPager := o.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EdgeOrder/orderItems`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/orderItems`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
-		if err != nil {
-			return nil, err
-		}
-		expandParam := getOptional(expandUnescaped)
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
-		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		filterParam := getOptional(qp.Get("$filter"))
+		expandParam := getOptional(qp.Get("$expand"))
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -451,7 +411,7 @@ func (o *OrderItemsServerTransport) dispatchNewListBySubscriptionPager(req *http
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		o.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -467,7 +427,7 @@ func (o *OrderItemsServerTransport) dispatchBeginReturn(req *http.Request) (*htt
 	}
 	beginReturn := o.beginReturn.get(req)
 	if beginReturn == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EdgeOrder/orderItems/(?P<orderItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/return`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/orderItems/(?P<orderItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/return`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -498,7 +458,7 @@ func (o *OrderItemsServerTransport) dispatchBeginReturn(req *http.Request) (*htt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		o.beginReturn.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -515,7 +475,7 @@ func (o *OrderItemsServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 	}
 	beginUpdate := o.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EdgeOrder/orderItems/(?P<orderItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/orderItems/(?P<orderItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -553,7 +513,7 @@ func (o *OrderItemsServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		o.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

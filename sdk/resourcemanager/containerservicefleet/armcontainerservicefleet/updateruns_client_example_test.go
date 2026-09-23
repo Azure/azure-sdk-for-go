@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-02-preview/UpdateRuns_CreateOrUpdate.json
+// Generated from example definition: 2026-06-02-preview/UpdateRuns_CreateOrUpdate.json
 func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,6 +35,9 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 							{
 								Name:           to.Ptr("group-a"),
 								MaxConcurrency: to.Ptr("2"),
+								MemberSelector: &armcontainerservicefleet.MemberSelector{
+									ByLabel: to.Ptr("tier=frontend"),
+								},
 								BeforeGates: []*armcontainerservicefleet.GateConfiguration{
 									{
 										DisplayName: to.Ptr("gate before group-a"),
@@ -62,6 +65,25 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 							},
 						},
 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
+					},
+					{
+						Name:           to.Ptr("stage2"),
+						MaxConcurrency: to.Ptr("50%"),
+						MemberSelector: &armcontainerservicefleet.MemberSelector{
+							ByLabel: to.Ptr("env=production"),
+						},
+						BeforeGates: []*armcontainerservicefleet.GateConfiguration{
+							{
+								DisplayName: to.Ptr("Wait until Friday evening"),
+								Type:        to.Ptr(armcontainerservicefleet.GateTypeScheduledStart),
+								ScheduledStartConfiguration: &armcontainerservicefleet.ScheduledStartConfiguration{
+									StartDay:  to.Ptr(armcontainerservicefleet.DayOfWeekFriday),
+									StartTime: to.Ptr("18:00"),
+									UTCOffset: to.Ptr("-05:00"),
+								},
+							},
+						},
+						AfterStageWaitInSeconds: to.Ptr[int32](600),
 					},
 				},
 			},
@@ -94,10 +116,10 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 		},
 	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
 	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
@@ -111,6 +133,9 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// 							{
 	// 								Name: to.Ptr("group-a"),
 	// 								MaxConcurrency: to.Ptr("2"),
+	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
+	// 									ByLabel: to.Ptr("tier=frontend"),
+	// 								},
 	// 								BeforeGates: []*armcontainerservicefleet.GateConfiguration{
 	// 									{
 	// 										DisplayName: to.Ptr("gate before group-a"),
@@ -138,6 +163,25 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// 							},
 	// 						},
 	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("stage2"),
+	// 						MaxConcurrency: to.Ptr("50%"),
+	// 						MemberSelector: &armcontainerservicefleet.MemberSelector{
+	// 							ByLabel: to.Ptr("env=production"),
+	// 						},
+	// 						BeforeGates: []*armcontainerservicefleet.GateConfiguration{
+	// 							{
+	// 								DisplayName: to.Ptr("Wait until Friday evening"),
+	// 								Type: to.Ptr(armcontainerservicefleet.GateTypeScheduledStart),
+	// 								ScheduledStartConfiguration: &armcontainerservicefleet.ScheduledStartConfiguration{
+	// 									StartDay: to.Ptr(armcontainerservicefleet.DayOfWeekFriday),
+	// 									StartTime: to.Ptr("18:00"),
+	// 									UTCOffset: to.Ptr("-05:00"),
+	// 								},
+	// 							},
+	// 						},
+	// 						AfterStageWaitInSeconds: to.Ptr[int32](600),
 	// 					},
 	// 				},
 	// 			},
@@ -219,6 +263,29 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// 							WaitDurationInSeconds: to.Ptr[int32](3600),
 	// 						},
 	// 					},
+	// 					{
+	// 						Status: &armcontainerservicefleet.UpdateStatus{
+	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+	// 						},
+	// 						Name: to.Ptr("stage2"),
+	// 						MaxConcurrency: to.Ptr[int32](50),
+	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
+	// 						},
+	// 						BeforeGates: []*armcontainerservicefleet.UpdateRunGateStatus{
+	// 							{
+	// 								DisplayName: to.Ptr("Wait until Friday evening"),
+	// 								Status: &armcontainerservicefleet.UpdateStatus{
+	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+	// 								},
+	// 							},
+	// 						},
+	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
+	// 							Status: &armcontainerservicefleet.UpdateStatus{
+	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+	// 							},
+	// 							WaitDurationInSeconds: to.Ptr[int32](600),
+	// 						},
+	// 					},
 	// 				},
 	// 			},
 	// 		},
@@ -227,7 +294,7 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/UpdateRuns_Delete.json
+// Generated from example definition: 2026-06-02-preview/UpdateRuns_Delete.json
 func ExampleUpdateRunsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,7 +320,7 @@ func ExampleUpdateRunsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/UpdateRuns_Get.json
+// Generated from example definition: 2026-06-02-preview/UpdateRuns_Get.json
 func ExampleUpdateRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -279,10 +346,10 @@ func ExampleUpdateRunsClient_Get() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 		},
 	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
 	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
@@ -295,6 +362,9 @@ func ExampleUpdateRunsClient_Get() {
 	// 							{
 	// 								Name: to.Ptr("group-a"),
 	// 								MaxConcurrency: to.Ptr("2"),
+	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
+	// 									ByLabel: to.Ptr("tier=frontend"),
+	// 								},
 	// 								BeforeGates: []*armcontainerservicefleet.GateConfiguration{
 	// 									{
 	// 										DisplayName: to.Ptr("gate before group-a"),
@@ -322,6 +392,14 @@ func ExampleUpdateRunsClient_Get() {
 	// 							},
 	// 						},
 	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("stage2"),
+	// 						MaxConcurrency: to.Ptr("50%"),
+	// 						MemberSelector: &armcontainerservicefleet.MemberSelector{
+	// 							ByLabel: to.Ptr("env=production"),
+	// 						},
+	// 						AfterStageWaitInSeconds: to.Ptr[int32](600),
 	// 					},
 	// 				},
 	// 			},
@@ -403,6 +481,21 @@ func ExampleUpdateRunsClient_Get() {
 	// 							WaitDurationInSeconds: to.Ptr[int32](3600),
 	// 						},
 	// 					},
+	// 					{
+	// 						Status: &armcontainerservicefleet.UpdateStatus{
+	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+	// 						},
+	// 						Name: to.Ptr("stage2"),
+	// 						MaxConcurrency: to.Ptr[int32](50),
+	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
+	// 						},
+	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
+	// 							Status: &armcontainerservicefleet.UpdateStatus{
+	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+	// 							},
+	// 							WaitDurationInSeconds: to.Ptr[int32](600),
+	// 						},
+	// 					},
 	// 				},
 	// 			},
 	// 		},
@@ -411,7 +504,7 @@ func ExampleUpdateRunsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/UpdateRuns_ListByFleet.json
+// Generated from example definition: 2026-06-02-preview/UpdateRuns_ListByFleet.json
 func ExampleUpdateRunsClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -443,10 +536,10 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 		// 				SystemData: &armcontainerservicefleet.SystemData{
 		// 					CreatedBy: to.Ptr("@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 		// 				},
 		// 				Properties: &armcontainerservicefleet.UpdateRunProperties{
 		// 					ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
@@ -459,6 +552,9 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 		// 									{
 		// 										Name: to.Ptr("group-a"),
 		// 										MaxConcurrency: to.Ptr("2"),
+		// 										MemberSelector: &armcontainerservicefleet.MemberSelector{
+		// 											ByLabel: to.Ptr("tier=frontend"),
+		// 										},
 		// 										BeforeGates: []*armcontainerservicefleet.GateConfiguration{
 		// 											{
 		// 												DisplayName: to.Ptr("gate before group-a"),
@@ -486,6 +582,14 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 		// 									},
 		// 								},
 		// 								AfterStageWaitInSeconds: to.Ptr[int32](3600),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("stage2"),
+		// 								MaxConcurrency: to.Ptr("50%"),
+		// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
+		// 									ByLabel: to.Ptr("env=production"),
+		// 								},
+		// 								AfterStageWaitInSeconds: to.Ptr[int32](600),
 		// 							},
 		// 						},
 		// 					},
@@ -567,6 +671,21 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 		// 									WaitDurationInSeconds: to.Ptr[int32](3600),
 		// 								},
 		// 							},
+		// 							{
+		// 								Status: &armcontainerservicefleet.UpdateStatus{
+		// 									State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+		// 								},
+		// 								Name: to.Ptr("stage2"),
+		// 								MaxConcurrency: to.Ptr[int32](50),
+		// 								Groups: []*armcontainerservicefleet.UpdateGroupStatus{
+		// 								},
+		// 								AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
+		// 									Status: &armcontainerservicefleet.UpdateStatus{
+		// 										State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+		// 									},
+		// 									WaitDurationInSeconds: to.Ptr[int32](600),
+		// 								},
+		// 							},
 		// 						},
 		// 					},
 		// 				},
@@ -579,7 +698,7 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-02-preview/UpdateRuns_Skip.json
+// Generated from example definition: 2026-06-02-preview/UpdateRuns_Skip.json
 func ExampleUpdateRunsClient_BeginSkip() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -620,10 +739,10 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:09:08.395Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 9, 8, 395000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 		},
 	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
 	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
@@ -636,13 +755,27 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// 							{
 	// 								Name: to.Ptr("group-a"),
 	// 								MaxConcurrency: to.Ptr("2"),
+	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
+	// 									ByLabel: to.Ptr("tier=frontend"),
+	// 								},
 	// 							},
 	// 							{
 	// 								Name: to.Ptr("group-b"),
 	// 								MaxConcurrency: to.Ptr("2"),
+	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
+	// 									ByLabel: to.Ptr("tier=frontend"),
+	// 								},
 	// 							},
 	// 						},
 	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("stage2"),
+	// 						MaxConcurrency: to.Ptr("50%"),
+	// 						MemberSelector: &armcontainerservicefleet.MemberSelector{
+	// 							ByLabel: to.Ptr("env=production"),
+	// 						},
+	// 						AfterStageWaitInSeconds: to.Ptr[int32](600),
 	// 					},
 	// 				},
 	// 			},
@@ -657,13 +790,13 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// 			},
 	// 			Status: &armcontainerservicefleet.UpdateRunStatus{
 	// 				Status: &armcontainerservicefleet.UpdateStatus{
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 					State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
 	// 				},
 	// 				Stages: []*armcontainerservicefleet.UpdateStageStatus{
 	// 					{
 	// 						Status: &armcontainerservicefleet.UpdateStatus{
-	// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 							StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
 	// 						},
 	// 						Name: to.Ptr("stage1"),
@@ -671,7 +804,7 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 							{
 	// 								Status: &armcontainerservicefleet.UpdateStatus{
-	// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 									StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateSkipped),
 	// 								},
 	// 								Name: to.Ptr("group-a"),
@@ -688,7 +821,7 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// 							},
 	// 							{
 	// 								Status: &armcontainerservicefleet.UpdateStatus{
-	// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 									StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
 	// 								},
 	// 								Name: to.Ptr("group-b"),
@@ -711,6 +844,21 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// 							WaitDurationInSeconds: to.Ptr[int32](3600),
 	// 						},
 	// 					},
+	// 					{
+	// 						Status: &armcontainerservicefleet.UpdateStatus{
+	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+	// 						},
+	// 						Name: to.Ptr("stage2"),
+	// 						MaxConcurrency: to.Ptr[int32](50),
+	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
+	// 						},
+	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
+	// 							Status: &armcontainerservicefleet.UpdateStatus{
+	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+	// 							},
+	// 							WaitDurationInSeconds: to.Ptr[int32](600),
+	// 						},
+	// 					},
 	// 				},
 	// 			},
 	// 		},
@@ -719,7 +867,7 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/UpdateRuns_Start.json
+// Generated from example definition: 2026-06-02-preview/UpdateRuns_Start.json
 func ExampleUpdateRunsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -749,10 +897,10 @@ func ExampleUpdateRunsClient_BeginStart() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:09:08.395Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 9, 8, 395000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 		},
 	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
 	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
@@ -765,9 +913,20 @@ func ExampleUpdateRunsClient_BeginStart() {
 	// 							{
 	// 								Name: to.Ptr("group-a"),
 	// 								MaxConcurrency: to.Ptr("5"),
+	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
+	// 									ByLabel: to.Ptr("tier=frontend"),
+	// 								},
 	// 							},
 	// 						},
 	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("stage2"),
+	// 						MaxConcurrency: to.Ptr("50%"),
+	// 						MemberSelector: &armcontainerservicefleet.MemberSelector{
+	// 							ByLabel: to.Ptr("env=production"),
+	// 						},
+	// 						AfterStageWaitInSeconds: to.Ptr[int32](600),
 	// 					},
 	// 				},
 	// 			},
@@ -782,13 +941,13 @@ func ExampleUpdateRunsClient_BeginStart() {
 	// 			},
 	// 			Status: &armcontainerservicefleet.UpdateRunStatus{
 	// 				Status: &armcontainerservicefleet.UpdateStatus{
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 					State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
 	// 				},
 	// 				Stages: []*armcontainerservicefleet.UpdateStageStatus{
 	// 					{
 	// 						Status: &armcontainerservicefleet.UpdateStatus{
-	// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 							StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
 	// 						},
 	// 						Name: to.Ptr("stage1"),
@@ -796,7 +955,7 @@ func ExampleUpdateRunsClient_BeginStart() {
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 							{
 	// 								Status: &armcontainerservicefleet.UpdateStatus{
-	// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 									StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
 	// 								},
 	// 								Name: to.Ptr("group-a"),
@@ -819,6 +978,21 @@ func ExampleUpdateRunsClient_BeginStart() {
 	// 							WaitDurationInSeconds: to.Ptr[int32](3600),
 	// 						},
 	// 					},
+	// 					{
+	// 						Status: &armcontainerservicefleet.UpdateStatus{
+	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+	// 						},
+	// 						Name: to.Ptr("stage2"),
+	// 						MaxConcurrency: to.Ptr[int32](50),
+	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
+	// 						},
+	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
+	// 							Status: &armcontainerservicefleet.UpdateStatus{
+	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+	// 							},
+	// 							WaitDurationInSeconds: to.Ptr[int32](600),
+	// 						},
+	// 					},
 	// 				},
 	// 			},
 	// 		},
@@ -827,7 +1001,7 @@ func ExampleUpdateRunsClient_BeginStart() {
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/UpdateRuns_Stop.json
+// Generated from example definition: 2026-06-02-preview/UpdateRuns_Stop.json
 func ExampleUpdateRunsClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -857,10 +1031,10 @@ func ExampleUpdateRunsClient_BeginStop() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:09:08.395Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 9, 8, 395000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 		},
 	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
 	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
@@ -873,9 +1047,20 @@ func ExampleUpdateRunsClient_BeginStop() {
 	// 							{
 	// 								Name: to.Ptr("group-a"),
 	// 								MaxConcurrency: to.Ptr("5"),
+	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
+	// 									ByLabel: to.Ptr("tier=frontend"),
+	// 								},
 	// 							},
 	// 						},
 	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("stage2"),
+	// 						MaxConcurrency: to.Ptr("50%"),
+	// 						MemberSelector: &armcontainerservicefleet.MemberSelector{
+	// 							ByLabel: to.Ptr("env=production"),
+	// 						},
+	// 						AfterStageWaitInSeconds: to.Ptr[int32](600),
 	// 					},
 	// 				},
 	// 			},
@@ -890,13 +1075,13 @@ func ExampleUpdateRunsClient_BeginStop() {
 	// 			},
 	// 			Status: &armcontainerservicefleet.UpdateRunStatus{
 	// 				Status: &armcontainerservicefleet.UpdateStatus{
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 					State: to.Ptr(armcontainerservicefleet.UpdateStateStopping),
 	// 				},
 	// 				Stages: []*armcontainerservicefleet.UpdateStageStatus{
 	// 					{
 	// 						Status: &armcontainerservicefleet.UpdateStatus{
-	// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 							StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateStopping),
 	// 						},
 	// 						Name: to.Ptr("stage1"),
@@ -904,7 +1089,7 @@ func ExampleUpdateRunsClient_BeginStop() {
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 							{
 	// 								Status: &armcontainerservicefleet.UpdateStatus{
-	// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 									StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateStopping),
 	// 								},
 	// 								Name: to.Ptr("group-a"),
@@ -925,6 +1110,21 @@ func ExampleUpdateRunsClient_BeginStop() {
 	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
 	// 							},
 	// 							WaitDurationInSeconds: to.Ptr[int32](3600),
+	// 						},
+	// 					},
+	// 					{
+	// 						Status: &armcontainerservicefleet.UpdateStatus{
+	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+	// 						},
+	// 						Name: to.Ptr("stage2"),
+	// 						MaxConcurrency: to.Ptr[int32](50),
+	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
+	// 						},
+	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
+	// 							Status: &armcontainerservicefleet.UpdateStatus{
+	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+	// 							},
+	// 							WaitDurationInSeconds: to.Ptr[int32](600),
 	// 						},
 	// 					},
 	// 				},

@@ -16,12 +16,10 @@ import (
 	"strings"
 )
 
-const defaultEntitiesGetTimelineClientVersion string = "2025-07-01-preview"
-
 // EntitiesGetTimelineClient contains the methods for the EntitiesGetTimeline group.
 // Don't use this type directly, use NewEntitiesGetTimelineClient() instead.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-10-01-preview
 type EntitiesGetTimelineClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -32,6 +30,9 @@ type EntitiesGetTimelineClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEntitiesGetTimelineClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EntitiesGetTimelineClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,19 +66,14 @@ func (client *EntitiesGetTimelineClient) List(ctx context.Context, resourceGroup
 	if err != nil {
 		return EntitiesGetTimelineClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EntitiesGetTimelineClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
 func (client *EntitiesGetTimelineClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, entityID string, parameters EntityTimelineParameters, _ *EntitiesGetTimelineClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/entities/{entityId}/getTimeline"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -97,7 +93,7 @@ func (client *EntitiesGetTimelineClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultEntitiesGetTimelineClientVersion)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -108,8 +104,11 @@ func (client *EntitiesGetTimelineClient) listCreateRequest(ctx context.Context, 
 }
 
 // listHandleResponse handles the List response.
-func (client *EntitiesGetTimelineClient) listHandleResponse(resp *http.Response) (EntitiesGetTimelineClientListResponse, error) {
+func (client *EntitiesGetTimelineClient) listHandleResponse(resp *http.Response, successCodes ...int) (EntitiesGetTimelineClientListResponse, error) {
 	result := EntitiesGetTimelineClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EntityTimelineResponse); err != nil {
 		return EntitiesGetTimelineClientListResponse{}, err
 	}

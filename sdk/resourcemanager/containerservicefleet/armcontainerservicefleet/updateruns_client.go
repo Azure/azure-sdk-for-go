@@ -20,7 +20,7 @@ import (
 // UpdateRunsClient contains the methods for the UpdateRuns group.
 // Don't use this type directly, use NewUpdateRunsClient() instead.
 //
-// Generated from API version 2026-03-02-preview
+// Generated from API version 2026-06-02-preview
 type UpdateRunsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -31,6 +31,9 @@ type UpdateRunsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewUpdateRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UpdateRunsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -85,8 +88,7 @@ func (client *UpdateRunsClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -95,7 +97,7 @@ func (client *UpdateRunsClient) createOrUpdate(ctx context.Context, resourceGrou
 func (client *UpdateRunsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, updateRunName string, resource UpdateRun, options *UpdateRunsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateRuns/{updateRunName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -115,7 +117,7 @@ func (client *UpdateRunsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -171,8 +173,7 @@ func (client *UpdateRunsClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -181,7 +182,7 @@ func (client *UpdateRunsClient) deleteOperation(ctx context.Context, resourceGro
 func (client *UpdateRunsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, updateRunName string, options *UpdateRunsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateRuns/{updateRunName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -201,7 +202,7 @@ func (client *UpdateRunsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -229,19 +230,14 @@ func (client *UpdateRunsClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return UpdateRunsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UpdateRunsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *UpdateRunsClient) getCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, updateRunName string, _ *UpdateRunsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateRuns/{updateRunName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -261,15 +257,18 @@ func (client *UpdateRunsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *UpdateRunsClient) getHandleResponse(resp *http.Response) (UpdateRunsClientGetResponse, error) {
+func (client *UpdateRunsClient) getHandleResponse(resp *http.Response, successCodes ...int) (UpdateRunsClientGetResponse, error) {
 	result := UpdateRunsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UpdateRun); err != nil {
 		return UpdateRunsClientGetResponse{}, err
 	}
@@ -292,53 +291,67 @@ func (client *UpdateRunsClient) NewListByFleetPager(resourceGroupName string, fl
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByFleetCreateRequest(ctx, resourceGroupName, fleetName, options)
-			}, nil)
+			req, err := client.listByFleetCreateRequest(ctx, resourceGroupName, fleetName, nextLink, options)
 			if err != nil {
 				return UpdateRunsClientListByFleetResponse{}, err
 			}
-			return client.listByFleetHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return UpdateRunsClientListByFleetResponse{}, err
+			}
+			return client.listByFleetHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByFleetCreateRequest creates the ListByFleet request.
-func (client *UpdateRunsClient) listByFleetCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, options *UpdateRunsClientListByFleetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateRuns"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *UpdateRunsClient) listByFleetCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, nextLink string, options *UpdateRunsClientListByFleetOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateRuns"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if fleetName == "" {
+			return nil, errors.New("parameter fleetName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{fleetName}", url.PathEscape(fleetName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if fleetName == "" {
-		return nil, errors.New("parameter fleetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fleetName}", url.PathEscape(fleetName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260602Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20260302Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByFleetHandleResponse handles the ListByFleet response.
-func (client *UpdateRunsClient) listByFleetHandleResponse(resp *http.Response) (UpdateRunsClientListByFleetResponse, error) {
+func (client *UpdateRunsClient) listByFleetHandleResponse(resp *http.Response, successCodes ...int) (UpdateRunsClientListByFleetResponse, error) {
 	result := UpdateRunsClientListByFleetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UpdateRunListResult); err != nil {
 		return UpdateRunsClientListByFleetResponse{}, err
 	}
@@ -386,8 +399,7 @@ func (client *UpdateRunsClient) skip(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -396,7 +408,7 @@ func (client *UpdateRunsClient) skip(ctx context.Context, resourceGroupName stri
 func (client *UpdateRunsClient) skipCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, updateRunName string, body SkipProperties, options *UpdateRunsClientBeginSkipOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateRuns/{updateRunName}/skip"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -416,7 +428,7 @@ func (client *UpdateRunsClient) skipCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -469,8 +481,7 @@ func (client *UpdateRunsClient) start(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -479,7 +490,7 @@ func (client *UpdateRunsClient) start(ctx context.Context, resourceGroupName str
 func (client *UpdateRunsClient) startCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, updateRunName string, options *UpdateRunsClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateRuns/{updateRunName}/start"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -499,7 +510,7 @@ func (client *UpdateRunsClient) startCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -548,8 +559,7 @@ func (client *UpdateRunsClient) stop(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -558,7 +568,7 @@ func (client *UpdateRunsClient) stop(ctx context.Context, resourceGroupName stri
 func (client *UpdateRunsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, updateRunName string, options *UpdateRunsClientBeginStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateRuns/{updateRunName}/stop"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -578,7 +588,7 @@ func (client *UpdateRunsClient) stopCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {

@@ -82,8 +82,7 @@ func (client *DiagnosticsClient) create(ctx context.Context, scope string, diagn
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -133,12 +132,7 @@ func (client *DiagnosticsClient) Get(ctx context.Context, scope string, diagnost
 	if err != nil {
 		return DiagnosticsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiagnosticsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -164,8 +158,11 @@ func (client *DiagnosticsClient) getCreateRequest(ctx context.Context, scope str
 }
 
 // getHandleResponse handles the Get response.
-func (client *DiagnosticsClient) getHandleResponse(resp *http.Response) (DiagnosticsClientGetResponse, error) {
+func (client *DiagnosticsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientGetResponse, error) {
 	result := DiagnosticsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticResource); err != nil {
 		return DiagnosticsClientGetResponse{}, err
 	}

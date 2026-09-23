@@ -45,10 +45,10 @@ func ExampleSaaSOperationGroupClient_BeginActivateResource_saaSOperationGroupAct
 	// 		SystemData: &armcommvaultcontentstore.SystemData{
 	// 			CreatedBy: to.Ptr("john.doe@example.com"),
 	// 			CreatedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T05:18:18.058Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.March, 12, 5, 18, 18, 58000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("john.doe@example.com"),
 	// 			LastModifiedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T05:18:18.059Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.March, 12, 5, 18, 18, 59000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

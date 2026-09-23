@@ -5,7 +5,7 @@
 package armcontainerservicefleet
 
 const (
-	version20260302Preview string = "2026-03-02-preview"
+	version20260602Preview string = "2026-06-02-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -179,6 +179,39 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// DayOfWeek - The days of a week.
+type DayOfWeek string
+
+const (
+	// DayOfWeekFriday - The day Friday.
+	DayOfWeekFriday DayOfWeek = "Friday"
+	// DayOfWeekMonday - The day Monday.
+	DayOfWeekMonday DayOfWeek = "Monday"
+	// DayOfWeekSaturday - The day Saturday.
+	DayOfWeekSaturday DayOfWeek = "Saturday"
+	// DayOfWeekSunday - The day Sunday.
+	DayOfWeekSunday DayOfWeek = "Sunday"
+	// DayOfWeekThursday - The day Thursday.
+	DayOfWeekThursday DayOfWeek = "Thursday"
+	// DayOfWeekTuesday - The day Tuesday.
+	DayOfWeekTuesday DayOfWeek = "Tuesday"
+	// DayOfWeekWednesday - The day Wednesday.
+	DayOfWeekWednesday DayOfWeek = "Wednesday"
+)
+
+// PossibleDayOfWeekValues returns the possible values for the DayOfWeek const type.
+func PossibleDayOfWeekValues() []DayOfWeek {
+	return []DayOfWeek{
+		DayOfWeekFriday,
+		DayOfWeekMonday,
+		DayOfWeekSaturday,
+		DayOfWeekSunday,
+		DayOfWeekThursday,
+		DayOfWeekTuesday,
+		DayOfWeekWednesday,
 	}
 }
 
@@ -359,12 +392,15 @@ type GateType string
 const (
 	// GateTypeApproval - An approval gate is completed by setting its state to be Completed.
 	GateTypeApproval GateType = "Approval"
+	// GateTypeScheduledStart - A scheduled start gate is automatically completed when the scheduled time is reached.
+	GateTypeScheduledStart GateType = "ScheduledStart"
 )
 
 // PossibleGateTypeValues returns the possible values for the GateType const type.
 func PossibleGateTypeValues() []GateType {
 	return []GateType{
 		GateTypeApproval,
+		GateTypeScheduledStart,
 	}
 }
 
@@ -605,6 +641,24 @@ func PossiblePropertySelectorOperatorValues() []PropertySelectorOperator {
 	}
 }
 
+// RolloutStrategyType - The possible rollout strategy types.
+type RolloutStrategyType string
+
+const (
+	// RolloutStrategyTypeExternal - Use external rollout strategy via Staged Update Run.
+	RolloutStrategyTypeExternal RolloutStrategyType = "External"
+	// RolloutStrategyTypeRollingUpdate - Use rolling update strategy for rollout.
+	RolloutStrategyTypeRollingUpdate RolloutStrategyType = "RollingUpdate"
+)
+
+// PossibleRolloutStrategyTypeValues returns the possible values for the RolloutStrategyType const type.
+func PossibleRolloutStrategyTypeValues() []RolloutStrategyType {
+	return []RolloutStrategyType{
+		RolloutStrategyTypeExternal,
+		RolloutStrategyTypeRollingUpdate,
+	}
+}
+
 // TaintEffect - TaintEffect
 type TaintEffect string
 
@@ -748,6 +802,10 @@ const (
 	// UpgradeChannelRapid - Upgrades the clusters kubernetes version to the latest supported patch release on the latest supported
 	// minor version.
 	UpgradeChannelRapid UpgradeChannel = "Rapid"
+	// UpgradeChannelSecurityPatch - Applies security patches to the nodes of the target clusters.
+	// For information on the behavior of update run for security patch upgrade,
+	// see https://learn.microsoft.com/en-us/azure/kubernetes-fleet/update-orchestration?tabs=azure-portal
+	UpgradeChannelSecurityPatch UpgradeChannel = "SecurityPatch"
 	// UpgradeChannelStable - Upgrades the clusters kubernetes version to the latest supported patch release on minor version
 	// N-1, where N is the latest supported minor version.
 	// For example, if a cluster runs version 1.17.7 and versions 1.17.9, 1.18.4, 1.18.6, and 1.19.1 are available, the cluster
@@ -765,6 +823,7 @@ func PossibleUpgradeChannelValues() []UpgradeChannel {
 	return []UpgradeChannel{
 		UpgradeChannelNodeImage,
 		UpgradeChannelRapid,
+		UpgradeChannelSecurityPatch,
 		UpgradeChannelStable,
 		UpgradeChannelTargetKubernetesVersion,
 	}

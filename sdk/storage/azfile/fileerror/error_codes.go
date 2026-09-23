@@ -111,4 +111,7 @@ const (
 var (
 	// MissingSharedKeyCredential - Error is returned when SAS URL is being created without SharedKeyCredential.
 	MissingSharedKeyCredential = errors.New("SAS can only be signed with a SharedKeyCredential")
+
+	// UnsupportedChecksum - Error is returned when a precomputed checksum is used with multi-chunk uploads.
+	UnsupportedChecksum = errors.New("for multi-part uploads, user generated checksums cannot be validated")
 )

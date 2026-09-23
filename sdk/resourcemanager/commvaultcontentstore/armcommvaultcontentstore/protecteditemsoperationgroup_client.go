@@ -55,12 +55,7 @@ func (client *ProtectedItemsOperationGroupClient) CountByProtectionGroups(ctx co
 	if err != nil {
 		return ProtectedItemsOperationGroupClientCountByProtectionGroupsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProtectedItemsOperationGroupClientCountByProtectionGroupsResponse{}, err
-	}
-	resp, err := client.countByProtectionGroupsHandleResponse(httpResp)
-	return resp, err
+	return client.countByProtectionGroupsHandleResponse(httpResp, http.StatusOK)
 }
 
 // countByProtectionGroupsCreateRequest creates the CountByProtectionGroups request.
@@ -82,8 +77,11 @@ func (client *ProtectedItemsOperationGroupClient) countByProtectionGroupsCreateR
 }
 
 // countByProtectionGroupsHandleResponse handles the CountByProtectionGroups response.
-func (client *ProtectedItemsOperationGroupClient) countByProtectionGroupsHandleResponse(resp *http.Response) (ProtectedItemsOperationGroupClientCountByProtectionGroupsResponse, error) {
+func (client *ProtectedItemsOperationGroupClient) countByProtectionGroupsHandleResponse(resp *http.Response, successCodes ...int) (ProtectedItemsOperationGroupClientCountByProtectionGroupsResponse, error) {
 	result := ProtectedItemsOperationGroupClientCountByProtectionGroupsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CountProtectedItemsResponse); err != nil {
 		return ProtectedItemsOperationGroupClientCountByProtectionGroupsResponse{}, err
 	}

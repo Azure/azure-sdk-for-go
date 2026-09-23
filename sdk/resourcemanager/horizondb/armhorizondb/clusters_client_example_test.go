@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-20-preview/Clusters_CreateOrUpdate.json
+// Generated from example definition: 2026-05-01-preview/Clusters_CreateOrUpdate.json
 func ExampleClustersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,13 +30,12 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 		},
 		Properties: &armhorizondb.ClusterProperties{
 			CreateMode:                 to.Ptr(armhorizondb.CreateModeClusterCreate),
-			SourceClusterResourceID:    to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/examplesourceresourcegroup/providers/Microsoft.HorizonDb/clusters/examplesourcecluster"),
 			Version:                    to.Ptr("17"),
 			AdministratorLogin:         to.Ptr("exampleadministratorlogin"),
 			AdministratorLoginPassword: to.Ptr("examplepassword"),
 			VCores:                     to.Ptr[int32](4),
 			ReplicaCount:               to.Ptr[int32](2),
-			ZonePlacementPolicy:        to.Ptr(armhorizondb.ZonePlacementPolicyStrict),
+			ZonePlacementPolicy:        to.Ptr(armhorizondb.ZonePlacementPolicyBestEffort),
 		},
 	}, nil)
 	if err != nil {
@@ -62,20 +61,23 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// 			AdministratorLogin: to.Ptr("exampleadministratorlogin"),
 	// 			Version: to.Ptr("17"),
 	// 			CreateMode: to.Ptr(armhorizondb.CreateModeClusterCreate),
-	// 			SourceClusterResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/examplesourceresourcegroup/providers/Microsoft.HorizonDb/clusters/examplesourcecluster"),
 	// 			VCores: to.Ptr[int32](4),
 	// 			ReplicaCount: to.Ptr[int32](2),
-	// 			ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyStrict),
-	// 			State: to.Ptr(armhorizondb.StateReady),
-	// 			FullyQualifiedDomainName: to.Ptr("examplecluster.westus2.horizondb.azure.com"),
-	// 			ReadonlyEndpoint: to.Ptr("examplecluster-ro.horizondb.azure.com"),
+	// 			ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyBestEffort),
+	// 			AuthConfig: &armhorizondb.ClusterAuthConfig{
+	// 				EntraIDAuth: to.Ptr(armhorizondb.AuthenticationStateDisabled),
+	// 				PasswordAuth: to.Ptr(armhorizondb.AuthenticationStateEnabled),
+	// 			},
+	// 			State: to.Ptr(armhorizondb.StateSucceeded),
+	// 			FullyQualifiedDomainName: to.Ptr("examplecluster.ffffffffffff.westus2.horizondb.azure.com"),
+	// 			ReadonlyEndpoint: to.Ptr("examplecluster.ffffffffffff-ro.horizondb.azure.com"),
 	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-20-preview/Clusters_Delete.json
+// Generated from example definition: 2026-05-01-preview/Clusters_Delete.json
 func ExampleClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +98,7 @@ func ExampleClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-20-preview/Clusters_Get.json
+// Generated from example definition: 2026-05-01-preview/Clusters_Get.json
 func ExampleClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,17 +130,21 @@ func ExampleClustersClient_Get() {
 	// 			Version: to.Ptr("17"),
 	// 			VCores: to.Ptr[int32](4),
 	// 			ReplicaCount: to.Ptr[int32](2),
-	// 			ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyStrict),
-	// 			State: to.Ptr(armhorizondb.StateReady),
-	// 			FullyQualifiedDomainName: to.Ptr("examplecluster.westus2.horizondb.azure.com"),
-	// 			ReadonlyEndpoint: to.Ptr("examplecluster-ro.horizondb.azure.com"),
+	// 			ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyBestEffort),
+	// 			AuthConfig: &armhorizondb.ClusterAuthConfig{
+	// 				EntraIDAuth: to.Ptr(armhorizondb.AuthenticationStateDisabled),
+	// 				PasswordAuth: to.Ptr(armhorizondb.AuthenticationStateEnabled),
+	// 			},
+	// 			State: to.Ptr(armhorizondb.StateSucceeded),
+	// 			FullyQualifiedDomainName: to.Ptr("examplecluster.ffffffffffff.westus2.horizondb.azure.com"),
+	// 			ReadonlyEndpoint: to.Ptr("examplecluster.ffffffffffff-ro.horizondb.azure.com"),
 	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-20-preview/Clusters_ListByResourceGroup.json
+// Generated from example definition: 2026-05-01-preview/Clusters_ListByResourceGroup.json
 func ExampleClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,9 +182,13 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 					Version: to.Ptr("17"),
 		// 					VCores: to.Ptr[int32](4),
 		// 					ReplicaCount: to.Ptr[int32](2),
-		// 					ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyStrict),
-		// 					State: to.Ptr(armhorizondb.StateReady),
-		// 					FullyQualifiedDomainName: to.Ptr("examplecluster.westus2.horizondb.azure.com"),
+		// 					ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyBestEffort),
+		// 					AuthConfig: &armhorizondb.ClusterAuthConfig{
+		// 						EntraIDAuth: to.Ptr(armhorizondb.AuthenticationStateDisabled),
+		// 						PasswordAuth: to.Ptr(armhorizondb.AuthenticationStateEnabled),
+		// 					},
+		// 					State: to.Ptr(armhorizondb.StateSucceeded),
+		// 					FullyQualifiedDomainName: to.Ptr("examplecluster.ffffffffffff.westus2.horizondb.azure.com"),
 		// 					ReadonlyEndpoint: to.Ptr("examplecluster-ro.westus2.horizondb.azure.com"),
 		// 					ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
 		// 				},
@@ -196,8 +206,12 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 					Version: to.Ptr("17"),
 		// 					VCores: to.Ptr[int32](2),
 		// 					ReplicaCount: to.Ptr[int32](1),
-		// 					ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyStrict),
-		// 					State: to.Ptr(armhorizondb.StateReady),
+		// 					ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyBestEffort),
+		// 					AuthConfig: &armhorizondb.ClusterAuthConfig{
+		// 						EntraIDAuth: to.Ptr(armhorizondb.AuthenticationStateDisabled),
+		// 						PasswordAuth: to.Ptr(armhorizondb.AuthenticationStateEnabled),
+		// 					},
+		// 					State: to.Ptr(armhorizondb.StateSucceeded),
 		// 					FullyQualifiedDomainName: to.Ptr("examplecluster2.westus2.horizondb.azure.com"),
 		// 					ReadonlyEndpoint: to.Ptr("examplecluster2-ro.westus2.horizondb.azure.com"),
 		// 					ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
@@ -209,7 +223,7 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-20-preview/Clusters_ListBySubscription.json
+// Generated from example definition: 2026-05-01-preview/Clusters_ListBySubscription.json
 func ExampleClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,9 +261,13 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 		// 					Version: to.Ptr("17"),
 		// 					VCores: to.Ptr[int32](4),
 		// 					ReplicaCount: to.Ptr[int32](2),
-		// 					ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyStrict),
-		// 					State: to.Ptr(armhorizondb.StateReady),
-		// 					FullyQualifiedDomainName: to.Ptr("examplecluster.westus2.horizondb.azure.com"),
+		// 					ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyBestEffort),
+		// 					AuthConfig: &armhorizondb.ClusterAuthConfig{
+		// 						EntraIDAuth: to.Ptr(armhorizondb.AuthenticationStateDisabled),
+		// 						PasswordAuth: to.Ptr(armhorizondb.AuthenticationStateEnabled),
+		// 					},
+		// 					State: to.Ptr(armhorizondb.StateSucceeded),
+		// 					FullyQualifiedDomainName: to.Ptr("examplecluster.ffffffffffff.westus2.horizondb.azure.com"),
 		// 					ReadonlyEndpoint: to.Ptr("examplecluster-ro.westus2.horizondb.azure.com"),
 		// 					ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
 		// 				},
@@ -267,8 +285,12 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 		// 					Version: to.Ptr("17"),
 		// 					VCores: to.Ptr[int32](2),
 		// 					ReplicaCount: to.Ptr[int32](1),
-		// 					ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyStrict),
-		// 					State: to.Ptr(armhorizondb.StateReady),
+		// 					ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyBestEffort),
+		// 					AuthConfig: &armhorizondb.ClusterAuthConfig{
+		// 						EntraIDAuth: to.Ptr(armhorizondb.AuthenticationStateDisabled),
+		// 						PasswordAuth: to.Ptr(armhorizondb.AuthenticationStateEnabled),
+		// 					},
+		// 					State: to.Ptr(armhorizondb.StateSucceeded),
 		// 					FullyQualifiedDomainName: to.Ptr("examplecluster2.westus2.horizondb.azure.com"),
 		// 					ReadonlyEndpoint: to.Ptr("examplecluster2-ro.westus2.horizondb.azure.com"),
 		// 					ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
@@ -280,7 +302,85 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-20-preview/Clusters_Update.json
+// Generated from example definition: 2026-05-01-preview/Clusters_Restart.json
+func ExampleClustersClient_BeginRestart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginRestart(ctx, "exampleresourcegroup", "examplecluster", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhorizondb.ClustersClientRestartResponse{
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/Clusters_Start.json
+func ExampleClustersClient_BeginStart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginStart(ctx, "exampleresourcegroup", "examplecluster", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhorizondb.ClustersClientStartResponse{
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/Clusters_Stop.json
+func ExampleClustersClient_BeginStop() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhorizondb.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginStop(ctx, "exampleresourcegroup", "examplecluster", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhorizondb.ClustersClientStopResponse{
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/Clusters_Update.json
 func ExampleClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -326,9 +426,9 @@ func ExampleClustersClient_BeginUpdate() {
 	// 			CreateMode: to.Ptr(armhorizondb.CreateModeClusterUpdate),
 	// 			VCores: to.Ptr[int32](8),
 	// 			ReplicaCount: to.Ptr[int32](2),
-	// 			ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyStrict),
-	// 			State: to.Ptr(armhorizondb.StateReady),
-	// 			FullyQualifiedDomainName: to.Ptr("examplecluster.westus2.horizondb.azure.com"),
+	// 			ZonePlacementPolicy: to.Ptr(armhorizondb.ZonePlacementPolicyBestEffort),
+	// 			State: to.Ptr(armhorizondb.StateSucceeded),
+	// 			FullyQualifiedDomainName: to.Ptr("examplecluster.ffffffffffff.westus2.horizondb.azure.com"),
 	// 			ReadonlyEndpoint: to.Ptr("examplecluster-ro.westus2.horizondb.azure.com"),
 	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
 	// 		},

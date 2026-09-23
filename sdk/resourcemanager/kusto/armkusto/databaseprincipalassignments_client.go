@@ -30,6 +30,9 @@ type DatabasePrincipalAssignmentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDatabasePrincipalAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabasePrincipalAssignmentsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *DatabasePrincipalAssignmentsClient) CheckNameAvailability(ctx cont
 	if err != nil {
 		return DatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
 func (client *DatabasePrincipalAssignmentsClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, principalAssignmentName DatabasePrincipalAssignmentCheckNameRequest, _ *DatabasePrincipalAssignmentsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/checkPrincipalAssignmentNameAvailability"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -106,8 +104,11 @@ func (client *DatabasePrincipalAssignmentsClient) checkNameAvailabilityCreateReq
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *DatabasePrincipalAssignmentsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (DatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse, error) {
+func (client *DatabasePrincipalAssignmentsClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (DatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse, error) {
 	result := DatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameResult); err != nil {
 		return DatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -157,8 +158,7 @@ func (client *DatabasePrincipalAssignmentsClient) createOrUpdate(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -167,7 +167,7 @@ func (client *DatabasePrincipalAssignmentsClient) createOrUpdate(ctx context.Con
 func (client *DatabasePrincipalAssignmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, principalAssignmentName string, parameters DatabasePrincipalAssignment, _ *DatabasePrincipalAssignmentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -243,8 +243,7 @@ func (client *DatabasePrincipalAssignmentsClient) deleteOperation(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -253,7 +252,7 @@ func (client *DatabasePrincipalAssignmentsClient) deleteOperation(ctx context.Co
 func (client *DatabasePrincipalAssignmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, principalAssignmentName string, _ *DatabasePrincipalAssignmentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -304,19 +303,14 @@ func (client *DatabasePrincipalAssignmentsClient) Get(ctx context.Context, resou
 	if err != nil {
 		return DatabasePrincipalAssignmentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabasePrincipalAssignmentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *DatabasePrincipalAssignmentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, principalAssignmentName string, _ *DatabasePrincipalAssignmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -347,8 +341,11 @@ func (client *DatabasePrincipalAssignmentsClient) getCreateRequest(ctx context.C
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatabasePrincipalAssignmentsClient) getHandleResponse(resp *http.Response) (DatabasePrincipalAssignmentsClientGetResponse, error) {
+func (client *DatabasePrincipalAssignmentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DatabasePrincipalAssignmentsClientGetResponse, error) {
 	result := DatabasePrincipalAssignmentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabasePrincipalAssignment); err != nil {
 		return DatabasePrincipalAssignmentsClientGetResponse{}, err
 	}
@@ -372,51 +369,65 @@ func (client *DatabasePrincipalAssignmentsClient) NewListPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, clusterName, databaseName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, clusterName, databaseName, nextLink, options)
 			if err != nil {
 				return DatabasePrincipalAssignmentsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DatabasePrincipalAssignmentsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *DatabasePrincipalAssignmentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, _ *DatabasePrincipalAssignmentsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DatabasePrincipalAssignmentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, nextLink string, _ *DatabasePrincipalAssignmentsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if clusterName == "" {
+			return nil, errors.New("parameter clusterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+		if databaseName == "" {
+			return nil, errors.New("parameter databaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250214)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250214)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DatabasePrincipalAssignmentsClient) listHandleResponse(resp *http.Response) (DatabasePrincipalAssignmentsClientListResponse, error) {
+func (client *DatabasePrincipalAssignmentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (DatabasePrincipalAssignmentsClientListResponse, error) {
 	result := DatabasePrincipalAssignmentsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabasePrincipalAssignmentListResult); err != nil {
 		return DatabasePrincipalAssignmentsClientListResponse{}, err
 	}

@@ -30,6 +30,9 @@ type SAPApplicationServerInstancesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSAPApplicationServerInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SAPApplicationServerInstancesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -85,8 +88,7 @@ func (client *SAPApplicationServerInstancesClient) create(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -95,7 +97,7 @@ func (client *SAPApplicationServerInstancesClient) create(ctx context.Context, r
 func (client *SAPApplicationServerInstancesClient) createCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, applicationInstanceName string, resource SAPApplicationServerInstance, _ *SAPApplicationServerInstancesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/applicationInstances/{applicationInstanceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -168,8 +170,7 @@ func (client *SAPApplicationServerInstancesClient) deleteOperation(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -178,7 +179,7 @@ func (client *SAPApplicationServerInstancesClient) deleteOperation(ctx context.C
 func (client *SAPApplicationServerInstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, applicationInstanceName string, _ *SAPApplicationServerInstancesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/applicationInstances/{applicationInstanceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -224,19 +225,14 @@ func (client *SAPApplicationServerInstancesClient) Get(ctx context.Context, reso
 	if err != nil {
 		return SAPApplicationServerInstancesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SAPApplicationServerInstancesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *SAPApplicationServerInstancesClient) getCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, applicationInstanceName string, _ *SAPApplicationServerInstancesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/applicationInstances/{applicationInstanceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -263,8 +259,11 @@ func (client *SAPApplicationServerInstancesClient) getCreateRequest(ctx context.
 }
 
 // getHandleResponse handles the Get response.
-func (client *SAPApplicationServerInstancesClient) getHandleResponse(resp *http.Response) (SAPApplicationServerInstancesClientGetResponse, error) {
+func (client *SAPApplicationServerInstancesClient) getHandleResponse(resp *http.Response, successCodes ...int) (SAPApplicationServerInstancesClientGetResponse, error) {
 	result := SAPApplicationServerInstancesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SAPApplicationServerInstance); err != nil {
 		return SAPApplicationServerInstancesClientGetResponse{}, err
 	}
@@ -287,47 +286,61 @@ func (client *SAPApplicationServerInstancesClient) NewListPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, nextLink, options)
 			if err != nil {
 				return SAPApplicationServerInstancesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SAPApplicationServerInstancesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *SAPApplicationServerInstancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, _ *SAPApplicationServerInstancesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/applicationInstances"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SAPApplicationServerInstancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, nextLink string, _ *SAPApplicationServerInstancesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/applicationInstances"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if sapVirtualInstanceName == "" {
+			return nil, errors.New("parameter sapVirtualInstanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{sapVirtualInstanceName}", url.PathEscape(sapVirtualInstanceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if sapVirtualInstanceName == "" {
-		return nil, errors.New("parameter sapVirtualInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{sapVirtualInstanceName}", url.PathEscape(sapVirtualInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SAPApplicationServerInstancesClient) listHandleResponse(resp *http.Response) (SAPApplicationServerInstancesClientListResponse, error) {
+func (client *SAPApplicationServerInstancesClient) listHandleResponse(resp *http.Response, successCodes ...int) (SAPApplicationServerInstancesClientListResponse, error) {
 	result := SAPApplicationServerInstancesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SAPApplicationServerInstanceListResult); err != nil {
 		return SAPApplicationServerInstancesClientListResponse{}, err
 	}
@@ -375,8 +388,7 @@ func (client *SAPApplicationServerInstancesClient) start(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -385,7 +397,7 @@ func (client *SAPApplicationServerInstancesClient) start(ctx context.Context, re
 func (client *SAPApplicationServerInstancesClient) startCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, applicationInstanceName string, options *SAPApplicationServerInstancesClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/applicationInstances/{applicationInstanceName}/start"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -459,8 +471,7 @@ func (client *SAPApplicationServerInstancesClient) stop(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -469,7 +480,7 @@ func (client *SAPApplicationServerInstancesClient) stop(ctx context.Context, res
 func (client *SAPApplicationServerInstancesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, applicationInstanceName string, options *SAPApplicationServerInstancesClientBeginStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/applicationInstances/{applicationInstanceName}/stop"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -524,19 +535,14 @@ func (client *SAPApplicationServerInstancesClient) Update(ctx context.Context, r
 	if err != nil {
 		return SAPApplicationServerInstancesClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SAPApplicationServerInstancesClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *SAPApplicationServerInstancesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, applicationInstanceName string, properties UpdateSAPApplicationInstanceRequest, _ *SAPApplicationServerInstancesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/applicationInstances/{applicationInstanceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -567,8 +573,11 @@ func (client *SAPApplicationServerInstancesClient) updateCreateRequest(ctx conte
 }
 
 // updateHandleResponse handles the Update response.
-func (client *SAPApplicationServerInstancesClient) updateHandleResponse(resp *http.Response) (SAPApplicationServerInstancesClientUpdateResponse, error) {
+func (client *SAPApplicationServerInstancesClient) updateHandleResponse(resp *http.Response, successCodes ...int) (SAPApplicationServerInstancesClientUpdateResponse, error) {
 	result := SAPApplicationServerInstancesClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SAPApplicationServerInstance); err != nil {
 		return SAPApplicationServerInstancesClientUpdateResponse{}, err
 	}

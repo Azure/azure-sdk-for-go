@@ -30,6 +30,9 @@ type KeyValuesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewKeyValuesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*KeyValuesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,19 +67,14 @@ func (client *KeyValuesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return KeyValuesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return KeyValuesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *KeyValuesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, keyValueParameters KeyValue, _ *KeyValuesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -107,8 +105,11 @@ func (client *KeyValuesClient) createOrUpdateCreateRequest(ctx context.Context, 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *KeyValuesClient) createOrUpdateHandleResponse(resp *http.Response) (KeyValuesClientCreateOrUpdateResponse, error) {
+func (client *KeyValuesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (KeyValuesClientCreateOrUpdateResponse, error) {
 	result := KeyValuesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyValue); err != nil {
 		return KeyValuesClientCreateOrUpdateResponse{}, err
 	}
@@ -157,8 +158,7 @@ func (client *KeyValuesClient) deleteOperation(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -167,7 +167,7 @@ func (client *KeyValuesClient) deleteOperation(ctx context.Context, resourceGrou
 func (client *KeyValuesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, _ *KeyValuesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -213,19 +213,14 @@ func (client *KeyValuesClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return KeyValuesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return KeyValuesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *KeyValuesClient) getCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, _ *KeyValuesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -252,8 +247,11 @@ func (client *KeyValuesClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *KeyValuesClient) getHandleResponse(resp *http.Response) (KeyValuesClientGetResponse, error) {
+func (client *KeyValuesClient) getHandleResponse(resp *http.Response, successCodes ...int) (KeyValuesClientGetResponse, error) {
 	result := KeyValuesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyValue); err != nil {
 		return KeyValuesClientGetResponse{}, err
 	}

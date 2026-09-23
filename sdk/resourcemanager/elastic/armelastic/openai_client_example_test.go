@@ -35,7 +35,7 @@ func ExampleOpenAIClient_CreateOrUpdate() {
 	// 		Type: to.Ptr("Microsoft.Elastic/monitors/openAIIntegration"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Elastic/monitors/myMonitor/openAIIntegration/default"),
 	// 		Properties: &armelastic.OpenAIIntegrationProperties{
-	// 			LastRefreshAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-12T09:28:50.9579871Z"); return t}()),
+	// 			LastRefreshAt: to.Ptr(time.Date(2023, time.July, 12, 9, 28, 50, 957987100, time.UTC)),
 	// 			OpenAIConnectorID: to.Ptr("0000000000000000"),
 	// 			OpenAIResourceEndpoint: to.Ptr("https://myOpenAI.openai.azure.com/"),
 	// 			OpenAIResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/myOpenAI"),
@@ -90,7 +90,7 @@ func ExampleOpenAIClient_Get() {
 	// 		Type: to.Ptr("Microsoft.Elastic/monitors/openAIIntegration"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Elastic/monitors/myMonitor/openAIIntegration/default"),
 	// 		Properties: &armelastic.OpenAIIntegrationProperties{
-	// 			LastRefreshAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-12T09:28:50.9579871Z"); return t}()),
+	// 			LastRefreshAt: to.Ptr(time.Date(2023, time.July, 12, 9, 28, 50, 957987100, time.UTC)),
 	// 			OpenAIConnectorID: to.Ptr("0000000000000000"),
 	// 			OpenAIResourceEndpoint: to.Ptr("https://myOpenAI.openai.azure.com/"),
 	// 			OpenAIResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/myOpenAI"),
@@ -156,7 +156,7 @@ func ExampleOpenAIClient_NewListPager() {
 		// 				Type: to.Ptr("Microsoft.Elastic/monitors/openAIIntegration"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Elastic/monitors/myMonitor/openAIIntegration/default"),
 		// 				Properties: &armelastic.OpenAIIntegrationProperties{
-		// 					LastRefreshAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-12T09:28:50.9579871Z"); return t}()),
+		// 					LastRefreshAt: to.Ptr(time.Date(2023, time.July, 12, 9, 28, 50, 957987100, time.UTC)),
 		// 					OpenAIConnectorID: to.Ptr("0000000000000000"),
 		// 					OpenAIResourceEndpoint: to.Ptr("https://myOpenAI.openai.azure.com/"),
 		// 					OpenAIResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/myOpenAI"),

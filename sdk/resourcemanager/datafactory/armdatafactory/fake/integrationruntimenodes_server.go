@@ -99,7 +99,7 @@ func (i *IntegrationRuntimeNodesServerTransport) dispatchDelete(req *http.Reques
 	if i.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/integrationRuntimes/(?P<integrationRuntimeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/nodes/(?P<nodeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/integrationRuntimes/(?P<integrationRuntimeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/nodes/(?P<nodeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -140,7 +140,7 @@ func (i *IntegrationRuntimeNodesServerTransport) dispatchGet(req *http.Request) 
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/integrationRuntimes/(?P<integrationRuntimeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/nodes/(?P<nodeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/integrationRuntimes/(?P<integrationRuntimeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/nodes/(?P<nodeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -181,7 +181,7 @@ func (i *IntegrationRuntimeNodesServerTransport) dispatchGetIPAddress(req *http.
 	if i.srv.GetIPAddress == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetIPAddress not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/integrationRuntimes/(?P<integrationRuntimeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/nodes/(?P<nodeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ipAddress`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/integrationRuntimes/(?P<integrationRuntimeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/nodes/(?P<nodeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ipAddress`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -222,7 +222,7 @@ func (i *IntegrationRuntimeNodesServerTransport) dispatchUpdate(req *http.Reques
 	if i.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/integrationRuntimes/(?P<integrationRuntimeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/nodes/(?P<nodeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/integrationRuntimes/(?P<integrationRuntimeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/nodes/(?P<nodeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {

@@ -52,8 +52,8 @@ func ExampleFileWorkspacesClient_Get() {
 	// 		Type: to.Ptr("Microsoft.Support/fileWorkspaces"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/fileWorkspaces/testworkspace"),
 	// 		Properties: &armsupport.FileWorkspaceDetailsProperties{
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-24T20:18:19Z"); return t}()),
-	// 			ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-25T20:18:19Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2022, time.August, 24, 20, 18, 19, 0, time.UTC)),
+	// 			ExpirationTime: to.Ptr(time.Date(2022, time.August, 25, 20, 18, 19, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }

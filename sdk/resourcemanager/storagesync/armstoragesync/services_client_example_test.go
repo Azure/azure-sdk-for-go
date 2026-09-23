@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2022-09-01/StorageSyncServiceCheckNameAvailability_AlreadyExists.json
+// Generated from example definition: 2025-12-01/StorageSyncServiceCheckNameAvailability_AlreadyExists.json
 func ExampleServicesClient_CheckNameAvailability_storageSyncServiceCheckNameAvailabilityAlreadyExists() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleServicesClient_CheckNameAvailability_storageSyncServiceCheckNameAvai
 	// }
 }
 
-// Generated from example definition: 2022-09-01/StorageSyncServiceCheckNameAvailability_Available.json
+// Generated from example definition: 2025-12-01/StorageSyncServiceCheckNameAvailability_Available.json
 func ExampleServicesClient_CheckNameAvailability_storageSyncServiceCheckNameAvailabilityAvailable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleServicesClient_CheckNameAvailability_storageSyncServiceCheckNameAvai
 	// }
 }
 
-// Generated from example definition: 2022-09-01/StorageSyncServices_Create.json
+// Generated from example definition: 2025-12-01/StorageSyncServices_Create.json
 func ExampleServicesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,10 +120,10 @@ func ExampleServicesClient_BeginCreate() {
 	// 			IncomingTrafficPolicy: to.Ptr(armstoragesync.IncomingTrafficPolicyAllowAllTraffic),
 	// 		},
 	// 		SystemData: &armstoragesync.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:16:03.944Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 16, 3, 944000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("sample-user"),
 	// 			CreatedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:17:03.944Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 17, 3, 944000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("sample-user"),
 	// 			LastModifiedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
 	// 		},
@@ -133,7 +133,7 @@ func ExampleServicesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/StorageSyncServices_Delete.json
+// Generated from example definition: 2025-12-01/StorageSyncServices_Delete.json
 func ExampleServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleServicesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/StorageSyncServices_Get.json
+// Generated from example definition: 2025-12-01/StorageSyncServices_Get.json
 func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,10 +216,10 @@ func ExampleServicesClient_Get() {
 	// 			StorageSyncServiceUID: to.Ptr("\"2de01144-72da-4d7f-9d0c-e858855114a8\""),
 	// 		},
 	// 		SystemData: &armstoragesync.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:16:03.944Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 16, 3, 944000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("sample-user"),
 	// 			CreatedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:17:03.944Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 17, 3, 944000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("sample-user"),
 	// 			LastModifiedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
 	// 		},
@@ -229,7 +229,7 @@ func ExampleServicesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/StorageSyncServices_ListByResourceGroup.json
+// Generated from example definition: 2025-12-01/StorageSyncServices_ListByResourceGroup.json
 func ExampleServicesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,10 +278,10 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 		// 					StorageSyncServiceUID: to.Ptr("\"3d1bf292-0f2a-4cc1-a3e1-60f35800e40c\""),
 		// 				},
 		// 				SystemData: &armstoragesync.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:16:03.944Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 16, 3, 944000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("sample-user"),
 		// 					CreatedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:17:03.944Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 17, 3, 944000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("sample-user"),
 		// 					LastModifiedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
 		// 				},
@@ -310,10 +310,10 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 		// 					StorageSyncServiceUID: to.Ptr("\"2de01144-72da-4d7f-9d0c-e858855114a8\""),
 		// 				},
 		// 				SystemData: &armstoragesync.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:16:03.944Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 16, 3, 944000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("sample-user"),
 		// 					CreatedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:17:03.944Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 17, 3, 944000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("sample-user"),
 		// 					LastModifiedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
 		// 				},
@@ -342,10 +342,10 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 		// 					StorageSyncServiceUID: to.Ptr("\"b2c58ee5-933e-462c-8a9e-b30f2bdd8fa3\""),
 		// 				},
 		// 				SystemData: &armstoragesync.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:16:03.944Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 16, 3, 944000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("sample-user"),
 		// 					CreatedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:17:03.944Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 17, 3, 944000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("sample-user"),
 		// 					LastModifiedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
 		// 				},
@@ -358,7 +358,7 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2022-09-01/StorageSyncServices_ListBySubscription.json
+// Generated from example definition: 2025-12-01/StorageSyncServices_ListBySubscription.json
 func ExampleServicesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -407,10 +407,10 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 		// 					StorageSyncServiceUID: to.Ptr("\"3d1bf292-0f2a-4cc1-a3e1-60f35800e40c\""),
 		// 				},
 		// 				SystemData: &armstoragesync.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:16:03.944Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 16, 3, 944000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("sample-user"),
 		// 					CreatedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:17:03.944Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 17, 3, 944000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("sample-user"),
 		// 					LastModifiedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
 		// 				},
@@ -439,10 +439,10 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 		// 					StorageSyncServiceUID: to.Ptr("\"2de01144-72da-4d7f-9d0c-e858855114a8\""),
 		// 				},
 		// 				SystemData: &armstoragesync.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:16:03.944Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 16, 3, 944000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("sample-user"),
 		// 					CreatedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:17:03.944Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 17, 3, 944000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("sample-user"),
 		// 					LastModifiedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
 		// 				},
@@ -471,10 +471,10 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 		// 					StorageSyncServiceUID: to.Ptr("\"b2c58ee5-933e-462c-8a9e-b30f2bdd8fa3\""),
 		// 				},
 		// 				SystemData: &armstoragesync.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:16:03.944Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 16, 3, 944000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("sample-user"),
 		// 					CreatedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:17:03.944Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 17, 3, 944000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("sample-user"),
 		// 					LastModifiedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
 		// 				},
@@ -487,7 +487,7 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2022-09-01/StorageSyncServices_Update.json
+// Generated from example definition: 2025-12-01/StorageSyncServices_Update.json
 func ExampleServicesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -539,10 +539,10 @@ func ExampleServicesClient_BeginUpdate() {
 	// 			IncomingTrafficPolicy: to.Ptr(armstoragesync.IncomingTrafficPolicyAllowAllTraffic),
 	// 		},
 	// 		SystemData: &armstoragesync.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:16:03.944Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 16, 3, 944000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("sample-user"),
 	// 			CreatedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:17:03.944Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 17, 3, 944000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("sample-user"),
 	// 			LastModifiedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
 	// 		},

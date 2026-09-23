@@ -36,10 +36,6 @@ type Client struct {
 	creds        clientCreds
 	namespace    internal.NamespaceForAMQPLinks
 	retryOptions RetryOptions
-
-	// acceptNextTimeout controls how long the session accept can take before
-	// the server stops waiting.
-	acceptNextTimeout time.Duration
 }
 
 // ClientOptions contains options for the `NewClient` and `NewClientFromConnectionString`
@@ -343,12 +339,11 @@ func (client *Client) acceptNextSessionForEntity(ctx context.Context, entity ent
 	sessionReceiver, err := newSessionReceiver(
 		ctx,
 		newSessionReceiverArgs{
-			sessionID:         nil,
-			ns:                client.namespace,
-			entity:            entity,
-			cleanupOnClose:    cleanupOnClose,
-			retryOptions:      client.retryOptions,
-			acceptNextTimeout: client.acceptNextTimeout,
+			sessionID:      nil,
+			ns:             client.namespace,
+			entity:         entity,
+			cleanupOnClose: cleanupOnClose,
+			retryOptions:   client.retryOptions,
 		}, toReceiverOptions(options))
 
 	if err != nil {

@@ -107,6 +107,37 @@ type AIModelsClientListResponse struct {
 	AIModelListResult
 }
 
+// CustomAIModelsClientCalculateCostResponse contains the response from method CustomAIModelsClient.CalculateCost.
+type CustomAIModelsClientCalculateCostResponse struct {
+	// Response body for the AI model `calculateCost` action.
+	CalculateCostResponse
+}
+
+// CustomAIModelsClientCreateOrUpdateResponse contains the response from method CustomAIModelsClient.BeginCreateOrUpdate.
+type CustomAIModelsClientCreateOrUpdateResponse struct {
+	// A custom AI model registered by the user and scoped to a specific
+	// AIManager.
+	CustomAIModel
+}
+
+// CustomAIModelsClientDeleteResponse contains the response from method CustomAIModelsClient.BeginDelete.
+type CustomAIModelsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// CustomAIModelsClientGetResponse contains the response from method CustomAIModelsClient.Get.
+type CustomAIModelsClientGetResponse struct {
+	// A custom AI model registered by the user and scoped to a specific
+	// AIManager.
+	CustomAIModel
+}
+
+// CustomAIModelsClientListResponse contains the response from method CustomAIModelsClient.NewListPager.
+type CustomAIModelsClientListResponse struct {
+	// The response of a CustomAIModel list operation.
+	CustomAIModelListResult
+}
+
 // ModelDeploymentsClientCreateOrUpdateResponse contains the response from method ModelDeploymentsClient.BeginCreateOrUpdate.
 type ModelDeploymentsClientCreateOrUpdateResponse struct {
 	// A running deployment of a model in an AI Manager namespace.

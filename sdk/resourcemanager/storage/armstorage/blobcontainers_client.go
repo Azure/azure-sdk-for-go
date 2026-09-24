@@ -19,7 +19,7 @@ import (
 // BlobContainersClient contains the methods for the BlobContainers group.
 // Don't use this type directly, use NewBlobContainersClient() instead.
 //
-// Generated from API version 2026-04-01
+// Generated from API version 2026-06-01
 type BlobContainersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -67,12 +67,7 @@ func (client *BlobContainersClient) ClearLegalHold(ctx context.Context, resource
 	if err != nil {
 		return BlobContainersClientClearLegalHoldResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientClearLegalHoldResponse{}, err
-	}
-	resp, err := client.clearLegalHoldHandleResponse(httpResp)
-	return resp, err
+	return client.clearLegalHoldHandleResponse(httpResp, http.StatusOK)
 }
 
 // clearLegalHoldCreateRequest creates the ClearLegalHold request.
@@ -99,7 +94,7 @@ func (client *BlobContainersClient) clearLegalHoldCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -110,8 +105,11 @@ func (client *BlobContainersClient) clearLegalHoldCreateRequest(ctx context.Cont
 }
 
 // clearLegalHoldHandleResponse handles the ClearLegalHold response.
-func (client *BlobContainersClient) clearLegalHoldHandleResponse(resp *http.Response) (BlobContainersClientClearLegalHoldResponse, error) {
+func (client *BlobContainersClient) clearLegalHoldHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientClearLegalHoldResponse, error) {
 	result := BlobContainersClientClearLegalHoldResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LegalHold); err != nil {
 		return BlobContainersClientClearLegalHoldResponse{}, err
 	}
@@ -143,12 +141,7 @@ func (client *BlobContainersClient) Create(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return BlobContainersClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
@@ -175,7 +168,7 @@ func (client *BlobContainersClient) createCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -186,8 +179,11 @@ func (client *BlobContainersClient) createCreateRequest(ctx context.Context, res
 }
 
 // createHandleResponse handles the Create response.
-func (client *BlobContainersClient) createHandleResponse(resp *http.Response) (BlobContainersClientCreateResponse, error) {
+func (client *BlobContainersClient) createHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientCreateResponse, error) {
 	result := BlobContainersClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobContainer); err != nil {
 		return BlobContainersClientCreateResponse{}, err
 	}
@@ -220,12 +216,7 @@ func (client *BlobContainersClient) CreateOrUpdateImmutabilityPolicy(ctx context
 	if err != nil {
 		return BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse{}, err
-	}
-	resp, err := client.createOrUpdateImmutabilityPolicyHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateImmutabilityPolicyHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateImmutabilityPolicyCreateRequest creates the CreateOrUpdateImmutabilityPolicy request.
@@ -252,7 +243,7 @@ func (client *BlobContainersClient) createOrUpdateImmutabilityPolicyCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -266,9 +257,12 @@ func (client *BlobContainersClient) createOrUpdateImmutabilityPolicyCreateReques
 }
 
 // createOrUpdateImmutabilityPolicyHandleResponse handles the CreateOrUpdateImmutabilityPolicy response.
-func (client *BlobContainersClient) createOrUpdateImmutabilityPolicyHandleResponse(resp *http.Response) (BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse, error) {
+func (client *BlobContainersClient) createOrUpdateImmutabilityPolicyHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse, error) {
 	result := BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImmutabilityPolicy); err != nil {
@@ -301,8 +295,7 @@ func (client *BlobContainersClient) Delete(ctx context.Context, resourceGroupNam
 		return BlobContainersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientDeleteResponse{}, err
+		return BlobContainersClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return BlobContainersClientDeleteResponse{}, nil
 }
@@ -331,7 +324,7 @@ func (client *BlobContainersClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -364,12 +357,7 @@ func (client *BlobContainersClient) DeleteImmutabilityPolicy(ctx context.Context
 	if err != nil {
 		return BlobContainersClientDeleteImmutabilityPolicyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientDeleteImmutabilityPolicyResponse{}, err
-	}
-	resp, err := client.deleteImmutabilityPolicyHandleResponse(httpResp)
-	return resp, err
+	return client.deleteImmutabilityPolicyHandleResponse(httpResp, http.StatusOK)
 }
 
 // deleteImmutabilityPolicyCreateRequest creates the DeleteImmutabilityPolicy request.
@@ -396,7 +384,7 @@ func (client *BlobContainersClient) deleteImmutabilityPolicyCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}
@@ -404,9 +392,12 @@ func (client *BlobContainersClient) deleteImmutabilityPolicyCreateRequest(ctx co
 }
 
 // deleteImmutabilityPolicyHandleResponse handles the DeleteImmutabilityPolicy response.
-func (client *BlobContainersClient) deleteImmutabilityPolicyHandleResponse(resp *http.Response) (BlobContainersClientDeleteImmutabilityPolicyResponse, error) {
+func (client *BlobContainersClient) deleteImmutabilityPolicyHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientDeleteImmutabilityPolicyResponse, error) {
 	result := BlobContainersClientDeleteImmutabilityPolicyResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImmutabilityPolicy); err != nil {
@@ -442,12 +433,7 @@ func (client *BlobContainersClient) ExtendImmutabilityPolicy(ctx context.Context
 	if err != nil {
 		return BlobContainersClientExtendImmutabilityPolicyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientExtendImmutabilityPolicyResponse{}, err
-	}
-	resp, err := client.extendImmutabilityPolicyHandleResponse(httpResp)
-	return resp, err
+	return client.extendImmutabilityPolicyHandleResponse(httpResp, http.StatusOK)
 }
 
 // extendImmutabilityPolicyCreateRequest creates the ExtendImmutabilityPolicy request.
@@ -474,7 +460,7 @@ func (client *BlobContainersClient) extendImmutabilityPolicyCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}
@@ -489,9 +475,12 @@ func (client *BlobContainersClient) extendImmutabilityPolicyCreateRequest(ctx co
 }
 
 // extendImmutabilityPolicyHandleResponse handles the ExtendImmutabilityPolicy response.
-func (client *BlobContainersClient) extendImmutabilityPolicyHandleResponse(resp *http.Response) (BlobContainersClientExtendImmutabilityPolicyResponse, error) {
+func (client *BlobContainersClient) extendImmutabilityPolicyHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientExtendImmutabilityPolicyResponse, error) {
 	result := BlobContainersClientExtendImmutabilityPolicyResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImmutabilityPolicy); err != nil {
@@ -523,12 +512,7 @@ func (client *BlobContainersClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return BlobContainersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -555,15 +539,18 @@ func (client *BlobContainersClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *BlobContainersClient) getHandleResponse(resp *http.Response) (BlobContainersClientGetResponse, error) {
+func (client *BlobContainersClient) getHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientGetResponse, error) {
 	result := BlobContainersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobContainer); err != nil {
 		return BlobContainersClientGetResponse{}, err
 	}
@@ -595,12 +582,7 @@ func (client *BlobContainersClient) GetImmutabilityPolicy(ctx context.Context, r
 	if err != nil {
 		return BlobContainersClientGetImmutabilityPolicyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientGetImmutabilityPolicyResponse{}, err
-	}
-	resp, err := client.getImmutabilityPolicyHandleResponse(httpResp)
-	return resp, err
+	return client.getImmutabilityPolicyHandleResponse(httpResp, http.StatusOK)
 }
 
 // getImmutabilityPolicyCreateRequest creates the GetImmutabilityPolicy request.
@@ -627,7 +609,7 @@ func (client *BlobContainersClient) getImmutabilityPolicyCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -637,9 +619,12 @@ func (client *BlobContainersClient) getImmutabilityPolicyCreateRequest(ctx conte
 }
 
 // getImmutabilityPolicyHandleResponse handles the GetImmutabilityPolicy response.
-func (client *BlobContainersClient) getImmutabilityPolicyHandleResponse(resp *http.Response) (BlobContainersClientGetImmutabilityPolicyResponse, error) {
+func (client *BlobContainersClient) getImmutabilityPolicyHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientGetImmutabilityPolicyResponse, error) {
 	result := BlobContainersClientGetImmutabilityPolicyResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImmutabilityPolicy); err != nil {
@@ -672,12 +657,7 @@ func (client *BlobContainersClient) Lease(ctx context.Context, resourceGroupName
 	if err != nil {
 		return BlobContainersClientLeaseResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientLeaseResponse{}, err
-	}
-	resp, err := client.leaseHandleResponse(httpResp)
-	return resp, err
+	return client.leaseHandleResponse(httpResp, http.StatusOK)
 }
 
 // leaseCreateRequest creates the Lease request.
@@ -704,7 +684,7 @@ func (client *BlobContainersClient) leaseCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
@@ -718,8 +698,11 @@ func (client *BlobContainersClient) leaseCreateRequest(ctx context.Context, reso
 }
 
 // leaseHandleResponse handles the Lease response.
-func (client *BlobContainersClient) leaseHandleResponse(resp *http.Response) (BlobContainersClientLeaseResponse, error) {
+func (client *BlobContainersClient) leaseHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientLeaseResponse, error) {
 	result := BlobContainersClientLeaseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LeaseContainerResponse); err != nil {
 		return BlobContainersClientLeaseResponse{}, err
 	}
@@ -743,56 +726,70 @@ func (client *BlobContainersClient) NewListPager(resourceGroupName string, accou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return BlobContainersClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BlobContainersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *BlobContainersClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *BlobContainersClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *BlobContainersClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, options *BlobContainersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Include != nil {
+			reqQP.Set("$include", string(*options.Include))
+		}
+		if options != nil && options.Maxpagesize != nil {
+			reqQP.Set("$maxpagesize", *options.Maxpagesize)
+		}
+		reqQP.Set("api-version", version20260601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Include != nil {
-		reqQP.Set("$include", string(*options.Include))
-	}
-	if options != nil && options.Maxpagesize != nil {
-		reqQP.Set("$maxpagesize", *options.Maxpagesize)
-	}
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *BlobContainersClient) listHandleResponse(resp *http.Response) (BlobContainersClientListResponse, error) {
+func (client *BlobContainersClient) listHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientListResponse, error) {
 	result := BlobContainersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListContainerItems); err != nil {
 		return BlobContainersClientListResponse{}, err
 	}
@@ -826,12 +823,7 @@ func (client *BlobContainersClient) LockImmutabilityPolicy(ctx context.Context, 
 	if err != nil {
 		return BlobContainersClientLockImmutabilityPolicyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientLockImmutabilityPolicyResponse{}, err
-	}
-	resp, err := client.lockImmutabilityPolicyHandleResponse(httpResp)
-	return resp, err
+	return client.lockImmutabilityPolicyHandleResponse(httpResp, http.StatusOK)
 }
 
 // lockImmutabilityPolicyCreateRequest creates the LockImmutabilityPolicy request.
@@ -858,7 +850,7 @@ func (client *BlobContainersClient) lockImmutabilityPolicyCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}
@@ -866,9 +858,12 @@ func (client *BlobContainersClient) lockImmutabilityPolicyCreateRequest(ctx cont
 }
 
 // lockImmutabilityPolicyHandleResponse handles the LockImmutabilityPolicy response.
-func (client *BlobContainersClient) lockImmutabilityPolicyHandleResponse(resp *http.Response) (BlobContainersClientLockImmutabilityPolicyResponse, error) {
+func (client *BlobContainersClient) lockImmutabilityPolicyHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientLockImmutabilityPolicyResponse, error) {
 	result := BlobContainersClientLockImmutabilityPolicyResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImmutabilityPolicy); err != nil {
@@ -925,8 +920,7 @@ func (client *BlobContainersClient) objectLevelWorm(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -955,7 +949,7 @@ func (client *BlobContainersClient) objectLevelWormCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -986,12 +980,7 @@ func (client *BlobContainersClient) SetLegalHold(ctx context.Context, resourceGr
 	if err != nil {
 		return BlobContainersClientSetLegalHoldResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientSetLegalHoldResponse{}, err
-	}
-	resp, err := client.setLegalHoldHandleResponse(httpResp)
-	return resp, err
+	return client.setLegalHoldHandleResponse(httpResp, http.StatusOK)
 }
 
 // setLegalHoldCreateRequest creates the SetLegalHold request.
@@ -1018,7 +1007,7 @@ func (client *BlobContainersClient) setLegalHoldCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1029,8 +1018,11 @@ func (client *BlobContainersClient) setLegalHoldCreateRequest(ctx context.Contex
 }
 
 // setLegalHoldHandleResponse handles the SetLegalHold response.
-func (client *BlobContainersClient) setLegalHoldHandleResponse(resp *http.Response) (BlobContainersClientSetLegalHoldResponse, error) {
+func (client *BlobContainersClient) setLegalHoldHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientSetLegalHoldResponse, error) {
 	result := BlobContainersClientSetLegalHoldResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LegalHold); err != nil {
 		return BlobContainersClientSetLegalHoldResponse{}, err
 	}
@@ -1062,12 +1054,7 @@ func (client *BlobContainersClient) Update(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return BlobContainersClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -1094,7 +1081,7 @@ func (client *BlobContainersClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1105,8 +1092,11 @@ func (client *BlobContainersClient) updateCreateRequest(ctx context.Context, res
 }
 
 // updateHandleResponse handles the Update response.
-func (client *BlobContainersClient) updateHandleResponse(resp *http.Response) (BlobContainersClientUpdateResponse, error) {
+func (client *BlobContainersClient) updateHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientUpdateResponse, error) {
 	result := BlobContainersClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobContainer); err != nil {
 		return BlobContainersClientUpdateResponse{}, err
 	}

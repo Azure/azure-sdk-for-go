@@ -11,6 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"reflect"
 	"unicode/utf8"
 )
 
@@ -22,6 +23,9 @@ type patchOperation struct {
 }
 
 // PatchOperations is an ordered set of changes for [ContainerClient.PatchItem].
+//
+// PatchOperations is provisional. It may change or be removed before azcosmos/v2 reaches a stable
+// release.
 //
 // Its zero value is ready to use. Values are encoded and copied when appended, so later changes
 // to caller-owned maps, slices, or byte buffers do not change the patch. Copying PatchOperations
@@ -64,7 +68,8 @@ func (p *PatchOperations) AppendRemove(path string) error {
 // AppendIncrement appends an operation that increments the number at path by value.
 //
 // value must encode as one JSON number. NaN, infinities, strings, objects, arrays, booleans, and
-// null are rejected.
+// null are rejected. Floating-point Go values retain their floating-point representation even when
+// whole-valued.
 func (p *PatchOperations) AppendIncrement(path string, value any) error {
 	return p.appendValue("incr", path, value, true)
 }
@@ -86,7 +91,13 @@ func (p *PatchOperations) appendValue(op string, path string, value any, numberO
 		return err
 	}
 
-	encoded, err := json.Marshal(value)
+	var encoded []byte
+	var err error
+	if numberOnly {
+		encoded, err = marshalPatchIncrementValue(value)
+	} else {
+		encoded, err = json.Marshal(value)
+	}
 	if err != nil {
 		return p.setError(fmt.Errorf("azcosmos: encoding patch %s value: %w", op, err))
 	}
@@ -141,6 +152,29 @@ func (p PatchOperations) marshal() ([]byte, error) {
 	}{
 		Operations: p.operations,
 	})
+}
+
+func marshalPatchIncrementValue(value any) ([]byte, error) {
+	encoded, err := json.Marshal(value)
+	if err != nil {
+		return nil, err
+	}
+	reflected := reflect.ValueOf(value)
+	for reflected.IsValid() && (reflected.Kind() == reflect.Interface || reflected.Kind() == reflect.Pointer) {
+		if reflected.IsNil() {
+			break
+		}
+		reflected = reflected.Elem()
+	}
+	if reflected.IsValid() {
+		switch reflected.Kind() {
+		case reflect.Float32, reflect.Float64:
+			if !bytes.ContainsAny(encoded, ".eE") {
+				encoded = append(encoded, '.', '0')
+			}
+		}
+	}
+	return encoded, nil
 }
 
 func validatePatchPath(path string) error {

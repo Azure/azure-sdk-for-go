@@ -134,6 +134,33 @@ func TestPatchOperationsIncrementRequiresJSONNumber(t *testing.T) {
 	}
 }
 
+func TestPatchOperationsIncrementPreservesNumericCategory(t *testing.T) {
+	type namedFloat64 float64
+	wholeFloat := 5.0
+
+	for _, tt := range []struct {
+		name  string
+		value any
+		want  string
+	}{
+		{"integer", int64(1), "1"},
+		{"whole float32", float32(1), "1.0"},
+		{"whole float64", float64(2), "2.0"},
+		{"named whole float", namedFloat64(3), "3.0"},
+		{"fractional float", float64(1.5), "1.5"},
+		{"scientific float", float64(1e21), "1e+21"},
+		{"explicit JSON float", json.Number("4.0"), "4.0"},
+		{"explicit JSON integer", json.Number("4"), "4"},
+		{"whole float pointer", &wholeFloat, "5.0"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			var operations PatchOperations
+			require.NoError(t, operations.AppendIncrement("/amount", tt.value))
+			require.Equal(t, tt.want, string(operations.operations[0].Value))
+		})
+	}
+}
+
 func TestPatchOperationsRetainFirstError(t *testing.T) {
 	var operations PatchOperations
 	first := operations.AppendRemove("not-a-pointer")

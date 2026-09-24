@@ -62,6 +62,11 @@ One limit applies to the driver-backed build today: v1's WebAssembly support doe
 
 ### Patching items
 
+> [!IMPORTANT]
+> `PatchItem`, `PatchOperations`, and the related PATCH options are provisional while PATCH support
+> in the shared driver is in preview. They may change or be removed before azcosmos/v2 reaches a
+> stable release.
+
 `PatchOperations` owns a JSON snapshot of each value when it is appended and supports `add`, `set`,
 `replace`, `remove`, `incr`, and `move`. Paths use RFC 6901 JSON Pointer syntax. There is no
 Go-side ten-operation limit: the driver automatically chooses a server PATCH or a client-side

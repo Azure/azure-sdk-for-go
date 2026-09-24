@@ -86,6 +86,9 @@ type DeleteItemOptions struct {
 
 // PatchItemOptions configures [ContainerClient.PatchItem]. A nil *PatchItemOptions selects the
 // defaults for every field.
+//
+// PatchItemOptions is provisional. It may change or be removed before azcosmos/v2 reaches a stable
+// release.
 type PatchItemOptions struct {
 	// Operation holds the settings every operation accepts. PatchItem returns the updated item by
 	// default unless content responses are explicitly disabled at the client or operation level.
@@ -306,6 +309,9 @@ func (c *ContainerClient) DeleteItem(ctx context.Context, partitionKey Partition
 }
 
 // PatchItem applies an ordered set of partial updates to an existing item.
+//
+// PatchItem is provisional. It may change or be removed before azcosmos/v2 reaches a stable
+// release.
 //
 // partitionKey is the item's partition key value and id is its id property. operations must
 // contain at least one operation. options may be nil. PatchItem returns the updated item by default

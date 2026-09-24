@@ -6,6 +6,9 @@ package azcosmos
 import "fmt"
 
 // PatchStrategy selects how the driver executes [ContainerClient.PatchItem].
+//
+// PatchStrategy is provisional. It may change or be removed before azcosmos/v2 reaches a stable
+// release.
 type PatchStrategy string
 
 const (

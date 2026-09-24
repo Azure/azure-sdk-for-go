@@ -637,6 +637,41 @@ func TestEmulatorPatchStrategies(t *testing.T) {
 	}
 }
 
+func TestEmulatorPatchWholeFloatIncrement(t *testing.T) {
+	for _, tt := range []struct {
+		name     string
+		strategy PatchStrategy
+		value    any
+	}{
+		{"auto float32", PatchStrategyAuto, float32(1)},
+		{"auto float64", PatchStrategyAuto, float64(1)},
+		{"client side float32", PatchStrategyClientSide, float32(1)},
+		{"client side float64", PatchStrategyClientSide, float64(1)},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			container := emulatorContainer(t)
+			id := uniqueItemID(t)
+			pk := NewPartitionKeyString(id)
+			trackEmulatorItem(t, container, pk, id)
+			item, err := json.Marshal(map[string]any{"id": id, "pk": id, "amount": 1.5})
+			require.NoError(t, err)
+			_, err = container.CreateItem(t.Context(), pk, id, item, nil)
+			require.NoError(t, err)
+
+			var operations PatchOperations
+			require.NoError(t, operations.AppendIncrement("/amount", tt.value))
+			response, err := container.PatchItem(t.Context(), pk, id, operations, &PatchItemOptions{
+				Strategy: tt.strategy,
+			})
+			require.NoError(t, err)
+
+			var value map[string]any
+			require.NoError(t, json.Unmarshal(response.Value, &value))
+			require.InDelta(t, 2.5, value["amount"], 0)
+		})
+	}
+}
+
 func TestEmulatorNewItemOperationsReportMissingItems(t *testing.T) {
 	container := emulatorContainer(t)
 	id := uniqueItemID(t)

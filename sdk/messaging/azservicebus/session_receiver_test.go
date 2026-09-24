@@ -415,6 +415,7 @@ func TestSessionReceiver_roundRobin(t *testing.T) {
 	// NOTE: this code is intentionally similar to `ExampleClient_AcceptNextSessionForQueue_roundrobin` so we can
 	// test it.
 	// BEGIN
+	acceptedSessions := 0
 	for {
 		// You can have multiple active session receivers, provided they're each receiving
 		// from different sessions.
@@ -426,7 +427,12 @@ func TestSessionReceiver_roundRobin(t *testing.T) {
 		cancel()
 
 		if err != nil {
+			if errors.Is(err, context.DeadlineExceeded) && acceptedSessions < maxSessions {
+				continue
+			}
+
 			if isAcceptNextSessionTimeout(err) {
+				require.Equal(t, maxSessions, acceptedSessions, "timed out before accepting all expected sessions")
 				fmt.Printf("No sessions available\n")
 
 				// NOTE: you could also continue here, which will block and wait again for a
@@ -437,6 +443,7 @@ func TestSessionReceiver_roundRobin(t *testing.T) {
 			panic(err)
 		}
 
+		acceptedSessions++
 		require.NotZero(t, sessionReceiver.LockedUntil())
 		fmt.Printf("Got receiving for session '%s'\n", sessionReceiver.SessionID())
 

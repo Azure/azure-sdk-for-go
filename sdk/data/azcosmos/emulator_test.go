@@ -223,6 +223,7 @@ func TestEmulatorCreateThenReadItem(t *testing.T) {
 
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id, "value": 42})
 	require.NoError(t, err)
 
@@ -270,6 +271,7 @@ func TestEmulatorCreateItemConflict(t *testing.T) {
 
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 
@@ -303,10 +305,12 @@ func TestEmulatorCreateItemContentResponse(t *testing.T) {
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			id := uniqueItemID(t)
+			pk := NewPartitionKeyString(id)
+			trackEmulatorItem(t, container, pk, id)
 			item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 			require.NoError(t, err)
 
-			response, err := container.CreateItem(ctx, NewPartitionKeyString(id), id, item,
+			response, err := container.CreateItem(ctx, pk, id, item,
 				&CreateItemOptions{Operation: OperationOptions{EnableContentResponseOnWrite: tt.enabled}})
 			require.NoError(t, err)
 
@@ -328,6 +332,7 @@ func TestEmulatorReadItemIfNoneMatch(t *testing.T) {
 
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 
@@ -488,6 +493,7 @@ func TestEmulatorDeleteItem(t *testing.T) {
 
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 	_, err = container.CreateItem(ctx, pk, id, item, nil)
@@ -696,10 +702,11 @@ func TestEmulatorConcurrentItemWriteOperations(t *testing.T) {
 	errs := make(chan error, operations)
 	wg.Add(operations)
 	for i := range operations {
-		go func() {
+		id := fmt.Sprintf("%s-%d-%d", t.Name(), time.Now().UnixNano(), i)
+		pk := NewPartitionKeyString(id)
+		trackEmulatorItem(t, container, pk, id)
+		go func(id string, pk PartitionKey) {
 			defer wg.Done()
-			id := fmt.Sprintf("%s-%d-%d", t.Name(), time.Now().UnixNano(), i)
-			pk := NewPartitionKeyString(id)
 			item := []byte(fmt.Sprintf(`{"id":%q,"pk":%q,"value":0}`, id, id))
 
 			if _, err := container.UpsertItem(t.Context(), pk, id, item, nil); err != nil {
@@ -738,7 +745,7 @@ func TestEmulatorConcurrentItemWriteOperations(t *testing.T) {
 				errs <- err
 				return
 			}
-		}()
+		}(id, pk)
 	}
 	wg.Wait()
 	close(errs)
@@ -802,6 +809,7 @@ func TestEmulatorSessionTokenRoundTrips(t *testing.T) {
 
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 
@@ -826,6 +834,7 @@ func TestEmulatorLatestCommittedRead(t *testing.T) {
 
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 
@@ -868,20 +877,22 @@ func TestEmulatorConcurrentOperations(t *testing.T) {
 	ids := make(chan string, operations)
 
 	for i := range operations {
-		go func() {
-			id := fmt.Sprintf("%s-%d-%d", t.Name(), time.Now().UnixNano(), i)
+		id := fmt.Sprintf("%s-%d-%d", t.Name(), time.Now().UnixNano(), i)
+		pk := NewPartitionKeyString(id)
+		trackEmulatorItem(t, container, pk, id)
+		go func(id string, pk PartitionKey) {
 			item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 			if err != nil {
 				errs <- err
 				return
 			}
-			if _, err := container.CreateItem(ctx, NewPartitionKeyString(id), id, item, nil); err != nil {
+			if _, err := container.CreateItem(ctx, pk, id, item, nil); err != nil {
 				errs <- err
 				return
 			}
 			ids <- id
 			errs <- nil
-		}()
+		}(id, pk)
 	}
 
 	for range operations {
@@ -936,6 +947,8 @@ func createForClientOptions(t *testing.T, container *ContainerClient, operation 
 	t.Helper()
 
 	id := uniqueItemID(t)
+	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 
@@ -943,7 +956,7 @@ func createForClientOptions(t *testing.T, container *ContainerClient, operation 
 	if operation != nil {
 		createOptions.Operation = *operation
 	}
-	response, err := container.CreateItem(context.Background(), NewPartitionKeyString(id), id, item, createOptions)
+	response, err := container.CreateItem(context.Background(), pk, id, item, createOptions)
 	require.NoError(t, err)
 	return len(response.Value) > 0
 }
@@ -991,9 +1004,11 @@ func TestEmulatorRoutingStrategiesRouteReads(t *testing.T) {
 		Routing: PreferredRegions(RegionEastUS),
 	})
 	id := uniqueItemID(t)
+	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, writer, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
-	_, err = writer.CreateItem(t.Context(), NewPartitionKeyString(id), id, item, nil)
+	_, err = writer.CreateItem(t.Context(), pk, id, item, nil)
 	require.NoError(t, err)
 
 	for _, tt := range []struct {
@@ -1008,7 +1023,7 @@ func TestEmulatorRoutingStrategiesRouteReads(t *testing.T) {
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			container := emulatorContainerWithOptions(t, &ClientOptions{Routing: tt.routing})
-			response, err := container.ReadItem(t.Context(), NewPartitionKeyString(id), id, &ReadItemOptions{
+			response, err := container.ReadItem(t.Context(), pk, id, &ReadItemOptions{
 				Operation: OperationOptions{ConsistencyStrategy: ReadConsistencyStrategyEventual},
 			})
 			if tt.wantExists {
@@ -1068,12 +1083,14 @@ func TestEmulatorTokenCredential(t *testing.T) {
 	container, err := client.NewContainer(databaseID, containerID)
 	require.NoError(t, err)
 	id := uniqueItemID(t)
+	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 
-	_, err = container.CreateItem(t.Context(), NewPartitionKeyString(id), id, item, nil)
+	_, err = container.CreateItem(t.Context(), pk, id, item, nil)
 	require.NoError(t, err)
-	read, err := container.ReadItem(t.Context(), NewPartitionKeyString(id), id, nil)
+	read, err := container.ReadItem(t.Context(), pk, id, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, read.Value)
 }
@@ -1138,10 +1155,12 @@ func TestEmulatorOperationInitializesLazily(t *testing.T) {
 	container, err := client.NewContainer(databaseID, containerID)
 	require.NoError(t, err)
 	id := uniqueItemID(t)
+	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 
-	_, err = container.CreateItem(t.Context(), NewPartitionKeyString(id), id, item, nil)
+	_, err = container.CreateItem(t.Context(), pk, id, item, nil)
 	require.NoError(t, err)
 
 	client.driver.mu.Lock()

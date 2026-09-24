@@ -819,6 +819,7 @@ func TestSessionReceiver_AcceptNextErrors(t *testing.T) {
 				defer cleanup()
 
 				ctx, cancel := context.WithCancel(context.Background())
+				defer cancel()
 				receiver, err := testCase.accept(ctx, client)
 				require.Nil(t, receiver)
 				require.ErrorIs(t, err, context.Canceled)

@@ -11,8 +11,8 @@ type AzureBlobStorageCapability struct {
 	// REQUIRED; The capacity details configuration for Azure Blob Storage.
 	CapacityDetails *CapacityDetails
 
-	// The prefix definitions that scope the capacity details to specific storage accounts, containers, and prefixes.
-	PrefixDefinitions []*PrefixDefinition
+	// The prefix configurations that scope the capacity details to specific storage accounts, containers, and prefixes.
+	PrefixConfigurations []*PrefixConfiguration
 }
 
 // AzureBlobStorageCapabilityUpdate - The Azure Blob Storage capability configuration that can be updated.
@@ -20,8 +20,8 @@ type AzureBlobStorageCapabilityUpdate struct {
 	// The capacity details configuration to update for Azure Blob Storage.
 	CapacityDetails *CapacityDetailsUpdate
 
-	// The prefix definitions to update for Azure Blob Storage.
-	PrefixDefinitions []*PrefixDefinitionUpdate
+	// The prefix configurations to update for Azure Blob Storage.
+	PrefixConfigurations []*PrefixConfigurationUpdate
 }
 
 // Capabilities - The capabilities configured for a storage discovery workspace.
@@ -99,8 +99,9 @@ type OperationListResult struct {
 	NextLink *string
 }
 
-// PrefixDefinition - A prefix definition that scopes capacity details to a specific storage account, container, and prefix.
-type PrefixDefinition struct {
+// PrefixConfiguration - A prefix configuration that scopes capacity details to a specific storage account, container, and
+// prefix.
+type PrefixConfiguration struct {
 	// REQUIRED; The name of the blob container within the storage account.
 	ContainerName *string
 
@@ -112,8 +113,8 @@ type PrefixDefinition struct {
 	Prefix *string
 }
 
-// PrefixDefinitionUpdate - A prefix definition that can be updated.
-type PrefixDefinitionUpdate struct {
+// PrefixConfigurationUpdate - A prefix configuration that can be updated.
+type PrefixConfigurationUpdate struct {
 	// The name of the blob container within the storage account.
 	ContainerName *string
 

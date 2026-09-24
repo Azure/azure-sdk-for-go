@@ -17,7 +17,7 @@ import (
 func (a AzureBlobStorageCapability) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "capacityDetails", a.CapacityDetails)
-	populate(objectMap, "prefixDefinitions", a.PrefixDefinitions)
+	populate(objectMap, "prefixConfigurations", a.PrefixConfigurations)
 	return json.Marshal(objectMap)
 }
 
@@ -33,8 +33,8 @@ func (a *AzureBlobStorageCapability) UnmarshalJSON(data []byte) error {
 		case "capacityDetails":
 			err = unpopulate(val, "CapacityDetails", &a.CapacityDetails)
 			delete(rawMsg, key)
-		case "prefixDefinitions":
-			err = unpopulate(val, "PrefixDefinitions", &a.PrefixDefinitions)
+		case "prefixConfigurations":
+			err = unpopulate(val, "PrefixConfigurations", &a.PrefixConfigurations)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -48,7 +48,7 @@ func (a *AzureBlobStorageCapability) UnmarshalJSON(data []byte) error {
 func (a AzureBlobStorageCapabilityUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "capacityDetails", a.CapacityDetails)
-	populate(objectMap, "prefixDefinitions", a.PrefixDefinitions)
+	populate(objectMap, "prefixConfigurations", a.PrefixConfigurations)
 	return json.Marshal(objectMap)
 }
 
@@ -64,8 +64,8 @@ func (a *AzureBlobStorageCapabilityUpdate) UnmarshalJSON(data []byte) error {
 		case "capacityDetails":
 			err = unpopulate(val, "CapacityDetails", &a.CapacityDetails)
 			delete(rawMsg, key)
-		case "prefixDefinitions":
-			err = unpopulate(val, "PrefixDefinitions", &a.PrefixDefinitions)
+		case "prefixConfigurations":
+			err = unpopulate(val, "PrefixConfigurations", &a.PrefixConfigurations)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -296,8 +296,8 @@ func (o *OperationListResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrefixDefinition.
-func (p PrefixDefinition) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type PrefixConfiguration.
+func (p PrefixConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "containerName", p.ContainerName)
 	populate(objectMap, "prefix", p.Prefix)
@@ -305,8 +305,8 @@ func (p PrefixDefinition) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type PrefixDefinition.
-func (p *PrefixDefinition) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type PrefixConfiguration.
+func (p *PrefixConfiguration) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", p, err.Error())
@@ -331,8 +331,8 @@ func (p *PrefixDefinition) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrefixDefinitionUpdate.
-func (p PrefixDefinitionUpdate) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type PrefixConfigurationUpdate.
+func (p PrefixConfigurationUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "containerName", p.ContainerName)
 	populate(objectMap, "prefix", p.Prefix)
@@ -340,8 +340,8 @@ func (p PrefixDefinitionUpdate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type PrefixDefinitionUpdate.
-func (p *PrefixDefinitionUpdate) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type PrefixConfigurationUpdate.
+func (p *PrefixConfigurationUpdate) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", p, err.Error())

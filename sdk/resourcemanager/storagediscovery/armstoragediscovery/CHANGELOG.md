@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (2026-09-16)
+## 1.1.0-beta.1 (2026-09-24)
 ### Features Added
 
 - New enum type `CapabilityStatus` with values `CapabilityStatusDisabled`, `CapabilityStatusEnabled`
@@ -10,8 +10,8 @@
 - New struct `CapabilitiesUpdate`
 - New struct `CapacityDetails`
 - New struct `CapacityDetailsUpdate`
-- New struct `PrefixDefinition`
-- New struct `PrefixDefinitionUpdate`
+- New struct `PrefixConfiguration`
+- New struct `PrefixConfigurationUpdate`
 - New field `Capabilities` in struct `WorkspaceProperties`
 - New field `Capabilities` in struct `WorkspacePropertiesUpdate`
 

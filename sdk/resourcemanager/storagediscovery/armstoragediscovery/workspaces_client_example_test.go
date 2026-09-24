@@ -39,7 +39,7 @@ func ExampleWorkspacesClient_CreateOrUpdate() {
 					CapacityDetails: &armstoragediscovery.CapacityDetails{
 						Status: to.Ptr(armstoragediscovery.CapabilityStatusEnabled),
 					},
-					PrefixDefinitions: []*armstoragediscovery.PrefixDefinition{
+					PrefixConfigurations: []*armstoragediscovery.PrefixConfiguration{
 						{
 							StorageAccountName: to.Ptr("firstsa"),
 							ContainerName:      to.Ptr("samplecontainer"),
@@ -116,7 +116,7 @@ func ExampleWorkspacesClient_CreateOrUpdate() {
 	// 					CapacityDetails: &armstoragediscovery.CapacityDetails{
 	// 						Status: to.Ptr(armstoragediscovery.CapabilityStatusEnabled),
 	// 					},
-	// 					PrefixDefinitions: []*armstoragediscovery.PrefixDefinition{
+	// 					PrefixConfigurations: []*armstoragediscovery.PrefixConfiguration{
 	// 						{
 	// 							StorageAccountName: to.Ptr("firstsa"),
 	// 							ContainerName: to.Ptr("samplecontainer"),
@@ -238,7 +238,7 @@ func ExampleWorkspacesClient_Get() {
 	// 					CapacityDetails: &armstoragediscovery.CapacityDetails{
 	// 						Status: to.Ptr(armstoragediscovery.CapabilityStatusEnabled),
 	// 					},
-	// 					PrefixDefinitions: []*armstoragediscovery.PrefixDefinition{
+	// 					PrefixConfigurations: []*armstoragediscovery.PrefixConfiguration{
 	// 						{
 	// 							StorageAccountName: to.Ptr("firstsa"),
 	// 							ContainerName: to.Ptr("samplecontainer"),
@@ -344,7 +344,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 		// 							CapacityDetails: &armstoragediscovery.CapacityDetails{
 		// 								Status: to.Ptr(armstoragediscovery.CapabilityStatusEnabled),
 		// 							},
-		// 							PrefixDefinitions: []*armstoragediscovery.PrefixDefinition{
+		// 							PrefixConfigurations: []*armstoragediscovery.PrefixConfiguration{
 		// 								{
 		// 									StorageAccountName: to.Ptr("firstsa"),
 		// 									ContainerName: to.Ptr("samplecontainer"),
@@ -402,7 +402,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 		// 							CapacityDetails: &armstoragediscovery.CapacityDetails{
 		// 								Status: to.Ptr(armstoragediscovery.CapabilityStatusEnabled),
 		// 							},
-		// 							PrefixDefinitions: []*armstoragediscovery.PrefixDefinition{
+		// 							PrefixConfigurations: []*armstoragediscovery.PrefixConfiguration{
 		// 								{
 		// 									StorageAccountName: to.Ptr("firstsa"),
 		// 									ContainerName: to.Ptr("samplecontainer"),
@@ -497,7 +497,7 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		// 							CapacityDetails: &armstoragediscovery.CapacityDetails{
 		// 								Status: to.Ptr(armstoragediscovery.CapabilityStatusEnabled),
 		// 							},
-		// 							PrefixDefinitions: []*armstoragediscovery.PrefixDefinition{
+		// 							PrefixConfigurations: []*armstoragediscovery.PrefixConfiguration{
 		// 								{
 		// 									StorageAccountName: to.Ptr("firstsa"),
 		// 									ContainerName: to.Ptr("samplecontainer"),
@@ -563,7 +563,7 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		// 							CapacityDetails: &armstoragediscovery.CapacityDetails{
 		// 								Status: to.Ptr(armstoragediscovery.CapabilityStatusEnabled),
 		// 							},
-		// 							PrefixDefinitions: []*armstoragediscovery.PrefixDefinition{
+		// 							PrefixConfigurations: []*armstoragediscovery.PrefixConfiguration{
 		// 								{
 		// 									StorageAccountName: to.Ptr("firstsa"),
 		// 									ContainerName: to.Ptr("samplecontainer"),
@@ -627,7 +627,7 @@ func ExampleWorkspacesClient_Update() {
 					CapacityDetails: &armstoragediscovery.CapacityDetailsUpdate{
 						Status: to.Ptr(armstoragediscovery.CapabilityStatusEnabled),
 					},
-					PrefixDefinitions: []*armstoragediscovery.PrefixDefinitionUpdate{
+					PrefixConfigurations: []*armstoragediscovery.PrefixConfigurationUpdate{
 						{
 							StorageAccountName: to.Ptr("firstsa"),
 							ContainerName:      to.Ptr("samplecontainer"),
@@ -692,7 +692,7 @@ func ExampleWorkspacesClient_Update() {
 	// 					CapacityDetails: &armstoragediscovery.CapacityDetails{
 	// 						Status: to.Ptr(armstoragediscovery.CapabilityStatusEnabled),
 	// 					},
-	// 					PrefixDefinitions: []*armstoragediscovery.PrefixDefinition{
+	// 					PrefixConfigurations: []*armstoragediscovery.PrefixConfiguration{
 	// 						{
 	// 							StorageAccountName: to.Ptr("firstsa"),
 	// 							ContainerName: to.Ptr("samplecontainer"),

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-06-preview/OccurrenceExtension_ListOccurrenceByVms_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/OccurrenceExtension_ListOccurrenceByVms_BasicSuccess.json
 func ExampleOccurrenceExtensionClient_NewListOccurrenceByVMsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExampleOccurrenceExtensionClient_NewListOccurrenceByVMsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewOccurrenceExtensionClient().NewListOccurrenceByVMsPager("subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm", nil)
+	pager := clientFactory.NewOccurrenceExtensionClient().NewListOccurrenceByVMsPager("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -38,43 +38,31 @@ func ExampleOccurrenceExtensionClient_NewListOccurrenceByVMsPager() {
 		// 		Value: []*armbulkactions.OccurrenceExtensionResource{
 		// 			{
 		// 				Properties: &armbulkactions.OccurrenceExtensionProperties{
-		// 					ScheduledTime: to.Ptr(time.Date(2025, time.May, 15, 0, 22, 10, 427000000, time.UTC)),
-		// 					ProvisioningState: to.Ptr(armbulkactions.OccurrenceResourceProvisioningStateCreated),
-		// 					ScheduledActionID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.Compute/scheduledActions/myScheduledAction"),
-		// 					ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm"),
+		// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
 		// 					NotificationSettings: []*armbulkactions.NotificationProperties{
-		// 						{
-		// 							Destination: to.Ptr("admin@contoso.com"),
-		// 							Type: to.Ptr(armbulkactions.NotificationTypeEmail),
-		// 							Language: to.Ptr(armbulkactions.LanguageEnUs),
-		// 							Disabled: to.Ptr(true),
-		// 						},
 		// 					},
-		// 					ErrorDetails: &armbulkactions.Error{
-		// 						Code: to.Ptr("InternalServerError"),
-		// 						Message: to.Ptr("An internal error occurred."),
-		// 						Target: to.Ptr("virtualMachines"),
-		// 						Details: []*armbulkactions.Error{
-		// 						},
-		// 						Innererror: &armbulkactions.InnerError{
-		// 							Code: to.Ptr("InnerErrorCode"),
-		// 						},
-		// 					},
+		// 					ScheduledTime: to.Ptr(time.Date(2026, time.September, 15, 14, 0, 0, 0, time.UTC)),
+		// 					ProvisioningState: to.Ptr(armbulkactions.OccurrenceResourceProvisioningStateScheduled),
+		// 					ScheduledActionID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start"),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm/providers/Microsoft.Compute/associatedOccurrences/67b5bada-4772-43fc-8dbb-402476d98a45"),
-		// 				Name: to.Ptr("67b5bada-4772-43fc-8dbb-402476d98a45"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01/providers/Microsoft.Compute/associatedOccurrences/77777777-7777-7777-7777-777777777777"),
+		// 				Name: to.Ptr("77777777-7777-7777-7777-777777777777"),
 		// 				Type: to.Ptr("Microsoft.Compute/associatedOccurrences"),
-		// 				SystemData: &armbulkactions.SystemData{
-		// 					CreatedBy: to.Ptr("user@contoso.com"),
-		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
+		// 			},
+		// 			{
+		// 				Properties: &armbulkactions.OccurrenceExtensionProperties{
+		// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+		// 					NotificationSettings: []*armbulkactions.NotificationProperties{
+		// 					},
+		// 					ScheduledTime: to.Ptr(time.Date(2026, time.September, 15, 19, 0, 0, 0, time.UTC)),
+		// 					ProvisioningState: to.Ptr(armbulkactions.OccurrenceResourceProvisioningStateSucceeded),
+		// 					ScheduledActionID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-deallocate"),
 		// 				},
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01/providers/Microsoft.Compute/associatedOccurrences/88888888-8888-8888-8888-888888888888"),
+		// 				Name: to.Ptr("88888888-8888-8888-8888-888888888888"),
+		// 				Type: to.Ptr("Microsoft.Compute/associatedOccurrences"),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm/providers/Microsoft.Compute/associatedOccurrences?api-version=2026-09-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}

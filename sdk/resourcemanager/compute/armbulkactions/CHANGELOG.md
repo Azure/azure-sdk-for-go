@@ -1,5 +1,28 @@
 # Release History
 
+## 0.5.0 (2026-09-24)
+### Breaking Changes
+
+- Enum `AllocationStrategy` has been removed
+- Enum `BulkCreateCustomAllocationStrategy` has been removed
+- Enum `BulkCreateCustomDistributionStrategy` has been removed
+- Enum `DistributionStrategy` has been removed
+- Struct `BulkCreateCustomOverrideBase` has been removed
+- Struct `BulkCreateCustomVMSizeProfile` has been removed
+- Struct `BulkCreateCustomZoneAllocationPolicy` has been removed
+- Struct `BulkCreateVMSizeProfile` has been removed
+- Struct `ZoneAllocationPolicy` has been removed
+- Struct `ZonePreference` has been removed
+- Field `AllocationStrategy` of struct `BulkCreateCustomPriorityProfile` has been removed
+- Field `VMSizesProfile`, `ZoneAllocationPolicy` of struct `BulkCreateCustomProperties` has been removed
+- Field `VMSizesProfile`, `ZoneAllocationPolicy` of struct `BulkCreateProperties` has been removed
+- Field `AllocationStrategy` of struct `PriorityProfile` has been removed
+
+### Features Added
+
+- New field `AdditionalCreateParameters` in struct `ExecutionParameters`
+
+
 ## 0.4.0 (2026-09-11)
 ### Breaking Changes
 

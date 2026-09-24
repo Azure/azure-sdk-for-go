@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-06-preview/BulkCreate_Cancel_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/BulkCreate_Cancel_MaximumSet_Gen.json
 func ExampleBulkCreateClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleBulkCreateClient_BeginCancel() {
 	}
 }
 
-// Generated from example definition: 2026-09-06-preview/BulkCreate_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/BulkCreate_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,20 +53,9 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 				Mode: to.Ptr(armbulkactions.PartialFulfillmentModeEnabled),
 			},
 			PriorityProfile: &armbulkactions.PriorityProfile{
-				Type:               to.Ptr(armbulkactions.PriorityTypeSpot),
-				MaxPricePerVM:      to.Ptr[float32](0.2),
-				EvictionPolicy:     to.Ptr(armbulkactions.EvictionPolicyDelete),
-				AllocationStrategy: to.Ptr(armbulkactions.AllocationStrategyLowestPrice),
-			},
-			VMSizesProfile: []*armbulkactions.BulkCreateVMSizeProfile{
-				{
-					Name: to.Ptr("Standard_D2s_v5"),
-					Rank: to.Ptr[int32](1),
-				},
-				{
-					Name: to.Ptr("Standard_D4s_v5"),
-					Rank: to.Ptr[int32](2),
-				},
+				Type:           to.Ptr(armbulkactions.PriorityTypeSpot),
+				MaxPricePerVM:  to.Ptr[float32](0.2),
+				EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
 			},
 			ComputeProfile: &armbulkactions.ComputeProfile{
 				VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
@@ -86,6 +75,9 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 							},
 							DeleteOption: to.Ptr(armbulkactions.DiskDeleteOptionTypesDelete),
 						},
+					},
+					HardwareProfile: &armbulkactions.HardwareProfile{
+						VMSize: to.Ptr("Standard_D2s_v5"),
 					},
 					OSProfile: &armbulkactions.OSProfile{
 						ComputerName:  to.Ptr("bulkvm"),
@@ -127,19 +119,6 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 					},
 				},
 				ComputeAPIVersion: to.Ptr("2024-11-01"),
-			},
-			ZoneAllocationPolicy: &armbulkactions.ZoneAllocationPolicy{
-				DistributionStrategy: to.Ptr(armbulkactions.DistributionStrategyBestEffortBalanced),
-				ZonePreferences: []*armbulkactions.ZonePreference{
-					{
-						Zone: to.Ptr("1"),
-						Rank: to.Ptr[int32](1),
-					},
-					{
-						Zone: to.Ptr("2"),
-						Rank: to.Ptr[int32](2),
-					},
-				},
 			},
 			ExecutionParameters: &armbulkactions.ExecutionParameters{
 				RetryPolicy: &armbulkactions.RetryPolicy{
@@ -187,17 +166,6 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 	// 				Type: to.Ptr(armbulkactions.PriorityTypeSpot),
 	// 				MaxPricePerVM: to.Ptr[float32](0.2),
 	// 				EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
-	// 				AllocationStrategy: to.Ptr(armbulkactions.AllocationStrategyLowestPrice),
-	// 			},
-	// 			VMSizesProfile: []*armbulkactions.BulkCreateVMSizeProfile{
-	// 				{
-	// 					Name: to.Ptr("Standard_D2s_v5"),
-	// 					Rank: to.Ptr[int32](1),
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("Standard_D4s_v5"),
-	// 					Rank: to.Ptr[int32](2),
-	// 				},
 	// 			},
 	// 			ComputeProfile: &armbulkactions.ComputeProfile{
 	// 				VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
@@ -217,6 +185,9 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 	// 							},
 	// 							DeleteOption: to.Ptr(armbulkactions.DiskDeleteOptionTypesDelete),
 	// 						},
+	// 					},
+	// 					HardwareProfile: &armbulkactions.HardwareProfile{
+	// 						VMSize: to.Ptr("Standard_D2s_v5"),
 	// 					},
 	// 					OSProfile: &armbulkactions.OSProfile{
 	// 						ComputerName: to.Ptr("bulkvm"),
@@ -258,19 +229,6 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 	// 					},
 	// 				},
 	// 				ComputeAPIVersion: to.Ptr("2024-11-01"),
-	// 			},
-	// 			ZoneAllocationPolicy: &armbulkactions.ZoneAllocationPolicy{
-	// 				DistributionStrategy: to.Ptr(armbulkactions.DistributionStrategyBestEffortBalanced),
-	// 				ZonePreferences: []*armbulkactions.ZonePreference{
-	// 					{
-	// 						Zone: to.Ptr("1"),
-	// 						Rank: to.Ptr[int32](1),
-	// 					},
-	// 					{
-	// 						Zone: to.Ptr("2"),
-	// 						Rank: to.Ptr[int32](2),
-	// 					},
-	// 				},
 	// 			},
 	// 			ExecutionParameters: &armbulkactions.ExecutionParameters{
 	// 				RetryPolicy: &armbulkactions.RetryPolicy{
@@ -307,7 +265,7 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-06-preview/BulkCreate_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/BulkCreate_Delete_MaximumSet_Gen.json
 func ExampleBulkCreateClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -329,7 +287,7 @@ func ExampleBulkCreateClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-09-06-preview/BulkCreate_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/BulkCreate_Get_MaximumSet_Gen.json
 func ExampleBulkCreateClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -358,17 +316,6 @@ func ExampleBulkCreateClient_Get() {
 	// 				Type: to.Ptr(armbulkactions.PriorityTypeSpot),
 	// 				MaxPricePerVM: to.Ptr[float32](0.2),
 	// 				EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
-	// 				AllocationStrategy: to.Ptr(armbulkactions.AllocationStrategyLowestPrice),
-	// 			},
-	// 			VMSizesProfile: []*armbulkactions.BulkCreateVMSizeProfile{
-	// 				{
-	// 					Name: to.Ptr("Standard_D2s_v5"),
-	// 					Rank: to.Ptr[int32](1),
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("Standard_D4s_v5"),
-	// 					Rank: to.Ptr[int32](2),
-	// 				},
 	// 			},
 	// 			ComputeProfile: &armbulkactions.ComputeProfile{
 	// 				VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
@@ -430,19 +377,6 @@ func ExampleBulkCreateClient_Get() {
 	// 				},
 	// 				ComputeAPIVersion: to.Ptr("2024-11-01"),
 	// 			},
-	// 			ZoneAllocationPolicy: &armbulkactions.ZoneAllocationPolicy{
-	// 				DistributionStrategy: to.Ptr(armbulkactions.DistributionStrategyBestEffortBalanced),
-	// 				ZonePreferences: []*armbulkactions.ZonePreference{
-	// 					{
-	// 						Zone: to.Ptr("1"),
-	// 						Rank: to.Ptr[int32](1),
-	// 					},
-	// 					{
-	// 						Zone: to.Ptr("2"),
-	// 						Rank: to.Ptr[int32](2),
-	// 					},
-	// 				},
-	// 			},
 	// 			ExecutionParameters: &armbulkactions.ExecutionParameters{
 	// 				RetryPolicy: &armbulkactions.RetryPolicy{
 	// 					RetryWindowInMinutes: to.Ptr[int32](30),
@@ -478,7 +412,7 @@ func ExampleBulkCreateClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-06-preview/BulkCreate_GetAsyncOperationStatus_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/BulkCreate_GetAsyncOperationStatus_MaximumSet_Gen.json
 func ExampleBulkCreateClient_GetAsyncOperationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -548,7 +482,7 @@ func ExampleBulkCreateClient_GetAsyncOperationStatus() {
 	// }
 }
 
-// Generated from example definition: 2026-09-06-preview/BulkCreate_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/BulkCreate_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleBulkCreateClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -583,17 +517,6 @@ func ExampleBulkCreateClient_NewListByResourceGroupPager() {
 		// 						Type: to.Ptr(armbulkactions.PriorityTypeSpot),
 		// 						MaxPricePerVM: to.Ptr[float32](0.2),
 		// 						EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
-		// 						AllocationStrategy: to.Ptr(armbulkactions.AllocationStrategyLowestPrice),
-		// 					},
-		// 					VMSizesProfile: []*armbulkactions.BulkCreateVMSizeProfile{
-		// 						{
-		// 							Name: to.Ptr("Standard_D2s_v5"),
-		// 							Rank: to.Ptr[int32](1),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("Standard_D4s_v5"),
-		// 							Rank: to.Ptr[int32](2),
-		// 						},
 		// 					},
 		// 					ComputeProfile: &armbulkactions.ComputeProfile{
 		// 						VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
@@ -654,19 +577,6 @@ func ExampleBulkCreateClient_NewListByResourceGroupPager() {
 		// 							},
 		// 						},
 		// 						ComputeAPIVersion: to.Ptr("2024-11-01"),
-		// 					},
-		// 					ZoneAllocationPolicy: &armbulkactions.ZoneAllocationPolicy{
-		// 						DistributionStrategy: to.Ptr(armbulkactions.DistributionStrategyBestEffortBalanced),
-		// 						ZonePreferences: []*armbulkactions.ZonePreference{
-		// 							{
-		// 								Zone: to.Ptr("1"),
-		// 								Rank: to.Ptr[int32](1),
-		// 							},
-		// 							{
-		// 								Zone: to.Ptr("2"),
-		// 								Rank: to.Ptr[int32](2),
-		// 							},
-		// 						},
 		// 					},
 		// 					ExecutionParameters: &armbulkactions.ExecutionParameters{
 		// 						RetryPolicy: &armbulkactions.RetryPolicy{
@@ -710,17 +620,6 @@ func ExampleBulkCreateClient_NewListByResourceGroupPager() {
 		// 						Type: to.Ptr(armbulkactions.PriorityTypeSpot),
 		// 						MaxPricePerVM: to.Ptr[float32](0.2),
 		// 						EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
-		// 						AllocationStrategy: to.Ptr(armbulkactions.AllocationStrategyLowestPrice),
-		// 					},
-		// 					VMSizesProfile: []*armbulkactions.BulkCreateVMSizeProfile{
-		// 						{
-		// 							Name: to.Ptr("Standard_D2s_v5"),
-		// 							Rank: to.Ptr[int32](1),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("Standard_D4s_v5"),
-		// 							Rank: to.Ptr[int32](2),
-		// 						},
 		// 					},
 		// 					ComputeProfile: &armbulkactions.ComputeProfile{
 		// 						VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
@@ -782,19 +681,6 @@ func ExampleBulkCreateClient_NewListByResourceGroupPager() {
 		// 						},
 		// 						ComputeAPIVersion: to.Ptr("2024-11-01"),
 		// 					},
-		// 					ZoneAllocationPolicy: &armbulkactions.ZoneAllocationPolicy{
-		// 						DistributionStrategy: to.Ptr(armbulkactions.DistributionStrategyBestEffortBalanced),
-		// 						ZonePreferences: []*armbulkactions.ZonePreference{
-		// 							{
-		// 								Zone: to.Ptr("1"),
-		// 								Rank: to.Ptr[int32](1),
-		// 							},
-		// 							{
-		// 								Zone: to.Ptr("2"),
-		// 								Rank: to.Ptr[int32](2),
-		// 							},
-		// 						},
-		// 					},
 		// 					ExecutionParameters: &armbulkactions.ExecutionParameters{
 		// 						RetryPolicy: &armbulkactions.RetryPolicy{
 		// 							RetryWindowInMinutes: to.Ptr[int32](30),
@@ -828,13 +714,13 @@ func ExampleBulkCreateClient_NewListByResourceGroupPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/locations/eastus/bulkCreate?api-version=2026-09-06-preview&$skiptoken=page2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/locations/eastus/bulkCreate?api-version=2026-10-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-09-06-preview/BulkCreate_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/BulkCreate_ListBySubscription_MaximumSet_Gen.json
 func ExampleBulkCreateClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -869,17 +755,6 @@ func ExampleBulkCreateClient_NewListBySubscriptionPager() {
 		// 						Type: to.Ptr(armbulkactions.PriorityTypeSpot),
 		// 						MaxPricePerVM: to.Ptr[float32](0.2),
 		// 						EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
-		// 						AllocationStrategy: to.Ptr(armbulkactions.AllocationStrategyLowestPrice),
-		// 					},
-		// 					VMSizesProfile: []*armbulkactions.BulkCreateVMSizeProfile{
-		// 						{
-		// 							Name: to.Ptr("Standard_D2s_v5"),
-		// 							Rank: to.Ptr[int32](1),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("Standard_D4s_v5"),
-		// 							Rank: to.Ptr[int32](2),
-		// 						},
 		// 					},
 		// 					ComputeProfile: &armbulkactions.ComputeProfile{
 		// 						VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
@@ -940,19 +815,6 @@ func ExampleBulkCreateClient_NewListBySubscriptionPager() {
 		// 							},
 		// 						},
 		// 						ComputeAPIVersion: to.Ptr("2024-11-01"),
-		// 					},
-		// 					ZoneAllocationPolicy: &armbulkactions.ZoneAllocationPolicy{
-		// 						DistributionStrategy: to.Ptr(armbulkactions.DistributionStrategyBestEffortBalanced),
-		// 						ZonePreferences: []*armbulkactions.ZonePreference{
-		// 							{
-		// 								Zone: to.Ptr("1"),
-		// 								Rank: to.Ptr[int32](1),
-		// 							},
-		// 							{
-		// 								Zone: to.Ptr("2"),
-		// 								Rank: to.Ptr[int32](2),
-		// 							},
-		// 						},
 		// 					},
 		// 					ExecutionParameters: &armbulkactions.ExecutionParameters{
 		// 						RetryPolicy: &armbulkactions.RetryPolicy{
@@ -996,17 +858,6 @@ func ExampleBulkCreateClient_NewListBySubscriptionPager() {
 		// 						Type: to.Ptr(armbulkactions.PriorityTypeSpot),
 		// 						MaxPricePerVM: to.Ptr[float32](0.2),
 		// 						EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
-		// 						AllocationStrategy: to.Ptr(armbulkactions.AllocationStrategyLowestPrice),
-		// 					},
-		// 					VMSizesProfile: []*armbulkactions.BulkCreateVMSizeProfile{
-		// 						{
-		// 							Name: to.Ptr("Standard_D2s_v5"),
-		// 							Rank: to.Ptr[int32](1),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("Standard_D4s_v5"),
-		// 							Rank: to.Ptr[int32](2),
-		// 						},
 		// 					},
 		// 					ComputeProfile: &armbulkactions.ComputeProfile{
 		// 						VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
@@ -1068,19 +919,6 @@ func ExampleBulkCreateClient_NewListBySubscriptionPager() {
 		// 						},
 		// 						ComputeAPIVersion: to.Ptr("2024-11-01"),
 		// 					},
-		// 					ZoneAllocationPolicy: &armbulkactions.ZoneAllocationPolicy{
-		// 						DistributionStrategy: to.Ptr(armbulkactions.DistributionStrategyBestEffortBalanced),
-		// 						ZonePreferences: []*armbulkactions.ZonePreference{
-		// 							{
-		// 								Zone: to.Ptr("1"),
-		// 								Rank: to.Ptr[int32](1),
-		// 							},
-		// 							{
-		// 								Zone: to.Ptr("2"),
-		// 								Rank: to.Ptr[int32](2),
-		// 							},
-		// 						},
-		// 					},
 		// 					ExecutionParameters: &armbulkactions.ExecutionParameters{
 		// 						RetryPolicy: &armbulkactions.RetryPolicy{
 		// 							RetryWindowInMinutes: to.Ptr[int32](30),
@@ -1114,13 +952,13 @@ func ExampleBulkCreateClient_NewListBySubscriptionPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/providers/Microsoft.Compute/locations/eastus/bulkCreate?api-version=2026-09-06-preview&$skiptoken=page2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/providers/Microsoft.Compute/locations/eastus/bulkCreate?api-version=2026-10-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-09-06-preview/BulkCreate_VirtualMachinesGetOperationStatus_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/BulkCreate_VirtualMachinesGetOperationStatus_MaximumSet_Gen.json
 func ExampleBulkCreateClient_NewVirtualMachinesGetOperationStatusPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1168,7 +1006,7 @@ func ExampleBulkCreateClient_NewVirtualMachinesGetOperationStatusPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/700935bc-adf2-4176-b9ad-c571731c09fc/resourceGroups/local-test-rg/providers/Microsoft.Compute/locations/eastus/bulkCreate/00000000-0000-0000-0000-000000000102/virtualMachinesGetOperationStatus?api-version=2026-09-06-preview&$skiptoken=page2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/700935bc-adf2-4176-b9ad-c571731c09fc/resourceGroups/local-test-rg/providers/Microsoft.Compute/locations/eastus/bulkCreate/00000000-0000-0000-0000-000000000102/virtualMachinesGetOperationStatus?api-version=2026-10-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}

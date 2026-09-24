@@ -606,6 +606,8 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		cpkInfo:                 o.CPKInfo,
 		cpkScope:                o.CPKScopeInfo,
 		transactionalValidation: o.TransactionalValidation,
+		// carried so a retry of this read stays on the endpoint the layout chose for it
+		layoutEndpoint: o.LayoutEndpoint,
 	}, err
 }
 

@@ -9,6 +9,7 @@ import (
 	"hash/crc64"
 	"io"
 	"net"
+	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
@@ -40,6 +41,8 @@ const (
 	HeaderXmsClientRequestID = "x-ms-client-request-id"
 	HeaderDate               = "Date"
 	HeaderXmsStructuredBody  = "x-ms-structured-body"
+	HeaderXmsBlobType        = "x-ms-blob-type"
+	HeaderXmsCopySource      = "x-ms-copy-source"
 )
 
 const crc64Polynomial uint64 = 0x9A6C9329AC4BC9B5
@@ -374,4 +377,23 @@ func ReadAtLeast(r io.Reader, buf []byte, min int) (n int, err error) {
 		err = nil
 	}
 	return
+}
+
+// HeaderValue returns the value of the named header from h.
+//
+// It looks the name up both the way http.Header.Get does, which canonicalizes it
+// ("x-ms-blob-type" becomes "X-Ms-Blob-Type"), and as a literal map key. The generated clients
+// assign directly into the header map with the wire casing, e.g.
+//
+//	req.Raw().Header["x-ms-blob-type"] = []string{"BlockBlob"}
+//
+// so those headers are invisible to Get and would otherwise read as absent.
+func HeaderValue(h http.Header, name string) string {
+	if v := h.Get(name); v != "" {
+		return v
+	}
+	if v := h[name]; len(v) > 0 {
+		return v[0]
+	}
+	return ""
 }

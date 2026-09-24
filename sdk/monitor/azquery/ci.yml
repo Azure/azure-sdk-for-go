@@ -3,7 +3,6 @@ trigger:
   branches:
     include:
     - main
-    - feature/*
     - hotfix/*
     - release/*
   paths:
@@ -14,7 +13,6 @@ pr:
   branches:
     include:
     - main
-    - feature/*
     - hotfix/*
     - release/*
   paths:

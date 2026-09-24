@@ -1,12 +1,14 @@
 # Release History
 
-## 1.23.2-beta.1 (Unreleased)
+## 1.23.2 (2026-09-24)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+* Fixed unmarshalling `datetime.RFC7231` to use a fixed `GMT` zone.
 
 ### Other Changes
 

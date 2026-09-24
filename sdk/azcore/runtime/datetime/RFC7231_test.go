@@ -27,7 +27,7 @@ func TestRFC7231(t *testing.T) {
 	var dt2 datetime.RFC7231
 	err = dt2.UnmarshalJSON(jsonBytes)
 	require.NoError(t, err)
-	require.Equal(t, originalTime, time.Time(dt2))
+	require.True(t, originalTime.Equal(time.Time(dt2)))
 
 	// MarshalText round-trip
 	textBytes, err := dt.MarshalText()
@@ -36,7 +36,7 @@ func TestRFC7231(t *testing.T) {
 	var dt3 datetime.RFC7231
 	err = dt3.UnmarshalText(textBytes)
 	require.NoError(t, err)
-	require.Equal(t, originalTime, time.Time(dt3))
+	require.True(t, originalTime.Equal(time.Time(dt3)))
 }
 
 func TestRFC7231MarshalConvertsToGMT(t *testing.T) {

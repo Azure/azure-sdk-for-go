@@ -16,6 +16,11 @@
   `NewClientWithKey`. See [PR 27334](https://github.com/Azure/azure-sdk-for-go/pull/27334).
 * Added `ContainerClient.ReadItem` and `ContainerClient.CreateItem` with their options types.
   See [PR 27336](https://github.com/Azure/azure-sdk-for-go/pull/27336).
+* Added `ContainerClient.ReplaceItem`, `ContainerClient.UpsertItem`, `ContainerClient.DeleteItem`,
+  and `ContainerClient.PatchItem`. Patch operations support add, set, replace, remove, increment,
+  and move through the owned `PatchOperations` builder.
+* Added `PatchItemOptions.Strategy` to select automatic, client-side, or server-side PATCH
+  execution.
 * Added the Cosmos driver binding for cgo builds on `linux/amd64` and `darwin/arm64`. `ReadItem` and
   `CreateItem` run against the driver, including `LatestCommitted` reads; `Client.Initialize`
   eagerly fills account and routing caches, and token credentials are supported.
@@ -29,6 +34,9 @@
   module replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver,
   so it is a full rewrite of the public surface rather than an incremental change. The complete
   breaking-change list lands here before the beta ships. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
+* Changed `ClientOptions.EnableContentResponseOnWrite` from `bool` to `*bool`, preserving the
+  difference between inheriting the driver's operation-specific default and explicitly enabling or
+  disabling content responses.
 
 ### Bugs Fixed
 

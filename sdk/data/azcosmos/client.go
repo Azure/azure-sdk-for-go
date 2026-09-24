@@ -37,10 +37,10 @@ type ClientOptions struct {
 	// per instance.
 	ApplicationID string
 
-	// EnableContentResponseOnWrite requests that writes return the resulting item. Leaving it
-	// false reduces network and CPU cost, because the service does not send the item back and the
-	// client does not deserialize it. Can be overridden per operation.
-	EnableContentResponseOnWrite bool
+	// EnableContentResponseOnWrite controls whether writes return the resulting item. Nil inherits
+	// the driver's operation-specific default; a non-nil value explicitly enables or disables
+	// content responses. It can be overridden per operation.
+	EnableContentResponseOnWrite *bool
 }
 
 // Client is a client for an Azure Cosmos DB account. It is the entry point to the databases and
@@ -60,6 +60,10 @@ type Client struct {
 	closed    bool
 	closeOnce sync.Once
 	closeErr  error
+
+	// beforeItemAcquire is a test hook for observing the boundary before an item operation enters
+	// the client's lifetime guard.
+	beforeItemAcquire func()
 
 	// driver holds the resources the client owns in the driver. It is nil in builds that are not
 	// bound to the driver, where operations report that the driver is unavailable.
@@ -123,6 +127,10 @@ func newClient(
 	if options != nil {
 		client.options = *options
 		client.options.Routing = options.Routing.clone()
+		if options.EnableContentResponseOnWrite != nil {
+			enabled := *options.EnableContentResponseOnWrite
+			client.options.EnableContentResponseOnWrite = &enabled
+		}
 	}
 	if err := client.options.validate(); err != nil {
 		return nil, err

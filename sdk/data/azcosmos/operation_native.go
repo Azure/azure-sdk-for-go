@@ -3,6 +3,8 @@
 
 //go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
 
+// cSpell:ignore gocritic
+
 package azcosmos
 
 /*
@@ -15,6 +17,7 @@ import (
 	"context"
 	"errors"
 	"runtime/cgo"
+	"unsafe"
 )
 
 // unsetMaxItemCount is what the driver reads as "no page-size hint".
@@ -190,45 +193,98 @@ func (d *nativeDriver) submit(
 	cookie C.intptr_t,
 	preError *C.cosmos_status_code_t,
 ) *C.cosmos_operation_handle_t {
+	request, release := buildNativeItemRequest(req, container)
+	defer release()
+
+	return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
+}
+
+// buildNativeItemRequest converts the Go request into the borrowed C request passed to submit. The
+// returned function releases every allocation after the driver has copied the request.
+func buildNativeItemRequest(req itemRequest, container *C.cosmos_container_ref_t) (C.cosmos_operation_request_t, func()) {
 	request := newOperationRequest(req.kind, container)
+	var releases []func()
 
 	if req.itemID != "" {
 		itemID, allocation := toNativeString(req.itemID)
-		defer C.free(allocation)
+		releases = append(releases, func() { C.free(allocation) })
 		request.item_id = itemID
 	}
 	if req.sessionToken != "" {
 		sessionToken, allocation := toNativeString(string(req.sessionToken))
-		defer C.free(allocation)
+		releases = append(releases, func() { C.free(allocation) })
 		request.session_token = sessionToken
 	}
-	if req.ifNoneMatchETag != "" {
-		etag, allocation := toNativeString(req.ifNoneMatchETag)
-		defer C.free(allocation)
-		request.precondition_kind = C.int32_t(C.COSMOS_PRECONDITION_KIND_IF_NONE_MATCH)
+	if req.preconditionKind != preconditionKindNone {
+		etag, allocation := toNativeString(req.preconditionETag)
+		releases = append(releases, func() { C.free(allocation) })
+		request.precondition_kind = C.int32_t(req.preconditionKind)
 		request.precondition_etag = etag
 	}
 	if len(req.body) > 0 {
 		// Go memory may not be passed to C when it can hold a Go pointer, and the driver copies
 		// the bytes before returning, so a C buffer is both required and cheap here.
 		body := C.CBytes(req.body)
-		defer C.free(body)
+		releases = append(releases, func() { C.free(body) })
 		request.body = (*C.uint8_t)(body)
 		request.body_len = C.uintptr_t(len(req.body))
 	}
 
 	pk, freePartitionKey := req.partitionKey.toNative()
-	defer freePartitionKey()
+	releases = append(releases, freePartitionKey)
 	// The inline component array takes precedence over the handle field, which is what lets the
 	// binding avoid constructing a partition key handle whose lifetime it would have to track.
 	request.partition_key_components = pk
 	request.partition_key_len = req.partitionKey.partitionKeyLen()
 
 	options, freeOptions := req.options.toNative()
-	defer freeOptions()
+	releases = append(releases, freeOptions)
+	if strategy, ok := req.patchStrategy.toNative(); ok {
+		options.patch_strategy = strategy
+	}
 	request.options = options
 
-	return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
+	return request, func() {
+		for i := len(releases) - 1; i >= 0; i-- {
+			releases[i]()
+		}
+	}
+}
+
+// nativeItemRequest is a converted request in Go types, for tests that cannot import C.
+type nativeItemRequest struct {
+	kind                 int32
+	itemID               string
+	partitionKeyLen      int
+	body                 []byte
+	sessionToken         string
+	maxItemCount         int32
+	preconditionKind     int32
+	preconditionETag     string
+	contentResponseWrite int32
+	patchStrategy        int32
+}
+
+// inspectNativeItemRequest converts a request and reads it back before releasing its C memory.
+func inspectNativeItemRequest(req itemRequest) (nativeItemRequest, func()) {
+	request, release := buildNativeItemRequest(req, nil)
+	converted := nativeItemRequest{
+		kind:             int32(request.kind),
+		itemID:           fromNativeString(request.item_id),
+		partitionKeyLen:  int(request.partition_key_len),
+		sessionToken:     fromNativeString(request.session_token),
+		maxItemCount:     int32(request.max_item_count),
+		preconditionKind: int32(request.precondition_kind),
+		preconditionETag: fromNativeString(request.precondition_etag),
+	}
+	if request.body != nil {
+		converted.body = C.GoBytes(unsafe.Pointer(request.body), C.int(request.body_len))
+	}
+	if request.options != nil {
+		converted.contentResponseWrite = int32(request.options.content_response_on_write)
+		converted.patchStrategy = int32(request.options.patch_strategy)
+	}
+	return converted, release
 }
 
 // resolveContainer returns the driver's handle for a container, resolving it on first use.

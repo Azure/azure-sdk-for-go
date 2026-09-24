@@ -19,7 +19,8 @@ type OperationOptions struct {
 
 	// EnableContentResponseOnWrite requests that a write return the resulting item. Nil uses the
 	// client-level [ClientOptions.EnableContentResponseOnWrite], and a non-nil value overrides it
-	// in either direction. Leaving it off reduces network and CPU cost. It has no effect on reads.
+	// in either direction. Explicitly disabling it reduces network and CPU cost. It has no effect
+	// on reads.
 	EnableContentResponseOnWrite *bool
 
 	// ExcludedRegions removes regions from consideration for this operation, in addition to any

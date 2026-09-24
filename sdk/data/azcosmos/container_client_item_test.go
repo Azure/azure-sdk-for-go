@@ -1,11 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+// cSpell:ignore Commited NULE
+
 package azcosmos
 
 import (
 	"context"
 	"errors"
+	"sync"
 	"testing"
 	"time"
 
@@ -61,6 +64,70 @@ func TestCreateItemRejectsEmptyID(t *testing.T) {
 	requireNotDriverUnavailable(t, err)
 }
 
+func TestItemWriteOperationsRejectEmptyID(t *testing.T) {
+	container := newTestContainer(t)
+	item := []byte(`{"id":"item-1","pk":"pk"}`)
+	patch := validPatchOperations(t)
+
+	for _, tt := range []struct {
+		name string
+		call func() error
+	}{
+		{"replace", func() error {
+			_, err := container.ReplaceItem(context.Background(), NewPartitionKeyString("pk"), "", item, nil)
+			return err
+		}},
+		{"upsert", func() error {
+			_, err := container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), "", item, nil)
+			return err
+		}},
+		{"delete", func() error {
+			_, err := container.DeleteItem(context.Background(), NewPartitionKeyString("pk"), "", nil)
+			return err
+		}},
+		{"patch", func() error {
+			_, err := container.PatchItem(context.Background(), NewPartitionKeyString("pk"), "", patch, nil)
+			return err
+		}},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.call()
+			require.ErrorContains(t, err, "item id must not be empty")
+			requireNotDriverUnavailable(t, err)
+		})
+	}
+}
+
+func TestReplaceAndUpsertRejectEmptyItem(t *testing.T) {
+	container := newTestContainer(t)
+
+	for _, item := range [][]byte{nil, {}} {
+		_, err := container.ReplaceItem(context.Background(), NewPartitionKeyString("pk"), "item-1", item, nil)
+		require.ErrorContains(t, err, "item must not be empty")
+		requireNotDriverUnavailable(t, err)
+
+		_, err = container.UpsertItem(context.Background(), NewPartitionKeyString("pk"), "item-1", item, nil)
+		require.ErrorContains(t, err, "item must not be empty")
+		requireNotDriverUnavailable(t, err)
+	}
+}
+
+func TestPatchItemRejectsInvalidOperations(t *testing.T) {
+	container := newTestContainer(t)
+	pk := NewPartitionKeyString("pk")
+
+	_, err := container.PatchItem(context.Background(), pk, "item-1", PatchOperations{}, nil)
+	require.ErrorContains(t, err, "at least one operation")
+	requireNotDriverUnavailable(t, err)
+
+	var operations PatchOperations
+	appendErr := operations.AppendRemove("not-a-pointer")
+	require.Error(t, appendErr)
+	_, err = container.PatchItem(context.Background(), pk, "item-1", operations, nil)
+	require.ErrorIs(t, err, appendErr)
+	requireNotDriverUnavailable(t, err)
+}
+
 // Argument validation runs before the context is consulted, so a caller's deterministic mistake is
 // reported as itself rather than being masked by a deadline that happened to fire first.
 func TestItemOperationsValidateArgumentsBeforeContext(t *testing.T) {
@@ -73,6 +140,22 @@ func TestItemOperationsValidateArgumentsBeforeContext(t *testing.T) {
 	require.NotErrorIs(t, err, context.Canceled)
 
 	_, err = container.CreateItem(ctx, NewPartitionKeyString("pk"), "item-1", nil, nil)
+	require.Error(t, err)
+	require.NotErrorIs(t, err, context.Canceled)
+
+	_, err = container.ReplaceItem(ctx, NewPartitionKeyString("pk"), "item-1", nil, nil)
+	require.Error(t, err)
+	require.NotErrorIs(t, err, context.Canceled)
+
+	_, err = container.UpsertItem(ctx, NewPartitionKeyString("pk"), "item-1", nil, nil)
+	require.Error(t, err)
+	require.NotErrorIs(t, err, context.Canceled)
+
+	_, err = container.DeleteItem(ctx, NewPartitionKeyString("pk"), "", nil)
+	require.Error(t, err)
+	require.NotErrorIs(t, err, context.Canceled)
+
+	_, err = container.PatchItem(ctx, NewPartitionKeyString("pk"), "item-1", PatchOperations{}, nil)
 	require.Error(t, err)
 	require.NotErrorIs(t, err, context.Canceled)
 }
@@ -90,6 +173,22 @@ func TestItemOperationsRejectEmptyPartitionKey(t *testing.T) {
 	_, err = container.CreateItem(context.Background(), PartitionKey{}, "item-1", []byte(`{"id":"item-1"}`), nil)
 	require.Error(t, err)
 	requireNotDriverUnavailable(t, err)
+
+	_, err = container.ReplaceItem(context.Background(), PartitionKey{}, "item-1", []byte(`{"id":"item-1"}`), nil)
+	require.Error(t, err)
+	requireNotDriverUnavailable(t, err)
+
+	_, err = container.UpsertItem(context.Background(), PartitionKey{}, "item-1", []byte(`{"id":"item-1"}`), nil)
+	require.Error(t, err)
+	requireNotDriverUnavailable(t, err)
+
+	_, err = container.DeleteItem(context.Background(), PartitionKey{}, "item-1", nil)
+	require.Error(t, err)
+	requireNotDriverUnavailable(t, err)
+
+	_, err = container.PatchItem(context.Background(), PartitionKey{}, "item-1", validPatchOperations(t), nil)
+	require.Error(t, err)
+	requireNotDriverUnavailable(t, err)
 }
 
 // An already-cancelled context must be honored rather than starting work that is bound to fail,
@@ -103,6 +202,18 @@ func TestItemOperationsHonorCancelledContext(t *testing.T) {
 	require.ErrorIs(t, err, context.Canceled)
 
 	_, err = container.CreateItem(ctx, NewPartitionKeyString("pk"), "item-1", []byte(`{"id":"item-1"}`), nil)
+	require.ErrorIs(t, err, context.Canceled)
+
+	_, err = container.ReplaceItem(ctx, NewPartitionKeyString("pk"), "item-1", []byte(`{"id":"item-1"}`), nil)
+	require.ErrorIs(t, err, context.Canceled)
+
+	_, err = container.UpsertItem(ctx, NewPartitionKeyString("pk"), "item-1", []byte(`{"id":"item-1"}`), nil)
+	require.ErrorIs(t, err, context.Canceled)
+
+	_, err = container.DeleteItem(ctx, NewPartitionKeyString("pk"), "item-1", nil)
+	require.ErrorIs(t, err, context.Canceled)
+
+	_, err = container.PatchItem(ctx, NewPartitionKeyString("pk"), "item-1", validPatchOperations(t), nil)
 	require.ErrorIs(t, err, context.Canceled)
 }
 
@@ -120,8 +231,12 @@ func TestItemOperationsReportErrorsAsCosmosErrors(t *testing.T) {
 
 	_, readErr := container.ReadItem(context.Background(), pk, "item-1", nil)
 	_, createErr := container.CreateItem(context.Background(), pk, "item-1", []byte(`{"id":"item-1"}`), nil)
+	_, replaceErr := container.ReplaceItem(context.Background(), pk, "item-1", []byte(`{"id":"item-1"}`), nil)
+	_, upsertErr := container.UpsertItem(context.Background(), pk, "item-1", []byte(`{"id":"item-1"}`), nil)
+	_, deleteErr := container.DeleteItem(context.Background(), pk, "item-1", nil)
+	_, patchErr := container.PatchItem(context.Background(), pk, "item-1", validPatchOperations(t), nil)
 
-	for _, err := range []error{readErr, createErr} {
+	for _, err := range []error{readErr, createErr, replaceErr, upsertErr, deleteErr, patchErr} {
 		var cosmosErr *Error
 		require.True(t, errors.As(err, &cosmosErr))
 		require.Equal(t, CodeClientError, cosmosErr.Code)
@@ -140,9 +255,17 @@ func TestItemOptionsShareOperationOptions(t *testing.T) {
 
 	read := ReadItemOptions{Operation: shared}
 	create := CreateItemOptions{Operation: shared}
+	replace := ReplaceItemOptions{Operation: shared}
+	upsert := UpsertItemOptions{Operation: shared}
+	deleteOptions := DeleteItemOptions{Operation: shared}
+	patch := PatchItemOptions{Operation: shared}
 
 	require.Equal(t, shared, read.Operation)
 	require.Equal(t, shared, create.Operation)
+	require.Equal(t, shared, replace.Operation)
+	require.Equal(t, shared, upsert.Operation)
+	require.Equal(t, shared, deleteOptions.Operation)
+	require.Equal(t, shared, patch.Operation)
 	require.Equal(t, []Region{RegionEastUS}, read.Operation.ExcludedRegions,
 		"excluded regions are typed, not free strings")
 }
@@ -165,6 +288,63 @@ func TestClosedClientReportedAheadOfCancelledContext(t *testing.T) {
 
 	_, err = container.CreateItem(ctx, NewPartitionKeyString("pk"), "x", []byte(`{"id":"x"}`), nil)
 	require.True(t, errors.As(err, &cosmosErr))
+	require.Equal(t, CodeClientClosed, cosmosErr.Code)
+
+	_, err = container.ReplaceItem(ctx, NewPartitionKeyString("pk"), "x", []byte(`{"id":"x"}`), nil)
+	require.True(t, errors.As(err, &cosmosErr))
+	require.Equal(t, CodeClientClosed, cosmosErr.Code)
+
+	_, err = container.UpsertItem(ctx, NewPartitionKeyString("pk"), "x", []byte(`{"id":"x"}`), nil)
+	require.True(t, errors.As(err, &cosmosErr))
+	require.Equal(t, CodeClientClosed, cosmosErr.Code)
+
+	_, err = container.DeleteItem(ctx, NewPartitionKeyString("pk"), "x", nil)
+	require.True(t, errors.As(err, &cosmosErr))
+	require.Equal(t, CodeClientClosed, cosmosErr.Code)
+
+	_, err = container.PatchItem(ctx, NewPartitionKeyString("pk"), "x", validPatchOperations(t), nil)
+	require.True(t, errors.As(err, &cosmosErr))
+	require.Equal(t, CodeClientClosed, cosmosErr.Code)
+}
+
+func TestReadItemDoesNotNestClientLifetimeLocks(t *testing.T) {
+	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil, nil)
+	require.NoError(t, err)
+	container, err := client.NewContainer("db", "items")
+	require.NoError(t, err)
+
+	beforeAcquire := make(chan struct{})
+	continueAcquire := make(chan struct{})
+	var once sync.Once
+	client.beforeItemAcquire = func() {
+		once.Do(func() {
+			close(beforeAcquire)
+			<-continueAcquire
+		})
+	}
+
+	readResult := make(chan error, 1)
+	go func() {
+		_, err := container.ReadItem(context.Background(), NewPartitionKeyString("pk"), "item-1", nil)
+		readResult <- err
+	}()
+	<-beforeAcquire
+
+	closeResult := make(chan error, 1)
+	go func() { closeResult <- client.Close() }()
+
+	select {
+	case err := <-closeResult:
+		require.NoError(t, err,
+			"Close must not wait on a lifetime lock held before executeItem acquires it")
+	case <-time.After(time.Second):
+		close(continueAcquire)
+		t.Fatal("Close blocked, indicating ReadItem held a nested lifetime read lock")
+	}
+	close(continueAcquire)
+
+	var cosmosErr *Error
+	require.ErrorAs(t, <-readResult, &cosmosErr)
 	require.Equal(t, CodeClientClosed, cosmosErr.Code)
 }
 
@@ -196,6 +376,29 @@ func TestReadItemRejectsUnknownConsistencyStrategy(t *testing.T) {
 	requireNotDriverUnavailable(t, err)
 }
 
+func TestPatchStrategyUnsetIsNotAuto(t *testing.T) {
+	require.NotEqual(t, PatchStrategyUnset, PatchStrategyAuto)
+
+	var zero PatchStrategy
+	require.Equal(t, PatchStrategyUnset, zero, "the zero value must mean inherit")
+}
+
+func TestPatchItemRejectsUnknownStrategy(t *testing.T) {
+	container := newTestContainer(t)
+
+	response, err := container.PatchItem(
+		context.Background(),
+		NewPartitionKeyString("pk"),
+		"item-1",
+		validPatchOperations(t),
+		&PatchItemOptions{Strategy: PatchStrategy("Automatic")},
+	)
+
+	require.Equal(t, ItemResponse{}, response)
+	require.ErrorContains(t, err, "unknown patch strategy")
+	requireNotDriverUnavailable(t, err)
+}
+
 func TestItemOperationsRejectNULSessionToken(t *testing.T) {
 	container := newTestContainer(t)
 	token := SessionToken("1:2\x00:3")
@@ -216,6 +419,85 @@ func TestItemOperationsRejectNULSessionToken(t *testing.T) {
 		&CreateItemOptions{SessionToken: token},
 	)
 	require.ErrorContains(t, err, "session token must not contain a NUL byte")
+
+	_, err = container.ReplaceItem(
+		context.Background(),
+		NewPartitionKeyString("pk"),
+		"item-1",
+		[]byte(`{"id":"item-1","pk":"pk"}`),
+		&ReplaceItemOptions{SessionToken: token},
+	)
+	require.ErrorContains(t, err, "session token must not contain a NUL byte")
+
+	_, err = container.UpsertItem(
+		context.Background(),
+		NewPartitionKeyString("pk"),
+		"item-1",
+		[]byte(`{"id":"item-1","pk":"pk"}`),
+		&UpsertItemOptions{SessionToken: token},
+	)
+	require.ErrorContains(t, err, "session token must not contain a NUL byte")
+
+	_, err = container.DeleteItem(
+		context.Background(),
+		NewPartitionKeyString("pk"),
+		"item-1",
+		&DeleteItemOptions{SessionToken: token},
+	)
+	require.ErrorContains(t, err, "session token must not contain a NUL byte")
+
+	_, err = container.PatchItem(
+		context.Background(),
+		NewPartitionKeyString("pk"),
+		"item-1",
+		validPatchOperations(t),
+		&PatchItemOptions{SessionToken: token},
+	)
+	require.ErrorContains(t, err, "session token must not contain a NUL byte")
+}
+
+func TestItemWritesRejectInvalidIfMatchETag(t *testing.T) {
+	container := newTestContainer(t)
+	item := []byte(`{"id":"item-1","pk":"pk"}`)
+	pk := NewPartitionKeyString("pk")
+
+	for _, etag := range []azcore.ETag{"", "\"etag\x00suffix\""} {
+		t.Run(string(etag), func(t *testing.T) {
+			_, replaceErr := container.ReplaceItem(context.Background(), pk, "item-1", item,
+				&ReplaceItemOptions{IfMatchETag: &etag})
+			_, upsertErr := container.UpsertItem(context.Background(), pk, "item-1", item,
+				&UpsertItemOptions{IfMatchETag: &etag})
+			_, deleteErr := container.DeleteItem(context.Background(), pk, "item-1",
+				&DeleteItemOptions{IfMatchETag: &etag})
+			_, patchErr := container.PatchItem(context.Background(), pk, "item-1", validPatchOperations(t),
+				&PatchItemOptions{IfMatchETag: &etag})
+
+			for _, err := range []error{replaceErr, upsertErr, deleteErr, patchErr} {
+				require.Error(t, err)
+				requireNotDriverUnavailable(t, err)
+			}
+		})
+	}
+}
+
+func TestPatchClientSidePreconditionErrorIsClassified(t *testing.T) {
+	original := &Error{
+		Code:       CodeClientError,
+		StatusCode: 412,
+		Message:    "client-side patch precondition failed",
+	}
+	normalized := normalizeItemOperationError(operationKindPatchItem, original)
+
+	var cosmosErr *Error
+	require.ErrorAs(t, normalized, &cosmosErr)
+	require.Equal(t, CodePreconditionFailed, cosmosErr.Code)
+	require.False(t, cosmosErr.FromWire)
+	require.NotSame(t, original, cosmosErr)
+	require.Equal(t, CodeClientError, original.Code, "normalization must not mutate the driver error")
+
+	require.Same(t, original, normalizeItemOperationError(operationKindReplaceItem, original))
+	original.FromWire = true
+	require.Same(t, original, normalizeItemOperationError(operationKindPatchItem, original))
 }
 
 func TestReadItemRejectsNULETag(t *testing.T) {
@@ -280,4 +562,11 @@ func TestEndToEndTimeoutFollowsTheContextDeadline(t *testing.T) {
 		// Zero would read as unset at the ABI, which would remove the bound rather than tighten it.
 		require.Positive(t, endToEndTimeout(ctx, 0))
 	})
+}
+
+func validPatchOperations(t *testing.T) PatchOperations {
+	t.Helper()
+	var operations PatchOperations
+	require.NoError(t, operations.AppendSet("/value", 1))
+	return operations
 }

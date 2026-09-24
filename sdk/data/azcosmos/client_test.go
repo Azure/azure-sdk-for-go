@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+// cSpell:ignore Wtle myaccount
+
 package azcosmos
 
 import (
@@ -167,6 +169,19 @@ func TestNewClientCopiesRoutingRegions(t *testing.T) {
 
 	regions[0] = RegionNorthEurope
 	require.Equal(t, []Region{RegionWestUS, RegionEastUS}, client.options.Routing.preferredRegions)
+}
+
+func TestNewClientCopiesContentResponseOption(t *testing.T) {
+	enabled := true
+	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil, &ClientOptions{
+		EnableContentResponseOnWrite: &enabled,
+	})
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, client.Close()) })
+
+	enabled = false
+	require.NotNil(t, client.options.EnableContentResponseOnWrite)
+	require.True(t, *client.options.EnableContentResponseOnWrite)
 }
 
 // Close is documented as idempotent, safe to call concurrently, and as reporting the same result

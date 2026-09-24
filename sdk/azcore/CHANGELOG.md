@@ -2,15 +2,9 @@
 
 ## 1.23.2 (2026-09-24)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
 * Fixed unmarshalling `datetime.RFC7231` to use a fixed `GMT` zone.
-
-### Other Changes
 
 ## 1.23.1 (2026-08-27)
 

@@ -46,11 +46,6 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// OutboundNetworkDependenciesEndpointsClientListResponse contains the response from method OutboundNetworkDependenciesEndpointsClient.List.
-type OutboundNetworkDependenciesEndpointsClientListResponse struct {
-	OutboundEnvironmentEndpointArray []*OutboundEnvironmentEndpoint
-}
-
 // PrivateEndpointConnectionsClientCreateResponse contains the response from method PrivateEndpointConnectionsClient.BeginCreate.
 type PrivateEndpointConnectionsClientCreateResponse struct {
 	// The private endpoint connection of a workspace.

@@ -144,30 +144,6 @@ type EncryptionV2KeyVaultProperties struct {
 	KeyVersion *string
 }
 
-// EndpointDependency - A domain name or IP address the Workspace is reaching at.
-type EndpointDependency struct {
-	// The domain name of the dependency.
-	DomainName *string
-
-	// The Ports used when connecting to domainName.
-	EndpointDetails []*EndpointDetail
-}
-
-// EndpointDetail - Connect information from the Workspace to a single endpoint.
-type EndpointDetail struct {
-	// An IP Address that Domain Name currently resolves to.
-	IPAddress *string
-
-	// Whether it is possible to create a connection from the Workspace to this IpAddress at this Port.
-	IsAccessible *bool
-
-	// The time in milliseconds it takes for the connection to be created from the Workspace to this IpAddress at this Port.
-	Latency *float64
-
-	// The port an endpoint is connected to.
-	Port *int32
-}
-
 // EnhancedSecurityComplianceDefinition - Status of settings related to the Enhanced Security and Compliance Add-On.
 type EnhancedSecurityComplianceDefinition struct {
 	// Status of automated cluster updates feature.
@@ -300,15 +276,6 @@ type OperationListResult struct {
 
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string
-}
-
-// OutboundEnvironmentEndpoint - Egress endpoints which Workspace connects to for common purposes.
-type OutboundEnvironmentEndpoint struct {
-	// The category of endpoints accessed by the Workspace, e.g. azure-storage, azure-mysql, etc.
-	Category *string
-
-	// The endpoints that Workspace connect to
-	Endpoints []*EndpointDependency
 }
 
 // PrivateEndpoint - The private endpoint property of a private endpoint connection.

@@ -47,14 +47,6 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
-// NewOutboundNetworkDependenciesEndpointsClient creates a new instance of OutboundNetworkDependenciesEndpointsClient.
-func (c *ClientFactory) NewOutboundNetworkDependenciesEndpointsClient() *OutboundNetworkDependenciesEndpointsClient {
-	return &OutboundNetworkDependenciesEndpointsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewPrivateEndpointConnectionsClient creates a new instance of PrivateEndpointConnectionsClient.
 func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient {
 	return &PrivateEndpointConnectionsClient{

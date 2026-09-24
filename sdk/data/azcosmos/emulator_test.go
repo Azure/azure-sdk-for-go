@@ -3,6 +3,8 @@
 
 //go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
 
+// cSpell:ignore azsdk itemdb testin upserted
+
 package azcosmos
 
 import (
@@ -14,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -183,11 +186,33 @@ func emulatorContainer(t *testing.T) *ContainerClient {
 	return container
 }
 
-// uniqueItemID keeps tests from colliding with each other or with a previous run, since nothing
-// here deletes what it creates: item deletion is not bound yet.
+// uniqueItemID keeps tests from colliding with each other or with a previous run.
 func uniqueItemID(t *testing.T) string {
 	t.Helper()
-	return fmt.Sprintf("%s-%d", t.Name(), time.Now().UnixNano())
+	name := strings.NewReplacer("/", "-", "\\", "-", "?", "-", "#", "-").Replace(t.Name())
+	return fmt.Sprintf("%s-%d", name, time.Now().UnixNano())
+}
+
+func TestEmulatorUniqueItemIDIsResourceSafe(t *testing.T) {
+	t.Run("subtest", func(t *testing.T) {
+		id := uniqueItemID(t)
+		for _, invalid := range []string{"/", "\\", "?", "#"} {
+			require.NotContains(t, id, invalid)
+		}
+	})
+}
+
+func trackEmulatorItem(t *testing.T, container *ContainerClient, pk PartitionKey, id string) {
+	t.Helper()
+	t.Cleanup(func() {
+		_, err := container.DeleteItem(context.Background(), pk, id, nil)
+		if err == nil {
+			return
+		}
+		var cosmosErr *Error
+		require.ErrorAs(t, err, &cosmosErr)
+		require.Equal(t, CodeNotFound, cosmosErr.Code)
+	})
 }
 
 // The round trip is what proves the binding works end to end: the request reaches the service and
@@ -198,6 +223,7 @@ func TestEmulatorCreateThenReadItem(t *testing.T) {
 
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id, "value": 42})
 	require.NoError(t, err)
 
@@ -245,6 +271,7 @@ func TestEmulatorCreateItemConflict(t *testing.T) {
 
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 
@@ -278,10 +305,12 @@ func TestEmulatorCreateItemContentResponse(t *testing.T) {
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			id := uniqueItemID(t)
+			pk := NewPartitionKeyString(id)
+			trackEmulatorItem(t, container, pk, id)
 			item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 			require.NoError(t, err)
 
-			response, err := container.CreateItem(ctx, NewPartitionKeyString(id), id, item,
+			response, err := container.CreateItem(ctx, pk, id, item,
 				&CreateItemOptions{Operation: OperationOptions{EnableContentResponseOnWrite: tt.enabled}})
 			require.NoError(t, err)
 
@@ -303,6 +332,7 @@ func TestEmulatorReadItemIfNoneMatch(t *testing.T) {
 
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 
@@ -321,6 +351,456 @@ func TestEmulatorReadItemIfNoneMatch(t *testing.T) {
 	require.NotEmpty(t, response.Value, "the ETag does not match, so the item is sent")
 }
 
+func TestEmulatorReplaceAndUpsertItem(t *testing.T) {
+	container := emulatorContainer(t)
+	ctx := t.Context()
+
+	t.Run("replace", func(t *testing.T) {
+		id := uniqueItemID(t)
+		pk := NewPartitionKeyString(id)
+		trackEmulatorItem(t, container, pk, id)
+
+		original, err := json.Marshal(map[string]any{"id": id, "pk": id, "value": "original"})
+		require.NoError(t, err)
+		created, err := container.CreateItem(ctx, pk, id, original, nil)
+		require.NoError(t, err)
+
+		replacement, err := json.Marshal(map[string]any{"id": id, "pk": id, "value": "replaced"})
+		require.NoError(t, err)
+		replaced, err := container.ReplaceItem(ctx, pk, id, replacement, &ReplaceItemOptions{
+			Operation: OperationOptions{EnableContentResponseOnWrite: to(true)},
+		})
+		require.NoError(t, err)
+		require.Positive(t, replaced.RequestCharge)
+		require.NotEmpty(t, replaced.ActivityID)
+		require.NotEmpty(t, replaced.SessionToken)
+		require.NotEmpty(t, replaced.ETag)
+		require.NotEqual(t, created.ETag, replaced.ETag)
+
+		var echoed map[string]any
+		require.NoError(t, json.Unmarshal(replaced.Value, &echoed))
+		require.Equal(t, "replaced", echoed["value"])
+
+		read, err := container.ReadItem(ctx, pk, id, &ReadItemOptions{
+			SessionToken: replaced.SessionToken,
+			Operation:    OperationOptions{ConsistencyStrategy: ReadConsistencyStrategySession},
+		})
+		require.NoError(t, err)
+		require.Equal(t, replaced.ETag, read.ETag)
+		requireItemFields(t, read.Value, map[string]any{
+			"id": id, "pk": id, "value": "replaced",
+		})
+	})
+
+	t.Run("upsert existing and missing", func(t *testing.T) {
+		existingID := uniqueItemID(t)
+		existingPK := NewPartitionKeyString(existingID)
+		trackEmulatorItem(t, container, existingPK, existingID)
+
+		original, err := json.Marshal(map[string]any{"id": existingID, "pk": existingID, "version": 1})
+		require.NoError(t, err)
+		_, err = container.CreateItem(ctx, existingPK, existingID, original, nil)
+		require.NoError(t, err)
+
+		updated, err := json.Marshal(map[string]any{"id": existingID, "pk": existingID, "version": 2})
+		require.NoError(t, err)
+		upserted, err := container.UpsertItem(ctx, existingPK, existingID, updated, &UpsertItemOptions{
+			Operation: OperationOptions{EnableContentResponseOnWrite: to(true)},
+		})
+		require.NoError(t, err)
+		require.Positive(t, upserted.RequestCharge)
+		require.NotEmpty(t, upserted.ActivityID)
+		require.NotEmpty(t, upserted.ETag)
+		requireItemFields(t, upserted.Value, map[string]any{
+			"id": existingID, "pk": existingID, "version": float64(2),
+		})
+
+		missingID := uniqueItemID(t)
+		missingPK := NewPartitionKeyString(missingID)
+		trackEmulatorItem(t, container, missingPK, missingID)
+		missing, err := json.Marshal(map[string]any{"id": missingID, "pk": missingID, "version": 1})
+		require.NoError(t, err)
+		created, err := container.UpsertItem(ctx, missingPK, missingID, missing, nil)
+		require.NoError(t, err)
+		require.NotEmpty(t, created.ETag)
+
+		read, err := container.ReadItem(ctx, missingPK, missingID, nil)
+		require.NoError(t, err)
+		requireItemFields(t, read.Value, map[string]any{
+			"id": missingID, "pk": missingID, "version": float64(1),
+		})
+	})
+}
+
+func TestEmulatorConditionalItemWrites(t *testing.T) {
+	container := emulatorContainer(t)
+	ctx := t.Context()
+	stale := azcore.ETag("\"00000000-0000-0000-0000-000000000000\"")
+
+	id := uniqueItemID(t)
+	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
+	item, err := json.Marshal(map[string]any{"id": id, "pk": id, "value": 1})
+	require.NoError(t, err)
+	created, err := container.CreateItem(ctx, pk, id, item, nil)
+	require.NoError(t, err)
+
+	replacement, err := json.Marshal(map[string]any{"id": id, "pk": id, "value": 2})
+	require.NoError(t, err)
+	var patch PatchOperations
+	require.NoError(t, patch.AppendSet("/value", 2))
+
+	_, err = container.ReplaceItem(ctx, pk, id, replacement, &ReplaceItemOptions{IfMatchETag: &stale})
+	requireWireError(t, err, CodePreconditionFailed, 412)
+	_, err = container.UpsertItem(ctx, pk, id, replacement, &UpsertItemOptions{IfMatchETag: &stale})
+	requireWireError(t, err, CodePreconditionFailed, 412)
+	_, err = container.PatchItem(ctx, pk, id, patch, &PatchItemOptions{IfMatchETag: &stale})
+	requirePatchPreconditionError(t, err)
+	_, err = container.DeleteItem(ctx, pk, id, &DeleteItemOptions{IfMatchETag: &stale})
+	requireWireError(t, err, CodePreconditionFailed, 412)
+
+	replaced, err := container.ReplaceItem(ctx, pk, id, replacement, &ReplaceItemOptions{
+		IfMatchETag: &created.ETag,
+	})
+	require.NoError(t, err)
+	require.NotEmpty(t, replaced.ETag)
+
+	current := replaced.ETag
+	patched, err := container.PatchItem(ctx, pk, id, patch, &PatchItemOptions{IfMatchETag: &current})
+	require.NoError(t, err)
+	require.NotEmpty(t, patched.ETag)
+
+	missingID := uniqueItemID(t)
+	missingPK := NewPartitionKeyString(missingID)
+	trackEmulatorItem(t, container, missingPK, missingID)
+	missing, err := json.Marshal(map[string]any{"id": missingID, "pk": missingID})
+	require.NoError(t, err)
+	_, err = container.UpsertItem(ctx, missingPK, missingID, missing, &UpsertItemOptions{
+		IfMatchETag: &stale,
+	})
+	require.NoError(t, err, "a missing item is created even with a stale If-Match")
+
+	read, err := container.ReadItem(ctx, pk, id, nil)
+	require.NoError(t, err)
+	deleted, err := container.DeleteItem(ctx, pk, id, &DeleteItemOptions{IfMatchETag: &read.ETag})
+	require.NoError(t, err)
+	require.Nil(t, deleted.Value)
+}
+
+func TestEmulatorDeleteItem(t *testing.T) {
+	container := emulatorContainer(t)
+	ctx := t.Context()
+
+	id := uniqueItemID(t)
+	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
+	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
+	require.NoError(t, err)
+	_, err = container.CreateItem(ctx, pk, id, item, nil)
+	require.NoError(t, err)
+
+	deleted, err := container.DeleteItem(ctx, pk, id, nil)
+	require.NoError(t, err)
+	require.Positive(t, deleted.RequestCharge)
+	require.NotEmpty(t, deleted.ActivityID)
+	require.Nil(t, deleted.Value)
+
+	_, err = container.ReadItem(ctx, pk, id, nil)
+	requireWireStatus(t, err, CodeNotFound, 404)
+	_, err = container.DeleteItem(ctx, pk, id, nil)
+	requireWireStatus(t, err, CodeNotFound, 404)
+}
+
+func TestEmulatorPatchItem(t *testing.T) {
+	container := emulatorContainer(t)
+	ctx := t.Context()
+
+	id := uniqueItemID(t)
+	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
+	item, err := json.Marshal(map[string]any{
+		"id":      id,
+		"pk":      id,
+		"count":   1,
+		"replace": "before",
+		"remove":  true,
+		"source":  "move-me",
+	})
+	require.NoError(t, err)
+	_, err = container.CreateItem(ctx, pk, id, item, nil)
+	require.NoError(t, err)
+
+	var operations PatchOperations
+	require.NoError(t, operations.AppendAdd("/added", "new"))
+	require.NoError(t, operations.AppendSet("/set", map[string]any{"nested": true}))
+	require.NoError(t, operations.AppendReplace("/replace", "after"))
+	require.NoError(t, operations.AppendRemove("/remove"))
+	require.NoError(t, operations.AppendIncrement("/count", 2))
+	require.NoError(t, operations.AppendMove("/source", "/moved"))
+
+	patched, err := container.PatchItem(ctx, pk, id, operations, nil)
+	require.NoError(t, err)
+	require.Positive(t, patched.RequestCharge)
+	require.NotEmpty(t, patched.ActivityID)
+	require.NotEmpty(t, patched.SessionToken)
+	require.NotEmpty(t, patched.ETag)
+	require.NotEmpty(t, patched.Value, "Patch defaults to returning the post-image")
+
+	var value map[string]any
+	require.NoError(t, json.Unmarshal(patched.Value, &value))
+	require.Equal(t, "new", value["added"])
+	require.Equal(t, true, value["set"].(map[string]any)["nested"])
+	require.Equal(t, "after", value["replace"])
+	require.NotContains(t, value, "remove")
+	require.InDelta(t, 3, value["count"], 0)
+	require.Equal(t, "move-me", value["moved"])
+	require.NotContains(t, value, "source")
+	require.Contains(t, value, "_azsdkPatchTracking",
+		"unsafe automatic PATCH records retry deduplication state on the item")
+}
+
+func TestEmulatorPatchContentResponse(t *testing.T) {
+	for _, tt := range []struct {
+		name          string
+		clientEnabled *bool
+		callEnabled   *bool
+		wantContent   bool
+	}{
+		{"native default", nil, nil, true},
+		{"operation disabled", nil, to(false), false},
+		{"client disabled", to(false), nil, false},
+		{"operation overrides client", to(false), to(true), true},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			container := emulatorContainerWithOptions(t, &ClientOptions{
+				EnableContentResponseOnWrite: tt.clientEnabled,
+			})
+			id := uniqueItemID(t)
+			pk := NewPartitionKeyString(id)
+			trackEmulatorItem(t, container, pk, id)
+			item, err := json.Marshal(map[string]any{"id": id, "pk": id, "value": 1})
+			require.NoError(t, err)
+			_, err = container.CreateItem(t.Context(), pk, id, item, nil)
+			require.NoError(t, err)
+
+			var operations PatchOperations
+			require.NoError(t, operations.AppendSet("/value", 2))
+			response, err := container.PatchItem(t.Context(), pk, id, operations, &PatchItemOptions{
+				Operation: OperationOptions{EnableContentResponseOnWrite: tt.callEnabled},
+			})
+			require.NoError(t, err)
+			require.Equal(t, tt.wantContent, len(response.Value) > 0)
+		})
+	}
+}
+
+func TestEmulatorPatchStrategies(t *testing.T) {
+	for _, tt := range []struct {
+		name         string
+		strategy     PatchStrategy
+		wantTooLarge bool
+	}{
+		{"unset uses automatic", PatchStrategyUnset, false},
+		{"explicit automatic", PatchStrategyAuto, false},
+		{"client side", PatchStrategyClientSide, false},
+		{"server side preserves service limit", PatchStrategyServerSide, true},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			container := emulatorContainer(t)
+			id := uniqueItemID(t)
+			pk := NewPartitionKeyString(id)
+			trackEmulatorItem(t, container, pk, id)
+			item, err := json.Marshal(map[string]any{"id": id, "pk": id})
+			require.NoError(t, err)
+			_, err = container.CreateItem(t.Context(), pk, id, item, nil)
+			require.NoError(t, err)
+
+			var operations PatchOperations
+			for i := range 11 {
+				require.NoError(t, operations.AppendSet(fmt.Sprintf("/value%d", i), i))
+			}
+			response, err := container.PatchItem(t.Context(), pk, id, operations, &PatchItemOptions{
+				Strategy: tt.strategy,
+			})
+			if tt.wantTooLarge {
+				requireWireStatus(t, err, CodeBadRequest, 400)
+
+				response, err = container.ReadItem(t.Context(), pk, id, nil)
+				require.NoError(t, err)
+				var value map[string]any
+				require.NoError(t, json.Unmarshal(response.Value, &value))
+				require.NotContains(t, value, "value0", "a rejected server PATCH must not modify the item")
+				return
+			}
+			require.NoError(t, err)
+
+			var value map[string]any
+			require.NoError(t, json.Unmarshal(response.Value, &value))
+			for i := range 11 {
+				require.InDelta(t, i, value[fmt.Sprintf("value%d", i)], 0)
+			}
+		})
+	}
+}
+
+func TestEmulatorPatchWholeFloatIncrement(t *testing.T) {
+	for _, tt := range []struct {
+		name     string
+		strategy PatchStrategy
+		value    any
+	}{
+		{"auto float32", PatchStrategyAuto, float32(1)},
+		{"auto float64", PatchStrategyAuto, float64(1)},
+		{"client side float32", PatchStrategyClientSide, float32(1)},
+		{"client side float64", PatchStrategyClientSide, float64(1)},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			container := emulatorContainer(t)
+			id := uniqueItemID(t)
+			pk := NewPartitionKeyString(id)
+			trackEmulatorItem(t, container, pk, id)
+			item, err := json.Marshal(map[string]any{"id": id, "pk": id, "amount": 1.5})
+			require.NoError(t, err)
+			_, err = container.CreateItem(t.Context(), pk, id, item, nil)
+			require.NoError(t, err)
+
+			var operations PatchOperations
+			require.NoError(t, operations.AppendIncrement("/amount", tt.value))
+			response, err := container.PatchItem(t.Context(), pk, id, operations, &PatchItemOptions{
+				Strategy: tt.strategy,
+			})
+			require.NoError(t, err)
+
+			var value map[string]any
+			require.NoError(t, json.Unmarshal(response.Value, &value))
+			require.InDelta(t, 2.5, value["amount"], 0)
+		})
+	}
+}
+
+func TestEmulatorNewItemOperationsReportMissingItems(t *testing.T) {
+	container := emulatorContainer(t)
+	id := uniqueItemID(t)
+	pk := NewPartitionKeyString(id)
+	item := []byte(fmt.Sprintf(`{"id":%q,"pk":%q}`, id, id))
+	var operations PatchOperations
+	require.NoError(t, operations.AppendSet("/value", 1))
+
+	_, err := container.ReplaceItem(t.Context(), pk, id, item, nil)
+	requireWireStatus(t, err, CodeNotFound, 404)
+	_, err = container.DeleteItem(t.Context(), pk, id, nil)
+	requireWireStatus(t, err, CodeNotFound, 404)
+	_, err = container.PatchItem(t.Context(), pk, id, operations, nil)
+	requireWireStatus(t, err, CodeNotFound, 404)
+}
+
+func TestEmulatorConcurrentItemWriteOperations(t *testing.T) {
+	container := emulatorContainer(t)
+	const operations = 8
+
+	var wg sync.WaitGroup
+	errs := make(chan error, operations)
+	wg.Add(operations)
+	for i := range operations {
+		id := fmt.Sprintf("%s-%d-%d", t.Name(), time.Now().UnixNano(), i)
+		pk := NewPartitionKeyString(id)
+		trackEmulatorItem(t, container, pk, id)
+		go func(id string, pk PartitionKey) {
+			defer wg.Done()
+			item := []byte(fmt.Sprintf(`{"id":%q,"pk":%q,"value":0}`, id, id))
+
+			if _, err := container.UpsertItem(t.Context(), pk, id, item, nil); err != nil {
+				errs <- err
+				return
+			}
+			replacement := []byte(fmt.Sprintf(`{"id":%q,"pk":%q,"value":1}`, id, id))
+			if _, err := container.ReplaceItem(t.Context(), pk, id, replacement, nil); err != nil {
+				errs <- err
+				return
+			}
+			var patch PatchOperations
+			if err := patch.AppendIncrement("/value", 1); err != nil {
+				errs <- err
+				return
+			}
+			if _, err := container.PatchItem(t.Context(), pk, id, patch, nil); err != nil {
+				errs <- err
+				return
+			}
+			read, err := container.ReadItem(t.Context(), pk, id, nil)
+			if err != nil {
+				errs <- err
+				return
+			}
+			var value map[string]any
+			if err := json.Unmarshal(read.Value, &value); err != nil {
+				errs <- err
+				return
+			}
+			if value["id"] != id || value["value"] != float64(2) {
+				errs <- fmt.Errorf("item correlation failed for %s: %v", id, value)
+				return
+			}
+			if _, err := container.DeleteItem(t.Context(), pk, id, nil); err != nil {
+				errs <- err
+				return
+			}
+		}(id, pk)
+	}
+	wg.Wait()
+	close(errs)
+	for err := range errs {
+		require.NoError(t, err)
+	}
+}
+
+func requireWireError(t *testing.T, err error, code Code, status int) {
+	t.Helper()
+	cosmosErr := requireWireErrorDetails(t, err, code, status)
+	require.Positive(t, cosmosErr.RequestCharge)
+}
+
+func requireWireStatus(t *testing.T, err error, code Code, status int) {
+	t.Helper()
+	require.NotNil(t, requireWireErrorDetails(t, err, code, status))
+}
+
+func requireWireErrorDetails(t *testing.T, err error, code Code, status int) *Error {
+	t.Helper()
+	var cosmosErr *Error
+	require.ErrorAs(t, err, &cosmosErr)
+	require.Equal(t, code, cosmosErr.Code)
+	require.Equal(t, status, cosmosErr.StatusCode)
+	require.True(t, cosmosErr.FromWire)
+	require.NotEmpty(t, cosmosErr.ActivityID)
+	return cosmosErr
+}
+
+func requireItemFields(t *testing.T, body []byte, expected map[string]any) {
+	t.Helper()
+
+	var item map[string]any
+	require.NoError(t, json.Unmarshal(body, &item))
+	for name, value := range expected {
+		require.Equal(t, value, item[name], "item field %q", name)
+	}
+}
+
+func requirePatchPreconditionError(t *testing.T, err error) {
+	t.Helper()
+	var cosmosErr *Error
+	require.ErrorAs(t, err, &cosmosErr)
+	require.Equal(t, CodePreconditionFailed, cosmosErr.Code)
+	require.Equal(t, 412, cosmosErr.StatusCode)
+	if cosmosErr.FromWire {
+		require.Positive(t, cosmosErr.RequestCharge)
+		require.NotEmpty(t, cosmosErr.ActivityID)
+		return
+	}
+	require.Zero(t, cosmosErr.RequestCharge)
+	require.Empty(t, cosmosErr.ActivityID)
+}
+
 // The session token a write produces has to be usable on a later read, which is how a caller reads
 // their own writes under session consistency.
 func TestEmulatorSessionTokenRoundTrips(t *testing.T) {
@@ -329,6 +809,7 @@ func TestEmulatorSessionTokenRoundTrips(t *testing.T) {
 
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 
@@ -353,6 +834,7 @@ func TestEmulatorLatestCommittedRead(t *testing.T) {
 
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 
@@ -395,20 +877,22 @@ func TestEmulatorConcurrentOperations(t *testing.T) {
 	ids := make(chan string, operations)
 
 	for i := range operations {
-		go func() {
-			id := fmt.Sprintf("%s-%d-%d", t.Name(), time.Now().UnixNano(), i)
+		id := fmt.Sprintf("%s-%d-%d", t.Name(), time.Now().UnixNano(), i)
+		pk := NewPartitionKeyString(id)
+		trackEmulatorItem(t, container, pk, id)
+		go func(id string, pk PartitionKey) {
 			item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 			if err != nil {
 				errs <- err
 				return
 			}
-			if _, err := container.CreateItem(ctx, NewPartitionKeyString(id), id, item, nil); err != nil {
+			if _, err := container.CreateItem(ctx, pk, id, item, nil); err != nil {
 				errs <- err
 				return
 			}
 			ids <- id
 			errs <- nil
-		}()
+		}(id, pk)
 	}
 
 	for range operations {
@@ -463,6 +947,8 @@ func createForClientOptions(t *testing.T, container *ContainerClient, operation 
 	t.Helper()
 
 	id := uniqueItemID(t)
+	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 
@@ -470,7 +956,7 @@ func createForClientOptions(t *testing.T, container *ContainerClient, operation 
 	if operation != nil {
 		createOptions.Operation = *operation
 	}
-	response, err := container.CreateItem(context.Background(), NewPartitionKeyString(id), id, item, createOptions)
+	response, err := container.CreateItem(context.Background(), pk, id, item, createOptions)
 	require.NoError(t, err)
 	return len(response.Value) > 0
 }
@@ -480,15 +966,17 @@ func createForClientOptions(t *testing.T, container *ContainerClient, operation 
 func TestEmulatorClientContentResponseOnWrite(t *testing.T) {
 	for _, tt := range []struct {
 		name    string
-		enabled bool
+		enabled *bool
+		want    bool
 	}{
-		{"disabled", false},
-		{"enabled", true},
+		{"unset", nil, false},
+		{"disabled", to(false), false},
+		{"enabled", to(true), true},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			container := emulatorContainerWithOptions(t, &ClientOptions{EnableContentResponseOnWrite: tt.enabled})
 
-			require.Equal(t, tt.enabled, createForClientOptions(t, container, nil),
+			require.Equal(t, tt.want, createForClientOptions(t, container, nil),
 				"an operation that sets nothing inherits the client's setting")
 		})
 	}
@@ -497,7 +985,7 @@ func TestEmulatorClientContentResponseOnWrite(t *testing.T) {
 // An operation that sets the value overrides the client, which is what makes the client value a
 // default rather than a policy.
 func TestEmulatorOperationContentResponseOverridesTheClient(t *testing.T) {
-	container := emulatorContainerWithOptions(t, &ClientOptions{EnableContentResponseOnWrite: true})
+	container := emulatorContainerWithOptions(t, &ClientOptions{EnableContentResponseOnWrite: to(true)})
 
 	require.False(t, createForClientOptions(t, container, &OperationOptions{
 		EnableContentResponseOnWrite: to(false),
@@ -516,9 +1004,11 @@ func TestEmulatorRoutingStrategiesRouteReads(t *testing.T) {
 		Routing: PreferredRegions(RegionEastUS),
 	})
 	id := uniqueItemID(t)
+	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, writer, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
-	_, err = writer.CreateItem(t.Context(), NewPartitionKeyString(id), id, item, nil)
+	_, err = writer.CreateItem(t.Context(), pk, id, item, nil)
 	require.NoError(t, err)
 
 	for _, tt := range []struct {
@@ -533,7 +1023,7 @@ func TestEmulatorRoutingStrategiesRouteReads(t *testing.T) {
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			container := emulatorContainerWithOptions(t, &ClientOptions{Routing: tt.routing})
-			response, err := container.ReadItem(t.Context(), NewPartitionKeyString(id), id, &ReadItemOptions{
+			response, err := container.ReadItem(t.Context(), pk, id, &ReadItemOptions{
 				Operation: OperationOptions{ConsistencyStrategy: ReadConsistencyStrategyEventual},
 			})
 			if tt.wantExists {
@@ -593,12 +1083,14 @@ func TestEmulatorTokenCredential(t *testing.T) {
 	container, err := client.NewContainer(databaseID, containerID)
 	require.NoError(t, err)
 	id := uniqueItemID(t)
+	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 
-	_, err = container.CreateItem(t.Context(), NewPartitionKeyString(id), id, item, nil)
+	_, err = container.CreateItem(t.Context(), pk, id, item, nil)
 	require.NoError(t, err)
-	read, err := container.ReadItem(t.Context(), NewPartitionKeyString(id), id, nil)
+	read, err := container.ReadItem(t.Context(), pk, id, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, read.Value)
 }
@@ -663,10 +1155,12 @@ func TestEmulatorOperationInitializesLazily(t *testing.T) {
 	container, err := client.NewContainer(databaseID, containerID)
 	require.NoError(t, err)
 	id := uniqueItemID(t)
+	pk := NewPartitionKeyString(id)
+	trackEmulatorItem(t, container, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 
-	_, err = container.CreateItem(t.Context(), NewPartitionKeyString(id), id, item, nil)
+	_, err = container.CreateItem(t.Context(), pk, id, item, nil)
 	require.NoError(t, err)
 
 	client.driver.mu.Lock()

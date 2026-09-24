@@ -16,6 +16,17 @@ _Static_assert(sizeof(cosmos_status_code_t) == 4, "cosmos_status_code_t must rem
 _Static_assert((cosmos_status_code_t)-1 < 0, "cosmos_status_code_t must remain signed");
 _Static_assert(COSMOS_OPERATION_KIND_CREATE_ITEM == 19, "create-item operation discriminant changed");
 _Static_assert(COSMOS_OPERATION_KIND_READ_ITEM == 20, "read-item operation discriminant changed");
+_Static_assert(COSMOS_OPERATION_KIND_UPSERT_ITEM == 21, "upsert-item operation discriminant changed");
+_Static_assert(COSMOS_OPERATION_KIND_REPLACE_ITEM == 22, "replace-item operation discriminant changed");
+_Static_assert(COSMOS_OPERATION_KIND_DELETE_ITEM == 23, "delete-item operation discriminant changed");
+_Static_assert(COSMOS_OPERATION_KIND_PATCH_ITEM == 24, "patch-item operation discriminant changed");
+_Static_assert(COSMOS_PRECONDITION_KIND_NONE == 0, "no-precondition discriminant changed");
+_Static_assert(COSMOS_PRECONDITION_KIND_IF_MATCH == 1, "if-match precondition discriminant changed");
+_Static_assert(COSMOS_PRECONDITION_KIND_IF_NONE_MATCH == 2, "if-none-match precondition discriminant changed");
+_Static_assert(COSMOS_PATCH_STRATEGY_UNSET == 0, "unset PATCH strategy discriminant changed");
+_Static_assert(COSMOS_PATCH_STRATEGY_AUTO == 1, "automatic PATCH strategy discriminant changed");
+_Static_assert(COSMOS_PATCH_STRATEGY_CLIENT_SIDE == 2, "client-side PATCH strategy discriminant changed");
+_Static_assert(COSMOS_PATCH_STRATEGY_SERVER_SIDE == 3, "server-side PATCH strategy discriminant changed");
 
 _Static_assert(sizeof(cosmos_string_view_t) == 16, "cosmos_string_view_t ABI size changed");
 _Static_assert(_Alignof(cosmos_string_view_t) == 8, "cosmos_string_view_t ABI alignment changed");

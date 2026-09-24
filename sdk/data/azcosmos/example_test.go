@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+// cSpell:ignore Contoso upserted
+
 package azcosmos_test
 
 import (
@@ -164,6 +166,92 @@ func ExampleContainerClient_ReadItem() {
 		log.Fatalf("ERROR: %s", err)
 	}
 	log.Printf("read item %v, charged %v RU", item["id"], response.RequestCharge)
+
+	closeClient()
+}
+
+func ExampleContainerClient_ReplaceItem() {
+	container, closeClient := exampleContainer()
+	pk := azcosmos.NewPartitionKeyString("gear-surf-surfboards")
+
+	item, err := json.Marshal(map[string]any{
+		"id":           "item-1",
+		"categoryName": "gear-surf-surfboards",
+		"quantity":     3,
+	})
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	response, err := container.ReplaceItem(context.TODO(), pk, "item-1", item, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	log.Printf("replaced the item, charged %v RU", response.RequestCharge)
+
+	closeClient()
+}
+
+func ExampleContainerClient_UpsertItem() {
+	container, closeClient := exampleContainer()
+	pk := azcosmos.NewPartitionKeyString("gear-surf-surfboards")
+
+	item, err := json.Marshal(map[string]any{
+		"id":           "item-1",
+		"categoryName": "gear-surf-surfboards",
+		"quantity":     3,
+	})
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	response, err := container.UpsertItem(context.TODO(), pk, "item-1", item, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	log.Printf("upserted the item, charged %v RU", response.RequestCharge)
+
+	closeClient()
+}
+
+func ExampleContainerClient_DeleteItem() {
+	container, closeClient := exampleContainer()
+	pk := azcosmos.NewPartitionKeyString("gear-surf-surfboards")
+
+	response, err := container.DeleteItem(context.TODO(), pk, "item-1", nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	log.Printf("deleted the item, charged %v RU", response.RequestCharge)
+
+	closeClient()
+}
+
+func ExampleContainerClient_PatchItem() {
+	container, closeClient := exampleContainer()
+	pk := azcosmos.NewPartitionKeyString("gear-surf-surfboards")
+
+	var operations azcosmos.PatchOperations
+	if err := operations.AppendSet("/quantity", 5); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if err := operations.AppendIncrement("/inventoryCount", 1); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	response, err := container.PatchItem(context.TODO(), pk, "item-1", operations, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	log.Printf("patched the item, charged %v RU", response.RequestCharge)
 
 	closeClient()
 }

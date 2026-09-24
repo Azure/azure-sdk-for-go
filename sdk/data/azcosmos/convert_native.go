@@ -3,6 +3,8 @@
 
 //go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
 
+// cSpell:ignore finalizer
+
 package azcosmos
 
 /*
@@ -155,6 +157,21 @@ func (s ReadConsistencyStrategy) toNative() (C.int32_t, bool) {
 	}
 }
 
+// toNative maps a PATCH strategy onto the driver's discriminant. The second result is false for
+// the unset strategy, which leaves the driver's default in place.
+func (s PatchStrategy) toNative() (C.int32_t, bool) {
+	switch s {
+	case PatchStrategyAuto:
+		return C.COSMOS_PATCH_STRATEGY_AUTO, true
+	case PatchStrategyClientSide:
+		return C.COSMOS_PATCH_STRATEGY_CLIENT_SIDE, true
+	case PatchStrategyServerSide:
+		return C.COSMOS_PATCH_STRATEGY_SERVER_SIDE, true
+	default:
+		return 0, false
+	}
+}
+
 // The inspectors below read back what the converters wrote, in Go types. They exist because cgo is
 // not permitted in _test.go files, so a test cannot dereference these structs itself — without
 // them the converters could only be tested by observing their effect on a live service.
@@ -248,6 +265,12 @@ func nativeReadConsistencyStrategy(s ReadConsistencyStrategy) (int32, bool) {
 	return int32(value), ok
 }
 
+// nativePatchStrategy reports the discriminant a strategy maps to, in Go types.
+func nativePatchStrategy(s PatchStrategy) (int32, bool) {
+	value, ok := s.toNative()
+	return int32(value), ok
+}
+
 // toNative builds the driver's per-client options config. The returned function releases it.
 //
 // The config is flat: preferred regions plus the operation options every operation starts from.
@@ -257,11 +280,8 @@ func (o ClientOptions) toNative() (*C.cosmos_driver_options_config_t, func(), er
 	config := (*C.cosmos_driver_options_config_t)(C.malloc(C.size_t(unsafe.Sizeof(C.cosmos_driver_options_config_t{}))))
 	*config = C.cosmos_driver_options_config_default()
 
-	// Passed explicitly rather than left unset, so that the documented Go default holds even if
-	// the driver's own default changes.
-	contentResponse := o.EnableContentResponseOnWrite
 	operationOptions, releaseOperationOptions := OperationOptions{
-		EnableContentResponseOnWrite: &contentResponse,
+		EnableContentResponseOnWrite: o.EnableContentResponseOnWrite,
 	}.toNative()
 	config.operation_options = operationOptions
 

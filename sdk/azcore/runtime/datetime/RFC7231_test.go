@@ -27,7 +27,8 @@ func TestRFC7231(t *testing.T) {
 	var dt2 datetime.RFC7231
 	err = dt2.UnmarshalJSON(jsonBytes)
 	require.NoError(t, err)
-	require.True(t, originalTime.Equal(time.Time(dt2)))
+	require.WithinDuration(t, originalTime, time.Time(dt2), 0)
+	require.Equal(t, "GMT", time.Time(dt2).Location().String())
 
 	// MarshalText round-trip
 	textBytes, err := dt.MarshalText()

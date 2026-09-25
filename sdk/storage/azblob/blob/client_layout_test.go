@@ -830,3 +830,51 @@ func TestGetLayoutPagerUserIfMatchWins(t *testing.T) {
 	}
 	require.Same(t, &userETag, mac.IfMatch, "the caller's access conditions must not be mutated")
 }
+
+// The download pins the initial read's ETag onto the access conditions it sends, but it must do
+// that on a copy: the caller's own AccessConditions value, and the ModifiedAccessConditions it
+// points at, have to come back untouched.
+func TestDownloadBufferDoesNotMutateCallerAccessConditions(t *testing.T) {
+	blobETag := azcore.ETag("layout-etag")
+	tags := "tier = 'hot'"
+	l := buildLayout(3, 100, 2, &blobETag)
+
+	f := newFakeLayoutResponder(l, nil)
+	client := newFakeLayoutClient(t, f)
+
+	mac := &ModifiedAccessConditions{IfMatch: &blobETag, IfTags: &tags}
+	ac := &AccessConditions{ModifiedAccessConditions: mac}
+	opts := &DownloadBufferOptions{
+		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		BlockSize:          100,
+		AccessConditions:   ac,
+	}
+
+	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), opts)
+	require.NoError(t, err)
+
+	require.Same(t, ac, opts.AccessConditions, "the caller's options must still point at their own conditions")
+	require.Same(t, mac, ac.ModifiedAccessConditions, "the nested conditions must not be replaced")
+	require.Same(t, &blobETag, mac.IfMatch, "the caller's If-Match must not be swapped out")
+	require.Equal(t, tags, *mac.IfTags, "unrelated conditions must survive untouched")
+	require.Nil(t, mac.IfNoneMatch)
+}
+
+// The same guarantee with no caller conditions at all: the download must not leave any behind on
+// the options it was handed.
+func TestDownloadBufferLeavesNilAccessConditionsNil(t *testing.T) {
+	etag := azcore.ETag("layout-etag")
+	l := buildLayout(3, 100, 2, &etag)
+
+	f := newFakeLayoutResponder(l, nil)
+	client := newFakeLayoutClient(t, f)
+
+	opts := &DownloadBufferOptions{
+		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		BlockSize:          100,
+	}
+	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), opts)
+	require.NoError(t, err)
+
+	require.Nil(t, opts.AccessConditions, "the caller's options must not gain conditions they never set")
+}

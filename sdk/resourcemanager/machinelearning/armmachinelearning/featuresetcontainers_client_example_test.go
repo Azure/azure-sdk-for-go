@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturesetContainer/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Workspace/FeaturesetContainer/createOrUpdate.json
 func ExampleFeaturesetContainersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleFeaturesetContainersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturesetContainer/delete.json
+// Generated from example definition: 2026-05-15-preview/Workspace/FeaturesetContainer/delete.json
 func ExampleFeaturesetContainersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleFeaturesetContainersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturesetContainer/getEntity.json
+// Generated from example definition: 2026-05-15-preview/Workspace/FeaturesetContainer/getEntity.json
 func ExampleFeaturesetContainersClient_GetEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleFeaturesetContainersClient_GetEntity() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturesetContainer/list.json
+// Generated from example definition: 2026-05-15-preview/Workspace/FeaturesetContainer/list.json
 func ExampleFeaturesetContainersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

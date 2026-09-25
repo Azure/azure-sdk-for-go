@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/PTUQuota/getAvailable.json
+// Generated from example definition: 2026-05-15-preview/PTUQuota/getAvailable.json
 func ExamplePTUQuotaClient_GetAvailable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExamplePTUQuotaClient_GetAvailable() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/PTUQuota/list.json
+// Generated from example definition: 2026-05-15-preview/PTUQuota/list.json
 func ExamplePTUQuotaClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExamplePTUQuotaClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/PTUQuota/listAvailable.json
+// Generated from example definition: 2026-05-15-preview/PTUQuota/listAvailable.json
 func ExamplePTUQuotaClient_NewListAvailablePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

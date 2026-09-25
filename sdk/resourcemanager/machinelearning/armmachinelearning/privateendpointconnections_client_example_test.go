@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/PrivateEndpointConnection/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/PrivateEndpointConnection/createOrUpdate.json
 func ExamplePrivateEndpointConnectionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExamplePrivateEndpointConnectionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/PrivateEndpointConnection/delete.json
+// Generated from example definition: 2026-05-15-preview/PrivateEndpointConnection/delete.json
 func ExamplePrivateEndpointConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExamplePrivateEndpointConnectionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/PrivateEndpointConnection/get.json
+// Generated from example definition: 2026-05-15-preview/PrivateEndpointConnection/get.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/PrivateEndpointConnection/list.json
+// Generated from example definition: 2026-05-15-preview/PrivateEndpointConnection/list.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

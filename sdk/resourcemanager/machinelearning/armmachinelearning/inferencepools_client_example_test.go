@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/InferencePool/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Workspace/InferencePool/createOrUpdate.json
 func ExampleInferencePoolsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleInferencePoolsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/InferencePool/delete.json
+// Generated from example definition: 2026-05-15-preview/Workspace/InferencePool/delete.json
 func ExampleInferencePoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleInferencePoolsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/InferencePool/get.json
+// Generated from example definition: 2026-05-15-preview/Workspace/InferencePool/get.json
 func ExampleInferencePoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,7 +198,7 @@ func ExampleInferencePoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/InferencePool/list.json
+// Generated from example definition: 2026-05-15-preview/Workspace/InferencePool/list.json
 func ExampleInferencePoolsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -286,7 +286,7 @@ func ExampleInferencePoolsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/InferencePool/update.json
+// Generated from example definition: 2026-05-15-preview/Workspace/InferencePool/update.json
 func ExampleInferencePoolsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

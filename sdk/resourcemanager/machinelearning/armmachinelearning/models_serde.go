@@ -5449,9 +5449,11 @@ func (c *CustomModelJobInput) UnmarshalJSON(data []byte) error {
 func (c CustomModelJobOutput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "assetName", c.AssetName)
+	populate(objectMap, "assetVersion", c.AssetVersion)
 	populate(objectMap, "description", c.Description)
 	objectMap["jobOutputType"] = JobOutputTypeCustomModel
 	populate(objectMap, "mode", c.Mode)
+	populate(objectMap, "pathOnCompute", c.PathOnCompute)
 	populate(objectMap, "uri", c.URI)
 	return json.Marshal(objectMap)
 }
@@ -5468,6 +5470,9 @@ func (c *CustomModelJobOutput) UnmarshalJSON(data []byte) error {
 		case "assetName":
 			err = unpopulate(val, "AssetName", &c.AssetName)
 			delete(rawMsg, key)
+		case "assetVersion":
+			err = unpopulate(val, "AssetVersion", &c.AssetVersion)
+			delete(rawMsg, key)
 		case "description":
 			err = unpopulate(val, "Description", &c.Description)
 			delete(rawMsg, key)
@@ -5476,6 +5481,9 @@ func (c *CustomModelJobOutput) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "mode":
 			err = unpopulate(val, "Mode", &c.Mode)
+			delete(rawMsg, key)
+		case "pathOnCompute":
+			err = unpopulate(val, "PathOnCompute", &c.PathOnCompute)
 			delete(rawMsg, key)
 		case "uri":
 			err = unpopulate(val, "URI", &c.URI)
@@ -13856,9 +13864,11 @@ func (m *MLFlowModelJobInput) UnmarshalJSON(data []byte) error {
 func (m MLFlowModelJobOutput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "assetName", m.AssetName)
+	populate(objectMap, "assetVersion", m.AssetVersion)
 	populate(objectMap, "description", m.Description)
 	objectMap["jobOutputType"] = JobOutputTypeMlflowModel
 	populate(objectMap, "mode", m.Mode)
+	populate(objectMap, "pathOnCompute", m.PathOnCompute)
 	populate(objectMap, "uri", m.URI)
 	return json.Marshal(objectMap)
 }
@@ -13875,6 +13885,9 @@ func (m *MLFlowModelJobOutput) UnmarshalJSON(data []byte) error {
 		case "assetName":
 			err = unpopulate(val, "AssetName", &m.AssetName)
 			delete(rawMsg, key)
+		case "assetVersion":
+			err = unpopulate(val, "AssetVersion", &m.AssetVersion)
+			delete(rawMsg, key)
 		case "description":
 			err = unpopulate(val, "Description", &m.Description)
 			delete(rawMsg, key)
@@ -13883,6 +13896,9 @@ func (m *MLFlowModelJobOutput) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "mode":
 			err = unpopulate(val, "Mode", &m.Mode)
+			delete(rawMsg, key)
+		case "pathOnCompute":
+			err = unpopulate(val, "PathOnCompute", &m.PathOnCompute)
 			delete(rawMsg, key)
 		case "uri":
 			err = unpopulate(val, "URI", &m.URI)
@@ -13993,9 +14009,11 @@ func (m *MLTableJobInput) UnmarshalJSON(data []byte) error {
 func (m MLTableJobOutput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "assetName", m.AssetName)
+	populate(objectMap, "assetVersion", m.AssetVersion)
 	populate(objectMap, "description", m.Description)
 	objectMap["jobOutputType"] = JobOutputTypeMltable
 	populate(objectMap, "mode", m.Mode)
+	populate(objectMap, "pathOnCompute", m.PathOnCompute)
 	populate(objectMap, "uri", m.URI)
 	return json.Marshal(objectMap)
 }
@@ -14012,6 +14030,9 @@ func (m *MLTableJobOutput) UnmarshalJSON(data []byte) error {
 		case "assetName":
 			err = unpopulate(val, "AssetName", &m.AssetName)
 			delete(rawMsg, key)
+		case "assetVersion":
+			err = unpopulate(val, "AssetVersion", &m.AssetVersion)
+			delete(rawMsg, key)
 		case "description":
 			err = unpopulate(val, "Description", &m.Description)
 			delete(rawMsg, key)
@@ -14020,6 +14041,9 @@ func (m *MLTableJobOutput) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "mode":
 			err = unpopulate(val, "Mode", &m.Mode)
+			delete(rawMsg, key)
+		case "pathOnCompute":
+			err = unpopulate(val, "PathOnCompute", &m.PathOnCompute)
 			delete(rawMsg, key)
 		case "uri":
 			err = unpopulate(val, "URI", &m.URI)
@@ -23636,9 +23660,11 @@ func (t *TritonModelJobInput) UnmarshalJSON(data []byte) error {
 func (t TritonModelJobOutput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "assetName", t.AssetName)
+	populate(objectMap, "assetVersion", t.AssetVersion)
 	populate(objectMap, "description", t.Description)
 	objectMap["jobOutputType"] = JobOutputTypeTritonModel
 	populate(objectMap, "mode", t.Mode)
+	populate(objectMap, "pathOnCompute", t.PathOnCompute)
 	populate(objectMap, "uri", t.URI)
 	return json.Marshal(objectMap)
 }
@@ -23655,6 +23681,9 @@ func (t *TritonModelJobOutput) UnmarshalJSON(data []byte) error {
 		case "assetName":
 			err = unpopulate(val, "AssetName", &t.AssetName)
 			delete(rawMsg, key)
+		case "assetVersion":
+			err = unpopulate(val, "AssetVersion", &t.AssetVersion)
+			delete(rawMsg, key)
 		case "description":
 			err = unpopulate(val, "Description", &t.Description)
 			delete(rawMsg, key)
@@ -23663,6 +23692,9 @@ func (t *TritonModelJobOutput) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "mode":
 			err = unpopulate(val, "Mode", &t.Mode)
+			delete(rawMsg, key)
+		case "pathOnCompute":
+			err = unpopulate(val, "PathOnCompute", &t.PathOnCompute)
 			delete(rawMsg, key)
 		case "uri":
 			err = unpopulate(val, "URI", &t.URI)
@@ -23808,9 +23840,11 @@ func (u *URIFileJobInput) UnmarshalJSON(data []byte) error {
 func (u URIFileJobOutput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "assetName", u.AssetName)
+	populate(objectMap, "assetVersion", u.AssetVersion)
 	populate(objectMap, "description", u.Description)
 	objectMap["jobOutputType"] = JobOutputTypeURIFile
 	populate(objectMap, "mode", u.Mode)
+	populate(objectMap, "pathOnCompute", u.PathOnCompute)
 	populate(objectMap, "uri", u.URI)
 	return json.Marshal(objectMap)
 }
@@ -23827,6 +23861,9 @@ func (u *URIFileJobOutput) UnmarshalJSON(data []byte) error {
 		case "assetName":
 			err = unpopulate(val, "AssetName", &u.AssetName)
 			delete(rawMsg, key)
+		case "assetVersion":
+			err = unpopulate(val, "AssetVersion", &u.AssetVersion)
+			delete(rawMsg, key)
 		case "description":
 			err = unpopulate(val, "Description", &u.Description)
 			delete(rawMsg, key)
@@ -23835,6 +23872,9 @@ func (u *URIFileJobOutput) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "mode":
 			err = unpopulate(val, "Mode", &u.Mode)
+			delete(rawMsg, key)
+		case "pathOnCompute":
+			err = unpopulate(val, "PathOnCompute", &u.PathOnCompute)
 			delete(rawMsg, key)
 		case "uri":
 			err = unpopulate(val, "URI", &u.URI)
@@ -23941,9 +23981,11 @@ func (u *URIFolderJobInput) UnmarshalJSON(data []byte) error {
 func (u URIFolderJobOutput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "assetName", u.AssetName)
+	populate(objectMap, "assetVersion", u.AssetVersion)
 	populate(objectMap, "description", u.Description)
 	objectMap["jobOutputType"] = JobOutputTypeURIFolder
 	populate(objectMap, "mode", u.Mode)
+	populate(objectMap, "pathOnCompute", u.PathOnCompute)
 	populate(objectMap, "uri", u.URI)
 	return json.Marshal(objectMap)
 }
@@ -23960,6 +24002,9 @@ func (u *URIFolderJobOutput) UnmarshalJSON(data []byte) error {
 		case "assetName":
 			err = unpopulate(val, "AssetName", &u.AssetName)
 			delete(rawMsg, key)
+		case "assetVersion":
+			err = unpopulate(val, "AssetVersion", &u.AssetVersion)
+			delete(rawMsg, key)
 		case "description":
 			err = unpopulate(val, "Description", &u.Description)
 			delete(rawMsg, key)
@@ -23968,6 +24013,9 @@ func (u *URIFolderJobOutput) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "mode":
 			err = unpopulate(val, "Mode", &u.Mode)
+			delete(rawMsg, key)
+		case "pathOnCompute":
+			err = unpopulate(val, "PathOnCompute", &u.PathOnCompute)
 			delete(rawMsg, key)
 		case "uri":
 			err = unpopulate(val, "URI", &u.URI)

@@ -21,6 +21,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
 )
@@ -127,12 +128,12 @@ func (tr *layoutSessionTransport) Do(req *http.Request) (*http.Response, error) 
 
 	header := http.Header{}
 	header.Set("ETag", `"layout-session-etag"`)
-	switch {
-	case req.Method == http.MethodHead:
+	switch req.Method {
+	case http.MethodHead:
 		// Get Blob Properties
 		header.Set("Content-Length", fmt.Sprintf("%d", tr.blobSize))
 		return newSessionTestResponse(req, http.StatusOK, header, nil), nil
-	case req.Method == http.MethodPut:
+	case http.MethodPut:
 		// Put Blob, Put Block, Put Block List
 		return newSessionTestResponse(req, http.StatusCreated, header, nil), nil
 	}
@@ -184,12 +185,9 @@ func (tr *layoutSessionTransport) layoutResponse(req *http.Request) *http.Respon
 }
 
 func parseXMSRange(req *http.Request) (int64, int64) {
-	raw := req.Header.Get("x-ms-range")
-	if raw == "" {
-		if v := req.Header["x-ms-range"]; len(v) > 0 {
-			raw = v[0]
-		}
-	}
+	// the generated clients write this header as a raw lowercase map key, which
+	// http.Header.Get cannot see, so read it the way production code does
+	raw := shared.HeaderValue(req.Header, "x-ms-range")
 	var start, end int64
 	if _, err := fmt.Sscanf(raw, "bytes=%d-%d", &start, &end); err != nil {
 		return 0, -1

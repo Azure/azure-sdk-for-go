@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance/v2"
 	"log"
 )
 
-// Generated from example definition: 2023-10-01-preview/ConfigurationAssignments_CreateOrUpdate.json
+// Generated from example definition: 2025-10-01-preview/ConfigurationAssignments_CreateOrUpdate.json
 func ExampleConfigurationAssignmentsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleConfigurationAssignmentsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/ConfigurationAssignments_CreateOrUpdateParent.json
+// Generated from example definition: 2025-10-01-preview/ConfigurationAssignments_CreateOrUpdateParent.json
 func ExampleConfigurationAssignmentsClient_CreateOrUpdateParent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleConfigurationAssignmentsClient_CreateOrUpdateParent() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/ConfigurationAssignments_Delete.json
+// Generated from example definition: 2025-10-01-preview/ConfigurationAssignments_Delete.json
 func ExampleConfigurationAssignmentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleConfigurationAssignmentsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/ConfigurationAssignments_DeleteParent.json
+// Generated from example definition: 2025-10-01-preview/ConfigurationAssignments_DeleteParent.json
 func ExampleConfigurationAssignmentsClient_DeleteParent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleConfigurationAssignmentsClient_DeleteParent() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/ConfigurationAssignments_Get.json
+// Generated from example definition: 2025-10-01-preview/ConfigurationAssignments_Get.json
 func ExampleConfigurationAssignmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +167,7 @@ func ExampleConfigurationAssignmentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/ConfigurationAssignments_GetParent.json
+// Generated from example definition: 2025-10-01-preview/ConfigurationAssignments_GetParent.json
 func ExampleConfigurationAssignmentsClient_GetParent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,7 +198,7 @@ func ExampleConfigurationAssignmentsClient_GetParent() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/ConfigurationAssignments_List.json
+// Generated from example definition: 2025-10-01-preview/ConfigurationAssignments_List.json
 func ExampleConfigurationAssignmentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,7 +238,7 @@ func ExampleConfigurationAssignmentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2023-10-01-preview/ConfigurationAssignments_ListParent.json
+// Generated from example definition: 2025-10-01-preview/ConfigurationAssignments_ListParent.json
 func ExampleConfigurationAssignmentsClient_NewListParentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

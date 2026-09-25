@@ -74,3 +74,28 @@ func unmarshalSignalDefinitionPropertiesClassification(rawMsg json.RawMessage) (
 	}
 	return b, nil
 }
+
+func unmarshalSignalRecommendationConfigurationClassification(rawMsg json.RawMessage) (SignalRecommendationConfigurationClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b SignalRecommendationConfigurationClassification
+	switch m["signalKind"] {
+	case string(SignalRecommendationKindAzureResourceMetric):
+		b = &AzureResourceMetricRecommendationConfiguration{}
+	case string(SignalRecommendationKindLogAnalyticsQuery):
+		b = &LogAnalyticsQueryRecommendationConfiguration{}
+	case string(SignalRecommendationKindPrometheusMetricsQuery):
+		b = &PrometheusMetricsRecommendationConfiguration{}
+	default:
+		b = &SignalRecommendationConfiguration{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}

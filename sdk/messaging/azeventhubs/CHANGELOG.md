@@ -2,6 +2,10 @@
 
 ## 2.0.3 (Unreleased)
 
+### Features Added
+
+- Added a `GetPartitionProperties` method to `PartitionClient` and `ProcessorPartitionClient`, so callers do not need the `ConsumerClient` to read partition properties. (#25038)
+
 ### Bugs Fixed
 
 - Fixed missing `consumers.Delete()` call when checkpoint initialization fails, which could block future consumer creation for the affected partition. (#24983)

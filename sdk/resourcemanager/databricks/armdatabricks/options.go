@@ -45,12 +45,6 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OutboundNetworkDependenciesEndpointsClientListOptions contains the optional parameters for the OutboundNetworkDependenciesEndpointsClient.List
-// method.
-type OutboundNetworkDependenciesEndpointsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // PrivateEndpointConnectionsClientBeginCreateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreate
 // method.
 type PrivateEndpointConnectionsClientBeginCreateOptions struct {

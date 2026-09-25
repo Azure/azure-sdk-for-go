@@ -1,5 +1,20 @@
 # Release History
 
+## 3.0.0 (2026-09-24)
+### Breaking Changes
+
+- Function `*ClientFactory.NewOutboundNetworkDependenciesEndpointsClient` has been removed
+- Function `NewOutboundNetworkDependenciesEndpointsClient` has been removed
+- Function `*OutboundNetworkDependenciesEndpointsClient.List` has been removed
+- Struct `EndpointDependency` has been removed
+- Struct `EndpointDetail` has been removed
+- Struct `OutboundEnvironmentEndpoint` has been removed
+
+
+## 2.0.1 (2026-09-24)
+### Other Changes
+
+
 ## 2.0.0 (2026-06-24)
 ### Breaking Changes
 

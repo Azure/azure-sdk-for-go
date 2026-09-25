@@ -21,9 +21,6 @@ type ServerFactory struct {
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
-	// OutboundNetworkDependenciesEndpointsServer contains the fakes for client OutboundNetworkDependenciesEndpointsClient
-	OutboundNetworkDependenciesEndpointsServer OutboundNetworkDependenciesEndpointsServer
-
 	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
 	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
 
@@ -49,15 +46,14 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armdatabricks.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                          *ServerFactory
-	trMu                                         sync.Mutex
-	trAccessConnectorsServer                     *AccessConnectorsServerTransport
-	trOperationsServer                           *OperationsServerTransport
-	trOutboundNetworkDependenciesEndpointsServer *OutboundNetworkDependenciesEndpointsServerTransport
-	trPrivateEndpointConnectionsServer           *PrivateEndpointConnectionsServerTransport
-	trPrivateLinkResourcesServer                 *PrivateLinkResourcesServerTransport
-	trVNetPeeringServer                          *VNetPeeringServerTransport
-	trWorkspacesServer                           *WorkspacesServerTransport
+	srv                                *ServerFactory
+	trMu                               sync.Mutex
+	trAccessConnectorsServer           *AccessConnectorsServerTransport
+	trOperationsServer                 *OperationsServerTransport
+	trPrivateEndpointConnectionsServer *PrivateEndpointConnectionsServerTransport
+	trPrivateLinkResourcesServer       *PrivateLinkResourcesServerTransport
+	trVNetPeeringServer                *VNetPeeringServerTransport
+	trWorkspacesServer                 *WorkspacesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -81,11 +77,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
-	case "OutboundNetworkDependenciesEndpointsClient":
-		initServer(&s.trMu, &s.trOutboundNetworkDependenciesEndpointsServer, func() *OutboundNetworkDependenciesEndpointsServerTransport {
-			return NewOutboundNetworkDependenciesEndpointsServerTransport(&s.srv.OutboundNetworkDependenciesEndpointsServer)
-		})
-		resp, err = s.trOutboundNetworkDependenciesEndpointsServer.Do(req)
 	case "PrivateEndpointConnectionsClient":
 		initServer(&s.trMu, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
 			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)

@@ -37,7 +37,8 @@ func TestRFC7231(t *testing.T) {
 	var dt3 datetime.RFC7231
 	err = dt3.UnmarshalText(textBytes)
 	require.NoError(t, err)
-	require.True(t, originalTime.Equal(time.Time(dt3)))
+	require.WithinDuration(t, originalTime, time.Time(dt3), 0)
+	require.Equal(t, "GMT", time.Time(dt3).Location().String())
 }
 
 func TestRFC7231MarshalConvertsToGMT(t *testing.T) {

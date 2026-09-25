@@ -5,7 +5,7 @@
 package armbulkactions
 
 const (
-	version20260906Preview string = "2026-09-06-preview"
+	version20261006Preview string = "2026-10-06-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -20,69 +20,6 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
-	}
-}
-
-// AllocationStrategy - The allocation strategy for VM size selection
-type AllocationStrategy string
-
-const (
-	// AllocationStrategyCapacityOptimized - Platform prioritizes VM sizes with the highest available capacity first
-	AllocationStrategyCapacityOptimized AllocationStrategy = "CapacityOptimized"
-	// AllocationStrategyLowestPrice - Platform prioritizes VM sizes with the lowest hourly cost
-	AllocationStrategyLowestPrice AllocationStrategy = "LowestPrice"
-	// AllocationStrategyPrioritized - Customer specifies a rank for each VM size, platform uses VM sizes in rank order
-	AllocationStrategyPrioritized AllocationStrategy = "Prioritized"
-)
-
-// PossibleAllocationStrategyValues returns the possible values for the AllocationStrategy const type.
-func PossibleAllocationStrategyValues() []AllocationStrategy {
-	return []AllocationStrategy{
-		AllocationStrategyCapacityOptimized,
-		AllocationStrategyLowestPrice,
-		AllocationStrategyPrioritized,
-	}
-}
-
-// BulkCreateCustomAllocationStrategy - The allocation strategy for VM size selection in BulkCreateCustom.
-type BulkCreateCustomAllocationStrategy string
-
-const (
-	// BulkCreateCustomAllocationStrategyLowestPrice - Platform prioritizes VM sizes with the lowest hourly cost
-	BulkCreateCustomAllocationStrategyLowestPrice BulkCreateCustomAllocationStrategy = "LowestPrice"
-	// BulkCreateCustomAllocationStrategyPrioritized - Customer specifies a rank for each VM size, platform uses VM sizes in rank
-	// order
-	BulkCreateCustomAllocationStrategyPrioritized BulkCreateCustomAllocationStrategy = "Prioritized"
-)
-
-// PossibleBulkCreateCustomAllocationStrategyValues returns the possible values for the BulkCreateCustomAllocationStrategy const type.
-func PossibleBulkCreateCustomAllocationStrategyValues() []BulkCreateCustomAllocationStrategy {
-	return []BulkCreateCustomAllocationStrategy{
-		BulkCreateCustomAllocationStrategyLowestPrice,
-		BulkCreateCustomAllocationStrategyPrioritized,
-	}
-}
-
-// BulkCreateCustomDistributionStrategy - The distribution strategy for zone allocation in BulkCreateCustom.
-type BulkCreateCustomDistributionStrategy string
-
-const (
-	// BulkCreateCustomDistributionStrategyBestEffortBalanced - Platform attempts to evenly distribute VMs across all available
-	// zones with best effort
-	BulkCreateCustomDistributionStrategyBestEffortBalanced BulkCreateCustomDistributionStrategy = "BestEffortBalanced"
-	// BulkCreateCustomDistributionStrategyBestEffortSingleZone - Platform attempts to place as many VMs as possible in a single
-	// zone, falls back to multiple zones if needed
-	BulkCreateCustomDistributionStrategyBestEffortSingleZone BulkCreateCustomDistributionStrategy = "BestEffortSingleZone"
-	// BulkCreateCustomDistributionStrategyPrioritized - Platform uses customer-provided zone rankings to allocate VMs
-	BulkCreateCustomDistributionStrategyPrioritized BulkCreateCustomDistributionStrategy = "Prioritized"
-)
-
-// PossibleBulkCreateCustomDistributionStrategyValues returns the possible values for the BulkCreateCustomDistributionStrategy const type.
-func PossibleBulkCreateCustomDistributionStrategyValues() []BulkCreateCustomDistributionStrategy {
-	return []BulkCreateCustomDistributionStrategy{
-		BulkCreateCustomDistributionStrategyBestEffortBalanced,
-		BulkCreateCustomDistributionStrategyBestEffortSingleZone,
-		BulkCreateCustomDistributionStrategyPrioritized,
 	}
 }
 
@@ -177,13 +114,13 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// DeadlineType - The types of deadlines supported by Bulkactions
+// DeadlineType - The deadline behavior for a bulk action.
 type DeadlineType string
 
 const (
-	// DeadlineTypeCompleteBy - Complete the operation by the given deadline.
+	// DeadlineTypeCompleteBy - Bulk Actions attempts to complete the operation by the specified deadline.
 	DeadlineTypeCompleteBy DeadlineType = "CompleteBy"
-	// DeadlineTypeInitiateAt - Initiate the operation at the given deadline.
+	// DeadlineTypeInitiateAt - Bulk Actions attempts to start the operation at the specified deadline.
 	DeadlineTypeInitiateAt DeadlineType = "InitiateAt"
 )
 
@@ -345,33 +282,6 @@ const (
 func PossibleDiskDetachOptionTypesValues() []DiskDetachOptionTypes {
 	return []DiskDetachOptionTypes{
 		DiskDetachOptionTypesForceDetach,
-	}
-}
-
-// DistributionStrategy - The distribution strategy for zone allocation
-type DistributionStrategy string
-
-const (
-	// DistributionStrategyBestEffortBalanced - Platform attempts to evenly distribute VMs across all available zones with best
-	// effort
-	DistributionStrategyBestEffortBalanced DistributionStrategy = "BestEffortBalanced"
-	// DistributionStrategyBestEffortSingleZone - Platform attempts to place as many VMs as possible in a single zone, falls back
-	// to multiple zones if needed
-	DistributionStrategyBestEffortSingleZone DistributionStrategy = "BestEffortSingleZone"
-	// DistributionStrategyPrioritized - Platform uses customer-provided zone rankings to allocate VMs
-	DistributionStrategyPrioritized DistributionStrategy = "Prioritized"
-	// DistributionStrategyStrictBalanced - Platform must evenly distribute VMs across zones, request is rejected if exact balance
-	// cannot be achieved
-	DistributionStrategyStrictBalanced DistributionStrategy = "StrictBalanced"
-)
-
-// PossibleDistributionStrategyValues returns the possible values for the DistributionStrategy const type.
-func PossibleDistributionStrategyValues() []DistributionStrategy {
-	return []DistributionStrategy{
-		DistributionStrategyBestEffortBalanced,
-		DistributionStrategyBestEffortSingleZone,
-		DistributionStrategyPrioritized,
-		DistributionStrategyStrictBalanced,
 	}
 }
 
@@ -809,21 +719,21 @@ func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
 	}
 }
 
-// OperationState - Values that define the states of operations in Bulkactions
+// OperationState - The current state of a bulk action.
 type OperationState string
 
 const (
-	// OperationStateBlocked - Operations that are blocked
+	// OperationStateBlocked - The operation cannot currently make progress.
 	OperationStateBlocked OperationState = "Blocked"
-	// OperationStateCancelled - Operations that have been Cancelled by the user
+	// OperationStateCancelled - The operation was canceled by the caller.
 	OperationStateCancelled OperationState = "Cancelled"
-	// OperationStateExecuting - Operations that are in the process of being executed
+	// OperationStateExecuting - The operation is in progress.
 	OperationStateExecuting OperationState = "Executing"
-	// OperationStateFailed - Operations that have failed
+	// OperationStateFailed - The operation failed.
 	OperationStateFailed OperationState = "Failed"
-	// OperationStateScheduled - Operations that have been scheduled
+	// OperationStateScheduled - The operation has been scheduled.
 	OperationStateScheduled OperationState = "Scheduled"
-	// OperationStateSucceeded - Operations that succeeded
+	// OperationStateSucceeded - The operation completed successfully.
 	OperationStateSucceeded OperationState = "Succeeded"
 )
 
@@ -903,13 +813,13 @@ func PossiblePartialFulfillmentReasonValues() []PartialFulfillmentReason {
 	}
 }
 
-// PriorityType - The priority type for VM allocation
+// PriorityType - The priority type for virtual machine allocation.
 type PriorityType string
 
 const (
-	// PriorityTypeRegular - Regular priority VMs
+	// PriorityTypeRegular - Regular, non-Spot virtual machines.
 	PriorityTypeRegular PriorityType = "Regular"
-	// PriorityTypeSpot - Spot priority VMs
+	// PriorityTypeSpot - Azure Spot Virtual Machines.
 	PriorityTypeSpot PriorityType = "Spot"
 )
 
@@ -1060,19 +970,19 @@ func PossibleResourceOperationStatusValues() []ResourceOperationStatus {
 	}
 }
 
-// ResourceOperationType - The kind of bulk operation that can be performed on resources using Bulkactions API
+// ResourceOperationType - The type of operation performed by Bulk Actions.
 type ResourceOperationType string
 
 const (
-	// ResourceOperationTypeCreate - Create operations on the resources
+	// ResourceOperationTypeCreate - Creates the specified virtual machines.
 	ResourceOperationTypeCreate ResourceOperationType = "Create"
-	// ResourceOperationTypeDeallocate - Deallocate operations on the resources
+	// ResourceOperationTypeDeallocate - Deallocates the specified virtual machines.
 	ResourceOperationTypeDeallocate ResourceOperationType = "Deallocate"
-	// ResourceOperationTypeDelete - Delete operations on the resources
+	// ResourceOperationTypeDelete - Deletes the specified virtual machines.
 	ResourceOperationTypeDelete ResourceOperationType = "Delete"
-	// ResourceOperationTypeHibernate - Hibernate operations on the resources
+	// ResourceOperationTypeHibernate - Hibernates the specified virtual machines.
 	ResourceOperationTypeHibernate ResourceOperationType = "Hibernate"
-	// ResourceOperationTypeStart - Start operations on the resources
+	// ResourceOperationTypeStart - Starts the specified virtual machines.
 	ResourceOperationTypeStart ResourceOperationType = "Start"
 )
 

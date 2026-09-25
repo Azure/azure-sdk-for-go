@@ -232,42 +232,48 @@ type ScheduledActionsClientUpdateResponse struct {
 
 // VirtualMachineBulkOperationsClientBulkCancelOperationsResponse contains the response from method VirtualMachineBulkOperationsClient.BulkCancelOperations.
 type VirtualMachineBulkOperationsClientBulkCancelOperationsResponse struct {
-	// This is the response from a cancel operations request
+	// The results of the cancellation requests.
 	CancelOperationsResponse
 }
 
 // VirtualMachineBulkOperationsClientBulkDeallocateOperationResponse contains the response from method VirtualMachineBulkOperationsClient.BulkDeallocateOperation.
 type VirtualMachineBulkOperationsClientBulkDeallocateOperationResponse struct {
-	// The response from a deallocate request
+	// The result of a bulk deallocate action.
 	DeallocateResourceOperationResponse
 }
 
 // VirtualMachineBulkOperationsClientBulkDeleteOperationResponse contains the response from method VirtualMachineBulkOperationsClient.BulkDeleteOperation.
 type VirtualMachineBulkOperationsClientBulkDeleteOperationResponse struct {
-	// The response from a delete request
+	// The result of a bulk delete action.
 	DeleteResourceOperationResponse
 }
 
 // VirtualMachineBulkOperationsClientBulkGetOperationsStatusResponse contains the response from method VirtualMachineBulkOperationsClient.BulkGetOperationsStatus.
 type VirtualMachineBulkOperationsClientBulkGetOperationsStatusResponse struct {
-	// This is the response from a get operations status request
+	// The current results for the requested operations.
 	GetOperationStatusResponse
 }
 
 // VirtualMachineBulkOperationsClientBulkHibernateOperationResponse contains the response from method VirtualMachineBulkOperationsClient.BulkHibernateOperation.
 type VirtualMachineBulkOperationsClientBulkHibernateOperationResponse struct {
-	// The response from a Hibernate request
+	// The result of a bulk hibernate action.
 	HibernateResourceOperationResponse
+}
+
+// VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse contains the response from method VirtualMachineBulkOperationsClient.NewBulkListOperationErrorsPager.
+type VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse struct {
+	// A paged list of recent bulk action errors.
+	ListBulkOperationErrorsResponse
 }
 
 // VirtualMachineBulkOperationsClientBulkReimageOperationResponse contains the response from method VirtualMachineBulkOperationsClient.BulkReimageOperation.
 type VirtualMachineBulkOperationsClientBulkReimageOperationResponse struct {
-	// The response from a reimage request
+	// The result of a bulk reimage action.
 	ReimageResourceOperationResponse
 }
 
 // VirtualMachineBulkOperationsClientBulkStartOperationResponse contains the response from method VirtualMachineBulkOperationsClient.BulkStartOperation.
 type VirtualMachineBulkOperationsClientBulkStartOperationResponse struct {
-	// The response from a start request
+	// The result of a bulk start action.
 	StartResourceOperationResponse
 }

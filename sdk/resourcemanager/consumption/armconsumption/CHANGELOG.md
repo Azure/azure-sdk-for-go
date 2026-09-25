@@ -1,5 +1,18 @@
 # Release History
 
+## 2.1.0 (2026-08-17)
+### Features Added
+
+- New value `ScopeManagementGroup` added to enum type `Scope`
+- New function `*LegacyManagementGroupScopeReservationRecommendationProperties.GetLegacyReservationRecommendationProperties() *LegacyReservationRecommendationProperties`
+- New function `*ModernManagementGroupScopeReservationRecommendationProperties.GetModernReservationRecommendationProperties() *ModernReservationRecommendationProperties`
+- New struct `LegacyManagementGroupScopeReservationRecommendationProperties`
+- New struct `ModernManagementGroupScopeReservationRecommendationProperties`
+- New struct `ReservationRecommendationDetailsProjectedUsageProperties`
+- New field `ManagementGroupID` in struct `ReservationRecommendationDetailsClientGetOptions`
+- New field `ManagementGroupID`, `ProjectedUsage`, `TenantID` in struct `ReservationRecommendationDetailsProperties`
+
+
 ## 2.0.0 (2026-06-24)
 ### Breaking Changes
 

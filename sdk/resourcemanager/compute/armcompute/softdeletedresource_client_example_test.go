@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-12-03/galleryExamples/GallerySoftDeletedResource_ListByArtifactName.json
+// Generated from example definition: 2026-03-03/galleryExamples/GallerySoftDeletedResource_ListByArtifactName.json
 func ExampleSoftDeletedResourceClient_NewListByArtifactNamePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,6 +45,8 @@ func ExampleSoftDeletedResourceClient_NewListByArtifactNamePager() {
 		// 					ResourceArmID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName/images/myGalleryImageName/versions/1.0.0"),
 		// 					SoftDeletedTime: to.Ptr("2024-10-17T13:01:05+00:00"),
 		// 					SoftDeletedArtifactType: to.Ptr(armcompute.SoftDeletedArtifactTypesImages),
+		// 					ConsumptionEndTime: to.Ptr(time.Date(2024, time.November, 16, 13, 1, 5, 0, time.UTC)),
+		// 					HardDeletionTargetTime: to.Ptr(time.Date(2024, time.November, 23, 13, 1, 5, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

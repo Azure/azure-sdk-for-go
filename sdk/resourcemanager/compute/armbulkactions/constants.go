@@ -23,15 +23,15 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
-// AllocationStrategy - The allocation strategy for VM size selection
+// AllocationStrategy - The strategy Bulk Actions uses to select a virtual machine size.
 type AllocationStrategy string
 
 const (
-	// AllocationStrategyCapacityOptimized - Platform prioritizes VM sizes with the highest available capacity first
+	// AllocationStrategyCapacityOptimized - Bulk Actions prioritizes virtual machine sizes with the highest available capacity.
 	AllocationStrategyCapacityOptimized AllocationStrategy = "CapacityOptimized"
-	// AllocationStrategyLowestPrice - Platform prioritizes VM sizes with the lowest hourly cost
+	// AllocationStrategyLowestPrice - Bulk Actions prioritizes virtual machine sizes with the lowest hourly cost.
 	AllocationStrategyLowestPrice AllocationStrategy = "LowestPrice"
-	// AllocationStrategyPrioritized - Customer specifies a rank for each VM size, platform uses VM sizes in rank order
+	// AllocationStrategyPrioritized - Bulk Actions considers virtual machine sizes in the customer-specified rank order.
 	AllocationStrategyPrioritized AllocationStrategy = "Prioritized"
 )
 
@@ -177,13 +177,13 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// DeadlineType - The types of deadlines supported by Bulkactions
+// DeadlineType - The deadline behavior for a bulk action.
 type DeadlineType string
 
 const (
-	// DeadlineTypeCompleteBy - Complete the operation by the given deadline.
+	// DeadlineTypeCompleteBy - Bulk Actions attempts to complete the operation by the specified deadline.
 	DeadlineTypeCompleteBy DeadlineType = "CompleteBy"
-	// DeadlineTypeInitiateAt - Initiate the operation at the given deadline.
+	// DeadlineTypeInitiateAt - Bulk Actions attempts to start the operation at the specified deadline.
 	DeadlineTypeInitiateAt DeadlineType = "InitiateAt"
 )
 
@@ -348,20 +348,20 @@ func PossibleDiskDetachOptionTypesValues() []DiskDetachOptionTypes {
 	}
 }
 
-// DistributionStrategy - The distribution strategy for zone allocation
+// DistributionStrategy - The strategy Bulk Actions uses to distribute virtual machines across availability zones.
 type DistributionStrategy string
 
 const (
-	// DistributionStrategyBestEffortBalanced - Platform attempts to evenly distribute VMs across all available zones with best
-	// effort
+	// DistributionStrategyBestEffortBalanced - Bulk Actions attempts to distribute virtual machines evenly across the available
+	// zones.
 	DistributionStrategyBestEffortBalanced DistributionStrategy = "BestEffortBalanced"
-	// DistributionStrategyBestEffortSingleZone - Platform attempts to place as many VMs as possible in a single zone, falls back
-	// to multiple zones if needed
+	// DistributionStrategyBestEffortSingleZone - Bulk Actions attempts to place as many virtual machines as possible in one availability
+	// zone and uses additional zones when needed.
 	DistributionStrategyBestEffortSingleZone DistributionStrategy = "BestEffortSingleZone"
-	// DistributionStrategyPrioritized - Platform uses customer-provided zone rankings to allocate VMs
+	// DistributionStrategyPrioritized - Bulk Actions considers availability zones in the customer-specified rank order.
 	DistributionStrategyPrioritized DistributionStrategy = "Prioritized"
-	// DistributionStrategyStrictBalanced - Platform must evenly distribute VMs across zones, request is rejected if exact balance
-	// cannot be achieved
+	// DistributionStrategyStrictBalanced - Bulk Actions distributes virtual machines evenly across zones and rejects the request
+	// when an even distribution cannot be achieved.
 	DistributionStrategyStrictBalanced DistributionStrategy = "StrictBalanced"
 )
 
@@ -809,21 +809,21 @@ func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
 	}
 }
 
-// OperationState - Values that define the states of operations in Bulkactions
+// OperationState - The current state of a bulk action.
 type OperationState string
 
 const (
-	// OperationStateBlocked - Operations that are blocked
+	// OperationStateBlocked - The operation cannot currently make progress.
 	OperationStateBlocked OperationState = "Blocked"
-	// OperationStateCancelled - Operations that have been Cancelled by the user
+	// OperationStateCancelled - The operation was canceled by the caller.
 	OperationStateCancelled OperationState = "Cancelled"
-	// OperationStateExecuting - Operations that are in the process of being executed
+	// OperationStateExecuting - The operation is in progress.
 	OperationStateExecuting OperationState = "Executing"
-	// OperationStateFailed - Operations that have failed
+	// OperationStateFailed - The operation failed.
 	OperationStateFailed OperationState = "Failed"
-	// OperationStateScheduled - Operations that have been scheduled
+	// OperationStateScheduled - The operation has been scheduled.
 	OperationStateScheduled OperationState = "Scheduled"
-	// OperationStateSucceeded - Operations that succeeded
+	// OperationStateSucceeded - The operation completed successfully.
 	OperationStateSucceeded OperationState = "Succeeded"
 )
 
@@ -903,13 +903,13 @@ func PossiblePartialFulfillmentReasonValues() []PartialFulfillmentReason {
 	}
 }
 
-// PriorityType - The priority type for VM allocation
+// PriorityType - The priority type for virtual machine allocation.
 type PriorityType string
 
 const (
-	// PriorityTypeRegular - Regular priority VMs
+	// PriorityTypeRegular - Regular, non-Spot virtual machines.
 	PriorityTypeRegular PriorityType = "Regular"
-	// PriorityTypeSpot - Spot priority VMs
+	// PriorityTypeSpot - Azure Spot Virtual Machines.
 	PriorityTypeSpot PriorityType = "Spot"
 )
 
@@ -1060,19 +1060,19 @@ func PossibleResourceOperationStatusValues() []ResourceOperationStatus {
 	}
 }
 
-// ResourceOperationType - The kind of bulk operation that can be performed on resources using Bulkactions API
+// ResourceOperationType - The type of operation performed by Bulk Actions.
 type ResourceOperationType string
 
 const (
-	// ResourceOperationTypeCreate - Create operations on the resources
+	// ResourceOperationTypeCreate - Creates the specified virtual machines.
 	ResourceOperationTypeCreate ResourceOperationType = "Create"
-	// ResourceOperationTypeDeallocate - Deallocate operations on the resources
+	// ResourceOperationTypeDeallocate - Deallocates the specified virtual machines.
 	ResourceOperationTypeDeallocate ResourceOperationType = "Deallocate"
-	// ResourceOperationTypeDelete - Delete operations on the resources
+	// ResourceOperationTypeDelete - Deletes the specified virtual machines.
 	ResourceOperationTypeDelete ResourceOperationType = "Delete"
-	// ResourceOperationTypeHibernate - Hibernate operations on the resources
+	// ResourceOperationTypeHibernate - Hibernates the specified virtual machines.
 	ResourceOperationTypeHibernate ResourceOperationType = "Hibernate"
-	// ResourceOperationTypeStart - Start operations on the resources
+	// ResourceOperationTypeStart - Starts the specified virtual machines.
 	ResourceOperationTypeStart ResourceOperationType = "Start"
 )
 

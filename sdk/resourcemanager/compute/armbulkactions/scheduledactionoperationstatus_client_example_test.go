@@ -34,17 +34,10 @@ func ExampleScheduledActionOperationStatusClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/providers/Microsoft.Compute/locations/eastus/scheduledActionsOperationStatuses/00000000-0000-0000-0000-000000000000"),
 	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		Status: to.Ptr("Succeeded"),
-	// 		StartTime: to.Ptr(time.Date(2026, time.June, 24, 0, 23, 55, 281000000, time.UTC)),
-	// 		EndTime: to.Ptr(time.Date(2026, time.June, 24, 0, 24, 55, 281000000, time.UTC)),
+	// 		StartTime: to.Ptr(time.Date(2026, time.September, 1, 2, 0, 0, 0, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2026, time.September, 1, 2, 1, 0, 0, time.UTC)),
 	// 		PercentComplete: to.Ptr[float64](100),
-	// 		Operations: []*armbulkactions.OperationStatusResult{
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/providers/Microsoft.Compute/locations/eastus/scheduledActionsOperationStatuses/00000000-0000-0000-0000-000000000001"),
-	// 				Name: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
-	// 				Status: to.Ptr("Succeeded"),
-	// 				PercentComplete: to.Ptr[float64](100),
-	// 			},
-	// 		},
+	// 		ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/scheduledActions/myScheduledAction"),
 	// 	},
 	// }
 }

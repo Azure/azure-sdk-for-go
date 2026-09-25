@@ -1157,7 +1157,6 @@ func ExampleBulkCreateClient_NewVirtualMachinesGetOperationStatusPager() {
 		// 					State: to.Ptr(armbulkactions.OperationStateScheduled),
 		// 					Timezone: to.Ptr("UTC"),
 		// 					RetryPolicy: &armbulkactions.RetryPolicy{
-		// 						RetryCount: to.Ptr[int32](1),
 		// 						RetryWindowInMinutes: to.Ptr[int32](60),
 		// 					},
 		// 				},

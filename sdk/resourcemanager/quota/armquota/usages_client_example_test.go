@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/getComputeOneSkuUsages.json
+// Generated from example definition: 2026-09-01-preview/getComputeOneSkuUsages.json
 func ExampleUsagesClient_Get_quotasUsagesRequestForCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleUsagesClient_Get_quotasUsagesRequestForCompute() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.UsagesClientGetResponse{
-	// 	CurrentUsagesBase: &armquota.CurrentUsagesBase{
+	// 	CurrentUsagesBase: armquota.CurrentUsagesBase{
 	// 		Name: to.Ptr("standardNDSFamily"),
 	// 		Type: to.Ptr("Microsoft.Quota/Usages"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/providers/Microsoft.Quota/Usages/standardNDSFamily"),
@@ -50,7 +50,7 @@ func ExampleUsagesClient_Get_quotasUsagesRequestForCompute() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/getNetworkOneSkuUsages.json
+// Generated from example definition: 2026-09-01-preview/getNetworkOneSkuUsages.json
 func ExampleUsagesClient_Get_quotasUsagesRequestForNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleUsagesClient_Get_quotasUsagesRequestForNetwork() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.UsagesClientGetResponse{
-	// 	CurrentUsagesBase: &armquota.CurrentUsagesBase{
+	// 	CurrentUsagesBase: armquota.CurrentUsagesBase{
 	// 		Name: to.Ptr("MinPublicIpInterNetworkPrefixLength"),
 	// 		Type: to.Ptr("Microsoft.Quota/usages"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/providers/Microsoft.Quota/usages/MinPublicIpInterNetworkPrefixLength"),
@@ -89,7 +89,7 @@ func ExampleUsagesClient_Get_quotasUsagesRequestForNetwork() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/getComputeUsages.json
+// Generated from example definition: 2026-09-01-preview/getComputeUsages.json
 func ExampleUsagesClient_NewListPager_quotasListUsagesForCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -313,7 +313,7 @@ func ExampleUsagesClient_NewListPager_quotasListUsagesForCompute() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/getMachineLearningServicesUsages.json
+// Generated from example definition: 2026-09-01-preview/getMachineLearningServicesUsages.json
 func ExampleUsagesClient_NewListPager_quotasListUsagesMachineLearningServices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -376,7 +376,7 @@ func ExampleUsagesClient_NewListPager_quotasListUsagesMachineLearningServices() 
 	}
 }
 
-// Generated from example definition: 2025-09-01/getNetworkUsages.json
+// Generated from example definition: 2026-09-01-preview/getNetworkUsages.json
 func ExampleUsagesClient_NewListPager_quotasListUsagesForNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

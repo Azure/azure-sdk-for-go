@@ -18,6 +18,8 @@ import (
 
 // GroupQuotaLimitsRequestClient contains the methods for the GroupQuotaLimitsRequest group.
 // Don't use this type directly, use NewGroupQuotaLimitsRequestClient() instead.
+//
+// Generated from API version 2026-09-01-preview
 type GroupQuotaLimitsRequestClient struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewGroupQuotaLimitsRequestClient(credential azcore.TokenCredential, options
 
 // Get - Get API to check the status of a GroupQuota request by requestId.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - managementGroupID - The management group ID.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - requestID - Request Id.
@@ -59,12 +59,7 @@ func (client *GroupQuotaLimitsRequestClient) Get(ctx context.Context, management
 	if err != nil {
 		return GroupQuotaLimitsRequestClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GroupQuotaLimitsRequestClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -87,15 +82,18 @@ func (client *GroupQuotaLimitsRequestClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *GroupQuotaLimitsRequestClient) getHandleResponse(resp *http.Response) (GroupQuotaLimitsRequestClientGetResponse, error) {
+func (client *GroupQuotaLimitsRequestClient) getHandleResponse(resp *http.Response, successCodes ...int) (GroupQuotaLimitsRequestClientGetResponse, error) {
 	result := GroupQuotaLimitsRequestClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubmittedResourceRequestStatus); err != nil {
 		return GroupQuotaLimitsRequestClientGetResponse{}, err
 	}
@@ -103,13 +101,11 @@ func (client *GroupQuotaLimitsRequestClient) getHandleResponse(resp *http.Respon
 }
 
 // NewListPager - Get API to check the status of a GroupQuota request by requestId.
-//
-// Generated from API version 2025-09-01
 //   - managementGroupID - The management group ID.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
 //     provider supports this API.
-//   - Filter - | Field | Supported operators \r\n|---------------------|------------------------\n\r\n location eq {location}
+//   - filter - | Field | Supported operators \r\n|---------------------|------------------------\n\r\n location eq {location}
 //     and resource eq {resourceName}\n Example: $filter=location eq eastus and resourceName eq cores
 //   - options - GroupQuotaLimitsRequestClientListOptions contains the optional parameters for the GroupQuotaLimitsRequestClient.NewListPager
 //     method.
@@ -124,48 +120,62 @@ func (client *GroupQuotaLimitsRequestClient) NewListPager(managementGroupID stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, managementGroupID, groupQuotaName, resourceProviderName, filter, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, managementGroupID, groupQuotaName, resourceProviderName, filter, nextLink, options)
 			if err != nil {
 				return GroupQuotaLimitsRequestClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GroupQuotaLimitsRequestClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *GroupQuotaLimitsRequestClient) listCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, filter string, _ *GroupQuotaLimitsRequestClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/resourceProviders/{resourceProviderName}/groupQuotaRequests"
-	if managementGroupID == "" {
-		return nil, errors.New("parameter managementGroupID cannot be empty")
+func (client *GroupQuotaLimitsRequestClient) listCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, filter string, nextLink string, _ *GroupQuotaLimitsRequestClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/resourceProviders/{resourceProviderName}/groupQuotaRequests"
+		if managementGroupID == "" {
+			return nil, errors.New("parameter managementGroupID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
+		if groupQuotaName == "" {
+			return nil, errors.New("parameter groupQuotaName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{groupQuotaName}", url.PathEscape(groupQuotaName))
+		if resourceProviderName == "" {
+			return nil, errors.New("parameter resourceProviderName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceProviderName}", url.PathEscape(resourceProviderName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	if groupQuotaName == "" {
-		return nil, errors.New("parameter groupQuotaName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{groupQuotaName}", url.PathEscape(groupQuotaName))
-	if resourceProviderName == "" {
-		return nil, errors.New("parameter resourceProviderName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderName}", url.PathEscape(resourceProviderName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("$filter", filter)
+		reqQP.Set("api-version", version20260901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *GroupQuotaLimitsRequestClient) listHandleResponse(resp *http.Response) (GroupQuotaLimitsRequestClientListResponse, error) {
+func (client *GroupQuotaLimitsRequestClient) listHandleResponse(resp *http.Response, successCodes ...int) (GroupQuotaLimitsRequestClientListResponse, error) {
 	result := GroupQuotaLimitsRequestClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubmittedResourceRequestStatusList); err != nil {
 		return GroupQuotaLimitsRequestClientListResponse{}, err
 	}
@@ -178,8 +188,6 @@ func (client *GroupQuotaLimitsRequestClient) listHandleResponse(resp *http.Respo
 // Use the polling API - OperationsStatus URI specified in Azure-AsyncOperation header field, with retry-after duration in
 // seconds to check the intermediate status. This API provides the finals status with the request details and status.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - managementGroupID - The management group ID.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
@@ -211,8 +219,6 @@ func (client *GroupQuotaLimitsRequestClient) BeginUpdate(ctx context.Context, ma
 // Use the polling API - OperationsStatus URI specified in Azure-AsyncOperation header field, with retry-after duration in
 // seconds to check the intermediate status. This API provides the finals status with the request details and status.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *GroupQuotaLimitsRequestClient) update(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, groupQuotaRequest GroupQuotaLimitList, options *GroupQuotaLimitsRequestClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GroupQuotaLimitsRequestClient.BeginUpdate"
@@ -228,8 +234,7 @@ func (client *GroupQuotaLimitsRequestClient) update(ctx context.Context, managem
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -258,8 +263,8 @@ func (client *GroupQuotaLimitsRequestClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, groupQuotaRequest); err != nil {

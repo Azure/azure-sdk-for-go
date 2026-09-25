@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-09-01-preview/Entities_AddDataAnnotation.json
+// Generated from example definition: 2026-10-01-preview/Entities_AddDataAnnotation.json
 func ExampleEntitiesClient_AddDataAnnotation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleEntitiesClient_AddDataAnnotation() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/Entities_CreateOrUpdate.json
+// Generated from example definition: 2026-10-01-preview/Entities_CreateOrUpdate.json
 func ExampleEntitiesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -498,7 +498,7 @@ func ExampleEntitiesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/Entities_Delete.json
+// Generated from example definition: 2026-10-01-preview/Entities_Delete.json
 func ExampleEntitiesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -519,7 +519,7 @@ func ExampleEntitiesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-09-01-preview/Entities_Get.json
+// Generated from example definition: 2026-10-01-preview/Entities_Get.json
 func ExampleEntitiesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -658,7 +658,7 @@ func ExampleEntitiesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/Entities_GetDataAnnotations.json
+// Generated from example definition: 2026-10-01-preview/Entities_GetDataAnnotations.json
 func ExampleEntitiesClient_GetDataAnnotations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -707,7 +707,7 @@ func ExampleEntitiesClient_GetDataAnnotations() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/Entities_GetHistory.json
+// Generated from example definition: 2026-10-01-preview/Entities_GetHistory.json
 func ExampleEntitiesClient_GetHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -763,7 +763,7 @@ func ExampleEntitiesClient_GetHistory() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/Entities_GetSignalHistory.json
+// Generated from example definition: 2026-10-01-preview/Entities_GetSignalHistory.json
 func ExampleEntitiesClient_GetSignalHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -832,7 +832,7 @@ func ExampleEntitiesClient_GetSignalHistory() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/Entities_GetSignalRecommendations.json
+// Generated from example definition: 2026-10-01-preview/Entities_GetSignalRecommendations.json
 func ExampleEntitiesClient_GetSignalRecommendations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -843,7 +843,7 @@ func ExampleEntitiesClient_GetSignalRecommendations() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEntitiesClient().GetSignalRecommendations(ctx, "online-store-rg", "online-store", "orders-db", nil)
+	res, err := clientFactory.NewEntitiesClient().GetSignalRecommendations(ctx, "online-store-rg", "online-store", "online-store-aks", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -854,30 +854,22 @@ func ExampleEntitiesClient_GetSignalRecommendations() {
 	// 	GetSignalRecommendationsResponse: armcloudhealth.GetSignalRecommendationsResponse{
 	// 		RecommendedSignals: []*armcloudhealth.SignalConfiguration{
 	// 			{
-	// 				SignalID: to.Ptr("sql-cpu-percent"),
-	// 				MetricNamespace: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 				MetricName: to.Ptr("cpu_percent"),
-	// 				AggregationType: to.Ptr(armcloudhealth.MetricAggregationTypeAverage),
-	// 				Unit: to.Ptr("Percent"),
-	// 				TimeGrain: to.Ptr("PT5M"),
-	// 				EvaluationRules: &armcloudhealth.EvaluationRule{
-	// 					DegradedRule: &armcloudhealth.ThresholdRuleV2{
-	// 						Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
-	// 						Threshold: to.Ptr[float64](70),
-	// 					},
-	// 					UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
-	// 						Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
-	// 						Threshold: to.Ptr[float64](90),
-	// 					},
+	// 				SignalID: to.Ptr("2c2d2ac1-c9bc-4bb7-997d-56af23c81f41"),
+	// 				DisplayName: to.Ptr("AKS node CPU usage"),
+	// 				Description: to.Ptr("Monitors average CPU usage across nodes in the cluster."),
+	// 				ApplicableResourceTypes: []*string{
+	// 					to.Ptr("Microsoft.ContainerService/managedClusters"),
 	// 				},
-	// 			},
-	// 			{
-	// 				SignalID: to.Ptr("sql-dtu-consumption"),
-	// 				MetricNamespace: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 				MetricName: to.Ptr("dtu_consumption_percent"),
-	// 				AggregationType: to.Ptr(armcloudhealth.MetricAggregationTypeAverage),
-	// 				Unit: to.Ptr("Percent"),
-	// 				TimeGrain: to.Ptr("PT5M"),
+	// 				RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT5M),
+	// 				DataUnit: to.Ptr("Percent"),
+	// 				Configuration: &armcloudhealth.AzureResourceMetricRecommendationConfiguration{
+	// 					SignalKind: to.Ptr(armcloudhealth.SignalRecommendationKindAzureResourceMetric),
+	// 					MetricNamespace: to.Ptr("Microsoft.ContainerService/managedClusters"),
+	// 					MetricName: to.Ptr("node_cpu_usage_percentage"),
+	// 					AggregationType: to.Ptr(armcloudhealth.MetricAggregationTypeAverage),
+	// 					TimeGrain: to.Ptr("PT5M"),
+	// 					DimensionFilter: to.Ptr("nodepool eq 'systempool'"),
+	// 				},
 	// 				EvaluationRules: &armcloudhealth.EvaluationRule{
 	// 					DegradedRule: &armcloudhealth.ThresholdRuleV2{
 	// 						Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
@@ -889,37 +881,68 @@ func ExampleEntitiesClient_GetSignalRecommendations() {
 	// 					},
 	// 				},
 	// 			},
-	// 		},
-	// 		RecommendedConfigurations: []*armcloudhealth.SignalConfiguration{
 	// 			{
-	// 				SignalID: to.Ptr("sql-storage-percent"),
-	// 				MetricNamespace: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 				MetricName: to.Ptr("storage_percent"),
-	// 				AggregationType: to.Ptr(armcloudhealth.MetricAggregationTypeMaximum),
-	// 				Unit: to.Ptr("Percent"),
-	// 				TimeGrain: to.Ptr("PT15M"),
+	// 				SignalID: to.Ptr("bf7e57d0-1b92-4fe0-8dc8-f48d5ec89f14"),
+	// 				DisplayName: to.Ptr("Restarting Kubernetes containers"),
+	// 				Description: to.Ptr("Detects containers that restart repeatedly within the evaluation window."),
+	// 				ApplicableResourceTypes: []*string{
+	// 					to.Ptr("Microsoft.ContainerService/managedClusters"),
+	// 				},
+	// 				RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT5M),
+	// 				DataUnit: to.Ptr("Count"),
+	// 				Configuration: &armcloudhealth.PrometheusMetricsRecommendationConfiguration{
+	// 					SignalKind: to.Ptr(armcloudhealth.SignalRecommendationKindPrometheusMetricsQuery),
+	// 					QueryText: to.Ptr("sum(increase(kube_pod_container_status_restarts_total{cluster=\"{{entity.name}}\"}[5m]))"),
+	// 					TimeGrain: to.Ptr("PT5M"),
+	// 					RequiredMetrics: []*string{
+	// 						to.Ptr("kube_pod_container_status_restarts_total"),
+	// 					},
+	// 					RequiredScrapeTargets: []*string{
+	// 						to.Ptr("kube-state-metrics"),
+	// 					},
+	// 				},
 	// 				EvaluationRules: &armcloudhealth.EvaluationRule{
 	// 					DegradedRule: &armcloudhealth.ThresholdRuleV2{
 	// 						Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
-	// 						Threshold: to.Ptr[float64](80),
+	// 						Threshold: to.Ptr[float64](3),
 	// 					},
 	// 					UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
 	// 						Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
-	// 						Threshold: to.Ptr[float64](95),
+	// 						Threshold: to.Ptr[float64](10),
 	// 					},
 	// 				},
 	// 			},
+	// 		},
+	// 		RecommendedConfigurations: []*armcloudhealth.SignalConfiguration{
 	// 			{
-	// 				SignalID: to.Ptr("sql-deadlocks"),
-	// 				MetricNamespace: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 				MetricName: to.Ptr("deadlock"),
-	// 				AggregationType: to.Ptr(armcloudhealth.MetricAggregationTypeTotal),
-	// 				Unit: to.Ptr("Count"),
-	// 				TimeGrain: to.Ptr("PT5M"),
+	// 				SignalID: to.Ptr("f482d4ea-3c8f-44e6-9a36-a24b6279291e"),
+	// 				DisplayName: to.Ptr("AKS control-plane errors"),
+	// 				Description: to.Ptr("Counts error-level control-plane audit events for the cluster."),
+	// 				ApplicableResourceTypes: []*string{
+	// 					to.Ptr("Microsoft.ContainerService/managedClusters"),
+	// 				},
+	// 				RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT5M),
+	// 				DataUnit: to.Ptr("Count"),
+	// 				Configuration: &armcloudhealth.LogAnalyticsQueryRecommendationConfiguration{
+	// 					SignalKind: to.Ptr(armcloudhealth.SignalRecommendationKindLogAnalyticsQuery),
+	// 					QueryText: to.Ptr("AKSAuditAdmin | where _ResourceId =~ '{{entity.azureResourceId}}' | where toint(ResponseStatus.code) >= 400 | summarize value = count() by bin(TimeGenerated, 5m)"),
+	// 					TimeGrain: to.Ptr("PT5M"),
+	// 					ValueColumnName: to.Ptr("value"),
+	// 					RequiredTables: []*string{
+	// 						to.Ptr("AKSAuditAdmin"),
+	// 					},
+	// 					RequiredDiagnosticSettingCategories: []*string{
+	// 						to.Ptr("kube-audit-admin"),
+	// 					},
+	// 				},
 	// 				EvaluationRules: &armcloudhealth.EvaluationRule{
-	// 					UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+	// 					DegradedRule: &armcloudhealth.ThresholdRuleV2{
 	// 						Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
 	// 						Threshold: to.Ptr[float64](0),
+	// 					},
+	// 					UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+	// 						Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 						Threshold: to.Ptr[float64](10),
 	// 					},
 	// 				},
 	// 			},
@@ -928,7 +951,7 @@ func ExampleEntitiesClient_GetSignalRecommendations() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/Entities_IngestHealthReport.json
+// Generated from example definition: 2026-10-01-preview/Entities_IngestHealthReport.json
 func ExampleEntitiesClient_IngestHealthReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -961,7 +984,7 @@ func ExampleEntitiesClient_IngestHealthReport() {
 	}
 }
 
-// Generated from example definition: 2026-09-01-preview/Entities_ListByHealthModel.json
+// Generated from example definition: 2026-10-01-preview/Entities_ListByHealthModel.json
 func ExampleEntitiesClient_NewListByHealthModelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

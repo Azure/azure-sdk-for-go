@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-06-preview/ScheduledActionExtension_ListByVms_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/ScheduledActionExtension_ListByVms_MaximumSet_Gen.json
 func ExampleScheduledActionExtensionClient_NewListByVMsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,8 +40,8 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager() {
 		// 				Properties: &armbulkactions.ScheduledActionsExtensionProperties{
 		// 					ResourceType: to.Ptr(armbulkactions.ResourceTypeVirtualMachine),
 		// 					ActionType: to.Ptr(armbulkactions.ScheduledActionTypeStart),
-		// 					StartTime: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 281000000, time.UTC)),
-		// 					EndTime: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 286000000, time.UTC)),
+		// 					StartTime: to.Ptr(time.Date(2026, time.September, 1, 19, 0, 0, 0, time.FixedZone("", -25200))),
+		// 					EndTime: to.Ptr(time.Date(2027, time.September, 1, 19, 0, 0, 0, time.FixedZone("", -25200))),
 		// 					Schedule: &armbulkactions.ScheduledActionsSchedule{
 		// 						ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 19, 0, 0, 0, time.UTC)),
 		// 						TimeZone: to.Ptr("America/Los_Angeles"),
@@ -56,7 +56,6 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager() {
 		// 						},
 		// 						ExecutionParameters: &armbulkactions.ScheduledActionsExecutionParameters{
 		// 							RetryPolicy: &armbulkactions.ScheduledActionsRetryPolicy{
-		// 								RetryCount: to.Ptr[int32](17),
 		// 								RetryWindowInMinutes: to.Ptr[int32](29),
 		// 							},
 		// 						},
@@ -81,7 +80,7 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager() {
 		// 						},
 		// 					},
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.Compute/scheduledActions/myScheduledAction"),
+		// 				ID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myRg/providers/Microsoft.Compute/scheduledActions/myScheduledAction"),
 		// 				Name: to.Ptr("myScheduledAction"),
 		// 				Type: to.Ptr("Microsoft.Compute/scheduledActions"),
 		// 				SystemData: &armbulkactions.SystemData{
@@ -94,7 +93,7 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm/providers/Microsoft.Compute/associatedScheduledActions?api-version=2026-09-06-preview&$skiptoken=page2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm/providers/Microsoft.Compute/associatedScheduledActions?api-version=2026-10-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}

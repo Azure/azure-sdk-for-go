@@ -13,13 +13,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
 // VirtualMachineBulkOperationsClient contains the methods for the VirtualMachineBulkOperations group.
 // Don't use this type directly, use NewVirtualMachineBulkOperationsClient() instead.
 //
-// Generated from API version 2026-09-06-preview
+// Generated from API version 2026-10-06-preview
 type VirtualMachineBulkOperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,11 +45,12 @@ func NewVirtualMachineBulkOperationsClient(subscriptionID string, credential azc
 	return client, nil
 }
 
-// BulkCancelOperations - BulkCancelOperations: Cancel a previously submitted (start/deallocate/hibernate) request
+// BulkCancelOperations - Cancel one or more Bulk Actions operations by Bulk Action Operation Ids. Cancellation is best effort
+// and work that has already completed is not reversed.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
-//   - requestBody - The request body
+//   - requestBody - The Bulk Action Operation Ids that identify the operations to cancel.
 //   - options - VirtualMachineBulkOperationsClientBulkCancelOperationsOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.BulkCancelOperations
 //     method.
 func (client *VirtualMachineBulkOperationsClient) BulkCancelOperations(ctx context.Context, resourceGroupName string, location string, requestBody CancelOperationsContent, options *VirtualMachineBulkOperationsClientBulkCancelOperationsOptions) (VirtualMachineBulkOperationsClientBulkCancelOperationsResponse, error) {
@@ -88,7 +90,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkCancelOperationsCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260906Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -110,12 +112,12 @@ func (client *VirtualMachineBulkOperationsClient) bulkCancelOperationsHandleResp
 	return result, nil
 }
 
-// BulkDeallocateOperation - BulkDeallocate: Execute deallocate operation for a batch of virtual machines, this operation
-// is triggered as soon as Computeschedule receives it.
+// BulkDeallocateOperation - Deallocate one or more virtual machines. Bulk Actions begins processing the request immediately
+// and returns a Bulk Action Operation Id for each virtual machine. Use the returned IDs to get operation status updates.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
-//   - requestBody - The request body
+//   - requestBody - The virtual machines to deallocate and the execution settings for the bulk action.
 //   - options - VirtualMachineBulkOperationsClientBulkDeallocateOperationOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.BulkDeallocateOperation
 //     method.
 func (client *VirtualMachineBulkOperationsClient) BulkDeallocateOperation(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteDeallocateContent, options *VirtualMachineBulkOperationsClientBulkDeallocateOperationOptions) (VirtualMachineBulkOperationsClientBulkDeallocateOperationResponse, error) {
@@ -155,7 +157,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkDeallocateOperationCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260906Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -177,12 +179,13 @@ func (client *VirtualMachineBulkOperationsClient) bulkDeallocateOperationHandleR
 	return result, nil
 }
 
-// BulkDeleteOperation - BulkDelete: Execute delete operation for a batch of virtual machines, this operation is triggered
-// as soon as Computeschedule receives it.
+// BulkDeleteOperation - Delete one or more virtual machines. This operation is destructive. Bulk Actions begins processing
+// the request immediately and returns a Bulk Action Operation Id for each virtual machine. Use the returned IDs to get operation
+// status updates.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
-//   - requestBody - The request body
+//   - requestBody - The virtual machines to delete and the execution settings for the bulk action.
 //   - options - VirtualMachineBulkOperationsClientBulkDeleteOperationOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.BulkDeleteOperation
 //     method.
 func (client *VirtualMachineBulkOperationsClient) BulkDeleteOperation(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteDeleteContent, options *VirtualMachineBulkOperationsClientBulkDeleteOperationOptions) (VirtualMachineBulkOperationsClientBulkDeleteOperationResponse, error) {
@@ -222,7 +225,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkDeleteOperationCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260906Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -244,11 +247,11 @@ func (client *VirtualMachineBulkOperationsClient) bulkDeleteOperationHandleRespo
 	return result, nil
 }
 
-// BulkGetOperationsStatus - BulkGetOperationsStatus: Polling endpoint to read status of operations performed on virtual machines
+// BulkGetOperationsStatus - Get the current status of one or more operations identified by their Bulk Action Operation Ids.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
-//   - requestBody - The request body
+//   - requestBody - The Bulk Action Operation Ids that identify the operations for which current status should be returned.
 //   - options - VirtualMachineBulkOperationsClientBulkGetOperationsStatusOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.BulkGetOperationsStatus
 //     method.
 func (client *VirtualMachineBulkOperationsClient) BulkGetOperationsStatus(ctx context.Context, resourceGroupName string, location string, requestBody GetOperationStatusContent, options *VirtualMachineBulkOperationsClientBulkGetOperationsStatusOptions) (VirtualMachineBulkOperationsClientBulkGetOperationsStatusResponse, error) {
@@ -288,7 +291,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkGetOperationsStatusCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260906Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -310,12 +313,13 @@ func (client *VirtualMachineBulkOperationsClient) bulkGetOperationsStatusHandleR
 	return result, nil
 }
 
-// BulkHibernateOperation - BulkHibernate: Execute hibernate operation for a batch of virtual machines, this operation is
-// triggered as soon as Computeschedule receives it.
+// BulkHibernateOperation - Hibernate one or more virtual machines that support hibernation. Bulk Actions begins processing
+// the request immediately and returns a Bulk Action Operation Id for each virtual machine. Use the returned IDs to get operation
+// status updates.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
-//   - requestBody - The request body
+//   - requestBody - The virtual machines to hibernate and the execution settings for the bulk action.
 //   - options - VirtualMachineBulkOperationsClientBulkHibernateOperationOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.BulkHibernateOperation
 //     method.
 func (client *VirtualMachineBulkOperationsClient) BulkHibernateOperation(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteHibernateContent, options *VirtualMachineBulkOperationsClientBulkHibernateOperationOptions) (VirtualMachineBulkOperationsClientBulkHibernateOperationResponse, error) {
@@ -355,7 +359,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkHibernateOperationCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260906Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -377,12 +381,94 @@ func (client *VirtualMachineBulkOperationsClient) bulkHibernateOperationHandleRe
 	return result, nil
 }
 
-// BulkReimageOperation - BulkReimage: Execute reimage operation for a batch of virtual machines, this operation is triggered
-// as soon as Computeschedule receives it.
+// NewBulkListOperationErrorsPager - List recent errors for operations in a resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - location - The location name.
+//   - options - VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.NewBulkListOperationErrorsPager
+//     method.
+func (client *VirtualMachineBulkOperationsClient) NewBulkListOperationErrorsPager(resourceGroupName string, location string, options *VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions) *runtime.Pager[VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse]{
+		More: func(page VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse) (VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineBulkOperationsClient.NewBulkListOperationErrorsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.bulkListOperationErrorsCreateRequest(ctx, resourceGroupName, location, nextLink, options)
+			if err != nil {
+				return VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{}, err
+			}
+			return client.bulkListOperationErrorsHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// bulkListOperationErrorsCreateRequest creates the BulkListOperationErrors request.
+func (client *VirtualMachineBulkOperationsClient) bulkListOperationErrorsCreateRequest(ctx context.Context, resourceGroupName string, location string, nextLink string, options *VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/listBulkOperationErrors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20261006Preview)
+		if options != nil && options.LookbackInMinutes != nil {
+			reqQP.Set("lookbackInMinutes", strconv.FormatInt(int64(*options.LookbackInMinutes), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// bulkListOperationErrorsHandleResponse handles the BulkListOperationErrors response.
+func (client *VirtualMachineBulkOperationsClient) bulkListOperationErrorsHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse, error) {
+	result := VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListBulkOperationErrorsResponse); err != nil {
+		return VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{}, err
+	}
+	return result, nil
+}
+
+// BulkReimageOperation - This feature is currently in preview.
+// Reimage one or more virtual machines. Reimaging is destructive and can replace operating system disk contents. Bulk Actions
+// begins processing the request immediately and returns a Bulk Action Operation Id for each virtual machine. Use the returned
+// IDs to get operation status updates.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
-//   - requestBody - The request body
+//   - requestBody - The virtual machines to reimage and the execution settings for the bulk action.
 //   - options - VirtualMachineBulkOperationsClientBulkReimageOperationOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.BulkReimageOperation
 //     method.
 func (client *VirtualMachineBulkOperationsClient) BulkReimageOperation(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteReimageRequest, options *VirtualMachineBulkOperationsClientBulkReimageOperationOptions) (VirtualMachineBulkOperationsClientBulkReimageOperationResponse, error) {
@@ -422,7 +508,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkReimageOperationCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260906Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -444,12 +530,12 @@ func (client *VirtualMachineBulkOperationsClient) bulkReimageOperationHandleResp
 	return result, nil
 }
 
-// BulkStartOperation - BulkStart: Execute start operation for a batch of virtual machines, this operation is triggered as
-// soon as Computeschedule receives it.
+// BulkStartOperation - Start one or more virtual machines. Bulk Actions begins processing the request immediately and returns
+// a Bulk Action Operation Id for each virtual machine. Use the returned IDs to get operation status updates.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
-//   - requestBody - The request body
+//   - requestBody - The virtual machines to start and the execution settings for the bulk action.
 //   - options - VirtualMachineBulkOperationsClientBulkStartOperationOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.BulkStartOperation
 //     method.
 func (client *VirtualMachineBulkOperationsClient) BulkStartOperation(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteStartContent, options *VirtualMachineBulkOperationsClientBulkStartOperationOptions) (VirtualMachineBulkOperationsClientBulkStartOperationResponse, error) {
@@ -489,7 +575,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkStartOperationCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260906Preview)
+	reqQP.Set("api-version", version20261006Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

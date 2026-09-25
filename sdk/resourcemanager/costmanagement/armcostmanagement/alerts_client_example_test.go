@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/DismissResourceGroupAlerts.json
+// Generated from example definition: 2026-06-01/DismissResourceGroupAlerts.json
 func ExampleAlertsClient_Dismiss_patchResourceGroupAlerts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleAlertsClient_Dismiss_patchResourceGroupAlerts() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/DismissSubscriptionAlerts.json
+// Generated from example definition: 2026-06-01/DismissSubscriptionAlerts.json
 func ExampleAlertsClient_Dismiss_patchSubscriptionAlerts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleAlertsClient_Dismiss_patchSubscriptionAlerts() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/SingleResourceGroupAlert.json
+// Generated from example definition: 2026-06-01/SingleResourceGroupAlert.json
 func ExampleAlertsClient_Get_singleResourceGroupAlerts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +221,7 @@ func ExampleAlertsClient_Get_singleResourceGroupAlerts() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/SingleSubscriptionAlert.json
+// Generated from example definition: 2026-06-01/SingleSubscriptionAlert.json
 func ExampleAlertsClient_Get_singleSubscriptionAlerts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +288,7 @@ func ExampleAlertsClient_Get_singleSubscriptionAlerts() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/BillingAccountAlerts.json
+// Generated from example definition: 2026-06-01/BillingAccountAlerts.json
 func ExampleAlertsClient_List_billingAccountAlerts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -404,7 +404,7 @@ func ExampleAlertsClient_List_billingAccountAlerts() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/BillingProfileAlerts.json
+// Generated from example definition: 2026-06-01/BillingProfileAlerts.json
 func ExampleAlertsClient_List_billingProfileAlerts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -520,7 +520,7 @@ func ExampleAlertsClient_List_billingProfileAlerts() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/DepartmentAlerts.json
+// Generated from example definition: 2026-06-01/DepartmentAlerts.json
 func ExampleAlertsClient_List_departmentAlerts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -636,7 +636,7 @@ func ExampleAlertsClient_List_departmentAlerts() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/EnrollmentAccountAlerts.json
+// Generated from example definition: 2026-06-01/EnrollmentAccountAlerts.json
 func ExampleAlertsClient_List_enrollmentAccountAlerts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -752,7 +752,7 @@ func ExampleAlertsClient_List_enrollmentAccountAlerts() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/InvoiceSectionAlerts.json
+// Generated from example definition: 2026-06-01/InvoiceSectionAlerts.json
 func ExampleAlertsClient_List_invoiceSectionAlerts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -868,7 +868,7 @@ func ExampleAlertsClient_List_invoiceSectionAlerts() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ResourceGroupAlerts.json
+// Generated from example definition: 2026-06-01/ResourceGroupAlerts.json
 func ExampleAlertsClient_List_resourceGroupAlerts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -984,7 +984,7 @@ func ExampleAlertsClient_List_resourceGroupAlerts() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/SubscriptionAlerts.json
+// Generated from example definition: 2026-06-01/SubscriptionAlerts.json
 func ExampleAlertsClient_List_subscriptionAlerts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1100,7 +1100,7 @@ func ExampleAlertsClient_List_subscriptionAlerts() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExternalBillingAccountAlerts.json
+// Generated from example definition: 2026-06-01/ExternalBillingAccountAlerts.json
 func ExampleAlertsClient_ListExternal_externalBillingAccountAlerts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1216,7 +1216,7 @@ func ExampleAlertsClient_ListExternal_externalBillingAccountAlerts() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExternalSubscriptionAlerts.json
+// Generated from example definition: 2026-06-01/ExternalSubscriptionAlerts.json
 func ExampleAlertsClient_ListExternal_externalSubscriptionAlerts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

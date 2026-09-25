@@ -723,6 +723,15 @@ type CurrentSpend struct {
 	Unit *string
 }
 
+// CustomerMetadata - The customer billing metadata
+type CustomerMetadata struct {
+	// REQUIRED; Customer billing account id
+	BillingAccountID *string
+
+	// REQUIRED; Customer billing profile id
+	BillingProfileID *string
+}
+
 // Dimension - List of Dimension.
 type Dimension struct {
 	// Dimension properties.
@@ -1519,6 +1528,120 @@ type MCAPriceSheetProperties struct {
 	// unit price. The blended price or effective price is the net price for the consumed quantity spanning across the multiple
 	// tiers (where each tier has a specific unit price).
 	UnitPrice *string
+}
+
+// ManagementGroupScopeBenefitRecommendationProperties - The properties of the benefit recommendation when scope is 'ManagementGroup'.
+type ManagementGroupScopeBenefitRecommendationProperties struct {
+	// REQUIRED; ManagementGroup benefit scope.
+	Scope *Scope
+
+	// Grain of the proposed commitment amount. Supported values: 'Hourly'
+	CommitmentGranularity *Grain
+
+	// The number of days of usage evaluated for computing the recommendations.
+	LookBackPeriod *LookBackPeriod
+
+	// The details of the proposed recommendation.
+	RecommendationDetails *AllSavingsBenefitDetails
+
+	// Term period of the benefit. For example, P1Y or P3Y.
+	Term *Term
+
+	// On-demand charges between firstConsumptionDate and lastConsumptionDate that were used for computing benefit recommendations.
+	Usage *RecommendationUsageDetails
+
+	// READ-ONLY; The list of all benefit recommendations with the recommendation details.
+	AllRecommendationDetails *AllSavingsList
+
+	// READ-ONLY; ARM SKU name. 'Compute_Savings_Plan' for SavingsPlan.
+	ArmSKUName *string
+
+	// READ-ONLY; The current cost without benefit, corresponds to 'totalHours' in the look-back period.
+	CostWithoutBenefit *float64
+
+	// READ-ONLY; An ISO 4217 currency code identifier for the costs and savings amounts.
+	CurrencyCode *string
+
+	// READ-ONLY; The first usage date used for looking back for computing the recommendations.
+	FirstConsumptionDate *time.Time
+
+	// READ-ONLY; The last usage date used for looking back for computing the recommendations.
+	LastConsumptionDate *time.Time
+
+	// READ-ONLY; Fully-qualified identifier of the management group that this management group scope recommendation is for, of
+	// the format /providers/Microsoft.Management/managementGroups/{managementGroupId}. Applicable only if recommendation is for
+	// 'ManagementGroup' scope.
+	ManagementGroupID *string
+
+	// READ-ONLY; The tenant ID associated with the management group. Populated only when managementGroupId is populated.
+	TenantID *string
+
+	// READ-ONLY; The total hours for which the cost is covered. Its equal to number of records in a property 'properties/usage/charges'.
+	TotalHours *int32
+}
+
+// GetBenefitRecommendationProperties implements the BenefitRecommendationPropertiesClassification interface for type ManagementGroupScopeBenefitRecommendationProperties.
+func (m *ManagementGroupScopeBenefitRecommendationProperties) GetBenefitRecommendationProperties() *BenefitRecommendationProperties {
+	return &BenefitRecommendationProperties{
+		AllRecommendationDetails: m.AllRecommendationDetails,
+		ArmSKUName:               m.ArmSKUName,
+		CommitmentGranularity:    m.CommitmentGranularity,
+		CostWithoutBenefit:       m.CostWithoutBenefit,
+		CurrencyCode:             m.CurrencyCode,
+		FirstConsumptionDate:     m.FirstConsumptionDate,
+		LastConsumptionDate:      m.LastConsumptionDate,
+		LookBackPeriod:           m.LookBackPeriod,
+		RecommendationDetails:    m.RecommendationDetails,
+		Scope:                    m.Scope,
+		Term:                     m.Term,
+		TotalHours:               m.TotalHours,
+		Usage:                    m.Usage,
+	}
+}
+
+// MarkupRule - Markup rule
+type MarkupRule struct {
+	// Markup rule properties
+	Properties *MarkupRuleProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MarkupRulePagedResponse - Markup rule list result. It contains a list of Markup rules.
+type MarkupRulePagedResponse struct {
+	// The link (url) to the next page of results.
+	NextLink *string
+
+	// The list of markup rules.
+	Value []*MarkupRule
+}
+
+// MarkupRuleProperties - The properties of the markup rule.
+type MarkupRuleProperties struct {
+	// REQUIRED; Customer information for the markup rule.
+	CustomerDetails *CustomerMetadata
+
+	// REQUIRED; The markup percentage of the rule.
+	Percentage *float64
+
+	// REQUIRED; Starting date of the markup rule.
+	StartDate *time.Time
+
+	// The description of the markup rule.
+	Description *string
+
+	// Ending date of the markup rule.
+	EndDate *time.Time
 }
 
 // Notification - The notification associated with a budget.

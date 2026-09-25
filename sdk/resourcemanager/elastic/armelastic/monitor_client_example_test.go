@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Monitor_Upgrade.json
+// Generated from example definition: 2026-03-15-preview/Monitor_Upgrade.json
 func ExampleMonitorClient_BeginUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

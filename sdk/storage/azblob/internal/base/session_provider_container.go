@@ -105,36 +105,83 @@ func (p *containerSessionProvider) InvalidateSession(req *http.Request, reqCred 
 	return nil
 }
 
+// Query parameter values identifying the blob operations a session can authenticate.
+const (
+	compBlock     = "block"
+	compBlockList = "blocklist"
+)
+
 // IsRequestEligible returns true if the request is eligible for session-based authentication.
-// Only GET requests are eligible, so writes and every other verb continue to authenticate with the bearer token.
+//
+// Eligibility is deliberately narrow: a request must be blob-level and must match one of the
+// operations the service accepts a session for. Everything else, including every other verb and
+// every other comp value, continues to authenticate with the bearer token.
+//
+// The eligible operations are Get Blob, Get Blob Properties, Put Blob, Put Block and
+// Put Block List. Each is identified by the request shape the generated clients produce rather
+// than by the verb alone, so that operations sharing a verb, such as Copy Blob or
+// Put Block From URL, are not swept in.
 func (p *containerSessionProvider) IsRequestEligible(req *http.Request) bool {
-	if req == nil || req.Method != http.MethodGet {
-		return false
-	}
-
-	u := req.URL
-	if u == nil {
-		return false
-	}
-
-	// Session auth is not supported for requests with comp query parameter
-	if u.Query().Get("comp") != "" {
-		return false
-	}
-
-	// Session auth is not supported for requests with restype query parameter
-	if u.Query().Get("restype") != "" {
+	if req == nil || req.URL == nil {
 		return false
 	}
 
 	// Session auth is not supported for structured message requests
-	if req.Header.Get(shared.HeaderXmsStructuredBody) != "" {
+	if shared.HeaderValue(req.Header, shared.HeaderXmsStructuredBody) != "" {
+		return false
+	}
+
+	query := req.URL.Query()
+
+	// restype scopes a request to the container or the account, neither of which is a
+	// blob-level operation a container session covers.
+	if query.Get("restype") != "" {
 		return false
 	}
 
 	// A session is scoped to a container, and only blob-level requests are eligible.
-	_, blob, err := shared.GetContainerAndBlobName(u)
-	return err == nil && blob != ""
+	if _, blob, err := shared.GetContainerAndBlobName(req.URL); err != nil || blob == "" {
+		return false
+	}
+
+	comp := query.Get("comp")
+
+	switch req.Method {
+	case http.MethodGet:
+		// Get Blob is the comp-less GET. Every other GET is a sub-resource read
+		// (comp=tags, comp=blocklist, comp=layout, ...) and stays on the bearer token.
+		return comp == ""
+
+	case http.MethodHead:
+		// Get Blob Properties is the comp-less HEAD. It is currently the only HEAD the blob
+		// API defines, but the comp check keeps a later one from becoming eligible silently.
+		return comp == ""
+
+	case http.MethodPut:
+		// The *FromURL operations (Copy Blob, Put Blob From URL, Put Block From URL) share a
+		// URL shape with the operations below but are distinct REST operations that are not
+		// approved for session auth. The service tells them apart by the copy-source header,
+		// so that is what excludes them here.
+		if shared.HeaderValue(req.Header, shared.HeaderXmsCopySource) != "" {
+			return false
+		}
+		switch comp {
+		case compBlock:
+			// Put Block. The generated client also sets blockid, but comp=block is what
+			// identifies the operation.
+			return true
+		case compBlockList:
+			// Put Block List.
+			return true
+		case "":
+			// Put Blob. It is the only comp-less PUT that creates blob content, and the
+			// generated clients identify it with x-ms-blob-type; requiring that header keeps
+			// a comp-less PUT added later from becoming eligible by default.
+			return shared.HeaderValue(req.Header, shared.HeaderXmsBlobType) != ""
+		}
+	}
+
+	return false
 }
 
 // resourceForRequest resolves the container for the request and returns its session resource.

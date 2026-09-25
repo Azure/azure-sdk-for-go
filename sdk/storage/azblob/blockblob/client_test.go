@@ -1914,6 +1914,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuth() {
 	// Download data from destination
 	destBuffer := make([]byte, 4*1024)
 	_, err = srcBBClient.DownloadBuffer(context.Background(), destBuffer, &blob.DownloadBufferOptions{
+		Range:              blob.HTTPRange{Count: int64(contentSize)},
 		LayoutAwareRouting: blob.LayoutAwareRoutingDisabled,
 	})
 	_require.NoError(err)

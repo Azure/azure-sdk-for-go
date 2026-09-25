@@ -6,6 +6,33 @@ package armcdn
 
 import "encoding/json"
 
+func unmarshalAFDDomainMtlsParametersClassification(rawMsg json.RawMessage) (AFDDomainMtlsParametersClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b AFDDomainMtlsParametersClassification
+	switch m["scenario"] {
+	case string(MtlsScenarioTypeClientCertificateRequiredAndOriginValidates):
+		b = &ClientCertificateRequiredAndOriginValidatesAdvancedSettings{}
+	case string(MtlsScenarioTypeClientCertificateRequiredAndValidated):
+		b = &ClientCertificateRequiredAndValidatedAdvancedSettings{}
+	case string(MtlsScenarioTypeClientCertificateValidatedIfPresented):
+		b = &ClientCertificateValidatedIfPresentedAdvancedSettings{}
+	case string(MtlsScenarioTypeCompleteMtlsPassthroughToOrigin):
+		b = &CompleteMtlsPassthroughToOriginAdvancedSettings{}
+	default:
+		b = &AFDDomainMtlsParameters{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalCustomDomainHTTPSParametersClassification(rawMsg json.RawMessage) (CustomDomainHTTPSParametersClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -39,10 +66,14 @@ func unmarshalDeliveryRuleActionClassification(rawMsg json.RawMessage) (Delivery
 	}
 	var b DeliveryRuleActionClassification
 	switch m["name"] {
+	case string(DeliveryRuleActionNameAfdURLSigning):
+		b = &AfdURLSigningAction{}
 	case string(DeliveryRuleActionNameCacheExpiration):
 		b = &DeliveryRuleCacheExpirationAction{}
 	case string(DeliveryRuleActionNameCacheKeyQueryString):
 		b = &DeliveryRuleCacheKeyQueryStringAction{}
+	case string(DeliveryRuleActionNameEdgeAction):
+		b = &EdgeAction{}
 	case string(DeliveryRuleActionNameModifyRequestHeader):
 		b = &DeliveryRuleRequestHeaderAction{}
 	case string(DeliveryRuleActionNameModifyResponseHeader):
@@ -177,6 +208,8 @@ func unmarshalSecretParametersClassification(rawMsg json.RawMessage) (SecretPara
 		b = &CustomerCertificateParameters{}
 	case string(SecretTypeManagedCertificate):
 		b = &ManagedCertificateParameters{}
+	case string(SecretTypeMtlsCertificateChain):
+		b = &AfdSecretMtlsCertificateChain{}
 	case string(SecretTypeURLSigningKey):
 		b = &URLSigningKeyParameters{}
 	default:

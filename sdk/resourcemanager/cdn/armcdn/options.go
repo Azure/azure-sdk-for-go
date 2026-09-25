@@ -572,15 +572,16 @@ type RoutesClientListByEndpointOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RuleSetsClientBeginDeleteOptions contains the optional parameters for the RuleSetsClient.BeginDelete method.
-type RuleSetsClientBeginDeleteOptions struct {
+// RuleSetsClientBeginCreateOptions contains the optional parameters for the RuleSetsClient.BeginCreate method.
+type RuleSetsClientBeginCreateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// RuleSetsClientCreateOptions contains the optional parameters for the RuleSetsClient.Create method.
-type RuleSetsClientCreateOptions struct {
-	// placeholder for future optional parameters
+// RuleSetsClientBeginDeleteOptions contains the optional parameters for the RuleSetsClient.BeginDelete method.
+type RuleSetsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // RuleSetsClientGetOptions contains the optional parameters for the RuleSetsClient.Get method.

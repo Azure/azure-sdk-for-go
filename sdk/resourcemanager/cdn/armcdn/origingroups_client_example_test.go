@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/OriginGroups_Create.json
+// Generated from example definition: 2026-07-01/OriginGroups_Create.json
 func ExampleOriginGroupsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleOriginGroupsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/OriginGroups_Delete.json
+// Generated from example definition: 2026-07-01/OriginGroups_Delete.json
 func ExampleOriginGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleOriginGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/OriginGroups_Get.json
+// Generated from example definition: 2026-07-01/OriginGroups_Get.json
 func ExampleOriginGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleOriginGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/OriginGroups_ListByEndpoint.json
+// Generated from example definition: 2026-07-01/OriginGroups_ListByEndpoint.json
 func ExampleOriginGroupsClient_NewListByEndpointPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExampleOriginGroupsClient_NewListByEndpointPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/OriginGroups_Update.json
+// Generated from example definition: 2026-07-01/OriginGroups_Update.json
 func ExampleOriginGroupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

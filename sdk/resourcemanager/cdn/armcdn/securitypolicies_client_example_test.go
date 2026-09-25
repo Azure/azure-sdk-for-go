@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/SecurityPolicies_Create.json
+// Generated from example definition: 2026-07-01/SecurityPolicies_Create.json
 func ExampleSecurityPoliciesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleSecurityPoliciesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/SecurityPolicies_Delete.json
+// Generated from example definition: 2026-07-01/SecurityPolicies_Delete.json
 func ExampleSecurityPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleSecurityPoliciesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/SecurityPolicies_Get.json
+// Generated from example definition: 2026-07-01/SecurityPolicies_Get.json
 func ExampleSecurityPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleSecurityPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/SecurityPolicies_ListByProfile.json
+// Generated from example definition: 2026-07-01/SecurityPolicies_ListByProfile.json
 func ExampleSecurityPoliciesClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -231,7 +231,7 @@ func ExampleSecurityPoliciesClient_NewListByProfilePager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/SecurityPolicies_Patch.json
+// Generated from example definition: 2026-07-01/SecurityPolicies_Patch.json
 func ExampleSecurityPoliciesClient_BeginPatch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

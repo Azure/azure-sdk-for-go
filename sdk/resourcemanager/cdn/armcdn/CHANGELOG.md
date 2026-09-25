@@ -1,5 +1,56 @@
 # Release History
 
+## 4.0.0 (2026-08-20)
+### Breaking Changes
+
+- Operation `*RuleSetsClient.Create` has been changed to LRO, use `*RuleSetsClient.BeginCreate` instead.
+
+### Features Added
+
+- New value `DeliveryRuleActionNameAfdURLSigning`, `DeliveryRuleActionNameEdgeAction` added to enum type `DeliveryRuleActionName`
+- New value `DeliveryRuleActionParametersTypeDeliveryRuleEdgeActionParameters` added to enum type `DeliveryRuleActionParametersType`
+- New value `SecretTypeMtlsCertificateChain` added to enum type `SecretType`
+- New enum type `AfdServerTLSGroup` with values `AfdServerTLSGroupPrime256V1`, `AfdServerTLSGroupSecP256R1MLKEM768`, `AfdServerTLSGroupSecP384R1MLKEM1024`, `AfdServerTLSGroupSecp384R1`, `AfdServerTLSGroupSecp521R1`, `AfdServerTLSGroupX25519`, `AfdServerTLSGroupX25519MLKEM768`
+- New enum type `AfdServerTLSGroupPolicy` with values `AfdServerTLSGroupPolicyCustom`, `AfdServerTLSGroupPolicyEnhanced`, `AfdServerTLSGroupPolicyStandard`
+- New enum type `CertificateNameCheckValidationMode` with values `CertificateNameCheckValidationModeCustomCertificateSubject`, `CertificateNameCheckValidationModeIncomingHostHeader`, `CertificateNameCheckValidationModeOriginHostname`
+- New enum type `CertificateRevocationCheckEnabledState` with values `CertificateRevocationCheckEnabledStateDisabled`, `CertificateRevocationCheckEnabledStateEnabled`
+- New enum type `EnforceMtlsEnabledState` with values `EnforceMtlsEnabledStateDisabled`, `EnforceMtlsEnabledStateEnabled`
+- New enum type `InvocationPoint` with values `InvocationPointClientRequest`, `InvocationPointOriginRequest`
+- New enum type `MtlsScenarioType` with values `MtlsScenarioTypeClientCertificateRequiredAndOriginValidates`, `MtlsScenarioTypeClientCertificateRequiredAndValidated`, `MtlsScenarioTypeClientCertificateValidatedIfPresented`, `MtlsScenarioTypeCompleteMtlsPassthroughToOrigin`
+- New enum type `OriginAuthenticationTokenDestinationHeader` with values `OriginAuthenticationTokenDestinationHeaderAuthorization`, `OriginAuthenticationTokenDestinationHeaderXAzureAuthorization`
+- New enum type `TypeName` with values `TypeNameDeliveryRuleAfdURLSigningActionParameters`
+- New function `*AFDDomainMtlsParameters.GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters`
+- New function `*AfdSecretMtlsCertificateChain.GetSecretParameters() *SecretParameters`
+- New function `*AfdURLSigningAction.GetDeliveryRuleAction() *DeliveryRuleAction`
+- New function `*ClientCertificateRequiredAndOriginValidatesAdvancedSettings.GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters`
+- New function `*ClientCertificateRequiredAndValidatedAdvancedSettings.GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters`
+- New function `*ClientCertificateValidatedIfPresentedAdvancedSettings.GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters`
+- New function `*CompleteMtlsPassthroughToOriginAdvancedSettings.GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters`
+- New function `*DeliveryRuleEdgeActionParameters.GetDeliveryRuleActionParameters() *DeliveryRuleActionParameters`
+- New function `*EdgeAction.GetDeliveryRuleAction() *DeliveryRuleAction`
+- New struct `AfdSecretMtlsCertificateChain`
+- New struct `AfdURLSigningAction`
+- New struct `AfdURLSigningActionParameters`
+- New struct `BatchRuleProperties`
+- New struct `ClientCertificateRequiredAndOriginValidatesAdvancedSettings`
+- New struct `ClientCertificateRequiredAndValidatedAdvancedSettings`
+- New struct `ClientCertificateValidatedIfPresentedAdvancedSettings`
+- New struct `CompleteMtlsPassthroughToOriginAdvancedSettings`
+- New struct `DeliveryRuleEdgeActionParameters`
+- New struct `EdgeAction`
+- New field `ServerTLSGroupPolicy`, `ServerTLSGroups` in struct `AFDDomainHTTPSParameters`
+- New field `MtlsSettings` in struct `AFDDomainProperties`
+- New field `MtlsSettings` in struct `AFDDomainUpdatePropertiesParameters`
+- New field `EnforceMtls` in struct `AFDEndpointProperties`
+- New field `EnforceMtls` in struct `AFDEndpointPropertiesUpdateParameters`
+- New field `CertificateNameCheckValidationMode`, `CustomCertificateSubjects` in struct `AFDOriginProperties`
+- New field `CertificateNameCheckValidationMode`, `CustomCertificateSubjects` in struct `AFDOriginUpdatePropertiesParameters`
+- New field `TokenDestinationHeader` in struct `OriginAuthenticationProperties`
+- New field `BatchMode`, `Rules` in struct `RuleSetProperties`
+- New field `Routes` in struct `SecurityPolicyWebApplicationFirewallAssociation`
+- New field `IsProfileLevel` in struct `SecurityPolicyWebApplicationFirewallParameters`
+
+
 ## 3.0.0 (2026-06-24)
 ### Breaking Changes
 

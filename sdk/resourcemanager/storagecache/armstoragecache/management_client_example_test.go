@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/checkAmlFSSubnets.json
+// Generated from example definition: 2026-08-01/checkAmlFSSubnets.json
 func ExampleManagementClient_CheckAmlFSSubnets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleManagementClient_CheckAmlFSSubnets() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/getRequiredAmlFSSubnetsSize.json
+// Generated from example definition: 2026-08-01/getRequiredAmlFSSubnetsSize.json
 func ExampleManagementClient_GetRequiredAmlFSSubnetsSize() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

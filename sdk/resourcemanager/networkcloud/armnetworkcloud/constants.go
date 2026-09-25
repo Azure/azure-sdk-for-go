@@ -5,7 +5,7 @@
 package armnetworkcloud
 
 const (
-	version20260701 string = "2026-07-01"
+	version20260801Preview string = "2026-08-01-preview"
 )
 
 // AccessBridgeAllowedName - The allowed names for the access bridge.
@@ -14,6 +14,8 @@ type AccessBridgeAllowedName string
 const (
 	// AccessBridgeAllowedNameBastion - The access bridge for bare metal machine bastion access.
 	AccessBridgeAllowedNameBastion AccessBridgeAllowedName = "Bastion"
+	// AccessBridgeAllowedNameEdgeManagement - The access bridge for edge management.
+	AccessBridgeAllowedNameEdgeManagement AccessBridgeAllowedName = "EdgeManagement"
 	// AccessBridgeAllowedNamePrivateVault - The access bridge for cluster access to private vault.
 	AccessBridgeAllowedNamePrivateVault AccessBridgeAllowedName = "PrivateVault"
 	// AccessBridgeAllowedNameStorageDashboard - The access bridge for access to the storage dashboard.
@@ -24,6 +26,7 @@ const (
 func PossibleAccessBridgeAllowedNameValues() []AccessBridgeAllowedName {
 	return []AccessBridgeAllowedName{
 		AccessBridgeAllowedNameBastion,
+		AccessBridgeAllowedNameEdgeManagement,
 		AccessBridgeAllowedNamePrivateVault,
 		AccessBridgeAllowedNameStorageDashboard,
 	}
@@ -1145,7 +1148,7 @@ func PossibleClusterTypeValues() []ClusterType {
 	}
 }
 
-// ClusterUpdateStrategyType - The mode of operation for runtime protection.
+// ClusterUpdateStrategyType - The strategy for updating the cluster.
 type ClusterUpdateStrategyType string
 
 const (
@@ -1508,6 +1511,25 @@ func PossibleIPAllocationTypeValues() []IPAllocationType {
 		IPAllocationTypeDualStack,
 		IPAllocationTypeIPV4,
 		IPAllocationTypeIPV6,
+	}
+}
+
+// KeyValueVersion - The version of the key value secrets engine. Supports values V1 and V2,
+// which map to engine versions 1 and 2 respectively.
+type KeyValueVersion string
+
+const (
+	// KeyValueVersionV1 - Key/value engine version 1.
+	KeyValueVersionV1 KeyValueVersion = "V1"
+	// KeyValueVersionV2 - Key/value engine version 2.
+	KeyValueVersionV2 KeyValueVersion = "V2"
+)
+
+// PossibleKeyValueVersionValues returns the possible values for the KeyValueVersion const type.
+func PossibleKeyValueVersionValues() []KeyValueVersion {
+	return []KeyValueVersion{
+		KeyValueVersionV1,
+		KeyValueVersionV2,
 	}
 }
 
@@ -2267,6 +2289,28 @@ func PossibleRuntimeProtectionEnforcementLevelValues() []RuntimeProtectionEnforc
 	}
 }
 
+// SecretArchiveProviderType - The provider of the secret archive. Absence of `providerConfiguration` on `SecretArchiveSettings`
+// implies Azure Key Vault as the default provider; this enum enumerates only the self-supplied (non-Azure Key Vault) providers.
+type SecretArchiveProviderType string
+
+const (
+	// SecretArchiveProviderTypeCyberArk - CyberArk secret archive provider.
+	SecretArchiveProviderTypeCyberArk SecretArchiveProviderType = "CyberArk"
+	// SecretArchiveProviderTypeHashiCorpVault - HashiCorp Vault secret archive provider.
+	SecretArchiveProviderTypeHashiCorpVault SecretArchiveProviderType = "HashiCorpVault"
+	// SecretArchiveProviderTypeOpenBao - OpenBao secret archive provider.
+	SecretArchiveProviderTypeOpenBao SecretArchiveProviderType = "OpenBao"
+)
+
+// PossibleSecretArchiveProviderTypeValues returns the possible values for the SecretArchiveProviderType const type.
+func PossibleSecretArchiveProviderTypeValues() []SecretArchiveProviderType {
+	return []SecretArchiveProviderType{
+		SecretArchiveProviderTypeCyberArk,
+		SecretArchiveProviderTypeHashiCorpVault,
+		SecretArchiveProviderTypeOpenBao,
+	}
+}
+
 // SecurityRuleDirection - The direction of allowed network traffic based on the rule.
 type SecurityRuleDirection string
 
@@ -2515,6 +2559,24 @@ func PossibleValidationThresholdTypeValues() []ValidationThresholdType {
 	return []ValidationThresholdType{
 		ValidationThresholdTypeCountSuccess,
 		ValidationThresholdTypePercentSuccess,
+	}
+}
+
+// VaultAuthenticationMethod - The authentication method used to authenticate to a HashiCorp Vault or OpenBao secret archive.
+type VaultAuthenticationMethod string
+
+const (
+	// VaultAuthenticationMethodAppRole - AppRole authentication method.
+	VaultAuthenticationMethodAppRole VaultAuthenticationMethod = "AppRole"
+	// VaultAuthenticationMethodClientCertificate - Client certificate authentication method.
+	VaultAuthenticationMethodClientCertificate VaultAuthenticationMethod = "ClientCertificate"
+)
+
+// PossibleVaultAuthenticationMethodValues returns the possible values for the VaultAuthenticationMethod const type.
+func PossibleVaultAuthenticationMethodValues() []VaultAuthenticationMethod {
+	return []VaultAuthenticationMethod{
+		VaultAuthenticationMethodAppRole,
+		VaultAuthenticationMethodClientCertificate,
 	}
 }
 

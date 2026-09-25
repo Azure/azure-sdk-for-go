@@ -207,9 +207,7 @@ func TestSessionReceiver_acceptNextSession_noSessionsExist(t *testing.T) {
 	defer cancel()
 
 	receiver, err := client.AcceptNextSessionForQueue(ctx, queueName, nil)
-	var sbErr *Error
-	require.ErrorAs(t, err, &sbErr)
-	require.Equal(t, CodeTimeout, sbErr.Code, "CodeTimeout since no sessions are available")
+	requireAcceptNextSessionTimeout(t, err)
 	require.Nil(t, receiver)
 }
 
@@ -260,10 +258,7 @@ func TestSessionReceiver_subscription(t *testing.T) {
 	receiver, err := client.AcceptNextSessionForSubscription(ctx, topic, "sub", nil)
 	cancel()
 	require.Nil(t, receiver)
-
-	var sbError *Error
-	require.ErrorAs(t, err, &sbError)
-	require.Equal(t, CodeTimeout, sbError.Code, "CodeTimeout because there are no sessions (yet)")
+	requireAcceptNextSessionTimeout(t, err)
 
 	sender, err := client.NewSender(topic, nil)
 	require.NoError(t, err)
@@ -420,6 +415,7 @@ func TestSessionReceiver_roundRobin(t *testing.T) {
 	// NOTE: this code is intentionally similar to `ExampleClient_AcceptNextSessionForQueue_roundrobin` so we can
 	// test it.
 	// BEGIN
+	acceptedSessions := 0
 	for {
 		// You can have multiple active session receivers, provided they're each receiving
 		// from different sessions.
@@ -431,9 +427,12 @@ func TestSessionReceiver_roundRobin(t *testing.T) {
 		cancel()
 
 		if err != nil {
-			var sbErr *Error
+			if errors.Is(err, context.DeadlineExceeded) && acceptedSessions < maxSessions {
+				continue
+			}
 
-			if errors.As(err, &sbErr) && sbErr.Code == CodeTimeout {
+			if isAcceptNextSessionTimeout(err) {
+				require.Equal(t, maxSessions, acceptedSessions, "timed out before accepting all expected sessions")
 				fmt.Printf("No sessions available\n")
 
 				// NOTE: you could also continue here, which will block and wait again for a
@@ -444,6 +443,7 @@ func TestSessionReceiver_roundRobin(t *testing.T) {
 			panic(err)
 		}
 
+		acceptedSessions++
 		require.NotZero(t, sessionReceiver.LockedUntil())
 		fmt.Printf("Got receiving for session '%s'\n", sessionReceiver.SessionID())
 
@@ -488,6 +488,21 @@ func TestSessionReceiver_roundRobin(t *testing.T) {
 	}
 
 	require.Equal(t, maxSessions, len(all))
+}
+
+func requireAcceptNextSessionTimeout(t *testing.T, err error) {
+	t.Helper()
+	require.Error(t, err)
+	require.True(t, isAcceptNextSessionTimeout(err), "expected a broker timeout or caller deadline, got %v", err)
+}
+
+func isAcceptNextSessionTimeout(err error) bool {
+	if errors.Is(err, context.DeadlineExceeded) {
+		return true
+	}
+
+	var sbErr *Error
+	return errors.As(err, &sbErr) && sbErr.Code == CodeTimeout
 }
 
 func Test_toReceiverOptions(t *testing.T) {

@@ -1,5 +1,21 @@
 # Release History
 
+## 1.1.0-beta.1 (2026-09-25)
+### Features Added
+
+- New enum type `CapabilityStatus` with values `CapabilityStatusDisabled`, `CapabilityStatusEnabled`
+- New struct `AzureBlobStorageCapability`
+- New struct `AzureBlobStorageCapabilityUpdate`
+- New struct `Capabilities`
+- New struct `CapabilitiesUpdate`
+- New struct `CapacityDetails`
+- New struct `CapacityDetailsUpdate`
+- New struct `PrefixConfiguration`
+- New struct `PrefixConfigurationUpdate`
+- New field `Capabilities` in struct `WorkspaceProperties`
+- New field `Capabilities` in struct `WorkspacePropertiesUpdate`
+
+
 ## 1.0.0 (2025-09-29)
 
 ### Features Added

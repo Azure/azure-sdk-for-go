@@ -5,7 +5,7 @@
 package armresiliencemanagement
 
 const (
-	version20260401Preview string = "2026-04-01-preview"
+	version20260831Preview string = "2026-08-31-preview"
 )
 
 // ActionTask - An action task type indicates the type of action task.
@@ -179,6 +179,63 @@ func PossibleDrillModeValues() []DrillMode {
 	}
 }
 
+// DrillReportFinalizationState - Finalization state of a Drill Run report.
+type DrillReportFinalizationState string
+
+const (
+	// DrillReportFinalizationStateFinalized - The report is finalized and immutable.
+	DrillReportFinalizationStateFinalized DrillReportFinalizationState = "Finalized"
+	// DrillReportFinalizationStateNotFinalized - The report is not finalized and may still change.
+	DrillReportFinalizationStateNotFinalized DrillReportFinalizationState = "NotFinalized"
+)
+
+// PossibleDrillReportFinalizationStateValues returns the possible values for the DrillReportFinalizationState const type.
+func PossibleDrillReportFinalizationStateValues() []DrillReportFinalizationState {
+	return []DrillReportFinalizationState{
+		DrillReportFinalizationStateFinalized,
+		DrillReportFinalizationStateNotFinalized,
+	}
+}
+
+// DrillReportFormat - Format of a Drill Run report.
+type DrillReportFormat string
+
+const (
+	// DrillReportFormatHTML - Human readable HTML report.
+	DrillReportFormatHTML DrillReportFormat = "Html"
+)
+
+// PossibleDrillReportFormatValues returns the possible values for the DrillReportFormat const type.
+func PossibleDrillReportFormatValues() []DrillReportFormat {
+	return []DrillReportFormat{
+		DrillReportFormatHTML,
+	}
+}
+
+// DrillReportGenerationStatus - Report generation status.
+type DrillReportGenerationStatus string
+
+const (
+	// DrillReportGenerationStatusFailed - Report generation failed. Details are captured in the lastError field.
+	DrillReportGenerationStatusFailed DrillReportGenerationStatus = "Failed"
+	// DrillReportGenerationStatusInProgress - Report generation is currently running.
+	DrillReportGenerationStatusInProgress DrillReportGenerationStatus = "InProgress"
+	// DrillReportGenerationStatusNotStarted - Report generation has not been attempted yet.
+	DrillReportGenerationStatusNotStarted DrillReportGenerationStatus = "NotStarted"
+	// DrillReportGenerationStatusSucceeded - Report generation completed successfully.
+	DrillReportGenerationStatusSucceeded DrillReportGenerationStatus = "Succeeded"
+)
+
+// PossibleDrillReportGenerationStatusValues returns the possible values for the DrillReportGenerationStatus const type.
+func PossibleDrillReportGenerationStatusValues() []DrillReportGenerationStatus {
+	return []DrillReportGenerationStatus{
+		DrillReportGenerationStatusFailed,
+		DrillReportGenerationStatusInProgress,
+		DrillReportGenerationStatusNotStarted,
+		DrillReportGenerationStatusSucceeded,
+	}
+}
+
 // DrillResourceFaultState - Drill Resource Fault State
 type DrillResourceFaultState string
 
@@ -311,6 +368,30 @@ func PossibleDrillRunSubtasksValues() []DrillRunSubtasks {
 		DrillRunSubtasksFaultInjection,
 		DrillRunSubtasksReprotect,
 		DrillRunSubtasksReprotectReverse,
+	}
+}
+
+// DrillRunTasks - Enum for DrillRun Tasks.
+type DrillRunTasks string
+
+const (
+	// DrillRunTasksFailover - Failover task.
+	DrillRunTasksFailover DrillRunTasks = "Failover"
+	// DrillRunTasksFailoverReverse - FailoverReverse task.
+	DrillRunTasksFailoverReverse DrillRunTasks = "FailoverReverse"
+	// DrillRunTasksReprotect - Reprotect task.
+	DrillRunTasksReprotect DrillRunTasks = "Reprotect"
+	// DrillRunTasksReprotectReverse - ReprotectReverse task.
+	DrillRunTasksReprotectReverse DrillRunTasks = "ReprotectReverse"
+)
+
+// PossibleDrillRunTasksValues returns the possible values for the DrillRunTasks const type.
+func PossibleDrillRunTasksValues() []DrillRunTasks {
+	return []DrillRunTasks{
+		DrillRunTasksFailover,
+		DrillRunTasksFailoverReverse,
+		DrillRunTasksReprotect,
+		DrillRunTasksReprotectReverse,
 	}
 }
 
@@ -759,6 +840,8 @@ const (
 	ProvisioningStateDeleting ProvisioningState = "Deleting"
 	// ProvisioningStateFailed - Resource creation failed.
 	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateNeedsAttention - The resource needs attention from the user.
+	ProvisioningStateNeedsAttention ProvisioningState = "NeedsAttention"
 	// ProvisioningStateProvisioning - Initial provisioning in progress
 	ProvisioningStateProvisioning ProvisioningState = "Provisioning"
 	// ProvisioningStateSucceeded - Resource has been created.
@@ -774,6 +857,7 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateCanceled,
 		ProvisioningStateDeleting,
 		ProvisioningStateFailed,
+		ProvisioningStateNeedsAttention,
 		ProvisioningStateProvisioning,
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
@@ -1059,6 +1143,45 @@ func PossibleResilienceHealthStatusValues() []ResilienceHealthStatus {
 	}
 }
 
+// ResourceFeasibilityReviewStatus - Outcome of a resource feasibility review for a recovery resource.
+type ResourceFeasibilityReviewStatus string
+
+const (
+	// ResourceFeasibilityReviewStatusFlagged - The review identified a risk the operator should consider.
+	ResourceFeasibilityReviewStatusFlagged ResourceFeasibilityReviewStatus = "Flagged"
+	// ResourceFeasibilityReviewStatusNotApplicable - The review did not apply to this resource and was skipped.
+	ResourceFeasibilityReviewStatusNotApplicable ResourceFeasibilityReviewStatus = "NotApplicable"
+	// ResourceFeasibilityReviewStatusPassed - The review identified no risk.
+	ResourceFeasibilityReviewStatusPassed ResourceFeasibilityReviewStatus = "Passed"
+	// ResourceFeasibilityReviewStatusUnavailable - The review could not complete. Advisory only; it never blocks failover.
+	ResourceFeasibilityReviewStatusUnavailable ResourceFeasibilityReviewStatus = "Unavailable"
+)
+
+// PossibleResourceFeasibilityReviewStatusValues returns the possible values for the ResourceFeasibilityReviewStatus const type.
+func PossibleResourceFeasibilityReviewStatusValues() []ResourceFeasibilityReviewStatus {
+	return []ResourceFeasibilityReviewStatus{
+		ResourceFeasibilityReviewStatusFlagged,
+		ResourceFeasibilityReviewStatusNotApplicable,
+		ResourceFeasibilityReviewStatusPassed,
+		ResourceFeasibilityReviewStatusUnavailable,
+	}
+}
+
+// ResourceFeasibilityReviewType - The resource feasibility review category for a recovery resource.
+type ResourceFeasibilityReviewType string
+
+const (
+	// ResourceFeasibilityReviewTypeSKUCapacity - SKU capacity availability check in the target region or zone.
+	ResourceFeasibilityReviewTypeSKUCapacity ResourceFeasibilityReviewType = "SkuCapacity"
+)
+
+// PossibleResourceFeasibilityReviewTypeValues returns the possible values for the ResourceFeasibilityReviewType const type.
+func PossibleResourceFeasibilityReviewTypeValues() []ResourceFeasibilityReviewType {
+	return []ResourceFeasibilityReviewType{
+		ResourceFeasibilityReviewTypeSKUCapacity,
+	}
+}
+
 // ResourceInclusionState - A state type that indicates inclusion of the resource with respect to the resiliency support.
 type ResourceInclusionState string
 
@@ -1167,6 +1290,42 @@ const (
 func PossibleResourceTypeCategoriesValues() []ResourceTypeCategories {
 	return []ResourceTypeCategories{
 		ResourceTypeCategoriesAzureSiteRecoveryVMsPresent,
+	}
+}
+
+// SliType - Category of an SLI selected for Drill monitoring.
+type SliType string
+
+const (
+	// SliTypeAvailability - Availability SLI.
+	SliTypeAvailability SliType = "Availability"
+	// SliTypeLatency - Latency SLI.
+	SliTypeLatency SliType = "Latency"
+)
+
+// PossibleSliTypeValues returns the possible values for the SliType const type.
+func PossibleSliTypeValues() []SliType {
+	return []SliType{
+		SliTypeAvailability,
+		SliTypeLatency,
+	}
+}
+
+// SliTypeMatchState - Whether the user-declared SLI type matches the SLI's actual category.
+type SliTypeMatchState string
+
+const (
+	// SliTypeMatchStateMatched - Declared type matches the SLI's actual category.
+	SliTypeMatchStateMatched SliTypeMatchState = "Matched"
+	// SliTypeMatchStateMismatched - Declared type does not match the SLI's actual category.
+	SliTypeMatchStateMismatched SliTypeMatchState = "Mismatched"
+)
+
+// PossibleSliTypeMatchStateValues returns the possible values for the SliTypeMatchState const type.
+func PossibleSliTypeMatchStateValues() []SliTypeMatchState {
+	return []SliTypeMatchState{
+		SliTypeMatchStateMatched,
+		SliTypeMatchStateMismatched,
 	}
 }
 

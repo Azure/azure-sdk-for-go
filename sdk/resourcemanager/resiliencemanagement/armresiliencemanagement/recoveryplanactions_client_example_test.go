@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/RecoveryPlanActions_CheckReadiness_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_CheckReadiness_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginCheckReadiness() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleRecoveryPlanActionsClient_BeginCheckReadiness() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryPlanActions_Failover_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_Failover_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleRecoveryPlanActionsClient_BeginFailover() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginFailover(ctx, "sampleServiceGroupName", "<operationID>", "samplePlanName", armresiliencemanagement.FailoverRequest{
+	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginFailover(ctx, "sampleServiceGroupName", "qmn", "samplePlanName", armresiliencemanagement.FailoverRequest{
 		FailoverDirection: to.Ptr(armresiliencemanagement.FailoverDirectionTypesFromSpecificLocations),
 		FailoverRequestProperties: &armresiliencemanagement.FailoverRequestProperties{
 			SourceLocations: []*string{
@@ -80,7 +80,7 @@ func ExampleRecoveryPlanActionsClient_BeginFailover() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryPlanActions_FailoverCommit_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_FailoverCommit_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginFailoverCommit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleRecoveryPlanActionsClient_BeginFailoverCommit() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginFailoverCommit(ctx, "sampleServiceGroupName", "<operationID>", "samplePlanName", nil)
+	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginFailoverCommit(ctx, "sampleServiceGroupName", "qmn", "samplePlanName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -109,7 +109,7 @@ func ExampleRecoveryPlanActionsClient_BeginFailoverCommit() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryPlanActions_Finalize_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_Finalize_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginFinalize() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleRecoveryPlanActionsClient_BeginFinalize() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginFinalize(ctx, "sampleServiceGroupName", "<operationID>", "samplePlanName", nil)
+	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginFinalize(ctx, "sampleServiceGroupName", "qmn", "samplePlanName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -130,7 +130,7 @@ func ExampleRecoveryPlanActionsClient_BeginFinalize() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryPlanActions_Reprotect_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_Reprotect_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginReprotect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +141,7 @@ func ExampleRecoveryPlanActionsClient_BeginReprotect() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginReprotect(ctx, "sampleServiceGroupName", "<operationID>", "samplePlanName", &armresiliencemanagement.RecoveryPlanActionsClientBeginReprotectOptions{
+	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginReprotect(ctx, "sampleServiceGroupName", "qmn", "samplePlanName", &armresiliencemanagement.RecoveryPlanActionsClientBeginReprotectOptions{
 		Body: &armresiliencemanagement.ReprotectRequest{
 			ReprotectRequestProperties: &armresiliencemanagement.ReprotectRequestProperties{
 				SelectedResourceIDs: []*string{
@@ -166,7 +166,7 @@ func ExampleRecoveryPlanActionsClient_BeginReprotect() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryPlanActions_TestFailover_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_TestFailover_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginTestFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleRecoveryPlanActionsClient_BeginTestFailover() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryPlanActions_TestFailoverCleanup_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_TestFailoverCleanup_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginTestFailoverCleanup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,7 +219,7 @@ func ExampleRecoveryPlanActionsClient_BeginTestFailoverCleanup() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginTestFailoverCleanup(ctx, "sampleServiceGroupName", "<operationID>", "samplePlanName", armresiliencemanagement.TestFailoverCleanupRequest{
+	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginTestFailoverCleanup(ctx, "sampleServiceGroupName", "qmn", "samplePlanName", armresiliencemanagement.TestFailoverCleanupRequest{
 		Comments: to.Ptr("Test failover clean-up comments"),
 	}, nil)
 	if err != nil {
@@ -239,7 +239,7 @@ func ExampleRecoveryPlanActionsClient_BeginTestFailoverCleanup() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryPlanActions_UpdateResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_UpdateResources_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginUpdateResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -250,7 +250,7 @@ func ExampleRecoveryPlanActionsClient_BeginUpdateResources() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginUpdateResources(ctx, "sampleServiceGroupName", "<operationID>", "samplePlanName", armresiliencemanagement.UpdateRecoveryResourcesRequest{
+	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginUpdateResources(ctx, "sampleServiceGroupName", "qmn", "samplePlanName", armresiliencemanagement.UpdateRecoveryResourcesRequest{
 		ResourcesToUpdate: []*armresiliencemanagement.RecoveryResource{
 			{
 				Properties: &armresiliencemanagement.RecoveryResourceProperties{
@@ -368,7 +368,7 @@ func ExampleRecoveryPlanActionsClient_BeginUpdateResources() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryPlanActions_ValidateForFailover_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_ValidateForFailover_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginValidateForFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -379,7 +379,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForFailover() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginValidateForFailover(ctx, "sampleServiceGroupName", "<operationID>", "samplePlanName", armresiliencemanagement.FailoverRequest{
+	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginValidateForFailover(ctx, "sampleServiceGroupName", "qmn", "samplePlanName", armresiliencemanagement.FailoverRequest{
 		FailoverDirection: to.Ptr(armresiliencemanagement.FailoverDirectionTypesFromSpecificLocations),
 		FailoverRequestProperties: &armresiliencemanagement.FailoverRequestProperties{
 			SourceLocations: []*string{
@@ -482,6 +482,31 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForFailover() {
 	// 					NotQualifiedReasons: []*string{
 	// 						to.Ptr("ResourceInNotProtectedState"),
 	// 					},
+	// 					ResourceFeasibilityReviews: []*armresiliencemanagement.ResourceFeasibilityReview{
+	// 						{
+	// 							FeasibilityType: to.Ptr(armresiliencemanagement.ResourceFeasibilityReviewTypeSKUCapacity),
+	// 							ResourceType: to.Ptr("Microsoft.Compute/virtualMachines"),
+	// 							CurrentTargetSKU: &armresiliencemanagement.SKUDetails{
+	// 								SKU: to.Ptr("Standard_D4s_v5"),
+	// 								VCPU: to.Ptr[int32](4),
+	// 								RAM: to.Ptr[int32](16),
+	// 								MonthlyPrice: to.Ptr[float64](219),
+	// 								Currency: to.Ptr("USD"),
+	// 								OfferingID: to.Ptr("bc713d38-e184-4631-9d42-2bf64f1d0131"),
+	// 							},
+	// 							Status: to.Ptr(armresiliencemanagement.ResourceFeasibilityReviewStatusFlagged),
+	// 							RecommendedTargetSKUs: []*armresiliencemanagement.SKUDetails{
+	// 								{
+	// 									SKU: to.Ptr("Standard_D8s_v5"),
+	// 									VCPU: to.Ptr[int32](8),
+	// 									RAM: to.Ptr[int32](32),
+	// 									MonthlyPrice: to.Ptr[float64](438),
+	// 									Currency: to.Ptr("USD"),
+	// 									OfferingID: to.Ptr("3996b909-b8d8-46f9-9e40-3a35fb687662"),
+	// 								},
+	// 							},
+	// 						},
+	// 					},
 	// 				},
 	// 			},
 	// 		},
@@ -489,7 +514,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForFailover() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryPlanActions_ValidateForFailoverCommit_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_ValidateForFailoverCommit_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginValidateForFailoverCommit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -500,7 +525,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForFailoverCommit() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginValidateForFailoverCommit(ctx, "sampleServiceGroupName", "<operationID>", "samplePlanName", nil)
+	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginValidateForFailoverCommit(ctx, "sampleServiceGroupName", "qmn", "samplePlanName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -603,7 +628,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForFailoverCommit() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryPlanActions_ValidateForOperation_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_ValidateForOperation_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginValidateForOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -614,7 +639,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForOperation() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginValidateForOperation(ctx, "sampleServiceGroupName", "<operationID>", "samplePlanName", armresiliencemanagement.ValidateForOperationRequest{
+	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginValidateForOperation(ctx, "sampleServiceGroupName", "qmn", "samplePlanName", armresiliencemanagement.ValidateForOperationRequest{
 		OperationName: to.Ptr(armresiliencemanagement.RecoveryOperationNamesFailover),
 	}, nil)
 	if err != nil {
@@ -626,7 +651,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForOperation() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryPlanActions_ValidateForReprotect_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_ValidateForReprotect_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginValidateForReprotect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -637,7 +662,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForReprotect() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginValidateForReprotect(ctx, "nrhlfd", "<operationID>", "samplePlanName", &armresiliencemanagement.RecoveryPlanActionsClientBeginValidateForReprotectOptions{
+	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginValidateForReprotect(ctx, "nrhlfd", "qmn", "samplePlanName", &armresiliencemanagement.RecoveryPlanActionsClientBeginValidateForReprotectOptions{
 		Body: &armresiliencemanagement.ReprotectRequest{
 			ReprotectRequestProperties: &armresiliencemanagement.ReprotectRequestProperties{
 				SelectedResourceIDs: []*string{
@@ -747,7 +772,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForReprotect() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryPlanActions_ValidateForTestFailover_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_ValidateForTestFailover_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginValidateForTestFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -758,7 +783,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForTestFailover() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginValidateForTestFailover(ctx, "sampleServiceGroupName", "<operationID>", "samplePlanName", armresiliencemanagement.FailoverRequest{
+	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginValidateForTestFailover(ctx, "sampleServiceGroupName", "qmn", "samplePlanName", armresiliencemanagement.FailoverRequest{
 		FailoverDirection: to.Ptr(armresiliencemanagement.FailoverDirectionTypesFromSpecificLocations),
 		FailoverRequestProperties: &armresiliencemanagement.FailoverRequestProperties{
 			SourceLocations: []*string{
@@ -868,7 +893,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForTestFailover() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryPlanActions_ValidateForTestFailoverCleanup_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryPlanActions_ValidateForTestFailoverCleanup_MaximumSet_Gen.json
 func ExampleRecoveryPlanActionsClient_BeginValidateForTestFailoverCleanup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -879,7 +904,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForTestFailoverCleanup() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginValidateForTestFailoverCleanup(ctx, "sampleServiceGroupName", "<operationID>", "samplePlanName", nil)
+	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginValidateForTestFailoverCleanup(ctx, "sampleServiceGroupName", "qmn", "samplePlanName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

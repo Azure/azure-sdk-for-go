@@ -4048,3 +4048,27 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsFlatArrowMatchesXM
 	sort.Strings(arrowNames)
 	_require.Equal(xmlNames, arrowNames)
 }
+
+// TestContainerGetSASURLPreservesCustomQueryParams is a regression test for GetSASURL()
+// appending a duplicated "?" to the resulting URL when the client's URL already contained a
+// query string (e.g. a customer-provided endpoint with pre-existing custom query parameters),
+// which previously produced a malformed SAS URL.
+func TestContainerGetSASURLPreservesCustomQueryParams(t *testing.T) {
+	_require := require.New(t)
+	const accountName = "fakestorageaccount"
+	// base64-encoded fake key; not a real secret.
+	const accountKey = "PSA7dl59RwZBFEBhBEtdrsq/g7VpjMFeSPzdC4SoBiQI3xVLg2y8HRoAF3PidfB8/i9v67QCNSAdVdJdKrmqSw=="
+	cred, err := container.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/container?customparam=value", accountName)
+	containerClient, err := container.NewClientWithSharedKeyCredential(containerURL, cred, nil)
+	_require.NoError(err)
+
+	sasURL, err := containerClient.GetSASURL(sas.ContainerPermissions{Read: true}, time.Now().Add(time.Hour), nil)
+	_require.NoError(err)
+
+	_require.Equal(1, strings.Count(sasURL, "?"), "SAS URL must not contain a duplicated '?': %s", sasURL)
+	_require.Contains(sasURL, "customparam=value")
+	_require.Contains(sasURL, "sig=")
+}

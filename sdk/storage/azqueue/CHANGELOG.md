@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed `QueueClient.GetSASURL()` and `ServiceClient.GetSASURL()` appending a duplicated `?` to the resulting URL when the client's underlying URL already contained a query string, which produced a malformed SAS URL.
 
 #### Other Changes
 * The `queueerror.Code` constants now reference the generated `StorageErrorCode` values instead of duplicating string literals, keeping them in sync with the service definition.

@@ -10,6 +10,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -291,13 +292,25 @@ func (b *Client) GetSASURL(permissions sas.BlobPermissions, expiry time.Time, o 
 		Permissions:   permissions.String(),
 		StartTime:     st,
 		ExpiryTime:    expiry.UTC(),
+		BlobVersion:   urlParts.VersionID,
 	}.SignWithSharedKey(b.sharedKey())
 
 	if err != nil {
 		return "", err
 	}
 
-	endpoint := b.URL() + "?" + qps.Encode()
+	// b.URL() may already contain a query string (e.g. "versionid" or "snapshot" for
+	// versioned/snapshot clients). Use the correct separator to avoid emitting a second "?",
+	// which would otherwise produce a malformed URL and let a caller "recover" a base-blob SAS
+	// suffix by splitting on the final "?" and re-appending it to the base blob path.
+	endpoint := b.URL()
+	if encoded := qps.Encode(); encoded != "" {
+		separator := "?"
+		if strings.Contains(endpoint, "?") {
+			separator = "&"
+		}
+		endpoint += separator + encoded
+	}
 
 	return endpoint, nil
 }

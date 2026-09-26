@@ -1,5 +1,16 @@
 # Release History
 
+## 1.9.0 (Unreleased)
+
+### Features Added
+* Added the `azblob_noarrow` build tag, which excludes the Apache Arrow dependency from the binary. With the tag, list operations with `StorageResponseFormatAuto` use XML and an explicit `StorageResponseFormatArrow` request returns an error.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.8.1 (2026-09-09)
 
 ### Breaking Changes

@@ -256,19 +256,23 @@ func (c *Client) NewListBlobsFlatPager(o *ListBlobsFlatOptions) *runtime.Pager[L
 	listOptions := generated.ContainerClientListBlobFlatSegmentOptions{}
 	arrowOptions := o.formatArrow()
 	var useArrow bool
+	var formatErr error
 	if o != nil {
 		listOptions.Include = o.Include.format()
 		listOptions.Marker = o.Marker
 		listOptions.Maxresults = o.MaxResults
 		listOptions.Prefix = o.Prefix
 		listOptions.StartFrom = o.StartFrom
-		useArrow = exported.ResolveAutoFormat(o.ResponseFormat) == exported.StorageResponseFormatArrow
+		useArrow, formatErr = arrow.UseArrow(o.ResponseFormat)
 	}
 	return runtime.NewPager(runtime.PagingHandler[ListBlobsFlatResponse]{
 		More: func(page ListBlobsFlatResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListBlobsFlatResponse) (ListBlobsFlatResponse, error) {
+			if formatErr != nil {
+				return ListBlobsFlatResponse{}, formatErr
+			}
 			if page != nil {
 				listOptions.Marker = page.NextMarker
 				arrowOptions.Marker = page.NextMarker
@@ -307,14 +311,18 @@ func (c *Client) NewListBlobsHierarchyPager(delimiter string, o *ListBlobsHierar
 	listOptions := o.format()
 	arrowOptions := o.formatArrow()
 	var useArrow bool
+	var formatErr error
 	if o != nil {
-		useArrow = exported.ResolveAutoFormat(o.ResponseFormat) == exported.StorageResponseFormatArrow
+		useArrow, formatErr = arrow.UseArrow(o.ResponseFormat)
 	}
 	return runtime.NewPager(runtime.PagingHandler[ListBlobsHierarchyResponse]{
 		More: func(page ListBlobsHierarchyResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListBlobsHierarchyResponse) (ListBlobsHierarchyResponse, error) {
+			if formatErr != nil {
+				return ListBlobsHierarchyResponse{}, formatErr
+			}
 			if page != nil {
 				listOptions.Marker = page.NextMarker
 				arrowOptions.Marker = page.NextMarker

@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
+//go:build !azblob_noarrow
+
 package arrow
 
 import (
@@ -20,13 +22,11 @@ import (
 	"github.com/apache/arrow-go/v18/arrow/memory"
 )
 
+// Supported reports whether Arrow list responses are compiled in.
+// Building with the azblob_noarrow tag excludes the Apache Arrow dependency.
+const Supported = true
+
 const (
-	// ArrowContentType is the Content-Type for Apache Arrow IPC stream responses.
-	ArrowContentType = "application/vnd.apache.arrow.stream"
-
-	// ArrowAcceptHeader is the Accept header value to request Arrow format.
-	ArrowAcceptHeader = ArrowContentType
-
 	// resourceTypeBlobPrefix is the ResourceType value that identifies a virtual directory prefix
 	// in hierarchy listing responses. In XML, prefixes are separate <BlobPrefix> elements;
 	// in Arrow, all rows share the same schema and are distinguished by this field value.

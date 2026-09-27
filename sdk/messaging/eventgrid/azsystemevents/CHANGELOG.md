@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0 (2026-08-17)
+## 1.1.0 (2026-09-27)
 ### Features Added
 
 - New value `TypeLifecycleHookEvents` added to enum type `string`
@@ -10,6 +10,7 @@
 - New enum type `LifecycleHookActionState` with values `LifecycleHookActionStateApproved`, `LifecycleHookActionStateRejected`, `LifecycleHookActionStateWaiting`
 - New enum type `VirtualMachineScaleSetLifecycleHookEventState` with values `VirtualMachineScaleSetLifecycleHookEventStateActive`, `VirtualMachineScaleSetLifecycleHookEventStateCompleted`
 - New enum type `VirtualMachineScaleSetLifecycleHookEventType` with values `VirtualMachineScaleSetLifecycleHookEventTypeUpgradeAutoOSRollingBatchStarting`, `VirtualMachineScaleSetLifecycleHookEventTypeUpgradeAutoOSScheduling`
+- New function `PossibleLifecycleHookActionValues() []LifecycleHookAction`
 - New struct `ACSChatRetentionPolicy`
 - New struct `APIEntityReference`
 - New struct `LifecycleHookEventsEventData`

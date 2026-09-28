@@ -135,6 +135,8 @@ func unmarshalBackupDatasourceParametersClassification(rawMsg json.RawMessage) (
 		b = &GenericBackupDatasourceParameters{}
 	case "KubernetesClusterBackupDatasourceParameters":
 		b = &KubernetesClusterBackupDatasourceParameters{}
+	case "PostgreSqlFlexibleServerBackupDatasourceParameters":
+		b = &PostgreSQLFlexibleServerBackupDatasourceParameters{}
 	default:
 		b = &BackupDatasourceParameters{}
 	}

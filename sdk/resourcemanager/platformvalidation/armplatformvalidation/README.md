@@ -1,6 +1,6 @@
-# Azure Platform Validation Module for Go
+# Azure Platformvalidation Module for Go
 
-The `armplatformvalidation` module provides operations for working with Azure Platform Validation.
+The `armplatformvalidation` module provides operations for working with Azure Platformvalidation.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/platformvalidation/armplatformvalidation)
 
@@ -15,7 +15,7 @@ The `armplatformvalidation` module provides operations for working with Azure Pl
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Platform Validation module:
+Install the Azure Platformvalidation module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/platformvalidation/armplatformvalidation
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/platformvalidation/
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Platform Validation.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Platformvalidation.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-The Azure Platform Validation module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Platformvalidation module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armplatformvalidation.NewClientFactory(<subscription ID>, cred, nil)

@@ -6,6 +6,8 @@
 
 ### Features Added
 
+* Added the Go SDK identity to the User-Agent header alongside the native driver identity,
+  preserving the optional `ClientOptions.ApplicationID` suffix. See [PR 27627](https://github.com/Azure/azure-sdk-for-go/pull/27627).
 * Added the error and response model: `Error` classifies a failure with a `Code` and reports whether
   the service or the client produced it, and `Response`/`ItemResponse` carry what an operation
   returns. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).

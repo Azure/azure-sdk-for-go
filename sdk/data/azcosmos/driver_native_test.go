@@ -77,9 +77,8 @@ func TestNativeRuntimeAndAccountLifecycle(t *testing.T) {
 	require.NoError(t, d.close(), "close is idempotent")
 }
 
-// ApplicationID is passed unchanged to the driver, which remains the source of truth for its
-// validation rules. The C ABI reports only an invalid-option status, so the binding adds the field
-// name without duplicating the rule.
+// ApplicationID is passed unchanged to the driver, which owns validation.
+// The C ABI reports only an invalid-option status, so the binding names both possible sources.
 func TestNativeRuntimeRejectsInvalidApplicationID(t *testing.T) {
 	for _, applicationID := range []string{
 		"order-service/1.2.3",
@@ -95,7 +94,7 @@ func TestNativeRuntimeRejectsInvalidApplicationID(t *testing.T) {
 			require.ErrorAs(t, err, &cosmosErr)
 			require.Equal(t, CodeClientError, cosmosErr.Code)
 			require.Equal(t, nativeInvalidOptionSubStatus(), cosmosErr.SubStatus)
-			require.Contains(t, cosmosErr.Message, "ClientOptions.ApplicationID")
+			require.Equal(t, "azcosmos: the Cosmos driver rejected runtime options (SDK identity or ClientOptions.ApplicationID)", cosmosErr.Message)
 			require.NotContains(t, cosmosErr.Message, applicationID, "do not echo telemetry identifiers")
 			require.Nil(t, d.runtime)
 		})

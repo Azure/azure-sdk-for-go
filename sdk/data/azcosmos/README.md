@@ -60,6 +60,12 @@ container's metadata.
 
 One limit applies to the driver-backed build today: v1's WebAssembly support does not carry over.
 
+### SDK identity
+
+Service requests include `azsdk-go-azcosmos/<version>` in the User-Agent header alongside the native
+Cosmos driver identity and feature flags. `ClientOptions.ApplicationID` remains an optional,
+unchanged application suffix; SDK identity does not consume its length allowance.
+
 ### Patching items
 
 > [!IMPORTANT]

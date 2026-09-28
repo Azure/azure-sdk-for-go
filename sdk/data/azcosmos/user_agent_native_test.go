@@ -5,6 +5,8 @@
 
 package azcosmos
 
+// cSpell:ignore azsdk rustc
+
 import (
 	"net/http"
 	"net/http/httptest"

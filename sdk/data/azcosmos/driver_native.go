@@ -5,6 +5,8 @@
 
 package azcosmos
 
+// cSpell:ignore gocritic
+
 /*
 #include <stdlib.h>
 #include "azurecosmosdriver.h"

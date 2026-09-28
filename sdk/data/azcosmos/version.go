@@ -3,6 +3,8 @@
 
 package azcosmos
 
+// cSpell:ignore azsdk
+
 import "strings"
 
 const (

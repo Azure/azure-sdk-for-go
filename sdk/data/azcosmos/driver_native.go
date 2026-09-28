@@ -292,6 +292,11 @@ func (d *nativeDriver) buildRuntime() error {
 	// rather than a Go zero.
 	options := C.cosmos_runtime_options_default()
 
+	// Copied into the runtime before the call returns, so freeing it here is safe.
+	identifier, identifierAllocation := toNativeString(wrappingSDKIdentifier())
+	defer C.free(identifierAllocation)
+	options.wrapping_sdk_identifier = identifier
+
 	if d.cfg.options.ApplicationID != "" {
 		// Copied into the runtime before the call returns, so freeing it here is safe.
 		suffix, allocation := toNativeString(d.cfg.options.ApplicationID)
@@ -302,17 +307,16 @@ func (d *nativeDriver) buildRuntime() error {
 	var richErr *C.cosmos_error_t
 	status := C.cosmos_runtime_build(&options, &d.runtime, &richErr) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
 	err := statusError(status, richErr, "building the driver runtime")
-	if err == nil || d.cfg.options.ApplicationID == "" {
+	if err == nil {
 		return err
 	}
 
-	// ApplicationID is the only runtime option this binding changes from the driver's defaults.
-	// The C ABI reports an invalid value as a bare status with no field name, so identify the field
-	// without duplicating the driver's validation rule.
+	// The C ABI reports invalid options without a field name. Identify the possible sources
+	// without echoing values or duplicating the driver's validation rules.
 	var cosmosErr *Error
 	if errors.As(err, &cosmosErr) &&
 		cosmosErr.SubStatus == int(C.COSMOS_SUB_STATUS_CLIENT_FFI_INVALID_OPTION_VALUE) {
-		cosmosErr.Message = "azcosmos: the Cosmos driver rejected ClientOptions.ApplicationID"
+		cosmosErr.Message = "azcosmos: the Cosmos driver rejected runtime options (SDK identity or ClientOptions.ApplicationID)"
 	}
 	return err
 }

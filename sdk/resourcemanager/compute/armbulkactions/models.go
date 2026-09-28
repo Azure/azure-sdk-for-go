@@ -147,27 +147,6 @@ type BulkCreateCustomOverride struct {
 	VirtualMachineProfile *BulkactionVMProperties
 }
 
-// BulkCreateCustomOverrideBase - Override fields shared by per-VM and per-VM-size overrides. Each set field takes precedence
-// over the operation-level value. VM size, zone, priority, eviction policy, and billing are owned by the service and cannot
-// be set here.
-type BulkCreateCustomOverrideBase struct {
-	// Extensions. When non-empty they replace the operation-level extensions; when omitted the operation-level extensions are
-	// inherited.
-	Extensions []*BulkactionVMExtension
-
-	// Identity overriding the operation-level identity.
-	Identity *VirtualMachineIdentity
-
-	// Plan overriding the operation-level plan.
-	Plan *Plan
-
-	// Tags overriding the operation-level tags.
-	Tags map[string]*string
-
-	// VM profile, the same shape as operation-level ComputeProfile.virtualMachineProfile. Overrides the operation-level VM profile.
-	VirtualMachineProfile *BulkactionVMProperties
-}
-
 // BulkCreateCustomOverridesProfile - Groups the per-VM overrides with the name prefix that names any override that does not
 // supply its own VM name.
 type BulkCreateCustomOverridesProfile struct {
@@ -181,9 +160,6 @@ type BulkCreateCustomOverridesProfile struct {
 
 // BulkCreateCustomPriorityProfile - Configuration options for Regular or Spot instances in BulkCreateCustom.
 type BulkCreateCustomPriorityProfile struct {
-	// The allocation strategy for VM size selection
-	AllocationStrategy *BulkCreateCustomAllocationStrategy
-
 	// Eviction Policy to follow when evicting Spot VMs.
 	EvictionPolicy *EvictionPolicy
 
@@ -225,12 +201,6 @@ type BulkCreateCustomProperties struct {
 	// allocation failures.
 	PartialFulfillmentPolicy *PartialFulfillmentPolicy
 
-	// List of VM sizes supported for BulkCreateCustom
-	VMSizesProfile []*BulkCreateCustomVMSizeProfile
-
-	// Zone Allocation Policy for launching instances.
-	ZoneAllocationPolicy *BulkCreateCustomZoneAllocationPolicy
-
 	// READ-ONLY; The UTC time the BulkCreateCustom resource was created.
 	CreatedTime *time.Time
 
@@ -247,23 +217,6 @@ type BulkCreateCustomResource struct {
 	VirtualMachineInfo *BulkCreateCustomVirtualMachineInfo
 }
 
-// BulkCreateCustomVMSizeProfile - A VM size profile entry that may additionally carry an optional per-VM-size profile override.
-// Every VM that the service assigns to this size inherits the override, layered on top of the operation-level base profile
-// and beneath any per-VM override. Present only on the bulkCreateCustom endpoint; the uniform endpoint rejects a non-null
-// override.
-type BulkCreateCustomVMSizeProfile struct {
-	// REQUIRED; The name of the VM size, eg Standard_D2ads_v5
-	Name *string
-
-	// REQUIRED; The rank of this VM size in the priority order
-	Rank *int32
-
-	// Optional per-VM-size profile override applied to every VM the service assigns to this size. A size maps to many VMs, so
-	// virtualMachineName is not part of this shape. virtualMachineProfile is layered beneath any per-VM override; tags, identity,
-	// and plan are merged with the per-VM override, with the per-VM value winning.
-	Override *BulkCreateCustomOverrideBase
-}
-
 // BulkCreateCustomVirtualMachineInfo - Information about a virtual machine resolved for a BulkCreateCustom operation.
 type BulkCreateCustomVirtualMachineInfo struct {
 	// The resolved Azure virtual machine name.
@@ -274,15 +227,6 @@ type BulkCreateCustomVirtualMachineInfo struct {
 
 	// The subscription-relative logical availability zone selected for the virtual machine.
 	Zone *string
-}
-
-// BulkCreateCustomZoneAllocationPolicy - The zone allocation policy for distributing VMs across availability zones in BulkCreateCustom.
-type BulkCreateCustomZoneAllocationPolicy struct {
-	// The distribution strategy for zone allocation. Defaults to BestEffortBalanced.
-	DistributionStrategy *BulkCreateCustomDistributionStrategy
-
-	// The zone preferences for allocation priority
-	ZonePreferences []*ZonePreference
 }
 
 // BulkCreateListResult - List of BulkCreate resources.
@@ -332,28 +276,11 @@ type BulkCreateProperties struct {
 	// allocation failures.
 	PartialFulfillmentPolicy *PartialFulfillmentPolicy
 
-	// List of VM sizes supported for BulkCreate. Every virtual machine is created from the operation-level computeProfile regardless
-	// of the size selected, so no per-VM-size override can be supplied here.
-	VMSizesProfile []*BulkCreateVMSizeProfile
-
-	// Zone Allocation Policy for launching instances.
-	ZoneAllocationPolicy *ZoneAllocationPolicy
-
 	// READ-ONLY; The UTC time the BulkCreate resource was created.
 	CreatedTime *time.Time
 
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *ProvisioningState
-}
-
-// BulkCreateVMSizeProfile - A VM size that the service may select for a BulkCreate operation.
-type BulkCreateVMSizeProfile struct {
-	// REQUIRED; The name of the VM size, eg Standard_D2ads_v5
-	Name *string
-
-	// The rank of this VM size in the priority order, starting at 0, where a lower value is preferred. Used when priorityProfile.allocationStrategy
-	// is Prioritized.
-	Rank *int32
 }
 
 // BulkactionVMExtension - Defines a virtual machine extension.
@@ -431,15 +358,15 @@ type CancelOccurrenceRequest struct {
 	ResourceIDs []*string
 }
 
-// CancelOperationsContent - This is the request to cancel running operations in scheduled actions using the operation ids
+// CancelOperationsContent - The eligible operations to cancel.
 type CancelOperationsContent struct {
-	// REQUIRED; The list of operation ids to cancel operations on
+	// REQUIRED; The Bulk Action Operation Ids that identify the operations to cancel.
 	OperationIDs []*string
 }
 
-// CancelOperationsResponse - This is the response from a cancel operations request
+// CancelOperationsResponse - The results of the cancellation requests.
 type CancelOperationsResponse struct {
-	// REQUIRED; An array of resource operations that were successfully cancelled
+	// REQUIRED; The current result for each operation submitted for cancellation.
 	Results []*ResourceOperation
 }
 
@@ -584,18 +511,18 @@ type DataDisk struct {
 	WriteAcceleratorEnabled *bool
 }
 
-// DeallocateResourceOperationResponse - The response from a deallocate request
+// DeallocateResourceOperationResponse - The result of a bulk deallocate action.
 type DeallocateResourceOperationResponse struct {
-	// REQUIRED; The description of the operation response
+	// REQUIRED; A description of the bulk action result.
 	Description *string
 
-	// REQUIRED; The location of the deallocate request eg westus
+	// REQUIRED; The Azure region where Bulk Actions processes the request.
 	Location *string
 
-	// REQUIRED; The type of resources used in the deallocate request eg virtual machines
+	// REQUIRED; The type of resources targeted by the bulk action.
 	Type *string
 
-	// The results from the deallocate request if no errors exist
+	// The result for each virtual machine.
 	Results []*ResourceOperation
 }
 
@@ -608,18 +535,18 @@ type DelayRequest struct {
 	ResourceIDs []*string
 }
 
-// DeleteResourceOperationResponse - The response from a delete request
+// DeleteResourceOperationResponse - The result of a bulk delete action.
 type DeleteResourceOperationResponse struct {
-	// REQUIRED; The description of the operation response
+	// REQUIRED; A description of the bulk action result.
 	Description *string
 
-	// REQUIRED; The location of the delete request eg westus
+	// REQUIRED; The Azure region where Bulk Actions processes the request.
 	Location *string
 
-	// REQUIRED; The type of resources used in the delete request eg virtual machines
+	// REQUIRED; The type of resources targeted by the bulk action.
 	Type *string
 
-	// The results from the delete request if no errors exist
+	// The result for each virtual machine.
 	Results []*ResourceOperation
 }
 
@@ -647,7 +574,7 @@ type DiffDiskSettings struct {
 // be specified for disk. **Note:** The disk encryption set resource id can only be specified for managed disk. Please refer
 // https://aka.ms/mdssewithcmkoverview for more details.
 type DiskEncryptionSetParametersContent struct {
-	// The ID of the sub-resource.
+	// The Azure resource ID.
 	ID *string
 }
 
@@ -723,12 +650,12 @@ type EventGridAndResourceGraph struct {
 	ScheduledEventsAPIVersion *string
 }
 
-// ExecuteDeallocateContent - The ExecuteDeallocateRequest request for executeDeallocate operations
+// ExecuteDeallocateContent - The virtual machines and execution settings for a bulk deallocate action.
 type ExecuteDeallocateContent struct {
-	// REQUIRED; The execution parameters for the request
+	// REQUIRED; The execution settings for the bulk action.
 	ExecutionParameters *ExecutionParameters
 
-	// The resources for the request
+	// The target virtual machines.
 	Resources *Resources
 
 	// The resources for the request with resource context information. Cannot be provided together with `resources` - exactly
@@ -736,15 +663,15 @@ type ExecuteDeallocateContent struct {
 	ResourcesWithContext *ResourcesWithContext
 }
 
-// ExecuteDeleteContent - The ExecuteDeleteRequest for delete VM operation
+// ExecuteDeleteContent - The virtual machines and execution settings for a bulk delete action.
 type ExecuteDeleteContent struct {
-	// REQUIRED; The execution parameters for the request
+	// REQUIRED; The execution settings for the bulk action.
 	ExecutionParameters *ExecutionParameters
 
-	// Forced delete resource item
+	// Indicates whether Bulk Actions uses forced deletion for the target virtual machines.
 	ForceDeletion *bool
 
-	// The resources for the request
+	// The target virtual machines.
 	Resources *Resources
 
 	// The resources for the request with resource context information. Cannot be provided together with `resources` - exactly
@@ -752,12 +679,12 @@ type ExecuteDeleteContent struct {
 	ResourcesWithContext *ResourcesWithContext
 }
 
-// ExecuteHibernateContent - The ExecuteHibernateRequest request for executeHibernate operations
+// ExecuteHibernateContent - The virtual machines and execution settings for a bulk hibernate action.
 type ExecuteHibernateContent struct {
-	// REQUIRED; The execution parameters for the request
+	// REQUIRED; The execution settings for the bulk action.
 	ExecutionParameters *ExecutionParameters
 
-	// The resources for the request
+	// The target virtual machines.
 	Resources *Resources
 
 	// The resources for the request with resource context information. Cannot be provided together with `resources` - exactly
@@ -765,15 +692,15 @@ type ExecuteHibernateContent struct {
 	ResourcesWithContext *ResourcesWithContext
 }
 
-// ExecuteReimageRequest - The ExecuteReimageRequest request for reimage operations
+// ExecuteReimageRequest - The virtual machines and configuration for a bulk reimage action.
 type ExecuteReimageRequest struct {
-	// REQUIRED; The execution parameters for the request
+	// REQUIRED; The execution settings for the bulk action.
 	ExecutionParameters *ExecutionParameters
 
-	// Reimage parameters including base profile and per-resource overrides
+	// The shared and per-virtual-machine reimage configuration.
 	ReimageParameters *ReimagePayload
 
-	// The resources for the request
+	// The target virtual machines.
 	Resources *Resources
 
 	// The resources for the request with resource context information. Cannot be provided together with `resources` - exactly
@@ -781,12 +708,12 @@ type ExecuteReimageRequest struct {
 	ResourcesWithContext *ResourcesWithContext
 }
 
-// ExecuteStartContent - The ExecuteStartRequest request for executeStart operations
+// ExecuteStartContent - The virtual machines and execution settings for a bulk start action.
 type ExecuteStartContent struct {
-	// REQUIRED; The execution parameters for the request
+	// REQUIRED; The execution settings for the bulk action.
 	ExecutionParameters *ExecutionParameters
 
-	// The resources for the request
+	// The target virtual machines.
 	Resources *Resources
 
 	// The resources for the request with resource context information. Cannot be provided together with `resources` - exactly
@@ -794,42 +721,45 @@ type ExecuteStartContent struct {
 	ResourcesWithContext *ResourcesWithContext
 }
 
-// ExecutionParameters - Extra details needed to run the user's request
+// ExecutionParameters - The execution settings for a bulk action.
 type ExecutionParameters struct {
+	// Additional configuration for Create.
+	AdditionalCreateParameters map[string]any
+
 	// Capacity recommendation parameters for the request. When provided on an executeStart request, the service computes placement
 	// recommendations only if the VM fails to start due to an allocation failure; the recommendations for the desired sizes and
 	// locations are then surfaced in the operation's capacityRecommendation response.
 	CapacityRecommendationParameters *CapacityRecommendationParameters
 
-	// Retry policy the user can pass
+	// The retry settings for the bulk action.
 	RetryPolicy *RetryPolicy
 
-	// When true on an executeStart request, run a post-Start VM agent health check and engage the fallback chain if the guest
-	// agent does not report Ready. Ignored for non-Start operations.
+	// If true, Bulk Actions verifies the virtual machine guest agent health after a start operation. Setting this property to
+	// true for any other operation causes the request to fail.
 	VerifyVMAgentHealth *bool
 }
 
-// FallbackOperationInfo - Describes the fallback operation that was performed
+// FallbackOperationInfo - Information about the fallback operation attempted after the requested operation did not succeed.
 type FallbackOperationInfo struct {
-	// REQUIRED; The last operation type that was performed as a fallback
+	// REQUIRED; The type of the additional operation.
 	LastOpType *ResourceOperationType
 
-	// REQUIRED; The status of the fallback operation
+	// REQUIRED; The status of the additional operation.
 	Status *string
 
-	// The error code if the fallback operation failed
+	// The error returned when the additional operation did not succeed.
 	Error *ResourceOperationError
 }
 
-// GetOperationStatusContent - This is the request to get operation status using operationids
+// GetOperationStatusContent - The operation for which current status should be returned.
 type GetOperationStatusContent struct {
-	// REQUIRED; The list of operation ids to get the status of
+	// REQUIRED; The Bulk Action Operation Ids that identify the operations for which current status should be returned.
 	OperationIDs []*string
 }
 
-// GetOperationStatusResponse - This is the response from a get operations status request
+// GetOperationStatusResponse - The current results for the requested operations.
 type GetOperationStatusResponse struct {
-	// REQUIRED; An array of resource operations based on their operation ids
+	// REQUIRED; The current result for each requested operation.
 	Results []*ResourceOperation
 }
 
@@ -850,18 +780,18 @@ type HardwareProfile struct {
 	VMSizeProperties *VMSizeProperties
 }
 
-// HibernateResourceOperationResponse - The response from a Hibernate request
+// HibernateResourceOperationResponse - The result of a bulk hibernate action.
 type HibernateResourceOperationResponse struct {
-	// REQUIRED; The description of the operation response
+	// REQUIRED; A description of the bulk action result.
 	Description *string
 
-	// REQUIRED; The location of the Hibernate request eg westus
+	// REQUIRED; The Azure region where Bulk Actions processes the request.
 	Location *string
 
-	// REQUIRED; The type of resources used in the Hibernate request eg virtual machines
+	// REQUIRED; The type of resources targeted by the bulk action.
 	Type *string
 
-	// The results from the Hibernate request if no errors exist
+	// The result for each virtual machine.
 	Results []*ResourceOperation
 }
 
@@ -885,7 +815,7 @@ type ImageReference struct {
 	// call.
 	CommunityGalleryImageID *string
 
-	// The ID of the sub-resource.
+	// The Azure resource ID.
 	ID *string
 
 	// Specifies the offer of the platform image or marketplace image used to create the virtual machine.
@@ -927,12 +857,12 @@ type KeyVaultKeyReference struct {
 	SourceVault *SubResource
 }
 
-// KeyVaultSecretReference - Describes a reference to Key Vault Secret
+// KeyVaultSecretReference - A reference to a secret stored in Azure Key Vault.
 type KeyVaultSecretReference struct {
-	// REQUIRED; The URL referencing a secret in a Key Vault.
+	// REQUIRED; The URL of the secret in Azure Key Vault.
 	SecretURL *string
 
-	// REQUIRED; The relative URL of the Key Vault containing the secret.
+	// REQUIRED; The Azure resource ID of the Key Vault that contains the secret.
 	SourceVault *SubResource
 }
 
@@ -982,6 +912,15 @@ type LinuxVMGuestPatchAutomaticByPlatformSettings struct {
 
 	// Specifies the reboot setting for all AutomaticByPlatform patch installation operations.
 	RebootSetting *LinuxVMGuestPatchAutomaticByPlatformRebootSetting
+}
+
+// ListBulkOperationErrorsResponse - A paged list of recent bulk action errors.
+type ListBulkOperationErrorsResponse struct {
+	// REQUIRED; The ResourceOperation items on this page
+	Value []*ResourceOperation
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // LocationBasedBulkCreate - Location based BulkCreate resource. The location is part of the resource path.
@@ -1049,7 +988,7 @@ type ManagedDiskParametersContent struct {
 	// Specifies the customer managed disk encryption set resource id for the managed disk.
 	DiskEncryptionSet *DiskEncryptionSetParametersContent
 
-	// The ID of the sub-resource.
+	// The Azure resource ID.
 	ID *string
 
 	// Specifies the security profile for the managed disk.
@@ -1078,7 +1017,7 @@ type ManagedServiceIdentity struct {
 
 // NetworkInterfaceReference - Describes a network interface reference.
 type NetworkInterfaceReference struct {
-	// The ID of the sub-resource.
+	// The Azure resource ID.
 	ID *string
 
 	// Describes a network interface reference properties.
@@ -1234,23 +1173,18 @@ type OSProfile struct {
 	WindowsConfiguration *WindowsConfiguration
 }
 
-// OSProfileProvisioningData - Additional parameters for Reimaging Non-Ephemeral Virtual Machine.
+// OSProfileProvisioningData - Additional parameters for reimaging a virtual machine that does not use an ephemeral operating
+// system disk.
 type OSProfileProvisioningData struct {
-	// Specifies the password of the administrator account. <br><br> **Minimum-length (Windows):** 8 characters <br><br> **Minimum-length
-	// (Linux):** 6 characters <br><br> **Max-length (Windows):** 123 characters <br><br> **Max-length (Linux):** 72 characters
-	// <br><br> **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled <br> Has lower characters <br>Has
-	// upper characters <br> Has a digit <br> Has a special character (Regex match [\W_]) <br><br> **Disallowed values:** "abc@123",
-	// "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!" <br><br>
-	// For resetting the password, see [How to reset the Remote Desktop service or its login password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
-	// <br><br> For resetting root password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess
-	// Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)
+	// The password for the virtual machine administrator account. The password must be 8 to 123 characters long for Windows virtual
+	// machines or 6 to 72 characters long for Linux virtual machines. It must contain characters from at least three of these
+	// categories: lowercase letters, uppercase letters, digits, and special characters. The following values are not allowed:
+	// `abc@123`, `P@$$w0rd`, `P@ssw0rd`, `P@ssword123`, `Pa$$word`, `pass@word1`, `Password!`, `Password1`, `Password22`, and
+	// `iloveyou!`. This secret is accepted only in the request and is not returned in responses.
 	AdminPassword *string
 
-	// Specifies a base-64 encoded string of custom data. The base-64 encoded string is decoded to a binary array that is saved
-	// as a file on the Virtual Machine. The maximum length of the binary array is 65535 bytes. **Note: Do not pass any secrets
-	// or passwords in customData property.** This property cannot be updated after the VM is created. The property customData
-	// is passed to the VM to be saved as a file, for more information see [Custom Data on Azure VMs](https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/).
-	// If using cloud-init for your Linux VM, see [Using cloud-init to customize a Linux VM during creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
+	// Base64-encoded custom data provided to the virtual machine. The decoded data can contain up to 65,535 bytes. Do not include
+	// secrets or passwords.
 	CustomData *string
 }
 
@@ -1529,18 +1463,15 @@ type Plan struct {
 	Version *string
 }
 
-// PriorityProfile - The priority profile for flex VM creation
+// PriorityProfile - The priority and allocation preferences for virtual machines.
 type PriorityProfile struct {
-	// The allocation strategy for VM size selection
-	AllocationStrategy *AllocationStrategy
-
-	// Eviction Policy to follow when evicting Spot VMs. Available from 2026-04-06-preview.
+	// The action applied to a Spot virtual machine when Azure evicts it.
 	EvictionPolicy *EvictionPolicy
 
-	// Price per hour of each Spot VM will never exceed this. Available from 2026-04-06-preview.
+	// The maximum hourly price, in US dollars, for each Spot virtual machine.
 	MaxPricePerVM *float32
 
-	// The priority type for VM allocation
+	// The priority type for virtual machine allocation.
 	Type *PriorityType
 }
 
@@ -1579,36 +1510,36 @@ type PublicIPAddressSKU struct {
 	Tier *PublicIPAddressSKUTier
 }
 
-// ReimagePayload - Reimage payload with common profile and per-resource overrides
+// ReimagePayload - The shared and per-virtual-machine configuration for a bulk reimage action.
 type ReimagePayload struct {
-	// Common reimage profile applied to all resources unless overridden
+	// The reimage configuration applied to every virtual machine unless a per-virtual-machine override is provided.
 	BaseProfile *VirtualMachineReimageParameters
 
-	// Per-resource reimage overrides
+	// The reimage configuration overrides for individual virtual machines.
 	ResourceOverrides []*ReimageResourceOverride
 }
 
-// ReimageResourceOperationResponse - The response from a reimage request
+// ReimageResourceOperationResponse - The result of a bulk reimage action.
 type ReimageResourceOperationResponse struct {
-	// REQUIRED; The description of the operation response
+	// REQUIRED; A description of the bulk action result.
 	Description *string
 
-	// REQUIRED; The location of the reimage request eg westus
+	// REQUIRED; The Azure region where Bulk Actions processes the request.
 	Location *string
 
-	// REQUIRED; The type of resources used in the reimage request eg virtual machines
+	// REQUIRED; The type of resources targeted by the bulk action.
 	Type *string
 
-	// The results from the reimage request if no errors exist
+	// The result for each virtual machine.
 	Results []*ResourceOperation
 }
 
-// ReimageResourceOverride - Per-resource override entry for reimage requests
+// ReimageResourceOverride - A reimage configuration override for one virtual machine.
 type ReimageResourceOverride struct {
-	// REQUIRED; Per-resource reimage profile override
+	// REQUIRED; The reimage configuration for this virtual machine.
 	Profile *VirtualMachineReimageParameters
 
-	// REQUIRED; The Azure resource ID of the virtual machine for this override
+	// REQUIRED; The Azure resource ID of the virtual machine to which the override applies.
 	ResourceID *string
 }
 
@@ -1633,81 +1564,82 @@ type ResourceListResponse struct {
 	NextLink *string
 }
 
-// ResourceNotificationDetails - Resource notification details containing notification metadata like the resource context
+// ResourceNotificationDetails - Caller-provided context associated with a virtual machine operation.
 type ResourceNotificationDetails struct {
-	// Resource context for notification tracking
+	// Caller-provided context string returned with the virtual machine operation result notification. Do not include secrets
+	// or personal data.
 	ResourceContext *string
 }
 
-// ResourceOperation - High level response from an operation on a resource
+// ResourceOperation - The result of a bulk action for one virtual machine.
 type ResourceOperation struct {
-	// Resource level error code if it exists
+	// A code that identifies the error for the virtual machine operation.
 	ErrorCode *string
 
-	// Resource level error details if they exist
+	// A message that describes the error for the virtual machine operation.
 	ErrorDetails *string
 
-	// Details of the operation performed on a resource
+	// The virtual machine operation details.
 	Operation *ResourceOperationDetails
 
-	// Unique identifier for the resource involved in the operation, for example Azure resource ID
+	// The virtual machine Azure resource ID.
 	ResourceID *string
 
-	// Information about the virtual machine
+	// Details of the virtual machine on which the operation is performed.
 	VirtualMachineInfo *VirtualMachineInfo
 }
 
-// ResourceOperationDetails - The details of a response from an operation on a resource
+// ResourceOperationDetails - The status and settings for an operation on one virtual machine.
 type ResourceOperationDetails struct {
-	// REQUIRED; Operation identifier for the unique operation
+	// REQUIRED; The operation ID used to track the action for this virtual machine.
 	OperationID *string
 
 	// The capacity/placement recommendation computed for the operation, if requested
 	CapacityRecommendation *CapacityRecommendation
 
-	// Time the operation was complete if errors are null
+	// The date and time when the operation completed.
 	CompletedAt *time.Time
 
-	// Deadline for the operation
+	// The requested deadline for the operation.
 	Deadline *time.Time
 
-	// Type of deadline of the operation
+	// Specifies whether the deadline time indicates the time at which the operation should start or should be complete.
 	DeadlineType *DeadlineType
 
-	// Fallback operation details if a fallback was performed
+	// Information about the fallback operation attempted after the requested operation did not succeed.
 	FallbackOperationInfo *FallbackOperationInfo
 
-	// Type of operation performed on the resources
+	// The type of operation performed on the virtual machine.
 	OpType *ResourceOperationType
 
-	// Unique identifier for the resource involved in the operation, for example Azure resource ID
+	// The virtual machine's Azure resource ID.
 	ResourceID *string
 
-	// Resource notification details.
+	// Caller-provided context associated with the virtual machine operation.
 	ResourceNotificationDetails *ResourceNotificationDetails
 
-	// Operation level errors if they exist
+	// Contains error details if the operation does not succeed.
 	ResourceOperationError *ResourceOperationError
 
-	// Retry policy the user can pass
+	// The retry settings for the bulk action.
 	RetryPolicy *RetryPolicy
 
-	// Current state of the operation
+	// The current state of the operation.
 	State *OperationState
 
-	// Subscription id attached to the request
+	// The subscription ID associated with the bulk action.
 	SubscriptionID *string
 
-	// Timezone for the operation
+	// The time zone used to interpret the operation deadline.
 	Timezone *string
 }
 
-// ResourceOperationError - These describe errors that occur at the resource level
+// ResourceOperationError - An error that occurred while processing one virtual machine.
 type ResourceOperationError struct {
-	// REQUIRED; Code for the error eg 404, 500
+	// REQUIRED; A code that identifies the error.
 	ErrorCode *string
 
-	// REQUIRED; Detailed message about the error
+	// REQUIRED; A message that describes the error.
 	ErrorDetails *string
 }
 
@@ -1759,9 +1691,9 @@ type ResourceWithContext struct {
 	ResourceID *string
 }
 
-// Resources - The resources needed for the user request
+// Resources - The virtual machines targeted by a bulk action.
 type Resources struct {
-	// REQUIRED; The resource ids used for the request
+	// REQUIRED; The Azure resource IDs of the target virtual machines.
 	IDs []*string
 }
 
@@ -1771,15 +1703,15 @@ type ResourcesWithContext struct {
 	Resources []*ResourceWithContext
 }
 
-// RetryPolicy - The retry policy for the user request
+// RetryPolicy - The retry settings for a bulk action.
 type RetryPolicy struct {
-	// Action to take on failure
+	// The operation that Bulk Actions attempts when the requested operation fails.
 	OnFailureAction *ResourceOperationType
 
-	// Retry count for user request
+	// The maximum number of retry attempts.
 	RetryCount *int32
 
-	// Retry window in minutes for user request
+	// The period, in minutes, during which Bulk Actions can retry the operation.
 	RetryWindowInMinutes *int32
 }
 
@@ -2097,18 +2029,18 @@ type SecurityProfile struct {
 	UefiSettings *UefiSettings
 }
 
-// StartResourceOperationResponse - The response from a start request
+// StartResourceOperationResponse - The result of a bulk start action.
 type StartResourceOperationResponse struct {
-	// REQUIRED; The description of the operation response
+	// REQUIRED; A description of the bulk action result.
 	Description *string
 
-	// REQUIRED; The location of the start request eg westus
+	// REQUIRED; The Azure region where Bulk Actions processes the request.
 	Location *string
 
-	// REQUIRED; The type of resources used in the start request eg virtual machines
+	// REQUIRED; The type of resources targeted by the bulk action.
 	Type *string
 
-	// The results from the start request if no errors exist
+	// The result for each virtual machine.
 	Results []*ResourceOperation
 }
 
@@ -2135,9 +2067,9 @@ type StorageProfile struct {
 	OSDisk *OSDisk
 }
 
-// SubResource - Describes a reference to a sub-resource.
+// SubResource - A reference to an Azure resource.
 type SubResource struct {
-	// The ID of the sub-resource.
+	// The Azure resource ID.
 	ID *string
 }
 
@@ -2326,10 +2258,10 @@ type VirtualMachineInfo struct {
 	// REQUIRED; The resolved Azure virtual machine name.
 	Name *string
 
-	// The name of the VM size, eg Standard_D2ads_v5
+	// The virtual machine SKU, for example `Standard_D2ads_v5`.
 	VMSize *string
 
-	// The zone identifier
+	// The availability zone identifier.
 	Zone *string
 }
 
@@ -2479,18 +2411,17 @@ type VirtualMachinePublicIPAddressDNSSettingsConfiguration struct {
 	DomainNameLabelScope *DomainNameLabelScopeTypes
 }
 
-// VirtualMachineReimageParameters - Parameters for Reimaging Virtual Machine. NOTE: Virtual Machine OS disk will always be
-// reimaged
+// VirtualMachineReimageParameters - The parameters for reimaging a virtual machine. The operating system disk is always reimaged.
 type VirtualMachineReimageParameters struct {
-	// Specifies in decimal number, the version the OS disk should be reimaged to. If exact version is not provided, the OS disk
-	// is reimaged to the existing version of OS Disk.
+	// The exact image version to use when reimaging the operating system disk. When omitted, the disk is reimaged to its current
+	// image version.
 	ExactVersion *string
 
-	// Specifies information required for reimaging the non-ephemeral OS disk.
+	// The operating system profile used when reimaging a non-ephemeral operating system disk.
 	OSProfile *OSProfileProvisioningData
 
-	// Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage parameter is only supported
-	// for VM/VMSS with Ephemeral OS disk.
+	// Indicates whether to reimage the temporary disk. The default value is `false`. This option is supported only for virtual
+	// machines or virtual machine scale sets that use an ephemeral operating system disk.
 	TempDisk *bool
 }
 
@@ -2548,26 +2479,4 @@ type WindowsVMGuestPatchAutomaticByPlatformSettings struct {
 
 	// Specifies the reboot setting for all AutomaticByPlatform patch installation operations.
 	RebootSetting *WindowsVMGuestPatchAutomaticByPlatformRebootSetting
-}
-
-// ZoneAllocationPolicy - The zone allocation policy for distributing VMs across availability zones
-type ZoneAllocationPolicy struct {
-	// The distribution strategy for zone allocation
-	DistributionStrategy *DistributionStrategy
-
-	// The zone preferences for allocation priority
-	ZonePreferences []*ZonePreference
-}
-
-// ZonePreference - A zone preference with a zone identifier and rank
-type ZonePreference struct {
-	// REQUIRED; The rank of this zone in the priority order
-	Rank *int32
-
-	// REQUIRED; The zone identifier
-	Zone *string
-
-	// The maximum capacity to place in this zone. The sum across capped zones must not exceed the requested capacity, and when
-	// every zone preference is capped the sum must equal the requested capacity.
-	TargetMaxCapacity *int32
 }

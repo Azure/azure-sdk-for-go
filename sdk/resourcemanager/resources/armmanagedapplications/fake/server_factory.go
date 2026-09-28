@@ -16,9 +16,17 @@ import (
 
 // ServerFactory is a fake server for instances of the armmanagedapplications.ClientFactory type.
 type ServerFactory struct {
-	ApplicationServer            ApplicationServer
+	// ApplicationServer contains the fakes for client ApplicationClient
+	ApplicationServer ApplicationServer
+
+	// ApplicationDefinitionsServer contains the fakes for client ApplicationDefinitionsClient
 	ApplicationDefinitionsServer ApplicationDefinitionsServer
-	ApplicationsServer           ApplicationsServer
+
+	// ApplicationsServer contains the fakes for client ApplicationsClient
+	ApplicationsServer ApplicationsServer
+
+	// JitRequestsServer contains the fakes for client JitRequestsClient
+	JitRequestsServer JitRequestsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -38,6 +46,7 @@ type ServerFactoryTransport struct {
 	trApplicationServer            *ApplicationServerTransport
 	trApplicationDefinitionsServer *ApplicationDefinitionsServerTransport
 	trApplicationsServer           *ApplicationsServerTransport
+	trJitRequestsServer            *JitRequestsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -64,6 +73,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ApplicationsClient":
 		initServer(s, &s.trApplicationsServer, func() *ApplicationsServerTransport { return NewApplicationsServerTransport(&s.srv.ApplicationsServer) })
 		resp, err = s.trApplicationsServer.Do(req)
+	case "JitRequestsClient":
+		initServer(s, &s.trJitRequestsServer, func() *JitRequestsServerTransport { return NewJitRequestsServerTransport(&s.srv.JitRequestsServer) })
+		resp, err = s.trJitRequestsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

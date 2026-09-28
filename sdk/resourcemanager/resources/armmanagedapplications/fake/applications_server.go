@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armmanagedapplications"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armmanagedapplications/v2"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -31,19 +31,19 @@ type ApplicationsServer struct {
 	BeginCreateOrUpdateByID func(ctx context.Context, applicationID string, parameters armmanagedapplications.Application, options *armmanagedapplications.ApplicationsClientBeginCreateOrUpdateByIDOptions) (resp azfake.PollerResponder[armmanagedapplications.ApplicationsClientCreateOrUpdateByIDResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method ApplicationsClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, applicationName string, options *armmanagedapplications.ApplicationsClientBeginDeleteOptions) (resp azfake.PollerResponder[armmanagedapplications.ApplicationsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// BeginDeleteByID is the fake for method ApplicationsClient.BeginDeleteByID
-	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeleteByID func(ctx context.Context, applicationID string, options *armmanagedapplications.ApplicationsClientBeginDeleteByIDOptions) (resp azfake.PollerResponder[armmanagedapplications.ApplicationsClientDeleteByIDResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ApplicationsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNotFound
+	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, applicationName string, options *armmanagedapplications.ApplicationsClientGetOptions) (resp azfake.Responder[armmanagedapplications.ApplicationsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetByID is the fake for method ApplicationsClient.GetByID
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNotFound
+	// HTTP status codes to indicate success: http.StatusOK
 	GetByID func(ctx context.Context, applicationID string, options *armmanagedapplications.ApplicationsClientGetByIDOptions) (resp azfake.Responder[armmanagedapplications.ApplicationsClientGetByIDResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method ApplicationsClient.NewListByResourceGroupPager
@@ -54,8 +54,12 @@ type ApplicationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armmanagedapplications.ApplicationsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmanagedapplications.ApplicationsClientListBySubscriptionResponse])
 
+	// BeginRefreshPermissions is the fake for method ApplicationsClient.BeginRefreshPermissions
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRefreshPermissions func(ctx context.Context, resourceGroupName string, applicationName string, options *armmanagedapplications.ApplicationsClientBeginRefreshPermissionsOptions) (resp azfake.PollerResponder[armmanagedapplications.ApplicationsClientRefreshPermissionsResponse], errResp azfake.ErrorResponder)
+
 	// Update is the fake for method ApplicationsClient.Update
-	// HTTP status codes to indicate success: http.StatusOK
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	Update func(ctx context.Context, resourceGroupName string, applicationName string, options *armmanagedapplications.ApplicationsClientUpdateOptions) (resp azfake.Responder[armmanagedapplications.ApplicationsClientUpdateResponse], errResp azfake.ErrorResponder)
 
 	// UpdateByID is the fake for method ApplicationsClient.UpdateByID
@@ -75,6 +79,7 @@ func NewApplicationsServerTransport(srv *ApplicationsServer) *ApplicationsServer
 		beginDeleteByID:             newTracker[azfake.PollerResponder[armmanagedapplications.ApplicationsClientDeleteByIDResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmanagedapplications.ApplicationsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armmanagedapplications.ApplicationsClientListBySubscriptionResponse]](),
+		beginRefreshPermissions:     newTracker[azfake.PollerResponder[armmanagedapplications.ApplicationsClientRefreshPermissionsResponse]](),
 	}
 }
 
@@ -88,6 +93,7 @@ type ApplicationsServerTransport struct {
 	beginDeleteByID             *tracker[azfake.PollerResponder[armmanagedapplications.ApplicationsClientDeleteByIDResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmanagedapplications.ApplicationsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armmanagedapplications.ApplicationsClientListBySubscriptionResponse]]
+	beginRefreshPermissions     *tracker[azfake.PollerResponder[armmanagedapplications.ApplicationsClientRefreshPermissionsResponse]]
 }
 
 // Do implements the policy.Transporter interface for ApplicationsServerTransport.
@@ -98,39 +104,60 @@ func (a *ApplicationsServerTransport) Do(req *http.Request) (*http.Response, err
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ApplicationsClient.BeginCreateOrUpdate":
-		resp, err = a.dispatchBeginCreateOrUpdate(req)
-	case "ApplicationsClient.BeginCreateOrUpdateByID":
-		resp, err = a.dispatchBeginCreateOrUpdateByID(req)
-	case "ApplicationsClient.BeginDelete":
-		resp, err = a.dispatchBeginDelete(req)
-	case "ApplicationsClient.BeginDeleteByID":
-		resp, err = a.dispatchBeginDeleteByID(req)
-	case "ApplicationsClient.Get":
-		resp, err = a.dispatchGet(req)
-	case "ApplicationsClient.GetByID":
-		resp, err = a.dispatchGetByID(req)
-	case "ApplicationsClient.NewListByResourceGroupPager":
-		resp, err = a.dispatchNewListByResourceGroupPager(req)
-	case "ApplicationsClient.NewListBySubscriptionPager":
-		resp, err = a.dispatchNewListBySubscriptionPager(req)
-	case "ApplicationsClient.Update":
-		resp, err = a.dispatchUpdate(req)
-	case "ApplicationsClient.UpdateByID":
-		resp, err = a.dispatchUpdateByID(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *ApplicationsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if applicationsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = applicationsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ApplicationsClient.BeginCreateOrUpdate":
+				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
+			case "ApplicationsClient.BeginCreateOrUpdateByID":
+				res.resp, res.err = a.dispatchBeginCreateOrUpdateByID(req)
+			case "ApplicationsClient.BeginDelete":
+				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "ApplicationsClient.BeginDeleteByID":
+				res.resp, res.err = a.dispatchBeginDeleteByID(req)
+			case "ApplicationsClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
+			case "ApplicationsClient.GetByID":
+				res.resp, res.err = a.dispatchGetByID(req)
+			case "ApplicationsClient.NewListByResourceGroupPager":
+				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
+			case "ApplicationsClient.NewListBySubscriptionPager":
+				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
+			case "ApplicationsClient.BeginRefreshPermissions":
+				res.resp, res.err = a.dispatchBeginRefreshPermissions(req)
+			case "ApplicationsClient.Update":
+				res.resp, res.err = a.dispatchUpdate(req)
+			case "ApplicationsClient.UpdateByID":
+				res.resp, res.err = a.dispatchUpdateByID(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *ApplicationsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -142,7 +169,7 @@ func (a *ApplicationsServerTransport) dispatchBeginCreateOrUpdate(req *http.Requ
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Solutions/applications/(?P<applicationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armmanagedapplications.Application](req)
@@ -190,7 +217,7 @@ func (a *ApplicationsServerTransport) dispatchBeginCreateOrUpdateByID(req *http.
 		const regexStr = `/(?P<applicationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armmanagedapplications.Application](req)
@@ -234,7 +261,7 @@ func (a *ApplicationsServerTransport) dispatchBeginDelete(req *http.Request) (*h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Solutions/applications/(?P<applicationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -258,9 +285,9 @@ func (a *ApplicationsServerTransport) dispatchBeginDelete(req *http.Request) (*h
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		a.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		a.beginDelete.remove(req)
@@ -278,7 +305,7 @@ func (a *ApplicationsServerTransport) dispatchBeginDeleteByID(req *http.Request)
 		const regexStr = `/(?P<applicationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		applicationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("applicationId")])
@@ -298,9 +325,9 @@ func (a *ApplicationsServerTransport) dispatchBeginDeleteByID(req *http.Request)
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		a.beginDeleteByID.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDeleteByID) {
 		a.beginDeleteByID.remove(req)
@@ -316,7 +343,7 @@ func (a *ApplicationsServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Solutions/applications/(?P<applicationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -332,8 +359,8 @@ func (a *ApplicationsServerTransport) dispatchGet(req *http.Request) (*http.Resp
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNotFound}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNotFound", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Application, req)
 	if err != nil {
@@ -349,7 +376,7 @@ func (a *ApplicationsServerTransport) dispatchGetByID(req *http.Request) (*http.
 	const regexStr = `/(?P<applicationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	applicationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("applicationId")])
@@ -361,8 +388,8 @@ func (a *ApplicationsServerTransport) dispatchGetByID(req *http.Request) (*http.
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNotFound}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNotFound", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Application, req)
 	if err != nil {
@@ -380,7 +407,7 @@ func (a *ApplicationsServerTransport) dispatchNewListByResourceGroupPager(req *h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Solutions/applications`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -417,7 +444,7 @@ func (a *ApplicationsServerTransport) dispatchNewListBySubscriptionPager(req *ht
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Solutions/applications`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := a.srv.NewListBySubscriptionPager(nil)
@@ -441,6 +468,50 @@ func (a *ApplicationsServerTransport) dispatchNewListBySubscriptionPager(req *ht
 	return resp, nil
 }
 
+func (a *ApplicationsServerTransport) dispatchBeginRefreshPermissions(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginRefreshPermissions == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRefreshPermissions not implemented")}
+	}
+	beginRefreshPermissions := a.beginRefreshPermissions.get(req)
+	if beginRefreshPermissions == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Solutions/applications/(?P<applicationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/refreshPermissions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		applicationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("applicationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginRefreshPermissions(req.Context(), resourceGroupNameParam, applicationNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRefreshPermissions = &respr
+		a.beginRefreshPermissions.add(req, beginRefreshPermissions)
+	}
+
+	resp, err := server.PollerResponderNext(beginRefreshPermissions, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		a.beginRefreshPermissions.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRefreshPermissions) {
+		a.beginRefreshPermissions.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (a *ApplicationsServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
 	if a.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
@@ -448,7 +519,7 @@ func (a *ApplicationsServerTransport) dispatchUpdate(req *http.Request) (*http.R
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Solutions/applications/(?P<applicationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armmanagedapplications.ApplicationPatchable](req)
@@ -474,8 +545,8 @@ func (a *ApplicationsServerTransport) dispatchUpdate(req *http.Request) (*http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Application, req)
 	if err != nil {
@@ -491,7 +562,7 @@ func (a *ApplicationsServerTransport) dispatchUpdateByID(req *http.Request) (*ht
 	const regexStr = `/(?P<applicationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armmanagedapplications.Application](req)
@@ -521,4 +592,10 @@ func (a *ApplicationsServerTransport) dispatchUpdateByID(req *http.Request) (*ht
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ApplicationsServerTransport
+var applicationsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

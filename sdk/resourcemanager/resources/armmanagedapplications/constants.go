@@ -5,24 +5,61 @@
 
 package armmanagedapplications
 
+// ApplicationArtifactName - The managed application artifact name.
+type ApplicationArtifactName string
+
 const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armmanagedapplications"
-	moduleVersion = "v1.2.0"
+	ApplicationArtifactNameAuthorizations       ApplicationArtifactName = "Authorizations"
+	ApplicationArtifactNameCustomRoleDefinition ApplicationArtifactName = "CustomRoleDefinition"
+	ApplicationArtifactNameNotSpecified         ApplicationArtifactName = "NotSpecified"
+	ApplicationArtifactNameViewDefinition       ApplicationArtifactName = "ViewDefinition"
 )
+
+// PossibleApplicationArtifactNameValues returns the possible values for the ApplicationArtifactName const type.
+func PossibleApplicationArtifactNameValues() []ApplicationArtifactName {
+	return []ApplicationArtifactName{
+		ApplicationArtifactNameAuthorizations,
+		ApplicationArtifactNameCustomRoleDefinition,
+		ApplicationArtifactNameNotSpecified,
+		ApplicationArtifactNameViewDefinition,
+	}
+}
 
 // ApplicationArtifactType - The managed application artifact type.
 type ApplicationArtifactType string
 
 const (
-	ApplicationArtifactTypeCustom   ApplicationArtifactType = "Custom"
-	ApplicationArtifactTypeTemplate ApplicationArtifactType = "Template"
+	ApplicationArtifactTypeCustom       ApplicationArtifactType = "Custom"
+	ApplicationArtifactTypeNotSpecified ApplicationArtifactType = "NotSpecified"
+	ApplicationArtifactTypeTemplate     ApplicationArtifactType = "Template"
 )
 
 // PossibleApplicationArtifactTypeValues returns the possible values for the ApplicationArtifactType const type.
 func PossibleApplicationArtifactTypeValues() []ApplicationArtifactType {
 	return []ApplicationArtifactType{
 		ApplicationArtifactTypeCustom,
+		ApplicationArtifactTypeNotSpecified,
 		ApplicationArtifactTypeTemplate,
+	}
+}
+
+// ApplicationDefinitionArtifactName - The managed application artifact name.
+type ApplicationDefinitionArtifactName string
+
+const (
+	ApplicationDefinitionArtifactNameApplicationResourceTemplate ApplicationDefinitionArtifactName = "ApplicationResourceTemplate"
+	ApplicationDefinitionArtifactNameCreateUIDefinition          ApplicationDefinitionArtifactName = "CreateUiDefinition"
+	ApplicationDefinitionArtifactNameMainTemplateParameters      ApplicationDefinitionArtifactName = "MainTemplateParameters"
+	ApplicationDefinitionArtifactNameNotSpecified                ApplicationDefinitionArtifactName = "NotSpecified"
+)
+
+// PossibleApplicationDefinitionArtifactNameValues returns the possible values for the ApplicationDefinitionArtifactName const type.
+func PossibleApplicationDefinitionArtifactNameValues() []ApplicationDefinitionArtifactName {
+	return []ApplicationDefinitionArtifactName{
+		ApplicationDefinitionArtifactNameApplicationResourceTemplate,
+		ApplicationDefinitionArtifactNameCreateUIDefinition,
+		ApplicationDefinitionArtifactNameMainTemplateParameters,
+		ApplicationDefinitionArtifactNameNotSpecified,
 	}
 }
 
@@ -44,21 +81,138 @@ func PossibleApplicationLockLevelValues() []ApplicationLockLevel {
 	}
 }
 
+// ApplicationManagementMode - The management mode.
+type ApplicationManagementMode string
+
+const (
+	ApplicationManagementModeManaged      ApplicationManagementMode = "Managed"
+	ApplicationManagementModeNotSpecified ApplicationManagementMode = "NotSpecified"
+	ApplicationManagementModeUnmanaged    ApplicationManagementMode = "Unmanaged"
+)
+
+// PossibleApplicationManagementModeValues returns the possible values for the ApplicationManagementMode const type.
+func PossibleApplicationManagementModeValues() []ApplicationManagementMode {
+	return []ApplicationManagementMode{
+		ApplicationManagementModeManaged,
+		ApplicationManagementModeNotSpecified,
+		ApplicationManagementModeUnmanaged,
+	}
+}
+
+// DeploymentMode - The deployment mode.
+type DeploymentMode string
+
+const (
+	DeploymentModeComplete     DeploymentMode = "Complete"
+	DeploymentModeIncremental  DeploymentMode = "Incremental"
+	DeploymentModeNotSpecified DeploymentMode = "NotSpecified"
+)
+
+// PossibleDeploymentModeValues returns the possible values for the DeploymentMode const type.
+func PossibleDeploymentModeValues() []DeploymentMode {
+	return []DeploymentMode{
+		DeploymentModeComplete,
+		DeploymentModeIncremental,
+		DeploymentModeNotSpecified,
+	}
+}
+
+// JitApprovalMode - The Jit approval mode.
+type JitApprovalMode string
+
+const (
+	JitApprovalModeAutoApprove   JitApprovalMode = "AutoApprove"
+	JitApprovalModeManualApprove JitApprovalMode = "ManualApprove"
+	JitApprovalModeNotSpecified  JitApprovalMode = "NotSpecified"
+)
+
+// PossibleJitApprovalModeValues returns the possible values for the JitApprovalMode const type.
+func PossibleJitApprovalModeValues() []JitApprovalMode {
+	return []JitApprovalMode{
+		JitApprovalModeAutoApprove,
+		JitApprovalModeManualApprove,
+		JitApprovalModeNotSpecified,
+	}
+}
+
+// JitApproverType - The approver type.
+type JitApproverType string
+
+const (
+	JitApproverTypeGroup JitApproverType = "group"
+	JitApproverTypeUser  JitApproverType = "user"
+)
+
+// PossibleJitApproverTypeValues returns the possible values for the JitApproverType const type.
+func PossibleJitApproverTypeValues() []JitApproverType {
+	return []JitApproverType{
+		JitApproverTypeGroup,
+		JitApproverTypeUser,
+	}
+}
+
+// JitRequestState - The JIT request state.
+type JitRequestState string
+
+const (
+	JitRequestStateApproved     JitRequestState = "Approved"
+	JitRequestStateCanceled     JitRequestState = "Canceled"
+	JitRequestStateDenied       JitRequestState = "Denied"
+	JitRequestStateExpired      JitRequestState = "Expired"
+	JitRequestStateFailed       JitRequestState = "Failed"
+	JitRequestStateNotSpecified JitRequestState = "NotSpecified"
+	JitRequestStatePending      JitRequestState = "Pending"
+	JitRequestStateTimeout      JitRequestState = "Timeout"
+)
+
+// PossibleJitRequestStateValues returns the possible values for the JitRequestState const type.
+func PossibleJitRequestStateValues() []JitRequestState {
+	return []JitRequestState{
+		JitRequestStateApproved,
+		JitRequestStateCanceled,
+		JitRequestStateDenied,
+		JitRequestStateExpired,
+		JitRequestStateFailed,
+		JitRequestStateNotSpecified,
+		JitRequestStatePending,
+		JitRequestStateTimeout,
+	}
+}
+
+// JitSchedulingType - The JIT request scheduling type.
+type JitSchedulingType string
+
+const (
+	JitSchedulingTypeNotSpecified JitSchedulingType = "NotSpecified"
+	JitSchedulingTypeOnce         JitSchedulingType = "Once"
+	JitSchedulingTypeRecurring    JitSchedulingType = "Recurring"
+)
+
+// PossibleJitSchedulingTypeValues returns the possible values for the JitSchedulingType const type.
+func PossibleJitSchedulingTypeValues() []JitSchedulingType {
+	return []JitSchedulingType{
+		JitSchedulingTypeNotSpecified,
+		JitSchedulingTypeOnce,
+		JitSchedulingTypeRecurring,
+	}
+}
+
 // ProvisioningState - Provisioning status of the managed application.
 type ProvisioningState string
 
 const (
-	ProvisioningStateAccepted  ProvisioningState = "Accepted"
-	ProvisioningStateCanceled  ProvisioningState = "Canceled"
-	ProvisioningStateCreated   ProvisioningState = "Created"
-	ProvisioningStateCreating  ProvisioningState = "Creating"
-	ProvisioningStateDeleted   ProvisioningState = "Deleted"
-	ProvisioningStateDeleting  ProvisioningState = "Deleting"
-	ProvisioningStateFailed    ProvisioningState = "Failed"
-	ProvisioningStateReady     ProvisioningState = "Ready"
-	ProvisioningStateRunning   ProvisioningState = "Running"
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-	ProvisioningStateUpdating  ProvisioningState = "Updating"
+	ProvisioningStateAccepted     ProvisioningState = "Accepted"
+	ProvisioningStateCanceled     ProvisioningState = "Canceled"
+	ProvisioningStateCreated      ProvisioningState = "Created"
+	ProvisioningStateCreating     ProvisioningState = "Creating"
+	ProvisioningStateDeleted      ProvisioningState = "Deleted"
+	ProvisioningStateDeleting     ProvisioningState = "Deleting"
+	ProvisioningStateFailed       ProvisioningState = "Failed"
+	ProvisioningStateNotSpecified ProvisioningState = "NotSpecified"
+	ProvisioningStateReady        ProvisioningState = "Ready"
+	ProvisioningStateRunning      ProvisioningState = "Running"
+	ProvisioningStateSucceeded    ProvisioningState = "Succeeded"
+	ProvisioningStateUpdating     ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
@@ -71,9 +225,30 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateDeleted,
 		ProvisioningStateDeleting,
 		ProvisioningStateFailed,
+		ProvisioningStateNotSpecified,
 		ProvisioningStateReady,
 		ProvisioningStateRunning,
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
+	}
+}
+
+// ResourceIdentityType - The identity type.
+type ResourceIdentityType string
+
+const (
+	ResourceIdentityTypeNone                       ResourceIdentityType = "None"
+	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = "SystemAssigned"
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned, UserAssigned"
+	ResourceIdentityTypeUserAssigned               ResourceIdentityType = "UserAssigned"
+)
+
+// PossibleResourceIdentityTypeValues returns the possible values for the ResourceIdentityType const type.
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return []ResourceIdentityType{
+		ResourceIdentityTypeNone,
+		ResourceIdentityTypeSystemAssigned,
+		ResourceIdentityTypeSystemAssignedUserAssigned,
+		ResourceIdentityTypeUserAssigned,
 	}
 }

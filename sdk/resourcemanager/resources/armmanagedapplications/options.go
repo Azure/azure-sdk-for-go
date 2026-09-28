@@ -14,28 +14,28 @@ type ApplicationClientListOperationsOptions struct {
 // ApplicationDefinitionsClientBeginCreateOrUpdateByIDOptions contains the optional parameters for the ApplicationDefinitionsClient.BeginCreateOrUpdateByID
 // method.
 type ApplicationDefinitionsClientBeginCreateOrUpdateByIDOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ApplicationDefinitionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationDefinitionsClient.BeginCreateOrUpdate
 // method.
 type ApplicationDefinitionsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ApplicationDefinitionsClientBeginDeleteByIDOptions contains the optional parameters for the ApplicationDefinitionsClient.BeginDeleteByID
 // method.
 type ApplicationDefinitionsClientBeginDeleteByIDOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ApplicationDefinitionsClientBeginDeleteOptions contains the optional parameters for the ApplicationDefinitionsClient.BeginDelete
 // method.
 type ApplicationDefinitionsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -59,26 +59,33 @@ type ApplicationDefinitionsClientListByResourceGroupOptions struct {
 // ApplicationsClientBeginCreateOrUpdateByIDOptions contains the optional parameters for the ApplicationsClient.BeginCreateOrUpdateByID
 // method.
 type ApplicationsClientBeginCreateOrUpdateByIDOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ApplicationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationsClient.BeginCreateOrUpdate
 // method.
 type ApplicationsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ApplicationsClientBeginDeleteByIDOptions contains the optional parameters for the ApplicationsClient.BeginDeleteByID method.
 type ApplicationsClientBeginDeleteByIDOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ApplicationsClientBeginDeleteOptions contains the optional parameters for the ApplicationsClient.BeginDelete method.
 type ApplicationsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ApplicationsClientBeginRefreshPermissionsOptions contains the optional parameters for the ApplicationsClient.BeginRefreshPermissions
+// method.
+type ApplicationsClientBeginRefreshPermissionsOptions struct {
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -114,4 +121,38 @@ type ApplicationsClientUpdateByIDOptions struct {
 type ApplicationsClientUpdateOptions struct {
 	// Parameters supplied to update an existing managed application.
 	Parameters *ApplicationPatchable
+}
+
+// JitRequestsClientBeginCreateOrUpdateOptions contains the optional parameters for the JitRequestsClient.BeginCreateOrUpdate
+// method.
+type JitRequestsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// JitRequestsClientDeleteOptions contains the optional parameters for the JitRequestsClient.Delete method.
+type JitRequestsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// JitRequestsClientGetOptions contains the optional parameters for the JitRequestsClient.Get method.
+type JitRequestsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// JitRequestsClientListByResourceGroupOptions contains the optional parameters for the JitRequestsClient.ListByResourceGroup
+// method.
+type JitRequestsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// JitRequestsClientListBySubscriptionOptions contains the optional parameters for the JitRequestsClient.ListBySubscription
+// method.
+type JitRequestsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// JitRequestsClientUpdateOptions contains the optional parameters for the JitRequestsClient.Update method.
+type JitRequestsClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }

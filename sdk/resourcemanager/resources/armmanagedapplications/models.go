@@ -5,6 +5,8 @@
 
 package armmanagedapplications
 
+import "time"
+
 // Application - Information about managed application.
 type Application struct {
 	// REQUIRED; The kind of the managed application. Allowed values are MarketPlace and ServiceCatalog.
@@ -43,23 +45,50 @@ type Application struct {
 
 // ApplicationArtifact - Managed application artifact.
 type ApplicationArtifact struct {
-	// The managed application artifact name.
-	Name *string
+	// REQUIRED; The managed application artifact name.
+	Name *ApplicationArtifactName
 
-	// The managed application artifact type.
+	// REQUIRED; The managed application artifact type.
 	Type *ApplicationArtifactType
 
-	// The managed application artifact blob uri.
+	// REQUIRED; The managed application artifact blob uri.
 	URI *string
+}
+
+// ApplicationAuthorization - The managed application provider authorization.
+type ApplicationAuthorization struct {
+	// REQUIRED; The provider's principal identifier. This is the identity that the provider will use to call ARM to manage the
+	// managed application resources.
+	PrincipalID *string
+
+	// REQUIRED; The provider's role definition identifier. This role will define all the permissions that the provider must have
+	// on the managed application's container resource group. This role definition cannot have
+	// permission to delete the resource group.
+	RoleDefinitionID *string
+}
+
+// ApplicationBillingDetailsDefinition - Managed application billing details definition.
+type ApplicationBillingDetailsDefinition struct {
+	// The managed application resource usage Id.
+	ResourceUsageID *string
+}
+
+// ApplicationClientDetails - The application client details to track the entity creating/updating the managed app resource.
+type ApplicationClientDetails struct {
+	// The client application Id.
+	ApplicationID *string
+
+	// The client Oid.
+	Oid *string
+
+	// The client Puid
+	Puid *string
 }
 
 // ApplicationDefinition - Information about managed application definition.
 type ApplicationDefinition struct {
 	// REQUIRED; The managed application definition properties.
 	Properties *ApplicationDefinitionProperties
-
-	// The identity of the resource.
-	Identity *Identity
 
 	// Resource location
 	Location *string
@@ -83,6 +112,18 @@ type ApplicationDefinition struct {
 	Type *string
 }
 
+// ApplicationDefinitionArtifact - Application definition artifact.
+type ApplicationDefinitionArtifact struct {
+	// REQUIRED; The managed application definition artifact name.
+	Name *ApplicationDefinitionArtifactName
+
+	// REQUIRED; The managed application definition artifact type.
+	Type *ApplicationArtifactType
+
+	// REQUIRED; The managed application definition artifact blob uri.
+	URI *string
+}
+
 // ApplicationDefinitionListResult - List of managed application definitions.
 type ApplicationDefinitionListResult struct {
 	// The URL to use for getting the next set of results.
@@ -94,20 +135,23 @@ type ApplicationDefinitionListResult struct {
 
 // ApplicationDefinitionProperties - The managed application definition properties.
 type ApplicationDefinitionProperties struct {
-	// REQUIRED; The managed application provider authorizations.
-	Authorizations []*ApplicationProviderAuthorization
-
 	// REQUIRED; The managed application lock level.
 	LockLevel *ApplicationLockLevel
 
 	// The collection of managed application artifacts. The portal will use the files specified as artifacts to construct the
 	// user experience of creating a managed application from a managed application
 	// definition.
-	Artifacts []*ApplicationArtifact
+	Artifacts []*ApplicationDefinitionArtifact
+
+	// The managed application provider authorizations.
+	Authorizations []*ApplicationAuthorization
 
 	// The createUiDefinition json for the backing template with Microsoft.Solutions/applications resource. It can be a JObject
 	// or well-formed JSON string.
 	CreateUIDefinition any
+
+	// The managed application deployment policy.
+	DeploymentPolicy *ApplicationDeploymentPolicy
 
 	// The managed application definition description.
 	Description *string
@@ -116,13 +160,49 @@ type ApplicationDefinitionProperties struct {
 	DisplayName *string
 
 	// A value indicating whether the package is enabled or not.
-	IsEnabled *string
+	IsEnabled *bool
+
+	// The managed application locking policy.
+	LockingPolicy *ApplicationPackageLockingPolicyDefinition
 
 	// The inline main template json which has resources to be provisioned. It can be a JObject or well-formed JSON string.
 	MainTemplate any
 
+	// The managed application management policy that determines publisher's access to the managed resource group.
+	ManagementPolicy *ApplicationManagementPolicy
+
+	// The managed application notification policy.
+	NotificationPolicy *ApplicationNotificationPolicy
+
 	// The managed application definition package file Uri. Use this element
 	PackageFileURI *string
+
+	// The managed application provider policies.
+	Policies []*ApplicationPolicy
+
+	// The storage account id for bring your own storage scenario.
+	StorageAccountID *string
+}
+
+// ApplicationDeploymentPolicy - Managed application deployment policy.
+type ApplicationDeploymentPolicy struct {
+	// REQUIRED; The managed application deployment mode.
+	DeploymentMode *DeploymentMode
+}
+
+// ApplicationJitAccessPolicy - Managed application Jit access policy.
+type ApplicationJitAccessPolicy struct {
+	// REQUIRED; Whether the JIT access is enabled.
+	JitAccessEnabled *bool
+
+	// JIT approval mode.
+	JitApprovalMode *JitApprovalMode
+
+	// The JIT approvers
+	JitApprovers []*JitApproverDefinition
+
+	// The maximum duration JIT access is granted. This is an ISO8601 time period value.
+	MaximumJitAccessDuration *string
 }
 
 // ApplicationListResult - List of managed applications.
@@ -132,6 +212,54 @@ type ApplicationListResult struct {
 
 	// The array of managed applications.
 	Value []*Application
+}
+
+// ApplicationManagementPolicy - Managed application management policy.
+type ApplicationManagementPolicy struct {
+	// The managed application management mode.
+	Mode *ApplicationManagementMode
+}
+
+// ApplicationNotificationEndpoint - Managed application notification endpoint.
+type ApplicationNotificationEndpoint struct {
+	// REQUIRED; The managed application notification endpoint uri.
+	URI *string
+}
+
+// ApplicationNotificationPolicy - Managed application notification policy.
+type ApplicationNotificationPolicy struct {
+	// REQUIRED; The managed application notification endpoint.
+	NotificationEndpoints []*ApplicationNotificationEndpoint
+}
+
+// ApplicationPackageContact - The application package contact information.
+type ApplicationPackageContact struct {
+	// REQUIRED; The contact email.
+	Email *string
+
+	// REQUIRED; The contact phone number.
+	Phone *string
+
+	// The contact name.
+	ContactName *string
+}
+
+// ApplicationPackageLockingPolicyDefinition - Managed application locking policy.
+type ApplicationPackageLockingPolicyDefinition struct {
+	// The deny assignment excluded actions.
+	AllowedActions []*string
+
+	// The deny assignment excluded data actions.
+	AllowedDataActions []*string
+}
+
+// ApplicationPackageSupportUrls - The appliance package support URLs.
+type ApplicationPackageSupportUrls struct {
+	// The government cloud support URL.
+	GovernmentCloud *string
+
+	// The public azure support URL.
+	PublicAzure *string
 }
 
 // ApplicationPatchable - Information about managed application.
@@ -152,7 +280,7 @@ type ApplicationPatchable struct {
 	Plan *PlanPatchable
 
 	// The managed application properties.
-	Properties *ApplicationPropertiesPatchable
+	Properties *ApplicationProperties
 
 	// The SKU of the resource.
 	SKU *SKU
@@ -170,22 +298,64 @@ type ApplicationPatchable struct {
 	Type *string
 }
 
+// ApplicationPolicy - Managed application policy.
+type ApplicationPolicy struct {
+	// The policy name
+	Name *string
+
+	// The policy parameters.
+	Parameters *string
+
+	// The policy definition Id.
+	PolicyDefinitionID *string
+}
+
 // ApplicationProperties - The managed application properties.
 type ApplicationProperties struct {
-	// REQUIRED; The managed resource group Id.
-	ManagedResourceGroupID *string
-
 	// The fully qualified path of managed application definition Id.
 	ApplicationDefinitionID *string
 
+	// The managed application Jit access policy.
+	JitAccessPolicy *ApplicationJitAccessPolicy
+
+	// The managed resource group Id.
+	ManagedResourceGroupID *string
+
 	// Name and value pairs that define the managed application parameters. It can be a JObject or a well formed JSON string.
 	Parameters any
+
+	// READ-ONLY; The collection of managed application artifacts.
+	Artifacts []*ApplicationArtifact
+
+	// READ-ONLY; The read-only authorizations property that is retrieved from the application package.
+	Authorizations []*ApplicationAuthorization
+
+	// READ-ONLY; The managed application billing details.
+	BillingDetails *ApplicationBillingDetailsDefinition
+
+	// READ-ONLY; The client entity that created the JIT request.
+	CreatedBy *ApplicationClientDetails
+
+	// READ-ONLY; The read-only customer support property that is retrieved from the application package.
+	CustomerSupport *ApplicationPackageContact
+
+	// READ-ONLY; The managed application management mode.
+	ManagementMode *ApplicationManagementMode
 
 	// READ-ONLY; Name and value pairs that define the managed application outputs.
 	Outputs any
 
 	// READ-ONLY; The managed application provisioning state.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The publisher tenant Id.
+	PublisherTenantID *string
+
+	// READ-ONLY; The read-only support URLs property that is retrieved from the application package.
+	SupportUrls *ApplicationPackageSupportUrls
+
+	// READ-ONLY; The client entity that last updated the JIT request.
+	UpdatedBy *ApplicationClientDetails
 }
 
 // ApplicationPropertiesPatchable - The managed application properties.
@@ -206,36 +376,36 @@ type ApplicationPropertiesPatchable struct {
 	ProvisioningState *ProvisioningState
 }
 
-// ApplicationProviderAuthorization - The managed application provider authorization.
-type ApplicationProviderAuthorization struct {
-	// REQUIRED; The provider's principal identifier. This is the identity that the provider will use to call ARM to manage the
-	// managed application resources.
-	PrincipalID *string
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
 
-	// REQUIRED; The provider's role definition identifier. This role will define all the permissions that the provider must have
-	// on the managed application's container resource group. This role definition cannot have
-	// permission to delete the resource group.
-	RoleDefinitionID *string
+	// READ-ONLY; The additional info type.
+	Type *string
 }
 
-// ErrorResponse - Error response indicates managed application is not able to process the incoming request. The reason is
-// provided in the error message.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.)
 type ErrorResponse struct {
-	// Error code.
-	ErrorCode *string
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
 
-	// Error message indicating why the operation failed.
-	ErrorMessage *string
+	// READ-ONLY; The error code.
+	Code *string
 
-	// Http status code.
-	HTTPStatus *string
+	// READ-ONLY; The error details.
+	Details []*ErrorResponse
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
 }
 
 // GenericResource - Resource information.
 type GenericResource struct {
-	// The identity of the resource.
-	Identity *Identity
-
 	// Resource location
 	Location *string
 
@@ -261,7 +431,12 @@ type GenericResource struct {
 // Identity for the resource.
 type Identity struct {
 	// The identity type.
-	Type *string
+	Type *ResourceIdentityType
+
+	// The list of user identities associated with the resource. The user identity dictionary key references will be resource
+	// ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+	UserAssignedIdentities map[string]*UserAssignedResourceIdentity
 
 	// READ-ONLY; The principal ID of resource identity.
 	PrincipalID *string
@@ -270,10 +445,109 @@ type Identity struct {
 	TenantID *string
 }
 
+// JitApproverDefinition - JIT approver definition.
+type JitApproverDefinition struct {
+	// REQUIRED; The approver service principal Id.
+	ID *string
+
+	// The approver display name.
+	DisplayName *string
+
+	// The approver type.
+	Type *JitApproverType
+}
+
+// JitAuthorizationPolicies - The JIT authorization policies.
+type JitAuthorizationPolicies struct {
+	// REQUIRED; The the principal id that will be granted JIT access.
+	PrincipalID *string
+
+	// REQUIRED; The role definition id that will be granted to the Principal.
+	RoleDefinitionID *string
+}
+
+// JitRequestDefinition - Information about JIT request definition.
+type JitRequestDefinition struct {
+	// Resource location
+	Location *string
+
+	// The JIT request properties.
+	Properties *JitRequestProperties
+
+	// Resource tags
+	Tags map[string]*string
+
+	// READ-ONLY; Resource ID
+	ID *string
+
+	// READ-ONLY; Resource name
+	Name *string
+
+	// READ-ONLY; Resource type
+	Type *string
+}
+
+// JitRequestDefinitionListResult - List of JIT requests.
+type JitRequestDefinitionListResult struct {
+	// The URL to use for getting the next set of results.
+	NextLink *string
+
+	// The array of Jit request definition.
+	Value []*JitRequestDefinition
+}
+
+// JitRequestPatchable - Information about JIT request.
+type JitRequestPatchable struct {
+	// Jit request tags
+	Tags map[string]*string
+}
+
+// JitRequestProperties - Information about JIT request properties
+type JitRequestProperties struct {
+	// REQUIRED; The parent application id.
+	ApplicationResourceID *string
+
+	// REQUIRED; The JIT authorization policies.
+	JitAuthorizationPolicies []*JitAuthorizationPolicies
+
+	// REQUIRED; The JIT request properties.
+	JitSchedulingPolicy *JitSchedulingPolicy
+
+	// READ-ONLY; The client entity that created the JIT request.
+	CreatedBy *ApplicationClientDetails
+
+	// READ-ONLY; The JIT request state.
+	JitRequestState *JitRequestState
+
+	// READ-ONLY; The JIT request provisioning state.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The publisher tenant id.
+	PublisherTenantID *string
+
+	// READ-ONLY; The client entity that last updated the JIT request.
+	UpdatedBy *ApplicationClientDetails
+}
+
+// JitSchedulingPolicy - The JIT scheduling policies.
+type JitSchedulingPolicy struct {
+	// REQUIRED; The required duration of the JIT request.
+	Duration *string
+
+	// REQUIRED; The start time of the request.
+	StartTime *time.Time
+
+	// READ-ONLY; The type of JIT schedule.
+	Type *JitSchedulingType
+}
+
 // Operation - Microsoft.Solutions operation
 type Operation struct {
 	// The object that represents the operation.
 	Display *OperationDisplay
+
+	// Indicates whether the operation is a data action
+	IsDataAction *bool
 
 	// Operation name: {provider}/{resource}/{operation}
 	Name *string
@@ -289,6 +563,9 @@ type OperationDisplay struct {
 
 	// Resource on which the operation is performed: Application, JitRequest, etc.
 	Resource *string
+
+	// READ-ONLY; Localized friendly description for the operation
+	Description *string
 }
 
 // OperationListResult - Result of the request to list Microsoft.Solutions operations. It contains a list of operations and
@@ -374,4 +651,14 @@ type SKU struct {
 
 	// The SKU tier.
 	Tier *string
+}
+
+// UserAssignedResourceIdentity - Represents the user assigned identity that is contained within the UserAssignedIdentities
+// dictionary on ResourceIdentity
+type UserAssignedResourceIdentity struct {
+	// READ-ONLY; The principal id of user assigned identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant id of user assigned identity.
+	TenantID *string
 }

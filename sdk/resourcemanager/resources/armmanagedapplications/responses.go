@@ -98,6 +98,11 @@ type ApplicationsClientListBySubscriptionResponse struct {
 	ApplicationListResult
 }
 
+// ApplicationsClientRefreshPermissionsResponse contains the response from method ApplicationsClient.BeginRefreshPermissions.
+type ApplicationsClientRefreshPermissionsResponse struct {
+	// placeholder for future response values
+}
+
 // ApplicationsClientUpdateByIDResponse contains the response from method ApplicationsClient.UpdateByID.
 type ApplicationsClientUpdateByIDResponse struct {
 	// Information about managed application.
@@ -108,4 +113,39 @@ type ApplicationsClientUpdateByIDResponse struct {
 type ApplicationsClientUpdateResponse struct {
 	// Information about managed application.
 	Application
+}
+
+// JitRequestsClientCreateOrUpdateResponse contains the response from method JitRequestsClient.BeginCreateOrUpdate.
+type JitRequestsClientCreateOrUpdateResponse struct {
+	// Information about JIT request definition.
+	JitRequestDefinition
+}
+
+// JitRequestsClientDeleteResponse contains the response from method JitRequestsClient.Delete.
+type JitRequestsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// JitRequestsClientGetResponse contains the response from method JitRequestsClient.Get.
+type JitRequestsClientGetResponse struct {
+	// Information about JIT request definition.
+	JitRequestDefinition
+}
+
+// JitRequestsClientListByResourceGroupResponse contains the response from method JitRequestsClient.ListByResourceGroup.
+type JitRequestsClientListByResourceGroupResponse struct {
+	// List of JIT requests.
+	JitRequestDefinitionListResult
+}
+
+// JitRequestsClientListBySubscriptionResponse contains the response from method JitRequestsClient.ListBySubscription.
+type JitRequestsClientListBySubscriptionResponse struct {
+	// List of JIT requests.
+	JitRequestDefinitionListResult
+}
+
+// JitRequestsClientUpdateResponse contains the response from method JitRequestsClient.Update.
+type JitRequestsClientUpdateResponse struct {
+	// Information about JIT request definition.
+	JitRequestDefinition
 }

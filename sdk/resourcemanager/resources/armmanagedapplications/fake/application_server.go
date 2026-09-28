@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armmanagedapplications"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armmanagedapplications/v2"
 	"net/http"
 )
 
@@ -48,21 +48,40 @@ func (a *ApplicationServerTransport) Do(req *http.Request) (*http.Response, erro
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ApplicationClient.NewListOperationsPager":
-		resp, err = a.dispatchNewListOperationsPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *ApplicationServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if applicationServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = applicationServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ApplicationClient.NewListOperationsPager":
+				res.resp, res.err = a.dispatchNewListOperationsPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *ApplicationServerTransport) dispatchNewListOperationsPager(req *http.Request) (*http.Response, error) {
@@ -90,4 +109,10 @@ func (a *ApplicationServerTransport) dispatchNewListOperationsPager(req *http.Re
 		a.newListOperationsPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ApplicationServerTransport
+var applicationServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

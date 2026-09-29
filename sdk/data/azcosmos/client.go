@@ -23,6 +23,10 @@ import (
 //
 // A nil *ClientOptions selects the defaults for every field.
 type ClientOptions struct {
+	// Runtime shares execution resources. Nil creates a private runtime owned by this client.
+	Runtime *Runtime
+	// Operation supplies account-level defaults for every item operation.
+	Operation OperationOptions
 	// Routing decides the order in which the client considers the account's regions. The zero
 	// value leaves the order to the account; prefer setting it with [PreferredRegions].
 	//
@@ -37,9 +41,8 @@ type ClientOptions struct {
 	// per instance.
 	ApplicationID string
 
-	// EnableContentResponseOnWrite controls whether writes return the resulting item. Nil inherits
-	// the driver's operation-specific default; a non-nil value explicitly enables or disables
-	// content responses. It can be overridden per operation.
+	// EnableContentResponseOnWrite is a compatibility alias for Operation.EnableContentResponseOnWrite.
+	// Conflicting non-nil values are rejected. Nil inherits runtime and driver defaults.
 	EnableContentResponseOnWrite *bool
 }
 
@@ -50,8 +53,10 @@ type ClientOptions struct {
 // resources backing it, along with the routing and metadata caches that make requests cheap, so
 // creating one per operation is expensive and defeats them. Call [Client.Close] when done.
 type Client struct {
-	endpoint string
-	options  ClientOptions
+	endpoint       string
+	options        ClientOptions
+	runtime        *Runtime
+	privateRuntime bool
 	// mu guards the client's lifetime rather than its fields. Operations hold it for read while
 	// they run, so Close taking it for write is exactly "wait for in-flight operations to
 	// finish". That matters more here than it would in a pure-Go client: closing releases handles
@@ -127,6 +132,7 @@ func newClient(
 	if options != nil {
 		client.options = *options
 		client.options.Routing = options.Routing.clone()
+		client.options.Operation = options.Operation.clone()
 		if options.EnableContentResponseOnWrite != nil {
 			enabled := *options.EnableContentResponseOnWrite
 			client.options.EnableContentResponseOnWrite = &enabled
@@ -135,17 +141,50 @@ func newClient(
 	if err := client.options.validate(); err != nil {
 		return nil, err
 	}
+	if client.options.EnableContentResponseOnWrite != nil {
+		client.options.Operation.EnableContentResponseOnWrite = clonePointer(client.options.EnableContentResponseOnWrite)
+	}
+	client.runtime = client.options.Runtime
+	if client.runtime != nil {
+		if id := client.options.ApplicationID; id != "" && id != client.runtime.applicationID {
+			return nil, errors.New("azcosmos: ClientOptions.ApplicationID conflicts with the shared runtime identity")
+		}
+	} else if driverAvailable {
+		client.runtime, err = NewRuntime(&RuntimeOptions{ApplicationID: client.options.ApplicationID})
+		if err != nil {
+			return nil, err
+		}
+		client.privateRuntime = true
+	}
+	// Registration and local handle construction are one transaction against runtime shutdown.
+	if client.runtime != nil {
+		client.runtime.mu.Lock()
+		if client.runtime.closing || client.runtime.native == nil {
+			client.runtime.mu.Unlock()
+			return nil, &Error{Code: CodeClientClosed, Message: "the runtime is closed or uninitialized"}
+		}
+	}
 
 	driver, err := openDriver(driverConfig{
 		endpoint:        endpoint,
 		accountKey:      accountKey,
 		tokenCredential: tokenCredential,
 		options:         client.options,
+		runtime:         client.runtime,
 	})
+	client.driver = driver
+	if client.runtime != nil {
+		if err == nil {
+			client.runtime.clients[client] = struct{}{}
+		}
+		client.runtime.mu.Unlock()
+	}
 	if err != nil {
+		if client.privateRuntime {
+			_ = client.runtime.Close()
+		}
 		return nil, err
 	}
-	client.driver = driver
 	return client, nil
 }
 
@@ -182,6 +221,14 @@ func (c *Client) Endpoint() string {
 // returns an error only when the client could not be torn down cleanly, in which case the
 // resources are released anyway, so there is nothing to retry.
 func (c *Client) Close() error {
+	err := c.close()
+	if c.privateRuntime {
+		err = errors.Join(err, c.runtime.Close())
+	}
+	return err
+}
+
+func (c *Client) close() error {
 	c.closeOnce.Do(func() {
 		// Signal host token acquisition before waiting for operations. Initialize can be holding
 		// the read lock while GetToken waits on this cancellation.
@@ -195,6 +242,9 @@ func (c *Client) Close() error {
 		// subsequent callers see it too.
 		c.closeErr = c.driver.close()
 		c.driver = nil
+		if c.runtime != nil {
+			c.runtime.detach(c)
+		}
 	})
 	return c.closeErr
 }
@@ -206,6 +256,17 @@ func (c *Client) acquire() (release func(), err error) {
 	if c.closed {
 		c.mu.RUnlock()
 		return nil, &Error{Code: CodeClientClosed, Message: "the client has been closed"}
+	}
+	if c.runtime != nil {
+		releaseRuntime, err := c.runtime.acquire()
+		if err != nil {
+			c.mu.RUnlock()
+			return nil, err
+		}
+		return func() {
+			releaseRuntime()
+			c.mu.RUnlock()
+		}, nil
 	}
 	return c.mu.RUnlock, nil
 }
@@ -236,5 +297,9 @@ func (o ClientOptions) validate() error {
 	if strings.IndexByte(o.ApplicationID, 0) >= 0 {
 		return errors.New("azcosmos: ClientOptions.ApplicationID must not contain a NUL byte")
 	}
-	return nil
+	if o.EnableContentResponseOnWrite != nil && o.Operation.EnableContentResponseOnWrite != nil &&
+		*o.EnableContentResponseOnWrite != *o.Operation.EnableContentResponseOnWrite {
+		return errors.New("azcosmos: conflicting EnableContentResponseOnWrite client options")
+	}
+	return o.Operation.validate()
 }

@@ -84,14 +84,19 @@ func translateCompletion(completion *C.cosmos_completion_t) completionResult {
 // translateCompletion.
 func translateCompletionOutcome(completion *C.cosmos_completion_t) completionResult {
 	headers := readCompletionHeaders(completion)
+	var trackingID PatchTrackingID
+	if id := C.cosmos_completion_patch_tracking_id(completion); id != nil {
+		trackingID = PatchTrackingID(C.GoString(id))
+	}
 
 	response := ItemResponse{
 		Response: Response{
 			RequestCharge: headers.requestCharge,
 			ActivityID:    headers.activityID,
 		},
-		ETag:         headers.etag,
-		SessionToken: headers.sessionToken,
+		ETag:            headers.etag,
+		SessionToken:    headers.sessionToken,
+		PatchTrackingID: trackingID,
 	}
 
 	switch completion.outcome {
@@ -105,17 +110,20 @@ func translateCompletionOutcome(completion *C.cosmos_completion_t) completionRes
 		return completionResult{
 			cancelled: true,
 			err: &Error{
-				Code:          CodeOperationCancelled,
-				Message:       "azcosmos: the operation was cancelled",
-				RequestCharge: headers.requestCharge,
-				ActivityID:    headers.activityID,
+				Code:            CodeOperationCancelled,
+				Message:         "azcosmos: the operation was cancelled",
+				RequestCharge:   headers.requestCharge,
+				ActivityID:      headers.activityID,
+				PatchTrackingID: trackingID,
 			},
 		}
 
 	default:
 		// ERROR, and UNKNOWN, which the driver documents as a state the host should treat as a
 		// failure rather than assume anything about.
-		return completionResult{err: completionError(completion, headers)}
+		err := completionError(completion, headers)
+		err.PatchTrackingID = trackingID
+		return completionResult{err: err}
 	}
 }
 

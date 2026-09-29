@@ -67,6 +67,15 @@ func emulatorClientConfigured(
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
 
+	// Existing semantic assertions decode JSON; binary-default behavior has separate coverage.
+	var configured ClientOptions
+	if options != nil {
+		configured = *options
+	}
+	if configured.Operation.BinaryEncoding == nil {
+		configured.Operation.BinaryEncoding = &BinaryEncodingOptions{Enabled: true, RequestTextResponse: true}
+	}
+	options = &configured
 	client, err := NewClientWithKey(endpoint, cred, options)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
@@ -924,11 +933,6 @@ func TestEmulatorUnknownContainer(t *testing.T) {
 	var cosmosErr *Error
 	require.ErrorAs(t, err, &cosmosErr)
 	require.Equal(t, CodeNotFound, cosmosErr.Code)
-}
-
-// to returns a pointer to v, for the tri-state option fields.
-func to[T any](v T) *T {
-	return &v
 }
 
 // emulatorContainerWithOptions returns a container client built with the options under test.

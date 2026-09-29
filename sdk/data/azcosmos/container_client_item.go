@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -17,6 +18,8 @@ import (
 // ReadItemOptions configures [ContainerClient.ReadItem]. A nil *ReadItemOptions selects the
 // defaults for every field.
 type ReadItemOptions struct {
+	// IfMatchETag makes the read conditional on the ETag. It cannot accompany IfNoneMatchETag.
+	IfMatchETag *azcore.ETag
 	// Operation holds the settings every operation accepts.
 	Operation OperationOptions
 
@@ -32,6 +35,10 @@ type ReadItemOptions struct {
 // CreateItemOptions configures [ContainerClient.CreateItem]. A nil *CreateItemOptions selects the
 // defaults for every field.
 type CreateItemOptions struct {
+	// IfMatchETag applies an If-Match precondition; service support depends on the operation.
+	IfMatchETag *azcore.ETag
+	// IfNoneMatchETag applies an If-None-Match precondition. It cannot accompany IfMatchETag.
+	IfNoneMatchETag *azcore.ETag
 	// Operation holds the settings every operation accepts.
 	Operation OperationOptions
 
@@ -43,6 +50,8 @@ type CreateItemOptions struct {
 // ReplaceItemOptions configures [ContainerClient.ReplaceItem]. A nil *ReplaceItemOptions selects
 // the defaults for every field.
 type ReplaceItemOptions struct {
+	// IfNoneMatchETag applies an If-None-Match precondition. It cannot accompany IfMatchETag.
+	IfNoneMatchETag *azcore.ETag
 	// Operation holds the settings every operation accepts.
 	Operation OperationOptions
 
@@ -57,6 +66,8 @@ type ReplaceItemOptions struct {
 // UpsertItemOptions configures [ContainerClient.UpsertItem]. A nil *UpsertItemOptions selects the
 // defaults for every field.
 type UpsertItemOptions struct {
+	// IfNoneMatchETag applies an If-None-Match precondition. It cannot accompany IfMatchETag.
+	IfNoneMatchETag *azcore.ETag
 	// Operation holds the settings every operation accepts.
 	Operation OperationOptions
 
@@ -72,6 +83,8 @@ type UpsertItemOptions struct {
 // DeleteItemOptions configures [ContainerClient.DeleteItem]. A nil *DeleteItemOptions selects the
 // defaults for every field.
 type DeleteItemOptions struct {
+	// IfNoneMatchETag applies an If-None-Match precondition. It cannot accompany IfMatchETag.
+	IfNoneMatchETag *azcore.ETag
 	// Operation holds the settings every operation accepts. Content-response settings have no
 	// effect because DeleteItem never returns an item body.
 	Operation OperationOptions
@@ -90,6 +103,18 @@ type DeleteItemOptions struct {
 // PatchItemOptions is provisional. It may change or be removed before azcosmos/v2 reaches a stable
 // release.
 type PatchItemOptions struct {
+	// IfNoneMatchETag applies an If-None-Match precondition. It cannot accompany IfMatchETag.
+	IfNoneMatchETag *azcore.ETag
+	// MaxAttempts limits client-side read-modify-write attempts to 1..255. Nil inherits.
+	MaxAttempts *uint8
+	// TrackingID reuses a UUID for bounded duplicate suppression after an ambiguous result.
+	// Empty lets the driver generate one when tracking is needed.
+	TrackingID PatchTrackingID
+	// TrackingCapacity limits retained tracking entries to 1..65535. Nil uses the driver default.
+	TrackingCapacity *uint16
+	// TrackingRetention floors to whole seconds with a minimum of one second, including zero.
+	// Nil uses the default. Capacity pressure can evict entries sooner.
+	TrackingRetention *time.Duration
 	// Operation holds the settings every operation accepts. PatchItem returns the updated item by
 	// default unless content responses are explicitly disabled at the client or operation level.
 	Operation OperationOptions
@@ -127,22 +152,14 @@ func (c *ContainerClient) ReadItem(ctx context.Context, partitionKey PartitionKe
 		return ItemResponse{}, errors.New("azcosmos: item id must not be empty")
 	}
 	if options != nil {
-		if err := options.Operation.ConsistencyStrategy.validate(); err != nil {
+		if err := options.Operation.validate(); err != nil {
 			return ItemResponse{}, err
 		}
 		if err := options.SessionToken.validate(); err != nil {
 			return ItemResponse{}, err
 		}
-		if options.IfNoneMatchETag != nil {
-			etag := string(*options.IfNoneMatchETag)
-			if etag == "" {
-				return ItemResponse{}, errors.New("azcosmos: IfNoneMatchETag must not be empty")
-			}
-			if strings.IndexByte(etag, 0) >= 0 {
-				return ItemResponse{}, errors.New(
-					"azcosmos: IfNoneMatchETag must not contain a NUL byte",
-				)
-			}
+		if err := validatePreconditions(options.IfMatchETag, options.IfNoneMatchETag); err != nil {
+			return ItemResponse{}, err
 		}
 	}
 	req := itemRequest{
@@ -155,6 +172,7 @@ func (c *ContainerClient) ReadItem(ctx context.Context, partitionKey PartitionKe
 	if options != nil {
 		req.options = options.Operation
 		req.sessionToken = options.SessionToken
+		setIfMatchPrecondition(&req, options.IfMatchETag)
 		if options.IfNoneMatchETag != nil {
 			req.preconditionKind = preconditionKindIfNoneMatch
 			req.preconditionETag = string(*options.IfNoneMatchETag)
@@ -193,6 +211,9 @@ func (c *ContainerClient) CreateItem(ctx context.Context, partitionKey Partition
 		if err := options.SessionToken.validate(); err != nil {
 			return ItemResponse{}, err
 		}
+		if err := validatePreconditions(options.IfMatchETag, options.IfNoneMatchETag); err != nil {
+			return ItemResponse{}, err
+		}
 	}
 	req := itemRequest{
 		kind:         operationKindCreateItem,
@@ -205,6 +226,8 @@ func (c *ContainerClient) CreateItem(ctx context.Context, partitionKey Partition
 	if options != nil {
 		req.options = options.Operation
 		req.sessionToken = options.SessionToken
+		setIfMatchPrecondition(&req, options.IfMatchETag)
+		setIfNoneMatchPrecondition(&req, options.IfNoneMatchETag)
 	}
 
 	return c.executeItem(ctx, req, true)
@@ -223,7 +246,7 @@ func (c *ContainerClient) ReplaceItem(ctx context.Context, partitionKey Partitio
 		return ItemResponse{}, err
 	}
 	if options != nil {
-		if err := validateItemWriteOptions(options.SessionToken, options.IfMatchETag); err != nil {
+		if err := validateItemWriteOptions(options.SessionToken, options.IfMatchETag, options.IfNoneMatchETag); err != nil {
 			return ItemResponse{}, err
 		}
 	}
@@ -240,6 +263,7 @@ func (c *ContainerClient) ReplaceItem(ctx context.Context, partitionKey Partitio
 		req.options = options.Operation
 		req.sessionToken = options.SessionToken
 		setIfMatchPrecondition(&req, options.IfMatchETag)
+		setIfNoneMatchPrecondition(&req, options.IfNoneMatchETag)
 	}
 	return c.executeItem(ctx, req, true)
 }
@@ -257,7 +281,7 @@ func (c *ContainerClient) UpsertItem(ctx context.Context, partitionKey Partition
 		return ItemResponse{}, err
 	}
 	if options != nil {
-		if err := validateItemWriteOptions(options.SessionToken, options.IfMatchETag); err != nil {
+		if err := validateItemWriteOptions(options.SessionToken, options.IfMatchETag, options.IfNoneMatchETag); err != nil {
 			return ItemResponse{}, err
 		}
 	}
@@ -274,6 +298,7 @@ func (c *ContainerClient) UpsertItem(ctx context.Context, partitionKey Partition
 		req.options = options.Operation
 		req.sessionToken = options.SessionToken
 		setIfMatchPrecondition(&req, options.IfMatchETag)
+		setIfNoneMatchPrecondition(&req, options.IfNoneMatchETag)
 	}
 	return c.executeItem(ctx, req, true)
 }
@@ -288,7 +313,7 @@ func (c *ContainerClient) DeleteItem(ctx context.Context, partitionKey Partition
 		return ItemResponse{}, err
 	}
 	if options != nil {
-		if err := validateItemWriteOptions(options.SessionToken, options.IfMatchETag); err != nil {
+		if err := validateItemWriteOptions(options.SessionToken, options.IfMatchETag, options.IfNoneMatchETag); err != nil {
 			return ItemResponse{}, err
 		}
 	}
@@ -304,6 +329,7 @@ func (c *ContainerClient) DeleteItem(ctx context.Context, partitionKey Partition
 		req.options = options.Operation
 		req.sessionToken = options.SessionToken
 		setIfMatchPrecondition(&req, options.IfMatchETag)
+		setIfNoneMatchPrecondition(&req, options.IfNoneMatchETag)
 	}
 	return c.executeItem(ctx, req, false)
 }
@@ -329,10 +355,13 @@ func (c *ContainerClient) PatchItem(ctx context.Context, partitionKey PartitionK
 		return ItemResponse{}, err
 	}
 	if options != nil {
-		if err := validateItemWriteOptions(options.SessionToken, options.IfMatchETag); err != nil {
+		if err := validateItemWriteOptions(options.SessionToken, options.IfMatchETag, options.IfNoneMatchETag); err != nil {
 			return ItemResponse{}, err
 		}
 		if err := options.Strategy.validate(); err != nil {
+			return ItemResponse{}, err
+		}
+		if err := options.validateTracking(); err != nil {
 			return ItemResponse{}, err
 		}
 	}
@@ -349,12 +378,24 @@ func (c *ContainerClient) PatchItem(ctx context.Context, partitionKey PartitionK
 		req.options = options.Operation
 		req.sessionToken = options.SessionToken
 		req.patchStrategy = options.Strategy
+		req.patchMaxAttempts = clonePointer(options.MaxAttempts)
+		req.patchTrackingID = options.TrackingID
+		req.patchTrackingCapacity = clonePointer(options.TrackingCapacity)
+		req.patchTrackingRetention = clonePointer(options.TrackingRetention)
 		setIfMatchPrecondition(&req, options.IfMatchETag)
+		setIfNoneMatchPrecondition(&req, options.IfNoneMatchETag)
 	}
 	return c.executeItem(ctx, req, true)
 }
 
 func (c *ContainerClient) executeItem(ctx context.Context, req itemRequest, includeValue bool) (ItemResponse, error) {
+	if err := req.options.validate(); err != nil {
+		return ItemResponse{}, err
+	}
+	if ctx == nil {
+		return ItemResponse{}, errors.New("azcosmos: context must not be nil")
+	}
+	req.options = req.options.clone()
 	if c.database.client.beforeItemAcquire != nil {
 		c.database.client.beforeItemAcquire()
 	}
@@ -409,11 +450,28 @@ func validateItemWriteArguments(partitionKey PartitionKey, id string, item []byt
 	return nil
 }
 
-func validateItemWriteOptions(sessionToken SessionToken, ifMatchETag *azcore.ETag) error {
+func validateItemWriteOptions(sessionToken SessionToken, ifMatchETag, ifNoneMatchETag *azcore.ETag) error {
 	if err := sessionToken.validate(); err != nil {
 		return err
 	}
-	return validateETag("IfMatchETag", ifMatchETag)
+	return validatePreconditions(ifMatchETag, ifNoneMatchETag)
+}
+
+func validatePreconditions(match, none *azcore.ETag) error {
+	if match != nil && none != nil {
+		return errors.New("azcosmos: IfMatchETag and IfNoneMatchETag cannot both be set")
+	}
+	if err := validateETag("IfMatchETag", match); err != nil {
+		return err
+	}
+	return validateETag("IfNoneMatchETag", none)
+}
+
+func setIfNoneMatchPrecondition(req *itemRequest, etag *azcore.ETag) {
+	if etag != nil {
+		req.preconditionKind = preconditionKindIfNoneMatch
+		req.preconditionETag = string(*etag)
+	}
 }
 
 func validateETag(name string, etag *azcore.ETag) error {

@@ -11,7 +11,7 @@
 
 // Specifies the version of azurecosmosdriver this header file was generated from.
 // This should match the version of libazurecosmosdriver you are linking against.
-#define AZURECOSMOSDRIVER_H_VERSION "0.1.0"
+#define AZURECOSMOSDRIVER_H_VERSION "0.2.0"
 
 // Packed-status helpers (see cosmos_status_code_t). Emitted as macros so
 // they keep the SCREAMING_SNAKE_CASE spelling shared with the
@@ -77,8 +77,7 @@ enum cosmos_completion_outcome_t
    */
   COSMOS_COMPLETION_OUTCOME_ERROR = 1,
   /**
-   * The operation was cancelled via [`cosmos_operation_handle_cancel`] or
-   * [`cosmos_completion_queue_shutdown`].
+   * Cancellation won before a terminal driver result was available.
    */
   COSMOS_COMPLETION_OUTCOME_CANCELLED = 2,
   /**
@@ -251,7 +250,7 @@ enum cosmos_operation_handle_state_t
    */
   COSMOS_OPERATION_HANDLE_STATE_FAILED = 2,
   /**
-   * Completion was posted with `outcome == CosmosCompletionOutcomeCancelled`.
+   * A cancelled completion was posted after the pending future was dropped.
    */
   COSMOS_OPERATION_HANDLE_STATE_CANCELLED = 3,
 };
@@ -661,10 +660,6 @@ enum cosmos_sub_status_t
    */
   COSMOS_SUB_STATUS_CLIENT_DUPLICATE_FAULT_INJECTION_RULE_ID = 20150,
   /**
-   * `CLIENT_THROUGHPUT_CONTROL_GROUP_NOT_REGISTERED` (20152).
-   */
-  COSMOS_SUB_STATUS_CLIENT_THROUGHPUT_CONTROL_GROUP_NOT_REGISTERED = 20152,
-  /**
    * `CLIENT_HTTP_CLIENT_CONSTRUCTION_FAILED` (20153).
    */
   COSMOS_SUB_STATUS_CLIENT_HTTP_CLIENT_CONSTRUCTION_FAILED = 20153,
@@ -688,10 +683,6 @@ enum cosmos_sub_status_t
    * `CLIENT_IMDS_REQWEST_FEATURE_REQUIRED` (20158).
    */
   COSMOS_SUB_STATUS_CLIENT_IMDS_REQWEST_FEATURE_REQUIRED = 20158,
-  /**
-   * `CLIENT_PARTITION_KEY_RANGE_CACHE_REQUIRED` (20159).
-   */
-  COSMOS_SUB_STATUS_CLIENT_PARTITION_KEY_RANGE_CACHE_REQUIRED = 20159,
   /**
    * `CLIENT_CONTINUATION_TOKEN_FETCH_IN_FLIGHT` (20200).
    */
@@ -801,7 +792,9 @@ enum cosmos_sub_status_t
    */
   COSMOS_SUB_STATUS_CLIENT_FFI_QUEUE_FULL = 20359,
   /**
-   * `CLIENT_FFI_OPERATION_CANCELLED` (20360).
+   * `CLIENT_FFI_OPERATION_CANCELLED` (20360). Reserved and unused: it
+   * mirrors the driver constant, but no wrapper path produces it. The
+   * value is kept fixed for future use.
    */
   COSMOS_SUB_STATUS_CLIENT_FFI_OPERATION_CANCELLED = 20360,
   /**
@@ -874,6 +867,16 @@ typedef struct cosmos_container_ref_t cosmos_container_ref_t;
 typedef struct cosmos_completion_backing_t cosmos_completion_backing_t;
 
 /**
+ * Opaque, read-only diagnostics handle borrowed from a completion.
+ *
+ * Obtained through a completion's `diagnostics` field. The handle is owned by
+ * the completion and remains valid until the completion is freed; it must not
+ * be freed on its own. All accessors are safe to call from any thread while
+ * the owning completion is alive.
+ */
+typedef struct cosmos_diagnostics_t cosmos_diagnostics_t;
+
+/**
  * The C ABI handle for a database reference (`cosmos_database_ref_t`).
  *
  * Wraps the driver's database reference; the C side holds it as an opaque
@@ -910,6 +913,11 @@ typedef struct cosmos_feed_range_t cosmos_feed_range_t;
 typedef struct cosmos_operation_handle_t cosmos_operation_handle_t;
 
 /**
+ * Opaque admission snapshot. Owned by the host until freed; submits clone it.
+ */
+typedef struct cosmos_operation_options_snapshot_t cosmos_operation_options_snapshot_t;
+
+/**
  * The C ABI handle for an immutable partition key (`cosmos_partition_key_t`).
  *
  * Owned by the SDK via `Box` single-ownership; freed with
@@ -931,7 +939,7 @@ typedef struct cosmos_partition_key_t cosmos_partition_key_t;
  *   `block_on(...)` driver builder construction at FFI-call time and to
  *   spawn the per-operation tasks that drive submits.
  * - `driver` — the underlying `azure_data_cosmos_driver` runtime that owns
- *   the per-account driver registry, container cache, account-metadata
+ *   the account-metadata
  *   cache, HTTP transport factory, and so on. Cloning the `Arc` is cheap
  *   and is how the driver / account surfaces hand out handles.
  */
@@ -1174,7 +1182,7 @@ typedef struct cosmos_response_header_t {
  * non-header signals live inline:
  *
  * - The completion / operation lifecycle (outcome, coarse status,
- *   user data, cancellation flag).
+ *   user data).
  * - The wire HTTP status code and error metadata (`http_status_code`,
  *   `is_from_wire`, `message`, `backtrace`) — none of which appear as
  *   response headers.
@@ -1202,10 +1210,6 @@ typedef struct cosmos_completion_t {
    * submit; the wrapper never dereferences it.
    */
   intptr_t user_data;
-  /**
-   * `1` iff cancellation was observed before the completion posted.
-   */
-  uint8_t was_cancel_requested;
   /**
    * Wire HTTP status code, or `0` when there is no wire response.
    */
@@ -1272,9 +1276,14 @@ typedef struct cosmos_completion_t {
    */
   uintptr_t body_len;
   /**
-   * Reserved for a future diagnostics handle; always NULL for now.
+   * Borrowed read-only diagnostics handle for the operation (request
+   * charge, elapsed time, attempt count, regions contacted, per-attempt
+   * timeline), or NULL when the driver attached none. Populated on success
+   * and on errors that carry diagnostics. Valid until the completion is
+   * freed; do not free separately. Read via the
+   * [`cosmos_diagnostics_*`](crate::diagnostics) accessors.
    */
-  void *diagnostics;
+  const struct cosmos_diagnostics_t *diagnostics;
   /**
    * Owned driver handle for a `get_or_create` completion, else NULL. Detach
    * with [`cosmos_completion_take_driver`] or let the free reclaim it.
@@ -1316,6 +1325,28 @@ typedef struct cosmos_completion_queue_options_t {
    */
   bool include_error_details;
 } cosmos_completion_queue_options_t;
+
+/**
+ * Verbosity selector for [`cosmos_diagnostics_to_json`].
+ *
+ * A newtype over the wire integer (rather than a Rust `enum`) so an
+ * unrecognized value is well-defined — it renders at
+ * [`CosmosDiagnosticsVerbosity::DEFAULT`] instead of being undefined
+ * behavior — matching the other integer-valued FFI selectors in this crate.
+ */
+typedef int32_t cosmos_diagnostics_verbosity_t;
+/**
+ * Render using the runtime's configured default verbosity.
+ */
+#define cosmos_diagnostics_verbosity_t_DEFAULT 0
+/**
+ * Render a compact, size-bounded summary.
+ */
+#define cosmos_diagnostics_verbosity_t_SUMMARY 1
+/**
+ * Render the full per-attempt detail.
+ */
+#define cosmos_diagnostics_verbosity_t_DETAILED 2
 
 /**
  * A single custom request/operation header. Both views are
@@ -1371,11 +1402,11 @@ typedef struct cosmos_operation_options_t {
   /**
    * Max region-failover retries. `< 0` = unset.
    */
-  int32_t max_failover_retry_count;
+  int64_t max_failover_retry_count;
   /**
    * Max session-consistency retries on 404/1002. `< 0` = unset.
    */
-  int32_t max_session_retry_count;
+  int64_t max_session_retry_count;
   /**
    * End-to-end timeout (milliseconds). `< 0` = unset.
    */
@@ -1385,12 +1416,8 @@ typedef struct cosmos_operation_options_t {
    */
   int64_t endpoint_unavailability_ttl_ms;
   /**
-   * Throughput control group name (counted UTF-8). NULL/0 = unset.
-   */
-  struct cosmos_string_view_t throughput_control_group;
-  /**
    * Excluded regions — array of counted UTF-8 region ids.
-   * NULL / `0` length = unset; non-NULL with `0` length is rejected.
+   * NULL / `0` length = unset; non-NULL with `0` length clears exclusions.
    */
   const struct cosmos_string_view_t *excluded_regions;
   /**
@@ -1453,10 +1480,40 @@ typedef struct cosmos_operation_options_t {
   int8_t binary_encoding_request_text_response;
   /**
    * Query-plan mode encoded as a [`CosmosQueryPlanMode`] discriminant.
-   * `0` (`Unset`) inherits. Stored as a raw `i32` so invalid host values can
-   * be rejected before materializing the enum.
+   * `0` (`Unset`) uses LocalPreferred. Raw `i32` storage allows invalid host
+   * values to be rejected before materializing the enum.
    */
   int32_t query_plan_mode;
+  /**
+   * Throughput bucket. `< 0` inherits; otherwise must fit `u32`.
+   */
+  int64_t throughput_bucket;
+  /**
+   * Priority level: `0` inherits, `1` High, `2` Low.
+   */
+  int32_t priority_level;
+  /**
+   * Throttling retry count. `< 0` inherits; otherwise must fit `u32`.
+   */
+  int64_t max_throttle_retry_count;
+  /**
+   * Cumulative throttle retry wait per transport invocation, in milliseconds.
+   * `< 0` inherits; `0` explicitly disables waiting.
+   */
+  int64_t max_throttle_retry_wait_time_ms;
+  /**
+   * Hedging master switch: `0` inherits, `1` false, `2` true.
+   */
+  int8_t hedging_enabled;
+  /**
+   * Availability strategy: `0` inherits, `1` disabled, `2` hedging.
+   */
+  int32_t availability_strategy;
+  /**
+   * Positive hedge threshold in milliseconds for strategy `2`.
+   * Must be negative (unset) for any other strategy.
+   */
+  int64_t hedge_threshold_ms;
 } cosmos_operation_options_t;
 
 /**
@@ -1589,6 +1646,10 @@ typedef struct cosmos_runtime_options_t {
    * `1000`–`60000`). `0` = unset.
    */
   uint64_t cpu_refresh_interval_ms;
+  /**
+   * Runtime operation defaults, copied during construction. NULL inherits.
+   */
+  const struct cosmos_operation_options_t *operation_options;
 } cosmos_runtime_options_t;
 
 /**
@@ -1733,6 +1794,11 @@ typedef struct cosmos_operation_request_t {
    * evict an entry earlier. `0` = use the driver default.
    */
   uint32_t patch_tracking_retention_seconds;
+  /**
+   * Optional admission snapshot. Overrides the shared fields in `options`;
+   * `options.query_plan_mode` remains per submit. Borrowed only until submit returns.
+   */
+  const struct cosmos_operation_options_snapshot_t *options_snapshot;
 } cosmos_operation_request_t;
 
 #ifdef __cplusplus
@@ -1839,13 +1905,21 @@ void cosmos_account_ref_free(struct cosmos_account_ref_t *account);
 void cosmos_bytes_free(struct cosmos_bytes_t bytes);
 
 /**
+ * Requests cancellation without consuming the operation handle.
+ *
+ * NULL is a no-op. Keep the handle and host cookie alive until the terminal
+ * completion is drained; an already-ready driver result wins over cancellation.
+ */
+void cosmos_operation_handle_cancel(const struct cosmos_operation_handle_t *handle);
+
+/**
  * Returns the effective PATCH tracking UUID carried by a completion.
  *
  * The returned NUL-terminated UTF-8 string is borrowed from `completion` and
  * remains valid until that completion is freed. Returns NULL for non-PATCH
  * operations, untracked retry-safe PATCH operations, or an invalid completion
- * pointer. For tracked PATCH operations, the ID is also available on cancelled
- * completions because it is resolved before execution begins.
+ * pointer. For tracked PATCH operations, the ID is resolved before execution
+ * begins, so it is available on the completion regardless of outcome.
  */
 const char *cosmos_completion_patch_tracking_id(const struct cosmos_completion_t *completion);
 
@@ -1859,9 +1933,15 @@ struct cosmos_completion_queue_t *cosmos_completion_queue_create(const struct co
 /**
  * Free a completion queue. NULL is a no-op.
  *
- * The "blocks until in-flight ops drain" contract from spec section 3.1.2 is
- * observable here: if anyone enqueued completions but never drained, this
- * drops them (and thus their pending allocations).
+ * Does **not** block or wait for in-flight operations — it drops the
+ * producer-side handle immediately. In-flight submissions keep the shared
+ * queue state alive through their own `Arc`s and still run to completion
+ * unless explicitly cancelled, but once the handle is freed their completions,
+ * and the diagnostics they carry, can no longer be observed and are dropped
+ * with any pending allocations. Hosts that must observe every completion first
+ * call `cosmos_completion_queue_shutdown` and drain via
+ * `cosmos_completion_queue_wait` until `cosmos_completion_queue_state` reports
+ * `DRAINED`, then free.
  */
 void cosmos_completion_queue_free(struct cosmos_completion_queue_t *queue);
 
@@ -1936,26 +2016,12 @@ void cosmos_completion_queue_shutdown(struct cosmos_completion_queue_t *queue);
 cosmos_completion_queue_state_t cosmos_completion_queue_state(const struct cosmos_completion_queue_t *queue);
 
 /**
- * Request cooperative cancellation. Idempotent and non-blocking.
- *
- * Sets the cancel-requested flag and wakes the submit task's
- * `tokio::select!` cancel branch (via a stored `Notify` permit, so a cancel
- * that races ahead of the task is still observed). The task then drops the
- * in-flight driver future and posts a `CANCELLED` completion. If the
- * operation already produced a completion before the cancel was observed,
- * the cancel is a no-op for the outcome but is still reflected in
- * `cosmos_completion_was_cancel_requested`.
- */
-void cosmos_operation_handle_cancel(struct cosmos_operation_handle_t *op);
-
-/**
  * Poll the operation's lifecycle state. Returns `InFlight` if `op` is NULL.
  */
 cosmos_operation_handle_state_t cosmos_operation_handle_state(const struct cosmos_operation_handle_t *op);
 
 /**
- * Free the FFI handle. Does NOT cancel the operation — call
- * `cosmos_operation_handle_cancel` first if needed. NULL is a no-op.
+ * Free the FFI handle. NULL is a no-op.
  *
  * Drops this handle's `Arc` reference. If the completion record still holds
  * its own reference, the inner operation state stays alive.
@@ -1972,8 +2038,11 @@ void cosmos_container_ref_free(struct cosmos_container_ref_t *container);
  * [`azure_data_cosmos_driver::driver::CosmosDriver::resolve_container_by_name`]
  * through the wrapper's Tokio runtime via `block_on`.
  *
- * Touches the network on cache miss (reads container metadata from
- * the gateway). On cache hit returns immediately without I/O.
+ * May read container metadata and partition topology from the gateway. In the
+ * default eager topology mode, a container-metadata cache hit can still issue
+ * `/pkranges` requests because topology is cached per driver. Resolution
+ * returns without I/O only when every required cache entry is warm; lazy
+ * topology mode skips the topology load during resolution.
  *
  * # Parameters
  *
@@ -2062,9 +2131,113 @@ cosmos_status_code_t cosmos_database_ref_create(const struct cosmos_account_ref_
 void cosmos_database_ref_free(struct cosmos_database_ref_t *database);
 
 /**
- * Frees a driver handle. Drops the FFI-side `Arc` reference; the
- * underlying driver remains alive in the runtime's cache until the
- * owning `cosmos_runtime_t` is freed (spec section 4.4.1). NULL is a no-op.
+ * Total request charge (RU) aggregated across every attempt. Returns `0.0`
+ * when `d` is NULL.
+ */
+double cosmos_diagnostics_total_request_charge(const struct cosmos_diagnostics_t *d);
+
+/**
+ * Total wall-clock time the operation took, in microseconds. Returns `0` when
+ * `d` is NULL, and saturates to `u64::MAX` for the (practically impossible)
+ * overflow.
+ */
+uint64_t cosmos_diagnostics_total_elapsed_micros(const struct cosmos_diagnostics_t *d);
+
+/**
+ * Number of attempts recorded for the operation (the initial try plus any
+ * retries, hedges, or failovers). A value of `1` means no retry occurred.
+ * Returns `0` when `d` is NULL.
+ */
+uint32_t cosmos_diagnostics_request_count(const struct cosmos_diagnostics_t *d);
+
+/**
+ * Number of per-attempt records actually retained for iteration by
+ * [`cosmos_diagnostics_iter_attempts`]. Under a retry storm the driver caps
+ * the retained set, so this can be smaller than
+ * [`cosmos_diagnostics_request_count`] (the true total). Returns `0` when `d`
+ * is NULL.
+ */
+uint32_t cosmos_diagnostics_retained_request_count(const struct cosmos_diagnostics_t *d);
+
+/**
+ * Returns `true` when the per-attempt list was compacted because the operation
+ * exceeded the driver's retained-attempt cap. When `true`, the attempts
+ * yielded by [`cosmos_diagnostics_iter_attempts`] are the retained subset
+ * (see [`cosmos_diagnostics_retained_request_count`]), not the full timeline,
+ * while [`cosmos_diagnostics_total_request_charge`] and
+ * [`cosmos_diagnostics_request_count`] remain exact. Returns `false` when `d`
+ * is NULL.
+ */
+bool cosmos_diagnostics_is_compacted(const struct cosmos_diagnostics_t *d);
+
+/**
+ * Returns `true` when the operation reached a terminal state (a final status
+ * was recorded or at least one attempt completed). A cancelled or still
+ * in-flight operation is not completed. Returns `false` when `d` is NULL.
+ */
+bool cosmos_diagnostics_is_completed(const struct cosmos_diagnostics_t *d);
+
+/**
+ * Returns `true` when the operation completed with a non-success status.
+ * Returns `false` when `d` is NULL or the operation succeeded.
+ */
+bool cosmos_diagnostics_is_failure(const struct cosmos_diagnostics_t *d);
+
+/**
+ * Invokes `visitor` once per distinct region contacted, in first-contact
+ * order. `region_name` is a NUL-terminated UTF-8 string valid only for the
+ * duration of the call. Does nothing when `d` or `visitor` is NULL.
+ */
+void cosmos_diagnostics_iter_regions_contacted(const struct cosmos_diagnostics_t *d,
+                                               void (*visitor)(void *user_data,
+                                                               const char *region_name),
+                                               void *user_data);
+
+/**
+ * Invokes `visitor` once per recorded attempt, in execution order.
+ *
+ * `endpoint` and `region` are NUL-terminated UTF-8 strings valid only for the
+ * duration of the call; `region` is NULL when the attempt has no associated
+ * region. `status_code` is the attempt's HTTP status and `sub_status` is the
+ * Cosmos sub-status, or `-1` when the attempt recorded none. `latency_ms` is
+ * the attempt's wall-clock duration in milliseconds, `request_charge` is its
+ * RU cost, and `server_duration_ms` is the service-reported processing time
+ * or a negative value when the service did not report one.
+ *
+ * When [`cosmos_diagnostics_is_compacted`] is `true` these are the retained
+ * attempts only, not the full timeline. Does nothing when `d` or `visitor` is
+ * NULL.
+ */
+void cosmos_diagnostics_iter_attempts(const struct cosmos_diagnostics_t *d,
+                                      void (*visitor)(void *user_data,
+                                                      const char *endpoint,
+                                                      const char *region,
+                                                      uint16_t status_code,
+                                                      int32_t sub_status,
+                                                      uint64_t latency_ms,
+                                                      double request_charge,
+                                                      double server_duration_ms),
+                                      void *user_data);
+
+/**
+ * Writes a borrowed, read-only JSON rendering of the diagnostics at the
+ * requested `verbosity`.
+ *
+ * On success writes `*out_data` / `*out_len` describing UTF-8 bytes (not
+ * NUL-terminated) owned by the diagnostics handle and valid until the
+ * completion is freed; the caller must not free them. An unrecognized
+ * `verbosity` value renders at the runtime default. Returns a NULL-argument
+ * error status without writing anything when `d`, `out_data`, or `out_len`
+ * is NULL.
+ */
+cosmos_status_code_t cosmos_diagnostics_to_json(const struct cosmos_diagnostics_t *d,
+                                                cosmos_diagnostics_verbosity_t verbosity,
+                                                const uint8_t **out_data,
+                                                uintptr_t *out_len);
+
+/**
+ * Frees a driver handle. In-flight operations retain their own references.
+ * Other drivers on the same runtime are unaffected. NULL is a no-op.
  */
 void cosmos_driver_free(struct cosmos_driver_t *driver);
 
@@ -2072,23 +2245,13 @@ void cosmos_driver_free(struct cosmos_driver_t *driver);
  * Synchronously gets or creates the driver for the supplied account.
  *
  * Bridges
- * `CosmosDriverRuntime::get_or_create_driver` through the wrapper's
+ * `CosmosDriverRuntime::create_driver` through the wrapper's
  * own multi-threaded Tokio runtime via `block_on`. Suitable for
  * startup-time initialization; for runtime use prefer the async
  * `_submit` variant.
  *
- * # Cache behavior (spec section 4.4.1)
- *
- * - The runtime caches drivers by endpoint URL. A second call with the
- *   same endpoint returns the cached driver and **silently ignores**
- *   `options`.
- * - Two `AccountReference`s with the same endpoint but different
- *   credentials collide in the cache — first credential wins.
- * - Cache eviction happens only when the owning `cosmos_runtime_t` is
- *   freed; freeing a `cosmos_driver_t` does not evict.
- *
- * The cache-hit advisory described in spec Section 4.4.1 is not emitted
- * today — see the module-level `Cache-hit advisory` note for the rationale.
+ * Each call creates a fresh driver, even for the same endpoint. Credentials
+ * and account options remain isolated; no cache-hit advisory is emitted.
  *
  * # Parameters
  *
@@ -2222,6 +2385,49 @@ void cosmos_feed_range_free(struct cosmos_feed_range_t *fr);
  * sentinels.
  */
 struct cosmos_operation_options_t cosmos_operation_options_default(void);
+
+/**
+ * Atomically replaces runtime operation defaults. NULL resets all defaults.
+ *
+ * All pointers must remain valid for this call. Input arrays and strings are
+ * copied; invalid options leave the previous defaults unchanged.
+ *
+ * # Safety
+ *
+ * The runtime and any non-NULL options and borrowed arrays must be live.
+ */
+cosmos_status_code_t cosmos_runtime_set_operation_options(const struct cosmos_runtime_t *runtime,
+                                                          const struct cosmos_operation_options_t *options);
+
+/**
+ * Captures all configuration layers and starts the logical-operation budget.
+ *
+ * `client_options` and `request_options` may be NULL to inherit. Outputs are
+ * required. On success `out_timeout_ms` is the resolved Rust timeout (including
+ * its minimum clamp), or -1 when unset. A snapshot keeps its runtime generation
+ * through initialization, retries and patch stages; it must be submitted to a
+ * driver from this runtime. Invalid inputs do not modify outputs.
+ *
+ * # Safety
+ *
+ * Handles, option structs and their arrays must be valid for this call; output
+ * pointers must be writable. The host owns the returned snapshot.
+ */
+cosmos_status_code_t cosmos_operation_options_snapshot_create(const struct cosmos_runtime_t *runtime,
+                                                              const struct cosmos_operation_options_t *client_options,
+                                                              const struct cosmos_operation_options_t *request_options,
+                                                              struct cosmos_operation_options_snapshot_t **out_snapshot,
+                                                              int64_t *out_timeout_ms);
+
+/**
+ * Frees a snapshot. NULL is a no-op; already-submitted operations retain a copy.
+ *
+ * # Safety
+ *
+ * The pointer must be NULL or a live snapshot returned by snapshot creation,
+ * not concurrently borrowed by another call.
+ */
+void cosmos_operation_options_snapshot_free(struct cosmos_operation_options_snapshot_t *snapshot);
 
 /**
  * Creates an immutable partition key from an inline component array in a

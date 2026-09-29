@@ -116,6 +116,8 @@ const (
 // [Error.Code] is part of the published API. The string returned by [Error.Error] is not, and is
 // subject to change.
 type Error struct {
+	// PatchTrackingID identifies a tracked patch, including failed or cancelled execution.
+	PatchTrackingID PatchTrackingID
 	// Code classifies the failure. Prefer it over StatusCode and SubStatus, which are reported
 	// verbatim and are harder to interpret correctly.
 	Code Code

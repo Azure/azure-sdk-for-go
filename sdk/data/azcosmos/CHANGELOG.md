@@ -6,6 +6,15 @@
 
 ### Features Added
 
+* Added all 15 shared driver operation settings through request `OperationOptions`,
+  `ClientOptions.Operation`, and `RuntimeOptions.Operation`, including throughput controls, retry
+  budgets, hedging, session capture, custom headers, and binary encoding.
+* Added `NewRuntime`, `Runtime.SetOperationOptions`, and `Runtime.Close` for shared execution
+  resources, atomic replacement of defaults, and snapshot-stable execution budgets. Closing a
+  runtime drains and closes attached clients; closing one client leaves its siblings usable.
+* Added mutually exclusive If-Match and If-None-Match item preconditions and client-side patch
+  attempt, tracking ID, capacity, and retention controls. Effective patch tracking IDs are
+  available on success and error responses, including cancellation.
 * Added the error and response model: `Error` classifies a failure with a `Code` and reports whether
   the service or the client produced it, and `Response`/`ItemResponse` carry what an operation
   returns. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
@@ -30,6 +39,9 @@
 
 ### Breaking Changes
 
+* Unset encoding options now inherit the driver's binary JSON default. Raw response bytes can be
+  Cosmos binary JSON; select `BinaryEncodingOptions.RequestTextResponse` with `Enabled: true`,
+  or explicitly disable binary encoding before decoding with `encoding/json`.
 * This is the first release of `github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2`. The v2
   module replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver,
   so it is a full rewrite of the public surface rather than an incremental change. The complete
@@ -40,7 +52,15 @@
 
 ### Bugs Fixed
 
+* Preserved explicit empty excluded-region lists and custom-header maps as overrides that clear
+  inherited values, rather than treating them as unset.
+* Rejected conflicting values in the legacy client content-response option and its shared
+  operation-option equivalent, and conflicting application identities on shared runtimes.
+
 ### Other Changes
+
+* Requires native ABI/distribution version 0.2.0. Matching platform modules must be published before
+  normal module-based builds can consume this change; local integration uses an external modfile.
 
 ## 1.6.0-beta.2 (2026-08-03)
 

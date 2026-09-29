@@ -20,7 +20,10 @@ Cosmos DB SDKs.
 ### Building with the driver
 
 The driver binding is selected automatically when cgo is enabled on glibc `linux/amd64` or
-`darwin/arm64`. No build tag or linker environment variable is required:
+`darwin/arm64`. This change requires **native ABI 0.2.0**, which is not yet published.
+Until matching distribution modules are released, use locally staged 0.2.0 modules with
+an external `go -modfile` file; do not commit machine-specific `replace` directives.
+After publication, no build tag or linker environment variable is required:
 
 ```sh
 go build ./...
@@ -60,6 +63,54 @@ container's metadata.
 
 One limit applies to the driver-backed build today: v1's WebAssembly support does not carry over.
 
+### Operation defaults and shared runtimes
+
+`OperationOptions` is accepted by each item request, `ClientOptions.Operation`, and
+`RuntimeOptions.Operation`. The Rust driver resolves declared environment overrides above request,
+client, runtime, ordinary supported environment settings, and driver defaults, in that order.
+Database and container handles do not introduce extra configuration layers.
+
+Nil pointers inherit; explicit false and zero values override. Nil excluded-region slices and
+custom-header maps inherit; non-nil empty values clear the inherited list/map. Nonempty values
+replace rather than extend them. Throughput and throttling members inherit independently.
+Binary encoding and availability strategies replace their entire groups.
+
+`NewRuntime` creates shared execution resources. Pass it in `ClientOptions.Runtime` to attach
+multiple independent account clients, including clients for the same endpoint with different
+credentials or defaults. Application identity belongs to the runtime; a conflicting nonempty
+client `ApplicationID` is rejected. Without a supplied runtime, the client owns a private one.
+The legacy client `EnableContentResponseOnWrite` alias remains supported, but conflicting values
+in it and `Operation.EnableContentResponseOnWrite` are rejected.
+
+`Runtime.SetOperationOptions` atomically replaces the whole default group. Requests capture a
+native snapshot before lazy initialization: concurrent updates affect later requests, not an
+already captured generation. One timeout budget covers initialization, metadata lookup, retries,
+and execution. The Rust timeout policy has a one-second minimum; Go context deadlines and explicit
+request timeouts may be stricter. Throttling retry budgets apply per transport invocation, not to
+the entire logical operation. The hedging master switch and its environment override can override
+the chosen availability strategy. Environment settings are captured at runtime construction.
+
+`Client.Close` affects only that client. `Runtime.Close` rejects new work on all attached clients,
+drains admitted operations, closes the clients, and frees shared resources. Both are idempotent
+and safe to call concurrently. Do not call Close from inside a credential callback.
+
+### Binary response compatibility change
+
+**Raw item response bytes now use the driver's binary JSON default**, including for existing
+callers that leave options unset. Before using `encoding/json`, select text responses at any scope:
+
+```go
+options := azcosmos.OperationOptions{
+    BinaryEncoding: &azcosmos.BinaryEncodingOptions{
+        Enabled: true, RequestTextResponse: true,
+    },
+}
+```
+
+This keeps binary wire encoding while asking the driver to return text JSON. Alternatively,
+`&azcosmos.BinaryEncodingOptions{}` disables binary wire encoding. Text conversion preserves JSON
+values, not necessarily byte-for-byte formatting. Go never decodes application item schemas.
+
 ### Patching items
 
 > [!IMPORTANT]
@@ -76,7 +127,17 @@ back to read-modify-write when a request exceeds the service limit.
 
 Client-side execution of a patch that is not intrinsically retry-safe permanently adds the
 `_azsdkPatchTracking` property to the item. The driver uses it to deduplicate retries within one
-`PatchItem` call. Supplying a stable tracking ID across separate calls is not exposed yet.
+`PatchItem` call. `PatchItemOptions.TrackingID` accepts a stable hyphenated UUID to reuse across
+application retries after an ambiguous outcome. The effective ID is returned on `ItemResponse`
+or `Error`, including cancellation, when supplied by the driver. Duplicate suppression is bounded
+by tracking capacity and retention; it is not a permanent exactly-once guarantee.
+
+`MaxAttempts` (1..255), `TrackingCapacity` (1..65535), and `TrackingRetention` configure client-side
+patching and are inert for server-side execution. Retention floors to whole seconds with a minimum
+of one second even for explicit zero; nil uses the driver default. Capacity pressure can evict
+tracking entries sooner. All item APIs expose mutually exclusive If-Match and If-None-Match
+preconditions, whose service support depends on the operation. Patch-specific `Strategy` overrides
+the shared `Operation.PatchStrategy`.
 
 ### Running the end-to-end tests
 

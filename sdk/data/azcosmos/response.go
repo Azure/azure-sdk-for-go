@@ -22,6 +22,8 @@ type Response struct {
 // ItemResponse is the response from an operation on a single item.
 type ItemResponse struct {
 	Response
+	// PatchTrackingID is the effective client-side patch identity, when tracking was used.
+	PatchTrackingID PatchTrackingID
 
 	// ETag is the entity tag of the item the operation addressed (`etag`). Use it to make a later
 	// write conditional on the item not having changed.
@@ -32,6 +34,7 @@ type ItemResponse struct {
 	SessionToken SessionToken
 
 	// Value is the raw item content the service returned. It is nil when the operation did not
-	// request a content response, and for operations that do not return an item.
+	// request a content response, and for operations that do not return an item. The default
+	// encoding can be Cosmos binary JSON; request text explicitly before using encoding/json.
 	Value []byte
 }

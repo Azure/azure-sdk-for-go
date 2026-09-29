@@ -34,9 +34,8 @@ const driverAvailable = true
 // nativeDriver owns the driver handles a client needs. close releases them in reverse acquisition
 // order.
 //
-// The runtime is per client rather than shared. It caches drivers by endpoint and only evicts that
-// cache when it is freed, so a process-wide runtime would keep a closed client's driver alive and
-// hand it to the next client for the same endpoint, defeating [Client.Close].
+// Runtime ownership belongs to Runtime. Each client retains independent driver/account handles,
+// credentials, options, metadata caches, and a completion queue.
 //
 // The runtime, account reference and completion queue are built locally. Initialize or the first
 // operation creates the driver, which fetches account properties, seeds routing state and creates
@@ -47,9 +46,10 @@ const driverAvailable = true
 type nativeDriver struct {
 	// cfg is kept across the local setup in openDriver and the asynchronous driver creation that
 	// follows it.
-	cfg     driverConfig
-	runtime *C.cosmos_runtime_t
-	account *C.cosmos_account_ref_t
+	cfg          driverConfig
+	runtime      *C.cosmos_runtime_t
+	ownedRuntime *nativeRuntime
+	account      *C.cosmos_account_ref_t
 
 	tokenProvider *tokenProviderState
 
@@ -95,7 +95,12 @@ type driverCreation struct {
 
 // initialize eagerly creates the driver, which fills its account-properties and routing caches.
 func (d *nativeDriver) initialize(ctx context.Context) error {
-	_, err := d.ensureDriver(ctx)
+	ctx, _, release, err := d.snapshot(ctx, OperationOptions{})
+	if err != nil {
+		return err
+	}
+	defer release()
+	_, err = d.ensureDriver(ctx)
 	return err
 }
 
@@ -135,8 +140,12 @@ func openDriver(cfg driverConfig) (*nativeDriver, error) {
 	}
 
 	d := &nativeDriver{cfg: cfg}
-	if err := d.buildRuntime(); err != nil {
-		return nil, err
+	if cfg.runtime != nil {
+		d.runtime = cfg.runtime.native.handle
+	} else {
+		if err := d.buildRuntime(); err != nil {
+			return nil, err
+		}
 	}
 	if err := d.buildAccount(cfg); err != nil {
 		_ = d.close()
@@ -288,27 +297,12 @@ func (d *nativeDriver) buildDriverOptions() (*C.cosmos_driver_options_t, error) 
 // ApplicationID is applied here rather than with the other client options because the C ABI carries
 // the user agent on the runtime, not on the driver.
 func (d *nativeDriver) buildRuntime() error {
-	// Seeded from the defaults so that fields this binding does not set keep the driver's values
-	// rather than a Go zero.
-	options := C.cosmos_runtime_options_default()
-
-	if d.cfg.options.ApplicationID != "" {
-		// Copied into the runtime before the call returns, so freeing it here is safe.
-		suffix, allocation := toNativeString(d.cfg.options.ApplicationID)
-		defer C.free(allocation)
-		options.user_agent_suffix = suffix
+	native, err := openRuntime(RuntimeOptions{ApplicationID: d.cfg.options.ApplicationID})
+	if err == nil {
+		d.ownedRuntime = native
+		d.runtime = native.handle
+		return nil
 	}
-
-	var richErr *C.cosmos_error_t
-	status := C.cosmos_runtime_build(&options, &d.runtime, &richErr) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
-	err := statusError(status, richErr, "building the driver runtime")
-	if err == nil || d.cfg.options.ApplicationID == "" {
-		return err
-	}
-
-	// ApplicationID is the only runtime option this binding changes from the driver's defaults.
-	// The C ABI reports an invalid value as a bare status with no field name, so identify the field
-	// without duplicating the driver's validation rule.
 	var cosmosErr *Error
 	if errors.As(err, &cosmosErr) &&
 		cosmosErr.SubStatus == int(C.COSMOS_SUB_STATUS_CLIENT_FFI_INVALID_OPTION_VALUE) {
@@ -369,7 +363,8 @@ func (d *nativeDriver) close() error {
 	d.driver = nil
 	C.cosmos_account_ref_free(d.account)
 	d.account = nil
-	C.cosmos_runtime_free(d.runtime)
+	d.ownedRuntime.close()
+	d.ownedRuntime = nil
 	d.runtime = nil
 	return nil
 }

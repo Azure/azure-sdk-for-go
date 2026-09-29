@@ -89,22 +89,21 @@ func TestPartitionKeyReleaseIsSafe(t *testing.T) {
 	}
 }
 
-// Unset options preserve driver defaults except binary encoding, since Go returns text JSON.
+// Unset options preserve the driver's binary encoding default.
 func TestOperationOptionsToNativeKeepsDefaults(t *testing.T) {
 	options, release := inspectNativeOperationOptions(OperationOptions{})
 	t.Cleanup(release)
 
 	expected := defaultNativeOperationOptions()
-	expected.binaryEncodingEnabled = 1
 	require.Equal(t, expected, options)
 }
 
-func TestClientOptionsToNativeDisablesBinaryEncoding(t *testing.T) {
+func TestClientOptionsToNativeInheritsBinaryEncoding(t *testing.T) {
 	options, release, err := inspectNativeClientOptions(ClientOptions{})
 	require.NoError(t, err)
 	t.Cleanup(release)
 
-	require.Equal(t, int8(1), options.operationOptions.binaryEncodingEnabled)
+	require.Equal(t, int8(0), options.operationOptions.binaryEncodingEnabled)
 }
 
 // The content-response setting is tri-state at the ABI, so false has to be distinguishable from

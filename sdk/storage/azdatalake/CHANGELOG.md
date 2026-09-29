@@ -13,6 +13,7 @@
 * Fixed `GetSASURL()` on `filesystem.Client`, `file.Client`, and `directory.Client` appending a duplicated `?` to the resulting URL when the client's underlying blob URL already contained a query string, which produced a malformed SAS URL.
 
 ### Other Changes
+* Updated `azcore` version to `1.23.2`
 
 ## 1.6.1-beta.1 (2026-07-24)
 

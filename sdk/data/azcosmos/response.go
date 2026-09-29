@@ -35,3 +35,19 @@ type ItemResponse struct {
 	// request a content response, and for operations that do not return an item.
 	Value []byte
 }
+
+// QueryItemsResponse contains one query page. An empty page can still have a continuation.
+type QueryItemsResponse struct {
+	// Response includes the metadata-validation charge on the first fetch.
+	Response
+
+	// Items contains independently owned JSON values, including scalar SELECT VALUE results.
+	Items [][]byte
+
+	// SessionToken is the session token returned for this page.
+	SessionToken SessionToken
+
+	// ContinuationToken is the driver's opaque resume token, not the server continuation header.
+	// Empty means there are no more pages. Resume with the same query and scope.
+	ContinuationToken string
+}

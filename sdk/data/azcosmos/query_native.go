@@ -41,7 +41,7 @@ func (c *Client) executeQuery(ctx context.Context, req *queryRequest) (QueryItem
 				nativeOptions, freeOptions := options.toNative()
 				defer freeOptions()
 				request.options = nativeOptions
-				return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError)
+				return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr targets cgo-generated code.
 			})
 		if err != nil {
 			return QueryItemsResponse{}, err
@@ -64,7 +64,7 @@ func (c *Client) executeQuery(ctx context.Context, req *queryRequest) (QueryItem
 				*preError = status
 				return nil
 			}
-			return C.cosmos_submit_operation(driver, &request, queue, cookie, preError)
+			return C.cosmos_submit_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr targets cgo-generated code.
 		})
 	if err != nil {
 		return QueryItemsResponse{}, addQuerySetupCharge(err, setup)
@@ -89,7 +89,7 @@ func buildNativeQueryRequest(req *queryRequest, options OperationOptions, contai
 	components, freeComponents := req.partitionKey.toNative()
 	releases = append(releases, freeComponents)
 	var pk *C.cosmos_partition_key_t
-	if status := C.cosmos_partition_key_create(components, req.partitionKey.partitionKeyLen(), &pk); status != 0 {
+	if status := C.cosmos_partition_key_create(components, req.partitionKey.partitionKeyLen(), &pk); status != 0 { //nolint:gocritic // dupSubExpr targets cgo-generated code.
 		return request, release, status
 	}
 	releases = append(releases, func() { C.cosmos_partition_key_free(pk) })

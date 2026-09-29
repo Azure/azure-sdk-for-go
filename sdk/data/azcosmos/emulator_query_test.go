@@ -11,6 +11,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -46,7 +47,7 @@ func TestEmulatorQueryPaginationAfterContainerRecreation(t *testing.T) {
 		request.Header.Set("x-ms-version", "2018-12-31")
 		response, err := http.DefaultClient.Do(request)
 		require.NoError(t, err)
-		defer response.Body.Close()
+		defer func() { require.NoError(t, response.Body.Close()) }()
 		result, err := io.ReadAll(response.Body)
 		require.NoError(t, err)
 		require.Equal(t, want, response.StatusCode, string(result))
@@ -65,11 +66,12 @@ func TestEmulatorQueryPaginationAfterContainerRecreation(t *testing.T) {
 	var invalidate atomic.Bool
 	var proxyURL string
 	proxy := httputil.NewSingleHostReverseProxy(account)
-	proxy.ModifyResponse = func(response *http.Response) error {
+	proxy.ModifyResponse = func(response *http.Response) (err error) {
 		if response.Request.Method != http.MethodGet || response.Request.URL.Path != "/" || response.StatusCode != http.StatusOK {
 			return nil
 		}
-		defer response.Body.Close()
+		originalBody := response.Body
+		defer func() { err = errors.Join(err, originalBody.Close()) }()
 		var properties map[string]json.RawMessage
 		if err := json.NewDecoder(response.Body).Decode(&properties); err != nil {
 			return err

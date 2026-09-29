@@ -44,7 +44,8 @@ func (q Query) WithParameter(name string, value any) (Query, error) {
 			return q, nil
 		}
 	}
-	q.parameters = append(parameters, queryParameter{Name: name, Value: encoded})
+	parameters = append(parameters, queryParameter{Name: name, Value: encoded})
+	q.parameters = parameters
 	return q, nil
 }
 

@@ -886,3 +886,93 @@ func TestDownloadBufferLeavesNilAccessConditionsNil(t *testing.T) {
 
 	require.Nil(t, opts.AccessConditions, "the caller's options must not gain conditions they never set")
 }
+
+// The download hint is what decides whether a layout is fetched at all. These tests pin that
+// contract from both sides: the same client, the same blob, the only difference being whether
+// the service sent x-ms-download-hint.
+
+// Without the hint the service is telling us it has no layout to offer, so the remainder is read
+// from the configured endpoint and GetLayout is never called.
+func TestDownloadBufferNoDownloadHintSkipsGetLayout(t *testing.T) {
+	etag := azcore.ETag("etag")
+	l := buildLayout(3, 100, 2, &etag)
+
+	f := newFakeLayoutResponder(l, nil)
+	f.noDownloadHint = true
+	client := newFakeLayoutClient(t, f)
+
+	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
+		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		BlockSize:          100,
+	})
+	require.NoError(t, err)
+
+	layoutCalls, localityGets, normalGets, _ := f.counts()
+	require.Zero(t, layoutCalls, "no hint means no layout lookup")
+	require.Zero(t, localityGets, "nothing should be routed to a layout endpoint")
+	require.Equal(t, 3, normalGets, "the whole blob is read from the configured endpoint")
+}
+
+// With the hint present the layout is fetched and the remaining chunks are routed by it. This is
+// the same setup as the test above, so a regression in the gate shows up as one of the two
+// failing rather than both.
+func TestDownloadBufferDownloadHintTriggersGetLayout(t *testing.T) {
+	etag := azcore.ETag("etag")
+	l := buildLayout(3, 100, 2, &etag)
+
+	f := newFakeLayoutResponder(l, nil)
+	client := newFakeLayoutClient(t, f)
+
+	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
+		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		BlockSize:          100,
+	})
+	require.NoError(t, err)
+
+	layoutCalls, localityGets, normalGets, _ := f.counts()
+	require.NotZero(t, layoutCalls, "the hint should have triggered a layout lookup")
+	require.Equal(t, 2, localityGets, "the chunks after the initial read are layout-routed")
+	require.Equal(t, 1, normalGets, "only the initial read precedes the layout")
+}
+
+// A blob small enough to arrive in the initial read is already finished by the time the hint is
+// known, so fetching a layout would be a wasted round trip on the exact case the initial-GetBlob
+// optimization exists to speed up.
+func TestDownloadBufferSmallBlobWithHintSkipsGetLayout(t *testing.T) {
+	etag := azcore.ETag("etag")
+	l := buildLayout(3, 100, 2, &etag)
+
+	f := newFakeLayoutResponder(l, nil)
+	client := newFakeLayoutClient(t, f)
+
+	// one block covers the whole blob
+	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
+		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		BlockSize:          l.contentLength,
+	})
+	require.NoError(t, err)
+
+	layoutCalls, localityGets, normalGets, _ := f.counts()
+	require.Zero(t, layoutCalls, "a download completed by the initial read must not fetch a layout")
+	require.Zero(t, localityGets)
+	require.Equal(t, 1, normalGets, "exactly one request")
+}
+
+// Routing turned off wins over the hint.
+func TestDownloadBufferHintIgnoredWhenRoutingDisabled(t *testing.T) {
+	etag := azcore.ETag("etag")
+	l := buildLayout(3, 100, 2, &etag)
+
+	f := newFakeLayoutResponder(l, nil)
+	client := newFakeLayoutClient(t, f)
+
+	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
+		LayoutAwareRouting: LayoutAwareRoutingDisabled,
+		BlockSize:          100,
+	})
+	require.NoError(t, err)
+
+	layoutCalls, localityGets, _, _ := f.counts()
+	require.Zero(t, layoutCalls, "the hint must not override an explicit LayoutAwareRoutingDisabled")
+	require.Zero(t, localityGets)
+}

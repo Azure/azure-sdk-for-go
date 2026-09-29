@@ -126,9 +126,14 @@ func GetAzClient(serviceURL string, cred azcore.TokenCredential, sharedKey *expo
 		authPolicy := exported.NewSharedKeyCredPolicy(sharedKey)
 		plOpts.PerRetry = []policy.Policy{authPolicy}
 	}
-	// main applies the range policy on every client; centralizing pipeline construction here
-	// must keep it, or each client would silently lose it.
-	plOpts.PerCall = []policy.Policy{shared.NewRangePolicy()}
+	// The range policy comes from main and applies to every client. The layout policy is
+	// registered per-call because its rewrite must happen exactly once: it moves the account
+	// host into the Host header and replaces the URL host with the layout endpoint. Those
+	// mutations are made on the request itself, so they persist across retries and every
+	// attempt still reaches the layout endpoint. Running it per-retry would re-apply the
+	// rewrite to an already-rewritten request, copying the layout host into the Host header
+	// and losing the original account host.
+	plOpts.PerCall = []policy.Policy{shared.NewRangePolicy(), shared.NewLayoutPolicy()}
 	if p := NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
 		plOpts.PerRetry = append(plOpts.PerRetry, p)
 	}

@@ -51,6 +51,7 @@ func convertDownloadResponse(dr generated.BlobClientDownloadResponseInternal) Do
 		CreationTime:                dr.CreationTime,
 		Date:                        dr.Date,
 		ETag:                        dr.ETag,
+		DownloadHint:                dr.DownloadHint,
 		EncryptionKeySHA256:         dr.EncryptionKeySHA256,
 		EncryptionScope:             dr.EncryptionScope,
 		ImmutabilityPolicyExpiresOn: dr.ImmutabilityPolicyExpiresOn,

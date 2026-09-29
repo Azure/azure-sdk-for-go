@@ -91,7 +91,7 @@ type SessionOptions struct {
 
 	// AccountName is the storage account name used to sign requests with the session key. When
 	// empty, it is derived from the client's URL; set it explicitly when it cannot be, for
-	// example when the account is reached through a custom domain.
+	// example, when the account is reached through a custom domain.
 	// It must match the account the client targets. A mismatched name produces signatures the
 	// service rejects, so every eligible request pays a new session, then a rejected round trip,
 	// before falling back to bearer token authentication.

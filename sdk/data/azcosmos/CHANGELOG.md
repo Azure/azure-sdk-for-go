@@ -43,7 +43,7 @@
   breaking-change list lands here before the beta ships. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
 * Changed `ClientOptions.EnableContentResponseOnWrite` from `bool` to `*bool`, preserving the
   difference between inheriting the driver's operation-specific default and explicitly enabling or
-  disabling content responses.
+  disabling content responses. See [PR 27597](https://github.com/Azure/azure-sdk-for-go/pull/27597).
 
 ### Bugs Fixed
 

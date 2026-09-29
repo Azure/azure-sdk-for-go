@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/AdvancedThreatProtectionSettingsGet.json
+// Generated from example definition: 2026-07-01-preview/AdvancedThreatProtectionSettingsGet.json
 func ExampleAdvancedThreatProtectionSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleAdvancedThreatProtectionSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/AdvancedThreatProtectionSettingsListByServer.json
+// Generated from example definition: 2026-07-01-preview/AdvancedThreatProtectionSettingsListByServer.json
 func ExampleAdvancedThreatProtectionSettingsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

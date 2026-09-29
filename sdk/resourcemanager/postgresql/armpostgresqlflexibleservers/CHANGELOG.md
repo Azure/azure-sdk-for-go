@@ -1,5 +1,31 @@
 # Release History
 
+## 6.0.0-beta.4 (2026-09-29)
+### Features Added
+
+- New value `PostgresMajorVersion19` added to enum type `PostgresMajorVersion`
+- New enum type `DbAgentForUpdateState` with values `DbAgentForUpdateStateDisabled`, `DbAgentForUpdateStateEnabled`
+- New enum type `DbAgentProvisioningState` with values `DbAgentProvisioningStateCanceled`, `DbAgentProvisioningStateFailed`, `DbAgentProvisioningStateInProgress`, `DbAgentProvisioningStateSucceeded`
+- New enum type `DbAgentState` with values `DbAgentStateDisabled`, `DbAgentStateDisabling`, `DbAgentStateEnabled`, `DbAgentStateEnabling`, `DbAgentStateFailed`
+- New enum type `FipsMode` with values `FipsModeDisabled`, `FipsModeEnabled`
+- New enum type `ImmutableBackup` with values `ImmutableBackupDisabled`, `ImmutableBackupEnabled`
+- New function `*ClientFactory.NewDbAgentsClient() *DbAgentsClient`
+- New function `NewDbAgentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DbAgentsClient, error)`
+- New function `*DbAgentsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, resource DbAgentForUpdate, options *DbAgentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DbAgentsClientCreateOrUpdateResponse], error)`
+- New function `*DbAgentsClient.Get(ctx context.Context, resourceGroupName string, serverName string, options *DbAgentsClientGetOptions) (DbAgentsClientGetResponse, error)`
+- New function `*DbAgentsClient.NewListPager(resourceGroupName string, serverName string, options *DbAgentsClientListOptions) *runtime.Pager[DbAgentsClientListResponse]`
+- New struct `DbAgent`
+- New struct `DbAgentForUpdate`
+- New struct `DbAgentForUpdateProperties`
+- New struct `DbAgentListResult`
+- New struct `DbAgentProperties`
+- New field `ImmutableBackup` in struct `Backup`
+- New field `ImmutableBackup` in struct `BackupForPatch`
+- New field `FipsMode` in struct `ServerProperties`
+- New field `FipsMode`, `SourceServerResourceID` in struct `ServerPropertiesForPatch`
+- New field `AutoGrowIncrementPercent`, `AutoGrowMaxThresholdMb` in struct `Storage`
+
+
 ## 6.0.0-beta.3 (2026-06-03)
 ### Features Added
 

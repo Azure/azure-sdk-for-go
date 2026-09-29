@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.Network": "2026-02-09-preview"
+  },
+  "emitterVersion": "0.17.4"
+}

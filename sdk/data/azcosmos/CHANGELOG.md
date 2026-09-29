@@ -10,6 +10,7 @@
   `QueryOptions`, and `ContainerClient.NewQueryItemsPager`, including page-size hints, raw JSON
   results, and resumable driver continuation tokens. Cross-partition and hierarchical-prefix
   queries remain unsupported.
+  See [PR 27634](https://github.com/Azure/azure-sdk-for-go/pull/27634).
 * Added the error and response model: `Error` classifies a failure with a `Code` and reports whether
   the service or the client produced it, and `Response`/`ItemResponse` carry what an operation
   returns. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
